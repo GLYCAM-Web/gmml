@@ -55,4 +55,14 @@ void ParameterFileAtom::Print(std::ostream& out)
     out << std::setw(60) << dscr_
         << std::setw(60) << mod4_dscr_
         << std::endl;
+
+    if(!equivalent_list_.empty())
+    {
+        out << std::setw(20) << "" << "Equivalent symbols: ";
+        for(std::vector<std::string>::iterator it = equivalent_list_.begin(); it != equivalent_list_.end(); it++)
+        {
+            out << (*it) << "   ";
+        }
+        out << std::endl;
+    }
 }

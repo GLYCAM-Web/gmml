@@ -30,6 +30,7 @@ const char* ParameterFileProcessingException::what() const throw()
         }
         throw std::invalid_argument("to_string: invalid conversion");       // Invalid conversion from int to string
     }
+    return "";
 }
 
 ParameterFileProcessingException::~ParameterFileProcessingException() throw() {}

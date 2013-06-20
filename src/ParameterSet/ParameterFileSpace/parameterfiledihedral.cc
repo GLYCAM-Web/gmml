@@ -57,7 +57,7 @@ void ParameterFileDihedral::Print(std::ostream& out)
             it->Print(out);
         else
         {
-            out << std::setw(42) << "";
+            out << std::setw(54) << "";
             it -> Print(out);
         }
     }
