@@ -4,10 +4,15 @@
 using namespace ParameterFileSpace;
 
 
-int main()
+int main(int argc, char *argv[])
 {
-    ParameterFile* temp = new ParameterFile("dat/parm99.dat");
-    //std::cout << "HERE";
-    temp->Print(std::cout);
+    if(argc < 3)
+        std::cout << "Not enough parameters" << std::endl;
+    else
+    {
+        ParameterFile* temp = new ParameterFile(argv[1]);
+        //std::cout << "HERE";
+        temp->Print(std::cout);
+    }
     return 0;
 }
