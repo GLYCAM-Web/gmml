@@ -385,7 +385,7 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
     if(dihedrals_.find(types) == dihedrals_.end() && dihedrals_.find(inverse_types) == dihedrals_.end())     // Duplicate checking
     {
         dihedral->is_improper_ = false;                                 // Set is_improper_ attribute to false; improper dihedral doesn't have factor
-        if (dihedral->types_[0] == "X" && dihedral->types_[3] == "X")   //  Check for generic dihedral
+        if (dihedral->types_[0] == "X" || dihedral->types_[1] == "X" || dihedral->types_[2] == "X" || dihedral->types_[3] == "X")   //  Check for generic dihedral
         {
             dihedral->is_generic_ = true;
         }
@@ -471,7 +471,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     if(dihedrals_.find(types) == dihedrals_.end() && dihedrals_.find(inverse_types) == dihedrals_.end())
     {
         dihedral->is_improper_ = true;                                  // Set is_improper_ attribute to true; improper dihedral doesn't have factor
-        if (dihedral->types_[0] == "X" && dihedral->types_[3] == "X")   //  Check for generic dihedral
+        if (dihedral->types_[0] == "X" || dihedral->types_[1] == "X" || dihedral->types_[2] == "X" || dihedral->types_[3] == "X")   //  Check for generic dihedral
         {
             dihedral->is_generic_ = true;
         }
