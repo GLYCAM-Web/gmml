@@ -41,6 +41,16 @@ void ParameterFileDihedral::Print(std::ostream& out)
     else
         out << std::setw(10) << "NO";
 
+    if(scee_ == kNotSet)
+        out << std::setw(6) << "--";
+    else
+        out << std::setw(6) << scee_;
+
+    if(scnb_ == kNotSet)
+        out << std::setw(6) << "--";
+    else
+        out << std::setw(6) << scnb_;
+
     for(std::vector<ParameterFileDihedralTerm>::iterator it = terms_.begin(); it != terms_.end(); it++)
     {
         if(it == terms_.begin())

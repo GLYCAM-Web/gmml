@@ -666,6 +666,8 @@ void ParameterFile::Print(std::ostream& out)
     out << setw(22) << "Dihedral Types"
         << setw(10) << "Generic"
         << setw(10) << "Improper"
+        << setw(6) << "SCEE"
+        << setw(6) << "SCNB"
         << setw(10) << "Factor"
         << setw(10) << "Force"
         << setw(10) << "Phase"
