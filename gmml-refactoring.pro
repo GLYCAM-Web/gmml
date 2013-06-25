@@ -19,7 +19,11 @@ HEADERS += includes/common.hpp \
            includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
            includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
            includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
-           includes/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.hpp
+           includes/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.hpp \
+    includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+    includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+    includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+    includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp
 SOURCES += main.cc \
            src/ParameterSet/ParameterFileSpace/parameterfile.cc \
            src/ParameterSet/ParameterFileSpace/parameterfileangle.cc \
@@ -27,4 +31,8 @@ SOURCES += main.cc \
            src/ParameterSet/ParameterFileSpace/parameterfilebond.cc \
            src/ParameterSet/ParameterFileSpace/parameterfiledihedral.cc \
            src/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.cc \
-           src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc
+           src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc \
+    src/ParameterSet/PrepFileSpace/prepfileatom.cc \
+    src/ParameterSet/PrepFileSpace/prepfileresidue.cc \
+    src/ParameterSet/PrepFileSpace/prepfile.cc \
+    src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc

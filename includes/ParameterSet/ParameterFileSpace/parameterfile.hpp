@@ -35,7 +35,6 @@ namespace ParameterFileSpace
 
             ///////////////////////////////// FUNCTIONS ///////////////////////////////////////////
             void Read(std::ifstream& in_file);
-
             void ProcessAtomType(const std::string& line);
             void ProcessHydrophilicAtomType(const std::string& line);
             void ProcessBond(const std::string& line);
