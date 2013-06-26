@@ -15,7 +15,18 @@ using namespace PrepFileSpace;
 /////////////////////////////// CONSTRUCTOR ///////////////////////////////
 PrepFileResidue::PrepFileResidue() {}
 
+///////////////////////////// ACCESSOR ////////////////////////////////////
+/// Return the index of an atom in a specific residue by a given name
+int PrepFileResidue::GetAtomIndexByName(const std::string& name)
+{
+    for (unsigned int i = 0; i < atoms_.size(); i++)
+        if (name.compare(atoms_[i]->name_) == 0)
+            return i;
+    return -1;
+}
+
 ///////////////////////////// FUNCTION ////////////////////////////////////
+/// Create a new residue from a given stream
 PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
 {
     string line, name, dummy_atom_type;
@@ -83,19 +94,24 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
         residue->atoms_.push_back(atom);
     }
 
+    // Process the extra sections: IMPROPER, LOOP, DONE
     bool done = false;
     while (!done)
     {
-        while (getline(in_file, line) && trim(line).empty())
+        // Skip blank lines until to reach to a known section title
+        getline(in_file, line);
+        while (trim(line).empty())
         {
+            getline(in_file, line);
         }
+        // Does a corresponding action based on the section title
         switch (ExtractSectionType(line))
         {
             case kSectionLoop:
-                //residue->impl_->set_loops(in);
+                residue->loops_ = ExtractLoops(in_file);
                 break;
             case kSectionImproper:
-                //residue->impl_->set_improper_dihedrals(in);
+                residue->improper_dihedrals_ = ExtractImproperDihedral(in_file);
                 break;
             case kSectionDone:
                 done = true;
@@ -109,6 +125,7 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     return residue;
 }
 
+/// Return residue name from a stream line which is the first column of the 3rd line in each residue section
 std::string PrepFileResidue::ExtractResidueName(std::istream& ss)
 {
     string name;
@@ -116,6 +133,7 @@ std::string PrepFileResidue::ExtractResidueName(std::istream& ss)
     return name;
 }
 
+/// Return coordinate type from a stream line which is the 2nd column of the 3rd line in each residue section
 CoordinateType PrepFileResidue::ExtractResidueCoordinateType(std::istream &ss)
 {
     string s;
@@ -126,6 +144,7 @@ CoordinateType PrepFileResidue::ExtractResidueCoordinateType(std::istream &ss)
         return kINT;
 }
 
+/// Return output format from a stream line which is the 3rd column of the 3rd line in each residue section
 OutputFormat PrepFileResidue::ExtractResidueOutputFormat(std::istream& ss)
 {
     int val;
@@ -136,6 +155,7 @@ OutputFormat PrepFileResidue::ExtractResidueOutputFormat(std::istream& ss)
         return kFormatted;
 }
 
+/// Return geometry type from a stream line which is the first column of the 4th line in each residue section
 GeometryType PrepFileResidue::ExtractResidueGeometryType(std::istream& ss)
 {
     string s;
@@ -146,6 +166,7 @@ GeometryType PrepFileResidue::ExtractResidueGeometryType(std::istream& ss)
         return kGeometryCorrect;
 }
 
+/// Return dummy atom omission from a stream line which is the 2nd column of the 4th line in each residue section
 DummyAtomOmission PrepFileResidue::ExtractResidueDummyAtomOmission(istream &ss)
 {
     string s;
@@ -156,6 +177,7 @@ DummyAtomOmission PrepFileResidue::ExtractResidueDummyAtomOmission(istream &ss)
         return kOmit;
 }
 
+/// Return dummy atom position from a stream line which is the 4th column of the 4th line in each residue section
 DummyAtomPosition PrepFileResidue::ExtractResidueDummyAtomPosition(istream &ss)
 {
     string s;
@@ -166,6 +188,7 @@ DummyAtomPosition PrepFileResidue::ExtractResidueDummyAtomPosition(istream &ss)
         return kPositionBeg;
 }
 
+/// Return a corresponding title from a stream line which may appear in each residue section
 SectionType PrepFileResidue::ExtractSectionType(string &line)
 {
     if (line == "LOOP")
@@ -177,8 +200,149 @@ SectionType PrepFileResidue::ExtractSectionType(string &line)
     return kSectionOther;
 }
 
+/// Parse the loop section of each residue section and return a loop map
+PrepFileResidue::Loop PrepFileResidue::ExtractLoops(ifstream &in_file)
+{
+    Loop loops;
+    string line;
+    std::stringstream ss;
+
+    getline(in_file, line);
+    while (!trim(line).empty())                         // Read file until blank line which determines the end of the section
+    {
+        ss.clear();
+        ss.str(line);                                   // Create a stream from the read line
+        string atom_names[2];
+        ss >> atom_names[0] >> atom_names[1];           // Extract atom names from the stream
+
+        int from = GetAtomIndexByName(atom_names[0]);   // Extract index of the first atom in the loop
+        int to = GetAtomIndexByName(atom_names[1]);     // Extract index of the second atom in the loop
+
+        if (from == -1 || to == -1)
+        {
+            //throw error here, unknown atom names
+        }
+        loops[from] = to;                               // Add a new entry into the loop map of the residue
+        getline(in_file, line);
+    }
+    return loops;
+}
+
+/// Parse the improper dihedral section of each residue section and return a vector of improper dihedrals
+vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstream &in_file)
+{
+    string line;
+    std::stringstream ss;
+    vector<Dihedral> dihedrals;
+    getline(in_file, line);
+    while (!trim(line).empty())                         // Read file until blank line which determines the end of the section
+    {
+        string atom_names[4];
+        Dihedral dihedral;
+        ss.clear();
+        ss.str(line);
+        // Extract improper atom types involving in a dihedral from each line
+        ss >> atom_names[0]
+           >> atom_names[1]
+           >> atom_names[2]
+           >> atom_names[3];
+        // Push all atoms into a vector of atom types
+        for(int i = 0; i < 4; i++)
+        {
+            dihedral.push_back(atom_names[i]);
+        }
+        dihedrals.push_back(dihedral);                  // Create a new dihedral into the vector of dihedrals
+        getline(in_file, line);                         // Read the next line
+    }
+    return dihedrals;
+}
+
 ////////////////////////// DISPLAY FUNCTION ///////////////////////////////
 void PrepFileResidue::Print(std::ostream& out)
 {
+    out << "Title: " << title_ << endl;
+    out << setw(10) << "ResName"
+        << setw(10) << "CrdType"
+        << setw(10) << "Output"
+        << setw(10) << "GeoType"
+        << setw(15) << "DummyOmission"
+        << setw(12) << "DummyType"
+        << setw(12) << "DummyPos"
+        << setw(10) << "Charge" << endl;
+    out << setw(10) << name_;
 
+    if(coordinate_type_ == kINT)
+        out << setw(10) << "INT";
+    else if(coordinate_type_ == kXYZ)
+        out << setw(10) << "XYZ";
+    else
+        out << setw(10) << "--";
+
+    if(output_format_ == kBinary)
+        out << setw(10) << "Binary";
+    else if(output_format_ == kFormatted)
+        out << setw(10) << "NBinary";
+    else
+        out << setw(10) << "--";
+
+    if(geometry_type_ == kGeometryCorrect)
+        out << setw(10) << "Correct";
+    else if(geometry_type_ == kGeometryChange)
+        out << setw(10) << "Change";
+    else
+        out << setw(10) << "--";
+
+    if(dummy_atom_omission_ == kOmit)
+        out << setw(15) << "YES";
+    else if(dummy_atom_omission_ == kNomit)
+        out << setw(15) << "NO";
+    else
+        out << setw(15) << "--";
+
+    out << setw(12) << dummy_atom_type_;
+
+    if(dummy_atom_position_ == kPositionAll)
+        out << setw(12) << "ALL";
+    else if (dummy_atom_position_ == kPositionBeg)
+        out << setw(12) << "BEG";
+    else
+        out << setw(12) << "--";
+
+    out << setw(10) << charge_ << endl << endl;
+
+    out << setw(3) << "#"
+        << setw(6) << "Name"
+        << setw(6) << "Type"
+        << setw(3) << "TT"
+        << setw(4) << "B#"
+        << setw(4) << "A#"
+        << setw(4) << "D#"
+        << setw(10) << "Bond"
+        << setw(10) << "Angle"
+        << setw(10) << "Dihedral"
+        << setw(10) << "Charge"
+        << endl;
+
+    for(vector<PrepFileAtom*>::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        (*it)->Print(out);
+    }
+
+    out << endl << "Improper dihedrals" << endl;
+    for(vector<Dihedral>::iterator it = improper_dihedrals_.begin(); it != improper_dihedrals_.end(); it++)
+    {
+        for(Dihedral::iterator it1 = it->begin(); it1 != it->end(); it1++)
+        {
+            out << setw(6) << (*it1);
+        }
+        out << endl;
+    }
+
+    out << endl << "Loops" << endl;
+    for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
+    {
+        out << setw(6) << it->first << setw(6) << it->second << endl;
+    }
+
+    out << endl;
 }

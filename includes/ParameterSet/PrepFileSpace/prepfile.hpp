@@ -23,11 +23,14 @@ namespace PrepFileSpace
             void Read(std::ifstream& in_file);
             PrepFileResidue* ProcessResidueSection(std::ifstream& in_file);
 
+            ////////////////////////////////// DISPLAY FUNCTION ////////////////////////////////////
+            void Print(std::ostream& out);
 
         private:
             //////////////////////////////////////// ATTRIBUTES ////////////////////////////////////
-            std::string path_;
-            ResidueMap residues_;
+            std::string path_;              // Actual path of the given prep file
+            ResidueMap residues_;           // Fill by PrepFileResidues
+            //End of a prep file gets marked by STOP
     };
 }
 

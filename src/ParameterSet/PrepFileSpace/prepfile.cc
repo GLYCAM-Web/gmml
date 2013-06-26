@@ -41,13 +41,28 @@ void PrepFile::Read(ifstream &in_file)
     getline(in_file, header1);
     getline(in_file, header2);
 
-    PrepFileResidue *residue = NULL;
-    while ((residue = ProcessResidueSection(in_file)) != NULL)
+    PrepFileResidue *residue = ProcessResidueSection(in_file);
+    while (residue != NULL)
+    {
         residues_[residue->name_] = residue;
+        residue = ProcessResidueSection(in_file);
+    }
 }
 
 PrepFileResidue* PrepFile::ProcessResidueSection(ifstream &in_file)
 {
+    PrepFileResidue* residue = new PrepFileResidue();
+    residue = residue->LoadFromStream(in_file);
+    return residue;
+}
 
+////////////////////////////////// DISPLAY FUNCTION ////////////////////////////////////
+void PrepFile::Print(std::ostream& out)
+{
+    for(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        out << "**********************************************************************************" << endl;
+        it->second->Print(out);
+    }
 }
 
