@@ -20,7 +20,7 @@ PrepFileResidue::PrepFileResidue() {}
 int PrepFileResidue::GetAtomIndexByName(const std::string& name)
 {
     for (unsigned int i = 0; i < atoms_.size(); i++)
-        if (name.compare(atoms_[i]->name_) == 0)
+        if (name == atoms_[i]->name_)
             return i;
     return -1;
 }
@@ -108,10 +108,10 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
         switch (ExtractSectionType(line))
         {
             case kSectionLoop:
-                residue->loops_ = ExtractLoops(in_file);
+                residue->loops_ = residue->ExtractLoops(in_file);
                 break;
             case kSectionImproper:
-                residue->improper_dihedrals_ = ExtractImproperDihedral(in_file);
+                residue->improper_dihedrals_ = residue->ExtractImproperDihedral(in_file);
                 break;
             case kSectionDone:
                 done = true;
