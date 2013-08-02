@@ -16,16 +16,17 @@ using namespace PrepFileSpace;
 PrepFile::PrepFile(const std::string& prep_file)
 {
     path_ = prep_file;
+    std::ifstream in_file;
     try
     {
-        std::ifstream in_file(prep_file.c_str());
-        Read(in_file);
-        in_file.close();            // Close the parameter files
+        in_file.open(prep_file.c_str());
     }
     catch(...)
     {
         throw PrepFileProcessingException(__LINE__,"File not found");
     }
+    Read(in_file);
+    in_file.close();            // Close the parameter files
 }
 
 ///////////////////////////////////////// ACCESSOR ////////////////////////////////////////

@@ -20,16 +20,18 @@ using namespace ParameterFileSpace;
 ParameterFile::ParameterFile(const std::string &param_file)
 {
     path_ = param_file;
+    std::ifstream in_file;
     try
     {
-        std::ifstream in_file(param_file.c_str());
-        Read(in_file);
-        in_file.close();            // Close the parameter files
+        in_file.open(param_file.c_str());
     }
     catch(...)
     {
         throw ParameterFileProcessingException(__LINE__,"File not found");
     }
+    Read(in_file);
+    in_file.close();            // Close the parameter files
+
 }
 
 ///////////////////////////////////////// ACCESSOR ////////////////////////////////////////

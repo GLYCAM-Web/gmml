@@ -28,7 +28,9 @@ HEADERS += includes/common.hpp \
     includes/Geometry/coordinate.hpp \
     includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
     includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
-    includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp
+    includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp \
+    includes/FileSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp \
+    includes/FileSet/CoordinateFileSpace/coordinatefile.hpp
 SOURCES += main.cc \
            src/ParameterSet/ParameterFileSpace/parameterfile.cc \
            src/ParameterSet/ParameterFileSpace/parameterfileangle.cc \
@@ -45,4 +47,6 @@ SOURCES += main.cc \
     src/ParameterSet/LibraryFileSpace/libraryfileatom.cc \
     src/ParameterSet/LibraryFileSpace/libraryfileresidue.cc \
     src/ParameterSet/LibraryFileSpace/libraryfile.cc \
-    src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc
+    src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc \
+    src/FileSet/CoordinateFileSpace/coordinatefileprocessingexception.cc \
+    src/FileSet/CoordinateFileSpace/coordinatefile.cc

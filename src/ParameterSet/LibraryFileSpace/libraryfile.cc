@@ -12,21 +12,23 @@
 using namespace std;
 using namespace gmml;
 using namespace LibraryFileSpace;
+using namespace Geometry;
 
 //////////////////////////////////// CONSTRUCTOR ///////////////////////////////////////
 LibraryFile::LibraryFile(const std::string &lib_file)
 {
     path_ = lib_file;
+    std::ifstream in_file;
     try
     {
-        std::ifstream in_file(lib_file.c_str());
-        Read(in_file);
-        in_file.close();            // Close the parameter files
+        in_file.open(lib_file.c_str());
     }
     catch(...)
     {
         throw LibraryFileProcessingException(__LINE__,"File not found");
     }
+    Read(in_file);
+    in_file.close();            // Close the parameter files
 }
 
 ///////////////////////////////////// ACCESSOR /////////////////////////////////////////
@@ -104,6 +106,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the atompertinfo section of the file for the corresponding residue
         if(line.find("atomspertinfo") != string::npos)
@@ -121,8 +127,12 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
-
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
         // Process the boundbox section of the file for the corresponding residue
+
         if(line.find("boundbox") != string::npos)
         {
             getline(in_file, line);                 // Get the first line of the section
@@ -176,6 +186,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the childsequence section of the file for the corresponding residue
         if(line.find("childsequence") != string::npos)
@@ -192,6 +206,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                     throw LibraryFileProcessingException(__LINE__, "Error processing child sequence section");
                 }
             }
+        }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
         // Process the connect section of the file for the corresponding residue
@@ -222,6 +240,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the connectivity section of the file for the corresponding residue
         if(line.find("connectivity") != string::npos)
@@ -246,6 +268,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the hierarchy section of the file for the corresponding residue
         if(line.find("hierarchy") != string::npos)
@@ -263,6 +289,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the name section of the file for the corresponding residue
         if(line.find("name") != string::npos)
@@ -279,6 +309,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                     throw LibraryFileProcessingException(__LINE__, "Error processing name section");
                 }
             }
+        }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
         // Process the positions section of the file for the corresponding residue
@@ -304,6 +338,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the residueconnect section of the file for the corresponding residue
         if(line.find("residueconnect") != string::npos)
@@ -320,6 +358,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                     throw LibraryFileProcessingException(__LINE__, "Error processing residue connect section");
                 }
             }
+        }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
         // Process the residues section of the file for the corresponding residue
@@ -338,6 +380,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the residuesPdbSequenceNumber section of the file for the corresponding residue
         if(line.find("residuesPdbSequenceNumber") != string::npos)
@@ -354,6 +400,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                     throw LibraryFileProcessingException(__LINE__, "Error processing residuePdbSequenceNumber section");
                 }
             }
+        }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
         // Process the solventcap section of the file for the corresponding residue
@@ -372,6 +422,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                 }
             }
         }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
+        }
 
         // Process the velocities section of the file for the corresponding residue
         if(line.find("velocities") != string::npos)
@@ -388,6 +442,10 @@ void LibraryFile::Read(std::ifstream& in_file)
                     throw LibraryFileProcessingException(__LINE__, "Error processing velocities section");
                 }
             }
+        }
+        else
+        {
+            throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
     }
 }
