@@ -19,7 +19,9 @@ namespace PrepFileSpace
     {
         public:
             ///////////////////////////// TYPE DEFINITION /////////////////////////////
+            // A mapping between two indices of atoms indicates a loop
             typedef std::map<int, int> Loop;
+            // A collection of four atom types
             typedef std::vector<std::string> Dihedral;
 
             /////////////////////////////// CONSTRUCTOR ///////////////////////////////

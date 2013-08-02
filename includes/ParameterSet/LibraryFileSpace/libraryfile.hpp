@@ -12,6 +12,7 @@ namespace LibraryFileSpace
     {
         public:
             ///////////////////////////////// TYPE DEFINITION ///////////////////////////////////////
+            // A mapping between a name of a residue and its residue object
             typedef std::map<std::string, LibraryFileResidue*> ResidueMap;
 
             //////////////////////////////////// CONSTRUCTOR ///////////////////////////////////////

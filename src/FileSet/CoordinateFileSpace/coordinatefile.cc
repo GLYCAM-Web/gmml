@@ -30,42 +30,50 @@ CoordinateFile::CoordinateFile(const string &crd_file)
 }
 
 ///////////////////////////////////// ACCESSOR /////////////////////////////////////////
+// Return path of the coordinate file
 const std::string& CoordinateFile::GetFilePath() const
 {
     return path_;
 }
 
+// Return title of the coordinate file
 const std::string& CoordinateFile::GetTitle() const
 {
     return title_;
 }
 
+// Return the number of coordinates contained in the coordinate file
 int CoordinateFile::GetNumberOfCoodinates()
 {
     return number_of_coordinates_;
 }
 
+// Return list of coordinates contained in the coordinate file
 const std::vector<Geometry::Coordinate*> CoordinateFile::GetCoordinates() const
 {
     return coordinates_;
 }
 
 ///////////////////////////////////// MUTATOR //////////////////////////////////////////
+// Set the path of the coordinate file
 void CoordinateFile::SetPath(std::string& path)
 {
     path_ = path;
 }
 
+// Set the title of the coordinate file
 void CoordinateFile::SetTitle(std::string& title)
 {
     title_ = title;
 }
 
+// Set the number of coordinates contained in the coordinate file
 void CoordinateFile::SetNumberOfCoordinates(int number_of_coordinates)
 {
     number_of_coordinates_ = number_of_coordinates;
 }
 
+// Clear and set the list of coordinates in the coordinate file
 void CoordinateFile::SetCoordinates(std::vector<Coordinate*> coordinates)
 {
     coordinates_.clear();
@@ -75,6 +83,7 @@ void CoordinateFile::SetCoordinates(std::vector<Coordinate*> coordinates)
     }
 }
 
+// Add a new coordinate to the list of the coordinates
 void CoordinateFile::AddCoordinate(Geometry::Coordinate* coordinate)
 {
     coordinates_.push_back(coordinate);
@@ -91,27 +100,32 @@ void CoordinateFile::Read(std::ifstream& in_file)
         throw CoordinateFileProcessingException("Error reading file");
     }
 
+    // Set the tile by the first read line
     title_ = line;
 
-    getline(in_file, line);
+    // Extract the number of coordinates in the file
+    getline(in_file, line);                         // Read the next line
     int number_of_coordinates;
-    stringstream ss(line);
+    stringstream ss(line);                          // Create a stream from the read line
     ss >> number_of_coordinates;
-    number_of_coordinates_ = number_of_coordinates;
+    number_of_coordinates_ = number_of_coordinates; // Set the number of coordinates attribute
 
-    getline(in_file, line);
-    while(!Trim(line).empty())
+    getline(in_file, line);                         // Read the next line
+    while(!Trim(line).empty())                      // Read until the end of the file
     {
+        // Tokenizing the read line
         boost::char_separator<char> separator(" ");
         boost::tokenizer< boost::char_separator<char> > tokens(line, separator);
         vector<string> vectorTokens = vector<string>();
         vectorTokens.assign(tokens.begin(), tokens.end());
         switch(vectorTokens.size())
         {
+            // One coordinate in the read line
             case 3:
                 coordinates_.push_back(new Coordinate(ConvertString<double>(vectorTokens.at(0)), ConvertString<double>(vectorTokens.at(1)),
                                                       ConvertString<double>(vectorTokens.at(2))));
                 break;
+            // Two coordinates in the read line
             case 6:
                 coordinates_.push_back(new Coordinate(ConvertString<double>(vectorTokens.at(0)), ConvertString<double>(vectorTokens.at(1)),
                                                       ConvertString<double>(vectorTokens.at(2))));

@@ -17,9 +17,13 @@ namespace ParameterFileSpace
     {
         public:
             ///////////////////////////////// TYPE DEFINITION ///////////////////////////////////////
+            // A mapping between a atom type and its atom object
             typedef std::map<std::string, ParameterFileAtom*> AtomTypeMap;
+            // A mapping between a connection of two atom types and its bond object
             typedef std::map<std::vector<std::string>, ParameterFileBond*> BondMap;
+            // A mapping between a connection of three atom types and its angle object
             typedef std::map<std::vector<std::string>, ParameterFileAngle*> AngleMap;
+            // A mapping between a connection of four atom types and its dihedral object
             typedef std::map<std::vector<std::string>, ParameterFileDihedral*> DihedralMap;
 
             //////////////////////////////////// CONSTRUCTOR ///////////////////////////////////////

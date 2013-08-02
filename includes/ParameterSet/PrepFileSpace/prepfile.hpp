@@ -11,6 +11,7 @@ namespace PrepFileSpace
     {
         public:
             ///////////////////////////////// TYPE DEFINITION ///////////////////////////////////////
+            // A mapping between a residue name and its residue object
             typedef std::map< std::string, PrepFileResidue* > ResidueMap;
 
             //////////////////////////////////// CONSTRUCTOR ///////////////////////////////////////
