@@ -39,7 +39,7 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     PrepFileResidue *residue = new PrepFileResidue();
 
     getline(in_file, line);             // Read the first line of a residue section
-    if (trim(line) == "STOP")           // End of file
+    if (Trim(line) == "STOP")           // End of file
         return NULL;
 
     residue->title_ = line;            // Set title of the residue
@@ -85,10 +85,10 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     getline(in_file, line);             // Read the next line
 
     // Residue charge extraction from the read line
-    residue->charge_ = convert_string<double>(line);
+    residue->charge_ = ConvertString<double>(line);
 
     // Process atoms of the residue
-    while (getline(in_file, line) && !trim(line).empty())
+    while (getline(in_file, line) && !Trim(line).empty())
     {
         PrepFileAtom *atom = new PrepFileAtom(line);
         residue->atoms_.push_back(atom);
@@ -100,7 +100,7 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     {
         // Skip blank lines until to reach to a known section title
         getline(in_file, line);
-        while (trim(line).empty())
+        while (Trim(line).empty())
         {
             getline(in_file, line);
         }
@@ -208,7 +208,7 @@ PrepFileResidue::Loop PrepFileResidue::ExtractLoops(ifstream &in_file)
     std::stringstream ss;
 
     getline(in_file, line);
-    while (!trim(line).empty())                         // Read file until blank line which determines the end of the section
+    while (!Trim(line).empty())                         // Read file until blank line which determines the end of the section
     {
         ss.clear();
         ss.str(line);                                   // Create a stream from the read line
@@ -235,7 +235,7 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
     std::stringstream ss;
     vector<Dihedral> dihedrals;
     getline(in_file, line);
-    while (!trim(line).empty())                         // Read file until blank line which determines the end of the section
+    while (!Trim(line).empty())                         // Read file until blank line which determines the end of the section
     {
         string atom_names[4];
         Dihedral dihedral;

@@ -79,13 +79,13 @@ void ParameterFile::Read(std::ifstream& in_file)
     }
 
     // Set the title of the parameter file
-    title_ = trim(line);
+    title_ = Trim(line);
     line_number++;
 
     // Atom type section reading
     getline(in_file, line);             // Read the first line of the atom type section
     line_number++;                      // Increment line counter
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -115,7 +115,7 @@ void ParameterFile::Read(std::ifstream& in_file)
     }
 
     // Bond section reading
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -131,7 +131,7 @@ void ParameterFile::Read(std::ifstream& in_file)
     // Angle section reading
     getline(in_file, line);             // Read the first line of the angle section
     line_number++;                      // Increment line counter
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -147,7 +147,7 @@ void ParameterFile::Read(std::ifstream& in_file)
     // Dihedral section reading
     getline(in_file, line);             // Read the first line of the dihedral section
     line_number++;                      // Increment line counter
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -163,7 +163,7 @@ void ParameterFile::Read(std::ifstream& in_file)
     // Improper dihedral section reading
     getline(in_file, line);             // Read the first line of the improper dihedral section
     line_number++;                      // Increment line counter
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -179,7 +179,7 @@ void ParameterFile::Read(std::ifstream& in_file)
     // Hydrogen bond section reading
     getline(in_file, line);             // Read the first line of the hydrogen-bond section
     line_number++;                      // Increment line counter
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -195,7 +195,7 @@ void ParameterFile::Read(std::ifstream& in_file)
     // Equivalent symbol section reading
     getline(in_file, line);             // Read the first line of the equivalent symbol section
     line_number++;                      // Increment line counter
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -215,7 +215,7 @@ void ParameterFile::Read(std::ifstream& in_file)
     // Potential parameter section reading
     getline(in_file, line);         // Read the first line of the potential parameter section
     line_number++;                  // Increment line counter
-    while (!trim(line).empty())         // Reading until a blank line which is the end of the section
+    while (!Trim(line).empty())         // Reading until a blank line which is the end of the section
     {
         try
         {
@@ -236,11 +236,11 @@ void ParameterFile::ProcessAtomType(const std::string& line)
     string type, dscr;
 
     type = line.substr(0, 2);                           // Extract type from the line
-    trim(type);
-    mass = convert_string<double>(line.substr(3, 10));  // Extract mass from the line
+    Trim(type);
+    mass = ConvertString<double>(line.substr(3, 10));  // Extract mass from the line
     try
     {
-        polarizability = convert_string<double>(line.substr(14, 10));   // Extract polarizability from the line
+        polarizability = ConvertString<double>(line.substr(14, 10));   // Extract polarizability from the line
     } catch(...)
     {
         polarizability = kNotSet;
@@ -256,7 +256,7 @@ void ParameterFile::ProcessHydrophilicAtomType(const std::string& line)
 {
     string type;
     istringstream in(line);             // Create an stream from the read line
-    while (in >> std::setw(4) >> type && !trim(type).empty())         // Iterate on the tokens in the read line
+    while (in >> std::setw(4) >> type && !Trim(type).empty())         // Iterate on the tokens in the read line
     {
         if(atom_types_.find(type) != atom_types_.end())         // Check for the existing atom type in the map
         {
@@ -285,7 +285,7 @@ void ParameterFile::ProcessBond(const std::string& line)
         dscr = line.substr(26);
 
     for(unsigned int i = 0; i < types.size(); i++)
-        trim(types[i]);
+        Trim(types[i]);
     bonds_[types] = new ParameterFileBond(types, force_constant, length, dscr);          // Create a new bond and insert into the bond list
 }
 
@@ -310,7 +310,7 @@ void ParameterFile::ProcessAngle(const std::string& line)
         dscr = line.substr(29);
 
     for(unsigned int i = 0; i < types.size(); i++)
-        trim(types[i]);
+        Trim(types[i]);
     angles_[types] = new ParameterFileAngle(types, force_constant, angle, dscr);         // Create a new angle and insert into the angle list
 }
 
@@ -347,7 +347,7 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
     scnb = ProcessDoubleDihedralDescription(dscr, "SCNB");              // Extract scnb from the description column of the line
 
     for(unsigned int i = 0; i < types.size(); i++)
-        trim(types[i]);
+        Trim(types[i]);
     ParameterFileDihedral *dihedral = new ParameterFileDihedral(types, t, scee, scnb);
     while (dihedral->terms_.at(dihedral->terms_.size() - 1).periodicity_ < 0)       // Processing the following lines with the same dihedral;
         // While the periodicity is negative the following lines are the same dihedrals with different attributes
@@ -435,7 +435,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     scnb = ProcessDoubleDihedralDescription(dscr, "SCNB");              // Extract scnb from the description column of the line
 
     for(unsigned int i = 0; i < types.size(); i++)
-        trim(types[i]);
+        Trim(types[i]);
     ParameterFileDihedral *dihedral = new ParameterFileDihedral(types, t, scee, scnb);
     while (dihedral->terms_.at(dihedral->terms_.size() - 1).periodicity_ < 0)       // Processing the following lines with the same dihedral;
         // While the periodicity is negative the following lines are the same dihedrals with different attributes
@@ -501,7 +501,7 @@ void ParameterFile::ProcessHydrogenBond(const std::string& line)
         dscr = line.substr(58);
 
     for(unsigned int i = 0; i < types.size(); i++)
-        trim(types[i]);
+        Trim(types[i]);
 
     vector<string> inverse_types(2);                // Create an inverse vector of types
     inverse_types[0] = types[1];
@@ -525,8 +525,8 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
     string type, t;
     istringstream in(line);         // Create an stream from the read line
     in >> std::setw(4) >> type;     // Extract the first atom type from the line which the equivalent list is created for
-    trim(type);
-    while (in >> std::setw(4) >> t && !trim(t).empty())        // Read until the end of the line
+    Trim(type);
+    while (in >> std::setw(4) >> t && !Trim(t).empty())        // Read until the end of the line
     {
         if(atom_types_.find(type) != atom_types_.end())         // Check for existing atom type in the atom type map
             atom_types_[type] -> equivalent_list_.push_back(t); // Add the equivalent atom type to the corresponding list of the found atom
@@ -538,7 +538,7 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
     istringstream in(line);         // Create an stream from the read line
     vector<string> types;
 
-    while (in >> std::setw(4) >> type && !trim(type).empty())     // Read until the end of the line
+    while (in >> std::setw(4) >> type && !Trim(type).empty())     // Read until the end of the line
     {
         types.push_back(type);;     // Add the read atom type into the temporary atom list
     }
@@ -569,7 +569,7 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
     if (line.size() > 38)               // Line has description
         dscr = line.substr(38);
 
-    trim(type);                         // Remove spaces from the begining and the end of the string
+    Trim(type);                         // Remove spaces from the begining and the end of the string
     if (atom_types_.find(type) == atom_types_.end())        // Check for the existing atom type in the map
     {
         atom_types_[type] = new ParameterFileAtom(type, kNotSet, kNotSet, radius, depth, dscr); // Create a new entry in the map for a non-existing atom type in the map

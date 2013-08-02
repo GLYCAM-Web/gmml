@@ -23,7 +23,12 @@ HEADERS += includes/common.hpp \
     includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
     includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
     includes/ParameterSet/PrepFileSpace/prepfile.hpp \
-    includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp
+    includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp \
+    includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+    includes/Geometry/coordinate.hpp \
+    includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+    includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+    includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp
 SOURCES += main.cc \
            src/ParameterSet/ParameterFileSpace/parameterfile.cc \
            src/ParameterSet/ParameterFileSpace/parameterfileangle.cc \
@@ -35,4 +40,9 @@ SOURCES += main.cc \
     src/ParameterSet/PrepFileSpace/prepfileatom.cc \
     src/ParameterSet/PrepFileSpace/prepfileresidue.cc \
     src/ParameterSet/PrepFileSpace/prepfile.cc \
-    src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc
+    src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc \
+    src/Geometry/coordinate.cc \
+    src/ParameterSet/LibraryFileSpace/libraryfileatom.cc \
+    src/ParameterSet/LibraryFileSpace/libraryfileresidue.cc \
+    src/ParameterSet/LibraryFileSpace/libraryfile.cc \
+    src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc
