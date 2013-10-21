@@ -8,7 +8,7 @@
 
 namespace gmml
 {
-    // Remove spaces on both sides of the string.
+    /// Removes spaces on both sides of the string.
     inline std::string& Trim(std::string& str)
     {
         str.erase(str.find_last_not_of(" ") + 1);
@@ -16,17 +16,19 @@ namespace gmml
         return str;
     }
 
+    /// Removes quotation marks from the begining and the end of the given string
     inline void RemoveQuotes(std::string& str)
     {
         str.erase(std::remove(str.begin(), str.end(), '\"'), str.end());
     }
 
+    /// Removes all spaces existing in the given string
     inline void RemoveSpaces(std::string& str)
     {
         str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
     }
 
-    // String convertor
+    /// String convertor
     template<typename T>
     inline T ConvertString(const std::string& str) {
         T val;
