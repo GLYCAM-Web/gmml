@@ -3,6 +3,7 @@
 
 #include <ostream>
 #include <iomanip>
+#include <iostream>
 
 namespace Geometry
 {

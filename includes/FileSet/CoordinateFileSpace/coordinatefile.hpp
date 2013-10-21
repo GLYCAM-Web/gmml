@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "../../../includes/Geometry/coordinate.hpp"
 

@@ -2,6 +2,7 @@
 #define PARAMETERFILEDIHEDRALTERM_HPP
 
 #include <string>
+#include <iostream>
 
 namespace ParameterFileSpace
 {
