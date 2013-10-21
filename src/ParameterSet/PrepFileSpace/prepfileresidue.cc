@@ -12,10 +12,14 @@ using namespace std;
 using namespace gmml;
 using namespace PrepFileSpace;
 
-/////////////////////////////// CONSTRUCTOR ///////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 PrepFileResidue::PrepFileResidue() {}
 
-///////////////////////////// ACCESSOR ////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
 /// Return the index of an atom in a specific residue by a given name
 int PrepFileResidue::GetAtomIndexByName(const std::string& name)
 {
@@ -25,7 +29,9 @@ int PrepFileResidue::GetAtomIndexByName(const std::string& name)
     return -1;
 }
 
-///////////////////////////// FUNCTION ////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                         FUNCTIONS                    //
+//////////////////////////////////////////////////////////
 /// Create a new residue from a given stream
 PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
 {
@@ -38,73 +44,73 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     DummyAtomPosition dummy_atom_position;
     PrepFileResidue *residue = new PrepFileResidue();
 
-    getline(in_file, line);             // Read the first line of a residue section
-    if (Trim(line) == "STOP")           // End of file
+    getline(in_file, line);             /// Read the first line of a residue section
+    if (Trim(line) == "STOP")           /// End of file
         return NULL;
 
-    residue->title_ = line;            // Set title of the residue
-    getline(in_file, line);             // Blank line, skip
-    getline(in_file, line);             // Read the next line
+    residue->title_ = line;             /// Set title of the residue
+    getline(in_file, line);             /// Blank line, skip
+    getline(in_file, line);             /// Read the next line
 
-    ss.str(line);                       // Create an stream from the read line
+    ss.str(line);                       /// Create an stream from the read line
 
-    // Residue name extraction from the stream of the read line
+    /// Residue name extraction from the stream of the read line
     name = ExtractResidueName(ss);
     residue->name_ = name;
 
-    // Coordinate type extraction from the stream of the read line
+    /// Coordinate type extraction from the stream of the read line
     coordinate_type = ExtractResidueCoordinateType(ss);
     residue->coordinate_type_ = coordinate_type;
 
-    // Output format extraction from the stream of the read line
+    /// Output format extraction from the stream of the read line
     output_format = ExtractResidueOutputFormat(ss);
     residue->output_format_ = output_format;
 
     ss.clear();
 
-    getline(in_file, line);             // Read the next line
+    getline(in_file, line);             /// Read the next line
 
-    ss.str(line);                       // Create an stream from the read line
+    ss.str(line);                       /// Create an stream from the read line
 
-    // Geometry type extraction from the stream of the read line
+    /// Geometry type extraction from the stream of the read line
     geometry_type = ExtractResidueGeometryType(ss);
     residue->geometry_type_ = geometry_type;
 
-    // Dummy atom omission extraction from the stream of the read line
+    /// Dummy atom omission extraction from the stream of the read line
     dummy_atom_omission = ExtractResidueDummyAtomOmission(ss);
     residue->dummy_atom_omission_ = dummy_atom_omission;
 
-    // Dummy atom type extraction from the stream of the read line
+    /// Dummy atom type extraction from the stream of the read line
     ss >> dummy_atom_type;
     residue->dummy_atom_type_ = dummy_atom_type;
 
-    // Dummy atom position extraction from the stream of the read line
+    /// Dummy atom position extraction from the stream of the read line
     dummy_atom_position = ExtractResidueDummyAtomPosition(ss);
     residue->dummy_atom_position_ = dummy_atom_position;
 
-    getline(in_file, line);             // Read the next line
+    getline(in_file, line);             /// Read the next line
 
-    // Residue charge extraction from the read line
+    /// Residue charge extraction from the read line
     residue->charge_ = ConvertString<double>(line);
 
-    // Process atoms of the residue
+    /// Process atoms of the residue
     while (getline(in_file, line) && !Trim(line).empty())
     {
         PrepFileAtom *atom = new PrepFileAtom(line);
         residue->atoms_.push_back(atom);
     }
 
-    // Process the extra sections: IMPROPER, LOOP, DONE
+    /// Process the extra sections: IMPROPER, LOOP, DONE
     bool done = false;
     while (!done)
     {
-        // Skip blank lines until to reach to a known section title
+        /// Skip blank lines until to reach to a known section title
         getline(in_file, line);
         while (Trim(line).empty())
         {
             getline(in_file, line);
         }
-        // Does a corresponding action based on the section title
+        /// Does a corresponding action based on the section title
         switch (ExtractSectionType(line))
         {
             case kSectionLoop:
@@ -208,21 +214,21 @@ PrepFileResidue::Loop PrepFileResidue::ExtractLoops(ifstream &in_file)
     std::stringstream ss;
 
     getline(in_file, line);
-    while (!Trim(line).empty())                         // Read file until blank line which determines the end of the section
+    while (!Trim(line).empty())                         /// Read file until blank line which determines the end of the section
     {
         ss.clear();
-        ss.str(line);                                   // Create a stream from the read line
+        ss.str(line);                                   /// Create a stream from the read line
         string atom_names[2];
-        ss >> atom_names[0] >> atom_names[1];           // Extract atom names from the stream
+        ss >> atom_names[0] >> atom_names[1];           /// Extract atom names from the stream
 
-        int from = GetAtomIndexByName(atom_names[0]);   // Extract index of the first atom in the loop
-        int to = GetAtomIndexByName(atom_names[1]);     // Extract index of the second atom in the loop
+        int from = GetAtomIndexByName(atom_names[0]);   /// Extract index of the first atom in the loop
+        int to = GetAtomIndexByName(atom_names[1]);     /// Extract index of the second atom in the loop
 
         if (from == -1 || to == -1)
         {
-            //throw error here, unknown atom names
+            /// throw error here, unknown atom names
         }
-        loops[from] = to;                               // Add a new entry into the loop map of the residue
+        loops[from] = to;                               /// Add a new entry into the loop map of the residue
         getline(in_file, line);
     }
     return loops;
@@ -235,29 +241,31 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
     std::stringstream ss;
     vector<Dihedral> dihedrals;
     getline(in_file, line);
-    while (!Trim(line).empty())                         // Read file until blank line which determines the end of the section
+    while (!Trim(line).empty())                         /// Read file until blank line which determines the end of the section
     {
         string atom_names[4];
         Dihedral dihedral;
         ss.clear();
         ss.str(line);
-        // Extract improper atom types involving in a dihedral from each line
+        /// Extract improper atom types involving in a dihedral from each line
         ss >> atom_names[0]
            >> atom_names[1]
            >> atom_names[2]
            >> atom_names[3];
-        // Push all atoms into a vector of atom types
+        /// Push all atoms into a vector of atom types
         for(int i = 0; i < 4; i++)
         {
             dihedral.push_back(atom_names[i]);
         }
-        dihedrals.push_back(dihedral);                  // Create a new dihedral into the vector of dihedrals
-        getline(in_file, line);                         // Read the next line
+        dihedrals.push_back(dihedral);                  /// Create a new dihedral into the vector of dihedrals
+        getline(in_file, line);                         /// Read the next line
     }
     return dihedrals;
 }
 
-////////////////////////// DISPLAY FUNCTION ///////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void PrepFileResidue::Print(std::ostream& out)
 {
     out << "Title: " << title_ << endl;

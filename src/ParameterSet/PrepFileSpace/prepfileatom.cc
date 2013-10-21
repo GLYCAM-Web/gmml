@@ -8,7 +8,9 @@ using namespace std;
 using namespace gmml;
 using namespace PrepFileSpace;
 
-/////////////////////////////// CONSTRUCTOR ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 PrepFileAtom::PrepFileAtom() : index_(0), name_(""), type_(""), topological_type_(kTopTypeM), bond_index_(0), angle_index_(0), dihedral_index_(0),
     bond_length_(kNotSet), angle_(kNotSet), dihedral_(kNotSet), charge_(kNotSet) {}
 
@@ -36,8 +38,10 @@ PrepFileAtom::PrepFileAtom(std::string& line)
        >> charge_;
 }
 
-///////////////////////////// FUNCTIONS ///////////////////////////////////
-/// Extract corresponsing topological type from a stream line
+//////////////////////////////////////////////////////////
+//                         FUNCTIONS                    //
+//////////////////////////////////////////////////////////
+/// Extract corresponding topological type from a stream line
 /// Return value is an enumeration type
 TopologicalType PrepFileAtom::ExtractAtomTopologicalType(istream &ss)
 {
@@ -55,7 +59,9 @@ TopologicalType PrepFileAtom::ExtractAtomTopologicalType(istream &ss)
         return kTopType3;
 }
 
-////////////////////////// DISPLAY FUNCTION ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void PrepFileAtom::Print(ostream &out)
 {
     out << setw(3) << index_

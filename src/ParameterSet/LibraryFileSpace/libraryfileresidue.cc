@@ -8,7 +8,9 @@ using namespace std;
 using namespace LibraryFileSpace;
 using namespace gmml;
 
-/////////////////////////////// CONSTRUCTOR /////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 LibraryFileResidue::LibraryFileResidue() : name_(""), atoms_(), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
     head_atom_index_(-1), tail_atom_index_(-1) {}
 
@@ -23,11 +25,13 @@ LibraryFileResidue::LibraryFileResidue(string &name, vector<LibraryFileAtom*> &a
     atoms_.clear();
     for(vector<LibraryFileAtom*>::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
-        atoms_[(*it)->GetAtomIndex()] = *it;
+        atoms_[(*it)->GetAtomOrder()] = *it;
     }
 }
 
-//////////////////////////////// ACCESSOR ///////////////////////////////////
+///////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
 /// Return the residue name
 std::string LibraryFileResidue::GetName()
 {
@@ -93,7 +97,9 @@ int LibraryFileResidue::GetTailAtomIndex()
     return tail_atom_index_;
 }
 
-///////////////////////////////// MUTATOR ///////////////////////////////////
+//////////////////////////////////////////////////////////
+//                           MUTATOR                    //
+//////////////////////////////////////////////////////////
 /// Set the residue name
 void LibraryFileResidue::SetName(std::string& name)
 {
@@ -106,14 +112,14 @@ void LibraryFileResidue::SetAtoms(LibraryFileResidue::AtomMap& atoms)
     atoms_.clear();
     for(LibraryFileResidue::AtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
-        atoms_[it->second->GetAtomIndex()] = it->second;
+        atoms_[it->second->GetAtomOrder()] = it->second;
     }
 }
 
 /// Add a new atom to map of the residue
 void LibraryFileResidue::AddAtom(LibraryFileAtom* atom)
 {
-    atoms_[atom->GetAtomIndex()] = atom;
+    atoms_[atom->GetAtomOrder()] = atom;
 }
 
 /// Set the box angle of the residue
@@ -152,7 +158,9 @@ void LibraryFileResidue::SetTailAtomIndex(int tail_atom_index)
     tail_atom_index_ = tail_atom_index;
 }
 
-//////////////////////////// DISPLAY FUNCTION ///////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void LibraryFileResidue::Print(std::ostream& out)
 {
     out << setw(80) << "***************************** " + name_ + " *****************************" << endl;

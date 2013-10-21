@@ -6,14 +6,18 @@
 using namespace gmml;
 using namespace ParameterFileSpace;
 
-/////////////////////////////// CONSTRUCTOR ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 ParameterFileAngle::ParameterFileAngle()
     : types_(), force_constant_(kNotSet), angle_(kNotSet), dscr_("") {}
 
 ParameterFileAngle::ParameterFileAngle(const std::vector<std::string> &types, double force_constant, double angle, const std::string &dscr)
     : types_(types), force_constant_(force_constant), angle_(angle), dscr_(dscr) {}
 
-////////////////////////// DISPLAY FUNCTION ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void ParameterFileAngle::Print(std::ostream& out)
 {
     for(std::vector<std::string>::iterator it = types_.begin(); it != types_.end(); it++)

@@ -7,7 +7,9 @@
 using namespace ParameterFileSpace;
 using namespace gmml;
 
-/////////////////////////////// CONSTRUCTOR ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 ParameterFileAtom::ParameterFileAtom()
     : type_(""), mass_(kNotSet), polarizability_(kNotSet), dscr_(""), radius_(kNotSet), well_depth_(kNotSet), mod4_dscr_("") {}
 
@@ -23,7 +25,9 @@ ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, doubl
     : type_(type), mass_(mass), polarizability_(polarizability), dscr_(dscr), radius_(radius), well_depth_(well_depth), mod4_dscr_(mod4_dscr),
       is_hydrophilic_(is_hydrophilic), equivalent_list_(equivalent_list) {}
 
-////////////////////////// DISPLAY FUNCTION ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void ParameterFileAtom::Print(std::ostream& out)
 {
     out << std::setw(6) << type_;

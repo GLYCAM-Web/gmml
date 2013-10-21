@@ -8,7 +8,9 @@
 using namespace gmml;
 using namespace ParameterFileSpace;
 
-/////////////////////////////// CONSTRUCTOR ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 ParameterFileDihedral::ParameterFileDihedral()
     : types_(), terms_(), scee_(kNotSet), scnb_(kNotSet), is_generic_(false), is_improper_(false) {}
 
@@ -19,7 +21,9 @@ ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string> &typ
     terms_.push_back(term);
 }
 
-////////////////////////// DISPLAY FUNCTION ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void ParameterFileDihedral::Print(std::ostream& out)
 {
     for(std::vector<std::string>::iterator it = types_.begin(); it != types_.end(); it++)

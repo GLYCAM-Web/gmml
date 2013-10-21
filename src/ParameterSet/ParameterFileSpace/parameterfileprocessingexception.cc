@@ -7,15 +7,18 @@
 using namespace gmml;
 using namespace ParameterFileSpace;
 
-///////////////////////////////////////// CONSTRUCTOR //////////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 ParameterFileProcessingException::ParameterFileProcessingException(const std::string &message)
     : line_number_(kNotSet), message_(message) {}
 
 ParameterFileProcessingException::ParameterFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
 
-/////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////
+//                         FUNCTIONS                    //
+//////////////////////////////////////////////////////////
 /// Exception handler for parameter file exceptions
 const char* ParameterFileProcessingException::what() const throw()
 {
@@ -28,7 +31,7 @@ const char* ParameterFileProcessingException::what() const throw()
             what_ += " (line " + ss.str() + ")";
             return what_.c_str();
         }
-        throw std::invalid_argument("to_string: invalid conversion");       // Invalid conversion from int to string
+        throw std::invalid_argument("to_string: invalid conversion");       /// Invalid conversion from int to string
     }
     return "";
 }

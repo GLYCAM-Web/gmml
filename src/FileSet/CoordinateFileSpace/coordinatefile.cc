@@ -12,7 +12,9 @@ using namespace CoordinateFileSpace;
 using namespace std;
 using namespace gmml;
 
-//////////////////////////////////// CONSTRUCTOR ///////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 CoordinateFile::CoordinateFile(const string &crd_file)
 {
     path_ = crd_file;
@@ -26,54 +28,58 @@ CoordinateFile::CoordinateFile(const string &crd_file)
         throw CoordinateFileProcessingException(__LINE__,"File not found");
     }
     Read(in_file);
-    in_file.close();            // Close the parameter files
+    in_file.close();            /// Close the parameter files
 }
 
-///////////////////////////////////// ACCESSOR /////////////////////////////////////////
-// Return path of the coordinate file
+//////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
+/// Return path of the coordinate file
 const std::string& CoordinateFile::GetFilePath() const
 {
     return path_;
 }
 
-// Return title of the coordinate file
+/// Return title of the coordinate file
 const std::string& CoordinateFile::GetTitle() const
 {
     return title_;
 }
 
-// Return the number of coordinates contained in the coordinate file
+/// Return the number of coordinates contained in the coordinate file
 int CoordinateFile::GetNumberOfCoodinates()
 {
     return number_of_coordinates_;
 }
 
-// Return list of coordinates contained in the coordinate file
+/// Return list of coordinates contained in the coordinate file
 const std::vector<Geometry::Coordinate*> CoordinateFile::GetCoordinates() const
 {
     return coordinates_;
 }
 
-///////////////////////////////////// MUTATOR //////////////////////////////////////////
-// Set the path of the coordinate file
+//////////////////////////////////////////////////////////
+//                           MUTATOR                    //
+//////////////////////////////////////////////////////////
+/// Set the path of the coordinate file
 void CoordinateFile::SetPath(std::string& path)
 {
     path_ = path;
 }
 
-// Set the title of the coordinate file
+/// Set the title of the coordinate file
 void CoordinateFile::SetTitle(std::string& title)
 {
     title_ = title;
 }
 
-// Set the number of coordinates contained in the coordinate file
+/// Set the number of coordinates contained in the coordinate file
 void CoordinateFile::SetNumberOfCoordinates(int number_of_coordinates)
 {
     number_of_coordinates_ = number_of_coordinates;
 }
 
-// Clear and set the list of coordinates in the coordinate file
+/// Clear and set the list of coordinates in the coordinate file
 void CoordinateFile::SetCoordinates(std::vector<Coordinate*> coordinates)
 {
     coordinates_.clear();
@@ -83,13 +89,15 @@ void CoordinateFile::SetCoordinates(std::vector<Coordinate*> coordinates)
     }
 }
 
-// Add a new coordinate to the list of the coordinates
+/// Add a new coordinate to the list of the coordinates
 void CoordinateFile::AddCoordinate(Geometry::Coordinate* coordinate)
 {
     coordinates_.push_back(coordinate);
 }
 
-///////////////////////////////// FUNCTIONS ///////////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                         FUNCTIONS                    //
+//////////////////////////////////////////////////////////
 void CoordinateFile::Read(std::ifstream& in_file)
 {
     string line;
@@ -100,18 +108,18 @@ void CoordinateFile::Read(std::ifstream& in_file)
         throw CoordinateFileProcessingException("Error reading file");
     }
 
-    // Set the tile by the first read line
+    /// Set the tile by the first read line
     title_ = line;
 
-    // Extract the number of coordinates in the file
-    getline(in_file, line);                         // Read the next line
+    /// Extract the number of coordinates in the file
+    getline(in_file, line);                         /// Read the next line
     int number_of_coordinates;
-    stringstream ss(line);                          // Create a stream from the read line
+    stringstream ss(line);                          /// Create a stream from the read line
     ss >> number_of_coordinates;
-    number_of_coordinates_ = number_of_coordinates; // Set the number of coordinates attribute
+    number_of_coordinates_ = number_of_coordinates; /// Set the number of coordinates attribute
 
-    getline(in_file, line);                         // Read the next line
-    while(!Trim(line).empty())                      // Read until the end of the file
+    getline(in_file, line);                         /// Read the next line
+    while(!Trim(line).empty())                      /// Read until the end of the file
     {
         // Tokenizing the read line
         boost::char_separator<char> separator(" ");
@@ -120,12 +128,12 @@ void CoordinateFile::Read(std::ifstream& in_file)
         vectorTokens.assign(tokens.begin(), tokens.end());
         switch(vectorTokens.size())
         {
-            // One coordinate in the read line
+            /// One coordinate in the read line
             case 3:
                 coordinates_.push_back(new Coordinate(ConvertString<double>(vectorTokens.at(0)), ConvertString<double>(vectorTokens.at(1)),
                                                       ConvertString<double>(vectorTokens.at(2))));
                 break;
-            // Two coordinates in the read line
+            /// Two coordinates in the read line
             case 6:
                 coordinates_.push_back(new Coordinate(ConvertString<double>(vectorTokens.at(0)), ConvertString<double>(vectorTokens.at(1)),
                                                       ConvertString<double>(vectorTokens.at(2))));
@@ -141,7 +149,9 @@ void CoordinateFile::Read(std::ifstream& in_file)
     }
 }
 
-///////////////////////////////// DISPLAY FUNCTION ////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void CoordinateFile::Print(std::ostream& out)
 {
     out << "*********** " << title_ << "***********" << endl;

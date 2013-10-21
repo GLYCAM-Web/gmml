@@ -7,7 +7,9 @@
 using namespace ParameterFileSpace;
 using namespace gmml;
 
-/////////////////////////////// CONSTRUCTOR ////////////////////////////////
+///////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 ParameterFileBond::ParameterFileBond()
     : types_(), force_constant_(kNotSet), length_(kNotSet), dscr_("") {}
 
@@ -18,7 +20,9 @@ ParameterFileBond::ParameterFileBond(const std::vector<std::string> &types, doub
                                      const std::vector<double> &hbond_coefficients, const std::string &dscr)
     : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr), hbond_coefficients_(hbond_coefficients) {}
 
-////////////////////////// DISPLAY FUNCTION ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void ParameterFileBond::Print(std::ostream& out)
 {
     for(std::vector<std::string>::iterator it = types_.begin(); it != types_.end(); it++)

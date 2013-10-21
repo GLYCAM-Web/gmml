@@ -14,7 +14,9 @@ using namespace gmml;
 using namespace LibraryFileSpace;
 using namespace Geometry;
 
-//////////////////////////////////// CONSTRUCTOR ///////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 LibraryFile::LibraryFile(const std::string &lib_file)
 {
     path_ = lib_file;
@@ -28,10 +30,12 @@ LibraryFile::LibraryFile(const std::string &lib_file)
         throw LibraryFileProcessingException(__LINE__,"File not found");
     }
     Read(in_file);
-    in_file.close();            // Close the parameter files
+    in_file.close();            /// Close the parameter files
 }
 
-///////////////////////////////////// ACCESSOR /////////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
 /// Return the library file path
 const std::string& LibraryFile::GetFilePath() const
 {
@@ -44,19 +48,21 @@ const LibraryFile::ResidueMap& LibraryFile::GetResidues() const
     return residues_;
 }
 
-///////////////////////////////// FUNCTIONS ////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                         FUNCTIONS                    //
+//////////////////////////////////////////////////////////
 /// Read the given file and extract all required fileds into the library file data structure
 void LibraryFile::Read(std::ifstream& in_file)
 {
     string line;
 
-    // Unable to read file
+    /// Unable to read file
     if (!getline(in_file, line))
     {
         throw LibraryFileProcessingException("Error reading file");
     }
 
-    // Skip blank lines at the begining of the file
+    /// Skip blank lines at the begining of the file
     while(line[0] != '!')
     {
         getline(in_file, line);
@@ -69,11 +75,11 @@ void LibraryFile::Read(std::ifstream& in_file)
         {
             try
             {
-                // Process index section
+                /// Process index section
                 RemoveQuotes(line);
                 RemoveSpaces(line);
                 residues_[line] = new LibraryFileResidue(line);
-                getline(in_file,line);      // Read the next line
+                getline(in_file,line);      /// Read the next line
             } catch(...)
             {
                 throw LibraryFileProcessingException(__LINE__, "Error processing index section");
@@ -81,25 +87,25 @@ void LibraryFile::Read(std::ifstream& in_file)
         }
     }
 
-    // Iterate on all residues indicated in the index section of the file
+    /// Iterate on all residues indicated in the index section of the file
     for(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        // Process the atom section of the file for the corresponding residue
+        /// Process the atom section of the file for the corresponding residue
         if(line.find("atoms") != string::npos)
         {
             int order = 0;
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process atom section
+                    /// Process atom section
                     order++;
                     LibraryFileAtom* newAtom = ProcessAtom(line);
                     newAtom->SetAtomOrder(order);;
-                    it->second->AddAtom(newAtom);               // Add the atom into the list of atoms of the corresponding residue
+                    it->second->AddAtom(newAtom);               /// Add the atom into the list of atoms of the corresponding residue
 
-                    getline(in_file,line);      // Read the next line
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing atom section");
@@ -111,16 +117,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the atompertinfo section of the file for the corresponding residue
+        /// Process the atompertinfo section of the file for the corresponding residue
         if(line.find("atomspertinfo") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process atompertinfo section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process atompertinfo section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing atom pert info section");
@@ -131,20 +137,20 @@ void LibraryFile::Read(std::ifstream& in_file)
         {
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
-        // Process the boundbox section of the file for the corresponding residue
+        /// Process the boundbox section of the file for the corresponding residue
 
         if(line.find("boundbox") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process boundbox section
+                    /// Process boundbox section
                     double is_box_set;
                     istringstream ss(line);
                     ss >> is_box_set;
-                    if(is_box_set < 0)              // If the number written in the first line of the section is negative then boundbox attributes have not been defined in the file
+                    if(is_box_set < 0)              /// If the number written in the first line of the section is negative then boundbox attributes have not been defined in the file
                     {
                         getline(in_file, line);
                         it->second->SetBoxAngle(kNotSet);
@@ -155,7 +161,7 @@ void LibraryFile::Read(std::ifstream& in_file)
                         getline(in_file, line);
                         it->second->SetBoxHeight(kNotSet);
                     }
-                    else                        // If the number written in the first line of the section is positive then set the attributes of the boundbox section
+                    else                        /// If the number written in the first line of the section is positive then set the attributes of the boundbox section
                     {
                         getline(in_file, line);
                         double val;
@@ -179,7 +185,7 @@ void LibraryFile::Read(std::ifstream& in_file)
                         ss >> val;
                         it->second->SetBoxHeight(val);
                     }
-                    getline(in_file,line);      // Read the next line
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing bound box section");
@@ -191,15 +197,15 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the childsequence section of the file for the corresponding residue
+        /// Process the childsequence section of the file for the corresponding residue
         if(line.find("childsequence") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process childsequence section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    /// Process childsequence section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
                     getline(in_file,line);
                 } catch(...)
                 {
@@ -212,15 +218,15 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the connect section of the file for the corresponding residue
+        /// Process the connect section of the file for the corresponding residue
         if(line.find("connect") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process connect section
+                    /// Process connect section
                     int head_index;
                     istringstream ss(line);
                     ss >> head_index;
@@ -245,15 +251,15 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the connectivity section of the file for the corresponding residue
+        /// Process the connectivity section of the file for the corresponding residue
         if(line.find("connectivity") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process connectivity section
+                    /// Process connectivity section
                     istringstream ss(line);
                     int from;
                     int to;
@@ -261,7 +267,7 @@ void LibraryFile::Read(std::ifstream& in_file)
                     ss >> from >> to >> t_int;
                     it -> second -> GetAtomByIndex(from)->AddBondedAtomIndex(to);
                     it -> second -> GetAtomByIndex(to)->AddBondedAtomIndex(from);
-                    getline(in_file,line);      // Read the next line
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing connectivity section");
@@ -273,16 +279,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the hierarchy section of the file for the corresponding residue
+        /// Process the hierarchy section of the file for the corresponding residue
         if(line.find("hierarchy") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process hierarchy section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process hierarchy section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing hierarchy section");
@@ -294,16 +300,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the name section of the file for the corresponding residue
+        /// Process the name section of the file for the corresponding residue
         if(line.find("name") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process name section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process name section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing name section");
@@ -315,23 +321,23 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the positions section of the file for the corresponding residue
+        /// Process the positions section of the file for the corresponding residue
         if(line.find("positions") != string::npos)
         {
             int order = 0;
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process positions section
+                    /// Process positions section
                     order ++;
                     istringstream ss(line);
                     double x, y, z;
                     ss >> x >> y >> z;
                     Coordinate crd(x, y, z);
                     it->second->GetAtomByOrder(order)->SetCoordinate(crd);
-                    getline(in_file,line);      // Read the next line
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing positions section");
@@ -343,16 +349,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the residueconnect section of the file for the corresponding residue
+        /// Process the residueconnect section of the file for the corresponding residue
         if(line.find("residueconnect") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process residueconnect section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process residueconnect section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing residue connect section");
@@ -364,16 +370,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the residues section of the file for the corresponding residue
+        /// Process the residues section of the file for the corresponding residue
         if(line.find("residues") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process residues section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process residues section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing residues section");
@@ -385,16 +391,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the residuesPdbSequenceNumber section of the file for the corresponding residue
+        /// Process the residuesPdbSequenceNumber section of the file for the corresponding residue
         if(line.find("residuesPdbSequenceNumber") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process residuesPdbSequenceNumber section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process residuesPdbSequenceNumber section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing residuePdbSequenceNumber section");
@@ -406,16 +412,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the solventcap section of the file for the corresponding residue
+        /// Process the solventcap section of the file for the corresponding residue
         if(line.find("solventcap") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!')                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process solventcap section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process solventcap section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing solventcap section");
@@ -427,16 +433,16 @@ void LibraryFile::Read(std::ifstream& in_file)
             throw LibraryFileProcessingException(__LINE__, "Unknown section or missing section");
         }
 
-        // Process the velocities section of the file for the corresponding residue
+        /// Process the velocities section of the file for the corresponding residue
         if(line.find("velocities") != string::npos)
         {
-            getline(in_file, line);                 // Get the first line of the section
-            while(line[0] != '!' && !Trim(line).empty())                   // Iterate until to the next section that indicates by ! at the begining of the read line
+            getline(in_file, line);                 /// Get the first line of the section
+            while(line[0] != '!' && !Trim(line).empty())                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
-                    // Process velocities section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      // Read the next line
+                    /// Process velocities section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
+                    getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing velocities section");
@@ -461,8 +467,8 @@ LibraryFileAtom* LibraryFile::ProcessAtom(string &line)
     double charge;
     int int_t;
 
-    istringstream ss(line);             // Create a stream from the given line
-    ss >> name >> type >> int_t >> residue_index >> int_t >> atom_index >> atomic_number >> charge;     // Split the line by space to extract attributes of the atom
+    istringstream ss(line);             /// Create a stream from the given line
+    ss >> name >> type >> int_t >> residue_index >> int_t >> atom_index >> atomic_number >> charge;     /// Split the line by space to extract attributes of the atom
 
     RemoveQuotes(name);
     RemoveQuotes(type);
@@ -471,7 +477,9 @@ LibraryFileAtom* LibraryFile::ProcessAtom(string &line)
     return atom;
 }
 
-///////////////////////////////// DISPLAY FUNCTION /////////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void LibraryFile::Print(std::ostream& out)
 {
     for(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)

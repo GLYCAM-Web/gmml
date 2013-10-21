@@ -7,14 +7,18 @@
 using namespace gmml;
 using namespace ParameterFileSpace;
 
-/////////////////////////////// CONSTRUCTOR ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                       Constructor                    //
+//////////////////////////////////////////////////////////
 ParameterFileDihedralTerm::ParameterFileDihedralTerm() :
     factor_(kNotSet), force_constant_(kNotSet), phase_(kNotSet), periodicity_(kNotSet), dscr_("") {}
 
 ParameterFileDihedralTerm::ParameterFileDihedralTerm(double factor, double force_constant, double phase, double periodicity, const std::string& dscr) :
     factor_(factor), force_constant_(force_constant), phase_(phase), periodicity_(periodicity), dscr_(dscr) {}
 
-////////////////////////// DISPLAY FUNCTION ////////////////////////////////
+//////////////////////////////////////////////////////////
+//                     DISPLAY FUNCTIONS                //
+//////////////////////////////////////////////////////////
 void ParameterFileDihedralTerm::Print(std::ostream& out)
 {
     if(factor_ == kNotSet)
