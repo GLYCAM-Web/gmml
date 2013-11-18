@@ -157,6 +157,6 @@ void CoordinateFile::Print(std::ostream& out)
     out << "*********** " << title_ << "***********" << endl;
     for(unsigned int i = 0; i < coordinates_.size(); i++)
     {
-        out << (i+1) << ". " << coordinates_.at(i)->x_ << ", " << coordinates_.at(i)->y_ << ", " << coordinates_.at(i)->z_ << endl;
+        out << (i+1) << ". " << coordinates_.at(i)->GetX() << ", " << coordinates_.at(i)->GetY() << ", " << coordinates_.at(i)->GetZ() << endl;
     }
 }

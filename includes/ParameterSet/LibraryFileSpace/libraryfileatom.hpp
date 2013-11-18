@@ -130,7 +130,7 @@ namespace LibraryFileSpace
               * Set the coordinate_ attribute of the current atom
               * @param coordinate The position of the current object in the cartesian coordinate
               */
-            void SetCoordinate(const Geometry::Coordinate& coordinate);
+            void SetCoordinate(Geometry::Coordinate& coordinate);
             /*! \fn
               * A mutator function in order to set the list of bonded atom indices of the current object
               * Set the bonded_atom_indices_ attribute of the current atom

@@ -30,6 +30,36 @@ namespace Geometry
               */
             Coordinate(const Coordinate& coordinate);            
 
+
+            //////////////////////////////////////////////////////////
+            //                           ACCESSOR                   //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * An accessor function in order to access to X coordinate attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return x_ of the current object of this class
+              */
+            double GetX();
+            /*! \fn
+              * An accessor function in order to access to Y coordinate attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return y_ of the current object of this class
+              */
+            double GetY();
+            /*! \fn
+              * An accessor function in order to access to Z coordinate attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return z_ of the current object of this class
+              */
+            double GetZ();
+
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            void SetX(double x);
+            void SetY(double y);
+            void SetZ(double z);
+
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
@@ -51,6 +81,7 @@ namespace Geometry
               */
             void Print(std::ostream& out = std::cout);
 
+	private:
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////

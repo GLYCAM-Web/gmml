@@ -119,11 +119,12 @@ void LibraryFileAtom::SetAtomicNumber(int atomic_number)
 }
 
 /// Set the postion of the atom
-void LibraryFileAtom::SetCoordinate(const Coordinate& coordinate)
+void LibraryFileAtom::SetCoordinate(Coordinate& coordinate)
 {
-    coordinate_.x_ = coordinate.x_;
-    coordinate_.y_ = coordinate.y_;
-    coordinate_.z_ = coordinate.z_;
+    double x = coordinate.GetX();
+//    coordinate_.SetX(coordinate.GetX());
+//    coordinate_.SetY(coordinate.GetY());
+//    coordinate_.SetZ(coordinate.GetZ());
 }
 
 /// Set all the bonded atom indices to the current atom
@@ -159,5 +160,5 @@ void LibraryFileAtom::Print(std::ostream& out)
         << setw(6) << residue_index_
         << setw(6) << atom_index_
         << setw(10) << charge_
-        << setw(15) << coordinate_.x_ << ", " << setw(15) << coordinate_.y_ << ", " << setw(15) << coordinate_.z_;
+        << setw(15) << coordinate_.GetX() << ", " << setw(15) << coordinate_.GetY() << ", " << setw(15) << coordinate_.GetZ();
 }

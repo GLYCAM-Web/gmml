@@ -25,7 +25,44 @@ namespace ParameterFileSpace
               * @param dscr A short description for each angle mentioned in a parameter file
               */
             ParameterFileAngle(const std::vector<std::string>& types, double force_constant, double angle, const std::string& dscr = "");
+///Delaram
+            //////////////////////////////////////////////////////////
+            //                           ACCESSOR                   //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * An accessor function in order to access to the atom types involved in an angle in the current object
+              * @return bonded_atom_indices attribute of the current atom
+              */
+            std::vector<std::string> GetTypes();
+            /*! \fn
+              * An accessor function in order to access to force constant attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return force_constant_ of the current object of this class
+              */
+            double GetForceConstant();
+            /*! \fn
+              * An accessor function in order to access to angle attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return angle_ of the current object of this class
+              */
+            double GetAngle();
+            /*! \fn
+              * An accessor function in order to access to angle descripion of the current object
+              * @return dscr_ attribute of the current object of this class
+              */
+            std::string GetType();
 
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the force constant of the current object
+              * Set the angle_ attribute of the current angle
+              * @param residue_index The index of the residue that the current object belongs to
+              */
+            void SetForceConstant(double force_constant_);
+
+///Delaram
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
@@ -36,6 +73,7 @@ namespace ParameterFileSpace
               */
             void Print(std::ostream& out = std::cout);
 
+        private:
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////
