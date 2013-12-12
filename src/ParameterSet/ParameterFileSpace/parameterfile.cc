@@ -269,7 +269,7 @@ void ParameterFile::ProcessHydrophilicAtomType(const std::string& line)
     {
         if(atom_types_.find(type) != atom_types_.end())         /// Check for the existing atom type in the map
         {
-            atom_types_[type] -> is_hydrophilic_ = true;            /// Set is_hydrophilic_ attribute to true
+            atom_types_[type] -> SetIsHydrophilic(true);            /// Set is_hydrophilic_ attribute to true
         }
     }
 }
@@ -331,17 +331,22 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
     ParameterFileDihedralTerm t;
     vector<ParameterFileDihedralTerm> terms;
     string dscr;
-    double scee, scnb;
+    double scee, scnb, temp_factor, temp_force_constant, temp_phase, temp_periodicity;
 
     istringstream in(line);                 /// Create an stream from the read bond line
     in >> std::setw(2) >> types[0] >> c
        >> std::setw(2) >> types[1] >> c
        >> std::setw(2) >> types[2] >> c
        >> std::setw(2) >> types[3];         /// Tokenize the angle atom types by '-'
-    in >> std::setw(4) >> t.factor_
-       >> std::setw(15) >> t.force_constant_
-       >> std::setw(15) >> t.phase_
-       >> std::setw(15) >> t.periodicity_;  /// Tokenize the rest of the line into the corresponding variables
+    in >> std::setw(4) >> temp_factor
+       >> std::setw(15) >> temp_force_constant
+       >> std::setw(15) >> temp_phase
+       >> std::setw(15) >> temp_periodicity;  /// Tokenize the rest of the line into the corresponding variables
+
+    t.SetFactor(temp_factor);
+    t.SetForceConstant(temp_force_constant);
+    t.SetPhase(temp_phase);
+    t.SetPeriodicity(temp_periodicity);
 
     if (in.fail())
         throw std::exception();
@@ -349,7 +354,7 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
     if (line.size() > 60)                   /// Line has description
         dscr = line.substr(60);
 
-    t.dscr_ = dscr;
+    t.SetDscr(dscr);
     terms.push_back(t);
 
     scee = ProcessDoubleDihedralDescription(dscr, "SCEE");              /// Extract scee from the description column of the line
@@ -358,7 +363,7 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
     for(unsigned int i = 0; i < types.size(); i++)
         Trim(types[i]);
     ParameterFileDihedral *dihedral = new ParameterFileDihedral(types, t, scee, scnb);
-    while (dihedral->terms_.at(dihedral->terms_.size() - 1).periodicity_ < 0)       /// Processing the following lines with the same dihedral;
+    while (dihedral->GetTerms().at(dihedral->GetTerms().size() - 1).GetPeriodicity() < 0)       /// Processing the following lines with the same dihedral;
         /// While the periodicity is negative the following lines are the same dihedrals with different attributes
     {
         getline(in_file, line);                     /// Read the following line with the same atom types in the dihedral
@@ -366,10 +371,15 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
         ParameterFileDihedralTerm new_term;
 
         istringstream in2(line.substr(11));         /// Skip the first column of the line which is the same dihedral atom types
-        in2 >> std::setw(4) >> new_term.factor_
-            >> std::setw(15) >> new_term.force_constant_
-            >> std::setw(15) >> new_term.phase_
-            >> std::setw(15) >> new_term.periodicity_;      /// Tokenize the rest of the line into the corresponding variables
+        in2 >> std::setw(4) >> temp_factor
+            >> std::setw(15) >> temp_force_constant
+            >> std::setw(15) >> temp_phase
+            >> std::setw(15) >> temp_periodicity;      /// Tokenize the rest of the line into the corresponding variables
+
+        new_term.SetFactor(temp_factor);
+        new_term.SetForceConstant(temp_force_constant);
+        new_term.SetPhase(temp_phase);
+        new_term.SetPeriodicity(temp_periodicity);
 
         if (in2.fail())                             /// Ivalid entry
         {
@@ -379,10 +389,10 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
         if (line.size() > 60)                   /// Line has description
             dscr = line.substr(60);
 
-        new_term.dscr_ = dscr;
+        new_term.SetDscr(dscr);
         terms.push_back(new_term);
 
-        dihedral->terms_.push_back(new_term);
+        dihedral->AddTerm(new_term);
     }
 
     vector<string> inverse_types(4);                /// Create an inverse vector of atom types for duplicate checking
@@ -393,16 +403,16 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
 
     if(dihedrals_.find(types) == dihedrals_.end() && dihedrals_.find(inverse_types) == dihedrals_.end())     /// Duplicate checking
     {
-        dihedral->is_improper_ = false;                                 /// Set is_improper_ attribute to false; improper dihedral doesn't have factor
-        if (dihedral->types_[0] == "X" || dihedral->types_[1] == "X" || dihedral->types_[2] == "X" || dihedral->types_[3] == "X")   ///  Check for generic dihedral
+        dihedral->SetIsImproper(false);                                 /// Set is_improper_ attribute to false; improper dihedral doesn't have factor
+        if (dihedral->GetTypes().at(0) == "X" || dihedral->GetTypes().at(1) == "X" || dihedral->GetTypes().at(2) == "X" || dihedral->GetTypes().at(3) == "X")   ///  Check for generic dihedral
         {
-            dihedral->is_generic_ = true;
+            dihedral->SetIsGeneric(true);
         }
         else
         {
-            dihedral->is_generic_ = false;
+            dihedral->SetIsGeneric(false);
         }
-        dihedrals_[dihedral->types_] = dihedral;
+        dihedrals_[dihedral->GetTypes()] = dihedral;
     }
     else
     {
@@ -418,26 +428,30 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     ParameterFileDihedralTerm t;
     vector<ParameterFileDihedralTerm> terms;
     string dscr;
-    double scee, scnb;
+    double scee, scnb, temp_force_constant, temp_phase, temp_periodicity;
 
     istringstream in(line);                     /// Create an stream from the read bond line
     in >> std::setw(2) >> types[0] >> c
        >> std::setw(2) >> types[1] >> c
        >> std::setw(2) >> types[2] >> c
        >> std::setw(2) >> types[3];             /// Tokenize the angle atom types by '-'
-    in >> std::setw(15) >> t.force_constant_
-       >> std::setw(15) >> t.phase_
-       >> std::setw(15) >> t.periodicity_;      /// Tokenize the rest of the line into the corresponding variables
+    in >> std::setw(15) >> temp_force_constant
+       >> std::setw(15) >> temp_phase
+       >> std::setw(15) >> temp_periodicity;      /// Tokenize the rest of the line into the corresponding variables
+
+    t.SetForceConstant(temp_force_constant);
+    t.SetPhase(temp_phase);
+    t.SetPeriodicity(temp_periodicity);
 
     if (in.fail())                              /// Invalid entry
         throw std::exception();
 
-    t.factor_ = kNotSet;                        /// Improper dihedral doesn't have factor
+    t.SetFactor(kNotSet);                        /// Improper dihedral doesn't have factor
 
     if (line.size() > 60)                       /// Line has description
         dscr = line.substr(60);
 
-    t.dscr_ = dscr;
+    t.SetDscr(dscr);
     terms.push_back(t);
 
     scee = ProcessDoubleDihedralDescription(dscr, "SCEE");              /// Extract scee from the description column of the line
@@ -446,7 +460,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     for(unsigned int i = 0; i < types.size(); i++)
         Trim(types[i]);
     ParameterFileDihedral *dihedral = new ParameterFileDihedral(types, t, scee, scnb);
-    while (dihedral->terms_.at(dihedral->terms_.size() - 1).periodicity_ < 0)       /// Processing the following lines with the same dihedral;
+    while (dihedral->GetTerms().at(dihedral->GetTerms().size() - 1).GetPeriodicity() < 0)       /// Processing the following lines with the same dihedral;
         /// While the periodicity is negative the following lines are the same dihedrals with different attributes
     {
         getline(in_file, line);                     /// Read the following line with the same atom types in the dihedral
@@ -454,9 +468,13 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
         ParameterFileDihedralTerm new_term;
 
         istringstream in2(line.substr(11));             /// Skip the first column of the line which is the same dihedral atom types
-        in2 >> std::setw(15) >> new_term.force_constant_
-            >> std::setw(15) >> new_term.phase_
-            >> std::setw(15) >> new_term.periodicity_;  /// Tokenize the rest of the line into the corresponding variables
+        in2 >> std::setw(15) >> temp_force_constant
+            >> std::setw(15) >> temp_phase
+            >> std::setw(15) >> temp_periodicity;  /// Tokenize the rest of the line into the corresponding variables
+
+        new_term.SetForceConstant(temp_force_constant);
+        new_term.SetPhase(temp_phase);
+        new_term.SetPeriodicity(temp_periodicity);
 
         if (in2.fail())
         {
@@ -465,10 +483,10 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
         if (line.size() > 60)                   /// Line has description
             dscr = line.substr(60);
 
-        new_term.dscr_ = dscr;
+        new_term.SetDscr(dscr);
         terms.push_back(new_term);
 
-        dihedral->terms_.push_back(new_term);
+        dihedral->AddTerm(new_term);
     }
 
     vector<string> inverse_types(4);                /// Create an inverse vector of atom types for duplicate checking
@@ -479,16 +497,16 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
 
     if(dihedrals_.find(types) == dihedrals_.end() && dihedrals_.find(inverse_types) == dihedrals_.end())
     {
-        dihedral->is_improper_ = true;                                  /// Set is_improper_ attribute to true; improper dihedral doesn't have factor
-        if (dihedral->types_[0] == "X" || dihedral->types_[1] == "X" || dihedral->types_[2] == "X" || dihedral->types_[3] == "X")   ///  Check for generic dihedral
+        dihedral->SetIsImproper(true);                                 /// Set is_improper_ attribute to true; improper dihedral doesn't have factor
+        if (dihedral->GetTypes().at(0) == "X" || dihedral->GetTypes().at(1) == "X" || dihedral->GetTypes().at(2) == "X" || dihedral->GetTypes().at(3) == "X")   ///  Check for generic dihedral
         {
-            dihedral->is_generic_ = true;
+            dihedral->SetIsGeneric(true);
         }
         else
         {
-            dihedral->is_generic_ = false;
+            dihedral->SetIsGeneric(false);
         }
-        dihedrals_[dihedral->types_] = dihedral;
+        dihedrals_[dihedral->GetTypes()] = dihedral;
     }
 }
 
@@ -518,11 +536,11 @@ void ParameterFile::ProcessHydrogenBond(const std::string& line)
 
     if(bonds_.find(types) != bonds_.end())          /// Check for existing bond
     {
-        bonds_[types] ->  hbond_coefficients_ = coefficients;   /// Update hydrogen-bond attribute of the bond
+        bonds_[types] ->  SetHbondCoefficients(coefficients);   /// Update hydrogen-bond attribute of the bond
     }
     else if (bonds_.find(inverse_types) != bonds_.end())        /// Check for existing inverse bond
     {
-        bonds_[inverse_types] -> hbond_coefficients_ = coefficients;    /// Update hydrogen-bond attribute of the bond
+        bonds_[inverse_types] -> SetHbondCoefficients(coefficients);    /// Update hydrogen-bond attribute of the bond
     }
 }
 
@@ -558,7 +576,7 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
         {
             vector<string> equivalent_types = types;
             equivalent_types.erase(equivalent_types.begin() + i);           /// Remove the base atom from the list
-            atom_types_[types[i]] -> equivalent_list_ = equivalent_types;   /// Assign the equivalent list to the corresponding atom in the map
+            atom_types_[types[i]] -> GetEquivalentList() = equivalent_types;   /// Assign the equivalent list to the corresponding atom in the map
         }
     }
 }
@@ -585,15 +603,15 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
     }
     else
     {
-        atom_types_[type]->radius_ = radius;            /// Update radius attribute of the existing atom type in the map
-        atom_types_[type]->well_depth_ = depth;         /// Update well depth attribute of the existing atom type in the map
-        atom_types_[type]->mod4_dscr_ = dscr;           /// Update mod4 description attribute of the existing atom type in the map
+        atom_types_[type]->SetRadius(radius) ;            /// Update radius attribute of the existing atom type in the map
+        atom_types_[type]->SetWellDepth(depth);         /// Update well depth attribute of the existing atom type in the map
+        atom_types_[type]->SetMod4Dscr(dscr);           /// Update mod4 description attribute of the existing atom type in the map
     }
 
     vector<string>::const_iterator it;
     vector<string> equivalent_atoms;
     if (atom_types_.find(type) != atom_types_.end())    /// Check if the atom type in the map has equivalent list
-        equivalent_atoms = atom_types_[type] -> equivalent_list_;
+        equivalent_atoms = atom_types_[type] -> GetEquivalentList();
     else
         return;
 
@@ -605,9 +623,9 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
         }
         else
         {
-            atom_types_[*it]->radius_ = radius;         /// Update radius attribute of the existing atom type in the map
-            atom_types_[*it]->well_depth_ = depth;      /// Update well depth attribute of the existing atom type in the map
-            atom_types_[*it]->mod4_dscr_ = dscr;        /// Update mod4 description attribute of the existing atom type in the map
+            atom_types_[*it]->SetRadius(radius);         /// Update radius attribute of the existing atom type in the map
+            atom_types_[*it]->SetWellDepth(depth);      /// Update well depth attribute of the existing atom type in the map
+            atom_types_[*it]->SetMod4Dscr(dscr);        /// Update mod4 description attribute of the existing atom type in the map
         }
     }
 }

@@ -31,11 +31,11 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             /*! \fn
               * An accessor function in order to access to the atom types involved in an angle in the current object
-              * @return bonded_atom_indices attribute of the current atom
+              * @return types_ attribute of the current object of this class
               */
             std::vector<std::string> GetTypes();
             /*! \fn
-              * An accessor function in order to access to force constant attribute of the current object
+              * An accessor function in order to access to access to the force constant attribute of the current object
               * The attribute is set by the contents of the given file
               * @return force_constant_ of the current object of this class
               */
@@ -50,17 +50,35 @@ namespace ParameterFileSpace
               * An accessor function in order to access to angle descripion of the current object
               * @return dscr_ attribute of the current object of this class
               */
-            std::string GetType();
+            std::string GetDscr();
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A mutator function in order to set the force constant of the current object
-              * Set the angle_ attribute of the current angle
-              * @param residue_index The index of the residue that the current object belongs to
+              * A mutator function in order to set the list of atom types of the current object
+              * Set the types_ attribute of the current angle
+              * @param types A list of types of atoms of the current object
               */
-            void SetForceConstant(double force_constant_);
+            void SetTypes(const std::vector<std::string> types);
+            /*! \fn
+              * A mutator function in order to set the force constant of the current object
+              * Set the force_constant_ attribute of the current angle
+              * @param force_constant The force constant of the current object
+              */
+            void SetForceConstant(double force_constant);
+            /*! \fn
+              * A mutator function in order to set the angle of the current object
+              * Set the angle_ attribute of the current angle
+              * @param angle The angle of the current object
+              */
+            void SetAngle(double angle);
+            /*! \fn
+              * A mutator function in order to set the description of the current object
+              * Set the dscr_ attribute of the current angle
+              * @param dscr The description attribute of the current object
+              */
+            void SetDscr(const std::string dscr);
 
 ///Delaram
             //////////////////////////////////////////////////////////

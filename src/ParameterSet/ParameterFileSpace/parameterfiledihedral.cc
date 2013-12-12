@@ -21,6 +21,75 @@ ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string> &typ
     terms_.push_back(term);
 }
 
+///Delaram
+//////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
+
+std::vector<std::string> ParameterFileDihedral::GetTypes()
+{
+    return types_;
+}
+
+std::vector<ParameterFileDihedralTerm> ParameterFileDihedral::GetTerms()
+{
+    return terms_;
+}
+
+double ParameterFileDihedral::GetScee()
+{
+    return scee_;
+}
+
+double ParameterFileDihedral::GetScnb()
+{
+    return scnb_;
+}
+
+bool ParameterFileDihedral::GetIsGeneric()
+{
+    return is_generic_;
+}
+
+bool ParameterFileDihedral::GetIsImproper()
+{
+    return is_improper_;
+}
+
+//////////////////////////////////////////////////////////
+//                           MUTATOR                    //
+//////////////////////////////////////////////////////////
+
+void ParameterFileDihedral::SetTypes(const std::vector<std::string> types){
+    types_ = types;
+}
+
+void ParameterFileDihedral::SetTerms(const std::vector<ParameterFileDihedralTerm> terms){
+    terms_ = terms;
+}
+
+void ParameterFileDihedral::AddTerm(ParameterFileDihedralTerm term){
+    terms_.push_back(term);
+}
+
+void ParameterFileDihedral::SetScee(double scee){
+    scee_ = scee;
+}
+
+void ParameterFileDihedral::SetScnb(double scnb){
+    scnb_ = scnb;
+}
+
+void ParameterFileDihedral::SetIsGeneric(bool is_generic){
+    is_generic_ = is_generic;
+}
+
+void ParameterFileDihedral::SetIsImproper(bool is_improper){
+    is_improper_ = is_improper;
+}
+
+///Delaram
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////

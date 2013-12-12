@@ -121,10 +121,9 @@ void LibraryFileAtom::SetAtomicNumber(int atomic_number)
 /// Set the postion of the atom
 void LibraryFileAtom::SetCoordinate(Coordinate& coordinate)
 {
-    double x = coordinate.GetX();
-//    coordinate_.SetX(coordinate.GetX());
-//    coordinate_.SetY(coordinate.GetY());
-//    coordinate_.SetZ(coordinate.GetZ());
+    coordinate_.SetX(coordinate.GetX());
+    coordinate_.SetY(coordinate.GetY());
+    coordinate_.SetZ(coordinate.GetZ());
 }
 
 /// Set all the bonded atom indices to the current atom

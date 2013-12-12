@@ -59,6 +59,106 @@ TopologicalType PrepFileAtom::ExtractAtomTopologicalType(istream &ss)
         return kTopType3;
 }
 
+///Delaram
+//////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
+
+int PrepFileAtom::GetIndex(){
+    return index_;
+}
+
+std::string PrepFileAtom::GetName(){
+    return name_;
+}
+
+std::string PrepFileAtom::GetType(){
+    return type_;
+}
+
+TopologicalType PrepFileAtom::GetTopologicalType(){
+    return topological_type_;
+}
+
+int PrepFileAtom::GetBondIndex(){
+    return bond_index_;
+}
+
+int PrepFileAtom::GetAngleIndex(){
+    return angle_index_;
+}
+
+int PrepFileAtom::GetDihedralIndex(){
+    return dihedral_index_;
+}
+
+double PrepFileAtom::GetBondLength(){
+    return bond_length_;
+}
+
+double PrepFileAtom::GetAngle(){
+    return angle_;
+}
+
+double PrepFileAtom::GetDihedral(){
+    return dihedral_;
+}
+
+double PrepFileAtom::GetCharge(){
+    return charge_;
+}
+
+//////////////////////////////////////////////////////////
+//                           MUTATOR                    //
+//////////////////////////////////////////////////////////
+
+void PrepFileAtom::SetIndex(int index){
+    index_ = index;
+}
+
+void PrepFileAtom::SetName(const std::string name){
+    name_ = name;
+}
+
+void PrepFileAtom::SetType(const std::string type){
+    type_ = type;
+}
+
+void PrepFileAtom::SetTopologicalType(TopologicalType topological_type){
+    topological_type_ = topological_type;
+}
+
+void PrepFileAtom::SetBondIndex(int bond_index){
+    bond_index_ = bond_index;
+}
+
+void PrepFileAtom::SetAngleIndex(int angle_index){
+    angle_index_ = angle_index;
+}
+
+void PrepFileAtom::SetDihedralIndex(int dihedral_index){
+    dihedral_index_ = dihedral_index;
+}
+
+void PrepFileAtom::SetBondLength(double bond_length){
+    bond_length_ = bond_length;
+}
+
+void PrepFileAtom::SetAngle(double angle){
+    angle_ = angle;
+}
+
+void PrepFileAtom::SetDihedral(double dihedral){
+    dihedral_ = dihedral;
+}
+
+void PrepFileAtom::SetCharge(double charge){
+    charge_ = charge;
+}
+
+///Delaram
+
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////

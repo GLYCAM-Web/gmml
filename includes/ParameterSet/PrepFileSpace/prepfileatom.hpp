@@ -73,6 +73,148 @@ namespace PrepFileSpace
               */
             void Print(std::ostream& out = std::cout);
 
+///Delaram
+            //////////////////////////////////////////////////////////
+            //                           ACCESSOR                   //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * An accessor function in order to access to index of the current object
+              * @return index_ attribute of the current object of this class
+              */
+            int GetIndex();
+            /*! \fn
+              * An accessor function in order to access to access to the name attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return name_ of the current object of this class
+              */
+            std::string GetName();
+            /*! \fn
+              * An accessor function in order to access to type attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return type_ of the current object of this class
+              */
+            std::string GetType();
+            /*! \fn
+              * An accessor function in order to access to topological type of the current object
+              * @return topological_type_ attribute of the current object of this class
+              */
+            TopologicalType GetTopologicalType();
+            /*! \fn
+              * An accessor function in order to access to bond index of the current object
+              * The attribute is set by the contents of the given file
+              * @return bond_index_ of the current object of this class
+              */
+            int GetBondIndex();
+            /*! \fn
+              * An accessor function in order to access to angle index of the current object
+              * The attribute is set by the contents of the given file
+              * @return angle_index_ of the current object of this class
+              */
+            int GetAngleIndex();
+            /*! \fn
+              * An accessor function in order to access to dihedral index of the current object
+              * The attribute is set by the contents of the given file
+              * @return dihedral_index_ of the current object of this class
+              */
+            int GetDihedralIndex();
+            /*! \fn
+              * An accessor function in order to access to bond length of the current object
+              * The attribute is set by the contents of the given file
+              * @return bond_length_ of the current object of this class
+              */
+            double GetBondLength();
+            /*! \fn
+              * An accessor function in order to access to angle attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return angle_ of the current object of this class
+              */
+            double GetAngle();
+            /*! \fn
+              * An accessor function in order to access to dihedral attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return dihedral_ of the current object of this class
+              */
+            double GetDihedral();
+            /*! \fn
+              * An accessor function in order to access to charge attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return charge_ of the current object of this class
+              */
+            double GetCharge();
+
+
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the type of the current object
+              * Set the index_ attribute of the current object
+              * @param index The index attribute of the current object
+              */
+            void SetIndex(int index);
+            /*! \fn
+              * A mutator function in order to set the name of the current object
+              * Set the name_ attribute of the current object
+              * @param name The force name of the current object
+              */
+            void SetName(std::string name);
+            /*! \fn
+              * A mutator function in order to set the type of the current object
+              * Set the type_ attribute of the current object
+              * @param type The type of the current object
+              */
+            void SetType(std::string type);
+            /*! \fn
+              * A mutator function in order to set the topological type of the current object
+              * Set the topological_type_ attribute of the current object
+              * @param topological_type The topological_type attribute of the current object
+              */
+            void SetTopologicalType(TopologicalType topological_type);
+            /*! \fn
+              * A mutator function in order to set the bond index of the current object
+              * Set the bond_index_ attribute of the current object
+              * @param bond_index The bond_index of the current object
+              */
+            void SetBondIndex(int bond_index);
+            /*! \fn
+              * A mutator function in order to set the angle index of the current object
+              * Set the angle_index_ attribute of the current object
+              * @param angle_index The angle_index of the current object
+              */
+            void SetAngleIndex(int angle_index);
+            /*! \fn
+              * A mutator function in order to set the dihedral index of the current object
+              * Set the dihedral_index_ attribute of the current atom
+              * @param dihedral_index The dihedral_index attribute of the current object
+              */
+            void SetDihedralIndex(int dihedral_index);
+            /*! \fn
+              * A mutator function in order to set the bond length of the current object
+              * Set the bond_length_ attribute of the current object
+              * @param bond_length The bond_length of the current object
+              */
+            void SetBondLength(double bond_length);
+            /*! \fn
+              * A mutator function in order to set the angle of the current object
+              * Set the angle_ attribute of the current object
+              * @param angle The angle of the current object
+              */
+            void SetAngle(double angle);
+            /*! \fn
+              * A mutator function in order to set the dihedral of the current object
+              * Set the dihedral_ attribute of the current object
+              * @param dihedral The dihedral of the current object
+              */
+            void SetDihedral(double dihedral);
+            /*! \fn
+              * A mutator function in order to set the charge of the current object
+              * Set the charge_ attribute of the current object
+              * @param charge The charge of the current object
+              */
+            void SetCharge(double charge);
+
+///Delaram
+
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////

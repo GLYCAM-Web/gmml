@@ -25,6 +25,108 @@ ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, doubl
     : type_(type), mass_(mass), polarizability_(polarizability), dscr_(dscr), radius_(radius), well_depth_(well_depth), mod4_dscr_(mod4_dscr),
       is_hydrophilic_(is_hydrophilic), equivalent_list_(equivalent_list) {}
 
+///Delaram
+//////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
+/// Retuns type
+std::string ParameterFileAtom::GetType()
+{
+    return type_;
+}
+
+/// Returns mass
+double ParameterFileAtom::GetMass()
+{
+    return mass_;
+}
+
+
+/// Returns polarizability
+double ParameterFileAtom::GetPolarizability()
+{
+    return polarizability_;
+}
+
+/// Return dscr
+std::string ParameterFileAtom::GetDscr()
+{
+    return dscr_;
+}
+
+/// Returns Radius
+double ParameterFileAtom::GetRadius()
+{
+    return radius_;
+}
+
+/// Retunrs well debpth
+double ParameterFileAtom::GetWellDepth()
+{
+    return well_depth_;
+}
+
+/// Returns mod4 dscr
+std::string ParameterFileAtom::GetMod4Dscr()
+{
+    return mod4_dscr_;
+}
+
+/// Returns is_hydrophilic
+bool ParameterFileAtom::GetIsHydrophilic()
+{
+    return is_hydrophilic_;
+}
+
+/// Returns equivalent_list
+std::vector<std::string> ParameterFileAtom::GetEquivalentList()
+{
+    return equivalent_list_;
+}
+
+//////////////////////////////////////////////////////////
+//                           MUTATOR                    //
+//////////////////////////////////////////////////////////
+
+void ParameterFileAtom::SetType( std::string type){
+    type = type_;
+}
+
+void ParameterFileAtom::SetMass(double mass){
+    mass = mass_;
+}
+
+void ParameterFileAtom::SetPolarizability(double polarizability){
+    polarizability = polarizability_;
+}
+
+void ParameterFileAtom::SetDscr( std::string dscr){
+    dscr = dscr_;
+}
+
+void ParameterFileAtom::SetRadius(double radius){
+    radius = radius_;
+}
+
+void ParameterFileAtom::SetWellDepth(double well_depth){
+    well_depth = well_depth_;
+}
+
+void ParameterFileAtom::SetMod4Dscr( std::string mod4_dscr)
+{
+    mod4_dscr = mod4_dscr_;
+}
+
+void ParameterFileAtom::SetIsHydrophilic(bool is_hydrophilic){
+    is_hydrophilic = is_hydrophilic_;
+}
+
+void ParameterFileAtom::SetEquivalentList( std::vector<std::string> equivalent_list){
+    equivalent_list = equivalent_list_;
+}
+
+///Delaram
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////

@@ -35,7 +35,73 @@ namespace ParameterFileSpace
               */
             ParameterFileBond(const std::vector<std::string>& types, double force_constant, double length, const std::vector<double>& hbond_coefficients,
                               const std::string& dscr = "");
+///Delaram
+            //////////////////////////////////////////////////////////
+            //                           ACCESSOR                   //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * An accessor function in order to access to the atom types involved in an angle in the current object
+              * @return types_ attribute of the current object of this class
+              */
+            std::vector<std::string> GetTypes();
+            /*! \fn
+              * An accessor function in order to access to access to the force constant attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return force_constant_ of the current object of this class
+              */
+            double GetForceConstant();
+            /*! \fn
+              * An accessor function in order to access to length attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return length_ of the current object of this class
+              */
+            double GetLength();
+            /*! \fn
+              * An accessor function in order to access to angle descripion of the current object
+              * @return dscr_ attribute of the current object of this class
+              */
+            std::string GetDscr();
+            /*! \fn
+              * An accessor function in order to access to the hbond coefficients involved in an angle in the current object
+              * @return hbond_coefficients_ attribute of the current object of this class
+              */
+            std::vector<double> GetHbondCoefficients();
 
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the list of atom types of the current object
+              * Set the types_ attribute of the current bond
+              * @param types A list of types of atoms of the current object
+              */
+            void SetTypes(const std::vector<std::string> types);
+            /*! \fn
+              * A mutator function in order to set the force constant of the current object
+              * Set the force_constant_ attribute of the current angle
+              * @param force_constant The force constant of the current object
+              */
+            void SetForceConstant(double force_constant);
+            /*! \fn
+              * A mutator function in order to set the length of the current object
+              * Set the length_ attribute of the current bond
+              * @param length The angle of the current object
+              */
+            void SetLength(double length);
+            /*! \fn
+              * A mutator function in order to set the description of the current object
+              * Set the dscr_ attribute of the current bond
+              * @param dscr The description attribute of the current object
+              */
+            void SetDscr(const std::string dscr);
+            /*! \fn
+              * A mutator function in order to set the list of hbond coefficients of the current object
+              * Set the hbond_coefficients_ attribute of the current bond
+              * @param hbond_coefficients A hbond_coefficients of types of atoms of the current object
+              */
+            void SetHbondCoefficients(std::vector<double> hbond_coefficients);
+
+///Delaram
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
@@ -46,6 +112,7 @@ namespace ParameterFileSpace
               */
             void Print(std::ostream& out = std::cout);
 
+         private:
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////

@@ -52,7 +52,119 @@ namespace ParameterFileSpace
             ParameterFileAtom(const std::string& type, double mass, double polarizability, double radius,
                               double well_depth, const std::vector<std::string>& equivalent_list,
                               const std::string& dscr = "", const std::string& mod4_dscr = "", bool is_hydrophilic = false);
+///Delaram
+            //////////////////////////////////////////////////////////
+            //                           ACCESSOR                   //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * An accessor function in order to access to type of the current object
+              * @return type_ attribute of the current object of this class
+              */
+            std::string GetType();
+            /*! \fn
+              * An accessor function in order to access to access to the mass attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return mass_ of the current object of this class
+              */
+            double GetMass();
+            /*! \fn
+              * An accessor function in order to access to polarizability attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return polarizability_ of the current object of this class
+              */
+            double GetPolarizability();
+            /*! \fn
+              * An accessor function in order to access to dscr of the current object
+              * @return dscr_ attribute of the current object of this class
+              */
+            std::string GetDscr();
+            /*! \fn
+              * An accessor function in order to access to radius attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return radius_ of the current object of this class
+              */
+            double GetRadius();
+            /*! \fn
+              * An accessor function in order to access to well depth attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return well_depth_ of the current object of this class
+              */
+            double GetWellDepth();
+            /*! \fn
+              * An accessor function in order to access to mod4_dscr of the current object
+              * @return mod4_dscr_ attribute of the current object of this class
+              */
+            std::string GetMod4Dscr();
+            /*! \fn
+              * An accessor function in order to access to is_hydrophilic attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return is_hydrophilic_ of the current object of this class
+              */
+            bool GetIsHydrophilic();
+            /*! \fn
+              * An accessor function in order to access to the equivalent list in the current object
+              * @return equivalent_list_ attribute of the current object of this class
+              */
+            std::vector<std::string> GetEquivalentList();
 
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the type of the current object
+              * Set the type_ attribute of the current atom
+              * @param type The type attribute of the current object
+              */
+            void SetType( std::string type);
+            /*! \fn
+              * A mutator function in order to set the mass of the current object
+              * Set the mass_ attribute of the current atom
+              * @param mass The force mass of the current object
+              */
+            void SetMass(double mass);
+            /*! \fn
+              * A mutator function in order to set the polarizability of the current object
+              * Set the polarizability_ attribute of the current atom
+              * @param polarizability The polarizability of the current object
+              */
+            void SetPolarizability(double polarizability);
+            /*! \fn
+              * A mutator function in order to set the description of the current object
+              * Set the dscr_ attribute of the current atom
+              * @param dscr The description attribute of the current object
+              */
+            void SetDscr( std::string dscr);
+            /*! \fn
+              * A mutator function in order to set the radius of the current object
+              * Set the radius_ attribute of the current atom
+              * @param radius The radius of the current object
+              */
+            void SetRadius(double radius);
+            /*! \fn
+              * A mutator function in order to set the well depth of the current object
+              * Set the well_depth_ attribute of the current atom
+              * @param well_depth The well_depth of the current object
+              */
+            void SetWellDepth(double well_depth);
+            /*! \fn
+              * A mutator function in order to set the mod4 dscription of the current object
+              * Set the mod4_dscr_ attribute of the current atom
+              * @param mod4_dscr The mod4_dscr attribute of the current object
+              */
+            void SetMod4Dscr( std::string mod4_dscr);
+            /*! \fn
+              * A mutator function in order to set the is_hydrophilic_ attribute of the current object
+              * Set the is_hydrophilic_ attribute of the current atom
+              * @param is_hydrophilic The well_depth of the current object
+              */
+            void SetIsHydrophilic(bool is_hydrophilic);
+            /*! \fn
+              * A mutator function in order to set equivalent_list of atoms of the current object
+              * Set the equivalent_list_ attribute of the current atom
+              * @param equivalent_list A list of equivalent_list of atoms of the current object
+              */
+            void SetEquivalentList( std::vector<std::string> equivalent_list);
+///Delaram
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
@@ -63,6 +175,7 @@ namespace ParameterFileSpace
               */
             void Print(std::ostream& out = std::cout);
 
+        private:
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////

@@ -20,6 +20,71 @@ ParameterFileBond::ParameterFileBond(const std::vector<std::string> &types, doub
                                      const std::vector<double> &hbond_coefficients, const std::string &dscr)
     : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr), hbond_coefficients_(hbond_coefficients) {}
 
+///Delaram
+//////////////////////////////////////////////////////////
+//                           ACCESSOR                   //
+//////////////////////////////////////////////////////////
+/// Return the list of atom types involved in the current bond object
+std::vector<std::string> ParameterFileBond::GetTypes()
+{
+    return types_;
+}
+
+/// Return force constant
+double ParameterFileBond::GetForceConstant()
+{
+    return force_constant_;
+}
+
+/// Return angle
+double ParameterFileBond::GetLength()
+{
+    return length_;
+}
+
+/// Return dscr
+std::string ParameterFileBond::GetDscr()
+{
+    return dscr_;
+}
+
+/// Return hbonded_coefficients
+std::vector<double> ParameterFileBond::GetHbondCoefficients()
+{
+    return hbond_coefficients_;
+}
+
+//////////////////////////////////////////////////////////
+//                           MUTATOR                    //
+//////////////////////////////////////////////////////////
+/// Set the list of atom types involved in the current bond object
+void ParameterFileBond::SetTypes(const std::vector<std::string> types)
+{
+    types_ = types;
+}
+
+/// Set force constant
+void ParameterFileBond::SetForceConstant(double force_constant)
+{
+    force_constant_ = force_constant;
+}
+
+/// Set angle
+void ParameterFileBond::SetLength(double length){
+    length_ = length;
+}
+
+/// Set dscr
+void ParameterFileBond::SetDscr(const std::string dscr){
+    dscr_ = dscr;
+}
+
+void ParameterFileBond::SetHbondCoefficients(std::vector<double> hbond_coefficients){
+    hbond_coefficients = hbond_coefficients_;
+}
+
+///Delaram
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////

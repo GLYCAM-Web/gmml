@@ -29,6 +29,118 @@ int PrepFileResidue::GetAtomIndexByName(const std::string& name)
     return -1;
 }
 
+///Delaram
+
+std::string PrepFileResidue::GetTitle(){
+    return title_;
+}
+
+std::string PrepFileResidue::GetName(){
+    return name_;
+}
+
+CoordinateType PrepFileResidue::GetCoordinateType(){
+    return coordinate_type_;
+}
+
+OutputFormat PrepFileResidue::GetOutputFormat(){
+    return output_format_;
+}
+
+GeometryType PrepFileResidue::GetGeometryType(){
+    return geometry_type_;
+}
+
+DummyAtomOmission PrepFileResidue::GetDummyAtomOmission(){
+    return dummy_atom_omission_;
+}
+
+std::string PrepFileResidue::GetDummyAtomType(){
+    return dummy_atom_type_;
+}
+
+DummyAtomPosition PrepFileResidue::GetDummyAtomPosition(){
+    return dummy_atom_position_;
+}
+
+double PrepFileResidue::GetCharge(){
+    return charge_;
+}
+
+std::vector<PrepFileAtom*> PrepFileResidue::GetAtoms(){
+    return atoms_;
+}
+
+std::vector<PrepFileResidue::Dihedral> PrepFileResidue::GetImproperDihedrals(){
+    return improper_dihedrals_;
+}
+
+PrepFileResidue::Loop PrepFileResidue::GetLoops(){
+    return loops_;
+}
+
+//////////////////////////////////////////////////////////
+//                           MUTATOR                    //
+//////////////////////////////////////////////////////////
+
+void PrepFileResidue::SetTitle(const std::string title){
+    title_ = title;
+}
+
+void PrepFileResidue::SetName(const std::string name){
+    name_ = name;
+}
+
+void PrepFileResidue::SetCoordinateType(CoordinateType coordinate_type){
+    coordinate_type_ = coordinate_type;
+}
+
+void PrepFileResidue::SetOutputFormat(OutputFormat output_format){
+    output_format_ = output_format;
+}
+
+void PrepFileResidue::SetBondIndex(GeometryType geometry_type){
+    geometry_type_ = geometry_type;
+}
+
+void PrepFileResidue::GetDummyAtomOmission(DummyAtomOmission dummy_atom_omission){
+    dummy_atom_omission_ = dummy_atom_omission;
+}
+
+void PrepFileResidue::SetDummyAtomType(const std::string dummy_atom_type){
+    dummy_atom_type_ = dummy_atom_type;
+}
+
+void PrepFileResidue::SetDummyAtomPosition(DummyAtomPosition dummy_atom_position){
+    dummy_atom_position_ = dummy_atom_position;
+}
+
+void PrepFileResidue::SetCharge(double charge){
+    charge_ = charge;
+}
+
+void PrepFileResidue::SetAtoms(std::vector<PrepFileAtom*> atoms){
+    atoms_ = atoms;
+}
+
+void PrepFileResidue::AddAtom(PrepFileAtom* atom){
+    atoms_.push_back(atom);
+}
+
+void PrepFileResidue::SetImproperDihedrals(std::vector<Dihedral> improper_dihedrals){
+    improper_dihedrals_ = improper_dihedrals;
+}
+
+void PrepFileResidue::AddImproperDihedral(Dihedral improper_dihedral){
+    improper_dihedrals_.push_back(improper_dihedral);
+}
+
+void PrepFileResidue::SetLoops(Loop loops){
+    loops_ = loops;
+}
+
+///Delaram
+
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////

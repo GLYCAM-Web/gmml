@@ -57,14 +57,8 @@ namespace PrepFileSpace
               */
             PrepFileResidue();
 
-            //////////////////////////////////////////////////////////
-            //                           ACCESSOR                   //
-            //////////////////////////////////////////////////////////
-            /*! \fn
-              * An accessor function in order to access to an atom in the residue by its name
-              * @return An atom in atmos_ attribute of the current object of this class that has the given name
-              */
-            int GetAtomIndexByName(const std::string& name);
+
+
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
@@ -130,6 +124,178 @@ namespace PrepFileSpace
               * @return A vector of improper dihedrals in the residue
               */
             std::vector<Dihedral> ExtractImproperDihedral(std::ifstream& in_file);
+
+            //////////////////////////////////////////////////////////
+            //                           ACCESSOR                   //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * An accessor function in order to access to an atom in the residue by its name
+              * @return An atom in atmos_ attribute of the current object of this class that has the given name
+              */
+              int GetAtomIndexByName(const std::string& name);
+
+///Delaram
+            /*! \fn
+              * An accessor function in order to access to the title attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return title_ of the current object of this class
+              */
+            std::string GetTitle();
+            /*! \fn
+              * An accessor function in order to access to name attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return name_ of the current object of this class
+              */
+            std::string GetName();
+            /*! \fn
+              * An accessor function in order to access to coordiante type of the current object
+              * @return coordinate_type_ attribute of the current object of this class
+              */
+            CoordinateType GetCoordinateType();
+            /*! \fn
+              * An accessor function in order to access to output format of the current object
+              * The attribute is set by the contents of the given file
+              * @return output_format_ of the current object of this class
+              */
+            OutputFormat GetOutputFormat();
+            /*! \fn
+              * An accessor function in order to access to geometry type of the current object
+              * The attribute is set by the contents of the given file
+              * @return geometry_type_ of the current object of this class
+              */
+            GeometryType GetGeometryType();
+            /*! \fn
+              * An accessor function in order to access to dummy atom omission of the current object
+              * The attribute is set by the contents of the given file
+              * @return dummy_atom_omission_ of the current object of this class
+              */
+            DummyAtomOmission GetDummyAtomOmission();
+            /*! \fn
+              * An accessor function in order to access to dummy atom type of the current object
+              * The attribute is set by the contents of the given file
+              * @return dummy_atom_type_ of the current object of this class
+              */
+            std::string GetDummyAtomType();
+            /*! \fn
+              * An accessor function in order to access to angle attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return dummy_atom_position of the current object of this class
+              */
+            DummyAtomPosition GetDummyAtomPosition();
+            /*! \fn
+              * An accessor function in order to access to charge attribute of the current object
+              * The attribute is set by the contents of the given file
+              * @return charge_ of the current object of this class
+              */
+            double GetCharge();
+            /*! \fn
+              * An accessor function in order to access to atoms of the current object
+              * The attribute is set by the contents of the given file
+              * @return atoms_ of the current object of this class
+              */
+            std::vector<PrepFileAtom*> GetAtoms();
+            /*! \fn
+              * An accessor function in order to access to improper dihedral of the current object
+              * The attribute is set by the contents of the given file
+              * @return improper_dihedral_ of the current object of this class
+              */
+            std::vector<Dihedral> GetImproperDihedrals();
+            /*! \fn
+              * An accessor function in order to access to loops of the current object
+              * The attribute is set by the contents of the given file
+              * @return loops_ of the current object of this class
+              */
+            Loop GetLoops();
+
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the title of the current object
+              * Set the title_ attribute of the current object
+              * @param title The index attribute of the current object
+              */
+            void SetTitle(std::string title);
+            /*! \fn
+              * A mutator function in order to set the name of the current object
+              * Set the name_ attribute of the current object
+              * @param name The force name of the current object
+              */
+            void SetName(std::string name);
+            /*! \fn
+              * A mutator function in order to set the coordinate_type of the current object
+              * Set the coordinate_type_ attribute of the current object
+              * @param coordinate_type The coordinate_type of the current object
+              */
+            void SetCoordinateType(CoordinateType coordinate_type);
+            /*! \fn
+              * A mutator function in order to set the output format of the current object
+              * Set the output_format_ attribute of the current object
+              * @param output_format The topological_type attribute of the current object
+              */
+            void SetOutputFormat(OutputFormat output_format);
+            /*! \fn
+              * A mutator function in order to set the geometry type of the current object
+              * Set the geometry_type_ attribute of the current object
+              * @param geometry_type The geometry_type of the current object
+              */
+            void SetBondIndex(GeometryType geometry_type);
+            /*! \fn
+              * A mutator function in order to set the dummy atom omission of the current object
+              * Set the dummy_atom_omission_ attribute of the current object
+              * @param dummy_atom_omission The dummy_atom_omission of the current object
+              */
+            void GetDummyAtomOmission(DummyAtomOmission dummy_atom_omission);
+            /*! \fn
+              * A mutator function in order to set the dummy atom type of the current object
+              * Set the dummy_atom_type_ attribute of the current atom
+              * @param dummy_atom_type The dummy_atom_type attribute of the current object
+              */
+            void SetDummyAtomType(std::string dummy_atom_type);
+            /*! \fn
+              * A mutator function in order to set the dummy atom position of the current object
+              * Set the dummy_atom_position_ attribute of the current object
+              * @param dummy_atom_position The dummy_atom_position of the current object
+              */
+            void SetDummyAtomPosition(DummyAtomPosition dummy_atom_position);
+            /*! \fn
+              * A mutator function in order to set the charge of the current object
+              * Set the charge_ attribute of the current object
+              * @param charge The charge of the current object
+              */
+            void SetCharge(double charge);
+            /*! \fn
+              * A mutator function in order to set the atoms of the current object
+              * Set the atoms_ attribute of the current object
+              * @param atoms The atoms of the current object
+              */
+            void SetAtoms(std::vector<PrepFileAtom*> atoms);
+            /*! \fn
+              * A mutator function in order to add the atom of the current object
+              * Add the atom_ attribute of the current object
+              * @param atom The atom of the current object
+              */
+            void AddAtom(PrepFileAtom* atom);
+            /*! \fn
+              * A mutator function in order to set the improper dihedrals of the current object
+              * Set the improper_dihedrals_ attribute of the current object
+              * @param improper_dihedrals The improper_dihedrals of the current object
+              */
+            void SetImproperDihedrals(std::vector<Dihedral> improper_dihedrals);
+            /*! \fn
+              * A mutator function in order to add the improper dihedral of the current object
+              * Add the improper_dihedral_ attribute of the current object
+              * @param improper_dihedral The improper_dihedral of the current object
+              */
+            void AddImproperDihedral(Dihedral improper_dihedral);
+            /*! \fn
+              * A mutator function in order to set the Loops of the current object
+              * Set the loops_ attribute of the current object
+              * @param loops The loops of the current object
+              */
+            void SetLoops(Loop loops);
+
+///Delaram
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
