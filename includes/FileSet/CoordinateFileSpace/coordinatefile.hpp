@@ -1,5 +1,3 @@
-
-
 #ifndef COORDINATEFILE_HPP
 #define COORDINATEFILE_HPP
 
