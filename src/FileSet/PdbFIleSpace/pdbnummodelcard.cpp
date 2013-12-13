@@ -1,44 +1,39 @@
-#include "../../../includes/FileSet/PdbFileSpace/pdbtitlecard.h"
+#include "../../../includes/FileSet/PdbFileSpace/pdbnummodelcard.h"
 
 using namespace std;
 using namespace PdbFileSpace;
 
+
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbTitleCard::PdbTitleCard() : record_name_("TITLE"), title_(""){}
-
-PdbTitleCard::PdbTitleCard(const string &record_name, const string &title)
-{
-    record_name_ = record_name;
-    title_ = title;
-}
-
+PdbNumModelCard::PdbNumModelCard() : record_name_("NUMMDL"), number_of_models_(0) {}
+PdbNumModelCard::PdbNumModelCard(const string &record_name, int number_of_models) : record_name_(record_name), number_of_models_(number_of_models) {}
 
 //////////////////////////////////////////////////////////
-//                       ACCESSOR                       //
+//                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbTitleCard::GetRecordName()
+string PdbNumModelCard::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbTitleCard::GetTitle()
+int PdbNumModelCard::GetNumberOfModels()
 {
-    return title_;
+    return number_of_models_;
 }
 
 //////////////////////////////////////////////////////////
-//                       MUTATOR                        //
+//                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbTitleCard::SetRecordName(const string record_name)
+void PdbNumModelCard::SetRecordName(const string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbTitleCard::SetTitle(const string title)
+void PdbNumModelCard::SetNumberOfModels(int number_of_models)
 {
-    title_ = title;
+    number_of_models_ = number_of_models;
 }
 
 //////////////////////////////////////////////////////////

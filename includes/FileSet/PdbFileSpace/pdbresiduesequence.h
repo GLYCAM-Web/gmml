@@ -1,46 +1,43 @@
-#ifndef PDBTITLECARD_H
-#define PDBTITLECARD_H
+#ifndef PDBRESIDUESEQUENCE_H
+#define PDBRESIDUESEQUENCE_H
 
 #include <string>
+#include <vector>
 
 namespace PdbFileSpace
 {
-    class PdbTitleCard
+    class PdbResidueSequence
     {
         public:
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
-            PdbTitleCard();
-            PdbTitleCard(const std::string& record_name, const std::string& title);
+            PdbResidueSequence();
+            PdbResidueSequence(char chain_id, int number_of_residues, const std::vector<std::string>& residue_names);
+            //////////////////////////////////////////////////////////
+            //                         ACCESSOR                     //
+            //////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////
-            //                       ACCESSOR                       //
+            //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
-            std::string GetRecordName();
-            std::string GetTitle();
-
-            //////////////////////////////////////////////////////////
-            //                       MUTATOR                        //
-            //////////////////////////////////////////////////////////
-            void SetRecordName(const std::string record_name);
-            void SetTitle(const std::string title);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////
-            //                       DISPLAY FUNCTION               //
+            //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
 
         private:
             //////////////////////////////////////////////////////////
-            //                       ATTRIBUTES                     //
+            //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            std::string title_;
+            char chain_id_;
+            int number_of_residues_;
+            std::vector<std::string> residue_names_;
     };
 }
 
-#endif // PDBTITLECARD_H
+#endif // PDBRESIDUESEQUENCE_H
