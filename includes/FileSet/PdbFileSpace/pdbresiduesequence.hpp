@@ -1,0 +1,43 @@
+#ifndef PDBRESIDUESEQUENCE_HPP
+#define PDBRESIDUESEQUENCE_HPP
+
+#include <string>
+#include <vector>
+
+namespace PdbFileSpace
+{
+    class PdbResidueSequence
+    {
+        public:
+            //////////////////////////////////////////////////////////
+            //                       CONSTRUCTOR                    //
+            //////////////////////////////////////////////////////////
+            PdbResidueSequence();
+            PdbResidueSequence(char chain_id, int number_of_residues, const std::vector<std::string>& residue_names);
+            //////////////////////////////////////////////////////////
+            //                         ACCESSOR                     //
+            //////////////////////////////////////////////////////////
+
+            //////////////////////////////////////////////////////////
+            //                          MUTATOR                     //
+            //////////////////////////////////////////////////////////
+
+            //////////////////////////////////////////////////////////
+            //                        FUNCTIONS                     //
+            //////////////////////////////////////////////////////////
+
+            //////////////////////////////////////////////////////////
+            //                      DISPLAY FUNCTION                //
+            //////////////////////////////////////////////////////////
+
+        private:
+            //////////////////////////////////////////////////////////
+            //                        ATTRIBUTES                    //
+            //////////////////////////////////////////////////////////
+            char chain_id_;
+            int number_of_residues_;
+            std::vector<std::string> residue_names_;
+    };
+}
+
+#endif // PDBRESIDUESEQUENCE_HPP

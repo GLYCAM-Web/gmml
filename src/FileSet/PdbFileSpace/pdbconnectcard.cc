@@ -1,0 +1,36 @@
+#include "../../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
+
+using namespace std;
+using namespace PdbFileSpace;
+
+//////////////////////////////////////////////////////////
+//                       CONSTRUCTOR                    //
+//////////////////////////////////////////////////////////
+PdbConnectCard::PdbConnectCard() {}
+
+
+//////////////////////////////////////////////////////////
+//                       ACCESSOR                       //
+//////////////////////////////////////////////////////////
+string PdbConnectCard::GetRecordName()
+{
+    return record_name_;
+}
+
+PdbConnectCard::BondedAtomsSerialNumbersMap PdbConnectCard::GetBondedAtomsSerialNumbers()
+{
+    return bonded_atom_serial_numbers_;
+}
+
+//////////////////////////////////////////////////////////
+//                       MUTATOR                        //
+//////////////////////////////////////////////////////////
+void PdbConnectCard::SetRecordName(const string record_name)
+{
+    record_name_ = record_name;
+}
+
+//////////////////////////////////////////////////////////
+//                       DISPLAY FUNCTION               //
+//////////////////////////////////////////////////////////
+
