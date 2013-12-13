@@ -1,54 +1,47 @@
-#ifndef PDBCOMPOUNDCARD_H
-#define PDBCOMPOUNDCARD_H
+#ifndef PDBNUMMODELCARD_H
+#define PDBNUMMODELCARD_H
 
 #include <string>
-#include <map>
 
 namespace PdbFileSpace
 {
-    class PdbCompoundSpecification;
-
-    class PdbCompoundCard
+    class PdbNumModelCard
     {
         public:
             //////////////////////////////////////////////////////////
-            //                       TYPE DEFINITION                //
-            //////////////////////////////////////////////////////////
-            typedef std::map<std::string, PdbCompoundSpecification*> PdbCompoundSpecificationMap;
-
-            //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
-            PdbCompoundCard();
-            PdbCompoundCard(const std::string& record_name);
+            PdbNumModelCard();
+            PdbNumModelCard(const std::string& record_name, int number_of_models);
 
             //////////////////////////////////////////////////////////
-            //                       ACCESSOR                       //
+            //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
             std::string GetRecordName();
-            PdbCompoundSpecificationMap GetCompoundSpecifications();
+            int GetNumberOfModels();
 
             //////////////////////////////////////////////////////////
-            //                       MUTATOR                        //
+            //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
             void SetRecordName(const std::string record_name);
+            void SetNumberOfModels(int number_of_models);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////
-            //                       DISPLAY FUNCTION               //
+            //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
 
         private:
             //////////////////////////////////////////////////////////
-            //                       ATTRIBUTES                     //
+            //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
             std::string record_name_;
-            PdbCompoundSpecificationMap compound_specifications_;
+            int number_of_models_;
 
     };
 }
 
-#endif // PDBCOMPOUNDCARD_H
+#endif // PDBNUMMODELCARD_H

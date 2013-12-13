@@ -1,4 +1,4 @@
-#include "../../../includes/FileSet/PdbFileSpace/pdbtitlecard.h"
+#include "../../../includes/FileSet/PdbFileSpace/pdbcompoundcard.h"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -6,39 +6,28 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbTitleCard::PdbTitleCard() : record_name_("TITLE"), title_(""){}
-
-PdbTitleCard::PdbTitleCard(const string &record_name, const string &title)
-{
-    record_name_ = record_name;
-    title_ = title;
-}
-
+PdbCompoundCard::PdbCompoundCard() : record_name_("COMPND"){}
+PdbCompoundCard::PdbCompoundCard(const string& record_name) : record_name_(record_name) {}
 
 //////////////////////////////////////////////////////////
-//                       ACCESSOR                       //
+//                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbTitleCard::GetRecordName()
+string PdbCompoundCard::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbTitleCard::GetTitle()
+PdbCompoundCard::PdbCompoundSpecificationMap PdbCompoundCard::GetCompoundSpecifications()
 {
-    return title_;
+    return compound_specifications_;
 }
 
 //////////////////////////////////////////////////////////
-//                       MUTATOR                        //
+//                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbTitleCard::SetRecordName(const string record_name)
+void PdbCompoundCard::SetRecordName(const string record_name)
 {
     record_name_ = record_name;
-}
-
-void PdbTitleCard::SetTitle(const string title)
-{
-    title_ = title;
 }
 
 //////////////////////////////////////////////////////////

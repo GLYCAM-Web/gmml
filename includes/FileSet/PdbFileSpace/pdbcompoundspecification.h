@@ -13,10 +13,10 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbCompoundSpecification();
-            PdbCompoundSpecification(std::string molecule_id, std::string molecule_name);
-            PdbCompoundSpecification(std::string molecule_id, std::string molecule_name, std::vector<std::string>& chain_ids,
-                                     std::string fragment, std::vector<std::string>& molecule_synonyms, std::vector<int>& enzyme_commission_numbers,
-                                     bool is_engineered, bool has_mutation, std::string comments);
+            PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name);
+            PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name, const std::vector<std::string>& chain_ids,
+                                     const std::string& fragment, const std::vector<std::string>& molecule_synonyms, std::vector<int>& enzyme_commission_numbers,
+                                     bool is_engineered, bool has_mutation, const std::string& comments);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -34,18 +34,22 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            void SetMoleculeId(std::string molecule_id);
-            void SetMoleculeName(std::string molecule_name);
-            void SetChainIds(std::vector<std::string> chain_ids);
-            void AddChainId(std::string chain_id);
-            void SetFragment(std::string fragment);
-            void SetMoleculeSynonyms(std::vector<std::string> molecule_synonyms);
-            void AddMoleculeSynonym(std::string molecule_synonym);
-            void SetEnzymeCommissionNumbers(std::vector<int> enzyme_commission_numbers);
+            void SetMoleculeId(const std::string molecule_id);
+            void SetMoleculeName(const std::string molecule_name);
+            void SetChainIds(const std::vector<std::string> chain_ids);
+            void AddChainId(const std::string chain_id);
+            void SetFragment(const std::string fragment);
+            void SetMoleculeSynonyms(const std::vector<std::string> molecule_synonyms);
+            void AddMoleculeSynonym(const std::string molecule_synonym);
+            void SetEnzymeCommissionNumbers(const std::vector<int> enzyme_commission_numbers);
             void AddEnzymeCommissionNumber(int enzyme_commission_number);
             void SetIsEngineered(bool is_engineered);
             void SetHasMutation(bool has_mutation);
-            void setComments(std::string comments);
+            void setComments(const std::string comments);
+
+            //////////////////////////////////////////////////////////
+            //                        FUNCTIONS                     //
+            //////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

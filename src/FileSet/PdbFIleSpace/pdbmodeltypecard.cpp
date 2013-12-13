@@ -1,4 +1,4 @@
-#include "../../../includes/FileSet/PdbFileSpace/pdbtitlecard.h"
+#include "../../../includes/FileSet/PdbFileSpace/pdbmodeltypecard.h"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -6,39 +6,38 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbTitleCard::PdbTitleCard() : record_name_("TITLE"), title_(""){}
+PdbModelTypeCard::PdbModelTypeCard() : record_name_("MDLTYP") {}
 
-PdbTitleCard::PdbTitleCard(const string &record_name, const string &title)
-{
-    record_name_ = record_name;
-    title_ = title;
-}
-
+PdbModelTypeCard::PdbModelTypeCard(const string &record_name, const vector<string> &comments) : record_name_(record_name), comments_(comments) {}
 
 //////////////////////////////////////////////////////////
-//                       ACCESSOR                       //
+//                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbTitleCard::GetRecordName()
+string PdbModelTypeCard::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbTitleCard::GetTitle()
+vector<string> PdbModelTypeCard::GetComments()
 {
-    return title_;
+    return comments_;
 }
 
 //////////////////////////////////////////////////////////
-//                       MUTATOR                        //
+//                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbTitleCard::SetRecordName(const string record_name)
+void PdbModelTypeCard::SetRecordName(const string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbTitleCard::SetTitle(const string title)
+void PdbModelTypeCard::SetComments(const vector<string> comments)
 {
-    title_ = title;
+    comments_.clear();
+    for(vector<string>::const_iterator it = comments.begin(); it != comments.end(); it++)
+    {
+        comments_.push_back(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////

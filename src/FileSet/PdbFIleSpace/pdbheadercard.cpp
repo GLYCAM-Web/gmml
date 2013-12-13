@@ -6,9 +6,9 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeaderClass::PdbHeaderClass() : record_name_("HEADER"), classification_(""), deposition_date_(""), identifier_code_(""){}
+PdbHeaderCard::PdbHeaderCard() : record_name_("HEADER"), classification_(""), deposition_date_(""), identifier_code_(""){}
 
-PdbHeaderClass::PdbHeaderClass(string record_name, string classification, string deposition_date, string identifier_code)
+PdbHeaderCard::PdbHeaderCard(const string &record_name, const string &classification, const string &deposition_date, const string &identifier_code)
 {
     record_name_ = record_name;
     classification_ = classification;
@@ -19,22 +19,22 @@ PdbHeaderClass::PdbHeaderClass(string record_name, string classification, string
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbHeaderClass::GetRecordName()
+string PdbHeaderCard::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbHeaderClass::GetClassification()
+string PdbHeaderCard::GetClassification()
 {
     return classification_;
 }
 
-string PdbHeaderClass::GetDepositionDate()
+string PdbHeaderCard::GetDepositionDate()
 {
     return deposition_date_;
 }
 
-string PdbHeaderClass::GetIdentifierCode()
+string PdbHeaderCard::GetIdentifierCode()
 {
     return identifier_code_;
 }
@@ -42,25 +42,29 @@ string PdbHeaderClass::GetIdentifierCode()
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-void PdbHeaderClass::SetRecordName(string record_name)
+void PdbHeaderCard::SetRecordName(const string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbHeaderClass::SetClassification(string classification)
+void PdbHeaderCard::SetClassification(const string classification)
 {
     classification_ = classification;
 }
 
-void PdbHeaderClass::SetDepositionDate(string deposition_date)
+void PdbHeaderCard::SetDepositionDate(const string deposition_date)
 {
     deposition_date_ = deposition_date;
 }
 
-void PdbHeaderClass::SetIdentificationCode(string identifier_code){
+void PdbHeaderCard::SetIdentificationCode(const string identifier_code){
     identifier_code_ = identifier_code;
 }
 
 //////////////////////////////////////////////////////////
-//                       DISPLAY FUNCTION               //
+//                        FUNCTIONS                     //
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+//                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////

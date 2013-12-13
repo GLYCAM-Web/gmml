@@ -5,14 +5,14 @@
 
 namespace PdbFileSpace
 {
-    class PdbHeaderClass
+    class PdbHeaderCard
     {
         public:
             //////////////////////////////////////////////////////////
-            //                       Constructor                    //
+            //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
-            PdbHeaderClass();
-            PdbHeaderClass(std::string record_name, std::string classification, std::string deposition_date, std::string identifier_code);
+            PdbHeaderCard();
+            PdbHeaderCard(const std::string& record_name, const std::string& classification, const std::string& deposition_date, const std::string& identifier_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -25,10 +25,14 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            void SetRecordName(std::string record_name);
-            void SetClassification(std::string classification);
-            void SetDepositionDate(std::string deposition_date);
-            void SetIdentificationCode(std::string identifier_code);
+            void SetRecordName(const std::string record_name);
+            void SetClassification(const std::string classification);
+            void SetDepositionDate(const std::string deposition_date);
+            void SetIdentificationCode(const std::string identifier_code);
+
+            //////////////////////////////////////////////////////////
+            //                        FUNCTIONS                     //
+            //////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
