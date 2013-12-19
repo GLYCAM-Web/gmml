@@ -1,7 +1,9 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbheadercard.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -14,6 +16,21 @@ PdbHeaderCard::PdbHeaderCard(const string &record_name, const string &classifica
     classification_ = classification;
     deposition_date_ = deposition_date;
     identifier_code_ = identifier_code;
+}
+
+PdbHeaderCard::PdbHeaderCard(const istringstream& stream_block)
+{
+    string line;
+    getline(stream_block, line);
+    line = Trim(line);
+    while(line != string::npos)
+    {
+        record_name_ = line.substr(0,5);
+        classification_ = line.substr(10,40);
+        deposition_date_ = line.substr(50, 9);
+        identifier_code_ = line.substr(62,4);
+        getline(stream_block, line);
+    }
 }
 
 //////////////////////////////////////////////////////////
