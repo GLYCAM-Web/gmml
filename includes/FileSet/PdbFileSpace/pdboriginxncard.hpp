@@ -1,56 +1,51 @@
-#ifndef PDBHEADERCARD_HPP
-#define PDBHEADERCARD_HPP
+#ifndef PDBORIGINXNCARD_HPP
+#define PDBORIGINXNCARD_HPP
 
 #include <string>
-#include <sstream>
+#include <vector>
 
 namespace PdbFileSpace
 {
-    class PdbHeaderCard
+    class PdbOriginXn;
+
+    class PdbOriginXnCard
     {
         public:
             //////////////////////////////////////////////////////////
+            //                       TYPE DEFINITION                //
+            //////////////////////////////////////////////////////////
+            typedef std::vector< PdbOriginXn* > OriginXnVector;
+
+            //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
-            PdbHeaderCard();
-            PdbHeaderCard(const std::string& record_name, const std::string& classification, const std::string& deposition_date, const std::string& identifier_code);
-            PdbHeaderCard(const std::istringstream& stream_block);
+            PdbOriginXnCard();
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            std::string GetRecordName();
-            std::string GetClassification();
-            std::string GetDepositionDate();
-            std::string GetIdentifierCode();
+            OriginXnVector GetOriginXN();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            void SetRecordName(const std::string record_name);
-            void SetClassification(const std::string classification);
-            void SetDepositionDate(const std::string deposition_date);
-            void SetIdentificationCode(const std::string identifier_code);
+            void SetOriginXN(const OriginXnVector origin_x_n);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
-            //////////////////////////////////////////////////////////            
+            //////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
 
-
-
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            std::string classification_;
-            std::string deposition_date_;
-            std::string identifier_code_;
+            OriginXnVector origin_x_n_;
 
     };
 }
-#endif // PDBHEADERCARD_HPP
+
+#endif // PDBORIGINXNCARD_HPP

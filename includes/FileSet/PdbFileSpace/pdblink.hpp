@@ -1,56 +1,54 @@
-#ifndef PDBHEADERCARD_HPP
-#define PDBHEADERCARD_HPP
+#ifndef PDBLINK_HPP
+#define PDBLINK_HPP
 
 #include <string>
-#include <sstream>
+#include <vector>
 
 namespace PdbFileSpace
 {
-    class PdbHeaderCard
+    class PdbLinkResidue;
+
+    class PdbLink
     {
         public:
             //////////////////////////////////////////////////////////
+            //                       TYPE DEFINITION                //
+            //////////////////////////////////////////////////////////
+            typedef std::vector< PdbLinkResidue* > LinkResidueVector;
+
+            //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
-            PdbHeaderCard();
-            PdbHeaderCard(const std::string& record_name, const std::string& classification, const std::string& deposition_date, const std::string& identifier_code);
-            PdbHeaderCard(const std::istringstream& stream_block);
+            PdbLink();
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            std::string GetRecordName();
-            std::string GetClassification();
-            std::string GetDepositionDate();
-            std::string GetIdentifierCode();
+            LinkResidueVector GetResidues();
+            double GetLinkLength();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            void SetRecordName(const std::string record_name);
-            void SetClassification(const std::string classification);
-            void SetDepositionDate(const std::string deposition_date);
-            void SetIdentificationCode(const std::string identifier_code);
+            void SetResidues(const LinkResidueVector residues);
+            void SetLinkLength(double link_length);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
-            //////////////////////////////////////////////////////////            
+            //////////////////////////////////////////////////////////
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
 
-
-
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            std::string classification_;
-            std::string deposition_date_;
-            std::string identifier_code_;
+            LinkResidueVector residues_;
+            double link_length_;
 
     };
 }
-#endif // PDBHEADERCARD_HPP
+
+#endif // PDBLINK_HPP

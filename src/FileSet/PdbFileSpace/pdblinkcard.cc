@@ -1,0 +1,48 @@
+#include "../../../includes/FileSet/PdbFileSpace/pdblinkcard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdblink.hpp"
+
+using namespace std;
+using namespace PdbFileSpace;
+
+//////////////////////////////////////////////////////////
+//                       CONSTRUCTOR                    //
+//////////////////////////////////////////////////////////
+PdbLinkCard::PdbLinkCard() {}
+
+//////////////////////////////////////////////////////////
+//                         ACCESSOR                     //
+//////////////////////////////////////////////////////////
+
+string PdbLinkCard::GetRecordName(){
+    return record_name_;
+}
+
+PdbLinkCard::LinkVector PdbLinkCard::GetResidueLinks(){
+    return residue_links_;
+}
+
+//////////////////////////////////////////////////////////
+//                       MUTATOR                        //
+//////////////////////////////////////////////////////////
+
+void PdbLinkCard::SetRecordName(string record_name){
+    record_name_ = record_name;
+}
+
+void PdbLinkCard::SetResidueLinks(const LinkVector residue_links){
+    residue_links_ = residue_links;
+}
+
+//////////////////////////////////////////////////////////
+//                        FUNCTIONS                     //
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+//                      DISPLAY FUNCTION                //
+//////////////////////////////////////////////////////////
+
+
+
+
+
+
