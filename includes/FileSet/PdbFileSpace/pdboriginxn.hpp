@@ -1,47 +1,35 @@
-#ifndef PDBATOM_HPP
-#define PDBATOM_HPP
+#ifndef PDBORIGINXN_HPP
+#define PDBORIGINXN_HPP
 
 #include <string>
-
-namespace Geometry
-{
-    class Coordinate;
-}
+#include "../../../includes/Geometry/coordinate.hpp"
 
 namespace PdbFileSpace
 {
-    class PdbAtom
+    class PdbOriginXn
     {
         public:
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
-            PdbAtomCard();
+            PdbOriginXn();
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            int GetAtomSerialNumber();
-            std::string GetName();
-            char GetAtomAlternateLocation();
-            std::string GetAtomResidueName();
-            char GetAtomChainId();
-            int GetAtomResidueSequenceNumber();
-            char GetAtomInsertionCode();
-            Geometry::Coordinate GetAtomOrthogonalCoordinate();
-            double GetAtomOccupancy();
-            double GetAtomTempretureFactor();
-            std::string GetAtomElementSymbol();
-            std::string GetAtomCharge();
+            std::string GetRecordName();
+            int GetN();
+            Geometry::Coordinate GetOrigin();
+            double GetT();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            void SetAtomSerialNumber(int atom_serial_number);
-            void SetAtomName(const std::string name);
-            void SetAtomAlternateLocation(char atom_alternate_location);
-            void SetAtomResidueName();
+            void SetRecordName(const std::string record_name);
+            void SetN(int n);
+            void SetOrigin(Geometry::Coordinate origin);
+            void SetT(double t);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -54,9 +42,10 @@ namespace PdbFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::string record_name_;
-            BondedAtomsSerialNumbersMap bonded_atom_serial_numbers_;
-
+            int n_;
+            Geometry::Coordinate origin_;
+            double t_;
     };
 }
 
-#endif // PDBATOM_HPP
+#endif // PDBORIGINXN_HPP
