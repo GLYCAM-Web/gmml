@@ -1,0 +1,43 @@
+// Author: Alireza Khatamian
+
+#include "../../../includes/FileSet/PdbFileSpace/pdbheterogencard.hpp"
+
+using namespace std;
+using namespace PdbFileSpace;
+
+//////////////////////////////////////////////////////////
+//                       CONSTRUCTOR                    //
+//////////////////////////////////////////////////////////
+PdbHeterogenCard::PdbHeterogenCard() : record_name_("HET") {}
+
+PdbHeterogenCard::PdbHeterogenCard(const string &record_name) : record_name_(record_name) {}
+
+//////////////////////////////////////////////////////////
+//                         ACCESSOR                     //
+//////////////////////////////////////////////////////////
+std::string PdbHeterogenCard::GetRecordName()
+{
+    return record_name_;
+}
+
+PdbHeterogenCard::HeterogenMap PdbHeterogenCard::GetHeterogens()
+{
+    return heterogens_;
+}
+
+//////////////////////////////////////////////////////////
+//                          MUTATOR                     //
+//////////////////////////////////////////////////////////
+void PdbHeterogenCard::SetRecordName(const string record_name)
+{
+    record_name_ = record_name;
+}
+
+//////////////////////////////////////////////////////////
+//                        FUNCTIONS                     //
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+//                      DISPLAY FUNCTION                //
+//////////////////////////////////////////////////////////
+
