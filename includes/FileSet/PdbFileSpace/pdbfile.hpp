@@ -16,6 +16,7 @@ namespace PdbFileSpace
     class PdbResidueSeqenceCard;
     class PdbResidueModificationCard;
     class PdbHeterogenCard;
+    class PdbHeterogenNameCard;
     class PdbHeterogenSynonymCard;
     class PdbFormulaCard;
     class PdbHelixCard;
@@ -58,6 +59,7 @@ namespace PdbFileSpace
             PdbResidueSeqenceCard* GetResidueSequence();
             PdbResidueModificationCard* GetResidueModification();
             PdbHeterogenCard* GetHeterogens();
+            PdbHeterogenNameCard* GetHeterogensName();
             PdbHeterogenSynonymCard* GetHeterogenSynonyms();
             PdbFormulaCard* GetFormulas();
             PdbHelixCard* GetHelixes();
@@ -142,6 +144,7 @@ namespace PdbFileSpace
             PdbResidueSeqenceCard* residues_sequence_;
             PdbResidueModificationCard* residue_modification_;
             PdbHeterogenCard* heterogens_;
+            PdbHeterogenNameCard* heterogens_name_;
             PdbHeterogenSynonymCard* heterogen_synonyms_;
             PdbFormulaCard* formulas_;
             PdbHelixCard* helixes_;

@@ -16,20 +16,20 @@ PdbTitleCard::PdbTitleCard(const string &record_name, const string &title)
     title_ = title;
 }
 
-PdbTitleCard::PdbTitleCard(istringstream& stream_block)
-{
-    string line;
-    getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
-    {
-        record_name_ = line.substr(0,6);
-        classification_ = line.substr(10,40);
-        deposition_date_ = line.substr(50, 9);
-        identifier_code_ = line.substr(62,4);
-        getline(stream_block, line);
-    }
-}
+//PdbTitleCard::PdbTitleCard(istringstream& stream_block)
+//{
+//    string line;
+//    getline(stream_block, line);
+//    line = Trim(line);
+//    while (!Trim(line).empty())
+//    {
+//        record_name_ = line.substr(0,6);
+//        classification_ = line.substr(10,40);
+//        deposition_date_ = line.substr(50, 9);
+//        identifier_code_ = line.substr(62,4);
+//        getline(stream_block, line);
+//    }
+//}
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //

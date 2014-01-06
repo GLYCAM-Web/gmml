@@ -5,6 +5,9 @@
 #include <stdexcept>
 #include <sstream>
 #include <algorithm>
+#include <vector>
+#include "boost/tokenizer.hpp"
+#include "boost/foreach.hpp"
 
 namespace gmml
 {
@@ -37,6 +40,15 @@ namespace gmml
             return val;
 
         throw std::invalid_argument("ConvertString: invalid conversion of string " + str);
+    }
+
+    inline std::vector<std::string> Split(std::string& line, std::string& delim)
+    {
+        boost::char_separator<char> separator(delim);
+        boost::tokenizer< boost::char_separator<char> > tokens(line, separator);
+        std::vector<string> vectorTokens = std::vector<std::string>();
+        vectorTokens.assign(tokens.begin(), tokens.end());
+        return vectorTokens;
     }
 }
 

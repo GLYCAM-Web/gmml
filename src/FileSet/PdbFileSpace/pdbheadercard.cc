@@ -18,7 +18,7 @@ PdbHeaderCard::PdbHeaderCard(const string &record_name, const string &classifica
     identifier_code_ = identifier_code;
 }
 
-PdbHeaderCard::PdbHeaderCard(istringstream& stream_block)
+PdbHeaderCard::PdbHeaderCard(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);
