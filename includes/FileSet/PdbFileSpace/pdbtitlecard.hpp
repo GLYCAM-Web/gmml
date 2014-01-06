@@ -2,6 +2,7 @@
 #define PDBTITLECARD_HPP
 
 #include <string>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -13,6 +14,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbTitleCard();
             PdbTitleCard(const std::string& record_name, const std::string& title);
+            PdbTitleCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

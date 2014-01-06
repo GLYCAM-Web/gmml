@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <sstring>
 
 namespace PdbFileSpace
 {
@@ -14,6 +15,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbModelTypeCard();
             PdbModelTypeCard(const std::string& record_name, const std::vector<std::string>& comments);
+            PdbModelTypeCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

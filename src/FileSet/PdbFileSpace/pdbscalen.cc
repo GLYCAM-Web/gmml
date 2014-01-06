@@ -11,7 +11,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 PdbScaleN::PdbScaleN():scale_vector_() {}
 
-PdbScaleN::PdbScaleN(istringstream& stream_block)
+PdbScaleN::PdbScaleN(stringstream& stream_block)
 {
     string line;
     scale_vector_=Coordinate();

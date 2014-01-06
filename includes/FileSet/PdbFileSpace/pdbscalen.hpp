@@ -15,7 +15,7 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbScaleN();
-            PdbScaleN(std::istringstream& stream_block);
+            PdbScaleN(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
