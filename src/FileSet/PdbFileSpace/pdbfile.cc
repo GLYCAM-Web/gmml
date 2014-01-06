@@ -6,9 +6,11 @@
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -150,6 +152,362 @@ PdbConnectCard* PdbFile::GetConnectivities()
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
 void PdbFile::Read(ifstream &in_file)
+{
+    this->ParseSections(in_file);
+}
+
+void PdbFile::ParseCards(ifstream &in_stream)
+{
+    string line;
+
+    /// Unable to read file
+    if (!getline(in_stream, line))
+    {
+        throw PdbFileProcessingException("Error reading file");
+    }
+
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
+    if(record_name == "HEADER")
+    {
+        ParseHeaderCard(in_stream, line);
+    }
+    if(record_name == "OBSLTE")
+    {
+        ParseObsoleteCard(in_stream, line);
+    }
+    if(record_name == "TITLE")
+    {
+        ParseTitleCard(in_stream, line);
+    }
+    if(record_name == "SPLIT")
+    {
+        ParseSplitCard(in_stream, line);
+    }
+    if(record_name == "CAVEAT")
+    {
+        ParseCaveatCard(in_stream, line);
+    }
+    if(record_name == "COMPND")
+    {
+        ParseCompoundCard(in_stream, line);
+    }
+    if(record_name == "SOURCE")
+    {
+        ParseSourceCard(in_stream, line);
+    }
+    if(record_name == "KEYWDS")
+    {
+        ParseKeywordCard(in_stream, line);
+    }
+    if(record_name == "EXPDTA")
+    {
+        ParseExpirationDateCard(in_stream, line);
+    }
+    if(record_name == "NUMMDL")
+    {
+        ParseNumModelCard(in_stream, line);
+    }
+    if(record_name == "MDLTYP")
+    {
+        ParseModelTypeCard(in_stream, line);
+    }
+    if(record_name == "AUTHOR")
+    {
+        ParseAuthorCard(in_stream, line);
+    }
+    if(record_name == "REVDAT")
+    {
+        ParseRevisionDateCard(in_stream, line);
+    }
+    if(record_name == "SPRSDE")
+    {
+        ParseSupersededEntriesCard(in_stream, line);
+    }
+    if(record_name == "JRNL")
+    {
+        ParseJournalCard(in_stream, line);
+    }
+    if(record_name == "REMARK")
+    {
+        ParseRemarkCard(in_stream, line);
+    }
+    if(record_name.find("DBREF") != string::npos)
+    {
+        ParseDatabaseReferenceCard(in_stream, line);
+    }
+    if(record_name == "SEQADV")
+    {
+        ParseSequenceAdvancedCard(in_stream, line);
+    }
+    if(record_name == "SEQRES")
+    {
+        ParseSequenceResidueCard(in_stream, line);
+    }
+    if(record_name == "MODRES")
+    {
+        ParseModificationResidueCard(in_stream, line);
+    }
+    if(record_name == "HET")
+    {
+        ParseHeterogenCard(in_stream, line);
+    }
+    if(record_name == "HETNAM")
+    {
+        ParseHeterogenNameCard(in_stream, line);
+    }
+    if(record_name == "HETSYN")
+    {
+        ParseHeterogenSynonymCard(in_stream, line);
+    }
+    if(record_name == "FORMUL")
+    {
+        ParseFormulaCard(in_stream, line);
+    }
+    if(record_name == "HELIX")
+    {
+        ParseHelixCard(in_stream, line);
+    }
+    if(record_name == "SHEET")
+    {
+        ParseSheetCard(in_stream, line);
+    }
+    if(record_name == "SSBOND")
+    {
+        ParseDisulfideBondCard(in_stream, line);
+    }
+    if(record_name == "LINK")
+    {
+        ParseLinkCard(in_stream, line);
+    }
+    if(record_name == "CISPEP")
+    {
+        ParseCISPeptideCard(in_stream, line);
+    }
+    if(record_name == "SITE")
+    {
+        ParseSiteCard(in_stream, line);
+    }
+    if(record_name == "CRYST1")
+    {
+        ParseCrystallographyCard(in_stream, line);
+    }
+    if(record_name.find("ORIGX") != string::npos)
+    {
+        ParseOriginCard(in_stream, line);
+    }
+    if(record_name.find("SCALE") != string::npos)
+    {
+        ParseScaleCard(in_stream, line);
+    }
+    if(record_name.find("MTRIX") != string::npos)
+    {
+        ParseMatrixCard(in_stream, line);
+    }
+    if(record_name == "MODEL")
+    {
+        ParseModelCard(in_stream, line);
+    }
+    if(record_name == "CONECT")
+    {
+        ParseConnectivityCard(in_stream, line);
+    }
+    if(record_name == "MASTER")
+    {
+        ParseMasterCard(in_stream, line);
+    }
+    if(record_name == "END")
+    {
+        ParseEndCard(in_stream, line);
+    }
+}
+
+void PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
+{
+
+}
+
+void PdbFile::ParseEndCard(std::ifstream& stream, string& line)
 {
 
 }
