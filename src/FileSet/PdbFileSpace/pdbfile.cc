@@ -200,150 +200,226 @@ void PdbFile::ParseCards(ifstream &in_stream)
     {
         ParseHeaderCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "OBSLTE")
     {
         ParseObsoleteCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "TITLE")
     {
         ParseTitleCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SPLIT")
     {
         ParseSplitCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "CAVEAT")
     {
         ParseCaveatCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "COMPND")
-    {
+    {        
         ParseCompoundCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SOURCE")
     {
         ParseSourceCard(in_stream, line);
     }
+    cout << line << endl;
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "KEYWDS")
     {
         ParseKeywordCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "EXPDTA")
     {
         ParseExpirationDateCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "NUMMDL")
     {
+        cout << "HERE" << endl;
         ParseNumModelCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "MDLTYP")
     {
         ParseModelTypeCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "AUTHOR")
     {
         ParseAuthorCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "REVDAT")
     {
         ParseRevisionDateCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SPRSDE")
     {
         ParseSupersededEntriesCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "JRNL")
     {
         ParseJournalCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "REMARK")
     {
         ParseRemarkCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name.find("DBREF") != string::npos)
     {
         ParseDatabaseReferenceCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SEQADV")
     {
         ParseSequenceAdvancedCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SEQRES")
     {
         ParseSequenceResidueCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "MODRES")
     {
         ParseModificationResidueCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "HET")
     {
         ParseHeterogenCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "HETNAM")
     {
         ParseHeterogenNameCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "HETSYN")
     {
         ParseHeterogenSynonymCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "FORMUL")
     {
         ParseFormulaCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "HELIX")
     {
         ParseHelixCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SHEET")
     {
         ParseSheetCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SSBOND")
     {
         ParseDisulfideBondCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "LINK")
     {
         ParseLinkCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "CISPEP")
     {
         ParseCISPeptideCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "SITE")
     {
         ParseSiteCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "CRYST1")
     {
         ParseCrystallographyCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name.find("ORIGX") != string::npos)
     {
         ParseOriginCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name.find("SCALE") != string::npos)
     {
         ParseScaleCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name.find("MTRIX") != string::npos)
     {
         ParseMatrixCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "MODEL")
     {
         ParseModelCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "CONECT")
     {
         ParseConnectivityCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "MASTER")
     {
         ParseMasterCard(in_stream, line);
     }
+    record_name = line.substr(0,6);
+    record_name = Trim(record_name);
     if(record_name == "END")
     {
         ParseEndCard(in_stream, line);
@@ -362,14 +438,29 @@ void PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
     header_ = new PdbHeaderCard(stream_block);
+    cout << header_->GetRecordName() << "\t" << header_->GetClassification() << "\t" << header_->GetDepositionDate() << "\t" << header_->GetIdentifierCode() << endl;
 }
 
 void PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "OBSLTE")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
@@ -384,19 +475,46 @@ void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
     title_ = new PdbTitleCard(stream_block);
+    cout << title_->GetRecordName() << "\t" << title_->GetTitle() << endl;
 }
 
 void PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "SPLIT")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "CAVEAT")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
@@ -411,24 +529,62 @@ void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    compound_ = new PdbCompoundCard(stream_block);
+//    compound_ = new PdbCompoundCard(stream_block);
 }
 
 void PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "SOURCE")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "KEYWDS")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "EXPDTA")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
@@ -443,9 +599,12 @@ void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
     number_of_models_ = new PdbNumModelCard(stream_block);
+    cout << number_of_models_->GetRecordName() << number_of_models_->GetNumberOfModels() << endl;
 }
 
 void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
@@ -460,44 +619,135 @@ void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
     model_type_ = new PdbModelTypeCard(stream_block);
+    cout << model_type_->GetRecordName() << endl;
+    for(vector<string>::iterator it = model_type_->GetComments().begin(); it != model_type_->GetComments().end(); it++)
+    {
+        cout << (*it) << endl;
+    }
 }
 
 void PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "AUTHOR")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "REVDAT")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "SPRSDE")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "JRNL")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "REMARK")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "DBREF")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "SEQADV")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
@@ -512,9 +762,11 @@ void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    residues_sequence_ = new PdbResidueSeqenceCard(stream_block);
+//    residues_sequence_ = new PdbResidueSeqenceCard(stream_block);
 }
 
 void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
@@ -529,9 +781,11 @@ void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    residue_modification_ = new PdbResidueModificationCard(stream_block);
+//    residue_modification_ = new PdbResidueModificationCard(stream_block);
 }
 
 void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
@@ -546,9 +800,11 @@ void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    heterogens_ = new PdbHeterogenCard(stream_block);
+//    heterogens_ = new PdbHeterogenCard(stream_block);
 }
 
 void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
@@ -563,9 +819,11 @@ void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
+//    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
 }
 
 void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
@@ -580,9 +838,11 @@ void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    heterogen_synonyms_ = new PdbHeterogenSynonymCard(stream_block);
+//    heterogen_synonyms_ = new PdbHeterogenSynonymCard(stream_block);
 }
 
 void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
@@ -597,9 +857,11 @@ void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    formulas_ = new PdbFormulaCard(stream_block);
+//    formulas_ = new PdbFormulaCard(stream_block);
 }
 
 void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
@@ -614,9 +876,11 @@ void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    helixes_ = new PdbHelixCard(stream_block);
+//    helixes_ = new PdbHelixCard(stream_block);
 }
 
 void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
@@ -631,9 +895,11 @@ void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    sheets_ = new PdbSheetCard(stream_block);
+//    sheets_ = new PdbSheetCard(stream_block);
 }
 
 void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
@@ -648,9 +914,11 @@ void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    disulfide_bonds_ = new PdbDisulfideBondCard(stream_block);
+//    disulfide_bonds_ = new PdbDisulfideBondCard(stream_block);
 }
 
 void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
@@ -665,14 +933,28 @@ void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    links_ = new PdbLinkCard(stream_block);
+//    links_ = new PdbLinkCard(stream_block);
 }
 
 void PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "CISPEP")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
@@ -687,9 +969,11 @@ void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    sites_ = new PdbSiteCard(stream_block);
+//    sites_ = new PdbSiteCard(stream_block);
 }
 
 void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
@@ -704,9 +988,14 @@ void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
     crystallography_ = new PdbCrystallographicCard(stream_block);
+    cout << crystallography_->GetRecordName() << "\t" << crystallography_->GetA() << "\t" << crystallography_->GetB() << "\t" << crystallography_->GetC() << "\t" <<
+            crystallography_->GetAlpha() << "\t" << crystallography_->GetBeta() << "\t" << crystallography_->GetGamma() << "\t" <<
+            crystallography_->GetSpaceGroup() << "\t" << crystallography_->GetZValue() << endl;
 }
 
 void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
@@ -721,9 +1010,11 @@ void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    origins_ = new PdbOriginXnCard(stream_block);
+//    origins_ = new PdbOriginXnCard(stream_block);
 }
 
 void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
@@ -738,9 +1029,11 @@ void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    scales_ = new PdbScaleNCard(stream_block);
+//    scales_ = new PdbScaleNCard(stream_block);
 }
 
 void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
@@ -755,9 +1048,11 @@ void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    matrices_ = new PdbMatrixNCard(stream_block);
+//    matrices_ = new PdbMatrixNCard(stream_block);
 }
 
 void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
@@ -773,9 +1068,11 @@ void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
+//    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
 }
 
 void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
@@ -790,19 +1087,45 @@ void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
     }
 
-    connectivities_ = new PdbConnectCard(stream_block);
+//    connectivities_ = new PdbConnectCard(stream_block);
 }
 
 void PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "MASTER")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 void PdbFile::ParseEndCard(std::ifstream& stream, string& line)
 {
+    stringstream stream_block;
+    stream_block << line << endl;
+    getline(stream, line);
+    string record_name = line.substr(0,6);
+    record_name = Trim(record_name);
 
+    while(record_name == "END")
+    {
+        stream_block << line << endl;
+        getline(stream, line);
+        record_name = line.substr(0,6);
+        record_name = Trim(record_name);
+    }
 }
 
 //////////////////////////////////////////////////////////
