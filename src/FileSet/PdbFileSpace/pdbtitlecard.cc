@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../../../includes/FileSet/PdbFileSpace/pdbtitlecard.hpp"
 #include "../../../includes/utils.hpp"
 
