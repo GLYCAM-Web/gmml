@@ -31,6 +31,15 @@ namespace gmml
         str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
     }
 
+    inline std::vector<std::string> Split(std::string line, std::string delim)
+    {
+        boost::char_separator<char> separator(delim.c_str());
+        boost::tokenizer< boost::char_separator<char> > tokens(line, separator);
+        std::vector<std::string> vectorTokens = std::vector<std::string>();
+        vectorTokens.assign(tokens.begin(), tokens.end());
+        return vectorTokens;
+    }
+
     /// String convertor
     template<typename T>
     inline T ConvertString(const std::string& str) {
@@ -40,16 +49,7 @@ namespace gmml
             return val;
 
         throw std::invalid_argument("ConvertString: invalid conversion of string " + str);
-    }
-
-    inline std::vector<std::string> Split(std::string& line, std::string& delim)
-    {
-        boost::char_separator<char> separator(delim);
-        boost::tokenizer< boost::char_separator<char> > tokens(line, separator);
-        std::vector<string> vectorTokens = std::vector<std::string>();
-        vectorTokens.assign(tokens.begin(), tokens.end());
-        return vectorTokens;
-    }
+    }    
 }
 
 #endif // UTILS_HPP
