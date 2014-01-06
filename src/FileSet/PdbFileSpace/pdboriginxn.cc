@@ -1,14 +1,35 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdboriginxn.hpp"
 //#include "../../../includes/Geometry/coordinate.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
 using namespace Geometry;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbOriginXn::PdbOriginXn() {}
+PdbOriginXn::PdbOriginXn():origin_() {}
+
+PdbOriginXn::PdbOriginXn(istringstream& stream_block)
+{
+    string line;
+    origin_=Coordinate();
+    getline(stream_block, line);
+    line = Trim(line);
+    while (!Trim(line).empty())
+    {
+        record_name_ = line.substr(0,6);
+        n_ = ConvertString<int>(line.substr(5,1));
+        origin_.SetX( ConvertString<double>(line.substr(10,10)));
+        origin_.SetY( ConvertString<double>(line.substr(20,10)));
+        origin_.SetZ( ConvertString<double>(line.substr(30,10)));
+        t_ = ConvertString<double>(line.substr(45,10));
+
+        getline(stream_block, line);
+    }
+}
 
 
 //////////////////////////////////////////////////////////
