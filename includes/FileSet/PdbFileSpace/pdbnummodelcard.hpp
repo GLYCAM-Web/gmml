@@ -2,6 +2,7 @@
 #define PDBNUMMODELCARD_HPP
 
 #include <string>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -13,6 +14,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbNumModelCard();
             PdbNumModelCard(const std::string& record_name, int number_of_models);
+            PdbNumModelCard(std::istringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

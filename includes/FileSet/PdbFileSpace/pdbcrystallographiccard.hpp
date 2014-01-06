@@ -2,6 +2,7 @@
 #define PDBCRYSTALLOGRAPHICCARD_HPP
 
 #include <string>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -13,6 +14,7 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbCrystallographicCard();
+            PdbCrystallographicCard(std::istringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
