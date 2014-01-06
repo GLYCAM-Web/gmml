@@ -10,7 +10,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 PdbCrystallographicCard::PdbCrystallographicCard() {}
 
-PdbCrystallographicCard::PdbCrystallographicCard(istringstream& stream_block)
+PdbCrystallographicCard::PdbCrystallographicCard(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);

@@ -14,7 +14,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbNumModelCard();
             PdbNumModelCard(const std::string& record_name, int number_of_models);
-            PdbNumModelCard(std::istringstream& stream_block);
+            PdbNumModelCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

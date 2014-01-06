@@ -12,7 +12,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 PdbOriginXn::PdbOriginXn():origin_() {}
 
-PdbOriginXn::PdbOriginXn(istringstream& stream_block)
+PdbOriginXn::PdbOriginXn(stringstream& stream_block)
 {
     string line;
     origin_=Coordinate();

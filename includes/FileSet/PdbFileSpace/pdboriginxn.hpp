@@ -15,7 +15,7 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbOriginXn();
-            PdbOriginXn(std::istringstream& stream_block);
+            PdbOriginXn(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

@@ -14,7 +14,7 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbCrystallographicCard();
-            PdbCrystallographicCard(std::istringstream& stream_block);
+            PdbCrystallographicCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
