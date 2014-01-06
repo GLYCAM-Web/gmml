@@ -14,7 +14,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbHeaderCard();
             PdbHeaderCard(const std::string& record_name, const std::string& classification, const std::string& deposition_date, const std::string& identifier_code);
-            PdbHeaderCard(const std::istringstream& stream_block);
+            PdbHeaderCard(std::istringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

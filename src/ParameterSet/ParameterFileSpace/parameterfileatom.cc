@@ -89,40 +89,40 @@ std::vector<std::string> ParameterFileAtom::GetEquivalentList()
 //////////////////////////////////////////////////////////
 
 void ParameterFileAtom::SetType( std::string type){
-    type = type_;
+    type_ = type;
 }
 
 void ParameterFileAtom::SetMass(double mass){
-    mass = mass_;
+    mass_ = mass;
 }
 
 void ParameterFileAtom::SetPolarizability(double polarizability){
-    polarizability = polarizability_;
+    polarizability_ = polarizability;
 }
 
 void ParameterFileAtom::SetDscr( std::string dscr){
-    dscr = dscr_;
+    dscr_ = dscr;
 }
 
 void ParameterFileAtom::SetRadius(double radius){
-    radius = radius_;
+    radius_ = radius;
 }
 
 void ParameterFileAtom::SetWellDepth(double well_depth){
-    well_depth = well_depth_;
+    well_depth_ = well_depth;
 }
 
 void ParameterFileAtom::SetMod4Dscr( std::string mod4_dscr)
 {
-    mod4_dscr = mod4_dscr_;
+    mod4_dscr_ = mod4_dscr;
 }
 
 void ParameterFileAtom::SetIsHydrophilic(bool is_hydrophilic){
-    is_hydrophilic = is_hydrophilic_;
+    is_hydrophilic_ = is_hydrophilic;
 }
 
 void ParameterFileAtom::SetEquivalentList( std::vector<std::string> equivalent_list){
-    equivalent_list = equivalent_list_;
+    equivalent_list_ = equivalent_list;
 }
 
 ///Delaram

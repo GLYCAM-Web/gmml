@@ -2,6 +2,7 @@
 #define PDBORIGINXN_HPP
 
 #include <string>
+#include<sstream>
 #include "../../../includes/Geometry/coordinate.hpp"
 
 namespace PdbFileSpace
@@ -14,6 +15,7 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbOriginXn();
+            PdbOriginXn(std::istringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

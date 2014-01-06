@@ -1,12 +1,35 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbcrystallographiccard.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbCrystallographicCard::PdbCrystallographicCard() {}
+
+PdbCrystallographicCard::PdbCrystallographicCard(istringstream& stream_block)
+{
+    string line;
+    getline(stream_block, line);
+    line = Trim(line);
+    while (!Trim(line).empty())
+    {
+        record_name_ = line.substr(0,6);
+        a_ = ConvertString<double>(line.substr(6,9));
+        b_ = ConvertString<double>(line.substr(15,9));
+        c_ = ConvertString<double>(line.substr(24,9));
+        alpha_ = ConvertString<double>(line.substr(33,7));
+        beta_ = ConvertString<double>(line.substr(40,7));
+        gamma_ = ConvertString<double>(line.substr(47,7));
+        space_group_ = line.substr(55,11);
+        z_value_ = ConvertString<int>(line.substr(66,4));
+
+        getline(stream_block, line);
+    }
+}
 
 
 //////////////////////////////////////////////////////////
