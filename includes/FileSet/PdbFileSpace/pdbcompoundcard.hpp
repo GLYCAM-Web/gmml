@@ -21,6 +21,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbCompoundCard();
             PdbCompoundCard(const std::string& record_name);
+            PdbCompoundCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

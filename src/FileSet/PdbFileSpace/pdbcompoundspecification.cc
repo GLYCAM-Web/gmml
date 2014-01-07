@@ -1,7 +1,9 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -14,6 +16,64 @@ PdbCompoundSpecification::PdbCompoundSpecification(const string &molecule_id, co
                                                    const vector<string> &molecule_synonyms, vector<int> &enzyme_commission_numbers, bool is_engineered, bool has_mutation, const string& comments) :
     molecule_id_(molecule_id), molecule_name_(molecule_name), chain_ids_(chain_ids), fragment_(fragment), molecule_synonyms_(molecule_synonyms),
     enzyme_commission_numbers_(enzyme_commission_numbers), is_engineered_(is_engineered), has_mutation_(has_mutation), comments_(comments){}
+
+PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_block)
+{
+    string line;
+    getline(specification_block, line);
+    while(!Trim(line).empty())
+    {
+        vector<string> tokens = Split(line,":;");
+        string token_name = Trim(tokens.at(0));
+        if(token_name == "MOL_ID")
+        {
+            molecule_id_ = tokens.at(1);
+        }
+        if(token_name == "MOLECULE")
+        {
+            molecule_name_ = tokens.at(1);
+        }
+        if(token_name == "CHAIN")
+        {
+            chain_ids_ = Split(tokens.at(1),",");
+        }
+        if(token_name == "FRAGMENT")
+        {
+            fragment_ = tokens.at(1);
+        }
+        if(token_name == "SYNONYM")
+        {
+            molecule_synonyms_ = Split(tokens.at(1), ",");
+        }
+        if(token_name == "EC")
+        {
+            vector<string> enzyme_commission_numbers = Split(tokens.at(1), ",");
+            for(vector<string>::iterator it = enzyme_commission_numbers.begin(); it != enzyme_commission_numbers.end(); it++)
+            {
+                enzyme_commission_numbers_.push_back(ConvertString<int>(*it));
+            }
+        }
+        if(token_name == "ENGINEERED")
+        {
+            if(tokens.at(1)=="YES")
+                is_engineered_ = true;
+            else
+                is_engineered_ = false;
+        }
+        if(token_name == "MUTATION")
+        {
+            if(tokens.at(1)=="YES")
+                has_mutation_ = true;
+            else
+                has_mutation_ = false;
+        }
+        if(token_name == "OTHER_DETAILS")
+        {
+            comments_ = tokens.at(1);
+        }
+        getline(specification_block, line);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
