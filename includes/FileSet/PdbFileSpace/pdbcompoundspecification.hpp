@@ -17,6 +17,7 @@ namespace PdbFileSpace
             PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name, const std::vector<std::string>& chain_ids,
                                      const std::string& fragment, const std::vector<std::string>& molecule_synonyms, std::vector<int>& enzyme_commission_numbers,
                                      bool is_engineered, bool has_mutation, const std::string& comments);
+            PdbCompoundSpecification(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
