@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../../../includes/FileSet/PdbFileSpace/pdbcompoundcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "../../../includes/utils.hpp"
@@ -16,8 +18,6 @@ PdbCompoundCard::PdbCompoundCard(stringstream& stream_block)
 {
     string line;
     bool is_record_name_set = false;
-    stringstream ss;
-    stringstream specification_block;
     getline(stream_block, line);
     line = Trim(line);
     while (!Trim(line).empty())
@@ -26,20 +26,22 @@ PdbCompoundCard::PdbCompoundCard(stringstream& stream_block)
             record_name_ = line.substr(0,6);
             is_record_name_set=true;
         }
+        stringstream ss, specification_block;
         ss << line.substr(10,70);
-
-        if (ss.str().find("MOL_ID") && !specification_block.str().empty()){
-            PdbCompoundSpecification* compound_specification = new PdbCompoundSpecification(specification_block);
-            compound_specifications_[compound_specification->GetMoleculeId()] = compound_specification;
-            specification_block.clear();
-        }
         specification_block << ss.str() << endl;
 
         getline(stream_block, line);
+
+        while (line.find("MOL_ID") == string::npos && !Trim(line).empty()){
+            stringstream sss;
+            sss << line.substr(10,70);
+
+            specification_block << sss.str() << endl;
+            getline(stream_block, line);
+        }
+        PdbCompoundSpecification* compound_specification = new PdbCompoundSpecification(specification_block);
+        compound_specifications_[compound_specification->GetMoleculeId()] = compound_specification;
     }
-    PdbCompoundSpecification* compound_specification = new PdbCompoundSpecification(specification_block);
-    compound_specifications_[compound_specification->GetMoleculeId()] = compound_specification;
-    specification_block.clear();
 }
 
 //////////////////////////////////////////////////////////

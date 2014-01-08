@@ -22,6 +22,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbResidueSequenceCard();
             PdbResidueSequenceCard(const std::string& record_name);
+            PdbResidueSequenceCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

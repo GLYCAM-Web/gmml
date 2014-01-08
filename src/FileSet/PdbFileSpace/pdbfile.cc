@@ -9,6 +9,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbheadercard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbtitlecard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbcompoundcard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodeltypecard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbresiduesequence.hpp"
@@ -443,7 +444,6 @@ void PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
     }
 
     header_ = new PdbHeaderCard(stream_block);
-    cout << header_->GetRecordName() << "\t" << header_->GetClassification() << "\t" << header_->GetDepositionDate() << "\t" << header_->GetIdentifierCode() << endl;
 }
 
 void PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
@@ -480,7 +480,6 @@ void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
     }
 
     title_ = new PdbTitleCard(stream_block);
-    cout << title_->GetRecordName() << "\t" << title_->GetTitle() << endl;
 }
 
 void PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
@@ -533,7 +532,7 @@ void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    compound_ = new PdbCompoundCard(stream_block);
+    compound_ = new PdbCompoundCard(stream_block);
 }
 
 void PdbFile::ParseSourceCard(std::ifstream& stream, string& line)

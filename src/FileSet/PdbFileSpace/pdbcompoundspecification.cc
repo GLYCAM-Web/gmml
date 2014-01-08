@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../../../includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "../../../includes/utils.hpp"
 
@@ -8,7 +10,8 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbCompoundSpecification::PdbCompoundSpecification() {}
+PdbCompoundSpecification::PdbCompoundSpecification() : molecule_id_(""), molecule_name_(""), chain_ids_(), fragment_(""),
+    molecule_synonyms_(), enzyme_commission_numbers_(), is_engineered_(false), has_mutation_(false), comments_(""){}
 
 PdbCompoundSpecification::PdbCompoundSpecification(const string& molecule_id, const string& molecule_name) : molecule_id_(molecule_id), molecule_name_(molecule_name){}
 
@@ -19,6 +22,7 @@ PdbCompoundSpecification::PdbCompoundSpecification(const string &molecule_id, co
 
 PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_block)
 {
+    PdbCompoundSpecification();
     string line;
     getline(specification_block, line);
     while(!Trim(line).empty())
@@ -35,7 +39,7 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
         }
         if(token_name == "CHAIN")
         {
-            chain_ids_ = Split(tokens.at(1),",");
+            chain_ids_ = Split(tokens.at(1),",;");
         }
         if(token_name == "FRAGMENT")
         {
@@ -43,15 +47,15 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
         }
         if(token_name == "SYNONYM")
         {
-            molecule_synonyms_ = Split(tokens.at(1), ",");
+            molecule_synonyms_ = Split(tokens.at(1), ",;");
         }
         if(token_name == "EC")
         {
-            vector<string> enzyme_commission_numbers = Split(tokens.at(1), ",");
+            vector<string> enzyme_commission_numbers = Split(tokens.at(1), ",;");
             for(vector<string>::iterator it = enzyme_commission_numbers.begin(); it != enzyme_commission_numbers.end(); it++)
             {
                 enzyme_commission_numbers_.push_back(ConvertString<int>(*it));
-            }
+            }            
         }
         if(token_name == "ENGINEERED")
         {
