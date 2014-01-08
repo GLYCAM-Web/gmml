@@ -14,6 +14,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbResidueSequence();
             PdbResidueSequence(char chain_id, int number_of_residues, const std::vector<std::string>& residue_names);
+            PdbResidueSequence(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
