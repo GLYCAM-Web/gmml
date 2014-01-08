@@ -2,6 +2,7 @@
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbresiduemodification.hpp"
 #include "../../../includes/common.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -17,6 +18,24 @@ PdbResidueModification::PdbResidueModification(const string &id_code, const stri
     id_code_(id_code), residue_name_(residue_name), chain_identifier_(chain_identifier), sequence_number_(sequence_number), insertion_code_(insertion_code),
     standard_residue_name_(standard_residue_name), dscr_(dscr) {}
 
+PdbResidueModification::PdbResidueModification(stringstream& stream_block)
+{
+    string line;
+    getline(stream_block, line);
+    line = Trim(line);
+    while (!Trim(line).empty())
+    {
+        id_code_ = line.substr(7,4);
+        residue_name_ = line.substr(12,3);
+        chain_identifier_ = ConvertString<char>(line.substr(16,1));
+        sequence_number_ = ConvertString<int>(line.substr(18,4));
+        insertion_code_ = ConvertString<char>(line.substr(22,1));
+        standard_residue_name_ = line.substr(24,3);
+        dscr_ = line.substr(29,41);
+
+        getline(stream_block, line);
+    }
+}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

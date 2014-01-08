@@ -16,7 +16,7 @@ namespace PdbFileSpace
             PdbResidueModification();
             PdbResidueModification(const std::string& id_code, const std::string& residue_name, char chain_identifier, int sequence_number,
                                    char insertion_code, const std::string& standard_residue_name, const std::string& dscr);
-
+            PdbResidueModification(std::stringstream& stream_block);
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
