@@ -12,6 +12,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodeltypecard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbresiduesequencecard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbresiduesequence.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbresiduemodificationcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogencard.hpp"
@@ -88,7 +89,7 @@ PdbModelTypeCard* PdbFile::GetModelType()
     return model_type_;
 }
 
-PdbResidueSeqenceCard* PdbFile::GetResidueSequence()
+PdbResidueSequenceCard* PdbFile::GetResidueSequence()
 {
     return residues_sequence_;
 }
@@ -765,7 +766,7 @@ void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    residues_sequence_ = new PdbResidueSeqenceCard(stream_block);
+    residues_sequence_ = new PdbResidueSequenceCard(stream_block);
 }
 
 void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)

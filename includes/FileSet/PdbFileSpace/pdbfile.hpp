@@ -13,7 +13,7 @@ namespace PdbFileSpace
     class PdbCompoundCard;
     class PdbNumModelCard;
     class PdbModelTypeCard;
-    class PdbResidueSeqenceCard;
+    class PdbResidueSequenceCard;
     class PdbResidueModificationCard;
     class PdbHeterogenCard;
     class PdbHeterogenNameCard;
@@ -56,7 +56,7 @@ namespace PdbFileSpace
             PdbCompoundCard* GetCompound();
             PdbNumModelCard* GetNumberOfModels();
             PdbModelTypeCard* GetModelType();
-            PdbResidueSeqenceCard* GetResidueSequence();
+            PdbResidueSequenceCard* GetResidueSequence();
             PdbResidueModificationCard* GetResidueModification();
             PdbHeterogenCard* GetHeterogens();
             PdbHeterogenNameCard* GetHeterogensName();
@@ -141,7 +141,7 @@ namespace PdbFileSpace
             PdbCompoundCard* compound_;
             PdbNumModelCard* number_of_models_;
             PdbModelTypeCard* model_type_;
-            PdbResidueSeqenceCard* residues_sequence_;
+            PdbResidueSequenceCard* residues_sequence_;
             PdbResidueModificationCard* residue_modification_;
             PdbHeterogenCard* heterogens_;
             PdbHeterogenNameCard* heterogens_name_;
