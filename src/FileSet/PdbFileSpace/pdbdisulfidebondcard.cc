@@ -31,7 +31,7 @@ PdbDisulfideBondCard::PdbDisulfideBondCard(stringstream &stream_block)
 
         ss << line;
         PdbDisulfideResidueBond* disulfide_bond = new PdbDisulfideResidueBond(ss);
-        disulfide_residue_bonds_[line.substr(7,3)] = disulfide_bond;
+        disulfide_residue_bonds_[ConvertString<int>(line.substr(7,3))] = disulfide_bond;
         getline(stream_block, line);
     }
 }

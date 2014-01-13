@@ -880,7 +880,7 @@ void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    helixes_ = new PdbHelixCard(stream_block);
+    helixes_ = new PdbHelixCard(stream_block);
 }
 
 void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
