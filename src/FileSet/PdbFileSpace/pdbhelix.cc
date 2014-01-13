@@ -1,7 +1,9 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbhelix.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbhelixresidue.hpp"
 #include "../../../includes/common.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -22,6 +24,56 @@ PdbHelix::PdbHelix(const string &helix_id, int helix_serial_number, HelixResidue
         helix_residues_.push_back(*it);
     }
 }
+
+PdbHelix::PdbHelix(stringstream& stream_block)
+{
+    string line;
+    getline(stream_block, line);
+    line = Trim(line);
+    while (!Trim(line).empty())
+    {
+        helix_id_ = line.substr(11, 3);
+        helix_serial_number_ = ConvertString<int>(line.substr(7,3));
+
+        PdbHelixResidue* initial_residue = new PdbHelixResidue(line.substr(15, 3), ConvertString<char>(line.substr(19, 1)), ConvertString<int>(line.substr(21, 4)), ConvertString<char>(line.substr(25, 1)));
+        PdbHelixResidue* terminal_residue = new PdbHelixResidue(line.substr(27, 3), ConvertString<char>(line.substr(31, 1)), ConvertString<int>(line.substr(33, 4)), ConvertString<char>(line.substr(37, 1)));
+
+        helix_residues_.push_back(initial_residue);
+        helix_residues_.push_back(terminal_residue);
+
+        int helix_class = ConvertString<int>(line.substr(38,2));
+        switch(helix_class)
+        {
+        case 1:
+            helix_class_ = RIGHT_HANDED_ALPHA;
+            break;
+        case 2:
+            helix_class_ = RIGHT_HANDED_OMEGA;
+            break;
+        case 3:
+            helix_class_ = RIGHT_HANDED_PI;
+        case 4:
+            helix_class_ = RIGHT_HANDED_GAMMA;
+        case 5:
+            helix_class_ = RIGHT_HANDED_310;
+        case 6:
+            helix_class_ = LEFT_HANDED_ALPHA;
+        case 7:
+            helix_class_ = LEFT_HANDED_OMEGA_;
+        case 8:
+            helix_class_ = LEFT_HANDED_GAMMA_;
+        case 9 :
+            helix_class_ = RIBBON_27;
+        case 10:
+            helix_class_ = POLYPROLINE;
+        }
+        comment_ = line.substr(40, 30);
+        helix_length_ = ConvertString<double>(line.substr(71,5));
+
+        getline(stream_block, line);
+    }
+}
+
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

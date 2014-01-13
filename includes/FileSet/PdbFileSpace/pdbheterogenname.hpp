@@ -19,6 +19,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbHeterogenName();
             PdbHeterogenName(const std::string& heterogen_identifier, const std::string& heterogen_name);
+            PdbHeterogenName(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
