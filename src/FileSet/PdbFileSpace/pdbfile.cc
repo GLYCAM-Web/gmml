@@ -785,7 +785,7 @@ void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    residue_modification_ = new PdbResidueModificationCard(stream_block);
+    residue_modification_ = new PdbResidueModificationCard(stream_block);
 }
 
 void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
@@ -804,7 +804,7 @@ void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    heterogens_ = new PdbHeterogenCard(stream_block);
+    heterogens_ = new PdbHeterogenCard(stream_block);
 }
 
 void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
@@ -823,7 +823,7 @@ void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
+    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
 }
 
 void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
@@ -842,7 +842,7 @@ void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    heterogen_synonyms_ = new PdbHeterogenSynonymCard(stream_block);
+    heterogen_synonyms_ = new PdbHeterogenSynonymCard(stream_block);
 }
 
 void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
@@ -861,7 +861,7 @@ void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    formulas_ = new PdbFormulaCard(stream_block);
+    formulas_ = new PdbFormulaCard(stream_block);
 }
 
 void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)

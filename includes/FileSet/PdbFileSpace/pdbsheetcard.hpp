@@ -22,6 +22,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbSheetCard();
             PdbSheetCard(const std::string& record_name);
+            PdbSheetCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

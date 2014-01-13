@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -20,6 +21,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbLinkCard();
+            PdbLinkCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -32,6 +34,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             void SetRecordName(std::string record_name);
             void SetResidueLinks(const LinkVector residue_links);
+            void AddResidueLink(PdbLink* residue_link);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
