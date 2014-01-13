@@ -5,6 +5,7 @@
 
 #include <string>
 #include <map>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -22,6 +23,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbHelixCard();
             PdbHelixCard(const std::string& record_name);
+            PdbHelixCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

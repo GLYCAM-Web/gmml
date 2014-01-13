@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -20,6 +21,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbSiteCard();
+            PdbSiteCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

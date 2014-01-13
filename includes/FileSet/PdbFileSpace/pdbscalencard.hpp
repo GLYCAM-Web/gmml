@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -20,6 +21,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbScaleNCard();
+            PdbScaleNCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -30,6 +32,7 @@ namespace PdbFileSpace
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             void SetScaleN(const ScaleNVector scale_n);
+            void AddScaleN(PdbScaleN* scale);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

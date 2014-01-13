@@ -20,6 +20,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbMatrixNCard();
+            PdbMatrixNCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -30,6 +31,7 @@ namespace PdbFileSpace
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             void SetMatrixN(const MatrixNVector matrix_n);
+            void AddMatrixN(PdbMatrixN* matrix);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
