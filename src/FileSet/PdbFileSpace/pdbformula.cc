@@ -2,6 +2,7 @@
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbformula.hpp"
 #include "../../../includes/common.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -14,6 +15,31 @@ PdbFormula::PdbFormula() : heterogen_identifier_(""), component_number_(kNotSet)
 PdbFormula::PdbFormula(const string &heterogen_identifier, int component_number, const string &chemical_formula)
     : heterogen_identifier_(heterogen_identifier), component_number_(component_number), chemical_formula_(chemical_formula) {}
 
+PdbFormula::PdbFormula(stringstream& stream_block)
+{
+    string line;
+    bool is_heterogen_identifier_set = false, is_component_number_set = false;
+    stringstream ss;
+    getline(stream_block, line);
+    line = Trim(line);
+    while (!Trim(line).empty())
+    {
+        if(!is_heterogen_identifier_set){
+            heterogen_identifier_ = line.substr(12,3);
+            is_heterogen_identifier_set = true;
+        }
+
+        if(!is_component_number_set){
+            component_number_ = ConvertString<int>(line.substr(8,2));
+            is_component_number_set = true;
+        }
+
+        ss << line.substr(19,51) << " ";
+
+        getline(stream_block, line);
+    }
+    chemical_formula_ = ss.str();
+}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

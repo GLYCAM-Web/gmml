@@ -1,9 +1,11 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogensynonym.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -16,6 +18,27 @@ PdbHeterogenSynonym::PdbHeterogenSynonym(const string &heterogen_identifier, con
     {
         heterogen_synonyms_.push_back(*it);
     }
+}
+
+PdbHeterogenSynonym::PdbHeterogenSynonym(stringstream& stream_block)
+{
+    string line;
+    bool is_heterogen_identifier_set = false;
+    stringstream ss;
+    getline(stream_block, line);
+    line = Trim(line);
+    while (!Trim(line).empty())
+    {
+        if(!is_heterogen_identifier_set){
+            heterogen_identifier_ = line.substr(11,3);
+            is_heterogen_identifier_set = true;
+        }
+
+        ss << line.substr(15,55) << " ";
+
+        getline(stream_block, line);
+    }
+    heterogen_synonyms_ = Split(ss.str(), ";");
 }
 
 //////////////////////////////////////////////////////////

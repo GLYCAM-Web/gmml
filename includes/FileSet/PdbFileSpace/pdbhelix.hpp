@@ -37,6 +37,7 @@ namespace PdbFileSpace
             PdbHelix();
             PdbHelix(const std::string& helix_id, int helix_serial_number, HelixResidueVector helix_residues,
                      PdbHelixClass helix_class, const std::string& comment, double helix_length);
+            PdbHelix(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
