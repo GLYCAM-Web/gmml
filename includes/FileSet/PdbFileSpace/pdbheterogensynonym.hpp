@@ -20,6 +20,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbHeterogenSynonym();
             PdbHeterogenSynonym(const std::string& heterogen_identifier, const std::vector<std::string>& heterogen_synonyms);
+            PdbHeterogenSynonym(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

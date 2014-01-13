@@ -19,6 +19,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbFormula();
             PdbFormula(const std::string& heterogen_identifier, int component_number, const std::string& chemical_formula);
+            PdbFormula(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
