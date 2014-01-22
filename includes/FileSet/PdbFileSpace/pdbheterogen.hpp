@@ -2,6 +2,8 @@
 
 #ifndef PDBHETEROGEN_HPP
 #define PDBHETEROGEN_HPP
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
 
 #include <string>
 

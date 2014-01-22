@@ -2,6 +2,7 @@
 #define PDBATOMCARD_HPP
 
 #include <string>
+#include <sstream>
 #include <map>
 
 namespace PdbFileSpace
@@ -20,6 +21,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbAtomCard();
+            PdbAtomCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

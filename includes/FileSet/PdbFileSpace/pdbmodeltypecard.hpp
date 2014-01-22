@@ -1,3 +1,6 @@
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
+
 #ifndef PDBMODELTYPECARD_HPP
 #define PDBMODELTYPECARD_HPP
 

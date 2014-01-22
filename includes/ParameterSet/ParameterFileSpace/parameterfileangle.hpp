@@ -35,7 +35,7 @@ namespace ParameterFileSpace
               */
             std::vector<std::string> GetTypes();
             /*! \fn
-              * An accessor function in order to access to access to the force constant attribute of the current object
+              * An accessor function in order to access to the force constant attribute of the current object
               * The attribute is set by the contents of the given file
               * @return force_constant_ of the current object of this class
               */

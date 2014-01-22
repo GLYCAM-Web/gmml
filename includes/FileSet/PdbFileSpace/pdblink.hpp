@@ -1,3 +1,6 @@
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
+
 #ifndef PDBLINK_HPP
 #define PDBLINK_HPP
 

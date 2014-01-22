@@ -1,3 +1,6 @@
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
+
 #ifndef PDBRESIDUESEQUENCE_HPP
 #define PDBRESIDUESEQUENCE_HPP
 

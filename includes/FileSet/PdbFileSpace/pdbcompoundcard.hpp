@@ -1,3 +1,6 @@
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
+
 #ifndef PDBCOMPOUNDCARD_HPP
 #define PDBCOMPOUNDCARD_HPP
 

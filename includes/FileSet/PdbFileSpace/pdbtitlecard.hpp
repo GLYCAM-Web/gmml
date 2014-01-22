@@ -1,3 +1,6 @@
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
+
 #ifndef PDBTITLECARD_HPP
 #define PDBTITLECARD_HPP
 

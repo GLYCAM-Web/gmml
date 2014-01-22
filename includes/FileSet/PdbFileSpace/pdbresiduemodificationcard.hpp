@@ -1,4 +1,5 @@
-// Author: Alireza Khatamian
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia// Author: Alireza Khatamian
 
 #ifndef PDBRESIDUEMODIFICATIONCARD_HPP
 #define PDBRESIDUEMODIFICATIONCARD_HPP

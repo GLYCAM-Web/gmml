@@ -1,4 +1,5 @@
-// Author: Alireza Khatamian
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
 
 #ifndef PDBSHEETSTRAND_HPP
 #define PDBSHEETSTRAND_HPP

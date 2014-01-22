@@ -1,8 +1,10 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 //#include "../../../includes/Geometry/coordinate.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 using namespace Geometry;
 
 //////////////////////////////////////////////////////////
@@ -10,7 +12,23 @@ using namespace Geometry;
 //////////////////////////////////////////////////////////
 PdbAtom::PdbAtom():atom_orthogonal_coordinate_() {}
 
-
+PdbAtom::PdbAtom(string &line)
+{
+    atom_serial_number_ = ConvertString<int>(line.substr(6,5));
+    atom_name_ = line.substr(12, 4);
+    atom_alternate_location_ = ConvertString<char>(line.substr(16,1));
+    atom_residue_name_ = line.substr(17,3);
+    atom_chain_id_ = ConvertString<char>(line.substr(21, 1));
+    atom_residue_sequence_number_ = ConvertString<int>(line.substr(22, 4));
+    atom_insertion_code_ = ConvertString<char>(line.substr(26, 1));
+    atom_orthogonal_coordinate_.SetX(ConvertString<double>(line.substr(30, 8)));
+    atom_orthogonal_coordinate_.SetY( ConvertString<double>(line.substr(38,8)));
+    atom_orthogonal_coordinate_.SetZ( ConvertString<double>(line.substr(46,8)));
+    atom_occupancy_ = ConvertString<double>(line.substr(54, 6));
+    atom_tempreture_factor_ = ConvertString<double>(line.substr(60, 6));
+    atom_element_symbol_ = line.substr(76, 2);
+    atom_charge_ = line.substr(78, 2);
+}
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////

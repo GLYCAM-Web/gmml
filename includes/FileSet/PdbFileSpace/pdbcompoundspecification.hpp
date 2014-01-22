@@ -1,3 +1,6 @@
+// Created by: Alireza Khatamian
+// Modified by: Alireza Khatamian, Delaram Rahbarinia
+
 #ifndef PDBCOMPOUNDSPECIFICATION_HPP
 #define PDBCOMPOUNDSPECIFICATION_HPP
 

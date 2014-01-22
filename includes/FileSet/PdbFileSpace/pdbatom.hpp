@@ -12,8 +12,16 @@ namespace PdbFileSpace
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
-            //////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////            
+            /*! \fn
+              * Default constructor
+              */
             PdbAtom();
+            /*! \fn
+              * Constructor with required parameters
+              * @param line A single line in a pdb file that represents pdb atom in model card
+              */
+            PdbAtom(std::string& line);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
