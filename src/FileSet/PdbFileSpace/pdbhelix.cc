@@ -52,20 +52,28 @@ PdbHelix::PdbHelix(stringstream& stream_block)
             break;
         case 3:
             helix_class_ = RIGHT_HANDED_PI;
+            break;
         case 4:
             helix_class_ = RIGHT_HANDED_GAMMA;
+            break;
         case 5:
             helix_class_ = RIGHT_HANDED_310;
+            break;
         case 6:
             helix_class_ = LEFT_HANDED_ALPHA;
+            break;
         case 7:
             helix_class_ = LEFT_HANDED_OMEGA_;
+            break;
         case 8:
             helix_class_ = LEFT_HANDED_GAMMA_;
+            break;
         case 9 :
             helix_class_ = RIBBON_27;
+            break;
         case 10:
             helix_class_ = POLYPROLINE;
+            break;
         }
         comment_ = line.substr(40, 30);
         helix_length_ = ConvertString<double>(line.substr(71,5));

@@ -27,7 +27,7 @@ PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(stringstream &stream_block)
         }
         stringstream heterogen_synonym_block;
         heterogen_synonym_block << line << endl;
-        char heterogen_identifier = line.substr(11,3);
+        string heterogen_identifier = line.substr(11,3);
 
         getline(stream_block, line);
 

@@ -1,9 +1,12 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogennamecard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbheterogenname.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -25,7 +28,7 @@ PdbHeterogenNameCard::PdbHeterogenNameCard(stringstream &stream_block)
         }
         stringstream heterogen_name_block;
         heterogen_name_block << line << endl;
-        char heterogen_id = line.substr(11,3);
+        string heterogen_id = line.substr(11,3);
 
         getline(stream_block, line);
 

@@ -1,8 +1,12 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbformulacard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbformula.hpp"
+#include "../../../includes/utils.hpp"
+
 
 using namespace std;
+using namespace gmml;
 using namespace PdbFileSpace;
 
 //////////////////////////////////////////////////////////
@@ -26,7 +30,7 @@ PdbFormulaCard::PdbFormulaCard(stringstream &stream_block)
         }
         stringstream formula_block;
         formula_block << line << endl;
-        char heterogen_identifier = line.substr(13,3);
+        string heterogen_identifier = line.substr(13,3);
 
         getline(stream_block, line);
 

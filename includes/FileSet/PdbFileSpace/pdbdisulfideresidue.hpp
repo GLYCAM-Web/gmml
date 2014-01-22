@@ -18,7 +18,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbDisulfideResidue();
-            PdbDisulfideResidue(const std::string& residue_name, char residue_chain_identifier, char residue_insertion_code, int symmetry_operator);
+            PdbDisulfideResidue(const std::string& residue_name, char residue_chain_identifier, int residue_sequence_number, char residue_insertion_code, int symmetry_operator);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -26,6 +26,7 @@ namespace PdbFileSpace
             std::string GetResidueName();
             char GetResidueChainIdentifier();
             char GetResidueInsertionCode();
+            int GetResidueSequenceNumber();
             int GetSymmetryOperator();
 
             //////////////////////////////////////////////////////////
@@ -34,6 +35,7 @@ namespace PdbFileSpace
             void SetResidueName(const std::string residue_name);
             void SetResidueChainIdentifier(char residue_chain_identifier);
             void SetResidueInsertionCode(char residue_insertion_code);
+            void SetResidueSequenceNumber(int residue_sequence_number);
             void SetSymmetryOperator(int symmetry_operator);
 
             //////////////////////////////////////////////////////////
@@ -50,6 +52,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             std::string residue_name_;
             char residue_chain_identifier_;
+            int residue_sequence_number_;
             char residue_insertion_code_;
             int symmetry_operator_;
     };

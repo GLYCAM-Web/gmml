@@ -1,7 +1,10 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbsheet.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbsheetstrand.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp"
 #include "../../../includes/common.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -21,6 +24,33 @@ PdbSheet::PdbSheet(const string &sheet_id, int number_of_strands, const SheetStr
         strands_.push_back(*it);
     }
 }
+
+PdbSheet::PdbSheet(stringstream& stream_block)
+{
+    string line;
+    bool is_sheet_id_set = false, is_number_of_strands_set = false;
+    getline(stream_block, line);
+    line = Trim(line);
+    while (!Trim(line).empty())
+    {
+        if(!is_sheet_id_set)
+        {
+            sheet_id_ = line.substr(11, 3);
+            is_sheet_id_set = true;
+        }
+        if(!is_number_of_strands_set)
+        {
+            number_of_strands_ = ConvertString<int>(line.substr(14,2));
+            is_number_of_strands_set = true;
+        }
+
+        PdbSheetStrand* sheet_strand = new PdbSheetStrand(line);
+        strands_.push_back(sheet_strand);
+
+        getline(stream_block, line);
+    }
+}
+
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

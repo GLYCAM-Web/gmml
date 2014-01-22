@@ -10,10 +10,10 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbDisulfideResidue::PdbDisulfideResidue() : residue_name_(""), residue_chain_identifier_(' '), residue_insertion_code_(' '), symmetry_operator_(kNotSet) {}
+PdbDisulfideResidue::PdbDisulfideResidue() : residue_name_(""), residue_chain_identifier_(' '), residue_sequence_number_(kNotSet), residue_insertion_code_(' '), symmetry_operator_(kNotSet) {}
 
-PdbDisulfideResidue::PdbDisulfideResidue(const string &residue_name, char residue_chain_identifier, char residue_insertion_code, int symmetry_operator)
-    : residue_name_(residue_name), residue_chain_identifier_(residue_chain_identifier), residue_insertion_code_(residue_insertion_code),
+PdbDisulfideResidue::PdbDisulfideResidue(const string &residue_name, char residue_chain_identifier, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
+    : residue_name_(residue_name), residue_chain_identifier_(residue_chain_identifier), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code),
       symmetry_operator_(symmetry_operator) {}
 
 //////////////////////////////////////////////////////////
@@ -32,6 +32,11 @@ char PdbDisulfideResidue::GetResidueChainIdentifier()
 char PdbDisulfideResidue::GetResidueInsertionCode()
 {
     return residue_insertion_code_;
+}
+
+int PdbDisulfideResidue::GetResidueSequenceNumber()
+{
+    return residue_sequence_number_;
 }
 
 int PdbDisulfideResidue::GetSymmetryOperator()
@@ -55,6 +60,11 @@ void PdbDisulfideResidue::SetResidueChainIdentifier(char residue_chain_identifie
 void PdbDisulfideResidue::SetResidueInsertionCode(char residue_insertion_code)
 {
     residue_insertion_code_ = residue_insertion_code;
+}
+
+void PdbDisulfideResidue::SetResidueSequenceNumber(int residue_sequence_number)
+{
+    residue_sequence_number_ = residue_sequence_number;
 }
 
 void PdbDisulfideResidue::SetSymmetryOperator(int symmetry_operator)

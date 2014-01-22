@@ -1,7 +1,9 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbmatrixn.hpp"
 //#include "../../../includes/Geometry/coordinate.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
+using namespace gmml;
 using namespace PdbFileSpace;
 using namespace Geometry;
 
@@ -9,6 +11,16 @@ using namespace Geometry;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbMatrixN::PdbMatrixN() {}
+PdbMatrixN::PdbMatrixN(string &line) {
+    record_name_ = line.substr(0, 6);
+    n_ = ConvertString<int>(line.substr(5, 1));
+    serial_number_ = ConvertString<int>(line.substr(7, 3));
+    transfomration_vector_.SetX(ConvertString<double>(line.substr(10, 10)));
+    transfomration_vector_.SetY(ConvertString<double>(line.substr(20, 10)));
+    transfomration_vector_.SetZ(ConvertString<double>(line.substr(30, 10)));
+    v_ = ConvertString<double>(line.substr(45, 10));
+    i_given_ = ConvertString<int>(line.substr(59, 1));
+}
 
 
 //////////////////////////////////////////////////////////

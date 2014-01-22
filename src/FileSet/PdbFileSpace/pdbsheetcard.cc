@@ -28,11 +28,18 @@ PdbSheetCard::PdbSheetCard(stringstream &stream_block)
             record_name_ = line.substr(0,6);
             is_record_name_set=true;
         }
+        stringstream sheet_block;
+        sheet_block << line << endl;
+        string sheet_id = line.substr(11,3);
 
-        ss << line;
-        PdbSheet* sheet = new PdbSheet(ss);
-        sheets_[line.substr(11,3)] = sheet;
         getline(stream_block, line);
+
+        while (!Trim(line).empty() && line.substr(11,3) == sheet_id){
+            sheet_block << line << endl;
+            getline(stream_block, line);
+        }
+        PdbSheet* sheet = new PdbSheet(sheet_block);
+        sheets_[sheet_id] = sheet;
     }
 }
 

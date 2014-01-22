@@ -14,7 +14,6 @@ PdbLinkCard::PdbLinkCard() {}
 PdbLinkCard::PdbLinkCard(stringstream &stream_block)
 {
     string line;
-    stringstream ss;
     bool is_record_name_set = false;
     getline(stream_block, line);
     line = Trim(line);
@@ -25,8 +24,7 @@ PdbLinkCard::PdbLinkCard(stringstream &stream_block)
             is_record_name_set=true;
         }
 
-        ss << line;
-        PdbLink* link = new PdbLink(ss);
+        PdbLink* link = new PdbLink(line);
         AddResidueLink(link);
         getline(stream_block, line);
     }

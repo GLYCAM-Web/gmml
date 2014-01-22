@@ -1,20 +1,31 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbsiteresidue.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbSiteResidue::PdbSiteResidue() {}
+PdbSiteResidue::PdbSiteResidue(const string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code)
+    :residue_name_(residue_name), residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code){}
 
+PdbSiteResidue::PdbSiteResidue(const string& section)
+{
+    residue_name_ = section.substr(0, 3);
+    residue_chain_id_ = ConvertString<char>(section.substr(4,1));
+    residue_sequence_number_ = ConvertString<int>(section.substr(5, 4));
+    residue_insertion_code_ = ConvertString<char>(section.substr(9,1));
+}
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbSiteResidue::GetRecordName(){
-    return record_name_;
+string PdbSiteResidue::GetResidueName(){
+    return residue_name_;
 }
 
 char PdbSiteResidue::GetResidueChainId(){
@@ -33,8 +44,8 @@ char PdbSiteResidue::GetResidueInsertionCode(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbSiteResidue::SetRecordName(const string record_name){
-    record_name_ = record_name;
+void PdbSiteResidue::SetResidueName(const string residue_name){
+    residue_name_ = residue_name;
 }
 
 void PdbSiteResidue::SetResidueChainId(char residue_chain_id){

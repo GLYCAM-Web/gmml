@@ -1,12 +1,13 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbdisulfideresiduebond.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbdisulfideresidue.hpp"
 #include "../../../includes/common.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
 using namespace gmml;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -20,6 +21,17 @@ PdbDisulfideResidueBond::PdbDisulfideResidueBond(int serial_number, const Disulf
     {
         residues_.push_back(*it);
     }
+}
+
+PdbDisulfideResidueBond::PdbDisulfideResidueBond(string &line)
+{
+    PdbDisulfideResidue* residue_1 = new PdbDisulfideResidue(line.substr(11, 3), ConvertString<char>(line.substr(15, 1)), ConvertString<int>(line.substr(17, 4)), ConvertString<char>(line.substr(21, 1)), ConvertString<int>(line.substr(59,6)) );
+    PdbDisulfideResidue* residue_2 = new PdbDisulfideResidue(line.substr(25, 3), ConvertString<char>(line.substr(29, 1)), ConvertString<int>(line.substr(31, 4)), ConvertString<char>(line.substr(35, 1)), ConvertString<int>(line.substr(66,6)));
+
+    residues_.push_back(residue_1);
+    residues_.push_back(residue_2);
+    serial_number_ = ConvertString<int>(line.substr(7,3));
+    bond_length_ = ConvertString<double>(line.substr(73,5));
 }
 
 //////////////////////////////////////////////////////////

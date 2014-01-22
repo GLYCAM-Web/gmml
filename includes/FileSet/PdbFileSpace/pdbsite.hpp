@@ -2,6 +2,7 @@
 #define PDBSITE_HPP
 
 #include <string>
+#include <sstream>
 #include <vector>
 
 namespace PdbFileSpace
@@ -20,18 +21,19 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbSite();
+            PdbSite(std::stringstream& site_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            int GetSiteId();
+            std::string GetSiteId();
             SiteResidueVector GetResidues();
             int GetNumberOfResidues();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            void SetSiteId(int site_id);
+            void SetSiteId(const std::string site_id);
             void SetResidues(const SiteResidueVector residues);
             void SetNumberOfResidues(int number_of_residues);
 
@@ -47,7 +49,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int site_id_;
+            std::string site_id_;
             SiteResidueVector residues_;
             int number_of_residues_;
     };

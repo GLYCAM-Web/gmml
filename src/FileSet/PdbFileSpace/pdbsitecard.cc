@@ -1,7 +1,9 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbsite.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbsitecard.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
+using namespace gmml;
 using namespace PdbFileSpace;
 
 //////////////////////////////////////////////////////////
@@ -23,7 +25,7 @@ PdbSiteCard::PdbSiteCard(stringstream &stream_block)
         }
         stringstream site_block;
         site_block << line << endl;
-        char site_id = line.substr(11,3);
+        string site_id = line.substr(11,3);
 
         getline(stream_block, line);
 

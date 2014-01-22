@@ -13,11 +13,13 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbSiteResidue();
+            PdbSiteResidue(const std::string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code);
+            PdbSiteResidue(const std::string& section);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            std::string GetRecordName();
+            std::string GetResidueName();
             char GetResidueChainId();
             int GetresidueSequenceNumber();
             char GetResidueInsertionCode();
@@ -25,7 +27,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            void SetRecordName(const std::string record_name);
+            void SetResidueName(const std::string residue_name);
             void SetResidueChainId(char residue_chain_id);
             void SetResidueSequenceNumber(int residue_sequence_number);
             void SetResidueInsertionCode(char residue_insertion_code);
@@ -40,7 +42,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
+            std::string residue_name_;
             char residue_chain_id_;
             int residue_sequence_number_;
             char residue_insertion_code_;

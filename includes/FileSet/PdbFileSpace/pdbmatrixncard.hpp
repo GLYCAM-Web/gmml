@@ -31,7 +31,7 @@ namespace PdbFileSpace
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             void SetMatrixN(const MatrixNVector matrix_n);
-            void AddMatrixN(PdbMatrixN* matrix);
+            void AddMatrixN(std::vector <PdbMatrixN*> matrix);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

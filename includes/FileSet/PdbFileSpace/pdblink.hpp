@@ -20,6 +20,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbLink();
+            PdbLink(std::string& line);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

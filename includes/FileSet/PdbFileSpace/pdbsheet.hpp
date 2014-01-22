@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include<sstream>
 
 namespace PdbFileSpace
 {
@@ -22,6 +23,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbSheet();
             PdbSheet(const std::string& sheet_id, int number_of_strands, const SheetStrandVector strands);
+            PdbSheet(std::stringstream& sheet_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

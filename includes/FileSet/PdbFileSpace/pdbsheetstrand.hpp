@@ -29,6 +29,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbSheetStrand();
             PdbSheetStrand(const SheetStrandResidueVector strand_residues, PdbSheetStrandSense sense, const std::string& current_atom, const std::string& previous_atom);
+            PdbSheetStrand(std::string& line);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //

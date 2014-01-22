@@ -1,9 +1,12 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbsheetstrand.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -19,6 +22,37 @@ PdbSheetStrand::PdbSheetStrand(const SheetStrandResidueVector strand_residues, P
     {
         strand_residues_.push_back(*it);
     }
+}
+
+PdbSheetStrand::PdbSheetStrand(string &line)
+{
+    PdbSheetStrandResidue* initial_residue = new PdbSheetStrandResidue(line.substr(17, 3), ConvertString<char>(line.substr(21, 1)), ConvertString<int>(line.substr(22, 4)), ConvertString<char>(line.substr(26, 1)));
+    PdbSheetStrandResidue* terminal_residue = new PdbSheetStrandResidue(line.substr(28, 3), ConvertString<char>(line.substr(32, 1)), ConvertString<int>(line.substr(33, 4)), ConvertString<char>(line.substr(37, 1)));
+    PdbSheetStrandResidue* current_residue = new PdbSheetStrandResidue(line.substr(45, 3), ConvertString<char>(line.substr(49, 1)), ConvertString<int>(line.substr(50, 4)), ConvertString<char>(line.substr(54, 1)));
+    PdbSheetStrandResidue* previous_residue = new PdbSheetStrandResidue(line.substr(60, 3), ConvertString<char>(line.substr(64, 1)), ConvertString<int>(line.substr(65, 4)), ConvertString<char>(line.substr(69, 1)));
+
+    strand_residues_.push_back(initial_residue);
+    strand_residues_.push_back(terminal_residue);
+    strand_residues_.push_back(current_residue);
+    strand_residues_.push_back(previous_residue);
+
+    int sense = ConvertString<int>(line.substr(38,2));
+    switch(sense)
+    {
+    case -1:
+        sense_ = ANTI_PARALLEL;
+        break;
+    case 0:
+        sense_ = FIRST_STRAND;
+        break;
+    case 1:
+        sense_ = PARALLEL;
+        break;
+
+    }
+    current_atom_ = line.substr(41, 4);
+    previous_atom_ = line.substr(56, 4);
+
 }
 
 //////////////////////////////////////////////////////////

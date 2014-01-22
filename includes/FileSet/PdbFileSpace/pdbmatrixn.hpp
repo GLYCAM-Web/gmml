@@ -14,6 +14,7 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbMatrixN();
+            PdbMatrixN(std::string& line);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

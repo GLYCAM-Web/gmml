@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -20,6 +21,7 @@ namespace PdbFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             PdbConnectCard();
+            PdbConnectCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

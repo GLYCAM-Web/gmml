@@ -18,7 +18,6 @@ PdbDisulfideBondCard::PdbDisulfideBondCard(const string &record_name) : record_n
 PdbDisulfideBondCard::PdbDisulfideBondCard(stringstream &stream_block)
 {
     string line;
-    stringstream ss;
     bool is_record_name_set = false;
     getline(stream_block, line);
     line = Trim(line);
@@ -29,8 +28,7 @@ PdbDisulfideBondCard::PdbDisulfideBondCard(stringstream &stream_block)
             is_record_name_set=true;
         }
 
-        ss << line;
-        PdbDisulfideResidueBond* disulfide_bond = new PdbDisulfideResidueBond(ss);
+        PdbDisulfideResidueBond* disulfide_bond = new PdbDisulfideResidueBond(line);
         disulfide_residue_bonds_[ConvertString<int>(line.substr(7,3))] = disulfide_bond;
         getline(stream_block, line);
     }

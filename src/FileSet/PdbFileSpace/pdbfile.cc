@@ -18,7 +18,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogencard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogennamecard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogensynonymcard.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbformula.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbformulacard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbhelixcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbsheetcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbdisulfidebondcard.hpp"
@@ -899,7 +899,7 @@ void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    sheets_ = new PdbSheetCard(stream_block);
+    sheets_ = new PdbSheetCard(stream_block);
 }
 
 void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
@@ -918,7 +918,7 @@ void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    disulfide_bonds_ = new PdbDisulfideBondCard(stream_block);
+    disulfide_bonds_ = new PdbDisulfideBondCard(stream_block);
 }
 
 void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
@@ -937,7 +937,7 @@ void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    links_ = new PdbLinkCard(stream_block);
+    links_ = new PdbLinkCard(stream_block);
 }
 
 void PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
@@ -973,7 +973,7 @@ void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    sites_ = new PdbSiteCard(stream_block);
+    sites_ = new PdbSiteCard(stream_block);
 }
 
 void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
@@ -1014,7 +1014,7 @@ void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    origins_ = new PdbOriginXnCard(stream_block);
+    origins_ = new PdbOriginXnCard(stream_block);
 }
 
 void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
@@ -1033,7 +1033,7 @@ void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    scales_ = new PdbScaleNCard(stream_block);
+    scales_ = new PdbScaleNCard(stream_block);
 }
 
 void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
@@ -1052,7 +1052,7 @@ void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    matrices_ = new PdbMatrixNCard(stream_block);
+    matrices_ = new PdbMatrixNCard(stream_block);
 }
 
 void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
@@ -1072,7 +1072,7 @@ void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
+    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
 }
 
 void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
@@ -1091,7 +1091,7 @@ void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-//    connectivities_ = new PdbConnectCard(stream_block);
+    connectivities_ = new PdbConnectCard(stream_block);
 }
 
 void PdbFile::ParseMasterCard(std::ifstream& stream, string& line)

@@ -4,6 +4,7 @@
 #define PDBDISULFIDERESIDUEBOND_HPP
 
 #include <vector>
+#include<string>
 
 namespace PdbFileSpace
 {
@@ -21,6 +22,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             PdbDisulfideResidueBond();
             PdbDisulfideResidueBond(int serial_number, const DisulfideResidueVector residues, double bond_length);
+            PdbDisulfideResidueBond(std::string& line);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
