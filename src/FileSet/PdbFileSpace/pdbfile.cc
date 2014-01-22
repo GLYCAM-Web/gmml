@@ -1072,7 +1072,7 @@ void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
         record_name = Trim(record_name);
     }
 
-    heterogens_name_ = new PdbHeterogenNameCard(stream_block);
+    models_ = new PdbModelCard(stream_block);
 }
 
 void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)

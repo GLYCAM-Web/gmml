@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -22,6 +23,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbModelResidueSet();
+            PdbModelResidueSet(std::stringstream& residue_set_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -33,7 +35,9 @@ namespace PdbFileSpace
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             void SetAtoms(const  AtomCardVector atoms);
+            void AddAtom(PdbAtomCard* atom);
             void SetHeterogenAtoms(const HeterogenAtomCardVector heterogen_atoms);
+            void AddHeterogenAtom(PdbHeterogenAtomCard* heterogen_atom);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

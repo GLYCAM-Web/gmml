@@ -2,6 +2,7 @@
 #define PDBMODEL_HPP
 
 #include <string>
+#include <sstream>
 
 namespace PdbFileSpace
 {
@@ -19,6 +20,7 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             PdbModel();
+            PdbModel(std::stringstream& model_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
