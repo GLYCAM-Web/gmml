@@ -1,13 +1,30 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbModel::PdbModel() {}
+
+PdbModel::PdbModel(stringstream &model_block)
+{
+    string line;
+    stringstream residue_set_block;
+    getline(model_block, line);
+    model_serial_number_ = ConvertString<int>(line.substr(10,4));
+    getline(model_block,line);
+    while(!Trim(line).empty() || line.find("ENDMDL") != string::npos)
+    {
+        residue_set_block << line << endl;
+        getline(model_block, line);
+    }
+    model_residue_set_ = new PdbModelResidueSet(residue_set_block);
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
