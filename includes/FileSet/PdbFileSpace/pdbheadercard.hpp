@@ -19,6 +19,13 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbHeaderCard();
+            /*! \fn
+              * Constructor with required parameters
+              * @param record_name
+              * @param classification
+              * @param deposition_date
+              * @param identifier_code
+              */
             PdbHeaderCard(const std::string& record_name, const std::string& classification, const std::string& deposition_date, const std::string& identifier_code);
             PdbHeaderCard(std::stringstream& stream_block);
 
