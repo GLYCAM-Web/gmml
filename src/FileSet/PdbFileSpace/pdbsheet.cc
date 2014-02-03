@@ -5,6 +5,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
+#include <iostream>
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -30,12 +31,13 @@ PdbSheet::PdbSheet(stringstream& stream_block)
     string line;
     bool is_sheet_id_set = false, is_number_of_strands_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_sheet_id_set)
         {
             sheet_id_ = line.substr(11, 3);
+            Trim(sheet_id_);
             is_sheet_id_set = true;
         }
         if(!is_number_of_strands_set)
@@ -45,9 +47,11 @@ PdbSheet::PdbSheet(stringstream& stream_block)
         }
 
         PdbSheetStrand* sheet_strand = new PdbSheetStrand(line);
+
         strands_.push_back(sheet_strand);
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -104,5 +108,14 @@ void PdbSheet::AddStrand(PdbSheetStrand *strand)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
+void PdbSheet::Print(ostream &out)
+{
+    out << "Sheet ID: " << sheet_id_ << ", Number of Strands: " << number_of_strands_ << endl <<
+           "------------------- Strands ------------------" << endl;
+    for(PdbSheet::SheetStrandVector::iterator it = strands_.begin(); it != strands_.end(); it++)
+    {
+        (*it)->Print(out);
+        out << endl;
+    }
+    out << endl;
+}

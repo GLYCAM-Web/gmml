@@ -2,7 +2,9 @@
 #define PDBORIGINXN_HPP
 
 #include <string>
-#include<sstream>
+#include <sstream>
+#include <iostream>
+
 #include "../../../includes/Geometry/coordinate.hpp"
 
 namespace PdbFileSpace
@@ -36,8 +38,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
-
-
+            void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////

@@ -79,4 +79,8 @@ void PdbDisulfideResidue::SetSymmetryOperator(int symmetry_operator)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbDisulfideResidue::Print(ostream &out)
+{
+    out << "Residue Name: " << residue_name_ << ", Residue Chain Identifier: " << residue_chain_identifier_ << ", Residue Insertion Code: " <<
+           residue_insertion_code_ << ", Residue Sequence Number: " << residue_sequence_number_ << ", Symmetry Operator: " << symmetry_operator_ << endl;
+}

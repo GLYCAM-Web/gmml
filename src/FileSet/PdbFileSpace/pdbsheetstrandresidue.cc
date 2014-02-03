@@ -69,5 +69,8 @@ void PdbSheetStrandResidue::SetResidueInsertionCode(char residue_insertion_code)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
+void PdbSheetStrandResidue::Print(ostream &out)
+{
+    out << "Residue Name: " << residue_name_ << ", Residue Cahin Identifier: " << residue_chain_id_ << ", Residue Sequence Number: " <<
+           residue_sequence_number_  << ", Residue Insertion Code: " << residue_insertion_code_ << endl;
+}

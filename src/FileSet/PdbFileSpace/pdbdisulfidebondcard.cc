@@ -20,17 +20,19 @@ PdbDisulfideBondCard::PdbDisulfideBondCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
 
         PdbDisulfideResidueBond* disulfide_bond = new PdbDisulfideResidueBond(line);
-        disulfide_residue_bonds_[ConvertString<int>(line.substr(7,3))] = disulfide_bond;
+        disulfide_residue_bonds_[disulfide_bond->GetSerialNumber()] = disulfide_bond;
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -62,4 +64,14 @@ void PdbDisulfideBondCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbDisulfideBondCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "================= Disulfide Bond =================" << endl;
+    for(PdbDisulfideBondCard::DisulfideResidueBondMap::iterator it = disulfide_residue_bonds_.begin(); it != disulfide_residue_bonds_.end(); it++)
+    {
+        out << "Serial Number: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

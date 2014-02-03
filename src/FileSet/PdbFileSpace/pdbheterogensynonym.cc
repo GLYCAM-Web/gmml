@@ -26,8 +26,8 @@ PdbHeterogenSynonym::PdbHeterogenSynonym(stringstream& stream_block)
     bool is_heterogen_identifier_set = false;
     stringstream ss;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_heterogen_identifier_set){
             heterogen_identifier_ = line.substr(11,3);
@@ -37,6 +37,7 @@ PdbHeterogenSynonym::PdbHeterogenSynonym(stringstream& stream_block)
         ss << line.substr(15,55) << " ";
 
         getline(stream_block, line);
+        temp = line;
     }
     heterogen_synonyms_ = Split(ss.str(), ";");
 }
@@ -83,4 +84,12 @@ void PdbHeterogenSynonym::AddHeterogenSynonym(const string heterogen_synonym)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbHeterogenSynonym::Print(ostream &out)
+{
+    out << "Heterogen ID: " << heterogen_identifier_ << "Heterogen Synonyms: ";
+    for(vector<string>::iterator it = heterogen_synonyms_.begin(); it != heterogen_synonyms_.end(); it++)
+    {
+        out << (*it) << ", ";
+    }
+    out << endl;
+}

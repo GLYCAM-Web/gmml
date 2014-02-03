@@ -19,11 +19,12 @@ PdbCompoundCard::PdbCompoundCard(stringstream& stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         stringstream ss, specification_block;
@@ -31,13 +32,14 @@ PdbCompoundCard::PdbCompoundCard(stringstream& stream_block)
         specification_block << ss.str() << endl;
 
         getline(stream_block, line);
-
-        while (line.find("MOL_ID") == string::npos && !Trim(line).empty()){
+        temp = line;
+        while (line.find("MOL_ID") == string::npos && !Trim(temp).empty()){
             stringstream sss;
             sss << line.substr(10,70);
 
             specification_block << sss.str() << endl;
             getline(stream_block, line);
+            temp = line;
         }
         PdbCompoundSpecification* compound_specification = new PdbCompoundSpecification(specification_block);
         compound_specifications_[compound_specification->GetMoleculeId()] = compound_specification;
@@ -72,3 +74,14 @@ void PdbCompoundCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
+void PdbCompoundCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl;
+    out << "============= Compound Specification =============" << endl;
+    for(PdbCompoundCard::PdbCompoundSpecificationMap::iterator it = compound_specifications_.begin(); it != compound_specifications_.end(); it++)
+    {
+        out << "Molecule ID: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

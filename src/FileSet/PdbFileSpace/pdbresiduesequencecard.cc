@@ -20,11 +20,12 @@ PdbResidueSequenceCard::PdbResidueSequenceCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         stringstream residue_sequence_block;
@@ -32,10 +33,12 @@ PdbResidueSequenceCard::PdbResidueSequenceCard(stringstream &stream_block)
         char chain_id = ConvertString<char>(line.substr(11,1));
 
         getline(stream_block, line);
+        temp = line;
 
-        while (!Trim(line).empty() && ConvertString<char>(line.substr(11,1)) == chain_id){
+        while (!Trim(temp).empty() && ConvertString<char>(line.substr(11,1)) == chain_id){
             residue_sequence_block << line << endl;
             getline(stream_block, line);
+            temp = line;
         }
         PdbResidueSequence* residue_sequence = new PdbResidueSequence(residue_sequence_block);
         residue_sequence_chains_[chain_id] = residue_sequence;
@@ -70,4 +73,14 @@ void PdbResidueSequenceCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbResidueSequenceCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "============= Residue Sequence Chain =============" << endl;
+    for(PdbResidueSequenceCard::ResidueSequenceMap::iterator it = residue_sequence_chains_.begin(); it != residue_sequence_chains_.end(); it++)
+    {
+        out << "Chain ID: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

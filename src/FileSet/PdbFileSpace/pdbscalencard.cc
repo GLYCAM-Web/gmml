@@ -14,13 +14,15 @@ PdbScaleNCard::PdbScaleNCard(stringstream &stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
-        stringstream ss(line);
+        stringstream ss;
+        ss << line << endl;
         PdbScaleN* scale = new PdbScaleN(ss);
         AddScaleN(scale);
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -51,7 +53,11 @@ void PdbScaleNCard::AddScaleN(PdbScaleN *scale)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
-
-
+void PdbScaleNCard::Print(ostream &out)
+{
+    for(PdbScaleNCard::ScaleNVector::iterator it = scale_n_.begin(); it != scale_n_.end(); it++)
+    {
+        (*it)->Print(out);
+    }
+    out << endl;
+}

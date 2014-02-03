@@ -19,11 +19,12 @@ PdbHeterogenNameCard::PdbHeterogenNameCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         stringstream heterogen_name_block;
@@ -31,10 +32,11 @@ PdbHeterogenNameCard::PdbHeterogenNameCard(stringstream &stream_block)
         string heterogen_id = line.substr(11,3);
 
         getline(stream_block, line);
-
-        while (!Trim(line).empty() && line.substr(11,3) == heterogen_id){
+        temp = line;
+        while (!Trim(temp).empty() && line.substr(11,3) == heterogen_id){
             heterogen_name_block << line << endl;
             getline(stream_block, line);
+            temp = line;
         }
         PdbHeterogenName* heterogen_name = new PdbHeterogenName(heterogen_name_block);
         heterogen_names_[heterogen_id] = heterogen_name;
@@ -69,4 +71,14 @@ void PdbHeterogenNameCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbHeterogenNameCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "========== Heterogen Names ==========" << endl;
+    for(PdbHeterogenNameCard::HeterogenNameMap::iterator it = heterogen_names_.begin(); it != heterogen_names_.end(); it++)
+    {
+        out << "Heterogen ID: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

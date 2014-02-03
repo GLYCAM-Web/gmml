@@ -1,11 +1,11 @@
-// Author: Alireza Khatamian
-
-#ifndef PDBHETEROGEN_HPP
-#define PDBHETEROGEN_HPP
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
+#ifndef PDBHETEROGEN_HPP
+#define PDBHETEROGEN_HPP
+
 #include <string>
+#include <iostream>
 
 namespace PdbFileSpace
 {
@@ -51,6 +51,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////

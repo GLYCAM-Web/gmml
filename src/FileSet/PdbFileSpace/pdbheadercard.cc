@@ -22,14 +22,19 @@ PdbHeaderCard::PdbHeaderCard(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
+        Trim(record_name_);
         classification_ = line.substr(10,40);
+        Trim(classification_);
         deposition_date_ = line.substr(50, 9);
+        Trim(deposition_date_);
         identifier_code_ = line.substr(62,4);
+        Trim(identifier_code_);
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -85,3 +90,8 @@ void PdbHeaderCard::SetIdentificationCode(const string identifier_code){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
+void PdbHeaderCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << ", Classification: " << classification_ <<
+           ", Deposition Date: " << deposition_date_ << ", Identifier Code: " << identifier_code_ << endl << endl;
+}

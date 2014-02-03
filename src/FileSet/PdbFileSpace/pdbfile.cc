@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <iostream>
 #include <iomanip>
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
@@ -238,7 +237,6 @@ void PdbFile::ParseCards(ifstream &in_stream)
     {
         ParseSourceCard(in_stream, line);
     }
-    cout << line << endl;
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "KEYWDS")
@@ -255,7 +253,6 @@ void PdbFile::ParseCards(ifstream &in_stream)
     record_name = Trim(record_name);
     if(record_name == "NUMMDL")
     {
-        cout << "HERE" << endl;
         ParseNumModelCard(in_stream, line);
     }
     record_name = line.substr(0,6);
@@ -408,6 +405,7 @@ void PdbFile::ParseCards(ifstream &in_stream)
     {
         ParseModelCard(in_stream, line);
     }
+    cout << line << endl;
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "CONECT")
@@ -624,11 +622,6 @@ void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
     }
 
     model_type_ = new PdbModelTypeCard(stream_block);
-    cout << model_type_->GetRecordName() << endl;
-    for(vector<string>::iterator it = model_type_->GetComments().begin(); it != model_type_->GetComments().end(); it++)
-    {
-        cout << (*it) << endl;
-    }
 }
 
 void PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
@@ -993,9 +986,6 @@ void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
     }
 
     crystallography_ = new PdbCrystallographicCard(stream_block);
-    cout << crystallography_->GetRecordName() << "\t" << crystallography_->GetA() << "\t" << crystallography_->GetB() << "\t" << crystallography_->GetC() << "\t" <<
-            crystallography_->GetAlpha() << "\t" << crystallography_->GetBeta() << "\t" << crystallography_->GetGamma() << "\t" <<
-            crystallography_->GetSpaceGroup() << "\t" << crystallography_->GetZValue() << endl;
 }
 
 void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
@@ -1010,7 +1000,7 @@ void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
-        record_name = line.substr(0,6);
+        record_name = line.substr(0,5);
         record_name = Trim(record_name);
     }
 
@@ -1029,7 +1019,7 @@ void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
-        record_name = line.substr(0,6);
+        record_name = line.substr(0,5);
         record_name = Trim(record_name);
     }
 
@@ -1048,7 +1038,7 @@ void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
-        record_name = line.substr(0,6);
+        record_name = line.substr(0,5);
         record_name = Trim(record_name);
     }
 
@@ -1132,3 +1122,116 @@ void PdbFile::ParseEndCard(std::ifstream& stream, string& line)
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 
+void PdbFile::Print(ostream &out)
+{
+    if(header_ != NULL)
+    {
+        out << "******************************* HEADER *******************************" << endl;
+        header_->Print(out);
+    }
+    if(title_ != NULL)
+    {
+        out << "******************************** TITLE *******************************" << endl;
+        title_->Print(out);
+    }
+    if(compound_ != NULL)
+    {
+        out << "****************************** COMPOUND ******************************" << endl;
+        compound_->Print(out);
+    }
+    if(number_of_models_ != NULL)
+    {
+        out << "************************** NUMBER OF MODELS **************************" << endl;
+        number_of_models_->Print(out);
+    }
+    if(model_type_ != NULL)
+    {
+        out << "***************************** MODEL TYPE *****************************" << endl;
+        model_type_->Print(out);
+    }
+    if(residues_sequence_ != NULL)
+    {
+        out << "************************** RESIDUE SEQUENCE **************************" << endl;
+        residues_sequence_->Print(out);
+    }
+    if(residue_modification_ != NULL)
+    {
+        out << "************************ RESIDUE MODIFICATION ************************" << endl;
+        residue_modification_->Print(out);
+    }
+    if(heterogens_ != NULL)
+    {
+        out << "***************************** HETEROGEN ******************************" << endl;
+        heterogens_->Print(out);
+    }
+    if(heterogens_name_ != NULL)
+    {
+        out << "*************************** HETEROGEN NAME ***************************" << endl;
+        heterogens_name_->Print(out);
+    }
+    if(heterogen_synonyms_ != NULL)
+    {
+        out << "************************** HETEROGEN SYNONYM *************************" << endl;
+        heterogen_synonyms_->Print(out);
+    }
+    if(formulas_ != NULL)
+    {
+        out << "******************************* FORMULA ******************************" << endl;
+        formulas_->Print(out);
+    }
+    if(helixes_ != NULL)
+    {
+        out << "******************************** HELIX *******************************" << endl;
+        helixes_->Print(out);
+    }
+    if(sheets_ != NULL)
+    {
+        out << "******************************** SHEET *******************************" << endl;
+        sheets_->Print(out);
+    }
+    if(disulfide_bonds_ != NULL)
+    {
+        out << "*************************** DISULFIDE BOND ***************************" << endl;
+        disulfide_bonds_->Print(out);
+    }
+    if(links_ != NULL)
+    {
+        out << "******************************** LINK ********************************" << endl;
+        links_->Print(out);
+    }
+    if(sites_ != NULL)
+    {
+        out << "******************************** SITE ********************************" << endl;
+        sites_->Print(out);
+    }
+    if(crystallography_ != NULL)
+    {
+        out << "************************** CRYSTALLOGRAPHIC **************************" << endl;
+        crystallography_->Print(out);
+    }
+    if(origins_ != NULL)
+    {
+        out << "******************************* ORIGIN *******************************" << endl;
+        origins_->Print(out);
+    }
+    if(scales_ != NULL)
+    {
+        out << "******************************** SCALE *******************************" << endl;
+        scales_->Print(out);
+    }
+    if(matrices_ != NULL)
+    {
+        out << "******************************* MATRIX *******************************" << endl;
+        matrices_->Print(out);
+    }
+    if(models_ != NULL)
+    {
+        out << "******************************* MODEL ********************************" << endl;
+        models_->Print(out);
+    }
+    if(connectivities_ != NULL)
+    {
+        out << "******************************* CONNECT ******************************" << endl;
+        connectivities_->Print(out);
+    }
+}

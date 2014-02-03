@@ -26,33 +26,71 @@ PdbSheetStrand::PdbSheetStrand(const SheetStrandResidueVector strand_residues, P
 
 PdbSheetStrand::PdbSheetStrand(string &line)
 {
-    PdbSheetStrandResidue* initial_residue = new PdbSheetStrandResidue(line.substr(17, 3), ConvertString<char>(line.substr(21, 1)), ConvertString<int>(line.substr(22, 4)), ConvertString<char>(line.substr(26, 1)));
-    PdbSheetStrandResidue* terminal_residue = new PdbSheetStrandResidue(line.substr(28, 3), ConvertString<char>(line.substr(32, 1)), ConvertString<int>(line.substr(33, 4)), ConvertString<char>(line.substr(37, 1)));
-    PdbSheetStrandResidue* current_residue = new PdbSheetStrandResidue(line.substr(45, 3), ConvertString<char>(line.substr(49, 1)), ConvertString<int>(line.substr(50, 4)), ConvertString<char>(line.substr(54, 1)));
-    PdbSheetStrandResidue* previous_residue = new PdbSheetStrandResidue(line.substr(60, 3), ConvertString<char>(line.substr(64, 1)), ConvertString<int>(line.substr(65, 4)), ConvertString<char>(line.substr(69, 1)));
-
-    strand_residues_.push_back(initial_residue);
-    strand_residues_.push_back(terminal_residue);
-    strand_residues_.push_back(current_residue);
-    strand_residues_.push_back(previous_residue);
-
     int sense = ConvertString<int>(line.substr(38,2));
+
     switch(sense)
     {
-    case -1:
-        sense_ = ANTI_PARALLEL;
-        break;
-    case 0:
-        sense_ = FIRST_STRAND;
-        break;
-    case 1:
-        sense_ = PARALLEL;
-        break;
+        case -1:
+            sense_ = ANTI_PARALLEL;
+            break;
+        case 0:
+            sense_ = FIRST_STRAND;
+            break;
+        case 1:
+            sense_ = PARALLEL;
+            break;
 
     }
-    current_atom_ = line.substr(41, 4);
-    previous_atom_ = line.substr(56, 4);
 
+    char temp1, temp2;
+    if(line.substr(21,1) == " ")
+        temp1 = ' ';
+    else
+        temp1 = ConvertString<char>(line.substr(21, 1));
+    if(line.substr(26,1) == " ")
+        temp2 = ' ';
+    else
+        temp2 = ConvertString<char>(line.substr(26, 1));
+    PdbSheetStrandResidue* initial_residue = new PdbSheetStrandResidue(line.substr(17, 3), temp1, ConvertString<int>(line.substr(22, 4)), temp2);
+    if(line.substr(32,1) == " ")
+        temp1 = ' ';
+    else
+        temp1 = ConvertString<char>(line.substr(32, 1));
+    if(line.substr(37,1) == " ")
+        temp2 = ' ';
+    else
+        temp2 = ConvertString<char>(line.substr(37, 1));
+    PdbSheetStrandResidue* terminal_residue = new PdbSheetStrandResidue(line.substr(28, 3), temp1, ConvertString<int>(line.substr(33, 4)), temp2);
+    strand_residues_.push_back(initial_residue);
+    strand_residues_.push_back(terminal_residue);
+    if(sense != 0)
+    {
+        if(line.substr(49,1) == " ")
+            temp1 = ' ';
+        else
+            temp1 = ConvertString<char>(line.substr(49, 1));
+        if(line.substr(54,1) == " ")
+            temp2 = ' ';
+        else
+            temp2 = ConvertString<char>(line.substr(54, 1));
+        PdbSheetStrandResidue* current_residue = new PdbSheetStrandResidue(line.substr(45, 3), temp1, ConvertString<int>(line.substr(50, 4)), temp2);
+        if(line.substr(64,1) == " ")
+            temp1 = ' ';
+        else
+            temp1 = ConvertString<char>(line.substr(64, 1));
+        if(line.substr(69,1) == " ")
+            temp2 = ' ';
+        else
+            temp2 = ConvertString<char>(line.substr(69, 1));
+        PdbSheetStrandResidue* previous_residue = new PdbSheetStrandResidue(line.substr(60, 3), temp1, ConvertString<int>(line.substr(65, 4)), temp2);
+
+        strand_residues_.push_back(current_residue);
+        strand_residues_.push_back(previous_residue);
+        current_atom_ = line.substr(41, 4);
+        Trim(current_atom_);
+        previous_atom_ = line.substr(56, 4);
+        Trim(previous_atom_);
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -117,4 +155,13 @@ void PdbSheetStrand::SetPreviousAtom(const string previous_atom)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbSheetStrand::Print(ostream &out)
+{
+    out << "Strand Residues: " << endl;
+    for(PdbSheetStrand::SheetStrandResidueVector::iterator it = strand_residues_.begin(); it != strand_residues_.end(); it++)
+    {
+        (*it)->Print(out);
+        out << endl;
+    }
+    out << "Sense: " << sense_ << ", Current Atom: " << current_atom_ << ", Previous Atom: " << previous_atom_ << endl << endl;
+}

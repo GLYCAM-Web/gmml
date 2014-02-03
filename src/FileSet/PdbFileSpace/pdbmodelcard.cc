@@ -16,11 +16,12 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
 
@@ -29,11 +30,13 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
         {
             model_block << line << endl;
             getline(stream_block,line);
+            temp = line;
         }
         model_block << line << endl;
         PdbModel* pdb_model = new PdbModel(model_block);
         models_[pdb_model->GetModelSerialNumber()] = pdb_model;
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -68,5 +71,14 @@ void PdbModelCard::SetModels(PdbModelMap models){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
+void PdbModelCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "================= Models =================" << endl;
+    for(PdbModelCard::PdbModelMap::iterator it = models_.begin(); it != models_.end(); it++)
+    {
+        out << "Model Serial Number: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}
