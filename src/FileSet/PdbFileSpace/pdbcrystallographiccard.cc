@@ -14,10 +14,11 @@ PdbCrystallographicCard::PdbCrystallographicCard(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
+        Trim(record_name_);
         a_ = ConvertString<double>(line.substr(6,9));
         b_ = ConvertString<double>(line.substr(15,9));
         c_ = ConvertString<double>(line.substr(24,9));
@@ -25,9 +26,11 @@ PdbCrystallographicCard::PdbCrystallographicCard(stringstream& stream_block)
         beta_ = ConvertString<double>(line.substr(40,7));
         gamma_ = ConvertString<double>(line.substr(47,7));
         space_group_ = line.substr(55,11);
+        Trim(space_group_);
         z_value_ = ConvertString<int>(line.substr(66,4));
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -115,6 +118,8 @@ void PdbCrystallographicCard::SetZValue(int z_value){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
-
-
+void PdbCrystallographicCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << ", A: " << a_ << ", B: " << b_ << ", C: " << c_ <<
+           ", Alpha: " << alpha_ << ", Beta: " << beta_ << ", Gamma: " << gamma_ << "Space Group: " << space_group_ << ", Z Value: " << z_value_ << endl << endl;
+}

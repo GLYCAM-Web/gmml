@@ -16,13 +16,15 @@ PdbNumModelCard::PdbNumModelCard(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
+        Trim(record_name_);
         number_of_models_ = ConvertString<int>(line.substr(10,4));
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -59,3 +61,7 @@ void PdbNumModelCard::SetNumberOfModels(int number_of_models)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
+void PdbNumModelCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << ", Number of Models: " << number_of_models_ << endl << endl;
+}

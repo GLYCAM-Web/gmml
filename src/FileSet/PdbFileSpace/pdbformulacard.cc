@@ -21,8 +21,8 @@ PdbFormulaCard::PdbFormulaCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
@@ -30,13 +30,15 @@ PdbFormulaCard::PdbFormulaCard(stringstream &stream_block)
         }
         stringstream formula_block;
         formula_block << line << endl;
-        string heterogen_identifier = line.substr(13,3);
+        string heterogen_identifier = line.substr(12,3);
 
         getline(stream_block, line);
+        temp = line;
 
-        while (!Trim(line).empty() && line.substr(13,3) == heterogen_identifier){
+        while (!Trim(temp).empty() && line.substr(12,3) == heterogen_identifier){
             formula_block << line << endl;
             getline(stream_block, line);
+            temp = line;
         }
         PdbFormula* formula = new PdbFormula(formula_block);
         formulas_[heterogen_identifier] = formula;
@@ -71,4 +73,14 @@ void PdbFormulaCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbFormulaCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "=========== Formulas =============" << endl;
+    for(PdbFormulaCard::FormulaMap::iterator it = formulas_.begin(); it != formulas_.end(); it++)
+    {
+        out << "Heterogen ID: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

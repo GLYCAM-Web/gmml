@@ -5,6 +5,7 @@
 #define PDBRESIDUEMODIFICATION_HPP
 
 #include <string>
+#include <iostream>
 
 namespace PdbFileSpace
 {
@@ -123,6 +124,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////

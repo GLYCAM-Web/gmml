@@ -25,29 +25,41 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
     PdbCompoundSpecification();
     string line;
     getline(specification_block, line);
-    while(!Trim(line).empty())
+    string temp = line;
+    while(!Trim(temp).empty())
     {
         vector<string> tokens = Split(line,":;");
         string token_name = Trim(tokens.at(0));
         if(token_name == "MOL_ID")
         {
             molecule_id_ = tokens.at(1);
+            Trim(molecule_id_);
         }
         if(token_name == "MOLECULE")
         {
             molecule_name_ = tokens.at(1);
+            Trim(molecule_name_);
         }
         if(token_name == "CHAIN")
         {
             chain_ids_ = Split(tokens.at(1),",;");
+            for(vector<string>::iterator it = chain_ids_.begin(); it != chain_ids_.end(); it++)
+            {
+                Trim(*it);
+            }
         }
         if(token_name == "FRAGMENT")
         {
             fragment_ = tokens.at(1);
+            Trim(fragment_);
         }
         if(token_name == "SYNONYM")
         {
             molecule_synonyms_ = Split(tokens.at(1), ",;");
+            for(vector<string>::iterator it = molecule_synonyms_.begin(); it != molecule_synonyms_.end(); it++)
+            {
+                Trim(*it);
+            }
         }
         if(token_name == "EC")
         {
@@ -74,8 +86,10 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
         if(token_name == "OTHER_DETAILS")
         {
             comments_ = tokens.at(1);
+            Trim(comments_);
         }
         getline(specification_block, line);
+        temp = line;
     }
 }
 
@@ -195,3 +209,33 @@ void PdbCompoundSpecification::setComments(const string comments)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
+void PdbCompoundSpecification::Print(ostream &out)
+{
+    out << "Molecule ID: " << molecule_id_ << ", Molecule Name: " << molecule_name_ << endl;
+    out << "Chain IDs: ";
+    for(vector<string>::iterator it = chain_ids_.begin(); it != chain_ids_.end(); it++)
+    {
+        out << (*it) << ", ";
+    }
+    out << endl << "Fragment: " << fragment_ << endl << "Molecule Synonyms: ";
+    for(vector<string>::iterator it = molecule_synonyms_.begin(); it != molecule_synonyms_.end(); it++)
+    {
+        out << (*it) << ", ";
+    }
+    out << endl << "Enzyme Commission Numbers: ";
+    for(vector<int>::iterator it = enzyme_commission_numbers_.begin(); it != enzyme_commission_numbers_.end(); it++)
+    {
+        out << (*it) << ", ";
+    }
+    out << endl << "Engineered: ";
+    if(is_engineered_)
+        out << "YES" << endl;
+    else
+        out << "NO" << endl;
+    out << "Mutation: ";
+    if(has_mutation_)
+        out << "YES" << endl;
+    else
+        out << "NO" << endl;
+    out << "Comments: " << comments_ << endl;
+}

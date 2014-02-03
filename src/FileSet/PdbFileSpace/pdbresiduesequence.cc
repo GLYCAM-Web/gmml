@@ -29,11 +29,14 @@ PdbResidueSequence::PdbResidueSequence(stringstream& stream_block)
     bool is_chain_id_set = false, is_number_of_residues_set = false;
     stringstream ss;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_chain_id_set){
-            chain_id_ = ConvertString<char>(line.substr(11,1));
+            if(line.substr(11,1) == " ")
+                chain_id_ = ' ';
+            else
+                chain_id_ = ConvertString<char>(line.substr(11,1));
             is_chain_id_set=true;
         }
         if(!is_number_of_residues_set){
@@ -43,6 +46,7 @@ PdbResidueSequence::PdbResidueSequence(stringstream& stream_block)
         ss << line.substr(19,51) << " ";
 
         getline(stream_block, line);
+        temp = line;
     }
     residue_names_ = Split(ss.str(), " ");
 }
@@ -99,4 +103,12 @@ void PdbResidueSequence::AddResidueName(const string residue_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbResidueSequence::Print(ostream &out)
+{
+    out << "Chain ID: " << chain_id_ << ", " << "Number of Residues: " << number_of_residues_ << "Residue Names: ";
+    for(vector<string>::iterator it = residue_names_.begin(); it != residue_names_.end(); it++)
+    {
+        out << (*it) << ", ";
+    }
+    out << endl;
+}

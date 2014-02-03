@@ -68,4 +68,8 @@ void PdbHelixResidue::SetResidueInsertionCode(char residue_insertion_code)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbHelixResidue::Print(ostream &out)
+{
+    out << "Residue Name: " << residue_name_ << ", Residue Chain ID: " << residue_chain_id_ << ", Residue Sequence Number: " <<
+           residue_sequence_number_ << ", Residue Insertion Code: " << residue_insertion_code_ << endl;
+}

@@ -17,21 +17,27 @@ PdbModelTypeCard::PdbModelTypeCard(stringstream& stream_block)
     string line;
     bool is_record_name_set = false;
     stringstream ss;
-    string temp;
+    string temp_comments;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         ss << line.substr(10,70);
 
         getline(stream_block, line);
+        temp = line;
     }
-    temp = ss.str();
-    comments_ = Split(temp, ",");
+    temp_comments = ss.str();
+    comments_ = Split(temp_comments, ",");
+    for(vector<string>::iterator it = comments_.begin(); it != comments_.end(); it++)
+    {
+        Trim(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -71,3 +77,12 @@ void PdbModelTypeCard::SetComments(const vector<string> comments)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
+void PdbModelTypeCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl << "Comments: ";
+    for(vector<string>::iterator it = comments_.begin(); it != comments_.end(); it++)
+    {
+        out << (*it) << ", ";
+    }
+    out << endl << endl;
+}

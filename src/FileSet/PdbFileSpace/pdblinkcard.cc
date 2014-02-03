@@ -16,17 +16,19 @@ PdbLinkCard::PdbLinkCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
 
         PdbLink* link = new PdbLink(line);
         AddResidueLink(link);
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -66,9 +68,14 @@ void PdbLinkCard::AddResidueLink(PdbLink *residue_link)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
-
-
-
-
+void PdbLinkCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "================== Residue Links ================" << endl;
+    for(PdbLinkCard::LinkVector::iterator it = residue_links_.begin(); it != residue_links_.end(); it++)
+    {
+        (*it)->Print(out);
+        out << endl;
+    }
+    out << endl;
+}

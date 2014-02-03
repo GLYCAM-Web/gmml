@@ -16,10 +16,11 @@ PdbScaleN::PdbScaleN(stringstream& stream_block)
     string line;
     scale_vector_=Coordinate();
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
-        record_name_ = line.substr(0,6);
+        record_name_ = line.substr(0,5);
+        Trim(record_name_);
         n_ = ConvertString<int>(line.substr(5,1));
         scale_vector_.SetX( ConvertString<double>(line.substr(10,10)));
         scale_vector_.SetY( ConvertString<double>(line.substr(20,10)));
@@ -27,6 +28,7 @@ PdbScaleN::PdbScaleN(stringstream& stream_block)
         u_ = ConvertString<double>(line.substr(45,10));
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 //////////////////////////////////////////////////////////
@@ -72,7 +74,9 @@ void PdbScaleN::SetU(double u){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
-
-
-
+void PdbScaleN::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << n_ << ", Origin: ";
+    scale_vector_.Print(out);
+    out << ", U: " << u_ << endl;
+}

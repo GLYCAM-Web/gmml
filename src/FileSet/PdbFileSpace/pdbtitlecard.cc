@@ -24,18 +24,21 @@ PdbTitleCard::PdbTitleCard(stringstream& stream_block)
     bool is_record_name_set = false;
     stringstream ss;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         ss << line.substr(10,70);
 
         getline(stream_block, line);
+        temp = line;
     }
     title_ = ss.str();
+    Trim(title_);
 }
 
 //////////////////////////////////////////////////////////
@@ -71,3 +74,7 @@ void PdbTitleCard::SetTitle(const string title)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
+void PdbTitleCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << ", Title: " << title_ << endl << endl;
+}

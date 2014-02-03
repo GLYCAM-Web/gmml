@@ -20,8 +20,8 @@ PdbHeterogenName::PdbHeterogenName(stringstream& stream_block)
     bool is_heterogen_identifier_set = false;
     stringstream ss;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_heterogen_identifier_set){
             heterogen_identifier_ = line.substr(11,3);
@@ -31,6 +31,7 @@ PdbHeterogenName::PdbHeterogenName(stringstream& stream_block)
         ss << line.substr(15,55) << " ";
 
         getline(stream_block, line);
+        temp = line;
     }
     heterogen_name_ = ss.str();
 }
@@ -68,4 +69,7 @@ void PdbHeterogenName::SetHeterogenName(const string heterogen_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbHeterogenName::Print(ostream &out)
+{
+    out << "Heterogen ID: " << heterogen_identifier_ << ", Heterogen Name: " << heterogen_name_ << endl;
+}

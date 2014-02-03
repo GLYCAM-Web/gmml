@@ -17,10 +17,11 @@ PdbOriginXn::PdbOriginXn(stringstream& stream_block)
     string line;
     origin_=Coordinate();
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
-        record_name_ = line.substr(0,6);
+        record_name_ = line.substr(0,5);
+        Trim(record_name_);
         n_ = ConvertString<int>(line.substr(5,1));
         origin_.SetX( ConvertString<double>(line.substr(10,10)));
         origin_.SetY( ConvertString<double>(line.substr(20,10)));
@@ -28,6 +29,7 @@ PdbOriginXn::PdbOriginXn(stringstream& stream_block)
         t_ = ConvertString<double>(line.substr(45,10));
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -75,8 +77,9 @@ void PdbOriginXn::SetT(double t){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
-
-
-
-
+void PdbOriginXn::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << n_ << ", Origin: ";
+    origin_.Print(out);
+    out << ", T: " << t_ << endl;
+}

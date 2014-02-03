@@ -18,11 +18,12 @@ PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         stringstream heterogen_synonym_block;
@@ -30,10 +31,12 @@ PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(stringstream &stream_block)
         string heterogen_identifier = line.substr(11,3);
 
         getline(stream_block, line);
+        temp = line;
 
-        while (!Trim(line).empty() && line.substr(11,3) == heterogen_identifier){
+        while (!Trim(temp).empty() && line.substr(11,3) == heterogen_identifier){
             heterogen_synonym_block << line << endl;
             getline(stream_block, line);
+            temp = line;
         }
         PdbHeterogenSynonym* heterogen_synonym = new PdbHeterogenSynonym(heterogen_synonym_block);
         heterogens_synonyms_[heterogen_identifier] = heterogen_synonym;
@@ -68,5 +71,14 @@ void PdbHeterogenSynonymCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
+void PdbHeterogenSynonymCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "============ Heterogen Synonyms ===========" << endl;
+    for(PdbHeterogenSynonymCard::HeterogenSynonymMap::iterator it = heterogens_synonyms_.begin(); it != heterogens_synonyms_.end(); it++)
+    {
+        out << "Heterogen ID: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

@@ -18,10 +18,12 @@ PdbModel::PdbModel(stringstream &model_block)
     getline(model_block, line);
     model_serial_number_ = ConvertString<int>(line.substr(10,4));
     getline(model_block,line);
-    while(!Trim(line).empty() || line.find("ENDMDL") != string::npos)
+    string temp = line;
+    while(!Trim(temp).empty() || line.find("ENDMDL") != string::npos)
     {
         residue_set_block << line << endl;
         getline(model_block, line);
+        temp = line;
     }
     model_residue_set_ = new PdbModelResidueSet(residue_set_block);
 }
@@ -57,4 +59,10 @@ void PdbModel::SetModelResidueSet(PdbModelResidueSet* model_residue_set){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbModel::Print(ostream &out)
+{
+    out << "Model Serial Number: " << model_serial_number_ << endl <<
+           "====================== Residue Set =====================" << endl;
+    model_residue_set_->Print(out);
+    out << endl;
+}
