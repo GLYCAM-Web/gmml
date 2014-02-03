@@ -15,24 +15,29 @@ PdbSite::PdbSite(stringstream &site_block)
     string line;
     bool is_site_id_set = false;
     getline(site_block, line);
-    line = Trim(line);
+    string temp = line;
     int residue_counter = 0;
-    while (!Trim(line).empty())
+    while (!Trim(temp).empty())
     {
         if(!is_site_id_set){
-            site_id_ = line.substr(0,6);
+            site_id_ = line.substr(11,3);
+            Trim(site_id_);
             is_site_id_set=true;
         }
         number_of_residues_ = ConvertString<int>(line.substr(15, 2));
 
-        while(residue_counter < number_of_residues_ || residue_counter % 4 != 0)
+        int residue_counter_per_line = 0;
+        while(residue_counter < number_of_residues_ && residue_counter_per_line < 4)
         {
-            PdbSiteResidue *residue = new PdbSiteResidue(line.substr(18, 10));
+            int index = 18 + (residue_counter%4)*11;
+            PdbSiteResidue *residue = new PdbSiteResidue(line.substr(index, 10));
             residues_.push_back(residue);
             residue_counter++;
+            residue_counter_per_line++;
         }
 
         getline(site_block, line);
+        temp = line;
     }
 }
 
@@ -75,7 +80,14 @@ void PdbSite::SetNumberOfResidues(int number_of_residues){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
-
-
+void PdbSite::Print(ostream &out)
+{
+    out << "Site ID: " << site_id_ << ", Number of Residues: " << number_of_residues_ << endl <<
+           "---------------- Residues ----------------" << endl;
+    for(PdbSite::SiteResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        (*it)->Print(out);
+        out << endl;
+    }
+    out << endl;
+}

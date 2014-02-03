@@ -15,13 +15,15 @@ PdbOriginXnCard::PdbOriginXnCard(stringstream &stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
-        stringstream ss(line);
+        stringstream ss;
+        ss << line << endl;
         PdbOriginXn* origin = new PdbOriginXn(ss);
         AddOriginXN(origin);
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -53,7 +55,11 @@ void PdbOriginXnCard::AddOriginXN(PdbOriginXn *origin)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
-
-
+void PdbOriginXnCard::Print(ostream &out)
+{
+    for(PdbOriginXnCard::OriginXnVector::iterator it = origin_x_n_.begin(); it != origin_x_n_.end(); it++)
+    {
+        (*it)->Print(out);
+    }
+    out << endl;
+}

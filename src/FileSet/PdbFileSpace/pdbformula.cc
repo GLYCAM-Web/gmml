@@ -21,8 +21,8 @@ PdbFormula::PdbFormula(stringstream& stream_block)
     bool is_heterogen_identifier_set = false, is_component_number_set = false;
     stringstream ss;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_heterogen_identifier_set){
             heterogen_identifier_ = line.substr(12,3);
@@ -37,6 +37,7 @@ PdbFormula::PdbFormula(stringstream& stream_block)
         ss << line.substr(19,51) << " ";
 
         getline(stream_block, line);
+        temp = line;
     }
     chemical_formula_ = ss.str();
 }
@@ -83,4 +84,7 @@ void PdbFormula::SetChemicalFormula(const string chemical_formula)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void  PdbFormula::Print(ostream &out)
+{
+    out << "Heterogen ID: " << heterogen_identifier_ << ", Component Number: " << component_number_ << "Chemical Formula: " << chemical_formula_ << endl;
+}

@@ -12,7 +12,8 @@ using namespace Geometry;
 //////////////////////////////////////////////////////////
 PdbMatrixN::PdbMatrixN() {}
 PdbMatrixN::PdbMatrixN(string &line) {
-    record_name_ = line.substr(0, 6);
+    record_name_ = line.substr(0, 5);
+    Trim(record_name_);
     n_ = ConvertString<int>(line.substr(5, 1));
     serial_number_ = ConvertString<int>(line.substr(7, 3));
     transfomration_vector_.SetX(ConvertString<double>(line.substr(10, 10)));
@@ -82,6 +83,9 @@ void PdbMatrixN::SetIGiven(int i_given){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
-
-
+void PdbMatrixN::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << n_ << ", Serial Number: " << serial_number_ << ", Transformation Vector: ";
+    transfomration_vector_.Print(out);
+    out << ", V: " << v_ << ", I Given: " << i_given_ << endl;
+}

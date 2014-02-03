@@ -5,6 +5,8 @@
 #define PDBMATRIXN_HPP
 
 #include <string>
+#include <iostream>
+
 #include "../../../includes/Geometry/coordinate.hpp"
 
 namespace PdbFileSpace
@@ -99,8 +101,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
-
-
+            void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////

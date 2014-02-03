@@ -14,9 +14,9 @@ PdbMatrixNCard::PdbMatrixNCard(stringstream &stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
+    string temp = line;
     vector <PdbMatrixN*> matrix_1, matrix_2, matrix_3;
-    while (!Trim(line).empty())
+    while (!Trim(temp).empty())
     {
         int index = ConvertString<int>(line.substr(5, 1));
         PdbMatrixN* matrix = new PdbMatrixN(line);
@@ -32,6 +32,7 @@ PdbMatrixNCard::PdbMatrixNCard(stringstream &stream_block)
             break;
         }
         getline(stream_block, line);
+        temp = line;
     }
     this->AddMatrixN(matrix_1);
     this->AddMatrixN(matrix_2);
@@ -65,6 +66,12 @@ void PdbMatrixNCard::AddMatrixN(vector <PdbMatrixN*> matrix)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
-
-
+void PdbMatrixNCard::Print(ostream &out)
+{
+    for(unsigned int i = 0; i < matrix_n_.size(); i++)
+    {
+        for(vector<PdbMatrixN*>::iterator it = matrix_n_.at(i).begin(); it != matrix_n_.at(i).end(); it++)
+            (*it)->Print(out);
+    }
+    out << endl;
+}

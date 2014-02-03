@@ -29,14 +29,32 @@ PdbHelix::PdbHelix(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         helix_id_ = line.substr(11, 3);
+        Trim(helix_id_);
         helix_serial_number_ = ConvertString<int>(line.substr(7,3));
 
-        PdbHelixResidue* initial_residue = new PdbHelixResidue(line.substr(15, 3), ConvertString<char>(line.substr(19, 1)), ConvertString<int>(line.substr(21, 4)), ConvertString<char>(line.substr(25, 1)));
-        PdbHelixResidue* terminal_residue = new PdbHelixResidue(line.substr(27, 3), ConvertString<char>(line.substr(31, 1)), ConvertString<int>(line.substr(33, 4)), ConvertString<char>(line.substr(37, 1)));
+        char temp1, temp2;
+        if(line.substr(19,1) == " ")
+            temp1 = ' ';
+        else
+            temp1 = ConvertString<char>(line.substr(19, 1));
+        if(line.substr(25,1) == " ")
+            temp2 = ' ';
+        else
+            temp2 = ConvertString<char>(line.substr(25, 1));
+        PdbHelixResidue* initial_residue = new PdbHelixResidue(line.substr(15, 3), temp1, ConvertString<int>(line.substr(21, 4)), temp2);
+        if(line.substr(31,1) == " ")
+            temp1 = ' ';
+        else
+            temp1 = ConvertString<char>(line.substr(31, 1));
+        if(line.substr(37,1) == " ")
+            temp2 = ' ';
+        else
+            temp2 = ConvertString<char>(line.substr(37, 1));
+        PdbHelixResidue* terminal_residue = new PdbHelixResidue(line.substr(27, 3), temp1, ConvertString<int>(line.substr(33, 4)), temp2);
 
         helix_residues_.push_back(initial_residue);
         helix_residues_.push_back(terminal_residue);
@@ -76,9 +94,11 @@ PdbHelix::PdbHelix(stringstream& stream_block)
             break;
         }
         comment_ = line.substr(40, 30);
+        Trim(comment_);
         helix_length_ = ConvertString<double>(line.substr(71,5));
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -165,4 +185,13 @@ void PdbHelix::SetHelixLength(double helix_length)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbHelix::Print(ostream &out)
+{
+    out << "Helix ID: " << helix_id_ << ", Helix Serial Number: " << helix_serial_number_ << endl <<
+           "=============== Helix Residues ==============" << endl;
+    for(PdbHelix::HelixResidueVector::iterator it = helix_residues_.begin(); it != helix_residues_.end(); it++)
+    {
+        (*it)->Print(out);
+    }
+    out << "Helix Class: " << helix_class_ << ", Comments: " << comment_ << "Helix Length: " << helix_length_ << endl << endl;
+}

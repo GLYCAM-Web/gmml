@@ -22,18 +22,25 @@ PdbResidueModification::PdbResidueModification(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         id_code_ = line.substr(7,4);
         residue_name_ = line.substr(12,3);
-        chain_identifier_ = ConvertString<char>(line.substr(16,1));
+        if(line.substr(16,1) == " ")
+            chain_identifier_ = ' ';
+        else
+            chain_identifier_ = ConvertString<char>(line.substr(16,1));
         sequence_number_ = ConvertString<int>(line.substr(18,4));
-        insertion_code_ = ConvertString<char>(line.substr(22,1));
+        if(line.substr(22,1) == " ")
+            insertion_code_ = ' ';
+        else
+            insertion_code_ = ConvertString<char>(line.substr(22,1));
         standard_residue_name_ = line.substr(24,3);
         dscr_ = line.substr(29,41);
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 //////////////////////////////////////////////////////////
@@ -119,4 +126,9 @@ void PdbResidueModification::SetDscr(const string dscr)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbResidueModification::Print(ostream &out)
+{
+    out << "ID Code: " << id_code_ << ", Residue Name: " << residue_name_ << ", Chain Identifier: " << chain_identifier_ <<
+           ", Sequence Number: " << sequence_number_ << ", Insertion Code: " << insertion_code_ << ", Standard Residue Name: " << standard_residue_name_ <<
+           ", Description: " << dscr_ << endl;
+}

@@ -102,4 +102,10 @@ void PdbLinkResidue::SetSymmetryOperator(int symmetry_operator)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbLinkResidue::Print(ostream &out)
+{
+    out << "Atom Name: " << atom_name_ << ", Alterante Location Identifier: " << alternate_location_indicator_ << ", Residue Name: " <<
+           residue_name_ << ", Residue Chain Identifier: " << residue_chain_identifier_ << ", Residue Sequence Number: " <<
+           residue_sequence_number_ << ", Residue Insertion Code: " << residue_insertion_code_ << ", Symmetry Operator: " <<
+           symmetry_operator_ << endl << endl;
+}

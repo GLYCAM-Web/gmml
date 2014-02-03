@@ -3,6 +3,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogen.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
+#include <iostream>
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -23,17 +24,31 @@ PdbHeterogen::PdbHeterogen(stringstream& stream_block)
 {
     string line;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         heterogen_id_ = line.substr(7,3);
-        chain_identifier_ = ConvertString<char>(line.substr(12,1));
+        if(line.substr(12,1) == " ")
+        {
+            chain_identifier_ = ' ';
+        }
+        else
+        {
+            chain_identifier_ = ConvertString<char>(line.substr(12,1));
+        }
         sequence_number_ = ConvertString<int>(line.substr(13,4));
-        insertion_code_ = ConvertString<char>(line.substr(17,1));
+        if(line.substr(17,1) == " ")
+        {
+            insertion_code_ = ' ';
+        }
+        else
+        {
+            insertion_code_ = ConvertString<char>(line.substr(17,1));
+        }
         number_of_heterogen_atoms_ = ConvertString<int>(line.substr(20,5));
         dscr_ = line.substr(30,40);
-
         getline(stream_block, line);
+        temp = line;
     }
 }
 //////////////////////////////////////////////////////////
@@ -109,4 +124,8 @@ void PdbHeterogen::SetDscr(const string dscr)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbHeterogen::Print(ostream &out)
+{
+    out << "Heterogen ID: " << heterogen_id_ << ", Chain Identifier: " << chain_identifier_ << ", Sequence Number: " << sequence_number_ <<
+           ", Insertion Code: " << insertion_code_ << ", Number of Heterogen Atoms: " << number_of_heterogen_atoms_ << ", Description: " << dscr_ << endl;
+}

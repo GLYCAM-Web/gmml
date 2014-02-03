@@ -1303,6 +1303,7 @@ ORIGX3      0.000000  0.000000  1.000000        0.00000
 SCALE1      0.004394  0.000000  0.001605        0.00000                         
 SCALE2      0.000000  0.007603  0.000000        0.00000                         
 SCALE3      0.000000  0.000000  0.006083        0.00000                         
+MODEL     1
 ATOM      1  N   ASP A   5      17.925 -16.975  36.734  1.00 83.79           N  
 ATOM      2  CA  ASP A   5      18.534 -16.355  35.523  1.00 83.69           C  
 ATOM      3  C   ASP A   5      19.052 -17.415  34.562  1.00 83.43           C  
@@ -26451,77 +26452,79 @@ HETATM25460  O   HOH L 733       9.185  41.377 106.327  1.00 53.02           O
 HETATM25461  O   HOH L 734       7.282  59.370 109.095  1.00 71.31           O  
 HETATM25462  O   HOH L 735      -0.724  34.020  30.455  1.00 67.20           O  
 HETATM25463  O   HOH L 736       3.873  54.775 120.147  1.00 51.70           O  
-HETATM25464  O   HOH L 737       1.193  45.247  49.912  1.00 45.04           O  CONECT   29 3641                                                                
-	CONECT  318 2180                                                                
-	CONECT  414  503                                                                
-	CONECT  503  414                                                                
-	CONECT  684 1051                                                                
-	CONECT 1051  684                                                                
-	CONECT 2180  318                                                                
-	CONECT 2210 2387                                                                
-	CONECT 2387 2210                                                                
+HETATM25464  O   HOH L 737       1.193  45.247  49.912  1.00 45.04           O
+ENDMDL
+CONECT   29 3641                                                                
+CONECT  318 2180                                                                
+CONECT  414  503                                                                
+CONECT  503  414                                                                
+CONECT  684 1051                                                                
+CONECT 1051  684                                                                
+CONECT 2180  318                                                                
+CONECT 2210 2387                                                                
+CONECT 2387 2210                                                                
 CONECT 3641   29                                                                
-	CONECT 3709 3740                                                                
-	CONECT 3740 3709                                                                
-	CONECT 3870 7483                                                                
-	CONECT 4159 6021                                                                
-	CONECT 4255 4344                                                                
-	CONECT 4344 4255                                                                
-	CONECT 4525 4892                                                                
-	CONECT 4892 4525                                                                
-	CONECT 6021 4159                                                                
-	CONECT 6051 6229                                                                
-	CONECT 6229 6051                                                                
-	CONECT 7483 3870                                                                
-	CONECT 7551 7582                                                                
-	CONECT 7582 7551                                                                
-	CONECT 771211325                                                                
-	CONECT 8001 9863                                                                
-	CONECT 8097 8186                                                                
-	CONECT 8186 8097                                                                
-	CONECT 8367 8734                                                                
-	CONECT 8734 8367                                                                
-	CONECT 9863 8001                                                                
-	CONECT 989310071                                                                
-	CONECT10071 9893                                                                
-	CONECT11325 7712                                                                
-	CONECT1139311424                                                                
-	CONECT1142411393                                                                
-	CONECT1155415167                                                                
-	CONECT1184313705                                                                
-	CONECT1193912028                                                                
-	CONECT1202811939                                                                
-	CONECT1220912576                                                                
-	CONECT1257612209                                                                
-	CONECT1370511843                                                                
-	CONECT1373513913                                                                
-	CONECT1391313735                                                                
-	CONECT1516711554                                                                
-	CONECT1523515266                                                                
-	CONECT1526615235                                                                
-	CONECT1539619009                                                                
-	CONECT1568517547                                                                
-	CONECT1578115870                                                                
-	CONECT1587015781                                                                
-	CONECT1605116418                                                                
-	CONECT1641816051                                                                
-	CONECT1754715685                                                                
-	CONECT1757717755                                                                
-	CONECT1775517577                                                                
-	CONECT1900915396                                                                
-	CONECT1907719108                                                                
-	CONECT1910819077                                                                
-	CONECT1923822851                                                                
-	CONECT1952721389                                                                
-	CONECT1962319712                                                                
-	CONECT1971219623                                                                
-	CONECT1989320260                                                                
-	CONECT2026019893                                                                
-	CONECT2138919527                                                                
-	CONECT2141921597                                                                
-	CONECT2159721419                                                                
-	CONECT2285119238                                                                
-	CONECT2291922950                                                                
-	CONECT2295022919                                                                
-	MASTER      626    0   21   48  215    0   45    625452   12  387  234          
-	END                                                                             
+CONECT 3709 3740                                                                
+CONECT 3740 3709                                                                
+CONECT 3870 7483                                                                
+CONECT 4159 6021                                                                
+CONECT 4255 4344                                                                
+CONECT 4344 4255                                                                
+CONECT 4525 4892                                                                
+CONECT 4892 4525                                                                
+CONECT 6021 4159                                                                
+CONECT 6051 6229                                                                
+CONECT 6229 6051                                                                
+CONECT 7483 3870                                                                
+CONECT 7551 7582                                                                
+CONECT 7582 7551                                                                
+CONECT 771211325                                                                
+CONECT 8001 9863                                                                
+CONECT 8097 8186                                                                
+CONECT 8186 8097                                                                
+CONECT 8367 8734                                                                
+CONECT 8734 8367                                                                
+CONECT 9863 8001                                                                
+CONECT 989310071                                                                
+CONECT10071 9893                                                                
+CONECT11325 7712                                                                
+CONECT1139311424                                                                
+CONECT1142411393                                                                
+CONECT1155415167                                                                
+CONECT1184313705                                                                
+CONECT1193912028                                                                
+CONECT1202811939                                                                
+CONECT1220912576                                                                
+CONECT1257612209                                                                
+CONECT1370511843                                                                
+CONECT1373513913                                                                
+CONECT1391313735                                                                
+CONECT1516711554                                                                
+CONECT1523515266                                                                
+CONECT1526615235                                                                
+CONECT1539619009                                                                
+CONECT1568517547                                                                
+CONECT1578115870                                                                
+CONECT1587015781                                                                
+CONECT1605116418                                                                
+CONECT1641816051                                                                
+CONECT1754715685                                                                
+CONECT1757717755                                                                
+CONECT1775517577                                                                
+CONECT1900915396                                                                
+CONECT1907719108                                                                
+CONECT1910819077                                                                
+CONECT1923822851                                                                
+CONECT1952721389                                                                
+CONECT1962319712                                                                
+CONECT1971219623                                                                
+CONECT1989320260                                                                
+CONECT2026019893                                                                
+CONECT2138919527                                                                
+CONECT2141921597                                                                
+CONECT2159721419                                                                
+CONECT2285119238                                                                
+CONECT2291922950                                                                
+CONECT2295022919                                                                
+MASTER      626    0   21   48  215    0   45    625452   12  387  234          
+END                                                                             

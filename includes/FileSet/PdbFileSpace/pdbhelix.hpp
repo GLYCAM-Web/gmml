@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
 
 namespace PdbFileSpace
 {
@@ -53,7 +54,7 @@ namespace PdbFileSpace
               */
             PdbHelix(const std::string& helix_id, int helix_serial_number, HelixResidueVector helix_residues,
                      PdbHelixClass helix_class, const std::string& comment, double helix_length);
-            PdbHelix(std::stringstream& specification_block);
+            PdbHelix(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -142,6 +143,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////

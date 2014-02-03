@@ -16,11 +16,12 @@ PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block)
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
 
@@ -28,6 +29,7 @@ PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block)
         heterogen_atoms_[atom->GetAtomSerialNumber()] = atom;
 
         getline(stream_block, line);
+        temp = line;
     }
 }
 
@@ -59,4 +61,14 @@ void PdbHeterogenAtomCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbHeterogenAtomCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "________________ Heterogen Atoms ___________________" << endl;
+    for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it = heterogen_atoms_.begin(); it != heterogen_atoms_.end(); it++)
+    {
+        out << "Atom Serial Number: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

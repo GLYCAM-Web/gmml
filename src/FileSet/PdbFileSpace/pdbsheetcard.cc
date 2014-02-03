@@ -18,11 +18,10 @@ PdbSheetCard::PdbSheetCard(const string &record_name) : record_name_(record_name
 PdbSheetCard::PdbSheetCard(stringstream &stream_block)
 {
     string line;
-    stringstream ss;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    line = Trim(line);
-    while (!Trim(line).empty())
+    string temp = line;
+    while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
@@ -33,10 +32,12 @@ PdbSheetCard::PdbSheetCard(stringstream &stream_block)
         string sheet_id = line.substr(11,3);
 
         getline(stream_block, line);
+        temp = line;
 
-        while (!Trim(line).empty() && line.substr(11,3) == sheet_id){
+        while (!Trim(temp).empty() && line.substr(11,3) == sheet_id){
             sheet_block << line << endl;
             getline(stream_block, line);
+            temp = line;
         }
         PdbSheet* sheet = new PdbSheet(sheet_block);
         sheets_[sheet_id] = sheet;
@@ -71,4 +72,14 @@ void PdbSheetCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-
+void PdbSheetCard::Print(ostream &out)
+{
+    out << "Record Name: " << record_name_ << endl <<
+           "============== Sheets ==============" << endl;
+    for(PdbSheetCard::SheetMap::iterator it = sheets_.begin(); it != sheets_.end(); it++)
+    {
+        out << "Sheet ID: " << (it)->first << endl;
+        (it)->second->Print();
+        out << endl;
+    }
+}

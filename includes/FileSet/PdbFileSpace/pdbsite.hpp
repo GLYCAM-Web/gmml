@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 namespace PdbFileSpace
 {
@@ -77,6 +78,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////
