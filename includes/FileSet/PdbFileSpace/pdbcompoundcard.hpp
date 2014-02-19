@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * A mapping between a molecule id and its assigned compound specifications in a compound card of a pdb file
+              */
             typedef std::map<std::string, PdbCompoundSpecification*> PdbCompoundSpecificationMap;
 
             //////////////////////////////////////////////////////////
@@ -32,6 +35,10 @@ namespace PdbFileSpace
               * @param record_name
               */
             PdbCompoundCard(const std::string& record_name);
+            /*! \fn
+              * A constructor that get a stream block of compound card and parse the whole block to fill the related fields
+              * @param stream_block A whole block of compound card in a pdb file
+              */
             PdbCompoundCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -65,14 +72,19 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the compound card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            PdbCompoundSpecificationMap compound_specifications_;
+            std::string record_name_;                               /*!< Record name of compound card in a pdb file: "COMPND" */
+            PdbCompoundSpecificationMap compound_specifications_;   /*!< Map of all compound specifications of a compound record by its molecule id */
 
     };
 }

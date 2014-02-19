@@ -179,18 +179,18 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int atom_serial_number_;
-            std::string atom_name_;
-            char atom_alternate_location_;
-            std::string atom_residue_name_;
-            char atom_chain_id_;
-            int atom_residue_sequence_number_;
-            char atom_insertion_code_;
-            Geometry::Coordinate atom_orthogonal_coordinate_;
-            double atom_occupancy_;
-            double atom_tempreture_factor_;
-            std::string atom_element_symbol_;
-            std::string atom_charge_;
+            int atom_serial_number_;                    /*!< Atom serial number in a model card of a pdb file */
+            std::string atom_name_;                     /*!< Atom name in a single atom record in a model card of a pdb file */
+            char atom_alternate_location_;              /*!< Atom residue name in a single atom record in a model card of a pdb file */
+            std::string atom_residue_name_;             /*!< Residue name that the atom is assigned to */
+            char atom_chain_id_;                        /*!< Chain id that the atom belongs to */
+            int atom_residue_sequence_number_;          /*!< Sequence number of the residue that the atom is assigned to */
+            char atom_insertion_code_;                  /*!< Insertion code for the atom in it belonging residue */
+            Geometry::Coordinate atom_orthogonal_coordinate_;   /*!< Atom coordinate */
+            double atom_occupancy_;                             /*!< Atom occupancy */
+            double atom_tempreture_factor_;                     /*!< Atom tempreture factor */
+            std::string atom_element_symbol_;                   /*!< Atom element symbol */
+            std::string atom_charge_;                           /*!< Atom charge */
 
     };
 }

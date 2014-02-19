@@ -19,6 +19,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * A mapping between a specific atom serial number and its bonded atoms serial numbers in a connect card of a pdb file
+              */
             typedef std::map<int, std::vector<int> > BondedAtomsSerialNumbersMap;
 
             //////////////////////////////////////////////////////////
@@ -28,6 +31,10 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbConnectCard();
+            /*! \fn
+              * A constructor that get a stream block of connect card and parse the whole block to fill the related fields
+              * @param stream_block A whole block of connect card in a pdb file
+              */
             PdbConnectCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -57,6 +64,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the connect card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
 
@@ -64,8 +76,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            BondedAtomsSerialNumbersMap bonded_atom_serial_numbers_;
+            std::string record_name_;                                   /*!< Record name of connect card in a pdb file: "CONECT" */
+            BondedAtomsSerialNumbersMap bonded_atom_serial_numbers_;    /*!< Map of bonded atoms to a specific atom by its serial number */
 
     };
 }
