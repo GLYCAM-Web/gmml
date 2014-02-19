@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * A mapping between disulfide residue serial number and its belonging records in a disulfide residue bond card in a pdb file
+              */
             typedef std::map<int, PdbDisulfideResidueBond*> DisulfideResidueBondMap;
 
             //////////////////////////////////////////////////////////
@@ -32,6 +35,10 @@ namespace PdbFileSpace
               * @param record_name
               */
             PdbDisulfideBondCard(const std::string& record_name);
+            /*! \fn
+              * A constructor that get a stream block of disulfide bond card and parse the whole block to fill the related fields
+              * @param stream_block A whole block of disulfide bond card in a pdb file
+              */
             PdbDisulfideBondCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -65,14 +72,19 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the disulfide residue bond card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            DisulfideResidueBondMap disulfide_residue_bonds_;
+            std::string record_name_;                           /*!< Record name of disulfide bond in a pdb file: "SSBOND" */
+            DisulfideResidueBondMap disulfide_residue_bonds_;   /*!< Map of disulfide bonds in a disulfide bond card in a pdb file by their serial numbers */
     };
 }
 

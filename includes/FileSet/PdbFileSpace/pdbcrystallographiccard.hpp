@@ -21,6 +21,10 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbCrystallographicCard();
+            /*! \fn
+              * A constructor that get a stream block of crystallography card and parse the whole block to fill the related fields
+              * @param stream_block A whole block of crystallography card in a pdb file
+              */
             PdbCrystallographicCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -133,6 +137,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the crystallography card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
 
@@ -141,7 +150,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
+            std::string record_name_;           /*!< Record name of crystallography card in a pdb file: "CRYST1" */
             double a_;
             double b_;
             double c_;

@@ -41,6 +41,10 @@ namespace PdbFileSpace
             PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name, const std::vector<std::string>& chain_ids,
                                      const std::string& fragment, const std::vector<std::string>& molecule_synonyms, std::vector<int>& enzyme_commission_numbers,
                                      bool is_engineered, bool has_mutation, const std::string& comments);
+            /*! \fn
+              * A constructor that get a stream block of compound specifications and parse the whole block to fill the related fields
+              * @param stream_block A whole block of compound specifications of a specific molecule id in a pdb file
+              */
             PdbCompoundSpecification(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
@@ -174,6 +178,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the compund specification contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:
