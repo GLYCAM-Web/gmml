@@ -133,7 +133,7 @@ namespace PdbFileSpace
               * Set the molecule_synonyms_ of the compound specification
               * @param molecule_synonyms The molecule synonyms of the current object
               */
-            void SetMoleculeSynonyms(const std::vector<std::string> molecule_synonyms);
+            void SetMoleculeSynonyms(std::vector<std::string> molecule_synonyms);
             /*! \fn
               * A function in order to add the molecule synonym to the current object
               * Set the molecule_synonym_ attribute of the compound specification
@@ -145,7 +145,7 @@ namespace PdbFileSpace
               * Set the enzyme_commission_numbers_ attribute of the compound specification
               * @param enzyme_commission_numbers The enzyme commission numbers of the current object
               */
-            void SetEnzymeCommissionNumbers(const std::vector<int> enzyme_commission_numbers);
+            void SetEnzymeCommissionNumbers(std::vector<int> enzyme_commission_numbers);
             /*! \fn
               * A function in order to add the enzyme commission number to the current object
               * Set the enzyme_commission_number_ attribute of the compound specification
