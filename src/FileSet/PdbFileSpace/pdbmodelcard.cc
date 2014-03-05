@@ -19,24 +19,50 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
     string temp = line;
     while (!Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
-            Trim(record_name_);
-            is_record_name_set=true;
-        }
-
-        stringstream model_block;
-        while(line.find("ENDMDL") == string::npos)
+        if(line.find("MODEL") != string::npos)
         {
+            if(!is_record_name_set){
+                record_name_ = line.substr(0,6);
+                Trim(record_name_);
+                is_record_name_set=true;
+            }
+
+            stringstream model_block;
+            while(line.find("ENDMDL") == string::npos)
+            {
+                model_block << line << endl;
+                getline(stream_block,line);
+                temp = line;
+            }
             model_block << line << endl;
-            getline(stream_block,line);
+            PdbModel* pdb_model = new PdbModel(model_block);
+            models_[pdb_model->GetModelSerialNumber()] = pdb_model;
+
+            getline(stream_block, line);
             temp = line;
         }
-        model_block << line << endl;
-        PdbModel* pdb_model = new PdbModel(model_block);
-        models_[pdb_model->GetModelSerialNumber()] = pdb_model;
-        getline(stream_block, line);
-        temp = line;
+        else
+        {
+            if(!is_record_name_set){
+                record_name_ = "MODEL ";
+                Trim(record_name_);
+                is_record_name_set=true;
+            }
+
+            stringstream model_block;
+            while(!Trim(temp).empty())
+            {
+                model_block << line << endl;
+                getline(stream_block,line);
+                temp = line;
+            }
+            model_block << line << endl;
+            PdbModel* pdb_model = new PdbModel(model_block);
+            models_[pdb_model->GetModelSerialNumber()] = pdb_model;
+
+            getline(stream_block, line);
+            temp = line;
+        }
     }
 }
 
