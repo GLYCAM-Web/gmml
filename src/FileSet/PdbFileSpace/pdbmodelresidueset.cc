@@ -34,45 +34,26 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
             temp = line;
         }
         /// End of a ATOM section in the given residue set block
-        if(line.find("TER") != string::npos || !Trim(temp).empty())
+        if(line.find("TER") != string::npos)
         {
             PdbAtomCard* atoms = new PdbAtomCard(atom_block);
             this->AddAtom(atoms);
-            /// Check for the end of the block
-            if(Trim(temp).empty())
-            {
-                continue;
-            }
             /// Section may have another ATOM/HETATM section
-            else
-            {
-                getline(residue_set_block, line);
-                temp = line;
-            }
+            getline(residue_set_block, line);
+            temp = line;
         }
         stringstream heterogen_atom_block;
         /// Extract HETATM section of the given residue set block
-        while(line.find("HETATM") != string::npos)
+        if(line.find("HETATM") != string::npos)
         {
-            heterogen_atom_block << line << endl;       /// Append all lines of HETATM section to create a block of stream of each heterogen atom set
-            getline(residue_set_block, line);           /// Read next line
-            temp = line;
-        }
-        if(line.find("TER") != string::npos || !Trim(temp).empty())
-        {
-            PdbHeterogenAtomCard* heterogen_atoms = new PdbHeterogenAtomCard(heterogen_atom_block);
-            this->AddHeterogenAtom(heterogen_atoms);
-            /// Check for the end of the block
-            if(Trim(temp).empty())
+            while(line.find("HETATM") != string::npos)
             {
-                continue;
-            }
-            /// Section may have another ATOM/HETATM section
-            else
-            {
-                getline(residue_set_block, line);
+                heterogen_atom_block << line << endl;       /// Append all lines of HETATM section to create a block of stream of each heterogen atom set
+                getline(residue_set_block, line);           /// Read next line
                 temp = line;
             }
+            PdbHeterogenAtomCard* heterogen_atoms = new PdbHeterogenAtomCard(heterogen_atom_block);
+            this->AddHeterogenAtom(heterogen_atoms);
         }
     }
 }
