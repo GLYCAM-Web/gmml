@@ -39,7 +39,8 @@ PdbHeterogenSynonym::PdbHeterogenSynonym(stringstream& stream_block)
         getline(stream_block, line);
         temp = line;
     }
-    heterogen_synonyms_ = Split(ss.str(), ";");
+    string temp_synonym = ss.str();
+    heterogen_synonyms_ = Split(Trim(temp_synonym), ";");
 }
 
 //////////////////////////////////////////////////////////

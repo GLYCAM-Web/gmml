@@ -52,8 +52,12 @@ void PdbLinkCard::SetRecordName(string record_name){
     record_name_ = record_name;
 }
 
-void PdbLinkCard::SetResidueLinks(const LinkVector residue_links){
-    residue_links_ = residue_links;
+void PdbLinkCard::SetResidueLinks(LinkVector residue_links){
+    residue_links_.clear();
+    for(LinkVector::iterator it = residue_links.begin(); it != residue_links.end(); it++)
+    {
+        residue_links_.push_back(*it);
+    }
 }
 
 void PdbLinkCard::AddResidueLink(PdbLink *residue_link)

@@ -50,8 +50,12 @@ PdbMatrixNCard::MatrixNVector PdbMatrixNCard::GetMatrixN(){
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbMatrixNCard::SetMatrixN(const MatrixNVector matrix_n){
-    matrix_n_ = matrix_n;
+void PdbMatrixNCard::SetMatrixN(MatrixNVector matrix_n){
+    matrix_n_.clear();
+    for(MatrixNVector::iterator it = matrix_n.begin(); it != matrix_n.end(); it++)
+    {
+        matrix_n.push_back(*it);
+    }
 }
 
 void PdbMatrixNCard::AddMatrixN(vector <PdbMatrixN*> matrix)

@@ -33,7 +33,8 @@ PdbHeterogenName::PdbHeterogenName(stringstream& stream_block)
         getline(stream_block, line);
         temp = line;
     }
-    heterogen_name_ = ss.str();
+    string temp_name = ss.str();
+    heterogen_name_ = Trim(temp_name);
 }
 
 //////////////////////////////////////////////////////////

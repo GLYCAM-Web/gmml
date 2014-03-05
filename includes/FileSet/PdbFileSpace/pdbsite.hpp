@@ -63,7 +63,7 @@ namespace PdbFileSpace
               * Set the residues_ attribute of the current site
               * @param residues The residues of the current object
               */
-            void SetResidues(const SiteResidueVector residues);
+            void SetResidues(SiteResidueVector residues);
             /*! \fn
               * A mutator function in order to set the number of residues of the current object
               * Set the number_of_residues_ attribute of the current site

@@ -46,7 +46,7 @@ namespace PdbFileSpace
               * Set the matrix_n_ attribute of the current matrix n card
               * @param a The matrix_n attribute of the current object
               */
-            void SetMatrixN(const MatrixNVector matrix_n);
+            void SetMatrixN(MatrixNVector matrix_n);
             /*! \fn
               * A function in order to add the matrix n attribute to the current object
               * Set the matrix_ attribute of the current matrix n card
