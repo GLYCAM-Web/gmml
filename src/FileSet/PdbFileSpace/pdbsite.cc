@@ -65,8 +65,12 @@ void PdbSite::SetSiteId(const string site_id){
     site_id_ = site_id;
 }
 
-void PdbSite::SetResidues(const SiteResidueVector residues){
-    residues_ = residues;
+void PdbSite::SetResidues(SiteResidueVector residues){
+    residues_.clear();
+    for(SiteResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        residues_.push_back(*it);
+    }
 }
 
 void PdbSite::SetNumberOfResidues(int number_of_residues){

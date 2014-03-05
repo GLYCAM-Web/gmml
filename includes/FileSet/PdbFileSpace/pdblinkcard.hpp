@@ -58,7 +58,7 @@ namespace PdbFileSpace
               * Set the residue_links_ attribute of the current link card
               * @param residue_links The residue links of the current object
               */
-            void SetResidueLinks(const LinkVector residue_links);
+            void SetResidueLinks(LinkVector residue_links);
             /*! \fn
               * A function in order to add the residue link to the current object
               * Set the residue_link_ attribute of the current link card

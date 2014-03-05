@@ -47,7 +47,7 @@ namespace PdbFileSpace
               * Set the scale_n_ attribute of the current scale n card
               * @param scale_n The scale n attribute of the current object
               */
-            void SetScaleN(const ScaleNVector scale_n);
+            void SetScaleN(ScaleNVector scale_n);
             /*! \fn
               * A function in order to add the record name to the current object
               * Set the scale_ attribute of the current scale n card

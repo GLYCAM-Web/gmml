@@ -37,8 +37,12 @@ PdbScaleNCard::ScaleNVector PdbScaleNCard::GetScaleN(){
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbScaleNCard::SetScaleN(const ScaleNVector scale_n){\
-    scale_n_ = scale_n;
+void PdbScaleNCard::SetScaleN(ScaleNVector scale_n){
+    scale_n_.clear();
+    for(ScaleNVector::iterator it = scale_n.begin(); it != scale_n.end(); it++)
+    {
+        scale_n_.push_back(*it);
+    }
 }
 
 void PdbScaleNCard::AddScaleN(PdbScaleN *scale)
