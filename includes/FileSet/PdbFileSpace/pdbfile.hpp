@@ -81,6 +81,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
+            /// Readers
+
             /*! \fn
               * A function to parse the contents of a given stream of a file
               * Parse the given stream and set the attributes of the current object accordingly
@@ -126,6 +128,49 @@ namespace PdbFileSpace
             void ParseConnectivityCard(std::ifstream& stream, std::string& line);
             void ParseMasterCard(std::ifstream& stream, std::string& line);
             void ParseEndCard(std::ifstream& stream, std::string& line);
+
+            /// Writers
+            void Write(const std::string& pdb_file);
+            void ResolveCards(std::ofstream& out_stream);
+            void ResolveHeaderCard(std::ofstream& stream);
+            void ResolveObsoleteCard(std::ofstream& stream);
+            void ResolveTitleCard(std::ofstream& stream);
+            void ResolveSplitCard(std::ofstream& stream);
+            void CaveatCard(std::ofstream& stream);
+            void ResolveCompoundCard(std::ofstream& stream);
+            void ResolveSourceCard(std::ofstream& stream);
+            void ResolveKeywordCard(std::ofstream& stream);
+            void ResolveExpirationDateCard(std::ofstream& stream);
+            void ResolveNumModelCard(std::ofstream& stream);
+            void ResolveModelTypeCard(std::ofstream& stream);
+            void ResolveAuthorCard(std::ofstream& stream);
+            void ResolveRevisionDateCard(std::ofstream& stream);
+            void ResolveSupersededEntriesCard(std::ofstream& stream);
+            void ResolveJournalCard(std::ofstream& stream);
+            void ResolveRemarkCard(std::ofstream& stream);
+            void ResolveDatabaseReferenceCard(std::ofstream& stream);
+            void ResolveSequenceAdvancedCard(std::ofstream& stream);
+            void ResolveSequenceResidueCard(std::ofstream& stream);
+            void ResolveModificationResidueCard(std::ofstream& stream);
+            void ResolveHeterogenCard(std::ofstream& stream);
+            void ResolveHeterogenNameCard(std::ofstream& stream);
+            void ResolveHeterogenSynonymCard(std::ofstream& stream);
+            void ResolveFormulaCard(std::ofstream& stream);
+            void ResolveHelixCard(std::ofstream& stream);
+            void ResolveSheetCard(std::ofstream& stream);
+            void ResolveDisulfideBondCard(std::ofstream& stream);
+            void ResolveLinkCard(std::ofstream& stream);
+            void ResolveCISPeptideCard(std::ofstream& stream);
+            void ResolveSiteCard(std::ofstream& stream);
+            void ResolveCrystallographyCard(std::ofstream& stream);
+            void ResolveOriginCard(std::ofstream& stream);
+            void ResolveScaleCard(std::ofstream& stream);
+            void ResolveMatrixCard(std::ofstream& stream);
+            void ResolveModelCard(std::ofstream& stream);
+            void ResolveConnectivityCard(std::ofstream& stream);
+            void ResolveMasterCard(std::ofstream& stream);
+            void ResolveEndCard(std::ofstream& stream);
+
 
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //

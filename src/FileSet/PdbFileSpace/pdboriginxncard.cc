@@ -39,8 +39,12 @@ PdbOriginXnCard::OriginXnVector PdbOriginXnCard::GetOriginXN(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbOriginXnCard::SetOriginXN(const OriginXnVector origin_x_n){
-    origin_x_n_ = origin_x_n;
+void PdbOriginXnCard::SetOriginXN(OriginXnVector origin_x_n){
+    origin_x_n_.clear();
+    for(OriginXnVector::iterator it = origin_x_n.begin(); it != origin_x_n.end(); it++)
+    {
+        origin_x_n_.push_back(*it);
+    }
 }
 
 void PdbOriginXnCard::AddOriginXN(PdbOriginXn *origin)

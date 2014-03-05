@@ -47,7 +47,7 @@ namespace PdbFileSpace
               * Set the origin_x_n_ attribute of the current origin X N
               * @param origin_x_n The origin X N of the current object
               */
-            void SetOriginXN(const OriginXnVector origin_x_n);
+            void SetOriginXN(OriginXnVector origin_x_n);
             /*! \fn
               * A function in order to add the origin to the current object
               * Set the origin_ attribute of the current origin X N

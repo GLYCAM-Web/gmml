@@ -39,7 +39,8 @@ PdbFormula::PdbFormula(stringstream& stream_block)
         getline(stream_block, line);
         temp = line;
     }
-    chemical_formula_ = ss.str();
+    string temp_formula = ss.str();
+    chemical_formula_ = Trim(temp_formula);
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

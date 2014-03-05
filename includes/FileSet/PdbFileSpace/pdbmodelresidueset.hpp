@@ -54,7 +54,7 @@ namespace PdbFileSpace
               * Set the atoms_ attribute of the current model residue set
               * @param atoms The atoms attribute of the current object
               */
-            void SetAtoms(const  AtomCardVector atoms);
+            void SetAtoms(AtomCardVector atoms);
             /*! \fn
               * A function in order to add the atom to the current object
               * Set the atom_ attribute of the current model residue set
@@ -66,7 +66,7 @@ namespace PdbFileSpace
               * Set the heterogen_atoms_ attribute of the current model residue set
               * @param heterogen_atoms The heterogen atoms of the current object
               */
-            void SetHeterogenAtoms(const HeterogenAtomCardVector heterogen_atoms);
+            void SetHeterogenAtoms(HeterogenAtomCardVector heterogen_atoms);
             /*! \fn
               * A function in order to add the heterogen atom to the current object
               * Set the heterogen_atom_ attribute of the current model residue set
