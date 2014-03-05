@@ -173,6 +173,20 @@ void PdbCompoundSpecification::SetFragment(const string fragment)
     fragment_ = fragment;
 }
 
+void PdbCompoundSpecification::SetMoleculeSynonyms(std::vector<std::string> molecule_synonyms)
+{
+    molecule_synonyms_.clear();
+    for(vector<string>::const_iterator it = molecule_synonyms.begin(); it != molecule_synonyms.end(); it++)
+    {
+        molecule_synonyms_.push_back(*it);
+    }
+}
+
+void PdbCompoundSpecification::AddMoleculeSynonym(const std::string molecule_synonym)
+{
+
+}
+
 void PdbCompoundSpecification::SetEnzymeCommissionNumbers(const vector<int> enzyme_commission_numbers)
 {
     enzyme_commission_numbers_.clear();

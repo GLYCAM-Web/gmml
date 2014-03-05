@@ -18,7 +18,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
-            typedef std::vector< std::vector <PdbMatrixN*> > MatrixNVector;
+            typedef std::vector<PdbMatrixN*> MatrixNVector;
+            typedef std::vector<MatrixNVector> MatrixNVectorVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -36,7 +37,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the matrix n in a matrix n card
               * @return matrix_n_ attribute of the current object of this class
               */
-            MatrixNVector GetMatrixN();
+            MatrixNVectorVector GetMatrixN();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -46,13 +47,13 @@ namespace PdbFileSpace
               * Set the matrix_n_ attribute of the current matrix n card
               * @param a The matrix_n attribute of the current object
               */
-            void SetMatrixN(const MatrixNVector matrix_n);
+            void SetMatrixN(const MatrixNVectorVector matrix_n);
             /*! \fn
               * A function in order to add the matrix n attribute to the current object
               * Set the matrix_ attribute of the current matrix n card
               * @param a The matrix attribute of the current object
               */
-            void AddMatrixN(std::vector <PdbMatrixN*> matrix);
+            void AddMatrixN(MatrixNVector matrix);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -67,7 +68,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            MatrixNVector matrix_n_;
+            MatrixNVectorVector matrix_n_;
 
     };
 }
