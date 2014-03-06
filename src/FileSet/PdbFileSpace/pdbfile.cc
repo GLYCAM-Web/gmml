@@ -64,6 +64,29 @@ using namespace gmml;
 PdbFile::PdbFile(const std::string &pdb_file)
 {
     path_ = pdb_file;
+    header_ = NULL;
+    title_ = NULL;
+    compound_ = NULL;	
+    number_of_models_ = NULL;
+    model_type_ = NULL;
+	residues_sequence_ = NULL;
+	residue_modification_ = NULL;
+	heterogens_ = NULL;
+	heterogens_name_ = NULL;
+	heterogen_synonyms_ = NULL;
+	formulas_ = NULL;
+	helixes_ = NULL;
+	sheets_ = NULL;
+	disulfide_bonds_ = NULL;
+	links_ = NULL;
+	sites_ = NULL;
+	crystallography_ = NULL;
+	origins_ = NULL;
+	scales_ = NULL;
+	matrices_ = NULL;
+	models_ = NULL;
+	connectivities_ = NULL;
+
     std::ifstream in_file;
     try
     {
@@ -423,10 +446,10 @@ void PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "MODEL" || record_name == "ATOM")
+    if(record_name == "MODEL")
     {
         ParseModelCard(in_stream, line);
-    }    
+    }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "CONECT")
@@ -623,7 +646,6 @@ void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     }
 
     number_of_models_ = new PdbNumModelCard(stream_block);
-    cout << number_of_models_->GetRecordName() << number_of_models_->GetNumberOfModels() << endl;
 }
 
 void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
@@ -2289,13 +2311,13 @@ void PdbFile::ResolveScaleCard(std::ofstream& stream)
 
 void PdbFile::ResolveMatrixCard(std::ofstream& stream)
 {
-    PdbMatrixNCard::MatrixNVectorVector matrices = matrices_->GetMatrixN();
+    PdbMatrixNCard::MatrixNVectorVector matrices = matrices_->GetMatrixN();    
     int number_of_matrix_entries = matrices.at(0).size();
     for(unsigned int i = 0; i < number_of_matrix_entries; i++)
     {
         for(unsigned int j = 0; j < 3; j++)
         {
-            PdbMatrixNCard::MatrixNVector matrix_vector = matrices.at(j);
+	    PdbMatrixNCard::MatrixNVector matrix_vector = matrices.at(j);
             PdbMatrixN* matrix = matrix_vector.at(i);
             stringstream ss;
             ss << matrix->GetRecordName() << matrix->GetN();
@@ -2322,29 +2344,8 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
 }
 
 void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
-{    
-    PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms = connectivities_->GetBondedAtomsSerialNumbers();
-    for(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bonded_atoms.begin(); it != bonded_atoms.end(); it++)
-    {
-        stream << left << setw(6) << connectivities_->GetRecordName();
-        vector<int> bonded_atom_numbers = (*it).second;
-        int source_atom_serial_number = (*it).first;
-        stream << right << setw(5) << source_atom_serial_number;
-        int number_of_bonded_atoms = bonded_atom_numbers.size();
-        const int MAX_NUMBER_IN_LINE = 4;
-        for(vector<int>::iterator it1 = bonded_atom_numbers.begin(); it1 != bonded_atom_numbers.end(); it1++)
-        {
-            int serial_number = (*it1);
-            stream << right << setw(5) << serial_number;
-        }
-        for(unsigned int i = 0; i < MAX_NUMBER_IN_LINE - number_of_bonded_atoms; i++)
-        {
-            stream << right << setw(5) << " ";
-        }
-        stream << left << setw(49) << " "
-               << endl;
+{
 
-    }
 }
 
 void PdbFile::ResolveMasterCard(std::ofstream& stream)

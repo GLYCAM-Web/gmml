@@ -16,34 +16,16 @@ PdbModel::PdbModel(stringstream &model_block)
     string line;
     stringstream residue_set_block;
     getline(model_block, line);
-    if(line.find("MODEL") == string::npos)
+    model_serial_number_ = ConvertString<int>(line.substr(10,4));
+    getline(model_block,line);
+    string temp = line;
+    while(!Trim(temp).empty() || line.find("ENDMDL") != string::npos)
     {
-        model_serial_number_ = 1;
-        string temp = line;
-        while(!Trim(temp).empty())
-        {
-            residue_set_block << line << endl;
-            getline(model_block, line);
-            temp = line;
-        }
-        model_residue_set_ = new PdbModelResidueSet(residue_set_block);
-        return;
+        residue_set_block << line << endl;
+        getline(model_block, line);
+        temp = line;
     }
-    else
-    {
-        model_serial_number_ = ConvertString<int>(line.substr(10,4));
-        getline(model_block,line);
-        string temp = line;
-        while(!Trim(temp).empty() || line.find("ENDMDL") != string::npos)
-        {
-            residue_set_block << line << endl;
-            getline(model_block, line);
-            temp = line;
-        }
-        model_residue_set_ = new PdbModelResidueSet(residue_set_block);
-        return;
-    }
-
+    model_residue_set_ = new PdbModelResidueSet(residue_set_block);
 }
 
 //////////////////////////////////////////////////////////
