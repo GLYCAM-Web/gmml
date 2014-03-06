@@ -48,6 +48,8 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbmatrixncard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmatrixn.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/utils.hpp"
