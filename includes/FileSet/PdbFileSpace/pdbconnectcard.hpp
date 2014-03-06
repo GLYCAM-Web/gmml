@@ -44,7 +44,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the record name in a connect card
               * @return record_name_ attribute of the current object of this class
               */
-            std::string GetRecordName();            
+            std::string GetRecordName();
             /*! \fn
               * An accessor function in order to access to the bonded atoms serial numbers in a connect card
               * @return bonded_atoms_serial_numbers_ attribute of the current object of this class
@@ -59,7 +59,7 @@ namespace PdbFileSpace
               * Set the record_name_ attribute of the current connect card
               * @param record_name The atom serial number of the current object
               */
-            void SetRecordName(const std::string record_name);            
+            void SetRecordName(const std::string record_name);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
