@@ -184,7 +184,7 @@ void PdbCompoundSpecification::SetMoleculeSynonyms(std::vector<std::string> mole
 
 void PdbCompoundSpecification::AddMoleculeSynonym(const std::string molecule_synonym)
 {
-
+    molecule_synonyms_.push_back(molecule_synonym);
 }
 
 void PdbCompoundSpecification::SetEnzymeCommissionNumbers(const vector<int> enzyme_commission_numbers)
