@@ -2246,7 +2246,7 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                    << left << setw(1) << " "
                    << right << setw(3) << site->GetSiteId()
                    << left << setw(1) << " "
-                   << right << setw(3) << site->GetNumberOfResidues()
+                   << right << setw(2) << site->GetNumberOfResidues()
                    << left << setw(63) << ss.str()
                    << endl;
             sequence_number++;
