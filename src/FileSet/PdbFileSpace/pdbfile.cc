@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <math.h>
+#include <exception>
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbheadercard.hpp"
@@ -69,10 +70,10 @@ PdbFile::PdbFile(const std::string &pdb_file)
     {
         in_file.open(pdb_file.c_str());
     }
-    catch(...)
+    catch(exception &ex)
     {
-        throw PdbFileProcessingException(__LINE__,"File not found");
-    }
+        throw PdbFileProcessingException(__LINE__, "File not found");
+    }        
     Read(in_file);
     in_file.close();            /// Close the parameter files
 }
@@ -623,7 +624,6 @@ void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     }
 
     number_of_models_ = new PdbNumModelCard(stream_block);
-    cout << number_of_models_->GetRecordName() << number_of_models_->GetNumberOfModels() << endl;
 }
 
 void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
