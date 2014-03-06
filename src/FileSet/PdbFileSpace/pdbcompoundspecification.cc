@@ -20,9 +20,9 @@ PdbCompoundSpecification::PdbCompoundSpecification(const string &molecule_id, co
     molecule_id_(molecule_id), molecule_name_(molecule_name), chain_ids_(chain_ids), fragment_(fragment), molecule_synonyms_(molecule_synonyms),
     enzyme_commission_numbers_(enzyme_commission_numbers), is_engineered_(is_engineered), has_mutation_(has_mutation), comments_(comments){}
 
-PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_block)
-{
-    PdbCompoundSpecification();
+PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_block) : molecule_id_(""), molecule_name_(""), chain_ids_(), fragment_(""),
+    molecule_synonyms_(), enzyme_commission_numbers_(), is_engineered_(false), has_mutation_(false), comments_("")
+{    
     string line;
     getline(specification_block, line);
     string temp = line;
@@ -71,14 +71,16 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
         }
         if(token_name == "ENGINEERED")
         {
-            if(tokens.at(1)=="YES")
+            string status = Trim(tokens.at(1));
+            if(status == "YES")
                 is_engineered_ = true;
             else
                 is_engineered_ = false;
         }
         if(token_name == "MUTATION")
         {
-            if(tokens.at(1)=="YES")
+            string status = Trim(tokens.at(1));
+            if(status == "YES")
                 has_mutation_ = true;
             else
                 has_mutation_ = false;

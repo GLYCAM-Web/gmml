@@ -2341,7 +2341,28 @@ void PdbFile::ResolveMatrixCard(std::ofstream& stream)
 
 void PdbFile::ResolveModelCard(std::ofstream& stream)
 {
+//    PdbModelCard::PdbModelMap models = models_->GetModels();
+//    int number_of_models = models.size();
+//    if(number_of_models == 1)
+//    {
+//        for(PdbModelCard::PdbModelMap::iterator it = models.begin(); it != models.end(); it++)
+//        {
+//            PdbModel* model = (*it).second;
+//            PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+//            PdbModelResidueSet::AtomCardVector atoms = residue_set->GetAtoms();
+//            for(PdbModelResidueSet::AtomCardVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+//            {
+//                PdbAtomCard* atom = (*it);
+//            }
+//            PdbModelResidueSet::HeterogenAtomCardVector heterogen_atoms = residue_set->GetHeterogenAtoms();
 
+
+//        }
+//    }
+//    else
+//    {
+
+//    }
 }
 
 void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
