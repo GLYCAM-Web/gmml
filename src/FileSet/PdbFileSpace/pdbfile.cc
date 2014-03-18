@@ -51,6 +51,9 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/utils.hpp"
@@ -447,7 +450,7 @@ void PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "MODEL")
+    if(record_name == "MODEL" || record_name == "ATOM")
     {
         ParseModelCard(in_stream, line);
     }
@@ -2341,33 +2344,226 @@ void PdbFile::ResolveMatrixCard(std::ofstream& stream)
 
 void PdbFile::ResolveModelCard(std::ofstream& stream)
 {
-//    PdbModelCard::PdbModelMap models = models_->GetModels();
-//    int number_of_models = models.size();
-//    if(number_of_models == 1)
-//    {
-//        for(PdbModelCard::PdbModelMap::iterator it = models.begin(); it != models.end(); it++)
-//        {
-//            PdbModel* model = (*it).second;
-//            PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-//            PdbModelResidueSet::AtomCardVector atoms = residue_set->GetAtoms();
-//            for(PdbModelResidueSet::AtomCardVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
-//            {
-//                PdbAtomCard* atom = (*it);
-//            }
-//            PdbModelResidueSet::HeterogenAtomCardVector heterogen_atoms = residue_set->GetHeterogenAtoms();
-
-
-//        }
-//    }
-//    else
-//    {
-
-//    }
+    PdbModelCard::PdbModelMap models = models_->GetModels();
+    int number_of_models = models.size();
+    if(number_of_models == 1)
+    {
+        for(PdbModelCard::PdbModelMap::iterator it = models.begin(); it != models.end(); it++)
+        {
+            PdbModel* model = (*it).second;
+            PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+            PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+            for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+            {
+                PdbAtomCard* atom_card = (*it1);
+                int serial_number = 0;
+                string residue_name = "";
+                char chain_id = ' ';
+                int residue_sequence_number = 0;
+                char insertion_code = ' ';
+                PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+                for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                {
+                    PdbAtom* atom = (*it2).second;
+                    stream << left << setw(6) << atom_card->GetRecordName()
+                          << right << setw(5) << atom->GetAtomSerialNumber()
+                          << left << setw(1) << " "
+                          << left << setw(4) << atom->GetAtomName()
+                          << left << setw(1) << atom->GetAtomAlternateLocation()
+                          << right << setw(3) << atom->GetAtomResidueName()
+                          << left << setw(1) << " "
+                          << left << setw(1) << atom->GetAtomChainId()
+                          << right << setw(4) << atom->GetAtomResidueSequenceNumber()
+                          << left << setw(1) << atom->GetAtomInsertionCode()
+                          << left << setw(3) << " "
+                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ()
+                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy()
+                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor()
+                          << left << setw(10) << " "
+                          << right << setw(2) << atom->GetAtomElementSymbol()
+                          << left << setw(2) << atom->GetAtomCharge()
+                          << endl;
+                    serial_number = atom->GetAtomSerialNumber();
+                    residue_name = atom->GetAtomResidueName();
+                    chain_id = atom->GetAtomChainId();
+                    residue_sequence_number = atom->GetAtomResidueSequenceNumber();
+                }
+                stream << left << setw(6) << "TER"
+                       << right << setw(5) << (serial_number+1)
+                       << left << setw(6) << " "
+                       << right << setw(3) << residue_name
+                       << left << setw(1) << " "
+                       << left << setw(1) << chain_id
+                       << right << setw(4) << residue_sequence_number
+                       << left << setw(1) << insertion_code
+                       << left << setw(53) << " "
+                       << endl;
+            }
+            PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
+            for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
+            {
+                PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
+                PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+                for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+                {
+                    PdbAtom* heterogen_atom = (*it2).second;
+                    stream << left << setw(6) << heterogen_atom_card->GetRecordName()
+                          << right << setw(5) << heterogen_atom->GetAtomSerialNumber()
+                          << left << setw(1) << " "
+                          << left << setw(4) << heterogen_atom->GetAtomName()
+                          << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
+                          << right << setw(3) << heterogen_atom->GetAtomResidueName()
+                          << left << setw(1) << " "
+                          << left << setw(1) << heterogen_atom->GetAtomChainId()
+                          << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber()
+                          << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
+                          << left << setw(3) << " "
+                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ()
+                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy()
+                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor()
+                          << left << setw(10) << " "
+                          << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
+                          << left << setw(2) << heterogen_atom->GetAtomCharge()
+                          << endl;
+                }
+            }
+        }
+    }
+    else
+    {
+        for(PdbModelCard::PdbModelMap::iterator it = models.begin(); it != models.end(); it++)
+        {
+            PdbModel* model = (*it).second;
+            stream << left << setw(6) << models_->GetRecordName()
+                   << left << setw(4) << " "
+                   << right << setw(4) << model->GetModelSerialNumber()
+                   << left << setw(66) << " "
+                   << endl;
+            PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+            PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+            for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+            {
+                PdbAtomCard* atom_card = (*it1);
+                int serial_number = 0;
+                string residue_name = "";
+                char chain_id = ' ';
+                int residue_sequence_number = 0;
+                char insertion_code = ' ';
+                PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+                for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                {
+                    PdbAtom* atom = (*it2).second;
+                    stream << left << setw(6) << atom_card->GetRecordName()
+                          << right << setw(5) << atom->GetAtomSerialNumber()
+                          << left << setw(1) << " "
+                          << left << setw(4) << atom->GetAtomName()
+                          << left << setw(1) << atom->GetAtomAlternateLocation()
+                          << right << setw(3) << atom->GetAtomResidueName()
+                          << left << setw(1) << " "
+                          << left << setw(1) << atom->GetAtomChainId()
+                          << right << setw(4) << atom->GetAtomResidueSequenceNumber()
+                          << left << setw(1) << atom->GetAtomInsertionCode()
+                          << left << setw(3) << " "
+                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ()
+                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy()
+                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor()
+                          << left << setw(10) << " "
+                          << right << setw(2) << atom->GetAtomElementSymbol()
+                          << left << setw(2) << atom->GetAtomCharge()
+                          << endl;
+                    serial_number = atom->GetAtomSerialNumber();
+                    residue_name = atom->GetAtomResidueName();
+                    chain_id = atom->GetAtomChainId();
+                    residue_sequence_number = atom->GetAtomResidueSequenceNumber();
+                }
+                stream << left << setw(6) << "TER"
+                       << right << setw(5) << (serial_number+1)
+                       << left << setw(6) << " "
+                       << right << setw(3) << residue_name
+                       << left << setw(1) << " "
+                       << left << setw(1) << chain_id
+                       << right << setw(4) << residue_sequence_number
+                       << left << setw(1) << insertion_code
+                       << left << setw(53) << " "
+                       << endl;
+            }
+            PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
+            for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
+            {
+                PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
+                PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+                for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+                {
+                    PdbAtom* heterogen_atom = (*it2).second;
+                    stream << left << setw(6) << heterogen_atom_card->GetRecordName()
+                          << right << setw(5) << heterogen_atom->GetAtomSerialNumber()
+                          << left << setw(1) << " "
+                          << left << setw(4) << heterogen_atom->GetAtomName()
+                          << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
+                          << right << setw(3) << heterogen_atom->GetAtomResidueName()
+                          << left << setw(1) << " "
+                          << left << setw(1) << heterogen_atom->GetAtomChainId()
+                          << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber()
+                          << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
+                          << left << setw(3) << " "
+                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ()
+                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy()
+                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor()
+                          << left << setw(10) << " "
+                          << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
+                          << left << setw(2) << heterogen_atom->GetAtomCharge()
+                          << endl;
+                }
+            }
+            stream << left << setw(6) << "ENDMDL"
+                   << left << setw(74) << " "
+                   << endl;
+        }
+    }
 }
 
 void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
 {
-
+    PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms = connectivities_->GetBondedAtomsSerialNumbers();
+    for(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bonded_atoms.begin(); it != bonded_atoms.end(); it++)
+    {
+        vector<int> bonded_atoms_serial_number = (*it).second;
+        int source_atom_serial_number = (*it).first;
+        stream << left << setw(6) << connectivities_->GetRecordName()
+               << right << setw(5) << source_atom_serial_number;
+        int number_of_bonded_atoms = bonded_atoms_serial_number.size();
+        const int MAX_SERIAL_NUMBER_IN_LINE = 4;
+        const int SERIAL_NUMBER_LENGTH = 5;
+        if(number_of_bonded_atoms < MAX_SERIAL_NUMBER_IN_LINE)
+        {
+            for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+            {
+                int serial_number = (*it1);
+                stream << right << setw(5) << serial_number;
+            }
+            stream << left << setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
+                   <<left << setw(49) << " "
+                   << endl;
+        }
+        else
+        {
+            for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+            {
+                int serial_number = (*it1);
+                stream << right << setw(5) << serial_number;
+            }
+            stream << left << setw(49) << " "
+                   << endl;
+        }
+    }
 }
 
 void PdbFile::ResolveMasterCard(std::ofstream& stream)
