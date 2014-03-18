@@ -33,21 +33,22 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
             getline(residue_set_block,line);        /// Skip lines
             temp = line;
         }
-        /// End of a ATOM section in the given residue set block
-        if(line.find("TER") != string::npos || !Trim(temp).empty())
+        /// End of an ATOM section in the given residue set block
+        if(line.find("TER") != string::npos || Trim(temp).empty())
         {
             PdbAtomCard* atoms = new PdbAtomCard(atom_block);
             this->AddAtom(atoms);
             /// Check for the end of the block
             if(Trim(temp).empty())
             {
-                continue;
+                break;
             }
             /// Section may have another ATOM/HETATM section
             else
             {
                 getline(residue_set_block, line);
                 temp = line;
+                continue;
             }
         }
         stringstream heterogen_atom_block;
@@ -58,21 +59,11 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
             getline(residue_set_block, line);           /// Read next line
             temp = line;
         }
-        if(line.find("TER") != string::npos || !Trim(temp).empty())
+        if(Trim(temp).empty())
         {
             PdbHeterogenAtomCard* heterogen_atoms = new PdbHeterogenAtomCard(heterogen_atom_block);
             this->AddHeterogenAtom(heterogen_atoms);
-            /// Check for the end of the block
-            if(Trim(temp).empty())
-            {
-                continue;
-            }
-            /// Section may have another ATOM/HETATM section
-            else
-            {
-                getline(residue_set_block, line);
-                temp = line;
-            }
+            break;
         }
     }
 }
