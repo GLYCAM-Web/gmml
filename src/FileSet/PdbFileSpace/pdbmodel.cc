@@ -21,7 +21,7 @@ PdbModel::PdbModel(stringstream &model_block)
         model_serial_number_ = ConvertString<int>(line.substr(10,4));
         getline(model_block,line);
         string temp = line;
-        while(line.find("ENDMDL") != string::npos)
+        while(line.find("ENDMDL") == string::npos)
         {
             residue_set_block << line << endl;
             getline(model_block, line);
