@@ -450,7 +450,7 @@ void PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "MODEL" || record_name == "ATOM")
+    if(record_name == "MODEL" || record_name == "ATOM" || record_name == "HETATM")
     {
         ParseModelCard(in_stream, line);
     }
@@ -2344,12 +2344,12 @@ void PdbFile::ResolveMatrixCard(std::ofstream& stream)
 
 void PdbFile::ResolveModelCard(std::ofstream& stream)
 {
-    PdbModelCard::PdbModelMap models = models_->GetModels();
+    PdbModelCard::PdbModelMap models = models_->GetModels();    
     int number_of_models = models.size();
     if(number_of_models == 1)
     {
         for(PdbModelCard::PdbModelMap::iterator it = models.begin(); it != models.end(); it++)
-        {
+        {            
             PdbModel* model = (*it).second;
             PdbModelResidueSet* residue_set = model->GetModelResidueSet();
             PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
