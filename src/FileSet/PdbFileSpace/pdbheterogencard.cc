@@ -32,7 +32,7 @@ PdbHeterogenCard::PdbHeterogenCard(stringstream &stream_block)
         ss << line << endl;
         PdbHeterogen* heterogen = new PdbHeterogen(ss);
         stringstream key;
-        key << heterogen->GetChainIdentifier() << "_" << heterogen->GetSequenceNumber() << "_" << heterogen->GetInsertionCode();
+        key << heterogen->GetChainId() << "_" << heterogen->GetSequenceNumber() << "_" << heterogen->GetInsertionCode();
         heterogens_[key.str()] = heterogen;
         getline(stream_block, line);
         temp = line;

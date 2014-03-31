@@ -56,7 +56,7 @@ namespace PdbFileSpace
             PdbCompoundCard* GetCompound();
             PdbNumModelCard* GetNumberOfModels();
             PdbModelTypeCard* GetModelType();
-            PdbResidueSequenceCard* GetResidueSequence();
+            PdbResidueSequenceCard* GetResiduesSequence();
             PdbResidueModificationCard* GetResidueModification();
             PdbHeterogenCard* GetHeterogens();
             PdbHeterogenNameCard* GetHeterogensName();

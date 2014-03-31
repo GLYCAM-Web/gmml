@@ -58,7 +58,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the residue chain identifier in a link residue
               * @return residue_chain_identifier_ attribute of the current object of this class
               */
-            char GetResidueChainIdentifier();
+            char GetResidueChainId();
             /*! \fn
               * An accessor function in order to access to the residue sequence number in a link residue
               * @return residue_sequence_number_ attribute of the current object of this class
@@ -101,7 +101,7 @@ namespace PdbFileSpace
               * Set the residue_chain_identifier_ attribute of the current link residue
               * @param residue_chain_identifier The residue chain identifier of the current object
               */
-            void SetResidueChainIdentifier(char residue_chain_identifier);
+            void SetResidueChainId(char residue_chain_identifier);
             /*! \fn
               * A mutator function in order to set the residue sequence number of the current object
               * Set the residue_sequence_number_ attribute of the current link residue

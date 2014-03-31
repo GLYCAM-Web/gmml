@@ -67,7 +67,7 @@ string PdbHeterogen::GetHeterogenId()
     return heterogen_id_;
 }
 
-char PdbHeterogen::GetChainIdentifier()
+char PdbHeterogen::GetChainId()
 {
     return chain_identifier_;
 }
@@ -100,7 +100,7 @@ void PdbHeterogen::SetHeterogenId(const string heterogen_id)
     heterogen_id_ = heterogen_id;
 }
 
-void PdbHeterogen::SetChainIdentifier(char chain_identifier)
+void PdbHeterogen::SetChainId(char chain_identifier)
 {
     chain_identifier_ = chain_identifier;
 }

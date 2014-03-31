@@ -62,7 +62,7 @@ std::string PdbResidueModification::GetResidueName()
     return residue_name_;
 }
 
-char PdbResidueModification::GetChainIdentifier()
+char PdbResidueModification::GetChainId()
 {
     return chain_identifier_;
 }
@@ -100,7 +100,7 @@ void PdbResidueModification::SetResidueName(const string residue_name)
     residue_name_ = residue_name;
 }
 
-void PdbResidueModification::SetChainIdentifier(char chain_identifier)
+void PdbResidueModification::SetChainId(char chain_identifier)
 {
     chain_identifier_ = chain_identifier;
 }

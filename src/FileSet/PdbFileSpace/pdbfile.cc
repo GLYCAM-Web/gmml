@@ -138,7 +138,7 @@ PdbModelTypeCard* PdbFile::GetModelType()
     return model_type_;
 }
 
-PdbResidueSequenceCard* PdbFile::GetResidueSequence()
+PdbResidueSequenceCard* PdbFile::GetResiduesSequence()
 {
     return residues_sequence_;
 }
@@ -1798,7 +1798,7 @@ void PdbFile::ResolveModificationResidueCard(std::ofstream& stream)
                << left << setw(1) << " "
                << right << setw(3) << residue_modification->GetResidueName()
                << left << setw(1) << " "
-               << right << setw(1) << residue_modification->GetChainIdentifier()
+               << right << setw(1) << residue_modification->GetChainId()
                << left << setw(1) << " ";
         if(residue_modification->GetSequenceNumber() != iNotSet)
             stream << right << setw(4) << residue_modification->GetSequenceNumber();
@@ -1825,7 +1825,7 @@ void PdbFile::ResolveHeterogenCard(std::ofstream& stream)
                << left << setw(1) << " "
                << right << setw(3) << heterogen->GetHeterogenId()
                << left << setw(2) << " "
-               << right << setw(1) << heterogen->GetChainIdentifier();
+               << right << setw(1) << heterogen->GetChainId();
         if(heterogen->GetSequenceNumber() != iNotSet)
             stream << right << setw(4) << heterogen->GetSequenceNumber();
         else
@@ -2252,7 +2252,7 @@ void PdbFile::ResolveDisulfideBondCard(std::ofstream& stream)
         stream << left << setw(1) << " "
                << right << setw(3) << disulfide_bonds_residues.at(0)->GetResidueName()
                << left << setw(1) << " "
-               << right << setw(1) << disulfide_bonds_residues.at(0)->GetResidueChainIdentifier()
+               << right << setw(1) << disulfide_bonds_residues.at(0)->GetResidueChainId()
                << left << setw(1) << " ";
         if(disulfide_bonds_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
             stream << right << setw(4) << disulfide_bonds_residues.at(0)->GetResidueSequenceNumber();
@@ -2262,7 +2262,7 @@ void PdbFile::ResolveDisulfideBondCard(std::ofstream& stream)
                << left << setw(3) << " "
                << right << setw(3) << disulfide_bonds_residues.at(1)->GetResidueName()
                << left << setw(1) << " "
-               << right << setw(1) << disulfide_bonds_residues.at(1)->GetResidueChainIdentifier()
+               << right << setw(1) << disulfide_bonds_residues.at(1)->GetResidueChainId()
                << left << setw(1) << " ";
         if(disulfide_bonds_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
             stream << right << setw(4) << disulfide_bonds_residues.at(1)->GetResidueSequenceNumber();
@@ -2302,7 +2302,7 @@ void PdbFile::ResolveLinkCard(std::ofstream& stream)
                << right << setw(1) << link_residues.at(0)->GetAlternateLocationIndicator()
                << right << setw(3) << link_residues.at(0)->GetResidueName()
                << left << setw(1) << " "
-               << right << setw(1) << link_residues.at(0)->GetResidueChainIdentifier();
+               << right << setw(1) << link_residues.at(0)->GetResidueChainId();
         if(link_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
             stream << right << setw(4) << link_residues.at(0)->GetResidueSequenceNumber();
         else
@@ -2313,7 +2313,7 @@ void PdbFile::ResolveLinkCard(std::ofstream& stream)
                << right << setw(1) << link_residues.at(1)->GetAlternateLocationIndicator()
                << right << setw(3) << link_residues.at(1)->GetResidueName()
                << left << setw(1) << " "
-               << right << setw(1) << link_residues.at(1)->GetResidueChainIdentifier();
+               << right << setw(1) << link_residues.at(1)->GetResidueChainId();
         if(link_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
             stream << right << setw(4) << link_residues.at(1)->GetResidueSequenceNumber();
         else
@@ -2372,8 +2372,8 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                            << right << setw(3) << residue->GetResidueName()
                            << left << setw(1) << " "
                            << right << setw(1) << residue->GetResidueChainId();
-                        if(residue->GetresidueSequenceNumber() != iNotSet)
-                            stream << right << setw(4) << residue->GetresidueSequenceNumber();
+                        if(residue->GetResidueSequenceNumber() != iNotSet)
+                            stream << right << setw(4) << residue->GetResidueSequenceNumber();
                         else
                             stream << right << setw(4) << " ";
                         stream << right << setw(1) << residue->GetResidueInsertionCode();
@@ -2403,8 +2403,8 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                            << right << setw(3) << residue->GetResidueName()
                            << left << setw(1) << " "
                            << right << setw(1) << residue->GetResidueChainId();
-                        if(residue->GetresidueSequenceNumber() != iNotSet)
-                            stream << right << setw(4) << residue->GetresidueSequenceNumber();
+                        if(residue->GetResidueSequenceNumber() != iNotSet)
+                            stream << right << setw(4) << residue->GetResidueSequenceNumber();
                         else
                             stream << right << setw(4) << " ";
                         stream << right << setw(1) << residue->GetResidueInsertionCode();
@@ -2439,8 +2439,8 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                    << right << setw(3) << residue->GetResidueName()
                    << left << setw(1) << " "
                    << right << setw(1) << residue->GetResidueChainId();
-                if(residue->GetresidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << residue->GetresidueSequenceNumber();
+                if(residue->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << residue->GetResidueSequenceNumber();
                 else
                     stream << right << setw(4) << " ";
                 stream << right << setw(1) << residue->GetResidueInsertionCode();

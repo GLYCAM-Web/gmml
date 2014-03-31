@@ -37,7 +37,7 @@ string PdbLinkResidue::GetResidueName()
     return residue_name_;
 }
 
-char PdbLinkResidue::GetResidueChainIdentifier()
+char PdbLinkResidue::GetResidueChainId()
 {
     return residue_chain_identifier_;
 }
@@ -75,7 +75,7 @@ void PdbLinkResidue::SetResidueName(const string residue_name)
     residue_name_ = residue_name;
 }
 
-void PdbLinkResidue::SetResidueChainIdentifier(char residue_chain_identifier)
+void PdbLinkResidue::SetResidueChainId(char residue_chain_identifier)
 {
     residue_chain_identifier_ = residue_chain_identifier;
 }
