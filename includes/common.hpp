@@ -5,7 +5,9 @@
 
 namespace gmml
 {
-    const double kNotSet = 123456789.0;
+    const double dNotSet = 123456789.0;
+    const int iNotSet = -123456;
+    const int iPdbLineLength = 80;
 }
 
 #endif // COMMON_HPP

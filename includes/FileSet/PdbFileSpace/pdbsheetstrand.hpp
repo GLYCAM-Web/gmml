@@ -17,7 +17,8 @@ namespace PdbFileSpace
     {
         FIRST_STRAND = 0,
         PARALLEL = 1,
-        ANTI_PARALLEL = -1
+        ANTI_PARALLEL = -1,
+        UnknownStrand
     };
 
     class PdbSheetStrandResidue;

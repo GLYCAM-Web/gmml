@@ -1,5 +1,6 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -21,7 +22,10 @@ PdbNumModelCard::PdbNumModelCard(stringstream& stream_block)
     {
         record_name_ = line.substr(0,6);
         Trim(record_name_);
-        number_of_models_ = ConvertString<int>(line.substr(10,4));
+        if(line.substr(10,4) == "    ")
+            number_of_models_ = iNotSet;
+        else
+            number_of_models_ = ConvertString<int>(line.substr(10,4));
 
         getline(stream_block, line);
         temp = line;
@@ -63,5 +67,11 @@ void PdbNumModelCard::SetNumberOfModels(int number_of_models)
 //////////////////////////////////////////////////////////
 void PdbNumModelCard::Print(ostream &out)
 {
-    out << "Record Name: " << record_name_ << ", Number of Models: " << number_of_models_ << endl << endl;
+    out << "Record Name: " << record_name_
+        << ", Number of Models: ";
+    if(number_of_models_ != iNotSet)
+        out << number_of_models_;
+    else
+        out << " ";
+    out << endl << endl;
 }

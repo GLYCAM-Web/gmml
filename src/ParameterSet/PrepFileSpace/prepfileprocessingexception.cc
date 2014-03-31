@@ -11,7 +11,7 @@ using namespace PrepFileSpace;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 PrepFileProcessingException::PrepFileProcessingException(const std::string &message)
-    : line_number_(kNotSet), message_(message) {}
+    : line_number_(dNotSet), message_(message) {}
 
 PrepFileProcessingException::PrepFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -23,7 +23,7 @@ PrepFileProcessingException::PrepFileProcessingException(int line_number, const 
 const char* PrepFileProcessingException::what() const throw()
 {
     what_ = "ParameterFile: " + message_;
-    if (line_number_ != kNotSet)
+    if (line_number_ != dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)

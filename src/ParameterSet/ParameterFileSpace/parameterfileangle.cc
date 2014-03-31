@@ -10,7 +10,7 @@ using namespace ParameterFileSpace;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileAngle::ParameterFileAngle()
-    : types_(), force_constant_(kNotSet), angle_(kNotSet), dscr_("") {}
+    : types_(), force_constant_(dNotSet), angle_(dNotSet), dscr_("") {}
 
 ParameterFileAngle::ParameterFileAngle(const std::vector<std::string> &types, double force_constant, double angle, const std::string &dscr)
     : types_(types), force_constant_(force_constant), angle_(angle), dscr_(dscr) {}
@@ -85,12 +85,12 @@ void ParameterFileAngle::Print(std::ostream& out)
         else
             out << std::setw(4) << (*it);
     }
-    if (force_constant_ == kNotSet)
+    if (force_constant_ == dNotSet)
         out << std::setw(15) << "--";
     else
         out << std::setw(15) << force_constant_;
 
-    if(angle_ == kNotSet)
+    if(angle_ == dNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << angle_;

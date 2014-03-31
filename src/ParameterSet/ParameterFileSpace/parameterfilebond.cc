@@ -11,7 +11,7 @@ using namespace gmml;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileBond::ParameterFileBond()
-    : types_(), force_constant_(kNotSet), length_(kNotSet), dscr_("") {}
+    : types_(), force_constant_(dNotSet), length_(dNotSet), dscr_("") {}
 
 ParameterFileBond::ParameterFileBond(const std::vector<std::string> &types, double force_constant, double length, const std::string &dscr)
     : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr) {}
@@ -101,12 +101,12 @@ void ParameterFileBond::Print(std::ostream& out)
             out << std::setw(4) << (*it);
     }
 
-    if(force_constant_ == kNotSet)
+    if(force_constant_ == dNotSet)
         out << std::setw(15) << "--";
     else
         out << std::setw(15) << force_constant_;
 
-    if(length_ == kNotSet)
+    if(length_ == dNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << length_;

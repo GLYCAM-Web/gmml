@@ -1,6 +1,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbsite.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbsiteresidue.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace gmml;
@@ -24,7 +25,10 @@ PdbSite::PdbSite(stringstream &site_block)
             Trim(site_id_);
             is_site_id_set=true;
         }
-        number_of_residues_ = ConvertString<int>(line.substr(15, 2));
+        if(line.substr(15, 2) == "  ")
+            number_of_residues_ = iNotSet;
+        else
+            number_of_residues_ = ConvertString<int>(line.substr(15, 2));
 
         int residue_counter_per_line = 0;
         while(residue_counter < number_of_residues_ && residue_counter_per_line < 4)
@@ -86,8 +90,13 @@ void PdbSite::SetNumberOfResidues(int number_of_residues){
 //////////////////////////////////////////////////////////
 void PdbSite::Print(ostream &out)
 {
-    out << "Site ID: " << site_id_ << ", Number of Residues: " << number_of_residues_ << endl <<
-           "---------------- Residues ----------------" << endl;
+    out << "Site ID: " << site_id_
+        << ", Number of Residues: ";
+    if(number_of_residues_ != iNotSet)
+        out << number_of_residues_;
+    else
+        out << " ";
+    out << endl << "---------------- Residues ----------------" << endl;
     for(PdbSite::SiteResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
         (*it)->Print(out);

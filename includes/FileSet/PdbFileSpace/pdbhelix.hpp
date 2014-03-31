@@ -24,7 +24,8 @@ namespace PdbFileSpace
         LEFT_HANDED_OMEGA_ = 7,
         LEFT_HANDED_GAMMA_ = 8,
         RIBBON_27 = 9,
-        POLYPROLINE = 10
+        POLYPROLINE = 10,
+        UnknownHelix
     };
 
     class PdbHelixResidue;

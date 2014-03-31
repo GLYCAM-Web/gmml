@@ -1,5 +1,6 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbcrystallographiccard.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -19,15 +20,36 @@ PdbCrystallographicCard::PdbCrystallographicCard(stringstream& stream_block)
     {
         record_name_ = line.substr(0,6);
         Trim(record_name_);
-        a_ = ConvertString<double>(line.substr(6,9));
-        b_ = ConvertString<double>(line.substr(15,9));
-        c_ = ConvertString<double>(line.substr(24,9));
-        alpha_ = ConvertString<double>(line.substr(33,7));
-        beta_ = ConvertString<double>(line.substr(40,7));
-        gamma_ = ConvertString<double>(line.substr(47,7));
+        if(line.substr(6, 9) != "         ")
+            a_ = ConvertString<double>(line.substr(6,9));
+        else
+            a_ = dNotSet;
+        if(line.substr(15, 9) != "         ")
+            b_ = ConvertString<double>(line.substr(15,9));
+        else
+            b_ = dNotSet;
+        if(line.substr(24, 9) != "         ")
+            c_ = ConvertString<double>(line.substr(24,9));
+        else
+            c_ = dNotSet;
+        if(line.substr(33, 7) != "       ")
+            alpha_ = ConvertString<double>(line.substr(33,7));
+        else
+            alpha_ = dNotSet;
+        if(line.substr(40, 7) != "       ")
+            beta_ = ConvertString<double>(line.substr(40,7));
+        else
+            beta_ = dNotSet;
+        if(line.substr(47, 7) != "       ")
+            gamma_ = ConvertString<double>(line.substr(47,7));
+        else
+            gamma_ = dNotSet;
         space_group_ = line.substr(55,11);
         Trim(space_group_);
-        z_value_ = ConvertString<int>(line.substr(66,4));
+        if(line.substr(66, 4) != "    ")
+            z_value_ = ConvertString<int>(line.substr(66,4));
+        else
+            z_value_ = iNotSet;
 
         getline(stream_block, line);
         temp = line;
@@ -120,6 +142,42 @@ void PdbCrystallographicCard::SetZValue(int z_value){
 //////////////////////////////////////////////////////////
 void PdbCrystallographicCard::Print(ostream &out)
 {
-    out << "Record Name: " << record_name_ << ", A: " << a_ << ", B: " << b_ << ", C: " << c_ <<
-           ", Alpha: " << alpha_ << ", Beta: " << beta_ << ", Gamma: " << gamma_ << "Space Group: " << space_group_ << ", Z Value: " << z_value_ << endl << endl;
+    out << "Record Name: " << record_name_
+        << ", A: ";
+    if(a_ != dNotSet)
+        out << a_;
+    else
+        out << " ";
+    out << ", B: ";
+    if(b_ != dNotSet)
+        out << b_;
+    else
+        out << " ";
+    out << ", C: ";
+    if(c_ != dNotSet)
+        out << c_;
+    else
+        out << " ";
+    out << ", Alpha: ";
+    if(alpha_ != dNotSet)
+        out << alpha_;
+    else
+        out << " ";
+    out << ", Beta: ";
+    if(beta_ != dNotSet)
+        out << beta_;
+    else
+        out << " ";
+    out << ", Gamma: ";
+    if(gamma_ != dNotSet)
+        out << gamma_;
+    else
+        out << " ";
+    out << "Space Group: " << space_group_
+        << ", Z Value: ";
+    if(z_value_ != iNotSet)
+        out << z_value_;
+    else
+        out << " ";
+    out << endl << endl;
 }

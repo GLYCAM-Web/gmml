@@ -11,7 +11,7 @@ using namespace gmml;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbLinkResidue::PdbLinkResidue() : atom_name_(""), alternate_location_indicator_(' '), residue_name_(""), residue_chain_identifier_(' '),
-    residue_sequence_number_(kNotSet), residue_insertion_code_(' '), symmetry_operator_(kNotSet) {}
+    residue_sequence_number_(dNotSet), residue_insertion_code_(' '), symmetry_operator_(dNotSet) {}
 
 PdbLinkResidue::PdbLinkResidue(const string &atom_name, char alternate_location_indicator, const string &residue_name,
                                char residue_chain_identifier, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
@@ -104,8 +104,20 @@ void PdbLinkResidue::SetSymmetryOperator(int symmetry_operator)
 //////////////////////////////////////////////////////////
 void PdbLinkResidue::Print(ostream &out)
 {
-    out << "Atom Name: " << atom_name_ << ", Alterante Location Identifier: " << alternate_location_indicator_ << ", Residue Name: " <<
-           residue_name_ << ", Residue Chain Identifier: " << residue_chain_identifier_ << ", Residue Sequence Number: " <<
-           residue_sequence_number_ << ", Residue Insertion Code: " << residue_insertion_code_ << ", Symmetry Operator: " <<
-           symmetry_operator_ << endl << endl;
+    out << "Atom Name: " << atom_name_
+        << ", Alterante Location Identifier: " << alternate_location_indicator_
+        << ", Residue Name: " << residue_name_
+        << ", Residue Chain Identifier: " << residue_chain_identifier_
+        << ", Residue Sequence Number: ";
+    if(residue_sequence_number_ != iNotSet)
+        out << residue_sequence_number_;
+    else
+        out << " ";
+    out << ", Residue Insertion Code: " << residue_insertion_code_
+        << ", Symmetry Operator: ";
+    if(symmetry_operator_ != iNotSet)
+        out << symmetry_operator_;
+    else
+        out << " ";
+    out << endl << endl;
 }

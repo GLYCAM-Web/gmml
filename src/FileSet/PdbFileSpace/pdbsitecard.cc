@@ -37,6 +37,7 @@ PdbSiteCard::PdbSiteCard(stringstream &stream_block)
             temp = line;
         }
         PdbSite* site = new PdbSite(site_block);
+        site_id = Trim(site_id);
         residue_sites_[site->GetSiteId()] = site;
     }
 }

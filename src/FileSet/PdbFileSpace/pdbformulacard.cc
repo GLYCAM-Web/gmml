@@ -26,6 +26,7 @@ PdbFormulaCard::PdbFormulaCard(stringstream &stream_block)
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         stringstream formula_block;
@@ -41,6 +42,7 @@ PdbFormulaCard::PdbFormulaCard(stringstream &stream_block)
             temp = line;
         }
         PdbFormula* formula = new PdbFormula(formula_block);
+        heterogen_identifier = Trim(heterogen_identifier);
         formulas_[heterogen_identifier] = formula;
     }
 }

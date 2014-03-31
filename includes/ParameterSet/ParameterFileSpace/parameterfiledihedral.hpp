@@ -29,7 +29,7 @@ namespace ParameterFileSpace
               * @param is_improper Boolean value to distinguish between proper and improper dihedrals
               */
             ParameterFileDihedral(const std::vector<std::string>& types, const ParameterFileDihedralTerm& term,
-                                  double scee = gmml::kNotSet, double scnb = gmml::kNotSet,
+                                  double scee = gmml::dNotSet, double scnb = gmml::dNotSet,
                                   bool is_generic = false, bool is_improper = false);
 
 ///Delaram

@@ -11,7 +11,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbFormula::PdbFormula() : heterogen_identifier_(""), component_number_(kNotSet), chemical_formula_("") {}
+PdbFormula::PdbFormula() : heterogen_identifier_(""), component_number_(dNotSet), chemical_formula_("") {}
 PdbFormula::PdbFormula(const string &heterogen_identifier, int component_number, const string &chemical_formula)
     : heterogen_identifier_(heterogen_identifier), component_number_(component_number), chemical_formula_(chemical_formula) {}
 
@@ -26,11 +26,15 @@ PdbFormula::PdbFormula(stringstream& stream_block)
     {
         if(!is_heterogen_identifier_set){
             heterogen_identifier_ = line.substr(12,3);
+            Trim(heterogen_identifier_);
             is_heterogen_identifier_set = true;
         }
 
         if(!is_component_number_set){
-            component_number_ = ConvertString<int>(line.substr(8,2));
+            if(line.substr(8, 2) == "  ")
+                component_number_ = iNotSet;
+            else
+                component_number_ = ConvertString<int>(line.substr(8,2));
             is_component_number_set = true;
         }
 
@@ -39,8 +43,8 @@ PdbFormula::PdbFormula(stringstream& stream_block)
         getline(stream_block, line);
         temp = line;
     }
-    string temp_formula = ss.str();
-    chemical_formula_ = Trim(temp_formula);
+    chemical_formula_ = ss.str();
+    chemical_formula_ = Trim(chemical_formula_);
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -87,5 +91,11 @@ void PdbFormula::SetChemicalFormula(const string chemical_formula)
 //////////////////////////////////////////////////////////
 void  PdbFormula::Print(ostream &out)
 {
-    out << "Heterogen ID: " << heterogen_identifier_ << ", Component Number: " << component_number_ << "Chemical Formula: " << chemical_formula_ << endl;
+    out << "Heterogen ID: " << heterogen_identifier_
+        << ", Component Number: ";
+    if(component_number_ != iNotSet)
+        out << component_number_;
+    else
+        out << " ";
+    out << "Chemical Formula: " << chemical_formula_ << endl;
 }

@@ -11,7 +11,7 @@ using namespace CoordinateFileSpace;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 CoordinateFileProcessingException::CoordinateFileProcessingException(const std::string &message)
-    : line_number_(kNotSet), message_(message) {}
+    : line_number_(dNotSet), message_(message) {}
 
 CoordinateFileProcessingException::CoordinateFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -23,7 +23,7 @@ CoordinateFileProcessingException::CoordinateFileProcessingException(int line_nu
 const char* CoordinateFileProcessingException::what() const throw()
 {
     what_ = "ParameterFile: " + message_;
-    if (line_number_ != kNotSet)
+    if (line_number_ != dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)

@@ -190,19 +190,19 @@ void LibraryFileResidue::Print(std::ostream& out)
         << setw(6) << "HGHT"
         << endl;
 
-    if(box_angle_ == kNotSet)
+    if(box_angle_ == dNotSet)
         out << setw(6) << "--";
     else
         out << setw(6) << box_angle_;
-    if(box_length_ == kNotSet)
+    if(box_length_ == dNotSet)
         out << setw(6) << "--";
     else
         out << setw(6) << box_length_;
-    if(box_width_ == kNotSet)
+    if(box_width_ == dNotSet)
         out << setw(6) << "--";
     else
         out << setw(6) << box_width_;
-    if(box_height_ == kNotSet)
+    if(box_height_ == dNotSet)
         out << setw(6) << "--";
     else
         out << setw(6) << box_height_;

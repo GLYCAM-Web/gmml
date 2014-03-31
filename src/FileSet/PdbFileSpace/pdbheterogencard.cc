@@ -25,6 +25,7 @@ PdbHeterogenCard::PdbHeterogenCard(stringstream &stream_block)
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
+            Trim(record_name_);
             is_record_name_set=true;
         }
         stringstream ss;

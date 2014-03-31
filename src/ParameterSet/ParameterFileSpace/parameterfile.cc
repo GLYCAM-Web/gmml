@@ -251,7 +251,7 @@ void ParameterFile::ProcessAtomType(const std::string& line)
         polarizability = ConvertString<double>(line.substr(14, 10));   /// Extract polarizability from the line
     } catch(...)
     {
-        polarizability = kNotSet;
+        polarizability = dNotSet;
     }
     if (line.size() > 24)               /// Line has description
         dscr = line.substr(24);
@@ -446,7 +446,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     if (in.fail())                              /// Invalid entry
         throw std::exception();
 
-    t.SetFactor(kNotSet);                        /// Improper dihedral doesn't have factor
+    t.SetFactor(dNotSet);                        /// Improper dihedral doesn't have factor
 
     if (line.size() > 60)                       /// Line has description
         dscr = line.substr(60);
@@ -599,7 +599,7 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
     Trim(type);                         /// Remove spaces from the begining and the end of the string
     if (atom_types_.find(type) == atom_types_.end())        /// Check for the existing atom type in the map
     {
-        atom_types_[type] = new ParameterFileAtom(type, kNotSet, kNotSet, radius, depth, dscr); /// Create a new entry in the map for a non-existing atom type in the map
+        atom_types_[type] = new ParameterFileAtom(type, dNotSet, dNotSet, radius, depth, dscr); /// Create a new entry in the map for a non-existing atom type in the map
     }
     else
     {
@@ -619,7 +619,7 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
     {
         if (atom_types_.find(*it) == atom_types_.end())         /// Check for the non-existing atom type in the map
         {
-            atom_types_[*it] = new ParameterFileAtom(*it, kNotSet, kNotSet, radius, depth, dscr);       /// Create a new entry in the map for the non-existing atom type in the map
+            atom_types_[*it] = new ParameterFileAtom(*it, dNotSet, dNotSet, radius, depth, dscr);       /// Create a new entry in the map for the non-existing atom type in the map
         }
         else
         {
@@ -636,11 +636,11 @@ double ParameterFile::ProcessDoubleDihedralDescription(const std::string& dscr, 
     double val;
     size_t pos = dscr.find(string(key + "="));      /// Find the starting position of the value of the given key in the given description
     if (pos == string::npos)                        /// Key is not found
-        return kNotSet;
+        return dNotSet;
     std::istringstream ss(dscr.substr(pos + key.size() + 1));
     ss >> val;                                      /// Extract the value of the key from the found position
     if (ss.fail())
-        return kNotSet;
+        return dNotSet;
     return val;
 }
 

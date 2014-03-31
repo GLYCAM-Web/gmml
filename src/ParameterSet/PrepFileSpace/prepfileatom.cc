@@ -12,7 +12,7 @@ using namespace PrepFileSpace;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 PrepFileAtom::PrepFileAtom() : index_(0), name_(""), type_(""), topological_type_(kTopTypeM), bond_index_(0), angle_index_(0), dihedral_index_(0),
-    bond_length_(kNotSet), angle_(kNotSet), dihedral_(kNotSet), charge_(kNotSet) {}
+    bond_length_(dNotSet), angle_(dNotSet), dihedral_(dNotSet), charge_(dNotSet) {}
 
 PrepFileAtom::PrepFileAtom(int index, const string& name, const string& type, TopologicalType topological_type, int bond_index, int angle_index, int dihedral_index,
                            double bond_length, double angle, double dihedral, double charge) :

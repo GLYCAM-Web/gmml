@@ -1,6 +1,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbmatrixn.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmatrixncard.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -18,18 +19,24 @@ PdbMatrixNCard::PdbMatrixNCard(stringstream &stream_block)
     MatrixNVector matrix_1, matrix_2, matrix_3;
     while (!Trim(temp).empty())
     {
-        int index = ConvertString<int>(line.substr(5, 1));
+        int index;
+        if(line.substr(5,1) == " ")
+            index = iNotSet;
+        else
+            index = ConvertString<int>(line.substr(5, 1));
         PdbMatrixN* matrix = new PdbMatrixN(line);
         switch (index) {
-        case 1 :
-           matrix_1.push_back(matrix);
-           break;
-        case 2:
-            matrix_2.push_back(matrix);
-            break;
-        case 3:
-            matrix_3.push_back(matrix);
-            break;
+            case 1 :
+                matrix_1.push_back(matrix);
+                break;
+            case 2:
+                matrix_2.push_back(matrix);
+                break;
+            case 3:
+                matrix_3.push_back(matrix);
+                break;
+            case iNotSet:
+                break;
         }
         getline(stream_block, line);
         temp = line;

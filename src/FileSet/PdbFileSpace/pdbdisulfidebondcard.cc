@@ -3,6 +3,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbdisulfidebondcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbdisulfideresiduebond.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -70,7 +71,11 @@ void PdbDisulfideBondCard::Print(ostream &out)
            "================= Disulfide Bond =================" << endl;
     for(PdbDisulfideBondCard::DisulfideResidueBondMap::iterator it = disulfide_residue_bonds_.begin(); it != disulfide_residue_bonds_.end(); it++)
     {
-        out << "Serial Number: " << (it)->first << endl;
+        out << "Serial Number: ";
+        if((it)->first != iNotSet)
+            out << (it)->first << endl;
+        else
+            out << " " << endl;
         (it)->second->Print();
         out << endl;
     }

@@ -39,7 +39,7 @@ namespace PdbFileSpace
               * @param comments
               */
             PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name, const std::vector<std::string>& chain_ids,
-                                     const std::string& fragment, const std::vector<std::string>& molecule_synonyms, std::vector<int>& enzyme_commission_numbers,
+                                     const std::string& fragment, const std::vector<std::string>& molecule_synonyms, std::vector<std::string>& enzyme_commission_numbers,
                                      bool is_engineered, bool has_mutation, const std::string& comments);
             /*! \fn
               * A constructor that get a stream block of compound specifications and parse the whole block to fill the related fields
@@ -79,7 +79,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the enzyme commission numbers in compound specification
               * @return enzyme_commission_numbers_ of the current object of this class
               */
-            std::vector<int> GetEnzymeCommissionNumbers();
+            std::vector<std::string> GetEnzymeCommissionNumbers();
             /*! \fn
               * An accessor function in order to access to the is engineered attribute in compound specification
               * @return is_engineered_ attribute of the current object of this class
@@ -145,13 +145,13 @@ namespace PdbFileSpace
               * Set the enzyme_commission_numbers_ attribute of the compound specification
               * @param enzyme_commission_numbers The enzyme commission numbers of the current object
               */
-            void SetEnzymeCommissionNumbers(std::vector<int> enzyme_commission_numbers);
+            void SetEnzymeCommissionNumbers(std::vector<std::string> enzyme_commission_numbers);
             /*! \fn
               * A function in order to add the enzyme commission number to the current object
               * Set the enzyme_commission_number_ attribute of the compound specification
               * @param enzyme_commission_number The enzyme commission number of the current object
               */
-            void AddEnzymeCommissionNumber(int enzyme_commission_number);
+            void AddEnzymeCommissionNumber(std::string enzyme_commission_number);
             /*! \fn
               * A mutator function in order to set the is engineered attribute of the current object
               * Set the is_engineered_ attribute of the compound specification
@@ -194,7 +194,7 @@ namespace PdbFileSpace
             std::vector<std::string> chain_ids_;
             std::string fragment_;
             std::vector<std::string> molecule_synonyms_;
-            std::vector<int> enzyme_commission_numbers_;
+            std::vector<std::string> enzyme_commission_numbers_;
             bool is_engineered_;
             bool has_mutation_;
             std::string comments_;

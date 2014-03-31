@@ -1,6 +1,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace gmml;
@@ -67,7 +68,11 @@ void PdbHeterogenAtomCard::Print(ostream &out)
            "________________ Heterogen Atoms ___________________" << endl;
     for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it = heterogen_atoms_.begin(); it != heterogen_atoms_.end(); it++)
     {
-        out << "Atom Serial Number: " << (it)->first << endl;
+        out << "Atom Serial Number: ";
+        if((it)->first != iNotSet)
+            out << (it)->first << endl;
+        else
+            out << " " << endl;
         (it)->second->Print();
         out << endl;
     }

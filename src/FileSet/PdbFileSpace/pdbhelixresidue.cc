@@ -10,7 +10,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHelixResidue::PdbHelixResidue() : residue_name_(""), residue_chain_id_(' '), residue_sequence_number_(kNotSet), residue_insertion_code_(' ' ) {}
+PdbHelixResidue::PdbHelixResidue() : residue_name_(""), residue_chain_id_(' '), residue_sequence_number_(dNotSet), residue_insertion_code_(' ' ) {}
 PdbHelixResidue::PdbHelixResidue(const string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code)
     : residue_name_(residue_name), residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number),
       residue_insertion_code_(residue_insertion_code) {}
@@ -70,6 +70,13 @@ void PdbHelixResidue::SetResidueInsertionCode(char residue_insertion_code)
 //////////////////////////////////////////////////////////
 void PdbHelixResidue::Print(ostream &out)
 {
-    out << "Residue Name: " << residue_name_ << ", Residue Chain ID: " << residue_chain_id_ << ", Residue Sequence Number: " <<
-           residue_sequence_number_ << ", Residue Insertion Code: " << residue_insertion_code_ << endl;
+    out << "Residue Name: " << residue_name_
+        << ", Residue Chain ID: " << residue_chain_id_
+        << ", Residue Sequence Number: ";
+    if(residue_sequence_number_ != iNotSet)
+        out << residue_sequence_number_;
+    else
+        out << " ";
+    out << ", Residue Insertion Code: " << residue_insertion_code_
+        << endl;
 }
