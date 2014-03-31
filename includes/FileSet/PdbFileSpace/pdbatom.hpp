@@ -77,8 +77,8 @@ namespace PdbFileSpace
               */
             double GetAtomOccupancy();
             /*! \fn
-              * An accessor function in order to access to the atom tempreture factor in a pdb atom
-              * @return atom_tempreture_factor_ attribute of the current object of this class
+              * An accessor function in order to access to the atom temperature factor in a pdb atom
+              * @return atom_temperature_factor_ attribute of the current object of this class
               */
             double GetAtomTempretureFactor();
             /*! \fn
@@ -150,11 +150,11 @@ namespace PdbFileSpace
               */
             void SetAtomOccupancy(double atom_occupancy);
             /*! \fn
-              * A mutator function in order to set the atom tempreture factor of the current object
-              * Set the atom_tempreture_factor_ attribute of the current pdb atom
-              * @param atom_tempreture_factor The atom tempreture factor of the current object
+              * A mutator function in order to set the atom temperature factor of the current object
+              * Set the atom_temperature_factor_ attribute of the current pdb atom
+              * @param atom_temperature_factor The atom temperature factor of the current object
               */
-            void SetAtomTempretureFactor(double atom_tempreture_factor);
+            void SetAtomTempretureFactor(double atom_temperature_factor);
             /*! \fn
               * A mutator function in order to set the atom element symbol of the current object
               * Set the atom_element_symbol_ attribute of the current pdb atom
@@ -188,7 +188,7 @@ namespace PdbFileSpace
             char atom_insertion_code_;                  /*!< Insertion code for the atom in it belonging residue */
             Geometry::Coordinate atom_orthogonal_coordinate_;   /*!< Atom coordinate */
             double atom_occupancy_;                             /*!< Atom occupancy */
-            double atom_tempreture_factor_;                     /*!< Atom tempreture factor */
+            double atom_temperature_factor_;                     /*!< Atom temperature factor */
             std::string atom_element_symbol_;                   /*!< Atom element symbol */
             std::string atom_charge_;                           /*!< Atom charge */
 

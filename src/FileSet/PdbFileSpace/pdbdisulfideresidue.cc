@@ -24,7 +24,7 @@ string PdbDisulfideResidue::GetResidueName()
     return residue_name_;
 }
 
-char PdbDisulfideResidue::GetResidueChainIdentifier()
+char PdbDisulfideResidue::GetResidueChainId()
 {
     return residue_chain_identifier_;
 }
@@ -52,7 +52,7 @@ void PdbDisulfideResidue::SetResidueName(const string residue_name)
     residue_name_ = residue_name;
 }
 
-void PdbDisulfideResidue::SetResidueChainIdentifier(char residue_chain_identifier)
+void PdbDisulfideResidue::SetResidueChainId(char residue_chain_identifier)
 {
     residue_chain_identifier_ = residue_chain_identifier;
 }

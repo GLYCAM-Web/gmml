@@ -43,7 +43,7 @@ char PdbSiteResidue::GetResidueChainId(){
     return residue_chain_id_;
 }
 
-int PdbSiteResidue::GetresidueSequenceNumber(){
+int PdbSiteResidue::GetResidueSequenceNumber(){
     return residue_sequence_number_;
 }
 

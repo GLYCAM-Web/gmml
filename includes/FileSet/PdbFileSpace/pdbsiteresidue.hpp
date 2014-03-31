@@ -47,7 +47,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the residue sequence number in a pdb site residue
               * @return resdiue_sequence_number_ attribute of the current object of this class
               */
-            int GetresidueSequenceNumber();
+            int GetResidueSequenceNumber();
             /*! \fn
               * An accessor function in order to access to the residue insertion code in a pdb site residue
               * @return resdiue_insertion_code_ attribute of the current object of this class

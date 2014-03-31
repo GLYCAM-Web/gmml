@@ -49,7 +49,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the chain identifier in a residue modification
               * @return chain_identifier_ attribute of the current object of this class
               */
-            char GetChainIdentifier();
+            char GetChainId();
             /*! \fn
               * An accessor function in order to access to the sequence number in a residue modification
               * @return sequence_number_ attribute of the current object of this class
@@ -91,7 +91,7 @@ namespace PdbFileSpace
               * Set the chain_identifier_ attribute of the current residue modification
               * @param chain_identifier The chain identifier of the current object
               */
-            void SetChainIdentifier(char chain_identifier);
+            void SetChainId(char chain_identifier);
             /*! \fn
               * A mutator function in order to set the sequence number of the current object
               * Set the sequence_number_ attribute of the current residue modification

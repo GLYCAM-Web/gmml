@@ -111,11 +111,11 @@ PdbAtom::PdbAtom(string &line)
 
     if(line.substr(60, 6) == "      ")
     {
-        atom_tempreture_factor_ = dNotSet;
+        atom_temperature_factor_ = dNotSet;
     }
     else
     {
-        atom_tempreture_factor_ = ConvertString<double>(line.substr(60, 6));
+        atom_temperature_factor_ = ConvertString<double>(line.substr(60, 6));
     }
 
     atom_element_symbol_ = line.substr(76, 2);
@@ -164,7 +164,7 @@ double PdbAtom::GetAtomOccupancy(){
 }
 
 double PdbAtom::GetAtomTempretureFactor(){
-    return atom_tempreture_factor_;
+    return atom_temperature_factor_;
 }
 
 string PdbAtom::GetAtomElementSymbol(){
@@ -214,8 +214,8 @@ void PdbAtom::SetAtomOccupancy(double atom_occupancy){
     atom_occupancy_ = atom_occupancy;
 }
 
-void PdbAtom::SetAtomTempretureFactor(double atom_tempreture_factor){
-    atom_tempreture_factor_ = atom_tempreture_factor;
+void PdbAtom::SetAtomTempretureFactor(double atom_temperature_factor){
+    atom_temperature_factor_ = atom_temperature_factor;
 }
 
 void PdbAtom::SetAtomElementSymbol(const string atom_element_symbol){
@@ -254,10 +254,10 @@ void PdbAtom::Print(ostream &out)
     else
         out << atom_occupancy_;
     out << ", Atom Tempreture Factor: ";
-    if(atom_tempreture_factor_ == dNotSet)
+    if(atom_temperature_factor_ == dNotSet)
         out << " ";
     else
-        out << atom_tempreture_factor_;
+        out << atom_temperature_factor_;
     out << ", Atom Element Symbol: " << atom_element_symbol_
         << ", Atom Charge: " << atom_charge_ << endl;
 }
