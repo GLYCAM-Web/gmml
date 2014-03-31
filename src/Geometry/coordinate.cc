@@ -1,6 +1,8 @@
 #include "../includes/Geometry/coordinate.hpp"
+#include "../includes/common.hpp"
 
 using namespace Geometry;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -57,12 +59,23 @@ void Coordinate::Translate(double x, double y, double z)
     z_ += z;
 }
 
+bool Coordinate::CompareTo(Coordinate coordinate)
+{
+    if(x_ == coordinate.x_ && y_ == coordinate.y_ && z_ == coordinate.z_)
+        return true;
+    else
+        return false;
+}
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
 void Coordinate::Print(std::ostream& out)
 {
-    out << std::setw(10) << x_ << ", " << std::setw(10) << y_ << ", " << std::setw(10) << z_;
+    if(this->CompareTo(Coordinate(dNotSet, dNotSet, dNotSet)) == true)
+        out << std::setw(10) << " " << ", " << std::setw(10) << " " << ", " << std::setw(10) << " ";
+    else
+        out << std::setw(10) << x_ << ", " << std::setw(10) << y_ << ", " << std::setw(10) << z_;
 }
 
 

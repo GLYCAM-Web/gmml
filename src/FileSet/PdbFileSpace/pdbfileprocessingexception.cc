@@ -13,7 +13,7 @@ using namespace PdbFileSpace;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 PdbFileProcessingException::PdbFileProcessingException(const std::string &message)
-    : line_number_(kNotSet), message_(message) {}
+    : line_number_(dNotSet), message_(message) {}
 
 PdbFileProcessingException::PdbFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -25,7 +25,7 @@ PdbFileProcessingException::PdbFileProcessingException(int line_number, const st
 const char* PdbFileProcessingException::what() const throw()
 {
     what_ = "ParameterFile: " + message_;
-    if (line_number_ != kNotSet)
+    if (line_number_ != dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)

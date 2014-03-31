@@ -1,6 +1,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdboriginxn.hpp"
 //#include "../../../includes/Geometry/coordinate.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -22,11 +23,26 @@ PdbOriginXn::PdbOriginXn(stringstream& stream_block)
     {
         record_name_ = line.substr(0,5);
         Trim(record_name_);
-        n_ = ConvertString<int>(line.substr(5,1));
-        origin_.SetX( ConvertString<double>(line.substr(10,10)));
-        origin_.SetY( ConvertString<double>(line.substr(20,10)));
-        origin_.SetZ( ConvertString<double>(line.substr(30,10)));
-        t_ = ConvertString<double>(line.substr(45,10));
+        if(line.substr(5,1) == " ")
+            n_ = iNotSet;
+        else
+            n_ = ConvertString<int>(line.substr(5,1));
+        if(line.substr(10,10) == "          ")
+            origin_.SetX(dNotSet);
+        else
+            origin_.SetX( ConvertString<double>(line.substr(10,10)));
+        if(line.substr(20, 10) == "          ")
+            origin_.SetY(dNotSet);
+        else
+            origin_.SetY( ConvertString<double>(line.substr(20,10)));
+        if(line.substr(30, 10) == "          ")
+            origin_.SetZ(dNotSet);
+        else
+            origin_.SetZ( ConvertString<double>(line.substr(30,10)));
+        if(line.substr(45, 10) == "          ")
+            t_ = dNotSet;
+        else
+            t_ = ConvertString<double>(line.substr(45,10));
 
         getline(stream_block, line);
         temp = line;
@@ -79,7 +95,17 @@ void PdbOriginXn::SetT(double t){
 //////////////////////////////////////////////////////////
 void PdbOriginXn::Print(ostream &out)
 {
-    out << "Record Name: " << record_name_ << n_ << ", Origin: ";
+    out << "Record Name: " << record_name_;
+    if(n_ != iNotSet)
+        out << n_;
+    else
+        out << " ";
+    out << ", Origin: ";
     origin_.Print(out);
-    out << ", T: " << t_ << endl;
+    out << ", T: ";
+    if(t_ != dNotSet)
+        out << t_;
+    else
+        out << " ";
+    out << endl;
 }

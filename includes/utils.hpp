@@ -6,6 +6,7 @@
 #include <sstream>
 #include <algorithm>
 #include <vector>
+#include <iomanip>
 #include "boost/tokenizer.hpp"
 #include "boost/foreach.hpp"
 
@@ -49,7 +50,22 @@ namespace gmml
             return val;
 
         throw std::invalid_argument("ConvertString: invalid conversion of string " + str);
-    }    
+    }
+
+    /// Expand a given line to a desired length by adding space at the end of the original one
+    inline std::string& ExpandLine(std::string& line, int length)
+    {
+        if(line.length() >= length)
+            return line;
+        else
+        {
+            int space = length - line.length();
+            std::stringstream ss;
+            ss << line << std::setw(space) << " ";
+            line = ss.str();
+            return line;
+        }
+    }
 }
 
 #endif // UTILS_HPP

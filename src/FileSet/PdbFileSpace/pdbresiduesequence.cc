@@ -11,7 +11,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbResidueSequence::PdbResidueSequence() : chain_id_(' '), number_of_residues_(kNotSet) {}
+PdbResidueSequence::PdbResidueSequence() : chain_id_(' '), number_of_residues_(dNotSet) {}
 
 PdbResidueSequence::PdbResidueSequence(char chain_id, int number_of_residues, const vector<string> &residue_names) : chain_id_(chain_id),
     number_of_residues_(number_of_residues)
@@ -40,7 +40,10 @@ PdbResidueSequence::PdbResidueSequence(stringstream& stream_block)
             is_chain_id_set=true;
         }
         if(!is_number_of_residues_set){
-            number_of_residues_ = ConvertString<int>(line.substr(13,4));
+            if(line.substr(13,4) == "    ")
+                number_of_residues_ = iNotSet;
+            else
+                number_of_residues_ = ConvertString<int>(line.substr(13,4));
             is_number_of_residues_set=true;
         }
         ss << line.substr(19,51) << " ";
@@ -49,6 +52,10 @@ PdbResidueSequence::PdbResidueSequence(stringstream& stream_block)
         temp = line;
     }
     residue_names_ = Split(ss.str(), " ");
+    for(vector<string>::iterator it = residue_names_.begin(); it != residue_names_.end(); it++)
+    {
+        Trim(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -105,7 +112,13 @@ void PdbResidueSequence::AddResidueName(const string residue_name)
 //////////////////////////////////////////////////////////
 void PdbResidueSequence::Print(ostream &out)
 {
-    out << "Chain ID: " << chain_id_ << ", " << "Number of Residues: " << number_of_residues_ << "Residue Names: ";
+    out << "Chain ID: " << chain_id_
+        << ", " << "Number of Residues: ";
+    if(number_of_residues_ != iNotSet)
+        out << number_of_residues_;
+    else
+        out << " ";
+    out << "Residue Names: ";
     for(vector<string>::iterator it = residue_names_.begin(); it != residue_names_.end(); it++)
     {
         out << (*it) << ", ";

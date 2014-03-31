@@ -57,6 +57,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -70,26 +71,26 @@ PdbFile::PdbFile(const std::string &pdb_file)
     path_ = pdb_file;
     header_ = NULL;
     title_ = NULL;
-    compound_ = NULL;	
+    compound_ = NULL;
     number_of_models_ = NULL;
     model_type_ = NULL;
-	residues_sequence_ = NULL;
-	residue_modification_ = NULL;
-	heterogens_ = NULL;
-	heterogens_name_ = NULL;
-	heterogen_synonyms_ = NULL;
-	formulas_ = NULL;
-	helixes_ = NULL;
-	sheets_ = NULL;
-	disulfide_bonds_ = NULL;
-	links_ = NULL;
-	sites_ = NULL;
-	crystallography_ = NULL;
-	origins_ = NULL;
-	scales_ = NULL;
-	matrices_ = NULL;
-	models_ = NULL;
-	connectivities_ = NULL;
+    residues_sequence_ = NULL;
+    residue_modification_ = NULL;
+    heterogens_ = NULL;
+    heterogens_name_ = NULL;
+    heterogen_synonyms_ = NULL;
+    formulas_ = NULL;
+    helixes_ = NULL;
+    sheets_ = NULL;
+    disulfide_bonds_ = NULL;
+    links_ = NULL;
+    sites_ = NULL;
+    crystallography_ = NULL;
+    origins_ = NULL;
+    scales_ = NULL;
+    matrices_ = NULL;
+    models_ = NULL;
+    connectivities_ = NULL;
 
     std::ifstream in_file;
     try
@@ -99,7 +100,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     catch(exception &ex)
     {
         throw PdbFileProcessingException(__LINE__, "File not found");
-    }        
+    }
     Read(in_file);
     in_file.close();            /// Close the parameter files
 }
@@ -244,6 +245,7 @@ void PdbFile::ParseCards(ifstream &in_stream)
         throw PdbFileProcessingException("Error reading file");
     }
 
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "HEADER")
@@ -479,6 +481,7 @@ void PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -486,6 +489,7 @@ void PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -498,6 +502,7 @@ void PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -505,6 +510,7 @@ void PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -515,6 +521,7 @@ void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -522,6 +529,7 @@ void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -534,6 +542,7 @@ void PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -541,6 +550,7 @@ void PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -551,6 +561,7 @@ void PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -558,6 +569,7 @@ void PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -568,6 +580,7 @@ void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -575,6 +588,7 @@ void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -587,6 +601,7 @@ void PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -594,6 +609,7 @@ void PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -604,6 +620,7 @@ void PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -611,6 +628,7 @@ void PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -621,6 +639,7 @@ void PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -628,6 +647,7 @@ void PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -638,6 +658,7 @@ void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -645,6 +666,7 @@ void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -657,6 +679,7 @@ void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -664,6 +687,7 @@ void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -676,6 +700,7 @@ void PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -683,6 +708,7 @@ void PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -693,6 +719,7 @@ void PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -700,6 +727,7 @@ void PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -710,6 +738,7 @@ void PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -717,6 +746,7 @@ void PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -727,6 +757,7 @@ void PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -734,6 +765,7 @@ void PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -744,6 +776,7 @@ void PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -751,6 +784,7 @@ void PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -761,6 +795,7 @@ void PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -768,6 +803,7 @@ void PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -778,6 +814,7 @@ void PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -785,6 +822,7 @@ void PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -795,6 +833,7 @@ void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -802,6 +841,7 @@ void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -814,6 +854,7 @@ void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -821,6 +862,7 @@ void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -833,6 +875,7 @@ void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -840,6 +883,7 @@ void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -852,6 +896,7 @@ void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -859,6 +904,7 @@ void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -871,6 +917,7 @@ void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -878,6 +925,7 @@ void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -890,6 +938,7 @@ void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -897,6 +946,7 @@ void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -909,6 +959,7 @@ void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -916,6 +967,7 @@ void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -928,6 +980,7 @@ void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -935,6 +988,7 @@ void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -947,6 +1001,7 @@ void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -954,6 +1009,7 @@ void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -966,6 +1022,7 @@ void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -973,6 +1030,7 @@ void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -985,6 +1043,7 @@ void PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -992,6 +1051,7 @@ void PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -1002,6 +1062,7 @@ void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -1009,6 +1070,7 @@ void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -1021,6 +1083,7 @@ void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -1028,6 +1091,7 @@ void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -1040,6 +1104,7 @@ void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
 
@@ -1047,6 +1112,7 @@ void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,5);
         record_name = Trim(record_name);
     }
@@ -1059,6 +1125,7 @@ void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
 
@@ -1066,6 +1133,7 @@ void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,5);
         record_name = Trim(record_name);
     }
@@ -1078,6 +1146,7 @@ void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
 
@@ -1085,6 +1154,7 @@ void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,5);
         record_name = Trim(record_name);
     }
@@ -1097,6 +1167,7 @@ void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -1105,6 +1176,7 @@ void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -1117,6 +1189,7 @@ void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -1124,6 +1197,7 @@ void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -1136,6 +1210,7 @@ void PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -1143,6 +1218,7 @@ void PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -1153,6 +1229,7 @@ void PdbFile::ParseEndCard(std::ifstream& stream, string& line)
     stringstream stream_block;
     stream_block << line << endl;
     getline(stream, line);
+    line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
@@ -1160,6 +1237,7 @@ void PdbFile::ParseEndCard(std::ifstream& stream, string& line)
     {
         stream_block << line << endl;
         getline(stream, line);
+        line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
     }
@@ -1447,10 +1525,10 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
         /// Enzyme commission numbers specification
         if(compound_specification->GetEnzymeCommissionNumbers().size() > 0)
         {
-            vector<int> enzyme_commission_numbers = compound_specification->GetEnzymeCommissionNumbers();
+            vector<string> enzyme_commission_numbers = compound_specification->GetEnzymeCommissionNumbers();
             stringstream ss;
             ss << " EC: ";
-            for(vector<int>::iterator it1 = enzyme_commission_numbers.begin(); it1 != enzyme_commission_numbers.end(); it1++)
+            for(vector<string>::iterator it1 = enzyme_commission_numbers.begin(); it1 != enzyme_commission_numbers.end(); it1++)
             {
                 if(it1 < enzyme_commission_numbers.end()-1)
                     ss << (*it1) << ", ";
@@ -1525,9 +1603,12 @@ void PdbFile::ResolveExpirationDateCard(std::ofstream& stream)
 void PdbFile::ResolveNumModelCard(std::ofstream& stream)
 {
     stream << left << setw(6) << number_of_models_->GetRecordName()
-           << left << setw(4) << " "
-           << right << setw(4) << number_of_models_->GetNumberOfModels()
-           << left << setw(66) << " "
+           << left << setw(4) << " ";
+    if(number_of_models_->GetNumberOfModels() != iNotSet)
+        stream << right << setw(4) << number_of_models_->GetNumberOfModels();
+    else
+        stream << right << setw(4) << " ";
+    stream << left << setw(66) << " "
            << endl;
 }
 
@@ -1645,9 +1726,12 @@ void PdbFile::ResolveSequenceResidueCard(std::ofstream& stream)
                    << right << setw(3) << serial_number
                    << right << setw(1) << " "
                    << right << setw(1) << residue_sequence->GetChainId()
-                   << right << setw(1) << " "
-                   << right << setw(4) << residue_sequence->GetNumberOfResidues()
-                   << right << setw(1) << " "
+                   << right << setw(1) << " ";
+            if(residue_sequence->GetNumberOfResidues() != iNotSet)
+                stream << right << setw(4) << residue_sequence->GetNumberOfResidues();
+            else
+                stream << right << setw(4) << " ";
+            stream << right << setw(1) << " "
                    << right << setw(52) << ss.str()
                    << right << setw(10) << " "
                    << endl;
@@ -1686,9 +1770,12 @@ void PdbFile::ResolveSequenceResidueCard(std::ofstream& stream)
                        << right << setw(3) << serial_number
                        << right << setw(1) << " "
                        << right << setw(1) << residue_sequence->GetChainId()
-                       << right << setw(1) << " "
-                       << right << setw(4) << residue_sequence->GetNumberOfResidues()
-                       << right << setw(1) << " "
+                       << right << setw(1) << " ";
+                if(residue_sequence->GetNumberOfResidues() != iNotSet)
+                    stream << right << setw(4) << residue_sequence->GetNumberOfResidues();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << " "
                        << right << setw(52) << ss.str()
                        << right << setw(10) << " "
                        << endl;
@@ -1712,9 +1799,12 @@ void PdbFile::ResolveModificationResidueCard(std::ofstream& stream)
                << right << setw(3) << residue_modification->GetResidueName()
                << left << setw(1) << " "
                << right << setw(1) << residue_modification->GetChainIdentifier()
-               << left << setw(1) << " "
-               << right << setw(4) << residue_modification->GetSequenceNumber()
-               << right << setw(1) << residue_modification->GetInsertionCode()
+               << left << setw(1) << " ";
+        if(residue_modification->GetSequenceNumber() != iNotSet)
+            stream << right << setw(4) << residue_modification->GetSequenceNumber();
+        else
+            stream << right << setw(4) << " ";
+        stream << right << setw(1) << residue_modification->GetInsertionCode()
                << left << setw(1) << " "
                << right << setw(3) << residue_modification->GetStandardResidueName()
                << left << setw(2) << " "
@@ -1735,12 +1825,18 @@ void PdbFile::ResolveHeterogenCard(std::ofstream& stream)
                << left << setw(1) << " "
                << right << setw(3) << heterogen->GetHeterogenId()
                << left << setw(2) << " "
-               << right << setw(1) << heterogen->GetChainIdentifier()
-               << right << setw(4) << heterogen->GetSequenceNumber()
-               << right << setw(1) << heterogen->GetInsertionCode()
-               << left << setw(2) << " "
-               << right << setw(5) << heterogen->GetNumberOfHeterogenAtoms()
-               << left << setw(5) << " "
+               << right << setw(1) << heterogen->GetChainIdentifier();
+        if(heterogen->GetSequenceNumber() != iNotSet)
+            stream << right << setw(4) << heterogen->GetSequenceNumber();
+        else
+            stream << right << setw(4) << " ";
+        stream << right << setw(1) << heterogen->GetInsertionCode()
+               << left << setw(2) << " ";
+        if(heterogen->GetNumberOfHeterogenAtoms() != iNotSet)
+            stream << right << setw(5) << heterogen->GetNumberOfHeterogenAtoms();
+        else
+            stream << right << setw(5) << " ";
+        stream << left << setw(5) << " "
                << left << setw(40) << heterogen->GetDscr()
                << left << setw(10) << " "
                << endl;
@@ -1894,9 +1990,12 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
         if(formula->GetChemicalFormula().length() > MAX_NAME_LENGTH_IN_LINE)
         {
             stream << left << setw(6) << formulas_->GetRecordName()
-                   << left << setw(2) << " "
-                   << right << setw(2) << formula->GetComponentNumber()
-                   << left << setw(2) << " "
+                   << left << setw(2) << " ";
+            if(formula->GetComponentNumber() != iNotSet)
+                stream << right << setw(2) << formula->GetComponentNumber();
+            else
+                stream << right << setw(2) << formula->GetComponentNumber();
+            stream << left << setw(2) << " "
                    << right << setw(3) << formula->GetHeterogenIdentifier()
                    << left << setw(1) << " "
                    << right << setw(2) << " "
@@ -1910,8 +2009,12 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
                 if(i != counter)
                 {
                     stream << left << setw(6) << formulas_->GetRecordName()
-                           << left << setw(2) << " "
-                           << right << setw(2) << formula->GetComponentNumber()
+                           << left << setw(2) << " ";
+                    if(formula->GetComponentNumber() != iNotSet)
+                        stream << right << setw(2) << formula->GetComponentNumber();
+                    else
+                        stream << right << setw(2) << formula->GetComponentNumber();
+                    stream << left << setw(2) << " "
                            << left << setw(2) << " "
                            << right << setw(3) << formula->GetHeterogenIdentifier()
                            << left << setw(1) << " "
@@ -1924,8 +2027,12 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
                 else
                 {
                     stream << left << setw(6) << formulas_->GetRecordName()
-                           << left << setw(2) << " "
-                           << right << setw(2) << formula->GetComponentNumber()
+                           << left << setw(2) << " ";
+                    if(formula->GetComponentNumber()!= iNotSet)
+                        stream << right << setw(2) << formula->GetComponentNumber();
+                    else
+                        stream << right << setw(2) << formula->GetComponentNumber();
+                    stream << left << setw(2) << " "
                            << left << setw(2) << " "
                            << right << setw(3) << formula->GetHeterogenIdentifier()
                            << left << setw(1) << " "
@@ -1940,8 +2047,12 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
         else
         {
             stream << left << setw(6) << formulas_->GetRecordName()
-                   << left << setw(2) << " "
-                   << right << setw(2) << formula->GetComponentNumber()
+                   << left << setw(2) << " ";
+            if(formula->GetComponentNumber() != iNotSet)
+                stream << right << setw(2) << formula->GetComponentNumber();
+            else
+                stream << right << setw(2) << formula->GetComponentNumber();
+            stream << left << setw(2) << " "
                    << left << setw(2) << " "
                    << right << setw(3) << formula->GetHeterogenIdentifier()
                    << left << setw(1) << " "
@@ -1969,29 +2080,44 @@ void PdbFile::ResolveHelixCard(std::ofstream& stream)
             if(helix->GetHelixSerialNumber() == serial_number)
             {
                 stream << left << setw(6) << helixes_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << helix->GetHelixSerialNumber()
-                       << left << setw(1) << " "
+                       << left << setw(1) << " ";
+                if(helix->GetHelixSerialNumber() != iNotSet)
+                    stream << right << setw(3) << helix->GetHelixSerialNumber();
+                else
+                    stream << right << setw(3) << " ";
+                stream << left << setw(1) << " "
                        << right << setw(3) << helix->GetHelixId()
                        << left << setw(1) << " "
                        << right << setw(3) << helix_residues.at(0)->GetResidueName()
                        << left << setw(1) << " "
                        << right << setw(1) << helix_residues.at(0)->GetResidueChainId()
-                       << left << setw(1) << " "
-                       << right << setw(4) << helix_residues.at(0)->GetResidueSequenceNumber()
-                       << right << setw(1) << helix_residues.at(0)->GetResidueInsertionCode()
+                       << left << setw(1) << " ";
+                if(helix_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << helix_residues.at(0)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << helix_residues.at(0)->GetResidueInsertionCode()
                        << left << setw(1) << " "
                        << right << setw(3) << helix_residues.at(1)->GetResidueName()
                        << left << setw(1) << " "
                        << right << setw(1) << helix_residues.at(1)->GetResidueChainId()
-                       << left << setw(1) << " "
-                       << right << setw(4) << helix_residues.at(1)->GetResidueSequenceNumber()
-                       << right << setw(1) << helix_residues.at(1)->GetResidueInsertionCode()
-                       << right << setw(2) << helix->GetHelixClass()
-                       << left << setw(30) << helix->GetComment()
-                       << left << setw(1) << " "
-                       << right << setw(5) << helix->GetHelixLength()
-                       << left << setw(4) << " "
+                       << left << setw(1) << " ";
+                if(helix_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << helix_residues.at(1)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << helix_residues.at(1)->GetResidueInsertionCode();
+                if(helix->GetHelixClass() != UnknownHelix)
+                    stream << right << setw(2) << helix->GetHelixClass();
+                else
+                    stream << right << setw(2) << " ";
+                stream << left << setw(30) << helix->GetComment()
+                       << left << setw(1) << " ";
+                if(helix->GetHelixLength() != dNotSet)
+                    stream << right << setw(5) << helix->GetHelixLength();
+                else
+                    stream << right << setw(5) << " ";
+                stream << left << setw(4) << " "
                        << endl;
                 break;
             }
@@ -2018,35 +2144,53 @@ void PdbFile::ResolveSheetCard(std::ofstream& stream)
                        << left << setw(1) << " "
                        << right << setw(3) << serial_number
                        << left << setw(1) << " "
-                       << right << setw(3) << sheet->GetSheetId()
-                       << right << setw(2) << sheet->GetNumberOfStrands()
-                       << left << setw(1) << " "
+                       << right << setw(3) << sheet->GetSheetId();
+                if(sheet->GetNumberOfStrands() != iNotSet)
+                    stream << right << setw(2) << sheet->GetNumberOfStrands();
+                else
+                    stream << right << setw(2) << " ";
+                stream << left << setw(1) << " "
                        << right << setw(3) << strand_residues.at(0)->GetResidueName()
                        << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(0)->GetResidueChainId()
-                       << right << setw(4) << strand_residues.at(0)->GetResidueSequenceNumber()
-                       << right << setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
+                       << right << setw(1) << strand_residues.at(0)->GetResidueChainId();
+                if(strand_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << strand_residues.at(0)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
                        << left << setw(1) << " "
                        << right << setw(3) << strand_residues.at(1)->GetResidueName()
                        << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(1)->GetResidueChainId()
-                       << right << setw(4) << strand_residues.at(1)->GetResidueSequenceNumber()
-                       << right << setw(1) << strand_residues.at(1)->GetResidueInsertionCode()
-                       << right << setw(2) << strand->GetSense()
-                       << left << setw(1) << " "
+                       << right << setw(1) << strand_residues.at(1)->GetResidueChainId();
+                if(strand_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << strand_residues.at(1)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << strand_residues.at(1)->GetResidueInsertionCode();
+                if(strand->GetSense() != UnknownStrand)
+                    stream << right << setw(2) << strand->GetSense();
+                else
+                    stream << right << setw(2) << " ";
+                stream << left << setw(1) << " "
                        << left << setw(4) << strand->GetCurrentAtom()
                        << right << setw(3) << strand_residues.at(2)->GetResidueName()
                        << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(2)->GetResidueChainId()
-                       << right << setw(4) << strand_residues.at(2)->GetResidueSequenceNumber()
-                       << right << setw(1) << strand_residues.at(2)->GetResidueInsertionCode()
+                       << right << setw(1) << strand_residues.at(2)->GetResidueChainId();
+                if(strand_residues.at(2)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << strand_residues.at(2)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << strand_residues.at(2)->GetResidueInsertionCode()
                        << left << setw(1) << " "
                        << left << setw(4) << strand->GetPreviousAtom()
                        << right << setw(3) << strand_residues.at(3)->GetResidueName()
                        << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(3)->GetResidueChainId()
-                       << right << setw(4) << strand_residues.at(3)->GetResidueSequenceNumber()
-                       << right << setw(1) << strand_residues.at(3)->GetResidueInsertionCode()
+                       << right << setw(1) << strand_residues.at(3)->GetResidueChainId();
+                if(strand_residues.at(3)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << strand_residues.at(3)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << strand_residues.at(3)->GetResidueInsertionCode()
                        << left << setw(10) << " "
                        << endl;
             }
@@ -2056,22 +2200,34 @@ void PdbFile::ResolveSheetCard(std::ofstream& stream)
                        << left << setw(1) << " "
                        << right << setw(3) << serial_number
                        << left << setw(1) << " "
-                       << right << setw(3) << sheet->GetSheetId()
-                       << right << setw(2) << sheet->GetNumberOfStrands()
-                       << left << setw(1) << " "
+                       << right << setw(3) << sheet->GetSheetId();
+                if(sheet->GetNumberOfStrands() != iNotSet)
+                    stream << right << setw(2) << sheet->GetNumberOfStrands();
+                else
+                    stream << right << setw(2) << " ";
+                stream << left << setw(1) << " "
                        << right << setw(3) << strand_residues.at(0)->GetResidueName()
                        << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(0)->GetResidueChainId()
-                       << right << setw(4) << strand_residues.at(0)->GetResidueSequenceNumber()
-                       << right << setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
+                       << right << setw(1) << strand_residues.at(0)->GetResidueChainId();
+                if(strand_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << strand_residues.at(0)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
                        << left << setw(1) << " "
                        << right << setw(3) << strand_residues.at(1)->GetResidueName()
                        << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(1)->GetResidueChainId()
-                       << right << setw(4) << strand_residues.at(1)->GetResidueSequenceNumber()
-                       << right << setw(1) << strand_residues.at(1)->GetResidueInsertionCode()
-                       << right << setw(2) << strand->GetSense()
-                       << left << setw(40) << " "
+                       << right << setw(1) << strand_residues.at(1)->GetResidueChainId();
+                if(strand_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << strand_residues.at(1)->GetResidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << strand_residues.at(1)->GetResidueInsertionCode();
+                if(strand->GetSense() != UnknownStrand)
+                    stream << right << setw(2) << strand->GetSense();
+                else
+                    stream << right << setw(2) << " ";
+                stream << left << setw(40) << " "
                        << endl;
             }
             serial_number++;
@@ -2088,29 +2244,47 @@ void PdbFile::ResolveDisulfideBondCard(std::ofstream& stream)
         PdbDisulfideResidueBond* disulfide_bonds = (*it).second;
         PdbDisulfideResidueBond::DisulfideResidueVector disulfide_bonds_residues = disulfide_bonds->GetResidues();
         stream << left << setw(6) << disulfide_bonds_->GetRecordName()
-               << left << setw(1) << " "
-               << right << setw(3) << disulfide_bonds->GetSerialNumber()
-               << left << setw(1) << " "
+               << left << setw(1) << " ";
+        if(disulfide_bonds->GetSerialNumber() != iNotSet)
+            stream << right << setw(3) << disulfide_bonds->GetSerialNumber();
+        else
+            stream << right << setw(3) << " ";
+        stream << left << setw(1) << " "
                << right << setw(3) << disulfide_bonds_residues.at(0)->GetResidueName()
                << left << setw(1) << " "
                << right << setw(1) << disulfide_bonds_residues.at(0)->GetResidueChainIdentifier()
-               << left << setw(1) << " "
-               << right << setw(4) << disulfide_bonds_residues.at(0)->GetResidueSequenceNumber()
-               << right << setw(1) << disulfide_bonds_residues.at(0)->GetResidueInsertionCode()
+               << left << setw(1) << " ";
+        if(disulfide_bonds_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
+            stream << right << setw(4) << disulfide_bonds_residues.at(0)->GetResidueSequenceNumber();
+        else
+            stream << right << setw(4) << " ";
+        stream << right << setw(1) << disulfide_bonds_residues.at(0)->GetResidueInsertionCode()
                << left << setw(3) << " "
                << right << setw(3) << disulfide_bonds_residues.at(1)->GetResidueName()
                << left << setw(1) << " "
                << right << setw(1) << disulfide_bonds_residues.at(1)->GetResidueChainIdentifier()
-               << left << setw(1) << " "
-               << right << setw(4) << disulfide_bonds_residues.at(1)->GetResidueSequenceNumber()
-               << right << setw(1) << disulfide_bonds_residues.at(1)->GetResidueInsertionCode()
-               << left << setw(23) << " "
-               << right << setw(6) << disulfide_bonds_residues.at(0)->GetSymmetryOperator()
-               << left << setw(1) << " "
-               << right << setw(6) << disulfide_bonds_residues.at(1)->GetSymmetryOperator()
-               << left << setw(1) << " "
-               << right << setw(5) << fixed << setprecision(2) << disulfide_bonds->GetBondLength()
-               << left << setw(2) << " "
+               << left << setw(1) << " ";
+        if(disulfide_bonds_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
+            stream << right << setw(4) << disulfide_bonds_residues.at(1)->GetResidueSequenceNumber();
+        else
+            stream << right << setw(4) << " ";
+        stream << right << setw(1) << disulfide_bonds_residues.at(1)->GetResidueInsertionCode()
+               << left << setw(23) << " ";
+        if(disulfide_bonds_residues.at(0)->GetSymmetryOperator() != iNotSet)
+            stream << right << setw(6) << disulfide_bonds_residues.at(0)->GetSymmetryOperator();
+        else
+            stream << right << setw(6) << " ";
+        stream << left << setw(1) << " ";
+        if(disulfide_bonds_residues.at(1)->GetSymmetryOperator() != iNotSet)
+            stream << right << setw(6) << disulfide_bonds_residues.at(1)->GetSymmetryOperator();
+        else
+            stream << right << setw(6) << " ";
+        stream << left << setw(1) << " ";
+        if(disulfide_bonds->GetBondLength() != dNotSet)
+            stream << right << setw(5) << fixed << setprecision(2) << disulfide_bonds->GetBondLength();
+        else
+            stream << right << setw(5) << " ";
+        stream << left << setw(2) << " "
                << endl;
     }
 }
@@ -2128,24 +2302,39 @@ void PdbFile::ResolveLinkCard(std::ofstream& stream)
                << right << setw(1) << link_residues.at(0)->GetAlternateLocationIndicator()
                << right << setw(3) << link_residues.at(0)->GetResidueName()
                << left << setw(1) << " "
-               << right << setw(1) << link_residues.at(0)->GetResidueChainIdentifier()
-               << right << setw(4) << link_residues.at(0)->GetResidueSequenceNumber()
-               << right << setw(1) << link_residues.at(0)->GetResidueInsertionCode()
+               << right << setw(1) << link_residues.at(0)->GetResidueChainIdentifier();
+        if(link_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
+            stream << right << setw(4) << link_residues.at(0)->GetResidueSequenceNumber();
+        else
+            stream << right << setw(4) << " ";
+        stream << right << setw(1) << link_residues.at(0)->GetResidueInsertionCode()
                << left << setw(15) << " "
                << left << setw(4) << link_residues.at(1)->GetAtomName()
                << right << setw(1) << link_residues.at(1)->GetAlternateLocationIndicator()
                << right << setw(3) << link_residues.at(1)->GetResidueName()
                << left << setw(1) << " "
-               << right << setw(1) << link_residues.at(1)->GetResidueChainIdentifier()
-               << right << setw(4) << link_residues.at(1)->GetResidueSequenceNumber()
-               << right << setw(1) << link_residues.at(1)->GetResidueInsertionCode()
-               << left << setw(2) << " "
-               << right << setw(6) << link_residues.at(0)->GetSymmetryOperator()
-               << left << setw(1) << " "
-               << right << setw(6) << link_residues.at(1)->GetSymmetryOperator()
-               << left << setw(1) << " "
-               << right << setw(5) << fixed << setprecision(2) << link->GetLinkLength()
-               << left << setw(2) << " "
+               << right << setw(1) << link_residues.at(1)->GetResidueChainIdentifier();
+        if(link_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
+            stream << right << setw(4) << link_residues.at(1)->GetResidueSequenceNumber();
+        else
+            stream << right << setw(4) << " ";
+        stream << right << setw(1) << link_residues.at(1)->GetResidueInsertionCode()
+               << left << setw(2) << " ";
+        if(link_residues.at(0)->GetSymmetryOperator() != iNotSet)
+            stream << right << setw(6) << link_residues.at(0)->GetSymmetryOperator();
+        else
+            stream << right << setw(6) << " ";
+        stream << left << setw(1) << " ";
+        if(link_residues.at(1)->GetSymmetryOperator() != iNotSet)
+            stream << right << setw(6) << link_residues.at(1)->GetSymmetryOperator();
+        else
+            stream << right << setw(6) << " ";
+        stream << left << setw(1) << " ";
+        if(link->GetLinkLength() != dNotSet)
+            stream << right << setw(5) << fixed << setprecision(2) << link->GetLinkLength();
+        else
+            stream << right << setw(5) << " ";
+        stream << left << setw(2) << " "
                << endl;
     }
 }
@@ -2182,9 +2371,12 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                         ss << left << setw(1) << " "
                            << right << setw(3) << residue->GetResidueName()
                            << left << setw(1) << " "
-                           << right << setw(1) << residue->GetResidueChainId()
-                           << right << setw(4) << residue->GetresidueSequenceNumber()
-                           << right << setw(1) << residue->GetResidueInsertionCode();
+                           << right << setw(1) << residue->GetResidueChainId();
+                        if(residue->GetresidueSequenceNumber() != iNotSet)
+                            stream << right << setw(4) << residue->GetresidueSequenceNumber();
+                        else
+                            stream << right << setw(4) << " ";
+                        stream << right << setw(1) << residue->GetResidueInsertionCode();
                     }
                     ss << left << setw(19) << " ";
                     stream << left << setw(6) << sites_->GetRecordName()
@@ -2192,9 +2384,12 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                            << right << setw(3) << sequence_number
                            << left << setw(1) << " "
                            << right << setw(3) << site->GetSiteId()
-                           << left << setw(1) << " "
-                           << right << setw(2) << site->GetNumberOfResidues()
-                           << left << setw(63) << ss.str()
+                           << left << setw(1) << " ";
+                    if(site->GetNumberOfResidues() != iNotSet)
+                        stream << right << setw(2) << site->GetNumberOfResidues();
+                    else
+                        stream << right << setw(2) << " ";
+                    stream << left << setw(63) << ss.str()
                            << endl;
                 }
                 else
@@ -2207,20 +2402,27 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                         ss << left << setw(1) << " "
                            << right << setw(3) << residue->GetResidueName()
                            << left << setw(1) << " "
-                           << right << setw(1) << residue->GetResidueChainId()
-                           << right << setw(4) << residue->GetresidueSequenceNumber()
-                           << right << setw(1) << residue->GetResidueInsertionCode();
+                           << right << setw(1) << residue->GetResidueChainId();
+                        if(residue->GetresidueSequenceNumber() != iNotSet)
+                            stream << right << setw(4) << residue->GetresidueSequenceNumber();
+                        else
+                            stream << right << setw(4) << " ";
+                        stream << right << setw(1) << residue->GetResidueInsertionCode();
                     }
-                    ss << left << setw((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
+                    if((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE != 0)
+                        ss << left << setw((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
                     ss << left << setw(19) << " ";
                     stream << left << setw(6) << sites_->GetRecordName()
                            << left << setw(1) << " "
                            << right << setw(3) << sequence_number
                            << left << setw(1) << " "
                            << right << setw(3) << site->GetSiteId()
-                           << left << setw(1) << " "
-                           << right << setw(2) << site->GetNumberOfResidues()
-                           << left << setw(63) << ss.str()
+                           << left << setw(1) << " ";
+                    if(site->GetNumberOfResidues() != iNotSet)
+                        stream << right << setw(2) << site->GetNumberOfResidues();
+                    else
+                        stream << right << setw(2) << " ";
+                    stream << left << setw(63) << ss.str()
                            << endl;
                 }
                 sequence_number++;
@@ -2236,11 +2438,15 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                 ss << left << setw(1) << " "
                    << right << setw(3) << residue->GetResidueName()
                    << left << setw(1) << " "
-                   << right << setw(1) << residue->GetResidueChainId()
-                   << right << setw(4) << residue->GetresidueSequenceNumber()
-                   << right << setw(1) << residue->GetResidueInsertionCode();
+                   << right << setw(1) << residue->GetResidueChainId();
+                if(residue->GetresidueSequenceNumber() != iNotSet)
+                    stream << right << setw(4) << residue->GetresidueSequenceNumber();
+                else
+                    stream << right << setw(4) << " ";
+                stream << right << setw(1) << residue->GetResidueInsertionCode();
             }
-            ss << left << setw((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
+            if((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE != 0)
+                ss << left << setw((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
             ss << left << setw(19) << " ";
 
             stream << left << setw(6) << sites_->GetRecordName()
@@ -2248,9 +2454,12 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                    << right << setw(3) << sequence_number
                    << left << setw(1) << " "
                    << right << setw(3) << site->GetSiteId()
-                   << left << setw(1) << " "
-                   << right << setw(2) << site->GetNumberOfResidues()
-                   << left << setw(63) << ss.str()
+                   << left << setw(1) << " ";
+            if(site->GetNumberOfResidues() != iNotSet)
+                stream << right << setw(2) << site->GetNumberOfResidues();
+            else
+                stream << right << setw(2) << " ";
+            stream << left << setw(63) << ss.str()
                    << endl;
             sequence_number++;
         }
@@ -2259,17 +2468,38 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
 
 void PdbFile::ResolveCrystallographyCard(std::ofstream& stream)
 {
-    stream << left << setw(6) << crystallography_->GetRecordName()
-           << right << setw(9) << fixed << setprecision(3) << crystallography_->GetA()
-           << right << setw(9) << fixed << setprecision(3) << crystallography_->GetB()
-           << right << setw(9) << fixed << setprecision(3) << crystallography_->GetC()
-           << right << setw(7) << fixed << setprecision(2) << crystallography_->GetAlpha()
-           << right << setw(7) << fixed << setprecision(2) << crystallography_->GetBeta()
-           << right << setw(7) << fixed << setprecision(2) << crystallography_->GetGamma()
-           << left << setw(1) << " "
-           << left << setw(11) << crystallography_->GetSpaceGroup()
-           << right << setw(4) << crystallography_->GetZValue()
-           << left << setw(10) << " "
+    stream << left << setw(6) << crystallography_->GetRecordName();
+    if(crystallography_->GetA() != dNotSet)
+        stream << right << setw(9) << fixed << setprecision(3) << crystallography_->GetA();
+    else
+        stream << right << setw(9) << " ";
+    if(crystallography_->GetB() != dNotSet)
+        stream << right << setw(9) << fixed << setprecision(3) << crystallography_->GetB();
+    else
+        stream << right << setw(9) << " ";
+    if(crystallography_->GetC() != dNotSet)
+        stream << right << setw(9) << fixed << setprecision(3) << crystallography_->GetC();
+    else
+        stream << right << setw(9) << " ";
+    if(crystallography_->GetAlpha() != dNotSet)
+        stream << right << setw(7) << fixed << setprecision(2) << crystallography_->GetAlpha();
+    else
+        stream << right << setw(7) << " ";
+    if(crystallography_->GetBeta() != dNotSet)
+        stream << right << setw(7) << fixed << setprecision(2) << crystallography_->GetBeta();
+    else
+        stream << right << setw(7) << " ";
+    if(crystallography_->GetGamma() != dNotSet)
+        stream << right << setw(7) << fixed << setprecision(2) << crystallography_->GetGamma();
+    else
+        stream << right << setw(7) << " ";
+    stream << left << setw(1) << " "
+           << left << setw(11) << crystallography_->GetSpaceGroup();
+    if(crystallography_->GetZValue() != dNotSet)
+        stream << right << setw(4) << crystallography_->GetZValue();
+    else
+        stream << right << setw(4) << " ";
+    stream << left << setw(10) << " "
            << endl;
 }
 
@@ -2282,13 +2512,26 @@ void PdbFile::ResolveOriginCard(std::ofstream& stream)
         stringstream ss;
         ss << origin->GetRecordName() << origin->GetN();
         stream << left << setw(6) << ss.str()
-               << left << setw(4) << " "
-               << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetX()
-               << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetY()
-               << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetZ()
-               << left << setw(5) << " "
-               << right << setw(10) << fixed << setprecision(5) << origin->GetT()
-               << left << setw(25) << " "
+               << left << setw(4) << " ";
+        if(origin->GetOrigin().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+        {
+            stream << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetX()
+                   << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetY()
+                   << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetZ();
+        }
+        else
+        {
+            stream << right << setw(10) << " "
+                   << right << setw(10) << " "
+                   << right << setw(10) << " ";
+        }
+
+        stream << left << setw(5) << " ";
+        if(origin->GetT() != dNotSet)
+            stream << right << setw(10) << fixed << setprecision(5) << origin->GetT();
+        else
+            stream << right << setw(10) << " ";
+        stream << left << setw(25) << " "
                << endl;
     }
 }
@@ -2302,40 +2545,70 @@ void PdbFile::ResolveScaleCard(std::ofstream& stream)
         stringstream ss;
         ss << scale->GetRecordName() << scale->GetN();
         stream << left << setw(6) << ss.str()
-               << left << setw(4) << " "
-               << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetX()
-               << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetY()
-               << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetZ()
-               << left << setw(5) << " "
-               << right << setw(10) << fixed << setprecision(5) << scale->GetU()
-               << left << setw(25) << " "
+               << left << setw(4) << " ";
+        if(scale->GetScaleVector().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+        {
+            stream << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetX()
+                   << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetY()
+                   << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetZ();
+        }
+        else
+        {
+            stream << right << setw(10) << " "
+                   << right << setw(10) << " "
+                   << right << setw(10) << " ";
+        }
+        stream << left << setw(5) << " ";
+        if(scale->GetU() != dNotSet)
+            stream << right << setw(10) << fixed << setprecision(5) << scale->GetU();
+        else
+            stream << right << setw(10) << " ";
+        stream << left << setw(25) << " "
                << endl;
     }
 }
 
 void PdbFile::ResolveMatrixCard(std::ofstream& stream)
 {
-    PdbMatrixNCard::MatrixNVectorVector matrices = matrices_->GetMatrixN();    
+    PdbMatrixNCard::MatrixNVectorVector matrices = matrices_->GetMatrixN();
     int number_of_matrix_entries = matrices.at(0).size();
     for(unsigned int i = 0; i < number_of_matrix_entries; i++)
     {
         for(unsigned int j = 0; j < 3; j++)
         {
-	    PdbMatrixNCard::MatrixNVector matrix_vector = matrices.at(j);
+            PdbMatrixNCard::MatrixNVector matrix_vector = matrices.at(j);
             PdbMatrixN* matrix = matrix_vector.at(i);
             stringstream ss;
             ss << matrix->GetRecordName() << matrix->GetN();
             stream << left << setw(6) << ss.str()
-                   << left << setw(1) << " "
-                   << right << setw(3) << matrix->GetSerialNumber()
-                   << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetX()
-                   << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetY()
-                   << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetZ()
-                   << left << setw(5) << " "
-                   << right << setw(10) << fixed << setprecision(5) << matrix->GetV()
-                   << left << setw(4) << " "
-                   << right << setw(1) << matrix->GetIGiven()
-                   << left << setw(20) << " "
+                   << left << setw(1) << " ";
+            if(matrix->GetSerialNumber() != iNotSet)
+                stream << right << setw(3) << matrix->GetSerialNumber();
+            else
+                stream << right << setw(3) << " ";
+            if(matrix->GetTransformationVector().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+            {
+                stream << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetX()
+                       << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetY()
+                       << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetZ();
+            }
+            else
+            {
+                stream << right << setw(10) << " "
+                       << right << setw(10) << " "
+                       << right << setw(10) << " ";
+            }
+            stream << left << setw(5) << " ";
+            if(matrix->GetV() != dNotSet)
+                stream << right << setw(10) << fixed << setprecision(5) << matrix->GetV();
+            else
+                stream << right << setw(10) << " ";
+            stream << left << setw(4) << " ";
+            if(matrix->GetIGiven() != iNotSet)
+                stream << right << setw(1) << matrix->GetIGiven();
+            else
+                stream << right << setw(1) << " ";
+            stream << left << setw(20) << " "
                    << endl;
         }
     }
@@ -2344,12 +2617,12 @@ void PdbFile::ResolveMatrixCard(std::ofstream& stream)
 
 void PdbFile::ResolveModelCard(std::ofstream& stream)
 {
-    PdbModelCard::PdbModelMap models = models_->GetModels();    
+    PdbModelCard::PdbModelMap models = models_->GetModels();
     int number_of_models = models.size();
     if(number_of_models == 1)
     {
         for(PdbModelCard::PdbModelMap::iterator it = models.begin(); it != models.end(); it++)
-        {            
+        {
             PdbModel* model = (*it).second;
             PdbModelResidueSet* residue_set = model->GetModelResidueSet();
             PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
@@ -2365,39 +2638,66 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
                 {
                     PdbAtom* atom = (*it2).second;
-                    stream << left << setw(6) << atom_card->GetRecordName()
-                          << right << setw(5) << atom->GetAtomSerialNumber()
-                          << left << setw(1) << " "
-                          << left << setw(4) << atom->GetAtomName()
-                          << left << setw(1) << atom->GetAtomAlternateLocation()
-                          << right << setw(3) << atom->GetAtomResidueName()
-                          << left << setw(1) << " "
-                          << left << setw(1) << atom->GetAtomChainId()
-                          << right << setw(4) << atom->GetAtomResidueSequenceNumber()
-                          << left << setw(1) << atom->GetAtomInsertionCode()
-                          << left << setw(3) << " "
-                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
-                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
-                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ()
-                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy()
-                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor()
-                          << left << setw(10) << " "
-                          << right << setw(2) << atom->GetAtomElementSymbol()
-                          << left << setw(2) << atom->GetAtomCharge()
-                          << endl;
+                    stream << left << setw(6) << atom_card->GetRecordName();
+                    if(atom->GetAtomSerialNumber() != iNotSet)
+                        stream << right << setw(5) << atom->GetAtomSerialNumber();
+                    else
+                        stream << right << setw(5) << " ";
+                    stream << left << setw(1) << " "
+                           << left << setw(4) << atom->GetAtomName()
+                           << left << setw(1) << atom->GetAtomAlternateLocation()
+                           << right << setw(3) << atom->GetAtomResidueName()
+                           << left << setw(1) << " "
+                           << left << setw(1) << atom->GetAtomChainId();
+                    if(atom->GetAtomResidueSequenceNumber() != iNotSet)
+                        stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
+                    else
+                        stream << right << setw(4) << " ";
+                    stream << left << setw(1) << atom->GetAtomInsertionCode()
+                           << left << setw(3) << " ";
+                    if(atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                    {
+                        stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
+                    }
+                    else
+                    {
+                        stream << right << setw(8) << " "
+                               << right << setw(8) << " "
+                               << right << setw(8) << " ";
+                    }
+                    if(atom->GetAtomOccupancy() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy();
+                    else
+                        stream << right << setw(6) << " ";
+                    if(atom->GetAtomTempretureFactor() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor();
+                    else
+                        stream << right << setw(6) << " ";
+                    stream << left << setw(10) << " "
+                           << right << setw(2) << atom->GetAtomElementSymbol()
+                           << left << setw(2) << atom->GetAtomCharge()
+                           << endl;
                     serial_number = atom->GetAtomSerialNumber();
                     residue_name = atom->GetAtomResidueName();
                     chain_id = atom->GetAtomChainId();
                     residue_sequence_number = atom->GetAtomResidueSequenceNumber();
                 }
-                stream << left << setw(6) << "TER"
-                       << right << setw(5) << (serial_number+1)
-                       << left << setw(6) << " "
+                stream << left << setw(6) << "TER";
+                if(serial_number != iNotSet)
+                    stream << right << setw(5) << (serial_number+1);
+                else
+                    stream << right << setw(5) << " ";
+                stream << left << setw(6) << " "
                        << right << setw(3) << residue_name
                        << left << setw(1) << " "
-                       << left << setw(1) << chain_id
-                       << right << setw(4) << residue_sequence_number
-                       << left << setw(1) << insertion_code
+                       << left << setw(1) << chain_id;
+                if(residue_sequence_number != iNotSet)
+                    stream << right << setw(4) << residue_sequence_number;
+                else
+                    stream << right << setw(4) << " ";
+                stream << left << setw(1) << insertion_code
                        << left << setw(53) << " "
                        << endl;
             }
@@ -2409,26 +2709,47 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
                 {
                     PdbAtom* heterogen_atom = (*it2).second;
-                    stream << left << setw(6) << heterogen_atom_card->GetRecordName()
-                          << right << setw(5) << heterogen_atom->GetAtomSerialNumber()
-                          << left << setw(1) << " "
-                          << left << setw(4) << heterogen_atom->GetAtomName()
-                          << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
-                          << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                          << left << setw(1) << " "
-                          << left << setw(1) << heterogen_atom->GetAtomChainId()
-                          << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber()
-                          << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
-                          << left << setw(3) << " "
-                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
-                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
-                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ()
-                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy()
-                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor()
-                          << left << setw(10) << " "
-                          << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
-                          << left << setw(2) << heterogen_atom->GetAtomCharge()
-                          << endl;
+                    stream << left << setw(6) << heterogen_atom_card->GetRecordName();
+                    if(heterogen_atom->GetAtomSerialNumber() != iNotSet)
+                        stream << right << setw(5) << heterogen_atom->GetAtomSerialNumber();
+                    else
+                        stream << right << setw(5) << " ";
+                    stream << left << setw(1) << " "
+                           << left << setw(4) << heterogen_atom->GetAtomName()
+                           << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
+                           << right << setw(3) << heterogen_atom->GetAtomResidueName()
+                           << left << setw(1) << " "
+                           << left << setw(1) << heterogen_atom->GetAtomChainId();
+                    if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
+                        stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
+                    else
+                        stream << right << setw(4) << " ";
+                    stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
+                           << left << setw(3) << " ";
+                    if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                    {
+                        stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
+                    }
+                    else
+                    {
+                        stream << right << setw(8) << " "
+                               << right << setw(8) << " "
+                               << right << setw(8) << " ";
+                    }
+                    if(heterogen_atom->GetAtomOccupancy() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy();
+                    else
+                        stream << right << setw(6) << " ";
+                    if(heterogen_atom->GetAtomTempretureFactor() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
+                    else
+                        stream << right << setw(6) << " ";
+                    stream << left << setw(10) << " "
+                           << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
+                           << left << setw(2) << heterogen_atom->GetAtomCharge()
+                           << endl;
                 }
             }
         }
@@ -2439,9 +2760,12 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
         {
             PdbModel* model = (*it).second;
             stream << left << setw(6) << models_->GetRecordName()
-                   << left << setw(4) << " "
-                   << right << setw(4) << model->GetModelSerialNumber()
-                   << left << setw(66) << " "
+                   << left << setw(4) << " ";
+            if(model->GetModelSerialNumber() != iNotSet)
+                stream << right << setw(4) << model->GetModelSerialNumber();
+            else
+                stream << right << setw(4) << " ";
+            stream << left << setw(66) << " "
                    << endl;
             PdbModelResidueSet* residue_set = model->GetModelResidueSet();
             PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
@@ -2457,39 +2781,62 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
                 {
                     PdbAtom* atom = (*it2).second;
-                    stream << left << setw(6) << atom_card->GetRecordName()
-                          << right << setw(5) << atom->GetAtomSerialNumber()
-                          << left << setw(1) << " "
-                          << left << setw(4) << atom->GetAtomName()
-                          << left << setw(1) << atom->GetAtomAlternateLocation()
-                          << right << setw(3) << atom->GetAtomResidueName()
-                          << left << setw(1) << " "
-                          << left << setw(1) << atom->GetAtomChainId()
-                          << right << setw(4) << atom->GetAtomResidueSequenceNumber()
-                          << left << setw(1) << atom->GetAtomInsertionCode()
-                          << left << setw(3) << " "
-                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
-                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
-                          << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ()
-                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy()
-                          << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor()
-                          << left << setw(10) << " "
-                          << right << setw(2) << atom->GetAtomElementSymbol()
-                          << left << setw(2) << atom->GetAtomCharge()
-                          << endl;
+                    stream << left << setw(6) << atom_card->GetRecordName();
+                    if(atom->GetAtomSerialNumber() != iNotSet)
+                        stream << right << setw(5) << atom->GetAtomSerialNumber();
+                    else
+                        stream << right << setw(5) << " ";
+                    stream << left << setw(1) << " "
+                           << left << setw(4) << atom->GetAtomName()
+                           << left << setw(1) << atom->GetAtomAlternateLocation()
+                           << right << setw(3) << atom->GetAtomResidueName()
+                           << left << setw(1) << " "
+                           << left << setw(1) << atom->GetAtomChainId();
+                    if(atom->GetAtomResidueSequenceNumber() != iNotSet)
+                        stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
+                    else
+                        stream << right << setw(4) << " ";
+                    stream << left << setw(1) << atom->GetAtomInsertionCode()
+                           << left << setw(3) << " ";
+                    if(atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                        stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
+                    else
+                        stream << right << setw(8) << " "
+                               << right << setw(8) << " "
+                               << right << setw(8) << " ";
+                    if(atom->GetAtomOccupancy() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy();
+                    else
+                        stream << right << setw(6) << " ";
+                    if(atom->GetAtomTempretureFactor() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor();
+                    else
+                        stream << right << setw(6) << " ";
+                    stream << left << setw(10) << " "
+                           << right << setw(2) << atom->GetAtomElementSymbol()
+                           << left << setw(2) << atom->GetAtomCharge()
+                           << endl;
                     serial_number = atom->GetAtomSerialNumber();
                     residue_name = atom->GetAtomResidueName();
                     chain_id = atom->GetAtomChainId();
                     residue_sequence_number = atom->GetAtomResidueSequenceNumber();
                 }
-                stream << left << setw(6) << "TER"
-                       << right << setw(5) << (serial_number+1)
-                       << left << setw(6) << " "
+                stream << left << setw(6) << "TER";
+                if(serial_number != iNotSet)
+                    stream << right << setw(5) << (serial_number+1);
+                else
+                    stream << right << setw(5) << " ";
+                stream << left << setw(6) << " "
                        << right << setw(3) << residue_name
                        << left << setw(1) << " "
-                       << left << setw(1) << chain_id
-                       << right << setw(4) << residue_sequence_number
-                       << left << setw(1) << insertion_code
+                       << left << setw(1) << chain_id;
+                if(residue_sequence_number != iNotSet)
+                    stream << right << setw(4) << residue_sequence_number;
+                else
+                    stream << right << setw(4) << " ";
+                stream << left << setw(1) << insertion_code
                        << left << setw(53) << " "
                        << endl;
             }
@@ -2501,26 +2848,43 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
                 {
                     PdbAtom* heterogen_atom = (*it2).second;
-                    stream << left << setw(6) << heterogen_atom_card->GetRecordName()
-                          << right << setw(5) << heterogen_atom->GetAtomSerialNumber()
-                          << left << setw(1) << " "
-                          << left << setw(4) << heterogen_atom->GetAtomName()
-                          << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
-                          << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                          << left << setw(1) << " "
-                          << left << setw(1) << heterogen_atom->GetAtomChainId()
-                          << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber()
-                          << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
-                          << left << setw(3) << " "
-                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
-                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
-                          << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ()
-                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy()
-                          << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor()
-                          << left << setw(10) << " "
-                          << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
-                          << left << setw(2) << heterogen_atom->GetAtomCharge()
-                          << endl;
+                    stream << left << setw(6) << heterogen_atom_card->GetRecordName();
+                    if(heterogen_atom->GetAtomSerialNumber() != iNotSet)
+                        stream << right << setw(5) << heterogen_atom->GetAtomSerialNumber();
+                    else
+                        stream << right << setw(5) << " ";
+                    stream << left << setw(1) << " "
+                           << left << setw(4) << heterogen_atom->GetAtomName()
+                           << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
+                           << right << setw(3) << heterogen_atom->GetAtomResidueName()
+                           << left << setw(1) << " "
+                           << left << setw(1) << heterogen_atom->GetAtomChainId();
+                    if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
+                        stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
+                    else
+                        stream << right << setw(4) << " ";
+                    stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
+                           << left << setw(3) << " ";
+                    if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                        stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
+                    else
+                        stream << right << setw(8) << " "
+                               << right << setw(8) << " "
+                               << right << setw(8) << " ";
+                    if(heterogen_atom->GetAtomOccupancy() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy();
+                    else
+                        stream << right << setw(6) << " ";
+                    if(heterogen_atom->GetAtomTempretureFactor() != dNotSet)
+                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
+                    else
+                        stream << right << setw(6) << " ";
+                    stream << left << setw(10) << " "
+                           << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
+                           << left << setw(2) << heterogen_atom->GetAtomCharge()
+                           << endl;
                 }
             }
             stream << left << setw(6) << "ENDMDL"
@@ -2537,8 +2901,11 @@ void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
     {
         vector<int> bonded_atoms_serial_number = (*it).second;
         int source_atom_serial_number = (*it).first;
-        stream << left << setw(6) << connectivities_->GetRecordName()
-               << right << setw(5) << source_atom_serial_number;
+        stream << left << setw(6) << connectivities_->GetRecordName();
+        if(source_atom_serial_number != iNotSet)
+            stream << right << setw(5) << source_atom_serial_number;
+        else
+            stream << right << setw(5) << " ";
         int number_of_bonded_atoms = bonded_atoms_serial_number.size();
         const int MAX_SERIAL_NUMBER_IN_LINE = 4;
         const int SERIAL_NUMBER_LENGTH = 5;
@@ -2547,18 +2914,25 @@ void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
             for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
             {
                 int serial_number = (*it1);
-                stream << right << setw(5) << serial_number;
+                if(serial_number != iNotSet)
+                    stream << right << setw(5) << serial_number;
+                else
+                    stream << right << setw(5) << " ";
             }
-            stream << left << setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
-                   <<left << setw(49) << " "
-                   << endl;
+            if((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH != 0)
+                stream << left << setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
+                       <<left << setw(49) << " "
+                      << endl;
         }
         else
         {
             for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
             {
                 int serial_number = (*it1);
-                stream << right << setw(5) << serial_number;
+                if(serial_number != iNotSet)
+                    stream << right << setw(5) << serial_number;
+                else
+                    stream << right << setw(5) << " ";
             }
             stream << left << setw(49) << " "
                    << endl;

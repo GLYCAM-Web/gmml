@@ -31,6 +31,7 @@ PdbHeterogenSynonym::PdbHeterogenSynonym(stringstream& stream_block)
     {
         if(!is_heterogen_identifier_set){
             heterogen_identifier_ = line.substr(11,3);
+            Trim(heterogen_identifier_);
             is_heterogen_identifier_set = true;
         }
 

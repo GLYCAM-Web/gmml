@@ -1,6 +1,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 //#include "../../../includes/Geometry/coordinate.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -14,9 +15,18 @@ PdbAtom::PdbAtom():atom_orthogonal_coordinate_() {}
 
 PdbAtom::PdbAtom(string &line)
 {
-    atom_serial_number_ = ConvertString<int>(line.substr(6,5));
+    if(line.substr(6,5) == "     ")
+    {
+        atom_serial_number_ =  iNotSet;
+    }
+    else
+    {
+        atom_serial_number_ = ConvertString<int>(line.substr(6,5));
+    }
+
     atom_name_ = line.substr(12, 4);
     Trim(atom_name_);
+
     if(line.substr(16,1) == " ")
     {
         atom_alternate_location_ = ' ';
@@ -25,7 +35,17 @@ PdbAtom::PdbAtom(string &line)
     {
         atom_alternate_location_ = ConvertString<char>(line.substr(16,1));
     }
-    atom_residue_name_ = line.substr(17,3);
+
+    if(line.substr(17,3) == "   ")
+    {
+        atom_residue_name_ = " ";
+    }
+    else
+    {
+        atom_residue_name_ = line.substr(17,3);
+        atom_residue_name_ = Trim(atom_residue_name_);
+    }
+
     if(line.substr(21,1) == " ")
     {
         atom_chain_id_ = ' ';
@@ -34,7 +54,16 @@ PdbAtom::PdbAtom(string &line)
     {
         atom_chain_id_ = ConvertString<char>(line.substr(21, 1));
     }
-    atom_residue_sequence_number_ = ConvertString<int>(line.substr(22, 4));
+
+    if(line.substr(22,4) == "    ")
+    {
+        atom_residue_sequence_number_ = iNotSet;
+    }
+    else
+    {
+        atom_residue_sequence_number_ = ConvertString<int>(line.substr(22, 4));
+    }
+
     if(line.substr(26,1) == " ")
     {
         atom_insertion_code_ = ' ';
@@ -43,14 +72,57 @@ PdbAtom::PdbAtom(string &line)
     {
         atom_insertion_code_ = ConvertString<char>(line.substr(26, 1));
     }
-    atom_orthogonal_coordinate_.SetX(ConvertString<double>(line.substr(30, 8)));
-    atom_orthogonal_coordinate_.SetY( ConvertString<double>(line.substr(38,8)));
-    atom_orthogonal_coordinate_.SetZ( ConvertString<double>(line.substr(46,8)));
-    atom_occupancy_ = ConvertString<double>(line.substr(54, 6));
-    atom_tempreture_factor_ = ConvertString<double>(line.substr(60, 6));
+
+    if(line.substr(30,8) == "        ")
+    {
+        atom_orthogonal_coordinate_.SetX(dNotSet);
+    }
+    else
+    {
+        atom_orthogonal_coordinate_.SetX(ConvertString<double>(line.substr(30, 8)));
+    }
+
+    if(line.substr(38,8) == "        ")
+    {
+        atom_orthogonal_coordinate_.SetY(dNotSet);
+    }
+    else
+    {
+        atom_orthogonal_coordinate_.SetY( ConvertString<double>(line.substr(38,8)));
+    }
+
+    if(line.substr(46,8) == "        ")
+    {
+        atom_orthogonal_coordinate_.SetZ(dNotSet);
+    }
+    else
+    {
+        atom_orthogonal_coordinate_.SetZ( ConvertString<double>(line.substr(46,8)));
+    }
+
+    if(line.substr(54, 6) == "      ")
+    {
+        atom_occupancy_ = dNotSet;
+    }
+    else
+    {
+        atom_occupancy_ = ConvertString<double>(line.substr(54, 6));
+    }
+
+    if(line.substr(60, 6) == "      ")
+    {
+        atom_tempreture_factor_ = dNotSet;
+    }
+    else
+    {
+        atom_tempreture_factor_ = ConvertString<double>(line.substr(60, 6));
+    }
+
     atom_element_symbol_ = line.substr(76, 2);
     Trim(atom_element_symbol_);
+
     atom_charge_ = line.substr(78, 2);
+    Trim(atom_charge_);
 }
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
@@ -159,10 +231,33 @@ void PdbAtom::SetAtomCharge(const string atom_charge){
 //////////////////////////////////////////////////////////
 void PdbAtom::Print(ostream &out)
 {
-    out << "Atom Serial Number: " << atom_serial_number_ << ", Atom Name: " << atom_name_ << ", Atom Alternate Location: " << atom_alternate_location_ <<
-           ", Atom Residue Name: " << atom_residue_name_ << ", Atom Chain ID: " << atom_chain_id_ << ", Atom Residue Sequence Number: " << atom_residue_sequence_number_ <<
-           ", Atom Inserion Code: " << atom_insertion_code_ << ", Atom Orthogonal Coordinate: ";
+    out << "Atom Serial Number: ";
+    if(atom_serial_number_ == iNotSet)
+        out << " ";
+    else
+        out << atom_serial_number_;
+    out << ", Atom Name: " << atom_name_
+        << ", Atom Alternate Location: " << atom_alternate_location_
+        << ", Atom Residue Name: " << atom_residue_name_
+        << ", Atom Chain ID: " << atom_chain_id_
+        << ", Atom Residue Sequence Number: ";
+    if(atom_residue_sequence_number_ == iNotSet)
+        out << " ";
+    else
+        out << atom_residue_sequence_number_;
+    out << ", Atom Inserion Code: " << atom_insertion_code_
+        << ", Atom Orthogonal Coordinate: ";
     atom_orthogonal_coordinate_.Print(out);
-    out << ", Atom Occupancy: " << atom_occupancy_ << ", Atom Tempreture Factor: " << atom_tempreture_factor_ << ", Atom Element Symbol: " << atom_element_symbol_ <<
-           ", Atom Charge: " << atom_charge_ << endl;
+    out << ", Atom Occupancy: ";
+    if(atom_occupancy_ == dNotSet)
+        out << " ";
+    else
+        out << atom_occupancy_;
+    out << ", Atom Tempreture Factor: ";
+    if(atom_tempreture_factor_ == dNotSet)
+        out << " ";
+    else
+        out << atom_tempreture_factor_;
+    out << ", Atom Element Symbol: " << atom_element_symbol_
+        << ", Atom Charge: " << atom_charge_ << endl;
 }

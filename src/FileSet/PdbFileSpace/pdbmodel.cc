@@ -1,6 +1,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -18,7 +19,10 @@ PdbModel::PdbModel(stringstream &model_block)
     getline(model_block, line);
     if(line.find("MODEL") != string::npos)
     {
-        model_serial_number_ = ConvertString<int>(line.substr(10,4));
+        if(line.substr(10, 4) == "    ")
+            model_serial_number_ = iNotSet;
+        else
+            model_serial_number_ = ConvertString<int>(line.substr(10,4));
         getline(model_block,line);
         string temp = line;
         while(line.find("ENDMDL") == string::npos)
@@ -77,8 +81,13 @@ void PdbModel::SetModelResidueSet(PdbModelResidueSet* model_residue_set){
 //////////////////////////////////////////////////////////
 void PdbModel::Print(ostream &out)
 {
-    out << "Model Serial Number: " << model_serial_number_ << endl <<
-           "====================== Residue Set =====================" << endl;
+    out << "Model Serial Number: ";
+    if(model_serial_number_ != iNotSet)
+        out << model_serial_number_;
+    else
+        out << " ";
+    out << endl
+        << "====================== Residue Set =====================" << endl;
     model_residue_set_->Print(out);
     out << endl;
 }

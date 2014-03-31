@@ -71,6 +71,13 @@ namespace Geometry
               */
             void Translate(double x, double y, double z);
 
+            /*! \fn
+              * Compare current object with the given coordinate and return true if they are the same
+              * @param coordinate A coordinate to be compared with the current object
+              * @return A boolean value as a result of comparison
+              */
+            bool CompareTo(Coordinate coordinate);
+
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

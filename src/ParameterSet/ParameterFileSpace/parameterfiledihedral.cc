@@ -12,7 +12,7 @@ using namespace ParameterFileSpace;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileDihedral::ParameterFileDihedral()
-    : types_(), terms_(), scee_(kNotSet), scnb_(kNotSet), is_generic_(false), is_improper_(false) {}
+    : types_(), terms_(), scee_(dNotSet), scnb_(dNotSet), is_generic_(false), is_improper_(false) {}
 
 ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string> &types, const ParameterFileDihedralTerm& term,
                                              double scee, double scnb, bool is_generic, bool is_improper)
@@ -114,12 +114,12 @@ void ParameterFileDihedral::Print(std::ostream& out)
     else
         out << std::setw(10) << "NO";
 
-    if(scee_ == kNotSet)
+    if(scee_ == dNotSet)
         out << std::setw(6) << "--";
     else
         out << std::setw(6) << scee_;
 
-    if(scnb_ == kNotSet)
+    if(scnb_ == dNotSet)
         out << std::setw(6) << "--";
     else
         out << std::setw(6) << scnb_;

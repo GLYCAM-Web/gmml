@@ -153,13 +153,13 @@ void LibraryFile::Read(std::ifstream& in_file)
                     if(is_box_set < 0)              /// If the number written in the first line of the section is negative then boundbox attributes have not been defined in the file
                     {
                         getline(in_file, line);
-                        it->second->SetBoxAngle(kNotSet);
+                        it->second->SetBoxAngle(dNotSet);
                         getline(in_file, line);
-                        it->second->SetBoxLength(kNotSet);
+                        it->second->SetBoxLength(dNotSet);
                         getline(in_file, line);
-                        it->second->SetBoxWidth(kNotSet);
+                        it->second->SetBoxWidth(dNotSet);
                         getline(in_file, line);
-                        it->second->SetBoxHeight(kNotSet);
+                        it->second->SetBoxHeight(dNotSet);
                     }
                     else                        /// If the number written in the first line of the section is positive then set the attributes of the boundbox section
                     {

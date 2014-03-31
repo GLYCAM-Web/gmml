@@ -1,6 +1,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -98,7 +99,11 @@ void PdbModelCard::Print(ostream &out)
            "================= Models =================" << endl;
     for(PdbModelCard::PdbModelMap::iterator it = models_.begin(); it != models_.end(); it++)
     {
-        out << "Model Serial Number: " << (it)->first << endl;
+        out << "Model Serial Number: ";
+        if((it)->first != iNotSet)
+            out << (it)->first << endl;
+        else
+            out << " " << endl;
         (it)->second->Print();
         out << endl;
     }

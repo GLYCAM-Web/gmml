@@ -2,6 +2,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace gmml;
@@ -70,7 +71,11 @@ void PdbAtomCard::Print(ostream &out)
            "_________________ Atoms _______________" << endl;
     for(PdbAtomCard::PdbAtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        out << "Atom Serial Number: " << (it)->first << endl;
+        out << "Atom Serial Number: ";
+        if((it)->first != iNotSet)
+            out << (it)->first << endl;
+        else
+            out << " " << endl;
         (it)->second->Print();
         out << endl;
     }

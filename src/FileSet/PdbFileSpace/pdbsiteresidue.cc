@@ -1,5 +1,6 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbsiteresidue.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -20,7 +21,10 @@ PdbSiteResidue::PdbSiteResidue(const string& section)
         residue_chain_id_ = ' ';
     else
         residue_chain_id_ = ConvertString<char>(section.substr(4,1));
-    residue_sequence_number_ = ConvertString<int>(section.substr(5, 4));
+    if(section.substr(5, 4) == "    ")
+        residue_sequence_number_ = iNotSet;
+    else
+        residue_sequence_number_ = ConvertString<int>(section.substr(5, 4));
     if(section.substr(9,1) == " ")
         residue_insertion_code_ = ' ';
     else
@@ -72,6 +76,13 @@ void PdbSiteResidue::SetResidueInsertionCode(char residue_insertion_code){
 //////////////////////////////////////////////////////////
 void PdbSiteResidue::Print(ostream &out)
 {
-    out << "Residue Name: " << residue_name_ << ", Residue Chain ID: " << residue_chain_id_ << ", Residue Sequence Number: " << residue_sequence_number_ <<
-           ", Residue Insertion Code: " << residue_insertion_code_ << endl << endl;
+    out << "Residue Name: " << residue_name_
+        << ", Residue Chain ID: " << residue_chain_id_
+        << ", Residue Sequence Number: ";
+    if(residue_sequence_number_ != iNotSet)
+        out << residue_sequence_number_;
+    else
+        out << " ";
+    out << ", Residue Insertion Code: " << residue_insertion_code_
+        << endl << endl;
 }

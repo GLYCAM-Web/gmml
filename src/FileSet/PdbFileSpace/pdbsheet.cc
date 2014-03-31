@@ -5,6 +5,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
+
 #include <iostream>
 
 using namespace std;
@@ -14,7 +15,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbSheet::PdbSheet() :  sheet_id_(""), number_of_strands_(kNotSet) {}
+PdbSheet::PdbSheet() :  sheet_id_(""), number_of_strands_(dNotSet) {}
 
 PdbSheet::PdbSheet(const string &sheet_id, int number_of_strands, const SheetStrandVector strands)
     : sheet_id_(sheet_id), number_of_strands_(number_of_strands)
@@ -42,7 +43,10 @@ PdbSheet::PdbSheet(stringstream& stream_block)
         }
         if(!is_number_of_strands_set)
         {
-            number_of_strands_ = ConvertString<int>(line.substr(14,2));
+            if(line.substr(14, 2) == "  ")
+                number_of_strands_ = iNotSet;
+            else
+                number_of_strands_ = ConvertString<int>(line.substr(14,2));
             is_number_of_strands_set = true;
         }
 
@@ -110,8 +114,13 @@ void PdbSheet::AddStrand(PdbSheetStrand *strand)
 //////////////////////////////////////////////////////////
 void PdbSheet::Print(ostream &out)
 {
-    out << "Sheet ID: " << sheet_id_ << ", Number of Strands: " << number_of_strands_ << endl <<
-           "------------------- Strands ------------------" << endl;
+    out << "Sheet ID: " << sheet_id_
+        << ", Number of Strands: ";
+    if(number_of_strands_ != iNotSet)
+        out << number_of_strands_;
+    else
+        out << " ";
+    out << endl << "------------------- Strands ------------------" << endl;
     for(PdbSheet::SheetStrandVector::iterator it = strands_.begin(); it != strands_.end(); it++)
     {
         (*it)->Print(out);

@@ -11,10 +11,10 @@ using namespace gmml;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileAtom::ParameterFileAtom()
-    : type_(""), mass_(kNotSet), polarizability_(kNotSet), dscr_(""), radius_(kNotSet), well_depth_(kNotSet), mod4_dscr_("") {}
+    : type_(""), mass_(dNotSet), polarizability_(dNotSet), dscr_(""), radius_(dNotSet), well_depth_(dNotSet), mod4_dscr_("") {}
 
 ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, double polarizability, const std::string &dscr)
-    : type_(type), mass_(mass), polarizability_(polarizability),dscr_(dscr), radius_(kNotSet), well_depth_(kNotSet) {}
+    : type_(type), mass_(mass), polarizability_(polarizability),dscr_(dscr), radius_(dNotSet), well_depth_(dNotSet) {}
 
 ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, double polarizability, double radius,
                                      double well_depth, const std::string &dscr, const std::string &mod4_dscr)
@@ -133,22 +133,22 @@ void ParameterFileAtom::SetEquivalentList( std::vector<std::string> equivalent_l
 void ParameterFileAtom::Print(std::ostream& out)
 {
     out << std::setw(6) << type_;
-    if(mass_ == kNotSet)
+    if(mass_ == dNotSet)
         out << std::setw(6) << "--";
     else
         out << std::setw(6) << mass_;
 
-    if(polarizability_ == kNotSet)
+    if(polarizability_ == dNotSet)
         out << std::setw(16) << "--";
     else
         out << std::setw(16) << polarizability_;
 
-    if(radius_ == kNotSet)
+    if(radius_ == dNotSet)
         out << std::setw(8) << "--";
     else
         out << std::setw(8) << radius_;
 
-    if(well_depth_ == kNotSet)
+    if(well_depth_ == dNotSet)
         out << std::setw(12) << "--";
     else
         out << std::setw(12) << well_depth_;

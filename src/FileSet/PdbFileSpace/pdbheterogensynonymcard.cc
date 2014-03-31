@@ -39,6 +39,7 @@ PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(stringstream &stream_block)
             temp = line;
         }
         PdbHeterogenSynonym* heterogen_synonym = new PdbHeterogenSynonym(heterogen_synonym_block);
+        heterogen_identifier = Trim(heterogen_identifier);
         heterogens_synonyms_[heterogen_identifier] = heterogen_synonym;
     }
 }

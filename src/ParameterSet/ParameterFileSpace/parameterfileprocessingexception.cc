@@ -11,7 +11,7 @@ using namespace ParameterFileSpace;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileProcessingException::ParameterFileProcessingException(const std::string &message)
-    : line_number_(kNotSet), message_(message) {}
+    : line_number_(dNotSet), message_(message) {}
 
 ParameterFileProcessingException::ParameterFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -23,7 +23,7 @@ ParameterFileProcessingException::ParameterFileProcessingException(int line_numb
 const char* ParameterFileProcessingException::what() const throw()
 {
     what_ = "ParameterFile: " + message_;
-    if (line_number_ != kNotSet)
+    if (line_number_ != dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)

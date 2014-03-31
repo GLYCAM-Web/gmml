@@ -11,7 +11,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbResidueModification::PdbResidueModification() : id_code_(""), residue_name_(""), chain_identifier_(' '), sequence_number_(kNotSet),
+PdbResidueModification::PdbResidueModification() : id_code_(""), residue_name_(""), chain_identifier_(' '), sequence_number_(dNotSet),
     insertion_code_(' '), standard_residue_name_(""), dscr_("") {}
 PdbResidueModification::PdbResidueModification(const string &id_code, const string &residue_name, char chain_identifier, int sequence_number,
                                                char insertion_code, const string &standard_residue_name, const string &dscr) :
@@ -26,17 +26,23 @@ PdbResidueModification::PdbResidueModification(stringstream& stream_block)
     while (!Trim(temp).empty())
     {
         id_code_ = line.substr(7,4);
+        Trim(id_code_);
         residue_name_ = line.substr(12,3);
+        Trim(residue_name_);
         if(line.substr(16,1) == " ")
             chain_identifier_ = ' ';
         else
             chain_identifier_ = ConvertString<char>(line.substr(16,1));
-        sequence_number_ = ConvertString<int>(line.substr(18,4));
+        if(line.substr(18, 4) == "    ")
+            sequence_number_ = iNotSet;
+        else
+            sequence_number_ = ConvertString<int>(line.substr(18,4));
         if(line.substr(22,1) == " ")
             insertion_code_ = ' ';
         else
             insertion_code_ = ConvertString<char>(line.substr(22,1));
         standard_residue_name_ = line.substr(24,3);
+        Trim(standard_residue_name_);
         dscr_ = line.substr(29,41);
 
         getline(stream_block, line);
@@ -128,7 +134,15 @@ void PdbResidueModification::SetDscr(const string dscr)
 //////////////////////////////////////////////////////////
 void PdbResidueModification::Print(ostream &out)
 {
-    out << "ID Code: " << id_code_ << ", Residue Name: " << residue_name_ << ", Chain Identifier: " << chain_identifier_ <<
-           ", Sequence Number: " << sequence_number_ << ", Insertion Code: " << insertion_code_ << ", Standard Residue Name: " << standard_residue_name_ <<
-           ", Description: " << dscr_ << endl;
+    out << "ID Code: " << id_code_
+        << ", Residue Name: " << residue_name_
+        << ", Chain Identifier: " << chain_identifier_
+        << ", Sequence Number: ";
+    if(sequence_number_ != iNotSet)
+        out << sequence_number_;
+    else
+        out << " ";
+    out << ", Insertion Code: " << insertion_code_
+        << ", Standard Residue Name: " << standard_residue_name_
+        << ", Description: " << dscr_ << endl;
 }

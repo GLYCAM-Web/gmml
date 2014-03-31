@@ -1,5 +1,6 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -24,7 +25,11 @@ PdbConnectCard::PdbConnectCard(stringstream &stream_block)
             is_record_name_set=true;
         }
 
-        int atom_serial_number = ConvertString<int>(line.substr(6,5));
+        int atom_serial_number;
+        if(line.substr(6, 5) != "     ")
+            atom_serial_number = ConvertString<int>(line.substr(6,5));
+        else
+            atom_serial_number = iNotSet;
         vector<int> bonded_atom_serial_numbers;
         if(line.substr(11,5) != "     ")
             bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(11,5)));
@@ -70,7 +75,11 @@ void PdbConnectCard::Print(ostream &out)
            "================= Bonded Atoms Serial Numbers ================" << endl;
     for(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers_.begin(); it != bonded_atom_serial_numbers_.end(); it++)
     {
-        out << "Atom Serial Number: " << (it)->first << endl;
+        out << "Atom Serial Number: ";
+        if((it)->first != iNotSet)
+            out << (it)->first << endl;
+        else
+            out << " " << endl;
         for(unsigned int i = 0; i < (it)->second.size(); i++)
         {
             out << (it)->second.at(i) << ", ";

@@ -39,6 +39,7 @@ PdbHeterogenNameCard::PdbHeterogenNameCard(stringstream &stream_block)
             temp = line;
         }
         PdbHeterogenName* heterogen_name = new PdbHeterogenName(heterogen_name_block);
+        heterogen_id = Trim(heterogen_id);
         heterogen_names_[heterogen_id] = heterogen_name;
     }
 }

@@ -16,7 +16,7 @@ PdbCompoundSpecification::PdbCompoundSpecification() : molecule_id_(""), molecul
 PdbCompoundSpecification::PdbCompoundSpecification(const string& molecule_id, const string& molecule_name) : molecule_id_(molecule_id), molecule_name_(molecule_name){}
 
 PdbCompoundSpecification::PdbCompoundSpecification(const string &molecule_id, const string &molecule_name, const vector<string> &chain_ids, const string &fragment,
-                                                   const vector<string> &molecule_synonyms, vector<int> &enzyme_commission_numbers, bool is_engineered, bool has_mutation, const string& comments) :
+                                                   const vector<string> &molecule_synonyms, vector<string> &enzyme_commission_numbers, bool is_engineered, bool has_mutation, const string& comments) :
     molecule_id_(molecule_id), molecule_name_(molecule_name), chain_ids_(chain_ids), fragment_(fragment), molecule_synonyms_(molecule_synonyms),
     enzyme_commission_numbers_(enzyme_commission_numbers), is_engineered_(is_engineered), has_mutation_(has_mutation), comments_(comments){}
 
@@ -28,19 +28,19 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
     string temp = line;
     while(!Trim(temp).empty())
     {
-        vector<string> tokens = Split(line,":;");
+        vector<string> tokens = Split(line,":");
         string token_name = Trim(tokens.at(0));
         if(token_name == "MOL_ID")
         {
             molecule_id_ = tokens.at(1);
             Trim(molecule_id_);
         }
-        if(token_name == "MOLECULE")
+        else if(token_name == "MOLECULE")
         {
             molecule_name_ = tokens.at(1);
             Trim(molecule_name_);
         }
-        if(token_name == "CHAIN")
+        else if(token_name == "CHAIN")
         {
             chain_ids_ = Split(tokens.at(1),",;");
             for(vector<string>::iterator it = chain_ids_.begin(); it != chain_ids_.end(); it++)
@@ -48,12 +48,12 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
                 Trim(*it);
             }
         }
-        if(token_name == "FRAGMENT")
+        else if(token_name == "FRAGMENT")
         {
             fragment_ = tokens.at(1);
             Trim(fragment_);
         }
-        if(token_name == "SYNONYM")
+        else if(token_name == "SYNONYM")
         {
             molecule_synonyms_ = Split(tokens.at(1), ",;");
             for(vector<string>::iterator it = molecule_synonyms_.begin(); it != molecule_synonyms_.end(); it++)
@@ -61,15 +61,15 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
                 Trim(*it);
             }
         }
-        if(token_name == "EC")
+        else if(token_name == "EC")
         {
-            vector<string> enzyme_commission_numbers = Split(tokens.at(1), ",;");
-            for(vector<string>::iterator it = enzyme_commission_numbers.begin(); it != enzyme_commission_numbers.end(); it++)
+            enzyme_commission_numbers_ = Split(tokens.at(1), ",;");
+            for(vector<string>::iterator it = enzyme_commission_numbers_.begin(); it != enzyme_commission_numbers_.end(); it++)
             {
-                enzyme_commission_numbers_.push_back(ConvertString<int>(*it));
-            }            
+                Trim(*it);
+            }
         }
-        if(token_name == "ENGINEERED")
+        else if(token_name == "ENGINEERED")
         {
             string status = Trim(tokens.at(1));
             if(status == "YES")
@@ -77,7 +77,7 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
             else
                 is_engineered_ = false;
         }
-        if(token_name == "MUTATION")
+        else if(token_name == "MUTATION")
         {
             string status = Trim(tokens.at(1));
             if(status == "YES")
@@ -85,10 +85,13 @@ PdbCompoundSpecification::PdbCompoundSpecification(stringstream& specification_b
             else
                 has_mutation_ = false;
         }
-        if(token_name == "OTHER_DETAILS")
+        else if(token_name == "OTHER_DETAILS")
         {
             comments_ = tokens.at(1);
             Trim(comments_);
+        }
+        else
+        {
         }
         getline(specification_block, line);
         temp = line;
@@ -123,7 +126,7 @@ vector<string> PdbCompoundSpecification::GetMoleculeSynonyms()
     return molecule_synonyms_;
 }
 
-vector<int> PdbCompoundSpecification::GetEnzymeCommissionNumbers()
+vector<string> PdbCompoundSpecification::GetEnzymeCommissionNumbers()
 {
     return enzyme_commission_numbers_;
 }
@@ -189,16 +192,16 @@ void PdbCompoundSpecification::AddMoleculeSynonym(const std::string molecule_syn
     molecule_synonyms_.push_back(molecule_synonym);
 }
 
-void PdbCompoundSpecification::SetEnzymeCommissionNumbers(const vector<int> enzyme_commission_numbers)
+void PdbCompoundSpecification::SetEnzymeCommissionNumbers(const vector<string> enzyme_commission_numbers)
 {
     enzyme_commission_numbers_.clear();
-    for(vector<int>::const_iterator it = enzyme_commission_numbers.begin(); it != enzyme_commission_numbers.end(); it++)
+    for(vector<string>::const_iterator it = enzyme_commission_numbers.begin(); it != enzyme_commission_numbers.end(); it++)
     {
         enzyme_commission_numbers_.push_back(*it);
     }
 }
 
-void PdbCompoundSpecification::AddEnzymeCommissionNumber(int enzyme_commission_number)
+void PdbCompoundSpecification::AddEnzymeCommissionNumber(string enzyme_commission_number)
 {
     enzyme_commission_numbers_.push_back(enzyme_commission_number);
 }
@@ -239,7 +242,7 @@ void PdbCompoundSpecification::Print(ostream &out)
         out << (*it) << ", ";
     }
     out << endl << "Enzyme Commission Numbers: ";
-    for(vector<int>::iterator it = enzyme_commission_numbers_.begin(); it != enzyme_commission_numbers_.end(); it++)
+    for(vector<string>::iterator it = enzyme_commission_numbers_.begin(); it != enzyme_commission_numbers_.end(); it++)
     {
         out << (*it) << ", ";
     }

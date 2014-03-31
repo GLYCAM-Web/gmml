@@ -12,8 +12,8 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogen::PdbHeterogen() : heterogen_id_(""), chain_identifier_(' '), sequence_number_(kNotSet), insertion_code_(' '),
-    number_of_heterogen_atoms_(kNotSet), dscr_("") {}
+PdbHeterogen::PdbHeterogen() : heterogen_id_(""), chain_identifier_(' '), sequence_number_(dNotSet), insertion_code_(' '),
+    number_of_heterogen_atoms_(dNotSet), dscr_("") {}
 
 PdbHeterogen::PdbHeterogen(const string &heterogen_id, char chain_identifier, int sequence_number,
                            char insertion_code, int number_of_heterogen_atoms, const string &dscr)
@@ -28,6 +28,7 @@ PdbHeterogen::PdbHeterogen(stringstream& stream_block)
     while (!Trim(temp).empty())
     {
         heterogen_id_ = line.substr(7,3);
+        Trim(heterogen_id_);
         if(line.substr(12,1) == " ")
         {
             chain_identifier_ = ' ';
@@ -36,7 +37,10 @@ PdbHeterogen::PdbHeterogen(stringstream& stream_block)
         {
             chain_identifier_ = ConvertString<char>(line.substr(12,1));
         }
-        sequence_number_ = ConvertString<int>(line.substr(13,4));
+        if(line.substr(13, 4) == "    ")
+            sequence_number_ = iNotSet;
+        else
+            sequence_number_ = ConvertString<int>(line.substr(13,4));
         if(line.substr(17,1) == " ")
         {
             insertion_code_ = ' ';
@@ -45,8 +49,12 @@ PdbHeterogen::PdbHeterogen(stringstream& stream_block)
         {
             insertion_code_ = ConvertString<char>(line.substr(17,1));
         }
-        number_of_heterogen_atoms_ = ConvertString<int>(line.substr(20,5));
+        if(line.substr(20, 5) == "     ")
+            number_of_heterogen_atoms_ = iNotSet;
+        else
+            number_of_heterogen_atoms_ = ConvertString<int>(line.substr(20,5));
         dscr_ = line.substr(30,40);
+
         getline(stream_block, line);
         temp = line;
     }
@@ -126,6 +134,18 @@ void PdbHeterogen::SetDscr(const string dscr)
 //////////////////////////////////////////////////////////
 void PdbHeterogen::Print(ostream &out)
 {
-    out << "Heterogen ID: " << heterogen_id_ << ", Chain Identifier: " << chain_identifier_ << ", Sequence Number: " << sequence_number_ <<
-           ", Insertion Code: " << insertion_code_ << ", Number of Heterogen Atoms: " << number_of_heterogen_atoms_ << ", Description: " << dscr_ << endl;
+    out << "Heterogen ID: " << heterogen_id_
+        << ", Chain Identifier: " << chain_identifier_
+        << ", Sequence Number: ";
+    if(sequence_number_ != iNotSet)
+        out << sequence_number_;
+    else
+        out << " ";
+    out << ", Insertion Code: " << insertion_code_
+        << ", Number of Heterogen Atoms: ";
+    if(number_of_heterogen_atoms_ != iNotSet)
+        out << number_of_heterogen_atoms_;
+    else
+        out << " ";
+    out << ", Description: " << dscr_ << endl;
 }
