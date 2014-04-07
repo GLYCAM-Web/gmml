@@ -1401,7 +1401,7 @@ void PdbFile::ResolveTitleCard(std::ofstream& stream)
                 stream << left << setw(6) << title_->GetRecordName()
                        << left << setw(2) << " "
                        << right << setw(2) << i
-                       << left << setw(70) << title_->GetTitle().substr(MAX_TITLE_LENGTH_IN_LINE*(i-1), title_->GetTitle().length())
+                       << left << setw(70) << title_->GetTitle().substr(MAX_TITLE_LENGTH_IN_LINE*(i-1), title_->GetTitle().length()-MAX_TITLE_LENGTH_IN_LINE*(i-1))
                        << endl;
             }
         }
@@ -1426,6 +1426,7 @@ void PdbFile::CaveatCard(std::ofstream& stream)
 
 void PdbFile::ResolveCompoundCard(std::ofstream& stream)
 {
+    const int MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE = 70;
     stream << left << setw(6) << compound_->GetRecordName()
            << left << setw(1) << " "
            << right << setw(3) << " ";
@@ -1459,88 +1460,258 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
         /// Molecule name specification
         if(compound_specification->GetMoleculeName() != "")
         {
-            stringstream ss;
-            ss << " MOLECULE: " << compound_specification->GetMoleculeName() << ";";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
-            counter++;
+            stringstream molecule_name;
+            molecule_name << " MOLECULE: " << compound_specification->GetMoleculeName() << ";";
+            int length = molecule_name.str().length();
+
+            if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
+            {
+                stringstream ss;
+                ss << molecule_name;
+                stream << left << setw(6) << compound_->GetRecordName()
+                       << left << setw(1) << " "
+                       << right << setw(3) << counter
+                       << left << setw(70) << ss.str() << endl;
+                counter++;
+            }
+            else
+            {
+                int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+
+                for(unsigned int i = 1; i <= number_of_lines; i++)
+                {
+                    if(i != number_of_lines)
+                    {
+                        stringstream ss;
+                        ss << molecule_name.str().substr((i-1)*(MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE), MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str()
+                               << endl;
+                        counter++;
+                    }
+                    else
+                    {
+                        stringstream ss;
+                        ss << molecule_name.str().substr((i-1)*(MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE), length - (i-1)*(MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE));
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str()
+                               << endl;
+                        counter++;
+                    }
+                }
+
+            }
         }
 
         /// Molecule chain ids specification
         if(compound_specification->GetChainIds().size() > 0)
         {
             vector<string> chain_ids = compound_specification->GetChainIds();
-            stringstream ss;
-            ss << " CHAIN: ";
+            stringstream chain_id;
+            chain_id << " CHAIN: ";
             for(vector<string>::iterator it1 = chain_ids.begin(); it1 != chain_ids.end(); it1++)
             {
                 if(it1 < chain_ids.end()-1)
-                    ss << (*it1) << ", ";
+                    chain_id << (*it1) << ",";
                 else
-                    ss << (*it1);
+                    chain_id << (*it1);
             }
-            ss << ";";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
-            counter++;
+            chain_id << ";";
+            int length = chain_id.str().length();
+            if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
+            {
+                stringstream ss;
+                ss << chain_id.str();
+                stream << left << setw(6) << compound_->GetRecordName()
+                       << left << setw(1) << " "
+                       << right << setw(3) << counter
+                       << left << setw(70) << ss.str() << endl;
+                counter++;
+            }
+            else
+            {
+                int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                for(unsigned int i = 1; i <= number_of_lines; i++)
+                {
+                    if(i != number_of_lines)
+                    {
+                        stringstream ss;
+                        ss << chain_id.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                    else
+                    {
+                        stringstream ss;
+                        ss << chain_id.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                }
+            }
         }
 
         /// Fragment specification
         if(compound_specification->GetFragment() != "")
         {
-            stringstream ss;
-            ss << " FRAGMENT: " << compound_specification->GetFragment() << ";";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
-            counter++;
+            stringstream fragment;
+            fragment << " FRAGMENT: " << compound_specification->GetFragment() << ";";
+            int length = fragment.str().length();
+            if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
+            {
+                stringstream ss;
+                ss << ss.str();
+                stream << left << setw(6) << compound_->GetRecordName()
+                       << left << setw(1) << " "
+                       << right << setw(3) << counter
+                       << left << setw(70) << ss.str() << endl;
+                counter++;
+            }
+            else
+            {
+                int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                for(unsigned int i = 1; i <= number_of_lines; i++)
+                {
+                    if(i != number_of_lines)
+                    {
+                        stringstream ss;
+                        ss << ss.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                    else
+                    {
+                        stringstream ss;
+                        ss << ss.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                }
+            }
         }
 
         /// Molecule synonyms specification
         if(compound_specification->GetMoleculeSynonyms().size() > 0)
         {
             vector<string> molecule_synonyms = compound_specification->GetMoleculeSynonyms();
-            stringstream ss;
-            ss << " SYNONYM: ";
+            stringstream synonyms;
+            synonyms << " SYNONYM: ";
             for(vector<string>::iterator it1 = molecule_synonyms.begin(); it1 != molecule_synonyms.end(); it1++)
             {
                 if(it1 < molecule_synonyms.end()-1)
-                    ss << (*it1) << ", ";
+                    synonyms << (*it1) << ",";
                 else
-                    ss << (*it1);
+                    synonyms << (*it1);
             }
-            ss << ";";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
-            counter++;
+            synonyms << ";";
+            int length = synonyms.str().length();
+            if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
+            {
+                stringstream ss;
+                ss << synonyms.str();
+                stream << left << setw(6) << compound_->GetRecordName()
+                       << left << setw(1) << " "
+                       << right << setw(3) << counter
+                       << left << setw(70) << ss.str() << endl;
+                counter++;
+            }
+            else
+            {
+                int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                for(unsigned int i = 1; i <= number_of_lines; i++)
+                {
+                    if(i != number_of_lines)
+                    {
+                        stringstream ss;
+                        ss << synonyms.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                    else
+                    {
+                        stringstream ss;
+                        ss << synonyms.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                }
+            }
         }
 
         /// Enzyme commission numbers specification
         if(compound_specification->GetEnzymeCommissionNumbers().size() > 0)
         {
             vector<string> enzyme_commission_numbers = compound_specification->GetEnzymeCommissionNumbers();
-            stringstream ss;
-            ss << " EC: ";
+            stringstream commission_numbers;
+            commission_numbers << " EC: ";
             for(vector<string>::iterator it1 = enzyme_commission_numbers.begin(); it1 != enzyme_commission_numbers.end(); it1++)
             {
                 if(it1 < enzyme_commission_numbers.end()-1)
-                    ss << (*it1) << ", ";
+                    commission_numbers << (*it1) << ",";
                 else
-                    ss << (*it1);
+                    commission_numbers << (*it1);
             }
-            ss << ";";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
-            counter++;
+            commission_numbers << ";";
+            int length = commission_numbers.str().length();
+            if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
+            {
+                stringstream ss;
+                ss << commission_numbers.str();
+                stream << left << setw(6) << compound_->GetRecordName()
+                       << left << setw(1) << " "
+                       << right << setw(3) << counter
+                       << left << setw(70) << ss.str() << endl;
+                counter++;
+            }
+            else
+            {
+                int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                for(unsigned int i = 1; i <= number_of_lines; i++)
+                {
+                    if(i != number_of_lines)
+                    {
+                        stringstream ss;
+                        ss << commission_numbers.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                    else
+                    {
+                        stringstream ss;
+                        ss << commission_numbers.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                }
+            }
         }
 
         /// Engineered specification
@@ -1570,13 +1741,46 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
         /// Other comments specification
         if(compound_specification->GetComments() != "")
         {
-            stringstream ss;
-            ss << " OTHER_DETAILS: " << compound_specification->GetComments() << ";";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
-            counter++;
+            stringstream comments;
+            comments << " OTHER_DETAILS: " << compound_specification->GetComments() << ";";
+            int length = comments.str().length();
+            if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
+            {
+                stringstream ss;
+                ss << comments.str();
+                stream << left << setw(6) << compound_->GetRecordName()
+                       << left << setw(1) << " "
+                       << right << setw(3) << counter
+                       << left << setw(70) << ss.str() << endl;
+                counter++;
+            }
+            else
+            {
+                int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                for(unsigned int i = 1; i <= number_of_lines; i++)
+                {
+                    if(i != number_of_lines)
+                    {
+                        stringstream ss;
+                        ss << comments.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                    else
+                    {
+                        stringstream ss;
+                        ss << comments.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
+                        stream << left << setw(6) << compound_->GetRecordName()
+                               << left << setw(1) << " "
+                               << right << setw(3) << counter
+                               << left << setw(70) << ss.str() << endl;
+                        counter++;
+                    }
+                }
+            }
         }
 
         first = false;
@@ -1650,7 +1854,7 @@ void PdbFile::ResolveModelTypeCard(std::ofstream& stream)
                 stream << left << setw(6) << model_type_->GetRecordName()
                        << left << setw(2) << " "
                        << right << setw(2) << i
-                       << left << setw(70) << ss.str().substr(70*(i-1), ss.str().length())
+                       << left << setw(70) << ss.str().substr(70*(i-1), ss.str().length() - (i-1)*70)
                        << endl;
             }
         }
@@ -1884,7 +2088,7 @@ void PdbFile::ResolveHeterogenNameCard(std::ofstream& stream)
                            << left << setw(1) << " "
                            << right << setw(3) << heterogen_name->GetHeterogenIdentifier()
                            << left << setw(1) << " "
-                           << left << setw(55) << heterogen_name->GetHeterogenName().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),heterogen_name->GetHeterogenName().length())
+                           << left << setw(55) << heterogen_name->GetHeterogenName().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),heterogen_name->GetHeterogenName().length()-MAX_NAME_LENGTH_IN_LINE*(i-1))
                            << left << setw(10) << " "
                            << endl;
                 }
@@ -1959,7 +2163,7 @@ void PdbFile::ResolveHeterogenSynonymCard(std::ofstream& stream)
                            << left << setw(1) << " "
                            << right << setw(3) << heterogen_synonym->GetHeterogenIdentifier()
                            << left << setw(1) << " "
-                           << left << setw(55) << ss.str().substr(MAX_SYNONYM_LENGTH_IN_LINE*(i-1),ss.str().length())
+                           << left << setw(55) << ss.str().substr(MAX_SYNONYM_LENGTH_IN_LINE*(i-1),ss.str().length()-MAX_SYNONYM_LENGTH_IN_LINE*(i-1))
                            << left << setw(10) << " "
                            << endl;
                 }
@@ -2038,7 +2242,7 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
                            << left << setw(1) << " "
                            << right << setw(2) << i
                            << left << setw(1) << " "
-                           << left << setw(51) << formula->GetChemicalFormula().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),formula->GetChemicalFormula().length())
+                           << left << setw(51) << formula->GetChemicalFormula().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),formula->GetChemicalFormula().length()-MAX_NAME_LENGTH_IN_LINE*(i-1))
                            << left << setw(10) << " "
                            << endl;
                 }
@@ -2901,16 +3105,16 @@ void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
     {
         vector<int> bonded_atoms_serial_number = (*it).second;
         int source_atom_serial_number = (*it).first;
-        stream << left << setw(6) << connectivities_->GetRecordName();
-        if(source_atom_serial_number != iNotSet)
-            stream << right << setw(5) << source_atom_serial_number;
-        else
-            stream << right << setw(5) << " ";
         int number_of_bonded_atoms = bonded_atoms_serial_number.size();
         const int MAX_SERIAL_NUMBER_IN_LINE = 4;
         const int SERIAL_NUMBER_LENGTH = 5;
-        if(number_of_bonded_atoms < MAX_SERIAL_NUMBER_IN_LINE)
+        if(number_of_bonded_atoms <= MAX_SERIAL_NUMBER_IN_LINE)
         {
+            stream << left << setw(6) << connectivities_->GetRecordName();
+            if(source_atom_serial_number != iNotSet)
+                stream << right << setw(5) << source_atom_serial_number;
+            else
+                stream << right << setw(5) << " ";
             for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
             {
                 int serial_number = (*it1);
@@ -2921,21 +3125,56 @@ void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
             }
             if((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH != 0)
                 stream << left << setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
-                       <<left << setw(49) << " "
-                      << endl;
+                       << left << setw(49) << " "
+                       << endl;
+            else
+                stream << left << setw(49) << " "
+                       << endl;
         }
         else
         {
-            for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+            int number_of_lines = ceil((double)(number_of_bonded_atoms) / MAX_SERIAL_NUMBER_IN_LINE);
+            for(unsigned int i = 1; i <= number_of_lines; i++)
             {
-                int serial_number = (*it1);
-                if(serial_number != iNotSet)
-                    stream << right << setw(5) << serial_number;
+                stream << left << setw(6) << connectivities_->GetRecordName();
+                if(source_atom_serial_number != iNotSet)
+                    stream << right << setw(5) << source_atom_serial_number;
                 else
                     stream << right << setw(5) << " ";
+                if(i != number_of_lines)
+                {
+                    for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin() + (i-1) * MAX_SERIAL_NUMBER_IN_LINE;
+                        it1 != bonded_atoms_serial_number.begin() + i * MAX_SERIAL_NUMBER_IN_LINE; it1++)
+                    {
+                        int serial_number = (*it1);
+                        if(serial_number != iNotSet)
+                            stream << right << setw(5) << serial_number;
+                        else
+                            stream << right << setw(5) << " ";
+                    }
+                    stream << left << setw(49) << " "
+                           << endl;
+                }
+                else
+                {
+                    for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin() + (i-1) * MAX_SERIAL_NUMBER_IN_LINE;
+                        it1 != bonded_atoms_serial_number.end(); it1++)
+                    {
+                        int serial_number = (*it1);
+                        if(serial_number != iNotSet)
+                            stream << right << setw(5) << serial_number;
+                        else
+                            stream << right << setw(5) << " ";
+                    }
+                    if((MAX_SERIAL_NUMBER_IN_LINE-(number_of_bonded_atoms-(i-1)*MAX_SERIAL_NUMBER_IN_LINE))*SERIAL_NUMBER_LENGTH != 0)
+                        stream << left << setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
+                               << left << setw(49) << " "
+                               << endl;
+                    else
+                        stream << left << setw(49) << " "
+                               << endl;
+                }
             }
-            stream << left << setw(49) << " "
-                   << endl;
         }
     }
 }

@@ -38,8 +38,17 @@ PdbConnectCard::PdbConnectCard(stringstream &stream_block)
         if(line.substr(21,5) != "     ")
             bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(21,5)));
         if(line.substr(26,5) != "     ")
-            bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(26,5)));
-        bonded_atom_serial_numbers_[atom_serial_number] = bonded_atom_serial_numbers;
+            bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(26,5)));        
+        BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers_.find(atom_serial_number);
+        if(it->first == atom_serial_number)
+        {
+            for(vector<int>::iterator it = bonded_atom_serial_numbers.begin(); it != bonded_atom_serial_numbers.end(); it++)
+                bonded_atom_serial_numbers_.find(atom_serial_number)->second.push_back((*it));
+        }
+        else
+        {
+            bonded_atom_serial_numbers_[atom_serial_number] = bonded_atom_serial_numbers;
+        }
         getline(stream_block, line);
         temp = line;
     }
