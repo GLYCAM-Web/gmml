@@ -2577,10 +2577,10 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                            << left << setw(1) << " "
                            << right << setw(1) << residue->GetResidueChainId();
                         if(residue->GetResidueSequenceNumber() != iNotSet)
-                            stream << right << setw(4) << residue->GetResidueSequenceNumber();
+                            ss << right << setw(4) << residue->GetResidueSequenceNumber();
                         else
-                            stream << right << setw(4) << " ";
-                        stream << right << setw(1) << residue->GetResidueInsertionCode();
+                            ss << right << setw(4) << " ";
+                        ss << right << setw(1) << residue->GetResidueInsertionCode();
                     }
                     ss << left << setw(19) << " ";
                     stream << left << setw(6) << sites_->GetRecordName()
@@ -2608,10 +2608,10 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                            << left << setw(1) << " "
                            << right << setw(1) << residue->GetResidueChainId();
                         if(residue->GetResidueSequenceNumber() != iNotSet)
-                            stream << right << setw(4) << residue->GetResidueSequenceNumber();
+                            ss << right << setw(4) << residue->GetResidueSequenceNumber();
                         else
-                            stream << right << setw(4) << " ";
-                        stream << right << setw(1) << residue->GetResidueInsertionCode();
+                            ss << right << setw(4) << " ";
+                        ss << right << setw(1) << residue->GetResidueInsertionCode();
                     }
                     if((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE != 0)
                         ss << left << setw((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
@@ -2644,10 +2644,10 @@ void PdbFile::ResolveSiteCard(std::ofstream& stream)
                    << left << setw(1) << " "
                    << right << setw(1) << residue->GetResidueChainId();
                 if(residue->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << residue->GetResidueSequenceNumber();
+                    ss << right << setw(4) << residue->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << residue->GetResidueInsertionCode();
+                    ss << right << setw(4) << " ";
+                ss << right << setw(1) << residue->GetResidueInsertionCode();
             }
             if((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE != 0)
                 ss << left << setw((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
