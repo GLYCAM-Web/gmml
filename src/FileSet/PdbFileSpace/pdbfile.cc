@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <math.h>
+#include <algorithm>
 #include <exception>
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
@@ -231,6 +232,46 @@ vector<string> PdbFile::GetAllResidueNames()
         PdbModel* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
         PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        {
+            PdbAtomCard* atom_card = (*it1);
+            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            {
+                PdbAtom* atom = (*it2).second;
+                bool find = false;
+                for(vector<string>::iterator it3 = residue_names.begin(); it3 != residue_names.end(); it3++)
+                {
+                    if((*it3) == atom->GetAtomResidueName())
+                    {
+                        find = true;
+                        break;
+                    }
+                    else
+                    {
+                        find = false;
+                        break;
+                    }
+                }
+                if(!find)
+                    residue_names.push_back(atom->GetAtomResidueName());
+            }
+        }
+        PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
+        for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
+        {
+            PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
+            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            {
+                PdbAtom* atom = (*it2).second;
+                vector<string>::iterator index = find(residue_names.begin(), residue_names.end(), atom->GetAtomResidueName());
+                if(index < residue_names.begin() || index > residue_names.end())
+                {
+                    residue_names.push_back(atom->GetAtomResidueName());
+                }
+            }
+        }
     }
 
 }
@@ -1450,6 +1491,12 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
         ss << "MOL_ID: " << (*(compound_specification_map.begin())).second->GetMoleculeId() << ";";
         stream << left << setw(70) << ss.str() << endl;
     }
+    else
+    {
+        stringstream ss;
+        ss << " UNKNOWN;";
+        stream << left << setw(70) << ss.str() << endl;
+    }
     bool first = true;
     int counter = 2;
     for(PdbCompoundCard::PdbCompoundSpecificationMap::iterator it = compound_specification_map.begin(); it != compound_specification_map.end(); it++)
@@ -1461,6 +1508,16 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             {
                 stringstream ss;
                 ss << " MOL_ID: " << compound_specification->GetMoleculeId() << ";";
+                stream << left << setw(6) << compound_->GetRecordName()
+                       << left << setw(1) << " "
+                       << right << setw(3) << counter
+                       << left << setw(70) << ss.str() << endl;
+                counter++;
+            }
+            else
+            {
+                stringstream ss;
+                ss << " UNKNOWN;";
                 stream << left << setw(6) << compound_->GetRecordName()
                        << left << setw(1) << " "
                        << right << setw(3) << counter
@@ -2711,7 +2768,7 @@ void PdbFile::ResolveCrystallographyCard(std::ofstream& stream)
         stream << right << setw(7) << " ";
     stream << left << setw(1) << " "
            << left << setw(11) << crystallography_->GetSpaceGroup();
-    if(crystallography_->GetZValue() != dNotSet)
+    if(crystallography_->GetZValue() != iNotSet)
         stream << right << setw(4) << crystallography_->GetZValue();
     else
         stream << right << setw(4) << " ";
