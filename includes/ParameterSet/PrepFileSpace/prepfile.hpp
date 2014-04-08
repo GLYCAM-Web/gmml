@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <vector>
 
 namespace PrepFileSpace
 {
@@ -36,6 +37,7 @@ namespace PrepFileSpace
               * @return path_ attribute of the current object of this class
               */
             ResidueMap& GetResidues();
+            std::vector<std::string> GetAllResidueNames();
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //

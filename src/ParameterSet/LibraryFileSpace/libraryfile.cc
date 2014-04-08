@@ -47,6 +47,14 @@ const LibraryFile::ResidueMap& LibraryFile::GetResidues() const
 {
     return residues_;
 }
+vector<string> LibraryFile::GetAllResidueNames()
+{
+    vector<string> residue_names;
+    for(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        residue_names.push_back((*it).first);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //

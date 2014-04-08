@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <vector>
 
 namespace LibraryFileSpace
 {
@@ -42,6 +43,7 @@ namespace LibraryFileSpace
               * @return residues_ attribute of the current object of this class
               */
             const ResidueMap& GetResidues() const;
+            std::vector<std::string> GetAllResidueNames();
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
@@ -57,7 +59,7 @@ namespace LibraryFileSpace
               * @param line A line from the atom section of a library file
               * @return A new LibraryFileAtom instance created by the information of the given line
               */
-            LibraryFileAtom* ProcessAtom(std::string& line);
+            LibraryFileAtom* ProcessAtom(std::string& line);            
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

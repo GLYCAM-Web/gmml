@@ -38,7 +38,13 @@ PrepFile::ResidueMap& PrepFile::GetResidues()
 {
     return residues_;
 }
-
+vector<string> PrepFile::GetAllResidueNames()
+{
+    vector<string> residue_names;
+    for(PrepFile::ResidueMap::iterator it=residues_.begin();it!=residues_.end();it++){
+        residue_names.push_back((*it).first);
+    }
+}
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////

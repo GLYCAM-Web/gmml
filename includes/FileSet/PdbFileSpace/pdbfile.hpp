@@ -5,6 +5,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 namespace PdbFileSpace
 {
@@ -72,7 +73,8 @@ namespace PdbFileSpace
             PdbScaleNCard* GetScales();
             PdbMatrixNCard* GetMatrices();
             PdbModelCard* GetModels();
-            PdbConnectCard* GetConnectivities();
+            PdbConnectCard* GetConnectivities();            
+            std::vector<std::string> GetAllResidueNames();
 
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //

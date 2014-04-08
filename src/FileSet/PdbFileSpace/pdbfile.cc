@@ -222,6 +222,18 @@ PdbConnectCard* PdbFile::GetConnectivities()
 {
     return connectivities_;
 }
+vector<string> PdbFile::GetAllResidueNames()
+{
+    vector<string> residue_names;
+    PdbModelCard::PdbModelMap models = models_->GetModels();
+    for(PdbModelCard::PdbModelMap::iterator it = models.begin();it != models.end(); it++)
+    {
+        PdbModel* model = (*it).second;
+        PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+    }
+
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
