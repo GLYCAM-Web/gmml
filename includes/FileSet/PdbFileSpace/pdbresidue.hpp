@@ -35,6 +35,11 @@ namespace PdbFileSpace
               * @return residue_sequence_number_ attribute of the current object of this class
               */
             int GetResidueSequenceNumber();
+            /*! \fn
+              * An accessor function in order to access to the residue insertion code
+              * @return residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetResidueInsertionCode();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -57,6 +62,12 @@ namespace PdbFileSpace
               * @param residue_sequcne_number The residue sequence number attribute of the current object
               */
             void SetResidueSequenceNumber(int residue_sequence_number);
+            /*! \fn
+              * A mutator function in order to set the residue insertion code of the current object
+              * Set the residue_insertion_code_ attribute of the current pdb residue
+              * @param residue_insertion_code The residue insertion code attribute of the current object
+              */
+            void SetResidueInsertionCode(char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -75,6 +86,7 @@ namespace PdbFileSpace
             char residue_chain_id_;
             std::string residue_name_;
             int residue_sequence_number_;
+            char residue_insertion_code_;
 
     };
 }
