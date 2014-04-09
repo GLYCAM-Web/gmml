@@ -52,8 +52,10 @@ vector<string> LibraryFile::GetAllResidueNames()
     vector<string> residue_names;
     for(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        residue_names.push_back((*it).first);
+        string residue_name = (*it).first;
+        residue_names.push_back(residue_name);
     }
+    return residue_names;
 }
 
 //////////////////////////////////////////////////////////

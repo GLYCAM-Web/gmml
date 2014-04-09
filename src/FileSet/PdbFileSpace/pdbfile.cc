@@ -223,8 +223,9 @@ PdbConnectCard* PdbFile::GetConnectivities()
 {
     return connectivities_;
 }
+
 vector<string> PdbFile::GetAllResidueNames()
-{
+{    
     vector<string> residue_names;
     PdbModelCard::PdbModelMap models = models_->GetModels();
     for(PdbModelCard::PdbModelMap::iterator it = models.begin();it != models.end(); it++)
@@ -242,7 +243,8 @@ vector<string> PdbFile::GetAllResidueNames()
                 bool find = false;
                 for(vector<string>::iterator it3 = residue_names.begin(); it3 != residue_names.end(); it3++)
                 {
-                    if((*it3) == atom->GetAtomResidueName())
+                    string name = (*it3);
+                    if(name.compare(atom->GetAtomResidueName()) == 0)
                     {
                         find = true;
                         break;
@@ -250,11 +252,13 @@ vector<string> PdbFile::GetAllResidueNames()
                     else
                     {
                         find = false;
-                        break;
+                        continue;
                     }
                 }
                 if(!find)
+                {
                     residue_names.push_back(atom->GetAtomResidueName());
+                }
             }
         }
         PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
@@ -265,14 +269,29 @@ vector<string> PdbFile::GetAllResidueNames()
             for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
             {
                 PdbAtom* atom = (*it2).second;
-                vector<string>::iterator index = find(residue_names.begin(), residue_names.end(), atom->GetAtomResidueName());
-                if(index < residue_names.begin() || index > residue_names.end())
+                bool find = false;
+                for(vector<string>::iterator it3 = residue_names.begin(); it3 != residue_names.end(); it3++)
+                {
+                    string name = (*it3);
+                    if(name.compare(atom->GetAtomResidueName()) == 0)
+                    {
+                        find = true;
+                        break;
+                    }
+                    else
+                    {
+                        find = false;
+                        continue;
+                    }
+                }
+                if(!find)
                 {
                     residue_names.push_back(atom->GetAtomResidueName());
                 }
             }
         }
     }
+    return residue_names;
 
 }
 
