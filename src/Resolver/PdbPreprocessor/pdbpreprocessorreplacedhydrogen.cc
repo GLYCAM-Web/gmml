@@ -12,9 +12,9 @@ PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen() {}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-int PdbPreprocessorReplacedHydrogen::GetAtomIndex()
+int PdbPreprocessorReplacedHydrogen::GetAtomSerialNumber()
 {
-    return atom_index_;
+    return atom_serial_number_;
 }
 string PdbPreprocessorReplacedHydrogen::GetAtomName()
 {
@@ -24,17 +24,17 @@ string PdbPreprocessorReplacedHydrogen::GetResidueName()
 {
     return residue_name_;
 }
-int PdbPreprocessorReplacedHydrogen::GetResidueNumber()
+int PdbPreprocessorReplacedHydrogen::GetResidueSequenceNumber()
 {
-    return residue_number_;
+    return residue_sequence_number_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbPreprocessorReplacedHydrogen::SetAtomIndex(int atom_index)
+void PdbPreprocessorReplacedHydrogen::SetAtomSerialNumber(int atom_serial_number)
 {
-    atom_index_ = atom_index;
+    atom_serial_number_ = atom_serial_number;
 }
 void PdbPreprocessorReplacedHydrogen::SetAtomName(const string atom_name)
 {
@@ -44,9 +44,9 @@ void PdbPreprocessorReplacedHydrogen::SetResidueName(const string residue_name)
 {
     residue_name_ = residue_name;
 }
-void PdbPreprocessorReplacedHydrogen::SetResidueNumber(int residue_number)
+void PdbPreprocessorReplacedHydrogen::SetResidueSequenceNumber(int residue_sequence_number)
 {
-    residue_number_ = residue_number;
+    residue_sequence_number_ = residue_sequence_number;
 }
 
 //////////////////////////////////////////////////////////

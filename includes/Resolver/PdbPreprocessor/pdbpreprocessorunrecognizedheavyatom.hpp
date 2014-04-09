@@ -26,10 +26,10 @@ namespace PdbPreprocessorSpace
               */
             char GetResidueChainId();
             /*! \fn
-              * An accessor function in order to access to the atom index
-              * @return atom_index_ attribute of the current object of this class
+              * An accessor function in order to access to the atom serial number
+              * @return atom_serial_number_ attribute of the current object of this class
               */
-            int GetAtomIndex();
+            int GetAtomSerialNumber();
             /*! \fn
               * An accessor function in order to access to the atom name
               * @return atom_name_ attribute of the current object of this class
@@ -41,10 +41,10 @@ namespace PdbPreprocessorSpace
               */
             std::string GetResidueName();
             /*! \fn
-              * An accessor function in order to access to the residue number
-              * @return residue_number_ attribute of the current object of this class
+              * An accessor function in order to access to the residue sequence number
+              * @return residue_sequence_number_ attribute of the current object of this class
               */
-            int GetResidueNumber();
+            int GetResidueSequenceNumber();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -56,11 +56,11 @@ namespace PdbPreprocessorSpace
               */
             void SetResidueChainId(char residue_chain_id);
             /*! \fn
-              * A mutator function in order to set the atom index of the current object
-              * Set the atom_index_ attribute of the current pdb preprocessor unrecognized heavy atom
-              * @param atom_index The residue index attribute of the current object
+              * A mutator function in order to set the atom serial number of the current object
+              * Set the atom_serial_number_ attribute of the current pdb preprocessor unrecognized heavy atom
+              * @param atom_serial_number The residue index attribute of the current object
               */
-            void SetAtomIndex(int atom_index);
+            void SetAtomSerialNumber(int atom_serial_number);
             /*! \fn
               * A mutator function in order to set the atom name of the current object
               * Set the atom_name_ attribute of the current pdb preprocessor unrecognized heavy atom
@@ -74,11 +74,11 @@ namespace PdbPreprocessorSpace
               */
             void SetResidueName(std::string residue_name);
             /*! \fn
-              * A mutator function in order to set the residue number of the current object
-              * Set the residue_number_ attribute of the current pdb preprocessor unrecognized heavy atom
-              * @param residue_number The residue number attribute of the current object
+              * A mutator function in order to set the residue sequence number of the current object
+              * Set the residue_sequence_number_ attribute of the current pdb preprocessor unrecognized heavy atom
+              * @param residue_sequcne_number The residue sequence number attribute of the current object
               */
-            void SetResidueNumber(int residue_number);
+            void SetResidueSequenceNumber(int residue_sequence_number);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -95,10 +95,10 @@ namespace PdbPreprocessorSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             char residue_chain_id_;
-            int atom_index_;
+            int atom_serial_number_;
             std::string atom_name_;
             std::string residue_name_;
-            int residue_number_;
+            int residue_sequence_number_;
 
     };
 }

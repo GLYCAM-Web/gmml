@@ -16,13 +16,13 @@ char PdbPreprocessorMissingResidue::GetResidueChainId()
 {
     return residue_chain_id_;
 }
-int PdbPreprocessorMissingResidue::GetResidueStartIndex()
+int PdbPreprocessorMissingResidue::GetStartingResidueSequenceNumber()
 {
-    return residue_start_index_;
+    return starting_residue_sequence_number_;
 }
-int PdbPreprocessorMissingResidue::GetResidueEndIndex()
+int PdbPreprocessorMissingResidue::GetEndingResidueSequenceNumber()
 {
-    return residue_end_index_;
+    return ending_residue_sequence_number_;
 }
 int PdbPreprocessorMissingResidue::GetResidueBeforeGap()
 {
@@ -40,13 +40,13 @@ vector<string> PdbPreprocessorMissingResidue::GetPossibleCTerminations()
 {
     return possible_c_terminations_;
 }
-string PdbPreprocessorMissingResidue::GetSelectedNTerminations()
+string PdbPreprocessorMissingResidue::GetSelectedNTermination()
 {
-    return selected_n_terminations_;
+    return selected_n_termination_;
 }
-string PdbPreprocessorMissingResidue::GetSelectedCTerminations()
+string PdbPreprocessorMissingResidue::GetSelectedCTermination()
 {
-    return selected_c_terminations_;
+    return selected_c_termination_;
 }
 
 //////////////////////////////////////////////////////////
@@ -56,19 +56,18 @@ void PdbPreprocessorMissingResidue::SetResidueChainId(char residue_chain_id)
 {
     residue_chain_id_ = residue_chain_id;
 }
-void PdbPreprocessorMissingResidue::SetResidueStartIndex(int residue_start_index)
+void PdbPreprocessorMissingResidue::SetStartingResidueSequenceNumber(int starting_residue_sequence_number)
 {
-    residue_start_index_ = residue_start_index;
+    starting_residue_sequence_number_ = starting_residue_sequence_number;
 }
-void PdbPreprocessorMissingResidue::SetResidueEndIndex(int residue_end_index)
+void PdbPreprocessorMissingResidue::SetEndingResidueSequenceNumber(int ending_residue_sequence_number)
 {
-    residue_end_index_ = residue_end_index;
+    ending_residue_sequence_number_ = ending_residue_sequence_number;
 }
 void PdbPreprocessorMissingResidue::SetResidueBeforeGap(int residue_before_gap)
 {
     residue_before_gap_ = residue_before_gap;
 }
-
 void PdbPreprocessorMissingResidue::SetResidueAfterGap(int residue_after_gap)
 {
     residue_after_gap_ = residue_after_gap;
@@ -89,13 +88,13 @@ void PdbPreprocessorMissingResidue::SetPossibleCTerminations(vector<string> poss
         possible_c_terminations_.push_back(*it);
     }
 }
-void PdbPreprocessorMissingResidue::SetSelectedNTerminations(const string selected_n_terminations)
+void PdbPreprocessorMissingResidue::SetSelectedNTermination(const string selected_n_termination)
 {
-    selected_n_terminations_ = selected_n_terminations;
+    selected_n_termination_ = selected_n_termination;
 }
-void PdbPreprocessorMissingResidue::SetSelectedCTerminations(const string selected_c_terminations)
+void PdbPreprocessorMissingResidue::SetSelectedCTermination(const string selected_c_termination)
 {
-    selected_c_terminations_ = selected_c_terminations;
+    selected_c_termination_ = selected_c_termination;
 }
 
 //////////////////////////////////////////////////////////

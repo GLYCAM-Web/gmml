@@ -1,12 +1,12 @@
-#ifndef PDBPREPROCESSORUNRECOGNIZEDRESIDUE_HPP
-#define PDBPREPROCESSORUNRECOGNIZEDRESIDUE_HPP
+#ifndef PDBRESIDUE_HPP
+#define PDBRESIDUE_HPP
 
 #include <string>
 #include <iostream>
 
-namespace PdbPreprocessorSpace
+namespace PdbFileSpace
 {
-    class PdbPreprocessorUnrecognizedResidue
+    class PdbResidue
     {
         public:
             //////////////////////////////////////////////////////////
@@ -15,7 +15,7 @@ namespace PdbPreprocessorSpace
             /*! \fn
               * Default constructor
               */
-            PdbPreprocessorUnrecognizedResidue();
+            PdbResidue();
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -26,43 +26,43 @@ namespace PdbPreprocessorSpace
               */
             char GetResidueChainId();
             /*! \fn
-              * An accessor function in order to access to the residue sequence number
-              * @return residue_sequence_number_ attribute of the current object of this class
-              */
-            int GetResidueSequenceNumber();
-            /*! \fn
               * An accessor function in order to access to the residue name
               * @return residue_name_ attribute of the current object of this class
               */
             std::string GetResidueName();
+            /*! \fn
+              * An accessor function in order to access to the residue sequence number
+              * @return residue_sequence_number_ attribute of the current object of this class
+              */
+            int GetResidueSequenceNumber();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             /*! \fn
               * A mutator function in order to set the residue chain id of the current object
-              * Set the residue_chain_id_ attribute of the current pdb preprocessor unrecognized residue
+              * Set the residue_chain_id_ attribute of the current pdb residue
               * @param residue_chain_id The residue chain id attribute of the current object
               */
             void SetResidueChainId(char residue_chain_id);
             /*! \fn
-              * A mutator function in order to set the residue sequence number of the current object
-              * Set the residue_sequence_number_ attribute of the current pdb preprocessor unrecognized residue
-              * @param residue_sequence_number The residue sequence number attribute of the current object
-              */
-            void SetResidueSequenceNumber(int residue_sequence_number);
-            /*! \fn
               * A mutator function in order to set the residue name of the current object
-              * Set the residue_name_ attribute of the current pdb preprocessor unrecognized residue
+              * Set the residue_name_ attribute of the current pdb residue
               * @param residue_name The residue name attribute of the current object
               */
             void SetResidueName(std::string residue_name);
+            /*! \fn
+              * A mutator function in order to set the residue sequence number of the current object
+              * Set the residue_sequence_number_ attribute of the current pdb residue
+              * @param residue_sequcne_number The residue sequence number attribute of the current object
+              */
+            void SetResidueSequenceNumber(int residue_sequence_number);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the pdb preprocessor unrecognized residue contents in a structural format
+              * A function to print out the pdb residue contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -73,10 +73,10 @@ namespace PdbPreprocessorSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             char residue_chain_id_;
-            int residue_sequence_number_;
             std::string residue_name_;
+            int residue_sequence_number_;
 
     };
 }
 
-#endif // PDBPREPROCESSORUNRECOGNIZEDRESIDUE_HPP
+#endif // PDBRESIDUE_HPP

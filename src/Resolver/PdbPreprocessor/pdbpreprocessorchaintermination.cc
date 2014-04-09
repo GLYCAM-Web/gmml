@@ -16,13 +16,13 @@ char PdbPreprocessorChainTermination::GetResidueChainId()
 {
     return residue_chain_id_;
 }
-int PdbPreprocessorChainTermination::GetResidueStartIndex()
+int PdbPreprocessorChainTermination::GetStartingResidueSequenceNumber()
 {
-    return residue_start_index_;
+    return starting_residue_sequence_number_;
 }
-int PdbPreprocessorChainTermination::GetResidueEndIndex()
+int PdbPreprocessorChainTermination::GetEndingResidueSequenceNumber()
 {
-    return residue_end_index_;
+    return ending_residue_sequence_number_;
 }
 vector<string> PdbPreprocessorChainTermination::GetPossibleNTerminations()
 {
@@ -32,13 +32,13 @@ vector<string> PdbPreprocessorChainTermination::GetPossibleCTerminations()
 {
     return possible_c_terminations_;
 }
-string PdbPreprocessorChainTermination::GetSelectedNTerminations()
+string PdbPreprocessorChainTermination::GetSelectedNTermination()
 {
-    return selected_n_terminations_;
+    return selected_n_termination_;
 }
-string PdbPreprocessorChainTermination::GetSelectedCTerminations()
+string PdbPreprocessorChainTermination::GetSelectedCTermination()
 {
-    return selected_c_terminations_;
+    return selected_c_termination_;
 }
 
 //////////////////////////////////////////////////////////
@@ -48,13 +48,13 @@ void PdbPreprocessorChainTermination::SetResidueChainId(char residue_chain_id)
 {
     residue_chain_id_ = residue_chain_id;
 }
-void PdbPreprocessorChainTermination::SetResidueStartIndex(int residue_start_index)
+void PdbPreprocessorChainTermination::SetStartingResidueSequenceNumber(int starting_residue_sequence_number)
 {
-    residue_start_index_ = residue_start_index;
+    starting_residue_sequence_number_ = starting_residue_sequence_number;
 }
-void PdbPreprocessorChainTermination::SetResidueEndIndex(int residue_end_index)
+void PdbPreprocessorChainTermination::SetEndingResidueSequenceNumber(int ending_residue_sequence_number)
 {
-    residue_end_index_ = residue_end_index;
+    ending_residue_sequence_number_ = ending_residue_sequence_number;
 }
 void PdbPreprocessorChainTermination::SetPossibleNTerminations(vector<string> possible_n_terminations)
 {
@@ -72,13 +72,13 @@ void PdbPreprocessorChainTermination::SetPossibleCTerminations(vector<string> po
         possible_c_terminations_.push_back(*it);
     }
 }
-void PdbPreprocessorChainTermination::SetSelectedNTerminations(const string selected_n_terminations)
+void PdbPreprocessorChainTermination::SetSelectedNTermination(const string selected_n_termination)
 {
-    selected_n_terminations_ = selected_n_terminations;
+    selected_n_termination_ = selected_n_termination;
 }
-void PdbPreprocessorChainTermination::SetSelectedCTerminations(const string selected_c_terminations)
+void PdbPreprocessorChainTermination::SetSelectedCTermination(const string selected_c_termination)
 {
-    selected_c_terminations_ = selected_c_terminations;
+    selected_c_termination_ = selected_c_termination;
 }
 
 //////////////////////////////////////////////////////////

@@ -27,15 +27,15 @@ namespace PdbPreprocessorSpace
               */
             char GetResidueChainId();
             /*! \fn
-              * An accessor function in order to access to the residue start index
-              * @return residue_start_index_ attribute of the current object of this class
+              * An accessor function in order to access to the starting residue sequence number
+              * @return starting_residue_sequence_number_ attribute of the current object of this class
               */
-            int GetResidueStartIndex();
+            int GetStartingResidueSequenceNumber();
             /*! \fn
-              * An accessor function in order to access to the residue end index
-              * @return residue_end_index_ attribute of the current object of this class
+              * An accessor function in order to access to the starting residue sequence number
+              * @return ending_residue_sequence_number_ attribute of the current object of this class
               */
-            int GetResidueEndIndex();
+            int GetEndingResidueSequenceNumber();
             /*! \fn
               * An accessor function in order to access to the residue before gap
               * @return residue_before_gap_ attribute of the current object of this class
@@ -57,15 +57,15 @@ namespace PdbPreprocessorSpace
               */
             std::vector<std::string> GetPossibleCTerminations();
             /*! \fn
-              * An accessor function in order to access to the selected n terminations
-              * @return selected_n_terminations_ attribute of the current object of this class
+              * An accessor function in order to access to the selected n termination
+              * @return selected_n_termination_ attribute of the current object of this class
               */
-            std::string GetSelectedNTerminations();
+            std::string GetSelectedNTermination();
             /*! \fn
-              * An accessor function in order to access to the selected c terminations
-              * @return selected_c_terminations_ attribute of the current object of this class
+              * An accessor function in order to access to the selected c termination
+              * @return selected_c_termination_ attribute of the current object of this class
               */
-            std::string GetSelectedCTerminations();
+            std::string GetSelectedCTermination();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -77,17 +77,17 @@ namespace PdbPreprocessorSpace
               */
             void SetResidueChainId(char residue_chain_id);
             /*! \fn
-              * A mutator function in order to set the residue start index of the current object
-              * Set the residue_start_index_ attribute of the current pdb preprocessor missing residue
-              * @param residue_start_index The residue start index attribute of the current object
+              * A mutator function in order to set the starting residue sequence number of the current object
+              * Set the starting_residue_sequence_number_ attribute of the current pdb preprocessor missing residue
+              * @param starting_residue_sequence_number The starting residue sequence number attribute of the current object
               */
-            void SetResidueStartIndex(int residue_start_index);
+            void SetStartingResidueSequenceNumber(int starting_residue_sequence_number);
             /*! \fn
-              * A mutator function in order to set the residue end index of the current object
-              * Set the residue_end_index_ attribute of the current pdb preprocessor missing residue
-              * @param residue_end_index The residue end index attribute of the current object
+              * A mutator function in order to set the ending residue sequence number of the current object
+              * Set the ending_residue_sequence_number_ attribute of the current pdb preprocessor missing residue
+              * @param ending_residue_sequence_number The ending residue sequence number attribute of the current object
               */
-            void SetResidueEndIndex(int residue_end_index);
+            void SetEndingResidueSequenceNumber(int ending_residue_sequence_number);
             /*! \fn
               * A mutator function in order to set the residue_before_gap of the current object
               * Set the residue_before_gap_ attribute of the current pdb preprocessor missing residue
@@ -113,17 +113,17 @@ namespace PdbPreprocessorSpace
               */
             void SetPossibleCTerminations(std::vector<std::string> possible_c_terminations);
             /*! \fn
-              * A mutator function in order to set the selected n terminations of the current object
-              * Set the selected_n_terminations_ attribute of the current pdb preprocessor missing residue
-              * @param selected_n_terminations The selected n terminations attribute of the current object
+              * A mutator function in order to set the selected n termination of the current object
+              * Set the selected_n_termination_ attribute of the current pdb preprocessor missing residue
+              * @param selected_n_termination The selected n termination attribute of the current object
               */
-            void SetSelectedNTerminations(std::string selected_n_terminations);
+            void SetSelectedNTermination(std::string selected_n_termination);
             /*! \fn
-              * A mutator function in order to set the selected c terminations of the current object
-              * Set the selected_c_terminations_ attribute of the current pdb preprocessor missing residue
-              * @param selected_c_terminations The selected c terminations attribute of the current object
+              * A mutator function in order to set the selected c termination of the current object
+              * Set the selected_c_termination_ attribute of the current pdb preprocessor missing residue
+              * @param selected_c_termination The selected c termination attribute of the current object
               */
-            void SetSelectedCTerminations(std::string selected_c_terminations);
+            void SetSelectedCTermination(std::string selected_c_termination);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -140,14 +140,14 @@ namespace PdbPreprocessorSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             char residue_chain_id_;
-            int residue_start_index_;
-            int residue_end_index_;
+            int starting_residue_sequence_number_;
+            int ending_residue_sequence_number_;
             int residue_before_gap_;
             int residue_after_gap_;
             std::vector<std::string> possible_n_terminations_;
             std::vector<std::string> possible_c_terminations_;
-            std::string selected_n_terminations_;
-            std::string selected_c_terminations_;
+            std::string selected_n_termination_;
+            std::string selected_c_termination_;
 
     };
 }

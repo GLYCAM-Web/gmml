@@ -16,9 +16,9 @@ char PdbPreprocessorUnrecognizedResidue::GetResidueChainId()
 {
     return residue_chain_id_;
 }
-int PdbPreprocessorUnrecognizedResidue::GetResidueIndex()
+int PdbPreprocessorUnrecognizedResidue::GetResidueSequenceNumber()
 {
-    return residue_index_;
+    return residue_sequence_number_;
 }
 string PdbPreprocessorUnrecognizedResidue::GetResidueName()
 {
@@ -32,9 +32,9 @@ void PdbPreprocessorUnrecognizedResidue::SetResidueChainId(char residue_chain_id
 {
     residue_chain_id_ = residue_chain_id;
 }
-void PdbPreprocessorUnrecognizedResidue::SetResidueIndex(int residue_index)
+void PdbPreprocessorUnrecognizedResidue::SetResidueSequenceNumber(int residue_sequence_number)
 {
-    residue_index_ = residue_index;
+    residue_sequence_number_ = residue_sequence_number;
 }
 void PdbPreprocessorUnrecognizedResidue::SetResidueName(const string residue_name)
 {
