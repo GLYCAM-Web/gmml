@@ -31,15 +31,15 @@ namespace PdbPreprocessorSpace
               */
             char GetResidueChainId2();
             /*! \fn
-              * An accessor function in order to access to the residue number 1
-              * @return residue_Number_1_ attribute of the current object of this class
+              * An accessor function in order to access to the residue sequence number 1
+              * @return residue_sequence_Number_1_ attribute of the current object of this class
               */
-            int GetResidueNumber1();
+            int GetResidueSequenceNumber1();
             /*! \fn
-              * An accessor function in order to access to the residue number 2
-              * @return residue_Number_2_ attribute of the current object of this class
+              * An accessor function in order to access to the residue sequence number 2
+              * @return residue_sequence_Number_2_ attribute of the current object of this class
               */
-            int GetResidueNumber2();
+            int GetResidueSequenceNumber2();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -57,17 +57,17 @@ namespace PdbPreprocessorSpace
               */
             void SetResidueChainId2(char residue_chain_id_2);
             /*! \fn
-              * A mutator function in order to set the residue number 1 of the current object
-              * Set the residue_number_1_ attribute of the current pdb preprocessor disulfide bond
-              * @param residue_number_1 The residue number 1 attribute of the current object
+              * A mutator function in order to set the residue sequence number 1 of the current object
+              * Set the residue_sequence_number_1_ attribute of the current pdb preprocessor disulfide bond
+              * @param residue_sequence_number_1 The residue sequence number 1 attribute of the current object
               */
-            void SetResidueNumber1(int residue_number_1);
+            void SetResidueSequenceNumber1(int residue_sequence_number_1);
             /*! \fn
-              * A mutator function in order to set the residue number 2 of the current object
-              * Set the residue_number_2_ attribute of the current pdb preprocessor disulfide bond
-              * @param residue_number_2 The residue number 2 attribute of the current object
+              * A mutator function in order to set the residue sequence number 2 of the current object
+              * Set the residue_sequence_number_2_ attribute of the current pdb preprocessor disulfide bond
+              * @param residue_sequence_number_2 The residue sequence number 2 attribute of the current object
               */
-            void SetResidueNumber2(int residue_number_2);
+            void SetResidueSequenceNumber2(int residue_sequence_number_2);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -85,8 +85,8 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             char residue_chain_id_1_;
             char residue_chain_id_2_;
-            int residue_number_1_;
-            int residue_number_2_;
+            int residue_sequence_number_1_;
+            int residue_sequence_number_2_;
 
     };
 }

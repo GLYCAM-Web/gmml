@@ -20,13 +20,13 @@ char PdbPreprocessorDisulfideBond::GetResidueChainId2()
 {
     return residue_chain_id_2_;
 }
-int PdbPreprocessorDisulfideBond::GetResidueNumber1()
+int PdbPreprocessorDisulfideBond::GetResidueSequenceNumber1()
 {
-    return residue_number_1_;
+    return residue_sequence_number_1_;
 }
-int PdbPreprocessorDisulfideBond::GetResidueNumber2()
+int PdbPreprocessorDisulfideBond::GetResidueSequenceNumber2()
 {
-    return residue_number_2_;
+    return residue_sequence_number_2_;
 }
 
 //////////////////////////////////////////////////////////
@@ -40,13 +40,13 @@ void PdbPreprocessorDisulfideBond::SetResidueChainId2(char residue_chain_id_2)
 {
     residue_chain_id_2_ = residue_chain_id_2;
 }
-void PdbPreprocessorDisulfideBond::SetResidueNumber1(int residue_number_1)
+void PdbPreprocessorDisulfideBond::SetResidueSequenceNumber1(int residue_sequence_number_1)
 {
-    residue_number_1_ = residue_number_1;
+    residue_sequence_number_1_ = residue_sequence_number_1;
 }
-void PdbPreprocessorDisulfideBond::SetResidueNumber2(int residue_number_2)
+void PdbPreprocessorDisulfideBond::SetResidueSequenceNumber2(int residue_sequence_number_2)
 {
-    residue_number_2_ = residue_number_2;
+    residue_sequence_number_2_ = residue_sequence_number_2;
 }
 
 //////////////////////////////////////////////////////////

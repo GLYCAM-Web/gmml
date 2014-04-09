@@ -16,9 +16,9 @@ char PdbPreprocessorUnrecognizedHeavyAtom::GetResidueChainId()
 {
     return residue_chain_id_;
 }
-int PdbPreprocessorUnrecognizedHeavyAtom::GetAtomIndex()
+int PdbPreprocessorUnrecognizedHeavyAtom::GetAtomSerialNumber()
 {
-    return atom_index_;
+    return atom_serial_number_;
 }
 string PdbPreprocessorUnrecognizedHeavyAtom::GetAtomName()
 {
@@ -28,9 +28,9 @@ string PdbPreprocessorUnrecognizedHeavyAtom::GetResidueName()
 {
     return residue_name_;
 }
-int PdbPreprocessorUnrecognizedHeavyAtom::GetResidueNumber()
+int PdbPreprocessorUnrecognizedHeavyAtom::GetResidueSequenceNumber()
 {
-    return residue_number_;
+    return residue_sequence_number_;
 }
 
 //////////////////////////////////////////////////////////
@@ -40,9 +40,9 @@ void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueChainId(char residue_chain_
 {
     residue_chain_id_ = residue_chain_id;
 }
-void PdbPreprocessorUnrecognizedHeavyAtom::SetAtomIndex(int atom_index)
+void PdbPreprocessorUnrecognizedHeavyAtom::SetAtomSerialNumber(int atom_serial_number)
 {
-    atom_index_ = atom_index;
+    atom_serial_number_ = atom_serial_number;
 }
 void PdbPreprocessorUnrecognizedHeavyAtom::SetAtomName(const string atom_name)
 {
@@ -52,9 +52,9 @@ void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueName(const string residue_n
 {
     residue_name_ = residue_name;
 }
-void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueNumber(int residue_number)
+void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueSequenceNumber(int residue_sequence_number)
 {
-    residue_number_ = residue_number;
+    residue_sequence_number_ = residue_sequence_number;
 }
 
 //////////////////////////////////////////////////////////

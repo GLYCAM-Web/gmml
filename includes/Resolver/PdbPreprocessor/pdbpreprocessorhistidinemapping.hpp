@@ -27,20 +27,20 @@ namespace PdbPreprocessorSpace
               */
             char GetResidueChainId();
             /*! \fn
-              * An accessor function in order to access to the residue number
-              * @return residue_number_ attribute of the current object of this class
+              * An accessor function in order to access to the residue sequence number
+              * @return residue_sequence_number_ attribute of the current object of this class
               */
-            int GetResidueNumber();
+            int GetResidueSequenceNumber();
             /*! \fn
               * An accessor function in order to access to the possible_mappings
               * @return possible_mappings_ attribute of the current object of this class
               */
             std::vector<std::string> GetPossibleMappings();
             /*! \fn
-              * An accessor function in order to access to the selected mappings
-              * @return selected_mappings_ attribute of the current object of this class
+              * An accessor function in order to access to the selected mapping
+              * @return selected_mapping_ attribute of the current object of this class
               */
-            std::string GetSelectedMappings();
+            std::string GetSelectedMapping();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -52,11 +52,11 @@ namespace PdbPreprocessorSpace
               */
             void SetResidueChainId(char residue_chain_id);
             /*! \fn
-              * A mutator function in order to set the residue number of the current object
-              * Set the residue_number_ attribute of the current pdb preprocessor histidine mapping
-              * @param residue_number The residue number attribute of the current object
+              * A mutator function in order to set the residue sequence number of the current object
+              * Set the residue_sequence_number_ attribute of the current pdb preprocessor histidine mapping
+              * @param residue_sequence_number The residue sequence number attribute of the current object
               */
-            void SetResidueNumber(int residue_number);
+            void SetResidueSequenceNumber(int residue_sequence_number);
             /*! \fn
               * A mutator function in order to set the possible_mappings of the current object
               * Set the possible_mappings_ attribute of the current pdb preprocessor histidine mapping
@@ -64,11 +64,11 @@ namespace PdbPreprocessorSpace
               */
             void SetPossibleMappings(std::vector<std::string> possible_mappings);
             /*! \fn
-              * A mutator function in order to set the selected mappings of the current object
-              * Set the selected_mappings_ attribute of the current pdb preprocessor histidine mapping
-              * @param selected_mappings The selected mappings attribute of the current object
+              * A mutator function in order to set the selected mapping of the current object
+              * Set the selected_mapping_ attribute of the current pdb preprocessor histidine mapping
+              * @param selected_mapping The selected mapping attribute of the current object
               */
-            void SetSelectedMappings(std::string selected_mappings);
+            void SetSelectedMapping(std::string selected_mapping);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -85,9 +85,9 @@ namespace PdbPreprocessorSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             char residue_chain_id_;
-            int residue_number_;
+            int residue_sequence_number_;
             std::vector<std::string> possible_mappings_;
-            std::string selected_mappings_;
+            std::string selected_mapping_;
 
     };
 }

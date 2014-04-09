@@ -16,17 +16,17 @@ char PdbPreprocessorHistidineMapping::GetResidueChainId()
 {
     return residue_chain_id_;
 }
-int PdbPreprocessorHistidineMapping::GetResidueNumber()
+int PdbPreprocessorHistidineMapping::GetResidueSequenceNumber()
 {
-    return residue_number_;
+    return residue_sequence_number_;
 }
 vector<string> PdbPreprocessorHistidineMapping::GetPossibleMappings()
 {
     return possible_mappings_;
 }
-string PdbPreprocessorHistidineMapping::GetSelectedMappings()
+string PdbPreprocessorHistidineMapping::GetSelectedMapping()
 {
-    return selected_mappings_;
+    return selected_mapping_;
 }
 
 //////////////////////////////////////////////////////////
@@ -36,9 +36,9 @@ void PdbPreprocessorHistidineMapping::SetResidueChainId(char residue_chain_id)
 {
     residue_chain_id_ = residue_chain_id;
 }
-void PdbPreprocessorHistidineMapping::SetResidueNumber(int residue_number)
+void PdbPreprocessorHistidineMapping::SetResidueSequenceNumber(int residue_sequence_number)
 {
-    residue_number_ = residue_number;
+    residue_sequence_number_ = residue_sequence_number;
 }
 void PdbPreprocessorHistidineMapping::SetPossibleMappings(vector<string> possible_mappings)
 {
@@ -48,9 +48,9 @@ void PdbPreprocessorHistidineMapping::SetPossibleMappings(vector<string> possibl
         possible_mappings_.push_back(*it);
     }
 }
-void PdbPreprocessorHistidineMapping::SetSelectedMappings(string selected_mappings)
+void PdbPreprocessorHistidineMapping::SetSelectedMapping(string selected_mapping)
 {
-    selected_mappings_ = selected_mappings;
+    selected_mapping_ = selected_mapping;
 }
 
 //////////////////////////////////////////////////////////
