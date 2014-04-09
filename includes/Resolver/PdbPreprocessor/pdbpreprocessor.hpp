@@ -164,6 +164,11 @@ namespace PdbPreprocessorSpace
             void AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen* replaced_hydrogen);
 
             //////////////////////////////////////////////////////////
+            //                       FUNCTIONS                      //
+            //////////////////////////////////////////////////////////
+
+
+            //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             /*! \fn
