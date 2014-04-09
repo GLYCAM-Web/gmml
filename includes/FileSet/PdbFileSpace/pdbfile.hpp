@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <map>
 
 namespace PdbFileSpace
 {
@@ -31,6 +32,7 @@ namespace PdbFileSpace
     class PdbMatrixNCard;
     class PdbModelCard;
     class PdbConnectCard;
+    class PdbResidue;
 
     class PdbFile
     {
@@ -38,6 +40,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            typedef std::vector<PdbResidue*> PdbResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -75,6 +78,7 @@ namespace PdbFileSpace
             PdbModelCard* GetModels();
             PdbConnectCard* GetConnectivities();            
             std::vector<std::string> GetAllResidueNames();
+            PdbResidueVector GetAllResidues();
 
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
