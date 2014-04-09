@@ -166,7 +166,8 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
-
+            std::vector<std::string> GetUnrecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            std::vector<std::string> GetRecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

@@ -126,6 +126,47 @@ void PdbPreprocessor::AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen *repla
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
+vector<string> PdbPreprocessor::GetUnrecognizedResidueNames(vector<string> pdb_residue_names, vector<string> dataset_residue_names)
+{
+    vector<string> unrecognized_residue_names;
+    bool is_recognized = false;
+    for(vector<string>::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
+    {
+        string pdb_residue_name = *it;
+        for(vector<string>::iterator it1 = dataset_residue_names.begin(); it1 != dataset_residue_names.end(); it1++)
+        {
+            string dataset_residue_name = *it1;
+            if((pdb_residue_name).compare(dataset_residue_name) == 0)
+            {
+                is_recognized = true;
+                break;
+            }
+            else
+                is_recognized = false;
+        }
+        if(!is_recognized)
+            unrecognized_residue_names.push_back(pdb_residue_name);
+    }
+    return unrecognized_residue_names;
+}
+vector<string> PdbPreprocessor::GetRecognizedResidueNames(vector<string> pdb_residue_names, vector<string> dataset_residue_names)
+{
+    vector<string> recognized_residue_names;
+    for(vector<string>::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
+    {
+        string pdb_residue_name = *it;
+        for(vector<string>::iterator it1 = dataset_residue_names.begin(); it1 != dataset_residue_names.end(); it1++)
+        {
+            string dataset_residue_name = *it1;
+            if((pdb_residue_name).compare(dataset_residue_name) == 0)
+            {
+                recognized_residue_names.push_back(pdb_residue_name);
+                break;
+            }
+        }
+    }
+    return recognized_residue_names;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
