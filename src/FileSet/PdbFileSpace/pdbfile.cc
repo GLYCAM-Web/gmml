@@ -299,6 +299,7 @@ vector<string> PdbFile::GetAllResidueNames()
 PdbFile::PdbResidueVector PdbFile::GetAllResidues()
 {
     PdbFile::PdbResidueVector residues;
+    map<string, bool> inserted_residues;
     PdbModelCard::PdbModelMap models = models_->GetModels();
     for(PdbModelCard::PdbModelMap::iterator it = models.begin();it != models.end(); it++)
     {
@@ -318,30 +319,13 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 stringstream ss;
-                ss << chain_id << "_" << sequence_number << "_" << insertion_code;
+                ss <<residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
                 string key = ss.str();
-                for(PdbFile::PdbResidueVector::iterator it3 = residues.begin(); it3 != residues.end(); it3++)
+                if(!inserted_residues[key])
                 {
-                    PdbResidue* residue = (*it3);
-                    stringstream sss;
-                    sss << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsetionCode();
-                    string residue_key = sss.str();
-
-                    if(residue_key.compare(key) == 0)
-                    {
-                        find = true;
-                        break;
-                    }
-                    else
-                    {
-                        find = false;
-                        continue;
-                    }
-                }
-                if(!find)
-                {
-                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number);
+                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code);
                     residues.push_back(res);
+                    inserted_residues[key] = true;
                 }
             }
         }
@@ -359,30 +343,13 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 stringstream ss;
-                ss << chain_id << "_" << sequence_number << "_" << insertion_code;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
                 string key = ss.str();
-                for(PdbFile::PdbResidueVector::iterator it3 = residues.begin(); it3 != residues.end(); it3++)
+                if(!inserted_residues[key])
                 {
-                    PdbResidue* residue = (*it3);
-                    stringstream sss;
-                    sss << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsetionCode();
-                    string residue_key = sss.str();
-
-                    if(residue_key.compare(key) == 0)
-                    {
-                        find = true;
-                        break;
-                    }
-                    else
-                    {
-                        find = false;
-                        continue;
-                    }
-                }
-                if(!find)
-                {
-                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number);
+                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code);
                     residues.push_back(res);
+                    inserted_residues[key] = true;
                 }
             }
         }
