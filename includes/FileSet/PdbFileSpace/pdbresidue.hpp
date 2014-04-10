@@ -17,7 +17,7 @@ namespace PdbFileSpace
               */
             PdbResidue();
 
-            PdbResidue(std::string residue_name, char chain_id, int sequence_number);
+            PdbResidue(std::string residue_name, char chain_id, int sequence_number, char insetion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

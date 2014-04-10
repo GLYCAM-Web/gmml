@@ -9,8 +9,8 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 PdbResidue::PdbResidue() {}
 
-PdbResidue::PdbResidue(string residue_name, char chain_id, int sequence_number) :
-    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number) {}
+PdbResidue::PdbResidue(string residue_name, char chain_id, int sequence_number, char insertion_code) :
+    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(insertion_code) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -57,7 +57,10 @@ void PdbResidue::SetResidueInsertionCode(char residue_insertion_code)
 //////////////////////////////////////////////////////////
 void PdbResidue::Print(ostream &out)
 {
-    cout << "Residue name: " << residue_name_ << ", Chain id: " << residue_chain_id_ << ", Sequence number: " << residue_sequence_number_ << endl;
+    cout << "Residue name: " << residue_name_
+         << ", Chain id: " << residue_chain_id_
+         << ", Sequence number: " << residue_sequence_number_
+         << ", Insertion code: " << residue_insertion_code_ << endl;
 }
 
 
