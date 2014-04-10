@@ -7,9 +7,11 @@
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
 
 using namespace std;
 using namespace PdbPreprocessorSpace;
+using namespace PdbFileSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -166,6 +168,54 @@ vector<string> PdbPreprocessor::GetRecognizedResidueNames(vector<string> pdb_res
         }
     }
     return recognized_residue_names;
+}
+PdbPreprocessor::PdbResidueVector PdbPreprocessor::GetUnrecognizedResidues(PdbPreprocessor::PdbResidueVector pdb_residues, vector<string> unrecognized_residue_names)
+{
+    PdbPreprocessor::PdbResidueVector unrecognized_residues;
+    bool is_unrecognized = false;
+    for(PdbPreprocessor::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        PdbResidue* pdb_residue = *it;
+        string pdb_residue_name = pdb_residue->GetResidueName();
+        for(vector<string>::iterator it1 = unrecognized_residue_names.begin(); it1 != unrecognized_residue_names.end(); it1++)
+        {
+            string unrecognized_residue_name = *it1;
+            if((pdb_residue_name).compare(unrecognized_residue_name) == 0)
+            {
+                is_unrecognized = true;
+                break;
+            }
+            else
+                is_unrecognized = false;
+        }
+        if(is_unrecognized)
+            unrecognized_residues.push_back(pdb_residue);
+    }
+    return unrecognized_residues;
+}
+PdbPreprocessor::PdbResidueVector PdbPreprocessor::GetRecognizedResidues(PdbPreprocessor::PdbResidueVector pdb_residues, vector<string> recognized_residue_names)
+{
+    PdbPreprocessor::PdbResidueVector recognized_residues;
+    bool is_recognized = false;
+    for(PdbPreprocessor::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        PdbResidue* pdb_residue = *it;
+        string pdb_residue_name = pdb_residue->GetResidueName();
+        for(vector<string>::iterator it1 = recognized_residue_names.begin(); it1 != recognized_residue_names.end(); it1++)
+        {
+            string recognized_residue_name = *it1;
+            if((pdb_residue_name).compare(recognized_residue_name) == 0)
+            {
+                is_recognized = true;
+                break;
+            }
+            else
+                is_recognized = false;
+        }
+        if(is_recognized)
+            recognized_residues.push_back(pdb_residue);
+    }
+    return recognized_residues;
 }
 
 //////////////////////////////////////////////////////////

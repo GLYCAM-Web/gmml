@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 
+#include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
+
 namespace PdbPreprocessorSpace
 {
     class PdbPreprocessorDisulfideBond;
@@ -27,6 +29,7 @@ namespace PdbPreprocessorSpace
             typedef std::vector<PdbPreprocessorUnrecognizedResidue*> PdbPreprocessorUnrecognizedResidueVector;
             typedef std::vector<PdbPreprocessorUnrecognizedHeavyAtom*> PdbPreprocessorUnrecognizedHeavyAtomVector;
             typedef std::vector<PdbPreprocessorReplacedHydrogen*> PdbPreprocessorReplacedHydrogenVector;
+            typedef std::vector<PdbFileSpace::PdbResidue*> PdbResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -168,6 +171,8 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             std::vector<std::string> GetUnrecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
             std::vector<std::string> GetRecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            PdbResidueVector GetUnrecognizedResidues(PdbResidueVector pdb_residues, std::vector<std::string> unrecognized_residue_names);
+            PdbResidueVector GetRecognizedResidues(PdbResidueVector pdb_residues, std::vector<std::string> recognized_residue_names);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
