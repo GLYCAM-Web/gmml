@@ -7,6 +7,16 @@
 
 namespace PdbPreprocessorSpace
 {
+    /*! \enum
+      * pdb preprocessor HIS mapping enumerator
+      */
+        enum PdbPreprocessorHISMapping
+        {
+            HIE = 1,
+            HIP = 2,
+            HID = 3
+        };
+
     class PdbPreprocessorHistidineMapping
     {
         public:
@@ -17,6 +27,8 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorHistidineMapping();
+
+            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, PdbPreprocessorHISMapping selected_mapping);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -32,15 +44,10 @@ namespace PdbPreprocessorSpace
               */
             int GetResidueSequenceNumber();
             /*! \fn
-              * An accessor function in order to access to the possible_mappings
-              * @return possible_mappings_ attribute of the current object of this class
-              */
-            std::vector<std::string> GetPossibleMappings();
-            /*! \fn
               * An accessor function in order to access to the selected mapping
               * @return selected_mapping_ attribute of the current object of this class
               */
-            std::string GetSelectedMapping();
+            PdbPreprocessorHISMapping GetSelectedMapping();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -58,17 +65,11 @@ namespace PdbPreprocessorSpace
               */
             void SetResidueSequenceNumber(int residue_sequence_number);
             /*! \fn
-              * A mutator function in order to set the possible_mappings of the current object
-              * Set the possible_mappings_ attribute of the current pdb preprocessor histidine mapping
-              * @param possible_mappings The possible mappings attribute of the current object
-              */
-            void SetPossibleMappings(std::vector<std::string> possible_mappings);
-            /*! \fn
               * A mutator function in order to set the selected mapping of the current object
               * Set the selected_mapping_ attribute of the current pdb preprocessor histidine mapping
               * @param selected_mapping The selected mapping attribute of the current object
               */
-            void SetSelectedMapping(std::string selected_mapping);
+            void SetSelectedMapping(PdbPreprocessorHISMapping selected_mapping);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -86,8 +87,7 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             char residue_chain_id_;
             int residue_sequence_number_;
-            std::vector<std::string> possible_mappings_;
-            std::string selected_mapping_;
+            PdbPreprocessorHISMapping selected_mapping_;
 
     };
 }

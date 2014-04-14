@@ -177,6 +177,11 @@ namespace PdbPreprocessorSpace
             std::vector<std::string> GetAllResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
             std::vector<std::string> GetAllResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
             std::vector<std::string> GetAllResidueNamesFromDatasetFiles(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            PdbResidueVector GetAllCYSResidues(PdbResidueVector pdb_residues);
+            double GetDistanceofCYS(PdbFileSpace::PdbResidue* first_residue, PdbFileSpace::PdbResidue* second_residue);
+            void ExtarctCYSResidues(std::string pdb_file_path);
+            PdbResidueVector GetAllHISResidues(PdbResidueVector pdb_residues);
+            void ExtractHISResidues(std::string pdb_file_path);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
