@@ -33,6 +33,7 @@ namespace PdbFileSpace
     class PdbModelCard;
     class PdbConnectCard;
     class PdbResidue;
+    class PdbAtom;
 
     class PdbFile
     {
@@ -41,6 +42,7 @@ namespace PdbFileSpace
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             typedef std::vector<PdbResidue*> PdbResidueVector;
+            typedef std::vector<PdbAtom*> PdbAtomVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -79,6 +81,8 @@ namespace PdbFileSpace
             PdbConnectCard* GetConnectivities();            
             std::vector<std::string> GetAllResidueNames();
             PdbResidueVector GetAllResidues();
+            PdbAtomVector GetAllAtomsOfResidue(PdbResidue* residue);
+            PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name);
 
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //

@@ -78,6 +78,13 @@ namespace Geometry
               */
             bool CompareTo(Coordinate coordinate);
 
+            /*! \fn
+              * Calculate the distance between current object coordinate and the given coordinate
+              * @param coordinate A coordinate to calculate the distance between that and the current object
+              * @return A double value as a distance between two coordinates
+              */
+            double Distance(Coordinate coordinate);
+
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

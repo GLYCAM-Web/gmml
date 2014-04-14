@@ -54,6 +54,12 @@ void PdbPreprocessorDisulfideBond::SetResidueSequenceNumber2(int residue_sequenc
 //////////////////////////////////////////////////////////
 void PdbPreprocessorDisulfideBond::Print(ostream &out)
 {
+    cout << "Chain id: " << residue_chain_id_1_
+         << ", Sequence number: " << residue_sequence_number_1_
+         << ", Chain id: " << residue_chain_id_2_
+         << ", Sequence number: " << residue_sequence_number_2_
+         << ", Distance: " << distance_
+         << endl;
 }
 
 
