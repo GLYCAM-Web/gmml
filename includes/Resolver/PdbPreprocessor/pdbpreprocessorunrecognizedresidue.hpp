@@ -17,6 +17,8 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorUnrecognizedResidue();
 
+            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
