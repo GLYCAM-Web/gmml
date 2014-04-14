@@ -17,6 +17,8 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorDisulfideBond();
 
+            PdbPreprocessorDisulfideBond(char chain_id_1, char chain_id_2, int residue_sequence_number_1, int residue_sequence_number_2, double distance, bool is_bonded);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -40,6 +42,16 @@ namespace PdbPreprocessorSpace
               * @return residue_sequence_Number_2_ attribute of the current object of this class
               */
             int GetResidueSequenceNumber2();
+            /*! \fn
+              * An accessor function in order to access to the distance
+              * @return distance_ attribute of the current object of this class
+              */
+            double GetDistance();
+            /*! \fn
+              * An accessor function in order to access to the is bonded attribute
+              * @return is_bonded_ attribute of the current object of this class
+              */
+            bool GetIsBonded();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -68,6 +80,18 @@ namespace PdbPreprocessorSpace
               * @param residue_sequence_number_2 The residue sequence number 2 attribute of the current object
               */
             void SetResidueSequenceNumber2(int residue_sequence_number_2);
+            /*! \fn
+              * A mutator function in order to set the distance of the current object
+              * Set the distance_ attribute of the current pdb preprocessor disulfide bond
+              * @param distance The distance attribute of the current object
+              */
+            void SetDistance(double distance);
+            /*! \fn
+              * A mutator function in order to set the is bonded of the current object
+              * Set the is_bonded_ attribute of the current pdb preprocessor disulfide bond
+              * @param is_bonded The is bonded attribute of the current object
+              */
+            void SetIsBonded(bool is_bonded);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -87,6 +111,8 @@ namespace PdbPreprocessorSpace
             char residue_chain_id_2_;
             int residue_sequence_number_1_;
             int residue_sequence_number_2_;
+            double distance_;
+            bool is_bonded_;
 
     };
 }
