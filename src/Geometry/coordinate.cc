@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "../includes/Geometry/coordinate.hpp"
 #include "../includes/common.hpp"
 
@@ -65,6 +67,12 @@ bool Coordinate::CompareTo(Coordinate coordinate)
         return true;
     else
         return false;
+}
+
+double Coordinate::Distance(Coordinate coordinate)
+{
+    double dist = (x_ - coordinate.x_) * (x_ - coordinate.x_) + (y_ - coordinate.y_) * (y_ - coordinate.y_) + (z_ - coordinate.z_) * (z_ - coordinate.z_);
+    return sqrt(dist);
 }
 
 //////////////////////////////////////////////////////////
