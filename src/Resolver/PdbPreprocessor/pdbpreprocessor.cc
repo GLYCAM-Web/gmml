@@ -11,10 +11,12 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../../../includes/common.hpp";
 
 using namespace std;
 using namespace PdbPreprocessorSpace;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -227,10 +229,10 @@ void PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
     PdbFile* pdb_file = new PdbFile(pdb_file_path);
     vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
     vector<string> unrecognized_residue_names = GetUnrecognizedResidueNames(pdb_residue_names, dataset_residue_names);
-    vector<PdbResidue*> pdb_residues = pdb_file->GetAllResidues();
-    vector<PdbResidue*> unrecognized_residues = GetUnrecognizedResidues(pdb_residues, unrecognized_residue_names);
+    PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    PdbResidueVector unrecognized_residues = GetUnrecognizedResidues(pdb_residues, unrecognized_residue_names);
 
-    for(vector<PdbResidue*>::iterator it = unrecognized_residues.begin(); it != unrecognized_residues.end(); it++)
+    for(PdbResidueVector::iterator it = unrecognized_residues.begin(); it != unrecognized_residues.end(); it++)
     {
         PdbResidue* pdb_residue = (*it);
         PdbPreprocessorUnrecognizedResidue* unrecognized_residue =
@@ -283,6 +285,79 @@ vector<string> PdbPreprocessor::GetAllResidueNamesFromDatasetFiles(vector<string
         all_residue_names.push_back(*it1);
     }
     return all_lib_residue_names;
+}
+
+PdbPreprocessor::PdbResidueVector PdbPreprocessor::GetAllCYSResidues(PdbResidueVector pdb_residues)
+{
+    PdbResidueVector all_cys_residues;
+    for(PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        PdbResidue* pdb_residue = (*it);
+        string pdb_residue_name = pdb_residue->GetResidueName();
+        if((pdb_residue_name).compare("CYS") == 0)
+        {
+            all_cys_residues.push_back(pdb_residue);
+        }
+    }
+    return all_cys_residues;
+}
+
+double PdbPreprocessor::GetDistanceofCYS(PdbResidue* first_residue, PdbResidue* second_residue)
+{
+    double distance;
+
+    return distance;
+}
+
+void PdbPreprocessor::ExtarctCYSResidues(string pdb_file_path)
+{
+    PdbFile* pdb_file = new PdbFile(pdb_file_path);
+    PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    PdbResidueVector cys_residues = GetAllCYSResidues(pdb_residues);
+    for(PdbResidueVector::iterator it = cys_residues.begin(); it != cys_residues.end(); it++)
+    {
+        PdbResidue* first_residue = (*it);
+        for(PdbResidueVector::iterator it1 = it+1 ; it1 != cys_residues.end(); it1++)
+        {
+            PdbResidue* second_residue = (*it1);
+            double distance = GetDistanceofCYS(first_residue, second_residue);
+            if (distance < dSulfurCutoff)
+            {
+                PdbPreprocessorDisulfideBond* disulfide_bond =
+                        new PdbPreprocessorDisulfideBond(first_residue->GetResidueChainId(), second_residue->GetResidueChainId(), first_residue->GetResidueSequenceNumber(), second_residue->GetResidueSequenceNumber(), distance, true );
+                disulfide_bonds_.push_back(disulfide_bond);
+            }
+        }
+    }
+}
+
+PdbPreprocessor::PdbResidueVector PdbPreprocessor::GetAllHISResidues(PdbPreprocessor::PdbResidueVector pdb_residues)
+{
+    PdbResidueVector all_his_residues;
+    for(PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        PdbResidue* pdb_residue = (*it);
+        string pdb_residue_name = pdb_residue->GetResidueName();
+        if((pdb_residue_name).compare("HIS") == 0)
+        {
+            all_his_residues.push_back(pdb_residue);
+        }
+    }
+    return all_his_residues;
+}
+
+void PdbPreprocessor::ExtractHISResidues(string pdb_file_path)
+{
+    PdbFile* pdb_file = new PdbFile(pdb_file_path);
+    PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    PdbResidueVector his_residues = GetAllHISResidues(pdb_residues);
+    for(PdbResidueVector::iterator it = his_residues.begin(); it != his_residues.end(); it++)
+    {
+        PdbResidue* his_residue = (*it);
+        PdbPreprocessorHistidineMapping* histidine_mapping =
+                new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE);
+        histidine_mappings_.push_back(histidine_mapping);
+    }
 }
 
 //////////////////////////////////////////////////////////
