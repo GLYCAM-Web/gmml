@@ -429,7 +429,17 @@ PdbFileSpace::PdbAtom* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, stri
             return atom;
     }
     return NULL;
-
+}
+vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue)
+{
+    PdbAtomVector atoms = GetAllAtomsOfResidue(residue);
+    vector<string> atom_names;
+    for(PdbAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        PdbAtom* atom = (*it);
+        atom_names.push_back(atom->GetAtomName());
+    }
+    return atom_names;
 }
 
 //////////////////////////////////////////////////////////
