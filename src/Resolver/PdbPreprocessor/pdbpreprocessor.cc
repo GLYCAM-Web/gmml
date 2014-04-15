@@ -11,6 +11,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../../includes/common.hpp";
 
 using namespace std;
@@ -302,10 +303,13 @@ PdbPreprocessor::PdbResidueVector PdbPreprocessor::GetAllCYSResidues(PdbResidueV
     return all_cys_residues;
 }
 
-double PdbPreprocessor::GetDistanceofCYS(PdbResidue* first_residue, PdbResidue* second_residue)
+double PdbPreprocessor::GetDistanceofCYS(PdbResidue* first_residue, PdbResidue* second_residue, PdbFile* pdb_file)
 {
-    double distance;
-
+    double distance = 0.0;
+    PdbAtom* first_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(first_residue, "SG");
+    PdbAtom* second_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(second_residue, "SG");
+    if(first_residue_sulfur_atom != NULL && second_residue_sulfur_atom != NULL)
+        distance = first_residue_sulfur_atom->GetAtomOrthogonalCoordinate().Distance(second_residue_sulfur_atom->GetAtomOrthogonalCoordinate());
     return distance;
 }
 
@@ -320,7 +324,7 @@ void PdbPreprocessor::ExtarctCYSResidues(string pdb_file_path)
         for(PdbResidueVector::iterator it1 = it+1 ; it1 != cys_residues.end(); it1++)
         {
             PdbResidue* second_residue = (*it1);
-            double distance = GetDistanceofCYS(first_residue, second_residue);
+            double distance = GetDistanceofCYS(first_residue, second_residue, pdb_file);
             if (distance < dSulfurCutoff)
             {
                 PdbPreprocessorDisulfideBond* disulfide_bond =

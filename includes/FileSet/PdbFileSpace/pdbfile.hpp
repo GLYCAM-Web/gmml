@@ -83,6 +83,7 @@ namespace PdbFileSpace
             PdbResidueVector GetAllResidues();
             PdbAtomVector GetAllAtomsOfResidue(PdbResidue* residue);
             PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name);
+            std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue);
 
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
