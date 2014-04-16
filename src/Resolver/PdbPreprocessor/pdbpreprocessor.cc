@@ -303,28 +303,30 @@ PdbPreprocessor::PdbResidueVector PdbPreprocessor::GetAllCYSResidues(PdbResidueV
     return all_cys_residues;
 }
 
-double PdbPreprocessor::GetDistanceofCYS(PdbResidue* first_residue, PdbResidue* second_residue, PdbFile* pdb_file)
+double PdbPreprocessor::GetDistanceofCYS(PdbResidue* first_residue, PdbResidue* second_residue, PdbFile* pdb_file, PdbFile::PdbResidueAtomsMap residue_atom_map)
 {
     double distance = 0.0;
-    PdbAtom* first_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(first_residue, "SG");
-    PdbAtom* second_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(second_residue, "SG");
+    PdbAtom* first_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(first_residue, "SG", residue_atom_map);
+    PdbAtom* second_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(second_residue, "SG", residue_atom_map);
     if(first_residue_sulfur_atom != NULL && second_residue_sulfur_atom != NULL)
         distance = first_residue_sulfur_atom->GetAtomOrthogonalCoordinate().Distance(second_residue_sulfur_atom->GetAtomOrthogonalCoordinate());
     return distance;
 }
 
-void PdbPreprocessor::ExtarctCYSResidues(string pdb_file_path)
+void PdbPreprocessor::ExtractCYSResidues(string pdb_file_path)
 {
     PdbFile* pdb_file = new PdbFile(pdb_file_path);
     PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
     PdbResidueVector cys_residues = GetAllCYSResidues(pdb_residues);
+    PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
+
     for(PdbResidueVector::iterator it = cys_residues.begin(); it != cys_residues.end(); it++)
     {
         PdbResidue* first_residue = (*it);
         for(PdbResidueVector::iterator it1 = it+1 ; it1 != cys_residues.end(); it1++)
         {
             PdbResidue* second_residue = (*it1);
-            double distance = GetDistanceofCYS(first_residue, second_residue, pdb_file);
+            double distance = GetDistanceofCYS(first_residue, second_residue, pdb_file, residue_atom_map);
             if (distance < dSulfurCutoff)
             {
                 PdbPreprocessorDisulfideBond* disulfide_bond =

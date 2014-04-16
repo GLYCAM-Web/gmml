@@ -49,6 +49,25 @@ void PdbPreprocessorHistidineMapping::SetSelectedMapping(PdbPreprocessorHISMappi
 //////////////////////////////////////////////////////////
 void PdbPreprocessorHistidineMapping::Print(ostream &out)
 {
+    cout << "Chain id: " << residue_chain_id_
+         << ", Sequence_number: " << residue_sequence_number_
+         << ", Selected mapping: ";
+    switch(selected_mapping_)
+    {
+        case 1:
+            cout << "HIE";
+            break;
+        case 2:
+            cout << "HIP";
+            break;
+        case 3:
+            cout << "HID";
+            break;
+        default:
+            cout << "UNKNOWN";
+            break;
+    }
+    cout << endl;
 }
 
 

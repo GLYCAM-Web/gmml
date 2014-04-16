@@ -43,6 +43,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             typedef std::vector<PdbResidue*> PdbResidueVector;
             typedef std::vector<PdbAtom*> PdbAtomVector;
+            typedef std::map<std::string, PdbAtomVector* > PdbResidueAtomsMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -82,7 +83,10 @@ namespace PdbFileSpace
             std::vector<std::string> GetAllResidueNames();
             PdbResidueVector GetAllResidues();
             PdbAtomVector GetAllAtomsOfResidue(PdbResidue* residue);
+            PdbResidueAtomsMap GetAllAtomsOfResidues();
+            PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name, PdbResidueAtomsMap residue_atom_map);
             PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name);
+            std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue, PdbResidueAtomsMap residue_atom_map);
             std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue);
 
             //////////////////////////////////////////////////////////
