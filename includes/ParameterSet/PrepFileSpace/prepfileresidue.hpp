@@ -48,6 +48,8 @@ namespace PrepFileSpace
               * A collection of four atom types
               */
             typedef std::vector<std::string> Dihedral;
+            typedef std::vector<PrepFileAtom*> PrepFileAtomVector;
+            typedef std::vector<Dihedral> DihedralVector;
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
@@ -123,7 +125,7 @@ namespace PrepFileSpace
               * @param A file stream that contains improper dihedral section of the residue
               * @return A vector of improper dihedrals in the residue
               */
-            std::vector<Dihedral> ExtractImproperDihedral(std::ifstream& in_file);
+            DihedralVector ExtractImproperDihedral(std::ifstream& in_file);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -193,13 +195,13 @@ namespace PrepFileSpace
               * The attribute is set by the contents of the given file
               * @return atoms_ of the current object of this class
               */
-            std::vector<PrepFileAtom*> GetAtoms();
+            PrepFileAtomVector GetAtoms();
             /*! \fn
               * An accessor function in order to access to improper dihedral of the current object
               * The attribute is set by the contents of the given file
               * @return improper_dihedral_ of the current object of this class
               */
-            std::vector<Dihedral> GetImproperDihedrals();
+            DihedralVector GetImproperDihedrals();
             /*! \fn
               * An accessor function in order to access to loops of the current object
               * The attribute is set by the contents of the given file
@@ -269,7 +271,7 @@ namespace PrepFileSpace
               * Set the atoms_ attribute of the current object
               * @param atoms The atoms of the current object
               */
-            void SetAtoms(std::vector<PrepFileAtom*> atoms);
+            void SetAtoms(PrepFileAtomVector atoms);
             /*! \fn
               * A mutator function in order to add the atom of the current object
               * Add the atom_ attribute of the current object
@@ -281,7 +283,7 @@ namespace PrepFileSpace
               * Set the improper_dihedrals_ attribute of the current object
               * @param improper_dihedrals The improper_dihedrals of the current object
               */
-            void SetImproperDihedrals(std::vector<Dihedral> improper_dihedrals);
+            void SetImproperDihedrals(DihedralVector improper_dihedrals);
             /*! \fn
               * A mutator function in order to add the improper dihedral of the current object
               * Add the improper_dihedral_ attribute of the current object
@@ -319,8 +321,8 @@ namespace PrepFileSpace
             std::string dummy_atom_type_;               /*!< Dummy atom type; fill by the 4th column of the 4th line of each residue section of the file */
             DummyAtomPosition dummy_atom_position_;     /*!< Dummy atom position(ALL, BEG); fill by the 5th column of the 4th line of each residue section of the file */
             double charge_;                             /*!< Total charge of the residue; fill by the 5th line of each residue section of the file */
-            std::vector<PrepFileAtom*> atoms_;          /*!< Atoms in the resisue; fill by all lines between 6th line of each residue section of the file and a blank line in that section */
-            std::vector<Dihedral> improper_dihedrals_;  /*!< Improper dihedrals; fill by all lines between IMPROPER title in each residue section of the file and a blank line in that section */
+            PrepFileAtomVector atoms_;          /*!< Atoms in the resisue; fill by all lines between 6th line of each residue section of the file and a blank line in that section */
+            DihedralVector improper_dihedrals_;  /*!< Improper dihedrals; fill by all lines between IMPROPER title in each residue section of the file and a blank line in that section */
             Loop loops_;                                /*!< Loops; fill by all lines between LOOP title in each residue section of the file and a blank line in that section */
             /*!< End of each residue section gets marked by DONE */
             /*! \example
