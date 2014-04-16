@@ -30,7 +30,8 @@ namespace PdbPreprocessorSpace
             typedef std::vector<PdbPreprocessorUnrecognizedResidue*> PdbPreprocessorUnrecognizedResidueVector;
             typedef std::vector<PdbPreprocessorUnrecognizedHeavyAtom*> PdbPreprocessorUnrecognizedHeavyAtomVector;
             typedef std::vector<PdbPreprocessorReplacedHydrogen*> PdbPreprocessorReplacedHydrogenVector;
-            typedef std::vector<PdbFileSpace::PdbResidue*> PdbResidueVector;
+            typedef std::vector<PdbFileSpace::PdbResidue*> PdbResidueVector;            
+
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -183,6 +184,7 @@ namespace PdbPreprocessorSpace
             void ExtractCYSResidues(std::string pdb_file_path);
             PdbResidueVector GetAllHISResidues(PdbResidueVector pdb_residues);
             void ExtractHISResidues(std::string pdb_file_path);
+            std::vector<std::string> GetUnknownHeavyAtomNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

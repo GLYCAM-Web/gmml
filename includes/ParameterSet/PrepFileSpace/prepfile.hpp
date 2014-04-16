@@ -38,6 +38,7 @@ namespace PrepFileSpace
               */
             ResidueMap& GetResidues();
             std::vector<std::string> GetAllResidueNames();
+            std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //

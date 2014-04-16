@@ -29,13 +29,11 @@ int PrepFileResidue::GetAtomIndexByName(const std::string& name)
     return -1;
 }
 
-///Delaram
-
-std::string PrepFileResidue::GetTitle(){
+string PrepFileResidue::GetTitle(){
     return title_;
 }
 
-std::string PrepFileResidue::GetName(){
+string PrepFileResidue::GetName(){
     return name_;
 }
 
@@ -55,7 +53,7 @@ DummyAtomOmission PrepFileResidue::GetDummyAtomOmission(){
     return dummy_atom_omission_;
 }
 
-std::string PrepFileResidue::GetDummyAtomType(){
+string PrepFileResidue::GetDummyAtomType(){
     return dummy_atom_type_;
 }
 
@@ -67,11 +65,11 @@ double PrepFileResidue::GetCharge(){
     return charge_;
 }
 
-std::vector<PrepFileAtom*> PrepFileResidue::GetAtoms(){
+PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtoms(){
     return atoms_;
 }
 
-std::vector<PrepFileResidue::Dihedral> PrepFileResidue::GetImproperDihedrals(){
+PrepFileResidue::DihedralVector PrepFileResidue::GetImproperDihedrals(){
     return improper_dihedrals_;
 }
 
@@ -83,11 +81,11 @@ PrepFileResidue::Loop PrepFileResidue::GetLoops(){
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 
-void PrepFileResidue::SetTitle(const std::string title){
+void PrepFileResidue::SetTitle(const string title){
     title_ = title;
 }
 
-void PrepFileResidue::SetName(const std::string name){
+void PrepFileResidue::SetName(const string name){
     name_ = name;
 }
 
@@ -107,7 +105,7 @@ void PrepFileResidue::GetDummyAtomOmission(DummyAtomOmission dummy_atom_omission
     dummy_atom_omission_ = dummy_atom_omission;
 }
 
-void PrepFileResidue::SetDummyAtomType(const std::string dummy_atom_type){
+void PrepFileResidue::SetDummyAtomType(const string dummy_atom_type){
     dummy_atom_type_ = dummy_atom_type;
 }
 
@@ -119,7 +117,7 @@ void PrepFileResidue::SetCharge(double charge){
     charge_ = charge;
 }
 
-void PrepFileResidue::SetAtoms(std::vector<PrepFileAtom*> atoms){
+void PrepFileResidue::SetAtoms(PrepFileAtomVector atoms){
     atoms_ = atoms;
 }
 
@@ -127,7 +125,7 @@ void PrepFileResidue::AddAtom(PrepFileAtom* atom){
     atoms_.push_back(atom);
 }
 
-void PrepFileResidue::SetImproperDihedrals(std::vector<Dihedral> improper_dihedrals){
+void PrepFileResidue::SetImproperDihedrals(DihedralVector improper_dihedrals){
     improper_dihedrals_ = improper_dihedrals;
 }
 
@@ -139,7 +137,6 @@ void PrepFileResidue::SetLoops(Loop loops){
     loops_ = loops;
 }
 
-///Delaram
 
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
