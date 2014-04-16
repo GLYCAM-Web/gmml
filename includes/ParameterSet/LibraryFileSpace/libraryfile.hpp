@@ -44,6 +44,7 @@ namespace LibraryFileSpace
               */
             const ResidueMap& GetResidues() const;
             std::vector<std::string> GetAllResidueNames();
+            std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //

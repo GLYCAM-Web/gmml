@@ -7,6 +7,7 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
+#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 
 using namespace std;
 using namespace gmml;
@@ -47,6 +48,21 @@ vector<string> PrepFile::GetAllResidueNames()
     }
     return residue_names;
 }
+
+vector<string> PrepFile::GetAllAtomNamesOfResidue(string residue_name)
+{
+    vector<string> atom_names_of_residue;
+    ResidueMap residue_map = GetResidues();
+    PrepFileResidue* prep_file_residue = residue_map[residue_name];
+    vector<PrepFileAtom*> atoms = prep_file_residue->GetAtoms();
+    for(vector<PrepFileAtom*>::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        PrepFileAtom* atom = (*it);
+        atom_names_of_residue.push_back(atom->GetName());
+    }
+    return atom_names_of_residue;
+}
+
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////

@@ -1,3 +1,4 @@
+#include <cctype>
 
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessor.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.hpp"
@@ -13,7 +14,7 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../../includes/common.hpp";
-
+#include "../../../includes/utils.hpp"
 using namespace std;
 using namespace PdbPreprocessorSpace;
 using namespace PdbFileSpace;
@@ -364,6 +365,24 @@ void PdbPreprocessor::ExtractHISResidues(string pdb_file_path)
                 new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE);
         histidine_mappings_.push_back(histidine_mapping);
     }
+}
+
+vector<string> PdbPreprocessor::GetUnknownHeavyAtomNamesOfResidue(vector<string> pdb_atom_names_of_residue, vector<string> dataset_atom_names_of_residue)
+{
+    vector<string> unknown_heavy_atom_names_of_residue;
+    for(vector<string>::iterator it = pdb_atom_names_of_residue.begin(); it != pdb_atom_names_of_residue.end(); it++)
+    {
+        string pdb_atom_name = (*it);
+        for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+        {
+            string dataset_atom_name = (*it1);
+            if( pdb_atom_name.compare(dataset_atom_name) != 0 &&
+                    pdb_atom_name.substr(0,1) != "H" &&
+                    (pdb_atom_name.substr(1,1) == "H" && !isdigit(ConvertString<char>(pdb_atom_name.substr(0,1)))))
+                unknown_heavy_atom_names_of_residue.push_back(pdb_atom_name);
+        }
+    }
+    return unknown_heavy_atom_names_of_residue;
 }
 
 //////////////////////////////////////////////////////////
