@@ -462,6 +462,25 @@ vector<string> PdbPreprocessor::GetAllAtomNamesOfResidueFromDatasetFiles(string 
     return all_atom_names;
 }
 
+PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetUnknownHeavyAtomsOfResidue(PdbFile::PdbAtomVector pdb_atoms, vector<string> dataset_atom_names_of_residue)
+{
+    PdbFile::PdbAtomVector unknown_heavy_atoms_of_residue;
+    for(PdbFile::PdbAtomVector::iterator it = pdb_atoms.begin(); it != pdb_atoms.end(); it++)
+    {
+        PdbAtom* pdb_atom = *it;
+        string pdb_atom_name = pdb_atom->GetAtomName();
+        for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+        {
+            string dataset_atom_name = (*it1);
+            if( pdb_atom_name.compare(dataset_atom_name) != 0 &&
+                    pdb_atom_name.substr(0,1) != "H" &&
+                    (pdb_atom_name.substr(1,1) == "H" && !isdigit(ConvertString<char>(pdb_atom_name.substr(0,1)))))
+                unknown_heavy_atoms_of_residue.push_back(pdb_atom);
+        }
+    }
+    return unknown_heavy_atoms_of_residue;
+}
+
 void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
 {
     PdbFile* pdb_file = new PdbFile(pdb_file_path);
@@ -469,12 +488,12 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
     for(PdbFile::PdbResidueAtomsMap::iterator it = residue_atoms_map.begin(); it != residue_atoms_map.end(); it++)
     {
         string residue_name = (*it).first;
-        PdbFile::PdbAtomVector* atoms_of_residue = (*it).second;
+        PdbFile::PdbAtomVector atoms_of_residue = *((*it).second);
         vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
         PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
         for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)
         {
-            PdbAtom* heavy_atom = (*it);
+            PdbAtom* heavy_atom = (*it1);
             PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom =
                     new PdbPreprocessorUnrecognizedHeavyAtom(heavy_atom->GetAtomChainId(), heavy_atom->GetAtomSerialNumber(),
                                                              heavy_atom->GetAtomName(), heavy_atom->GetAtomResidueName(),
@@ -482,6 +501,7 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
             unrecognized_heavy_atoms_.push_back(unknown_heavy_atom);
         }
     }
+}
 
 PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetUnknownHeavyAtomsOfResidue(PdbFile::PdbAtomVector pdb_atoms, vector<string> dataset_atom_names_of_residue)
 {
