@@ -16,6 +16,7 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorUnrecognizedHeavyAtom();
+            PdbPreprocessorUnrecognizedHeavyAtom(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

@@ -214,16 +214,20 @@ namespace PdbPreprocessorSpace
             std::vector<std::string> GetAllResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
             std::vector<std::string> GetAllResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
             std::vector<std::string> GetAllResidueNamesFromDatasetFiles(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+
             PdbFileSpace::PdbFile::PdbResidueVector GetAllCYSResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues);
             double GetDistanceofCYS(PdbFileSpace::PdbResidue* first_residue, PdbFileSpace::PdbResidue* second_residue, PdbFileSpace::PdbFile* pdb_file, PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atom_map);
             void ExtractCYSResidues(std::string pdb_file_path);
+
             PdbFileSpace::PdbFile::PdbResidueVector GetAllHISResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues);
             void ExtractHISResidues(std::string pdb_file_path);
+
             std::vector<std::string> GetUnknownHeavyAtomNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultipleLibFiles(std::string residue_name, std::vector<std::string> lib_files);
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultiplePrepFiles(std::string residue_name, std::vector<std::string> prep_files);
             std::vector<std::string> GetAllAtomNamesOfResidueFromDatasetFiles(std::string residue_name, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             PdbFileSpace::PdbFile::PdbAtomVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+            void ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
