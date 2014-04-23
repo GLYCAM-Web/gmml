@@ -171,11 +171,46 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function in order to access to the unrecognized residue names of pdb
+              * @param pdb_residue_names The list of residue names in the current pdb file
+              * @param data_set_residue_names The list of residue names from library and prep files
+              * @return unrecognized_residue_names
+              */
             std::vector<std::string> GetUnrecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            /*! \fn
+              * A function in order to access to the recognized residue names of pdb
+              * @param pdb_residue_names The list of residue names in the current pdb file
+              * @param data_set_residue_names The list of residue names from library and prep files
+              * @return recognized_residue_names
+              */
             std::vector<std::string> GetRecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            /*! \fn
+              * A function in order to access to the unrecognized residues of pdb
+              * @param pdb_residues The list of residues in the current pdb file
+              * @param unrecognized_residue_names The list of unrecognized residue names
+              * @return unrecognized_residues
+              */
             PdbFileSpace::PdbFile::PdbResidueVector GetUnrecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> unrecognized_residue_names);
+            /*! \fn
+              * A function in order to access to the recognized residues of pdb
+              * @param pdb_residues The list of residues in the current pdb file
+              * @param recognized_residue_names The list of recognized residue names
+              * @return recognized_residues
+              */
             PdbFileSpace::PdbFile::PdbResidueVector GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> recognized_residue_names);
+            /*! \fn
+              * A function in order to extract the unrecognized residues of a pdb file
+              * @param pdb_file_path The path to the pdb files
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
             void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to access to the list of all residue names from lib files
+              * @param lib_files The list of paths to library files
+              * @return all_residue_names
+              */
             std::vector<std::string> GetAllResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
             std::vector<std::string> GetAllResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
             std::vector<std::string> GetAllResidueNamesFromDatasetFiles(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
@@ -188,6 +223,7 @@ namespace PdbPreprocessorSpace
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultipleLibFiles(std::string residue_name, std::vector<std::string> lib_files);
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultiplePrepFiles(std::string residue_name, std::vector<std::string> prep_files);
             std::vector<std::string> GetAllAtomNamesOfResidueFromDatasetFiles(std::string residue_name, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            PdbFileSpace::PdbFile::PdbAtomVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
