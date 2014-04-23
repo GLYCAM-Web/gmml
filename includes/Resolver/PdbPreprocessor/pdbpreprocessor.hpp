@@ -199,13 +199,7 @@ namespace PdbPreprocessorSpace
               * @return recognized_residues
               */
             PdbFileSpace::PdbFile::PdbResidueVector GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> recognized_residue_names);
-            /*! \fn
-              * A function in order to extract the unrecognized residues of a pdb file
-              * @param pdb_file_path The path to the pdb files
-              * @param lib_files The list of paths to the library files
-              * @param prep_files The list of paths to the prep files
-              */
-            void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+
             /*! \fn
               * A function in order to access to the list of all residue names from lib files
               * @param lib_files The list of paths to library files
@@ -214,6 +208,13 @@ namespace PdbPreprocessorSpace
             std::vector<std::string> GetAllResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
             std::vector<std::string> GetAllResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
             std::vector<std::string> GetAllResidueNamesFromDatasetFiles(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to extract the unrecognized residues of a pdb file
+              * @param pdb_file_path The path to the pdb files
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
+            void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
             PdbFileSpace::PdbFile::PdbResidueVector GetAllCYSResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues);
             double GetDistanceofCYS(PdbFileSpace::PdbResidue* first_residue, PdbFileSpace::PdbResidue* second_residue, PdbFileSpace::PdbFile* pdb_file, PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atom_map);
