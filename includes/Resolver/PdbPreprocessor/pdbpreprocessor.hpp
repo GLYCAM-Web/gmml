@@ -230,6 +230,9 @@ namespace PdbPreprocessorSpace
             PdbFileSpace::PdbFile::PdbAtomVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
             void ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
+            std::vector<std::string> GetRemovedHydrogenNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
+            PdbFileSpace::PdbFile::PdbAtomVector GetRemovedHydrogensOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
