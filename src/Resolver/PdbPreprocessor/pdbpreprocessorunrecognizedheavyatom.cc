@@ -65,6 +65,12 @@ void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueSequenceNumber(int residue_
 //////////////////////////////////////////////////////////
 void PdbPreprocessorUnrecognizedHeavyAtom::Print(ostream &out)
 {
+    cout << "Atom name: " << atom_name_
+         << ", Serial number: " << atom_serial_number_
+         << ", Chain id: " << residue_chain_id_
+         << ", Residue name: " << residue_name_
+         << ", Sequence number: " << residue_sequence_number_
+         << endl;
 }
 
 
