@@ -5,8 +5,10 @@
 #include <iostream>
 #include <vector>
 
+#include "../../common.hpp"
+
 namespace PdbPreprocessorSpace
-{
+{    
     class PdbPreprocessorMissingResidue
     {
         public:
@@ -17,6 +19,7 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorMissingResidue();
+            PdbPreprocessorMissingResidue(char chain_id, int start_index, int end_index, int index_before_gap, int index_after_gap);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -45,27 +48,26 @@ namespace PdbPreprocessorSpace
               * An accessor function in order to access to the residue after gap
               * @return residue_after_gap_ attribute of the current object of this class
               */
-            int GetResidueAfterGap();
-            /*! \fn
-              * An accessor function in order to access to the possible n teminations
-              * @return possible_n_terminations_ attribute of the current object of this class
-              */
-            std::vector<std::string> GetPossibleNTerminations();
-            /*! \fn
-              * An accessor function in order to access to the possible c teminations
-              * @return possible_c_terminations_ attribute of the current object of this class
-              */
-            std::vector<std::string> GetPossibleCTerminations();
+            int GetResidueAfterGap();            
             /*! \fn
               * An accessor function in order to access to the selected n termination
               * @return selected_n_termination_ attribute of the current object of this class
               */
-            std::string GetSelectedNTermination();
+            gmml::PossibleNChainTermination GetSelectedNTermination();
             /*! \fn
               * An accessor function in order to access to the selected c termination
               * @return selected_c_termination_ attribute of the current object of this class
               */
-            std::string GetSelectedCTermination();
+            gmml::PossibleCChainTermination GetSelectedCTermination();
+
+            std::string GetStringFormatOfSelectedNTermination();
+            std::string GetStringFormatOfSelectedCTermination();
+
+            std::string GetStringFormatOfNTermination(gmml::PossibleNChainTermination n_termination);
+            std::string GetStringFormatOfCTermination(gmml::PossibleCChainTermination c_termination);
+
+            std::vector<std::string> GetAllPossibleNChainTerminationAsString();
+            std::vector<std::string> GetAllPossibleCChainTerminationAsString();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -99,31 +101,19 @@ namespace PdbPreprocessorSpace
               * Set the residue_after_gap_ attribute of the current pdb preprocessor missing residue
               * @param residue_after_gap The residue after gap attribute of the current object
               */
-            void SetResidueAfterGap(int residue_after_gap);
-            /*! \fn
-              * A mutator function in order to set the possible n terminations of the current object
-              * Set the possible_n_terminations_ attribute of the current pdb preprocessor missing residue
-              * @param possible_n_terminations The possible n terminations attribute of the current object
-              */
-            void SetPossibleNTerminations(std::vector<std::string> possible_n_terminations);
-            /*! \fn
-              * A mutator function in order to set the possible c terminations of the current object
-              * Set the possible_c_terminations_ attribute of the current pdb preprocessor missing residue
-              * @param possible_c_terminations The possible c terminations attribute of the current object
-              */
-            void SetPossibleCTerminations(std::vector<std::string> possible_c_terminations);
+            void SetResidueAfterGap(int residue_after_gap);            
             /*! \fn
               * A mutator function in order to set the selected n termination of the current object
               * Set the selected_n_termination_ attribute of the current pdb preprocessor missing residue
               * @param selected_n_termination The selected n termination attribute of the current object
               */
-            void SetSelectedNTermination(std::string selected_n_termination);
+            void SetSelectedNTermination(gmml::PossibleNChainTermination selected_n_termination);
             /*! \fn
               * A mutator function in order to set the selected c termination of the current object
               * Set the selected_c_termination_ attribute of the current pdb preprocessor missing residue
               * @param selected_c_termination The selected c termination attribute of the current object
               */
-            void SetSelectedCTermination(std::string selected_c_termination);
+            void SetSelectedCTermination(gmml::PossibleCChainTermination selected_c_termination);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -144,10 +134,8 @@ namespace PdbPreprocessorSpace
             int ending_residue_sequence_number_;
             int residue_before_gap_;
             int residue_after_gap_;
-            std::vector<std::string> possible_n_terminations_;
-            std::vector<std::string> possible_c_terminations_;
-            std::string selected_n_termination_;
-            std::string selected_c_termination_;
+            gmml::PossibleNChainTermination selected_n_termination_;
+            gmml::PossibleCChainTermination selected_c_termination_;
 
     };
 }

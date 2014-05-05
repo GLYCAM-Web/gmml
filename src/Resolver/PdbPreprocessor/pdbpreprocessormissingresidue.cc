@@ -3,11 +3,20 @@
 
 using namespace std;
 using namespace PdbPreprocessorSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbPreprocessorMissingResidue::PdbPreprocessorMissingResidue() {}
+
+PdbPreprocessorMissingResidue::PdbPreprocessorMissingResidue(char chain_id, int start_index, int end_index, int index_before_gap, int index_after_gap) :
+    residue_chain_id_(chain_id), starting_residue_sequence_number_(start_index), ending_residue_sequence_number_(end_index),
+    residue_before_gap_(index_before_gap), residue_after_gap_(index_after_gap)
+{
+    selected_n_termination_ = (PossibleNChainTermination)1;
+    selected_c_termination_ = (PossibleCChainTermination) 2;
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -32,21 +41,77 @@ int PdbPreprocessorMissingResidue::GetResidueAfterGap()
 {
     return residue_after_gap_;
 }
-vector<string> PdbPreprocessorMissingResidue::GetPossibleNTerminations()
-{
-    return possible_n_terminations_;
-}
-vector<string> PdbPreprocessorMissingResidue::GetPossibleCTerminations()
-{
-    return possible_c_terminations_;
-}
-string PdbPreprocessorMissingResidue::GetSelectedNTermination()
+PossibleNChainTermination PdbPreprocessorMissingResidue::GetSelectedNTermination()
 {
     return selected_n_termination_;
 }
-string PdbPreprocessorMissingResidue::GetSelectedCTermination()
+PossibleCChainTermination PdbPreprocessorMissingResidue::GetSelectedCTermination()
 {
     return selected_c_termination_;
+}
+
+string PdbPreprocessorMissingResidue::GetStringFormatOfSelectedNTermination()
+{
+    switch (selected_n_termination_)
+    {
+        case 1:
+            return "COCH3";
+        case 2:
+            return "NH3+";
+    }
+}
+
+string PdbPreprocessorMissingResidue::GetStringFormatOfSelectedCTermination()
+{
+    switch(selected_c_termination_)
+    {
+        case 1:
+            return "NH2";
+        case 2:
+            return "NHCH3";
+        case 3:
+            return "CO2-";
+    }
+}
+
+string PdbPreprocessorMissingResidue::GetStringFormatOfNTermination(PossibleNChainTermination n_termination)
+{
+    switch (n_termination)
+    {
+        case 1:
+            return "COCH3";
+        case 2:
+            return "NH3+";
+    }
+}
+
+string PdbPreprocessorMissingResidue::GetStringFormatOfCTermination(PossibleCChainTermination c_termination)
+{
+    switch(c_termination)
+    {
+        case 1:
+            return "NH2";
+        case 2:
+            return "NHCH3";
+        case 3:
+            return "CO2-";
+    }
+}
+
+vector<string> PdbPreprocessorMissingResidue::GetAllPossibleNChainTerminationAsString()
+{
+    vector<string> all_possible_n_chian_termination_as_string;
+    for(int possible_n_chian_termination = COCH3; possible_n_chian_termination != NH3; possible_n_chian_termination++)
+        all_possible_n_chian_termination_as_string.push_back(GetStringFormatOfNTermination((PossibleNChainTermination)possible_n_chian_termination));
+    return all_possible_n_chian_termination_as_string;
+}
+
+vector<string> PdbPreprocessorMissingResidue::GetAllPossibleCChainTerminationAsString()
+{
+    vector<string> all_possible_c_chian_termination_as_string;
+    for(int possible_c_chian_termination = NH2; possible_c_chian_termination != CO2; possible_c_chian_termination++)
+        all_possible_c_chian_termination_as_string.push_back(GetStringFormatOfCTermination((PossibleCChainTermination)possible_c_chian_termination));
+    return all_possible_c_chian_termination_as_string;
 }
 
 //////////////////////////////////////////////////////////
@@ -72,27 +137,11 @@ void PdbPreprocessorMissingResidue::SetResidueAfterGap(int residue_after_gap)
 {
     residue_after_gap_ = residue_after_gap;
 }
-void PdbPreprocessorMissingResidue::SetPossibleNTerminations(vector<string> possible_n_terminations)
-{
-    possible_n_terminations_.clear();
-    for(vector<string>::iterator it = possible_n_terminations.begin(); it != possible_n_terminations.end(); it++)
-    {
-        possible_n_terminations_.push_back(*it);
-    }
-}
-void PdbPreprocessorMissingResidue::SetPossibleCTerminations(vector<string> possible_c_terminations)
-{
-    possible_c_terminations_.clear();
-    for(vector<string>::iterator it = possible_c_terminations.begin(); it != possible_c_terminations.end(); it++)
-    {
-        possible_c_terminations_.push_back(*it);
-    }
-}
-void PdbPreprocessorMissingResidue::SetSelectedNTermination(const string selected_n_termination)
+void PdbPreprocessorMissingResidue::SetSelectedNTermination(PossibleNChainTermination selected_n_termination)
 {
     selected_n_termination_ = selected_n_termination;
 }
-void PdbPreprocessorMissingResidue::SetSelectedCTermination(const string selected_c_termination)
+void PdbPreprocessorMissingResidue::SetSelectedCTermination(PossibleCChainTermination selected_c_termination)
 {
     selected_c_termination_ = selected_c_termination;
 }
@@ -102,6 +151,12 @@ void PdbPreprocessorMissingResidue::SetSelectedCTermination(const string selecte
 //////////////////////////////////////////////////////////
 void PdbPreprocessorMissingResidue::Print(ostream &out)
 {
+    out << "Chain: " << starting_residue_sequence_number_ << "-" << ending_residue_sequence_number_ << "(" << residue_chain_id_ << ")"
+        << ", Residue before gap: " << residue_before_gap_
+        << ", Selected c termination: " << GetStringFormatOfSelectedCTermination()
+        << ", Residue after gap: " << residue_after_gap_
+        << ", Selected n termination: " << GetStringFormatOfSelectedNTermination()
+        << endl;
 }
 
 
