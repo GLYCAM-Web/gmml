@@ -37,7 +37,16 @@ namespace PrepFileSpace
               * @return path_ attribute of the current object of this class
               */
             ResidueMap& GetResidues();
+            /*! \fn
+              * An accessor function in order to access to all residue names of the current object
+              * @return residue_names residue names of the current object of this class
+              */
             std::vector<std::string> GetAllResidueNames();
+            /*! \fn
+              * An accessor function in order to access to all atom names of the current object
+              * @param residue_name the residue name of the current object
+              * @return atom_names_of_residue The atom names of the current object of this class
+              */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
 
             //////////////////////////////////////////////////////////
