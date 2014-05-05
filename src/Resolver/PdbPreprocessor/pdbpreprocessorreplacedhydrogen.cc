@@ -9,6 +9,9 @@ using namespace PdbPreprocessorSpace;
 //////////////////////////////////////////////////////////
 PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen() {}
 
+PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen(int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number) :
+    atom_serial_number_(atom_serial_number), atom_name_(atom_name), residue_name_(residue_name), residue_sequence_number_(residue_sequence_number) {}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -54,6 +57,11 @@ void PdbPreprocessorReplacedHydrogen::SetResidueSequenceNumber(int residue_seque
 //////////////////////////////////////////////////////////
 void PdbPreprocessorReplacedHydrogen::Print(ostream &out)
 {
+    cout << "Atom name: " << atom_name_
+         << ", Serial number: " << atom_serial_number_
+         << ", Residue name: " << residue_name_
+         << ", Sequence number: " << residue_sequence_number_
+         << endl;
 }
 
 

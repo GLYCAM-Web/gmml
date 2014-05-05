@@ -296,6 +296,48 @@ vector<string> PdbFile::GetAllResidueNames()
 
 }
 
+vector<string> PdbFile::GetAllResidueNamesFromAtomCard()
+{
+    vector<string> residue_names;
+    PdbModelCard::PdbModelMap models = models_->GetModels();
+    for(PdbModelCard::PdbModelMap::iterator it = models.begin();it != models.end(); it++)
+    {
+        PdbModel* model = (*it).second;
+        PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        {
+            PdbAtomCard* atom_card = (*it1);
+            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            {
+                PdbAtom* atom = (*it2).second;
+                bool find = false;
+                for(vector<string>::iterator it3 = residue_names.begin(); it3 != residue_names.end(); it3++)
+                {
+                    string name = (*it3);
+                    if(name.compare(atom->GetAtomResidueName()) == 0)
+                    {
+                        find = true;
+                        break;
+                    }
+                    else
+                    {
+                        find = false;
+                        continue;
+                    }
+                }
+                if(!find)
+                {
+                    residue_names.push_back(atom->GetAtomResidueName());
+                }
+            }
+        }
+    }
+    return residue_names;
+
+}
+
 PdbFile::PdbResidueVector PdbFile::GetAllResidues()
 {
     PdbFile::PdbResidueVector residues;
@@ -334,6 +376,42 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
             PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
             for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            {
+                PdbAtom* atom = (*it2).second;
+                string residue_name = atom->GetAtomResidueName();
+                char chain_id = atom->GetAtomChainId();
+                int sequence_number = atom->GetAtomResidueSequenceNumber();
+                char insertion_code = atom->GetAtomInsertionCode();
+                stringstream ss;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                string key = ss.str();
+                if(!inserted_residues[key])
+                {
+                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code);
+                    residues.push_back(res);
+                    inserted_residues[key] = true;
+                }
+            }
+        }
+    }
+    return residues;
+}
+
+PdbFile::PdbResidueVector PdbFile::GetAllResiduesFromAtomCard()
+{
+    PdbFile::PdbResidueVector residues;
+    map<string, bool> inserted_residues;
+    PdbModelCard::PdbModelMap models = models_->GetModels();
+    for(PdbModelCard::PdbModelMap::iterator it = models.begin();it != models.end(); it++)
+    {
+        PdbModel* model = (*it).second;
+        PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        {
+            PdbAtomCard* atom_card = (*it1);
+            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
                 PdbAtom* atom = (*it2).second;
                 string residue_name = atom->GetAtomResidueName();

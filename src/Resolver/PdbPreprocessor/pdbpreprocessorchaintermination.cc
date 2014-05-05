@@ -3,11 +3,19 @@
 
 using namespace std;
 using namespace PdbPreprocessorSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbPreprocessorChainTermination::PdbPreprocessorChainTermination() {}
+
+PdbPreprocessorChainTermination::PdbPreprocessorChainTermination(char chain_id, int starting_sequence_number, int ending_sequence_number) :
+    residue_chain_id_(chain_id), starting_residue_sequence_number_(starting_sequence_number), ending_residue_sequence_number_(ending_sequence_number)
+{
+    selected_n_termination_ = (PossibleNChainTermination)2;
+    selected_c_termination_ = (PossibleCChainTermination)3;
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -24,21 +32,77 @@ int PdbPreprocessorChainTermination::GetEndingResidueSequenceNumber()
 {
     return ending_residue_sequence_number_;
 }
-vector<string> PdbPreprocessorChainTermination::GetPossibleNTerminations()
-{
-    return possible_n_terminations_;
-}
-vector<string> PdbPreprocessorChainTermination::GetPossibleCTerminations()
-{
-    return possible_c_terminations_;
-}
-string PdbPreprocessorChainTermination::GetSelectedNTermination()
+PossibleNChainTermination PdbPreprocessorChainTermination::GetSelectedNTermination()
 {
     return selected_n_termination_;
 }
-string PdbPreprocessorChainTermination::GetSelectedCTermination()
+PossibleCChainTermination PdbPreprocessorChainTermination::GetSelectedCTermination()
 {
     return selected_c_termination_;
+}
+
+string PdbPreprocessorChainTermination::GetStringFormatOfSelectedNTermination()
+{
+    switch (selected_n_termination_)
+    {
+        case 1:
+            return "COCH3";
+        case 2:
+            return "NH3+";
+    }
+}
+
+string PdbPreprocessorChainTermination::GetStringFormatOfSelectedCTermination()
+{
+    switch(selected_c_termination_)
+    {
+        case 1:
+            return "NH2";
+        case 2:
+            return "NHCH3";
+        case 3:
+            return "CO2-";
+    }
+}
+
+string PdbPreprocessorChainTermination::GetStringFormatOfNTermination(PossibleNChainTermination n_termination)
+{
+    switch (n_termination)
+    {
+        case 1:
+            return "COCH3";
+        case 2:
+            return "NH3+";
+    }
+}
+
+string PdbPreprocessorChainTermination::GetStringFormatOfCTermination(PossibleCChainTermination c_termination)
+{
+    switch(c_termination)
+    {
+        case 1:
+            return "NH2";
+        case 2:
+            return "NHCH3";
+        case 3:
+            return "CO2-";
+    }
+}
+
+vector<string> PdbPreprocessorChainTermination::GetAllPossibleNChainTerminationAsString()
+{
+    vector<string> all_possible_n_chian_termination_as_string;
+    for(int possible_n_chian_termination = COCH3; possible_n_chian_termination != NH3; possible_n_chian_termination++)
+        all_possible_n_chian_termination_as_string.push_back(GetStringFormatOfNTermination((PossibleNChainTermination)possible_n_chian_termination));
+    return all_possible_n_chian_termination_as_string;
+}
+
+vector<string> PdbPreprocessorChainTermination::GetAllPossibleCChainTerminationAsString()
+{
+    vector<string> all_possible_c_chian_termination_as_string;
+    for(int possible_c_chian_termination = NH2; possible_c_chian_termination != CO2; possible_c_chian_termination++)
+        all_possible_c_chian_termination_as_string.push_back(GetStringFormatOfCTermination((PossibleCChainTermination)possible_c_chian_termination));
+    return all_possible_c_chian_termination_as_string;
 }
 
 //////////////////////////////////////////////////////////
@@ -56,27 +120,11 @@ void PdbPreprocessorChainTermination::SetEndingResidueSequenceNumber(int ending_
 {
     ending_residue_sequence_number_ = ending_residue_sequence_number;
 }
-void PdbPreprocessorChainTermination::SetPossibleNTerminations(vector<string> possible_n_terminations)
-{
-    possible_n_terminations_.clear();
-    for(vector<string>::iterator it = possible_n_terminations.begin(); it != possible_n_terminations.end(); it++)
-    {
-        possible_n_terminations_.push_back(*it);
-    }
-}
-void PdbPreprocessorChainTermination::SetPossibleCTerminations(vector<string> possible_c_terminations)
-{
-    possible_c_terminations_.clear();
-    for(vector<string>::iterator it = possible_c_terminations.begin(); it != possible_c_terminations.end(); it++)
-    {
-        possible_c_terminations_.push_back(*it);
-    }
-}
-void PdbPreprocessorChainTermination::SetSelectedNTermination(const string selected_n_termination)
+void PdbPreprocessorChainTermination::SetSelectedNTermination(PossibleNChainTermination selected_n_termination)
 {
     selected_n_termination_ = selected_n_termination;
 }
-void PdbPreprocessorChainTermination::SetSelectedCTermination(const string selected_c_termination)
+void PdbPreprocessorChainTermination::SetSelectedCTermination(PossibleCChainTermination selected_c_termination)
 {
     selected_c_termination_ = selected_c_termination;
 }
@@ -86,6 +134,12 @@ void PdbPreprocessorChainTermination::SetSelectedCTermination(const string selec
 //////////////////////////////////////////////////////////
 void PdbPreprocessorChainTermination::Print(ostream &out)
 {
+    cout << "Chain id " << residue_chain_id_
+         << ", Start sequence number: " << starting_residue_sequence_number_
+         << ", End sequence number: " << ending_residue_sequence_number_
+         << ", Selected n termination: " << GetStringFormatOfSelectedNTermination()
+         << ", Selected c termination: " << GetStringFormatOfSelectedCTermination()
+         << endl;
 }
 
 
