@@ -207,37 +207,137 @@ namespace PdbPreprocessorSpace
               * @return all_residue_names
               */
             std::vector<std::string> GetAllResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
+            /*! \fn
+              * A function in order to access to the list of all residue names from prep files
+              * @param prep_files The list of paths to prep files
+              * @return all_residue_names
+              */
             std::vector<std::string> GetAllResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to access to the list of all residue names from library and prep files
+              * @param lib_files The list of paths to library files
+              * @param prep_files The list of paths to prep files
+              * @return all_residue_names
+              */
             std::vector<std::string> GetAllResidueNamesFromDatasetFiles(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
-	    /*! \fn
+            /*! \fn
               * A function in order to extract the unrecognized residues of a pdb file
-              * @param pdb_file_path The path to the pdb files
+              * @param pdb_file_path The path to the pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
               */
             void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
+            /*! \fn
+              * A function in order to access to the list of CYS residues
+              * @param pdb_residues The list of pdb residues
+              * @return all_cys_residues
+              */
             PdbFileSpace::PdbFile::PdbResidueVector GetAllCYSResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues);
+            /*! \fn
+              * A function in order to access to the distance of a pair of CYS residues
+              * @param first_residue The first residue of CYS pair
+              * @param second_residue The second residue of CYS pair
+              * @param pdb_file Pdb file object
+              * @param residue_atom_map A map between a residue and its atoms
+              * @return distance
+              */
             double GetDistanceofCYS(PdbFileSpace::PdbResidue* first_residue, PdbFileSpace::PdbResidue* second_residue, PdbFileSpace::PdbFile* pdb_file, PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atom_map);
+            /*! \fn
+              * A function in order to extract the CYS residues of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              */
             void ExtractCYSResidues(std::string pdb_file_path);
 
+            /*! \fn
+              * A function in order to access to the list of HIS residues
+              * @param pdb_residues The list of pdb residues
+              * @return all_his_residues
+              */
             PdbFileSpace::PdbFile::PdbResidueVector GetAllHISResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues);
+            /*! \fn
+              * A function in order to extract the HIS residues of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              */
             void ExtractHISResidues(std::string pdb_file_path);
 
+            /*! \fn
+              * A function in order to access to the list of unknown heavy atoms of a residue
+              * @param pdb_atom_names_of_residue The list of atom names of a pdb residue
+              * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
+              * @return unknown_heavy_atom_names_of_residue
+              */
             std::vector<std::string> GetUnknownHeavyAtomNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
+            /*! \fn
+              * A function in order to access to the list of atom names of a residue from multiple library files
+              * @param residue_name The name of the residue
+              * @param lib_files The list of paths to the library files
+              * @return all_atom_names_of_residue
+              */
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultipleLibFiles(std::string residue_name, std::vector<std::string> lib_files);
+            /*! \fn
+              * A function in order to access to the list of atom names of a residue from multiple prep files
+              * @param residue_name The name of the residue
+              * @param prep_files The list of paths to the prep files
+              * @return all_atom_names_of_residue
+              */
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultiplePrepFiles(std::string residue_name, std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to access to the list of all atom names of a residue from library and prep files
+              * @param lib_files The list of paths to library files
+              * @param prep_files The list of paths to prep files
+              * @return all_atom_names
+              */
             std::vector<std::string> GetAllAtomNamesOfResidueFromDatasetFiles(std::string residue_name, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to access to the unknown heavy atoms of a residue
+              * @param pdb_atoms The list of pbd atoms
+              * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
+              * @return unknown_heavy_atoms_of_residue
+              */
             PdbFileSpace::PdbFile::PdbAtomVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+            /*! \fn
+              * A function in order to extract the unknown heavy atoms of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
             void ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
+            /*! \fn
+              * A function in order to access to the removed hydrogen names of a residue
+              * @param pdb_atom_names_of_residue The list of atom names of a residue from pdb file
+              * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
+              * @return removed_hydrogen_names_of_residue
+              */
             std::vector<std::string> GetRemovedHydrogenNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
+            /*! \fn
+              * A function in order to access to the removed hydrogens of a residue
+              * @param pdb_atoms The list of pdb atoms
+              * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
+              * @return removed_hydrogens_of_residue
+              */
             PdbFileSpace::PdbFile::PdbAtomVector GetRemovedHydrogensOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+            /*! \fn
+              * A function in order to extract the removed hydrogens of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
             void ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
+            /*! \fn
+              * A function in order to extract the amino acid chains of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              */
             void ExtractAminoAcidChains(std::string pdb_file_path);
 
+            /*! \fn
+              * A function in order to extract the gaps in amino acid chains of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              */
             void ExtractGapsInAminoAcidChains(std::string pdb_file_path);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
