@@ -44,6 +44,9 @@ PdbPreprocessor::PdbPreprocessorMissingResidueVector PdbPreprocessor::GetMissing
 PdbPreprocessor::PdbPreprocessorUnrecognizedResidueVector PdbPreprocessor::GetUnrecognizedResidues(){
     return unrecognized_residues_;
 }
+PdbPreprocessor::PdbPreprocessorRecognizedResidueVector PdbPreprocessor::GetRecognizedResidues(){
+    return recognized_residues_;
+}
 PdbPreprocessor::PdbPreprocessorUnrecognizedHeavyAtomVector PdbPreprocessor::GetUnrecognizedHeavyAtoms(){
     return unrecognized_heavy_atoms_;
 }
@@ -108,6 +111,17 @@ void PdbPreprocessor::SetUnrecognizedResidues(PdbPreprocessor::PdbPreprocessorUn
 void PdbPreprocessor::AddUnrecognizedResidue(PdbPreprocessorUnrecognizedResidue *unrecognized_residue)
 {
     unrecognized_residues_.push_back(unrecognized_residue);
+}
+void PdbPreprocessor::SetRecognizedResidues(PdbPreprocessor::PdbPreprocessorRecognizedResidueVector recognized_residues){
+    recognized_residues_.clear();
+    for(PdbPreprocessorRecognizedResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
+    {
+        recognized_residues_.push_back(*it);
+    }
+}
+void PdbPreprocessor::AddRecognizedResidue(PdbPreprocessorUnrecognizedResidue *recognized_residue)
+{
+    recognized_residues_.push_back(recognized_residue);
 }
 void PdbPreprocessor::SetUnrecognizedHeavyAtoms(PdbPreprocessor::PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms){
     unrecognized_heavy_atoms_.clear();
@@ -291,6 +305,24 @@ void PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
     }
 }
 
+void PdbPreprocessor::ExtractRecognizedResidues(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
+{
+    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
+    PdbFile* pdb_file = new PdbFile(pdb_file_path);
+    vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+    vector<string> unrecognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
+    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, unrecognized_residue_names);
+
+    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
+    {
+        PdbResidue* pdb_residue = (*it);
+        PdbPreprocessorUnrecognizedResidue* recognized_residue =
+                new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber());
+        recognized_residues_.push_back(recognized_residue);
+    }
+}
+
 PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetAllCYSResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues)
 {
     PdbFileSpace::PdbFile::PdbResidueVector all_cys_residues;
@@ -375,12 +407,25 @@ vector<string> PdbPreprocessor::GetUnknownHeavyAtomNamesOfResidue(vector<string>
     for(vector<string>::iterator it = pdb_atom_names_of_residue.begin(); it != pdb_atom_names_of_residue.end(); it++)
     {
         string pdb_atom_name = (*it);
-        for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+        bool found = false;
+        if(!(pdb_atom_name.substr(0,1).compare("H") == 0 ||
+             (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            string dataset_atom_name = (*it1);
-            if( pdb_atom_name.compare(dataset_atom_name) != 0 &&
-                    pdb_atom_name.substr(0,1) != "H" &&
-                    (pdb_atom_name.substr(1,1) == "H" && !isdigit(ConvertString<char>(pdb_atom_name.substr(0,1)))))
+            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+            {
+                string dataset_atom_name = (*it1);
+                {
+                    if( pdb_atom_name.compare(dataset_atom_name) != 0)
+                        continue;
+                    else
+                    {
+                        found = true;
+                        break;
+                    }
+
+                }
+            }
+            if(!found)
                 unknown_heavy_atom_names_of_residue.push_back(pdb_atom_name);
         }
     }
@@ -469,12 +514,23 @@ PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetUnknownHeavyAtomsOfResi
     {
         PdbAtom* pdb_atom = *it;
         string pdb_atom_name = pdb_atom->GetAtomName();
-        for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+        bool found = false;
+        if(!(pdb_atom_name.substr(0,1).compare("H") == 0 ||
+             (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            string dataset_atom_name = (*it1);
-            if( pdb_atom_name.compare(dataset_atom_name) != 0 &&
-                    pdb_atom_name.substr(0,1) != "H" &&
-                    (pdb_atom_name.substr(1,1) == "H" && !isdigit(ConvertString<char>(pdb_atom_name.substr(0,1)))))
+            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+            {
+                string dataset_atom_name = (*it1);
+
+                if( pdb_atom_name.compare(dataset_atom_name) != 0)
+                    continue;
+                else
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
                 unknown_heavy_atoms_of_residue.push_back(pdb_atom);
         }
     }
@@ -523,12 +579,24 @@ vector<string> PdbPreprocessor::GetRemovedHydrogenNamesOfResidue(vector<string> 
     for(vector<string>::iterator it = pdb_atom_names_of_residue.begin(); it != pdb_atom_names_of_residue.end(); it++)
     {
         string pdb_atom_name = (*it);
-        for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+        bool found = false;
+        if((pdb_atom_name.substr(0,1).compare("H") == 0 ||
+            (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            string dataset_atom_name = (*it1);
-            if( pdb_atom_name.compare(dataset_atom_name) != 0 &&
-                    (pdb_atom_name.substr(0,1) == "H" ||
-                    (pdb_atom_name.substr(1,1) == "H" && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
+            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+            {
+                string dataset_atom_name = (*it1);
+
+                if( pdb_atom_name.compare(dataset_atom_name) != 0)
+                    continue;
+                else
+                {
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found)
                 removed_hydrogen_names_of_residue.push_back(pdb_atom_name);
         }
     }
@@ -542,12 +610,23 @@ PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetRemovedHydrogensOfResid
     {
         PdbAtom* pdb_atom = *it;
         string pdb_atom_name = pdb_atom->GetAtomName();
-        for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+        bool found = false;
+        if((pdb_atom_name.substr(0,1).compare("H") == 0 ||
+            (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            string dataset_atom_name = (*it1);
-            if( pdb_atom_name.compare(dataset_atom_name) != 0 &&
-                    (pdb_atom_name.substr(0,1) == "H" ||
-                    (pdb_atom_name.substr(1,1) == "H" && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
+            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+            {
+                string dataset_atom_name = (*it1);
+
+                if( pdb_atom_name.compare(dataset_atom_name) != 0)
+                    continue;
+                else
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if(!found)
                 removed_hydrogens_of_residue.push_back(pdb_atom);
         }
     }

@@ -29,6 +29,7 @@ namespace PdbPreprocessorSpace
             typedef std::vector<PdbPreprocessorHistidineMapping*> PdbPreprocessorHistidineMappingVector;
             typedef std::vector<PdbPreprocessorMissingResidue*> PdbPreprocessorMissingResidueVector;
             typedef std::vector<PdbPreprocessorUnrecognizedResidue*> PdbPreprocessorUnrecognizedResidueVector;
+            typedef std::vector<PdbPreprocessorUnrecognizedResidue*> PdbPreprocessorRecognizedResidueVector;
             typedef std::vector<PdbPreprocessorUnrecognizedHeavyAtom*> PdbPreprocessorUnrecognizedHeavyAtomVector;
             typedef std::vector<PdbPreprocessorReplacedHydrogen*> PdbPreprocessorReplacedHydrogenVector;
             typedef std::map<char, std::vector<int> > PdbPreprocessorChainIdSequenceNumbersMap;
@@ -70,6 +71,11 @@ namespace PdbPreprocessorSpace
               * @return unrecognized_residues_ attribute of the current object of this class
               */
             PdbPreprocessorUnrecognizedResidueVector GetUnrecognizedResidues();
+            /*! \fn
+              * An accessor function in order to access to the recognized residues
+              * @return recognized_residues_ attribute of the current object of this class
+              */
+            PdbPreprocessorRecognizedResidueVector GetRecognizedResidues();
             /*! \fn
               * An accessor function in order to access to the unrecognized heavy atoms
               * @return unrecognized_heavy_atoms_ attribute of the current object of this class
@@ -144,6 +150,18 @@ namespace PdbPreprocessorSpace
               * @param unrecognized_residue The unrecognized residue attribute of the current object
               */
             void AddUnrecognizedResidue(PdbPreprocessorUnrecognizedResidue* unrecognized_residue);
+            /*! \fn
+              * A mutator function in order to set the recognized residues of the current object
+              * Set the recognized_residues_ attribute of the current pdb preprocessor
+              * @param recognized_residues The recognized residues attribute of the current object
+              */
+            void SetRecognizedResidues(PdbPreprocessorRecognizedResidueVector recognized_residues);
+            /*! \fn
+              * A function in order to add the recognized residue to the current object
+              * Set recognized_residues_ attribute of the current pdb preprocessor
+              * @param recognized_residue The recognized residue attribute of the current object
+              */
+            void AddRecognizedResidue(PdbPreprocessorUnrecognizedResidue* recognized_residue);
             /*! \fn
               * A mutator function in order to set the unrecognized heavy atoms of the current object
               * Set the unrecognized_heavy_atoms_ attribute of the current pdb preprocessor
@@ -227,6 +245,14 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+
+            /*! \fn
+              * A function in order to extract the recognized residues of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
+            void ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
             /*! \fn
               * A function in order to access to the list of CYS residues
@@ -357,6 +383,7 @@ namespace PdbPreprocessorSpace
             PdbPreprocessorHistidineMappingVector histidine_mappings_;
             PdbPreprocessorMissingResidueVector missing_residues_;
             PdbPreprocessorUnrecognizedResidueVector unrecognized_residues_;
+            PdbPreprocessorRecognizedResidueVector recognized_residues_;
             PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms_;
             PdbPreprocessorReplacedHydrogenVector replaced_hydrogens_;
 
