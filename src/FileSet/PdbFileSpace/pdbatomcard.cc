@@ -58,6 +58,17 @@ void PdbAtomCard::SetRecordName(const string record_name)
     record_name_ = record_name;
 }
 
+void PdbAtomCard::SetAtoms(PdbAtomMap atoms)
+{
+    atoms_.clear();
+    for(PdbAtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        PdbAtom* atom = (*it).second;
+        int serial_number = (*it).first;
+        atoms_[serial_number] = atom;
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////

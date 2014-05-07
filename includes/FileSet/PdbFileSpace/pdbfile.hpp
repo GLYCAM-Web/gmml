@@ -96,6 +96,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
 
             void DeleteResidue(PdbResidue* residue);
+            void DeleteAtom(PdbAtom* atom);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

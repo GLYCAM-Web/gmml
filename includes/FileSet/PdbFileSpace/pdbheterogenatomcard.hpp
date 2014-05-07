@@ -54,6 +54,13 @@ namespace PdbFileSpace
               */
             void SetRecordName(const std::string record_name);
 
+            /*! \fn
+              * A mutator function in order to set the atoms of the current object
+              * Set the heterogen_atoms_ attribute of the current atom card
+              * @param heterogen_atoms Heterogen atoms attribute of the current object
+              */
+            void SetHeterogenAtoms(PdbHeterogenAtomMap heterogen_atoms);
+
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

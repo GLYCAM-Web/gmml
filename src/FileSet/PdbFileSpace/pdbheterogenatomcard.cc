@@ -55,6 +55,17 @@ void PdbHeterogenAtomCard::SetRecordName(const string record_name)
     record_name_ = record_name;
 }
 
+void PdbHeterogenAtomCard::SetHeterogenAtoms(PdbHeterogenAtomMap heterogen_atoms)
+{
+    heterogen_atoms_.clear();
+    for(PdbHeterogenAtomMap::iterator it = heterogen_atoms.begin(); it != heterogen_atoms.end(); it++)
+    {
+        PdbHeterogenAtom* heterogen_atom = (*it).second;
+        int serial_number = (*it).first;
+        heterogen_atoms_[serial_number] = heterogen_atom;
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
