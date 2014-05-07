@@ -245,6 +245,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            void RemoveUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues);
 
             /*! \fn
               * A function in order to extract the recognized residues of a pdb file
@@ -286,6 +287,7 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractHISResidues(std::string pdb_file_path);
+            void UpdateHISMapping(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings);
 
             /*! \fn
               * A function in order to access to the list of unknown heavy atoms of a residue
@@ -329,6 +331,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            void RemoveUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
 
             /*! \fn
               * A function in order to access to the removed hydrogen names of a residue
@@ -351,6 +354,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            void RemoveRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens);
 
             /*! \fn
               * A function in order to extract the amino acid chains of a pdb file

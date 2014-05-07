@@ -5,18 +5,10 @@
 #include <iostream>
 #include <vector>
 
+#include "../../common.hpp"
+
 namespace PdbPreprocessorSpace
 {
-    /*! \enum
-      * pdb preprocessor HIS mapping enumerator
-      */
-        enum PdbPreprocessorHISMapping
-        {
-            HIE = 1,
-            HIP = 2,
-            HID = 3
-        };
-
     class PdbPreprocessorHistidineMapping
     {
         public:
@@ -28,7 +20,7 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorHistidineMapping();
 
-            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, PdbPreprocessorHISMapping selected_mapping);
+            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, gmml::PdbPreprocessorHISMapping selected_mapping);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -47,7 +39,11 @@ namespace PdbPreprocessorSpace
               * An accessor function in order to access to the selected mapping
               * @return selected_mapping_ attribute of the current object of this class
               */
-            PdbPreprocessorHISMapping GetSelectedMapping();
+            gmml::PdbPreprocessorHISMapping GetSelectedMapping();
+
+            std::string GetStringFormatOfSelectedMapping();
+            std::string GetStringFormatOfMapping(gmml::PdbPreprocessorHISMapping mapping);
+            std::vector<std::string> GetAllHISMappingAsString();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -69,7 +65,7 @@ namespace PdbPreprocessorSpace
               * Set the selected_mapping_ attribute of the current pdb preprocessor histidine mapping
               * @param selected_mapping The selected mapping attribute of the current object
               */
-            void SetSelectedMapping(PdbPreprocessorHISMapping selected_mapping);
+            void SetSelectedMapping(gmml::PdbPreprocessorHISMapping selected_mapping);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -87,7 +83,7 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             char residue_chain_id_;
             int residue_sequence_number_;
-            PdbPreprocessorHISMapping selected_mapping_;
+            gmml::PdbPreprocessorHISMapping selected_mapping_;
 
     };
 }
