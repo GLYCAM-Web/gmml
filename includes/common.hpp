@@ -23,6 +23,13 @@ namespace gmml
         NHCH3 = 2,
         CO2 = 3
     };
+
+    enum PdbPreprocessorHISMapping
+    {
+        HIE = 1,
+        HIP = 2,
+        HID = 3
+    };
 }
 
 #endif // COMMON_HPP

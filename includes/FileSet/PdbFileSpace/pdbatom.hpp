@@ -27,6 +27,7 @@ namespace PdbFileSpace
               * @param line A single line in a pdb file that represents pdb atom in model card
               */
             PdbAtom(std::string& line);
+            PdbAtom(char chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
