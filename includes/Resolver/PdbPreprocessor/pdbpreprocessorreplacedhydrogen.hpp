@@ -16,7 +16,7 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorReplacedHydrogen();
-            PdbPreprocessorReplacedHydrogen(int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number);
+            PdbPreprocessorReplacedHydrogen(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -41,6 +41,7 @@ namespace PdbPreprocessorSpace
               * @return residue_sequence_number_ attribute of the current object of this class
               */
             int GetResidueSequenceNumber();
+            char GetResidueChainId();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -69,6 +70,7 @@ namespace PdbPreprocessorSpace
               * @param residue_sequence_number The residue sequence number attribute of the current object
               */
             void SetResidueSequenceNumber(int residue_sequence_number);
+            void SetResidueChainId(char residue_chain_id);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -88,6 +90,7 @@ namespace PdbPreprocessorSpace
             std::string atom_name_;
             std::string residue_name_;
             int residue_sequence_number_;
+            char residue_chain_id_;
 
     };
 }

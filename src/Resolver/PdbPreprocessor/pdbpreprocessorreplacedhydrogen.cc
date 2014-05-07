@@ -9,8 +9,8 @@ using namespace PdbPreprocessorSpace;
 //////////////////////////////////////////////////////////
 PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen() {}
 
-PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen(int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number) :
-    atom_serial_number_(atom_serial_number), atom_name_(atom_name), residue_name_(residue_name), residue_sequence_number_(residue_sequence_number) {}
+PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen(char residue_chain_id, int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number) :
+    atom_serial_number_(atom_serial_number), atom_name_(atom_name), residue_name_(residue_name), residue_sequence_number_(residue_sequence_number), residue_chain_id_(residue_chain_id) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -32,6 +32,11 @@ int PdbPreprocessorReplacedHydrogen::GetResidueSequenceNumber()
     return residue_sequence_number_;
 }
 
+char PdbPreprocessorReplacedHydrogen::GetResidueChainId()
+{
+    return residue_chain_id_;
+}
+
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -51,7 +56,10 @@ void PdbPreprocessorReplacedHydrogen::SetResidueSequenceNumber(int residue_seque
 {
     residue_sequence_number_ = residue_sequence_number;
 }
-
+void PdbPreprocessorReplacedHydrogen::SetResidueChainId(char residue_chain_id)
+{
+    residue_chain_id_ = residue_chain_id;
+}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
@@ -61,6 +69,7 @@ void PdbPreprocessorReplacedHydrogen::Print(ostream &out)
          << ", Serial number: " << atom_serial_number_
          << ", Residue name: " << residue_name_
          << ", Sequence number: " << residue_sequence_number_
+         << ", chain id: " << residue_chain_id_
          << endl;
 }
 

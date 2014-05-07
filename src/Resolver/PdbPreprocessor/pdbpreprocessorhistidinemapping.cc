@@ -3,6 +3,7 @@
 
 using namespace std;
 using namespace PdbPreprocessorSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -26,6 +27,37 @@ int PdbPreprocessorHistidineMapping::GetResidueSequenceNumber()
 PdbPreprocessorHISMapping PdbPreprocessorHistidineMapping::GetSelectedMapping()
 {
     return selected_mapping_;
+}
+string PdbPreprocessorHistidineMapping::GetStringFormatOfSelectedMapping()
+{
+    switch(selected_mapping_)
+    {
+        case 1:
+            return "HIE";
+        case 2:
+            return "HIP";
+        case 3:
+            return "HID";
+    }
+}
+string PdbPreprocessorHistidineMapping::GetStringFormatOfMapping(PdbPreprocessorHISMapping his_mapping)
+{
+    switch(his_mapping)
+    {
+        case 1:
+            return "HIE";
+        case 2:
+            return "HIP";
+        case 3:
+            return "HID";
+    }
+}
+vector<string> PdbPreprocessorHistidineMapping::GetAllHISMappingAsString()
+{
+    vector<string> all_his_mapping_as_string;
+    for(int his_mapping = HIE; his_mapping != HID; his_mapping++)
+        all_his_mapping_as_string.push_back(GetStringFormatOfMapping((PdbPreprocessorHISMapping)his_mapping));
+    return all_his_mapping_as_string;
 }
 
 //////////////////////////////////////////////////////////
@@ -51,23 +83,8 @@ void PdbPreprocessorHistidineMapping::Print(ostream &out)
 {
     cout << "Chain id: " << residue_chain_id_
          << ", Sequence_number: " << residue_sequence_number_
-         << ", Selected mapping: ";
-    switch(selected_mapping_)
-    {
-        case 1:
-            cout << "HIE";
-            break;
-        case 2:
-            cout << "HIP";
-            break;
-        case 3:
-            cout << "HID";
-            break;
-        default:
-            cout << "UNKNOWN";
-            break;
-    }
-    cout << endl;
+         << ", Selected mapping: " << GetStringFormatOfSelectedMapping()
+         << cout << endl;
 }
 
 
