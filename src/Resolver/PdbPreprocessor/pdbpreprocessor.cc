@@ -11,8 +11,11 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
+#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
 #include "../../../includes/common.hpp";
 #include "../../../includes/utils.hpp"
 using namespace std;
@@ -838,7 +841,26 @@ void PdbPreprocessor::UpdateAminoAcidChains(string pdb_file_path, vector<string>
             else
             {
                 // Add c terminal at the end of the chain
-
+                PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
+                string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_c_termination, lib_files);
+                LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                pdb_atom_card->SetRecordName("ATOM");
+                PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                int serial_number = 0;
+                for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                {
+                    LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                    stringstream charge;
+                    charge << lib_file_atom->GetCharge();
+                    PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, chain->GetResidueChainId(),
+                                                                 chain->GetEndingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", charge.str());
+                    atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
+                pdb_atom_card->SetAtoms(atom_map);
+                pdb_file->InsertResidueAtEnd(pdb_atom_card);
             }
         }
         else
@@ -847,11 +869,71 @@ void PdbPreprocessor::UpdateAminoAcidChains(string pdb_file_path, vector<string>
             if(chain->GetStringFormatOfSelectedCTermination().find("+") != string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != string::npos)
             {
                 // Add n terminal residue at the beginning of the chain
+                PossibleNChainTermination n_termination = chain->GetSelectedNTermination();
+                string string_n_termination = chain->GetStringFormatOfNTermination(n_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_n_termination, lib_files);
+                LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                pdb_atom_card->SetRecordName("ATOM");
+                PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                int serial_number = 0;
+                for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                {
+                    LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                    stringstream charge;
+                    charge << lib_file_atom->GetCharge();
+                    PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, chain->GetResidueChainId(),
+                                                                 chain->GetStartingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", charge.str());
+                    atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
+                pdb_atom_card->SetAtoms(atom_map);
+                pdb_file->InsertResidueAtBeginning(pdb_atom_card);
             }
             else
             {
                 // Add n terminal residue at the beginning of the chain
+                PossibleNChainTermination n_termination = chain->GetSelectedNTermination();
+                string string_n_termination = chain->GetStringFormatOfNTermination(n_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_n_termination, lib_files);
+                LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                pdb_atom_card->SetRecordName("ATOM");
+                PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                int serial_number = 0;
+                for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                {
+                    LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                    stringstream charge;
+                    charge << lib_file_atom->GetCharge();
+                    PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, chain->GetResidueChainId(),
+                                                                 chain->GetStartingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", charge.str());
+                    atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
+                pdb_atom_card->SetAtoms(atom_map);
+                pdb_file->InsertResidueAtBeginning(pdb_atom_card);
                 // Add c terminal residue at the end of the chain
+                PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
+                string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue_from_c_termination = GetLibraryResidueByNameFromMultipleLibraryFiles(string_c_termination, lib_files);
+                LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
+                PdbFileSpace::PdbAtomCard* pdb_atom_card_for_c_termination = new PdbAtomCard();
+                pdb_atom_card_for_c_termination->SetRecordName("ATOM");
+                PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map_for_c_termination;
+                serial_number = 0;
+                for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)
+                {
+                    LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it3).second;
+                    stringstream charge;
+                    charge << lib_file_atom->GetCharge();
+                    PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, chain->GetResidueChainId(),
+                                                                 chain->GetEndingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", charge.str());
+                    atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
+                pdb_atom_card_for_c_termination->SetAtoms(atom_map_for_c_termination);
+                pdb_file->InsertResidueAtEnd(pdb_atom_card_for_c_termination);
             }
         }
     }
