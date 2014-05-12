@@ -19,7 +19,7 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorMissingResidue();
-            PdbPreprocessorMissingResidue(char chain_id, int start_index, int end_index, int index_before_gap, int index_after_gap);
+            PdbPreprocessorMissingResidue(char chain_id, int start_index, int end_index, int index_before_gap, int index_after_gap, char starting_residue_insertion_code, char ending_residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -35,7 +35,7 @@ namespace PdbPreprocessorSpace
               */
             int GetStartingResidueSequenceNumber();
             /*! \fn
-              * An accessor function in order to access to the starting residue sequence number
+              * An accessor function in order to access to the ending residue sequence number
               * @return ending_residue_sequence_number_ attribute of the current object of this class
               */
             int GetEndingResidueSequenceNumber();
@@ -59,6 +59,16 @@ namespace PdbPreprocessorSpace
               * @return selected_c_termination_ attribute of the current object of this class
               */
             gmml::PossibleCChainTermination GetSelectedCTermination();
+            /*! \fn
+              * An accessor function in order to access to the starting residue insertion code
+              * @return starting_residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetStartingResidueInsertionCode();
+            /*! \fn
+              * An accessor function in order to access to the ending residue insertion code
+              * @return ending_residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetEndingResidueInsertionCode();
 
             std::string GetStringFormatOfSelectedNTermination();
             std::string GetStringFormatOfSelectedCTermination();
@@ -114,6 +124,18 @@ namespace PdbPreprocessorSpace
               * @param selected_c_termination The selected c termination attribute of the current object
               */
             void SetSelectedCTermination(gmml::PossibleCChainTermination selected_c_termination);
+            /*! \fn
+              * A mutator function in order to set the starting residue insertion code of the current object
+              * Set the starting_residue_insertion_code_ attribute of the current pdb preprocessor missing residue
+              * @param starting_residue_insertion_code The starting residue insertion code attribute of the current object
+              */
+            void SetStartingResidueInsertionCode(char starting_residue_insertion_code);
+            /*! \fn
+              * A mutator function in order to set the ending residue insertion code of the current object
+              * Set the ending_residue_insertion_code_ attribute of the current pdb preprocessor missing residue
+              * @param ending_residue_insertion_code The ending residue insertion code attribute of the current object
+              */
+            void SetEndingResidueInsertionCode(char ending_residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -136,6 +158,8 @@ namespace PdbPreprocessorSpace
             int residue_after_gap_;
             gmml::PossibleNChainTermination selected_n_termination_;
             gmml::PossibleCChainTermination selected_c_termination_;
+            char starting_residue_insertion_code_;
+            char ending_residue_insertion_code_;
 
     };
 }

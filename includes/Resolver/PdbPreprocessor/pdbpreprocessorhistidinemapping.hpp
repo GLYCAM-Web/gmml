@@ -20,7 +20,7 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorHistidineMapping();
 
-            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, gmml::PdbPreprocessorHISMapping selected_mapping);
+            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, gmml::PdbPreprocessorHISMapping selected_mapping, char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -40,6 +40,11 @@ namespace PdbPreprocessorSpace
               * @return selected_mapping_ attribute of the current object of this class
               */
             gmml::PdbPreprocessorHISMapping GetSelectedMapping();
+            /*! \fn
+              * An accessor function in order to access to the residue insertion code
+              * @return residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetResidueInsertionCode();
 
             std::string GetStringFormatOfSelectedMapping();
             std::string GetStringFormatOfMapping(gmml::PdbPreprocessorHISMapping mapping);
@@ -66,6 +71,12 @@ namespace PdbPreprocessorSpace
               * @param selected_mapping The selected mapping attribute of the current object
               */
             void SetSelectedMapping(gmml::PdbPreprocessorHISMapping selected_mapping);
+            /*! \fn
+              * A mutator function in order to set the insertion code of the current object
+              * Set the insertion_code_ attribute of the current pdb preprocessor histidine mapping
+              * @param insertion_code The insertion code attribute of the current object
+              */
+            void SetResidueInsertionCode(char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -84,6 +95,7 @@ namespace PdbPreprocessorSpace
             char residue_chain_id_;
             int residue_sequence_number_;
             gmml::PdbPreprocessorHISMapping selected_mapping_;
+            char residue_insertion_code_;
 
     };
 }
