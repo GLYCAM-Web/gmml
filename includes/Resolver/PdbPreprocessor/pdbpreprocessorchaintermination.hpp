@@ -21,7 +21,7 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorChainTermination();
-            PdbPreprocessorChainTermination(char chain_id, int starting_sequence_number, int ending_sequence_number);
+            PdbPreprocessorChainTermination(char chain_id, int starting_sequence_number, int ending_sequence_number, char starting_residue_insertion_code, char ending_residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -51,6 +51,16 @@ namespace PdbPreprocessorSpace
               * @return selected_c_termination_ attribute of the current object of this class
               */
             gmml::PossibleCChainTermination GetSelectedCTermination();
+            /*! \fn
+              * An accessor function in order to access to the starting residue insertion code
+              * @return starting_residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetStartingResidueInsertionCode();
+            /*! \fn
+              * An accessor function in order to access to the ending residue insertion code
+              * @return ending_residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetEndingResidueInsertionCode();
 
             std::string GetStringFormatOfSelectedNTermination();
             std::string GetStringFormatOfSelectedCTermination();
@@ -94,6 +104,19 @@ namespace PdbPreprocessorSpace
               * @param selected_c_termination The selected c termination attribute of the current object
               */
             void SetSelectedCTermination(gmml::PossibleCChainTermination selected_c_termination);
+            /*! \fn
+              * A mutator function in order to set the starting residue insertion code of the current object
+              * Set the starting_residue_insertion_code_ attribute of the current pdb preprocessor chain termination
+              * @param starting_residue_insertion_code The starting residue insertion code attribute of the current object
+              */
+            void SetStartingResidueInsertionCode(char starting_residue_insertion_code);
+
+            /*! \fn
+              * A mutator function in order to set the ending residue insertion code of the current object
+              * Set the ending_residue_insertion_code_ attribute of the current pdb preprocessor chain termination
+              * @param ending_residue_insertion_code The ending residue insertion code attribute of the current object
+              */
+            void SetEndingResidueInsertionCode(char ending_residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -114,6 +137,8 @@ namespace PdbPreprocessorSpace
             int ending_residue_sequence_number_;
             gmml::PossibleNChainTermination selected_n_termination_;
             gmml::PossibleCChainTermination selected_c_termination_;
+            char starting_residue_insertion_code_;
+            char ending_residue_insertion_code_;
 
     };
 }

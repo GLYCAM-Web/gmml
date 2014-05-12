@@ -16,7 +16,7 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorUnrecognizedHeavyAtom();
-            PdbPreprocessorUnrecognizedHeavyAtom(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number);
+            PdbPreprocessorUnrecognizedHeavyAtom(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -46,6 +46,11 @@ namespace PdbPreprocessorSpace
               * @return residue_sequence_number_ attribute of the current object of this class
               */
             int GetResidueSequenceNumber();
+            /*! \fn
+              * An accessor function in order to access to the residue insertion code
+              * @return residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetResidueInsertionCode();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -80,6 +85,12 @@ namespace PdbPreprocessorSpace
               * @param residue_sequcne_number The residue sequence number attribute of the current object
               */
             void SetResidueSequenceNumber(int residue_sequence_number);
+            /*! \fn
+              * A mutator function in order to set the residue insertion code of the current object
+              * Set the residue_insertion_code_ attribute of the current pdb preprocessor unrecognized heavy atom
+              * @param residue_insertion_code The residue insertion code attribute of the current object
+              */
+            void SetResidueInsertionCode(char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -100,6 +111,7 @@ namespace PdbPreprocessorSpace
             std::string atom_name_;
             std::string residue_name_;
             int residue_sequence_number_;
+            char residue_insertion_code_;
 
     };
 }

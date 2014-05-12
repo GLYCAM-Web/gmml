@@ -69,7 +69,8 @@ namespace LibraryFileSpace
               * @param line A line from the atom section of a library file
               * @return A new LibraryFileAtom instance created by the information of the given line
               */
-            LibraryFileAtom* ProcessAtom(std::string& line);            
+            LibraryFileAtom* ProcessAtom(std::string& line);
+            LibraryFileResidue* GetLibraryResidueByResidueName(std::string residue_name);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

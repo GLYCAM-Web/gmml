@@ -10,8 +10,8 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 PdbPreprocessorHistidineMapping::PdbPreprocessorHistidineMapping() {}
 
-PdbPreprocessorHistidineMapping::PdbPreprocessorHistidineMapping(char residue_chain_id, int residue_sequence_number, PdbPreprocessorHISMapping selected_mapping) :
-    residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number), selected_mapping_(selected_mapping) {}
+PdbPreprocessorHistidineMapping::PdbPreprocessorHistidineMapping(char residue_chain_id, int residue_sequence_number, PdbPreprocessorHISMapping selected_mapping, char residue_insertion_code) :
+    residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number), selected_mapping_(selected_mapping), residue_insertion_code_(residue_insertion_code) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -27,6 +27,10 @@ int PdbPreprocessorHistidineMapping::GetResidueSequenceNumber()
 PdbPreprocessorHISMapping PdbPreprocessorHistidineMapping::GetSelectedMapping()
 {
     return selected_mapping_;
+}
+char PdbPreprocessorHistidineMapping::GetResidueInsertionCode()
+{
+    return residue_insertion_code_;
 }
 string PdbPreprocessorHistidineMapping::GetStringFormatOfSelectedMapping()
 {
@@ -75,6 +79,10 @@ void PdbPreprocessorHistidineMapping::SetSelectedMapping(PdbPreprocessorHISMappi
 {
     selected_mapping_ = selected_mapping;
 }
+void PdbPreprocessorHistidineMapping::SetResidueInsertionCode(char residue_insertion_code)
+{
+    residue_insertion_code_ = residue_insertion_code;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -84,6 +92,7 @@ void PdbPreprocessorHistidineMapping::Print(ostream &out)
     cout << "Chain id: " << residue_chain_id_
          << ", Sequence_number: " << residue_sequence_number_
          << ", Selected mapping: " << GetStringFormatOfSelectedMapping()
+            << ", insertion code: " << GetResidueInsertionCode()
          << cout << endl;
 }
 

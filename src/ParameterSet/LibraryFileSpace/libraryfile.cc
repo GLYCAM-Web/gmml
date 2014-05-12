@@ -501,6 +501,13 @@ LibraryFileAtom* LibraryFile::ProcessAtom(string &line)
     return atom;
 }
 
+LibraryFileResidue* LibraryFile::GetLibraryResidueByResidueName(string residue_name)
+{
+    ResidueMap residue_map = GetResidues();
+    LibraryFileResidue* library_file_residue = residue_map[residue_name];
+    return library_file_residue;
+}
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////

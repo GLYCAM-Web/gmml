@@ -17,7 +17,7 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorDisulfideBond();
 
-            PdbPreprocessorDisulfideBond(char chain_id_1, char chain_id_2, int residue_sequence_number_1, int residue_sequence_number_2, double distance, bool is_bonded);
+            PdbPreprocessorDisulfideBond(char chain_id_1, char chain_id_2, int residue_sequence_number_1, int residue_sequence_number_2, double distance, bool is_bonded, char residue_insertion_code_1, char residue_insertion_code_2);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -52,6 +52,16 @@ namespace PdbPreprocessorSpace
               * @return is_bonded_ attribute of the current object of this class
               */
             bool GetIsBonded();
+            /*! \fn
+              * An accessor function in order to access to the residue insertion code attribute of the first residue
+              * @return residue_insertion_code_1_ attribute of the current object of this class
+              */
+            char GetResidueInsertionCode1();
+            /*! \fn
+              * An accessor function in order to access to the residue insertion code attribute of the second residue
+              * @return residue_insertion_code_2_ attribute of the current object of this class
+              */
+            char GetResidueInsertionCode2();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -92,6 +102,18 @@ namespace PdbPreprocessorSpace
               * @param is_bonded The is bonded attribute of the current object
               */
             void SetIsBonded(bool is_bonded);
+            /*! \fn
+              * A mutator function in order to set the first residue insertion code of the current object
+              * Set the residue_insertion_code_1_ attribute of the current pdb preprocessor disulfide bond
+              * @param residue_insertion_code_1 The insertion code 1 attribute of the current object
+              */
+            void SetResidueInsertionCode1(char residue_insertion_code_1);
+            /*! \fn
+              * A mutator function in order to set the second residue insertion code of the current object
+              * Set the residue_insertion_code_2_ attribute of the current pdb preprocessor disulfide bond
+              * @param residue_insertion_code_2 The insertion code 2 attribute of the current object
+              */
+            void SetResidueInsertionCode2(char residue_insertion_code_2);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -113,6 +135,8 @@ namespace PdbPreprocessorSpace
             int residue_sequence_number_2_;
             double distance_;
             bool is_bonded_;
+            char residue_insertion_code_1_;
+            char residue_insertion_code_2_;
 
     };
 }

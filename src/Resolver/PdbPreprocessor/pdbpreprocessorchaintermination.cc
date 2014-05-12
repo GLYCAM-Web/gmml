@@ -10,8 +10,9 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 PdbPreprocessorChainTermination::PdbPreprocessorChainTermination() {}
 
-PdbPreprocessorChainTermination::PdbPreprocessorChainTermination(char chain_id, int starting_sequence_number, int ending_sequence_number) :
-    residue_chain_id_(chain_id), starting_residue_sequence_number_(starting_sequence_number), ending_residue_sequence_number_(ending_sequence_number)
+PdbPreprocessorChainTermination::PdbPreprocessorChainTermination(char chain_id, int starting_sequence_number, int ending_sequence_number, char starting_residue_insertion_code, char ending_residue_insertion_code) :
+    residue_chain_id_(chain_id), starting_residue_sequence_number_(starting_sequence_number), ending_residue_sequence_number_(ending_sequence_number),
+    starting_residue_insertion_code_(starting_residue_insertion_code), ending_residue_insertion_code_(ending_residue_insertion_code)
 {
     selected_n_termination_ = (PossibleNChainTermination)2;
     selected_c_termination_ = (PossibleCChainTermination)3;
@@ -39,6 +40,14 @@ PossibleNChainTermination PdbPreprocessorChainTermination::GetSelectedNTerminati
 PossibleCChainTermination PdbPreprocessorChainTermination::GetSelectedCTermination()
 {
     return selected_c_termination_;
+}
+char PdbPreprocessorChainTermination::GetStartingResidueInsertionCode()
+{
+    return starting_residue_insertion_code_;
+}
+char PdbPreprocessorChainTermination::GetEndingResidueInsertionCode()
+{
+    return ending_residue_insertion_code_;
 }
 
 string PdbPreprocessorChainTermination::GetStringFormatOfSelectedNTermination()
@@ -128,6 +137,14 @@ void PdbPreprocessorChainTermination::SetSelectedCTermination(PossibleCChainTerm
 {
     selected_c_termination_ = selected_c_termination;
 }
+void PdbPreprocessorChainTermination::SetStartingResidueInsertionCode(char starting_residue_insertion_code)
+{
+    starting_residue_insertion_code_ = starting_residue_insertion_code;
+}
+void PdbPreprocessorChainTermination::SetEndingResidueInsertionCode(char ending_residue_insertion_code)
+{
+    ending_residue_insertion_code_ = ending_residue_insertion_code;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -137,8 +154,10 @@ void PdbPreprocessorChainTermination::Print(ostream &out)
     cout << "Chain id " << residue_chain_id_
          << ", Start sequence number: " << starting_residue_sequence_number_
          << ", End sequence number: " << ending_residue_sequence_number_
+         << ", Start insertion code: " << starting_residue_insertion_code_
+         << ", End insertion code: " << ending_residue_insertion_code_
          << ", Selected n termination: " << GetStringFormatOfSelectedNTermination()
-         << ", Selected c termination: " << GetStringFormatOfSelectedCTermination()
+         << ", Selected c termination: " << GetStringFormatOfSelectedCTermination()         
          << endl;
 }
 
