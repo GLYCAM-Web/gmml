@@ -34,6 +34,7 @@ namespace PdbFileSpace
     class PdbConnectCard;
     class PdbResidue;
     class PdbAtom;
+    class PdbAtomCard;
 
     class PdbFile
     {
@@ -97,6 +98,8 @@ namespace PdbFileSpace
 
             void DeleteResidue(PdbResidue* residue);
             void DeleteAtom(PdbAtom* atom);
+            void InsertResidueAtBeginning(PdbAtomCard residue);
+            void InsertResidueAtEnd(PdbAtomCard residue);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
