@@ -361,12 +361,14 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractAminoAcidChains(std::string pdb_file_path);
+            void UpdateAminoAcidChains(std::string pdb_file_path, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_termination);
 
             /*! \fn
               * A function in order to extract the gaps in amino acid chains of a pdb file
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractGapsInAminoAcidChains(std::string pdb_file_path);
+            void UpdateGapsInAminoAcidChains(std::string pdb_file_path, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

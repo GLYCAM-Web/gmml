@@ -760,6 +760,43 @@ void PdbPreprocessor::ExtractAminoAcidChains(string pdb_file_path)
     }
 }
 
+void PdbPreprocessor::UpdateAminoAcidChains(string pdb_file_path, vector<string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations)
+{
+    PdbFile* pdb_file = new PdbFile(pdb_file_path);
+    for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
+    {
+        PdbPreprocessorChainTermination* chain = (*it1);
+        // Zwitterionic in n terminal
+        if(chain->GetStringFormatOfSelectedNTermination().find("+") != string::npos || chain->GetStringFormatOfSelectedNTermination().find("-") != string::npos)
+        {
+            // Zwitterionic in c terminal
+            if(chain->GetStringFormatOfSelectedCTermination().find("+") != string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != string::npos)
+            {
+                // End of chain
+                // Do nothing
+            }
+            else
+            {
+                // Add c terminal at the end of the chain
+
+            }
+        }
+        else
+        {
+            // Zwitterionic in c terminal
+            if(chain->GetStringFormatOfSelectedCTermination().find("+") != string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != string::npos)
+            {
+                // Add n terminal residue at the beginning of the chain
+            }
+            else
+            {
+                // Add n terminal residue at the beginning of the chain
+                // Add c terminal residue at the end of the chain
+            }
+        }
+    }
+}
+
 void PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path)
 {
     PdbFile* pdb_file = new PdbFile(pdb_file_path);

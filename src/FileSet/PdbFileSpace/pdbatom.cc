@@ -127,6 +127,13 @@ PdbAtom::PdbAtom(string &line)
 PdbAtom::PdbAtom(char residue_chain_id, int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number) :
     atom_chain_id_(residue_chain_id), atom_serial_number_(atom_serial_number), atom_name_(atom_name), atom_residue_name_(residue_name), atom_residue_sequence_number_(residue_sequence_number) {}
 
+PdbAtom::PdbAtom(int atom_serial_number, string atom_name, char atom_alternate_location, string residue_name, char chain_id,
+                 int residue_sequence_number, char insertion_code, Coordinate coordinate, double occupancy, double tempreture_factor,
+                 string element_symbol, string charge) :
+    atom_serial_number_(atom_serial_number), atom_name_(atom_name), atom_alternate_location_(atom_alternate_location), atom_residue_name_(residue_name),
+    atom_chain_id_(chain_id), atom_residue_sequence_number_(residue_sequence_number), atom_insertion_code_(insertion_code), atom_orthogonal_coordinate_(coordinate),
+    atom_occupancy_(occupancy), atom_temperature_factor_(tempreture_factor), atom_element_symbol_(element_symbol), atom_charge_(charge) {}
+
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
