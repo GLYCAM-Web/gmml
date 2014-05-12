@@ -247,6 +247,11 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to remove the unrecognized residues of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param unknown_heavy_atoms The list of unrecognized residues
+              */
             void RemoveUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues);
 
             /*! \fn
@@ -277,6 +282,11 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractCYSResidues(std::string pdb_file_path);
+            /*! \fn
+              * A function in order to remove the unknown heavy atoms of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param disulfide_bonds The list of disulfide bonds
+              */
             void UpdateCYSResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds);
 
             /*! \fn
@@ -290,6 +300,11 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractHISResidues(std::string pdb_file_path);
+            /*! \fn
+              * A function in order to update histidine mapping of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param histidine_mappings The list of histidine mappings
+              */
             void UpdateHISMapping(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings);
 
             /*! \fn
@@ -334,6 +349,11 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to remove the unknown heavy atoms of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param unknown_heavy_atoms The list of unknown heavy atoms
+              */
             void RemoveUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
 
             /*! \fn
@@ -357,6 +377,11 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
+              * A function in order to remove the removed hydrogens of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param replaced_hydrogens The list of replaced hydrogens
+              */
             void RemoveRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens);
 
             /*! \fn
@@ -364,6 +389,12 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractAminoAcidChains(std::string pdb_file_path);
+            /*! \fn
+              * A function in order to update the amino acid chains of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              * @param lib_files The list of paths to the library files
+              * @param gaps The list of chain terminations
+              */
             void UpdateAminoAcidChains(std::string pdb_file_path, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_termination);
 
             /*! \fn
@@ -371,8 +402,20 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractGapsInAminoAcidChains(std::string pdb_file_path);
+            /*! \fn
+              * A function in order to update the gaps in amino acid chains of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              * @param lib_files The list of paths to the library files
+              * @param gaps The list of missing residues
+              */
             void UpdateGapsInAminoAcidChains(std::string pdb_file_path, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps);
 
+            /*! \fn
+              * A function in order to access to the library residue by name from multiple library files
+              * @param residue_name The name of a residue
+              * @param lib_files The list of paths to the library files
+              * @return library_residue
+              */
             LibraryFileSpace::LibraryFileResidue* GetLibraryResidueByNameFromMultipleLibraryFiles(std::string residue_name, std::vector<std::string> lib_files);
 
             //////////////////////////////////////////////////////////
