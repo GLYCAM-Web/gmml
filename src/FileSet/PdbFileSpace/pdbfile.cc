@@ -786,7 +786,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
     models_->SetModels(models);
 }
 
-void PdbFile::InsertResidueAtBeginning(PdbAtomCard residue)
+void PdbFile::InsertResidueAtBeginning(PdbAtomCard* residue)
 {
     PdbModelCard::PdbModelMap models = models_->GetModels();
     PdbModelCard::PdbModelMap updated_models;
@@ -821,7 +821,7 @@ void PdbFile::InsertResidueAtBeginning(PdbAtomCard residue)
                 {
                     if(located)
                     {
-                        PdbAtomCard::PdbAtomMap atoms_of_residue = residue.GetAtoms();
+                        PdbAtomCard::PdbAtomMap atoms_of_residue = residue->GetAtoms();
                         for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
                         {
                             PdbAtom* atom_of_residue = (*it3).second;
@@ -901,7 +901,7 @@ void PdbFile::InsertResidueAtBeginning(PdbAtomCard residue)
     models_->SetModels(updated_models);
 }
 
-void PdbFile::InsertResidueAtEnd(PdbAtomCard residue)
+void PdbFile::InsertResidueAtEnd(PdbAtomCard* residue)
 {
     PdbModelCard::PdbModelMap models = models_->GetModels();
     PdbModelCard::PdbModelMap updated_models;
@@ -952,7 +952,7 @@ void PdbFile::InsertResidueAtEnd(PdbAtomCard residue)
                 {
                     if(located)
                     {
-                        PdbAtomCard::PdbAtomMap atoms_of_residue = residue.GetAtoms();
+                        PdbAtomCard::PdbAtomMap atoms_of_residue = residue->GetAtoms();
                         for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
                         {
                             PdbAtom* atom_of_residue = (*it3).second;

@@ -64,7 +64,7 @@ string PdbPreprocessorMissingResidue::GetStringFormatOfSelectedNTermination()
     switch (selected_n_termination_)
     {
         case 1:
-            return "COCH3";
+            return "ACE";
         case 2:
             return "NH3+";
     }
@@ -75,9 +75,9 @@ string PdbPreprocessorMissingResidue::GetStringFormatOfSelectedCTermination()
     switch(selected_c_termination_)
     {
         case 1:
-            return "NH2";
+            return "NHE";
         case 2:
-            return "NHCH3";
+            return "NME";
         case 3:
             return "CO2-";
     }
@@ -88,7 +88,7 @@ string PdbPreprocessorMissingResidue::GetStringFormatOfNTermination(PossibleNCha
     switch (n_termination)
     {
         case 1:
-            return "COCH3";
+            return "ACE";
         case 2:
             return "NH3+";
     }
@@ -99,9 +99,9 @@ string PdbPreprocessorMissingResidue::GetStringFormatOfCTermination(PossibleCCha
     switch(c_termination)
     {
         case 1:
-            return "NH2";
+            return "NHE";
         case 2:
-            return "NHCH3";
+            return "NME";
         case 3:
             return "CO2-";
     }
