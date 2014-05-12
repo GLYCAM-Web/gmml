@@ -98,8 +98,8 @@ namespace PdbFileSpace
 
             void DeleteResidue(PdbResidue* residue);
             void DeleteAtom(PdbAtom* atom);
-            void InsertResidueAtBeginning(PdbAtomCard* residue);
-            void InsertResidueAtEnd(PdbAtomCard* residue);
+            void InsertResidueBefore(PdbAtomCard* residue);
+            void InsertResidueAfter(PdbAtomCard* residue);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
