@@ -860,7 +860,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(string pdb_file_path, vector<string>
                     serial_number++;
                 }
                 pdb_atom_card->SetAtoms(atom_map);
-                pdb_file->InsertResidueAtEnd(pdb_atom_card);
+                pdb_file->InsertResidueAfter(pdb_atom_card);
             }
         }
         else
@@ -888,7 +888,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(string pdb_file_path, vector<string>
                     serial_number++;
                 }
                 pdb_atom_card->SetAtoms(atom_map);
-                pdb_file->InsertResidueAtBeginning(pdb_atom_card);
+                pdb_file->InsertResidueBefore(pdb_atom_card);
             }
             else
             {
@@ -912,7 +912,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(string pdb_file_path, vector<string>
                     serial_number++;
                 }
                 pdb_atom_card->SetAtoms(atom_map);
-                pdb_file->InsertResidueAtBeginning(pdb_atom_card);
+                pdb_file->InsertResidueBefore(pdb_atom_card);
                 // Add c terminal residue at the end of the chain
                 PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
                 string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
@@ -933,7 +933,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(string pdb_file_path, vector<string>
                     serial_number++;
                 }
                 pdb_atom_card_for_c_termination->SetAtoms(atom_map_for_c_termination);
-                pdb_file->InsertResidueAtEnd(pdb_atom_card_for_c_termination);
+                pdb_file->InsertResidueAfter(pdb_atom_card_for_c_termination);
             }
         }
     }

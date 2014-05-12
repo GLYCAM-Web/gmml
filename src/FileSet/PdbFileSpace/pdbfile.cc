@@ -786,7 +786,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
     models_->SetModels(models);
 }
 
-void PdbFile::InsertResidueAtBeginning(PdbAtomCard* residue)
+void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
 {
     PdbModelCard::PdbModelMap models = models_->GetModels();
     PdbModelCard::PdbModelMap updated_models;
@@ -901,7 +901,7 @@ void PdbFile::InsertResidueAtBeginning(PdbAtomCard* residue)
     models_->SetModels(updated_models);
 }
 
-void PdbFile::InsertResidueAtEnd(PdbAtomCard* residue)
+void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
 {
     PdbModelCard::PdbModelMap models = models_->GetModels();
     PdbModelCard::PdbModelMap updated_models;
