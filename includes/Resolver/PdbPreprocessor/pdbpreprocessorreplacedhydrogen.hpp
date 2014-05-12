@@ -16,7 +16,7 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorReplacedHydrogen();
-            PdbPreprocessorReplacedHydrogen(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number);
+            PdbPreprocessorReplacedHydrogen(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -41,7 +41,16 @@ namespace PdbPreprocessorSpace
               * @return residue_sequence_number_ attribute of the current object of this class
               */
             int GetResidueSequenceNumber();
+            /*! \fn
+              * An accessor function in order to access to the residue chain id
+              * @return residue_chain_id_ attribute of the current object of this class
+              */
             char GetResidueChainId();
+            /*! \fn
+              * An accessor function in order to access to the residue insertion code
+              * @return residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetResidueInsertionCode();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -70,7 +79,18 @@ namespace PdbPreprocessorSpace
               * @param residue_sequence_number The residue sequence number attribute of the current object
               */
             void SetResidueSequenceNumber(int residue_sequence_number);
+            /*! \fn
+              * A mutator function in order to set the residue chain id of the current object
+              * Set the residue_chain_id_ attribute of the current pdb preprocessor replaced hydrogen
+              * @param residue_chain_id The residue chain id attribute of the current object
+              */
             void SetResidueChainId(char residue_chain_id);
+            /*! \fn
+              * A mutator function in order to set the residue insertion code of the current object
+              * Set the residue_insertion_code_ attribute of the current pdb preprocessor replaced hydrogen
+              * @param residue_insertion_code The residue insertion code attribute of the current object
+              */
+            void SetResidueInsertionCode(char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -91,6 +111,7 @@ namespace PdbPreprocessorSpace
             std::string residue_name_;
             int residue_sequence_number_;
             char residue_chain_id_;
+            char residue_insertion_code_;
 
     };
 }

@@ -17,7 +17,7 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorUnrecognizedResidue();
 
-            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number);
+            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -37,6 +37,11 @@ namespace PdbPreprocessorSpace
               * @return residue_name_ attribute of the current object of this class
               */
             std::string GetResidueName();
+            /*! \fn
+              * An accessor function in order to access to the residue insertion code
+              * @return residue_insertion_code_ attribute of the current object of this class
+              */
+            char GetResidueInsertionCode();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -59,6 +64,12 @@ namespace PdbPreprocessorSpace
               * @param residue_name The residue name attribute of the current object
               */
             void SetResidueName(std::string residue_name);
+            /*! \fn
+              * A mutator function in order to set the residue insertion code of the current object
+              * Set the residue_insertion_code_ attribute of the current pdb preprocessor unrecognized residue
+              * @param residue_insertion_code The residue insertion code attribute of the current object
+              */
+            void SetResidueInsertionCode(char residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -77,6 +88,7 @@ namespace PdbPreprocessorSpace
             char residue_chain_id_;
             int residue_sequence_number_;
             std::string residue_name_;
+            char residue_insertion_code_;
 
     };
 }

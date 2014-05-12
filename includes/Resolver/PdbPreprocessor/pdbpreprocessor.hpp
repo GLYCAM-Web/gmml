@@ -8,6 +8,7 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
+#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 
 namespace PdbPreprocessorSpace
 {
@@ -33,6 +34,7 @@ namespace PdbPreprocessorSpace
             typedef std::vector<PdbPreprocessorUnrecognizedHeavyAtom*> PdbPreprocessorUnrecognizedHeavyAtomVector;
             typedef std::vector<PdbPreprocessorReplacedHydrogen*> PdbPreprocessorReplacedHydrogenVector;
             typedef std::map<char, std::vector<int> > PdbPreprocessorChainIdSequenceNumbersMap;
+            typedef std::map<char, std::vector<char> > PdbPreprocessorChainIdInsertionCodeMap;
 
 
             //////////////////////////////////////////////////////////
@@ -275,6 +277,7 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractCYSResidues(std::string pdb_file_path);
+            void UpdateCYSResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds);
 
             /*! \fn
               * A function in order to access to the list of HIS residues
@@ -367,6 +370,8 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractGapsInAminoAcidChains(std::string pdb_file_path);
+
+            LibraryFileSpace::LibraryFileResidue* GetLibraryResidueByNameFromMultipleLibraryFiles(std::string residue_name, std::vector<std::string> lib_files);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

@@ -9,8 +9,8 @@ using namespace PdbPreprocessorSpace;
 //////////////////////////////////////////////////////////
 PdbPreprocessorUnrecognizedHeavyAtom::PdbPreprocessorUnrecognizedHeavyAtom() {}
 
-PdbPreprocessorUnrecognizedHeavyAtom::PdbPreprocessorUnrecognizedHeavyAtom(char residue_chain_id, int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number) :
-    residue_chain_id_(residue_chain_id), atom_serial_number_(atom_serial_number), atom_name_(atom_name), residue_name_(residue_name), residue_sequence_number_(residue_sequence_number) {}
+PdbPreprocessorUnrecognizedHeavyAtom::PdbPreprocessorUnrecognizedHeavyAtom(char residue_chain_id, int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number, char residue_insertion_code) :
+    residue_chain_id_(residue_chain_id), atom_serial_number_(atom_serial_number), atom_name_(atom_name), residue_name_(residue_name), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -34,6 +34,10 @@ string PdbPreprocessorUnrecognizedHeavyAtom::GetResidueName()
 int PdbPreprocessorUnrecognizedHeavyAtom::GetResidueSequenceNumber()
 {
     return residue_sequence_number_;
+}
+char PdbPreprocessorUnrecognizedHeavyAtom::GetResidueInsertionCode()
+{
+    return residue_insertion_code_;
 }
 
 //////////////////////////////////////////////////////////
@@ -59,6 +63,10 @@ void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueSequenceNumber(int residue_
 {
     residue_sequence_number_ = residue_sequence_number;
 }
+void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueInsertionCode(char residue_insertion_code)
+{
+    residue_insertion_code_ = residue_insertion_code;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -70,6 +78,7 @@ void PdbPreprocessorUnrecognizedHeavyAtom::Print(ostream &out)
          << ", Chain id: " << residue_chain_id_
          << ", Residue name: " << residue_name_
          << ", Sequence number: " << residue_sequence_number_
+            << ", Insertion code: " << residue_insertion_code_
          << endl;
 }
 
