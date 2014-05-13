@@ -32,7 +32,6 @@ namespace ParameterFileSpace
                                   double scee = gmml::dNotSet, double scnb = gmml::dNotSet,
                                   bool is_generic = false, bool is_improper = false);
 
-///Delaram
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -118,7 +117,6 @@ namespace ParameterFileSpace
               */
             void SetIsImproper(bool is_improper);
 
-///Delaram
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

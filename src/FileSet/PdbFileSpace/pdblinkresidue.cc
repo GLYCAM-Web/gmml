@@ -10,13 +10,13 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbLinkResidue::PdbLinkResidue() : atom_name_(""), alternate_location_indicator_(' '), residue_name_(""), residue_chain_identifier_(' '),
+PdbLinkResidue::PdbLinkResidue() : atom_name_(""), alternate_location_indicator_(' '), residue_name_(""), residue_chain_id_(' '),
     residue_sequence_number_(dNotSet), residue_insertion_code_(' '), symmetry_operator_(dNotSet) {}
 
 PdbLinkResidue::PdbLinkResidue(const string &atom_name, char alternate_location_indicator, const string &residue_name,
-                               char residue_chain_identifier, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
+                               char residue_chain_id, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
     : atom_name_(atom_name), alternate_location_indicator_(alternate_location_indicator), residue_name_(residue_name),
-      residue_chain_identifier_(residue_chain_identifier), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code),
+      residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code),
       symmetry_operator_(symmetry_operator) {}
 
 //////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ string PdbLinkResidue::GetResidueName()
 
 char PdbLinkResidue::GetResidueChainId()
 {
-    return residue_chain_identifier_;
+    return residue_chain_id_;
 }
 
 int PdbLinkResidue::GetResidueSequenceNumber()
@@ -75,9 +75,9 @@ void PdbLinkResidue::SetResidueName(const string residue_name)
     residue_name_ = residue_name;
 }
 
-void PdbLinkResidue::SetResidueChainId(char residue_chain_identifier)
+void PdbLinkResidue::SetResidueChainId(char residue_chain_id)
 {
-    residue_chain_identifier_ = residue_chain_identifier;
+    residue_chain_id_ = residue_chain_id;
 }
 
 void PdbLinkResidue::SetResidueSequenceNumber(int residue_sequence_number)
@@ -107,7 +107,7 @@ void PdbLinkResidue::Print(ostream &out)
     out << "Atom Name: " << atom_name_
         << ", Alterante Location Identifier: " << alternate_location_indicator_
         << ", Residue Name: " << residue_name_
-        << ", Residue Chain Identifier: " << residue_chain_identifier_
+        << ", Residue Chain Identifier: " << residue_chain_id_
         << ", Residue Sequence Number: ";
     if(residue_sequence_number_ != iNotSet)
         out << residue_sequence_number_;

@@ -70,6 +70,11 @@ namespace LibraryFileSpace
               * @return A new LibraryFileAtom instance created by the information of the given line
               */
             LibraryFileAtom* ProcessAtom(std::string& line);
+            /*! \fn
+              * A function in order to access to library file residue by a residue name
+              * @param residue_name The name of the residue
+              * @return library_file_residue
+              */
             LibraryFileResidue* GetLibraryResidueByResidueName(std::string residue_name);
 
             //////////////////////////////////////////////////////////

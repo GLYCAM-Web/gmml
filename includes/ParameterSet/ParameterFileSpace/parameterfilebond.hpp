@@ -35,7 +35,7 @@ namespace ParameterFileSpace
               */
             ParameterFileBond(const std::vector<std::string>& types, double force_constant, double length, const std::vector<double>& hbond_coefficients,
                               const std::string& dscr = "");
-///Delaram
+
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -101,7 +101,6 @@ namespace ParameterFileSpace
               */
             void SetHbondCoefficients(std::vector<double> hbond_coefficients);
 
-///Delaram
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

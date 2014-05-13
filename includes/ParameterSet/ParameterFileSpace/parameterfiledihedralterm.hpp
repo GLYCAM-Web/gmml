@@ -26,7 +26,6 @@ namespace ParameterFileSpace
               */
             ParameterFileDihedralTerm(double factor, double force_constant, double phase, double periodicity, const std::string& dscr = "");
 
-///Delaram
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -93,7 +92,6 @@ namespace ParameterFileSpace
               * @param dscr The dscr attribute of the current object
               */
             void SetDscr( std::string dscr);
-///Delaram
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

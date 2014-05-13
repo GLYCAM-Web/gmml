@@ -52,7 +52,7 @@ namespace ParameterFileSpace
             ParameterFileAtom(const std::string& type, double mass, double polarizability, double radius,
                               double well_depth, const std::vector<std::string>& equivalent_list,
                               const std::string& dscr = "", const std::string& mod4_dscr = "", bool is_hydrophilic = false);
-///Delaram
+
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -164,7 +164,7 @@ namespace ParameterFileSpace
               * @param equivalent_list A list of equivalent_list of atoms of the current object
               */
             void SetEquivalentList( std::vector<std::string> equivalent_list);
-///Delaram
+
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
