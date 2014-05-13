@@ -46,8 +46,21 @@ namespace PdbPreprocessorSpace
               */
             char GetResidueInsertionCode();
 
+            /*! \fn
+              * An accessor function in order to access to the string format of selected mapping
+              * @return
+              */
             std::string GetStringFormatOfSelectedMapping();
+            /*! \fn
+              * An accessor function in order to access to the string format of a selected mapping
+              * @param mapping The histidine mapping of the current object
+              * @return
+              */
             std::string GetStringFormatOfMapping(gmml::PdbPreprocessorHISMapping mapping);
+            /*! \fn
+              * An accessor function in order to access to all HIS mappings as string
+              * @return all_his_mapping_as_string
+              */
             std::vector<std::string> GetAllHISMappingAsString();
 
             //////////////////////////////////////////////////////////

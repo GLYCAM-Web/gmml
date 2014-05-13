@@ -62,13 +62,39 @@ namespace PdbPreprocessorSpace
               */
             char GetEndingResidueInsertionCode();
 
+            /*! \fn
+              * An accessor function in order to access to the string format of selected N termination
+              * @return
+              */
             std::string GetStringFormatOfSelectedNTermination();
+            /*! \fn
+              * An accessor function in order to access to the string format of selected C termination
+              * @return
+              */
             std::string GetStringFormatOfSelectedCTermination();
 
+            /*! \fn
+              * An accessor function in order to access to the string format of a N termination
+              * @param n_termination The N termination of the current object
+              * @return
+              */
             std::string GetStringFormatOfNTermination(gmml::PossibleNChainTermination n_termination);
+            /*! \fn
+              * An accessor function in order to access to the string format of a C termination
+              * @param c_termination The C termination of the current object
+              * @return
+              */
             std::string GetStringFormatOfCTermination(gmml::PossibleCChainTermination c_termination);
 
+            /*! \fn
+              * An accessor function in order to access to all possible N terminations as string
+              * @return all_possible_n_chian_termination_as_string
+              */
             std::vector<std::string> GetAllPossibleNChainTerminationAsString();
+            /*! \fn
+              * An accessor function in order to access to all possible C terminations as string
+              * @return all_possible_c_chian_termination_as_string
+              */
             std::vector<std::string> GetAllPossibleCChainTerminationAsString();
 
             //////////////////////////////////////////////////////////
