@@ -100,6 +100,7 @@ namespace PdbFileSpace
             void DeleteAtom(PdbAtom* atom);
             void InsertResidueBefore(PdbAtomCard* residue);
             void InsertResidueAfter(PdbAtomCard* residue);
+            void SplitAtomCardOfModelCard(char split_point_chain_id, int split_point_sequence_number);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
