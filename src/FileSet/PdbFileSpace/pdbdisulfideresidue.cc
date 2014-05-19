@@ -10,10 +10,10 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbDisulfideResidue::PdbDisulfideResidue() : residue_name_(""), residue_chain_identifier_(' '), residue_sequence_number_(dNotSet), residue_insertion_code_(' '), symmetry_operator_(dNotSet) {}
+PdbDisulfideResidue::PdbDisulfideResidue() : residue_name_(""), residue_chain_id_(' '), residue_sequence_number_(dNotSet), residue_insertion_code_(' '), symmetry_operator_(dNotSet) {}
 
-PdbDisulfideResidue::PdbDisulfideResidue(const string &residue_name, char residue_chain_identifier, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
-    : residue_name_(residue_name), residue_chain_identifier_(residue_chain_identifier), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code),
+PdbDisulfideResidue::PdbDisulfideResidue(const string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
+    : residue_name_(residue_name), residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code),
       symmetry_operator_(symmetry_operator) {}
 
 //////////////////////////////////////////////////////////
@@ -26,7 +26,7 @@ string PdbDisulfideResidue::GetResidueName()
 
 char PdbDisulfideResidue::GetResidueChainId()
 {
-    return residue_chain_identifier_;
+    return residue_chain_id_;
 }
 
 char PdbDisulfideResidue::GetResidueInsertionCode()
@@ -52,9 +52,9 @@ void PdbDisulfideResidue::SetResidueName(const string residue_name)
     residue_name_ = residue_name;
 }
 
-void PdbDisulfideResidue::SetResidueChainId(char residue_chain_identifier)
+void PdbDisulfideResidue::SetResidueChainId(char residue_chain_id)
 {
-    residue_chain_identifier_ = residue_chain_identifier;
+    residue_chain_id_ = residue_chain_id;
 }
 
 void PdbDisulfideResidue::SetResidueInsertionCode(char residue_insertion_code)
@@ -82,7 +82,7 @@ void PdbDisulfideResidue::SetSymmetryOperator(int symmetry_operator)
 void PdbDisulfideResidue::Print(ostream &out)
 {
     out << "Residue Name: " << residue_name_
-        << ", Residue Chain Identifier: " << residue_chain_identifier_
+        << ", Residue Chain Identifier: " << residue_chain_id_
         << ", Residue Insertion Code: " << residue_insertion_code_
         << ", Residue Sequence Number: ";
     if(residue_sequence_number_ != iNotSet)

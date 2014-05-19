@@ -25,7 +25,7 @@ namespace ParameterFileSpace
               * @param dscr A short description for each angle mentioned in a parameter file
               */
             ParameterFileAngle(const std::vector<std::string>& types, double force_constant, double angle, const std::string& dscr = "");
-///Delaram
+
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -80,7 +80,6 @@ namespace ParameterFileSpace
               */
             void SetDscr(const std::string dscr);
 
-///Delaram
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

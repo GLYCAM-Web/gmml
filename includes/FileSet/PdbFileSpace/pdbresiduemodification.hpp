@@ -23,13 +23,13 @@ namespace PdbFileSpace
               * Constructor with required parameters
               * @param id_code
               * @param residue_name
-              * @param chain_identifier
+              * @param chain_id
               * @param sequence_number
               * @param insertion_code
               * @param standard_residue_name
               * @param dscr
               */
-            PdbResidueModification(const std::string& id_code, const std::string& residue_name, char chain_identifier, int sequence_number,
+            PdbResidueModification(const std::string& id_code, const std::string& residue_name, char chain_id, int sequence_number,
                                    char insertion_code, const std::string& standard_residue_name, const std::string& dscr);
             PdbResidueModification(std::stringstream& stream_block);
             //////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ namespace PdbFileSpace
             std::string GetResidueName();
             /*! \fn
               * An accessor function in order to access to the chain identifier in a residue modification
-              * @return chain_identifier_ attribute of the current object of this class
+              * @return chain_id_ attribute of the current object of this class
               */
             char GetChainId();
             /*! \fn
@@ -88,10 +88,10 @@ namespace PdbFileSpace
             void SetResidueName(const std::string residue_name);
             /*! \fn
               * A mutator function in order to set the chain identifier of the current object
-              * Set the chain_identifier_ attribute of the current residue modification
-              * @param chain_identifier The chain identifier of the current object
+              * Set the chain_id_ attribute of the current residue modification
+              * @param chain_id The chain identifier of the current object
               */
-            void SetChainId(char chain_identifier);
+            void SetChainId(char chain_id);
             /*! \fn
               * A mutator function in order to set the sequence number of the current object
               * Set the sequence_number_ attribute of the current residue modification
@@ -132,7 +132,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             std::string id_code_;
             std::string residue_name_;
-            char chain_identifier_;
+            char chain_id_;
             int sequence_number_;
             char insertion_code_;
             std::string standard_residue_name_;

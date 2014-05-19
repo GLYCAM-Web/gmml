@@ -26,12 +26,12 @@ namespace PdbFileSpace
             /*! \fn
               * Constructor with required parameters
               * @param residue_name
-              * @param residue_chain_identifier
+              * @param residue_chain_id
               * @param residue_sequence_number
               * @param residue_insertion_code
               * @param symmetry_operator
               */
-            PdbDisulfideResidue(const std::string& residue_name, char residue_chain_identifier, int residue_sequence_number, char residue_insertion_code, int symmetry_operator);
+            PdbDisulfideResidue(const std::string& residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code, int symmetry_operator);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -42,8 +42,8 @@ namespace PdbFileSpace
               */
             std::string GetResidueName();
             /*! \fn
-              * An accessor function in order to access to the residue chain identifier in a disulfide residue
-              * @return residue_chain_identifier_ attribute of the current object of this class
+              * An accessor function in order to access to the residue chain id in a disulfide residue
+              * @return residue_chain_id_ attribute of the current object of this class
               */
             char GetResidueChainId();
             /*! \fn
@@ -72,11 +72,11 @@ namespace PdbFileSpace
               */
             void SetResidueName(const std::string residue_name);
             /*! \fn
-              * A mutator function in order to set the residue chain identifier of the current object
-              * Set the residue_chain_identifier_ attribute of the current disulfide residue
-              * @param residue_chain_identifier The residue chain identifier of the current object
+              * A mutator function in order to set the residue chain id of the current object
+              * Set the residue_chain_id_ attribute of the current disulfide residue
+              * @param residue_chain_id The residue chain id of the current object
               */
-            void SetResidueChainId(char residue_chain_identifier);
+            void SetResidueChainId(char residue_chain_id);
             /*! \fn
               * A mutator function in order to set the residue insertion code of the current object
               * Set the residue_insertion_code_ attribute of the current disulfide residue
@@ -115,7 +115,7 @@ namespace PdbFileSpace
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
             std::string residue_name_;
-            char residue_chain_identifier_;
+            char residue_chain_id_;
             int residue_sequence_number_;
             char residue_insertion_code_;
             int symmetry_operator_;
