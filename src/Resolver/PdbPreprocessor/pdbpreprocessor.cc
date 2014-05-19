@@ -426,8 +426,11 @@ void PdbPreprocessor::UpdateCYSResidues(PdbFile *pdb_file, PdbPreprocessorDisulf
                     string pdb_residue_key;
                     ss << residue_name << "_" << pdb_residue->GetResidueChainId() << "_" << pdb_residue->GetResidueSequenceNumber() << pdb_residue->GetResidueInsertionCode();
                     pdb_residue_key = ss.str();
-                    if(pdb_residue_key.compare(target_key2) == 0 || pdb_residue_key.compare(target_key2) == 0)
-                        pdb_residue->SetResidueName("CYX");
+                    if(pdb_residue_key.compare(target_key1) == 0 || pdb_residue_key.compare(target_key2) == 0)
+                    {
+//                        pdb_residue->SetResidueName("CYX");
+                        pdb_file->UpdateResisueName(pdb_residue, "CYX");
+                    }
                 }
             }
 
@@ -489,7 +492,10 @@ void PdbPreprocessor::UpdateHISMapping(PdbFile *pdb_file, PdbPreprocessor::PdbPr
                     << "_" << pdb_residue->GetResidueInsertionCode();
                 pdb_residue_key = ss1.str();
                 if(pdb_residue_key.compare(target_key) == 0)
-                    pdb_residue->SetResidueName(histidine_mapping->GetStringFormatOfSelectedMapping());
+                {
+//                    pdb_residue->SetResidueName(histidine_mapping->GetStringFormatOfSelectedMapping());
+                    pdb_file->UpdateResisueName(pdb_residue, histidine_mapping->GetStringFormatOfSelectedMapping());
+                }
             }
         }
     }

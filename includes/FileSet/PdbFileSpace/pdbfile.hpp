@@ -96,8 +96,9 @@ namespace PdbFileSpace
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
 
-            void DeleteResidue(PdbResidue* residue);
+            void DeleteResidue(PdbResidue* residue);            
             void DeleteAtom(PdbAtom* atom);
+            void UpdateResisueName(PdbResidue* residue, std::string residue_name);
             void InsertResidueBefore(PdbAtomCard* residue);
             void InsertResidueAfter(PdbAtomCard* residue);
             void SplitAtomCardOfModelCard(char split_point_chain_id, int split_point_sequence_number);
