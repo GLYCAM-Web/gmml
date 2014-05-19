@@ -94,8 +94,8 @@ void PdbPreprocessorDisulfideBond::Print(ostream &out)
          << ", Chain id: " << residue_chain_id_2_
          << ", Sequence number: " << residue_sequence_number_2_
          << ", Distance: " << distance_
-            << ", Insertion code: " << residue_insertion_code_1_
-               << ", Insertion code: " << residue_insertion_code_2_
+         << ", Insertion code: " << residue_insertion_code_1_
+         << ", Insertion code: " << residue_insertion_code_2_
          << endl;
 }
 
