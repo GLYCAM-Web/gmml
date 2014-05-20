@@ -89,7 +89,7 @@ void PdbPreprocessorDisulfideBond::SetResidueInsertionCode2(char residue_inserti
 //////////////////////////////////////////////////////////
 void PdbPreprocessorDisulfideBond::Print(ostream &out)
 {
-    cout << "Chain id: " << residue_chain_id_1_
+    out << "Chain id: " << residue_chain_id_1_
          << ", Sequence number: " << residue_sequence_number_1_
          << ", Chain id: " << residue_chain_id_2_
          << ", Sequence number: " << residue_sequence_number_2_

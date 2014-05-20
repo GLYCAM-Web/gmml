@@ -51,6 +51,10 @@ void PdbResidue::SetResidueInsertionCode(char residue_insertion_code)
 {
     residue_insertion_code_ = residue_insertion_code;
 }
+void PdbResidue::SetResidueAlternateLocation(char residue_alternate_location)
+{
+    residue_alternate_location_ = residue_alternate_location;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -60,7 +64,8 @@ void PdbResidue::Print(ostream &out)
     cout << "Residue name: " << residue_name_
          << ", Chain id: " << residue_chain_id_
          << ", Sequence number: " << residue_sequence_number_
-         << ", Insertion code: " << residue_insertion_code_ << endl;
+         << ", Insertion code: " << residue_insertion_code_
+         << ", Alternate location: " << residue_alternate_location_ << endl;
 }
 
 

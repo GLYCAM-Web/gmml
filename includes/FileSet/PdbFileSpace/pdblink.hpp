@@ -53,6 +53,12 @@ namespace PdbFileSpace
               */
             void SetResidues(const LinkResidueVector residues);
             /*! \fn
+              * A function in order to add residue to the current object
+              * Set the residues_ attribute of the current link card
+              * @param residue The residue of the current object
+              */
+            void AddResidue(PdbLinkResidue* residue);
+            /*! \fn
               * A mutator function in order to set the link length of the current object
               * Set the link_length_ attribute of the current link card
               * @param link_length The link length of the current object

@@ -77,6 +77,11 @@ void PdbSite::SetResidues(SiteResidueVector residues){
     }
 }
 
+void PdbSite::AddResidue(PdbSiteResidue *residue)
+{
+    residues_.push_back(residue);
+}
+
 void PdbSite::SetNumberOfResidues(int number_of_residues){
     number_of_residues_ = number_of_residues;
 }

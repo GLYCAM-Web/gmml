@@ -161,7 +161,7 @@ namespace PdbFileSpace
             void ResolveObsoleteCard(std::ofstream& stream);
             void ResolveTitleCard(std::ofstream& stream);
             void ResolveSplitCard(std::ofstream& stream);
-            void CaveatCard(std::ofstream& stream);
+            void ResolveCaveatCard(std::ofstream& stream);
             void ResolveCompoundCard(std::ofstream& stream);
             void ResolveSourceCard(std::ofstream& stream);
             void ResolveKeywordCard(std::ofstream& stream);

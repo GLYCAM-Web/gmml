@@ -89,10 +89,10 @@ void PdbPreprocessorHistidineMapping::SetResidueInsertionCode(char residue_inser
 //////////////////////////////////////////////////////////
 void PdbPreprocessorHistidineMapping::Print(ostream &out)
 {
-    cout << "Chain id: " << residue_chain_id_
+    out << "Chain id: " << residue_chain_id_
          << ", Sequence_number: " << residue_sequence_number_
          << ", Selected mapping: " << GetStringFormatOfSelectedMapping()
-         << ", insertion code: " << residue_insertion_code_
+         << ", Insertion code: " << GetResidueInsertionCode()
          << endl;
 }
 
