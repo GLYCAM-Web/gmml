@@ -503,8 +503,12 @@ LibraryFileAtom* LibraryFile::ProcessAtom(string &line)
 
 LibraryFileResidue* LibraryFile::GetLibraryResidueByResidueName(string residue_name)
 {
-    ResidueMap residue_map = GetResidues();
-    LibraryFileResidue* library_file_residue = residue_map[residue_name];
+    ResidueMap residue_map = this->GetResidues();
+    LibraryFileResidue* library_file_residue = new LibraryFileResidue();
+    if(distance(residue_map.begin(), residue_map.find(residue_name)) >= 0)
+        library_file_residue = residue_map[residue_name];
+    else
+        library_file_residue = NULL;
     return library_file_residue;
 }
 
@@ -515,13 +519,13 @@ void LibraryFile::Print(std::ostream& out)
 {
     for(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-//        for(unsigned int i = 0; i < it -> second -> GetAtoms().size(); i++)
-//        {
-//            for(unsigned int j = 0; j < it->second->GetAtomByIndex(i+1)->GetBondedAtomsIndicies().size(); j++)
-//                cout << it -> second -> GetAtomByIndex(i+1)->GetBondedAtomsIndicies()[j] << ", ";
-//            cout << endl;
-//        }
-//        cout << endl;
+        //        for(unsigned int i = 0; i < it -> second -> GetAtoms().size(); i++)
+        //        {
+        //            for(unsigned int j = 0; j < it->second->GetAtomByIndex(i+1)->GetBondedAtomsIndicies().size(); j++)
+        //                cout << it -> second -> GetAtomByIndex(i+1)->GetBondedAtomsIndicies()[j] << ", ";
+        //            cout << endl;
+        //        }
+        //        cout << endl;
         it->second->Print(out);
     }
 }
