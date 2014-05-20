@@ -151,7 +151,7 @@ void PdbPreprocessorChainTermination::SetEndingResidueInsertionCode(char ending_
 //////////////////////////////////////////////////////////
 void PdbPreprocessorChainTermination::Print(ostream &out)
 {
-    cout << "Chain id " << residue_chain_id_
+    out << "Chain id " << residue_chain_id_
          << ", Start sequence number: " << starting_residue_sequence_number_
          << ", End sequence number: " << ending_residue_sequence_number_
          << ", Start insertion code: " << starting_residue_insertion_code_

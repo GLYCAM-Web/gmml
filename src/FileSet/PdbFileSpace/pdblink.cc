@@ -97,6 +97,11 @@ void PdbLink::SetResidues(const LinkResidueVector residues){
     residues_ = residues;
 }
 
+void PdbLink::AddResidue(PdbLinkResidue *residue)
+{
+    residues_.push_back(residue);
+}
+
 void PdbLink::SetLinkLength(double link_length){
     link_length_ = link_length;
 }

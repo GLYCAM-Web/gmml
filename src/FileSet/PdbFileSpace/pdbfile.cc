@@ -359,12 +359,13 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream ss;
-                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = ss.str();
                 if(!inserted_residues[key])
                 {
-                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code);
+                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_location);
                     residues.push_back(res);
                     inserted_residues[key] = true;
                 }
@@ -382,12 +383,13 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream ss;
-                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = ss.str();
                 if(!inserted_residues[key])
                 {
-                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code);
+                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_location);
                     residues.push_back(res);
                     inserted_residues[key] = true;
                 }
@@ -418,12 +420,13 @@ PdbFile::PdbResidueVector PdbFile::GetAllResiduesFromAtomCard()
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream ss;
-                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = ss.str();
                 if(!inserted_residues[key])
                 {
-                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code);
+                    PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_location);
                     residues.push_back(res);
                     inserted_residues[key] = true;
                 }
@@ -439,8 +442,9 @@ PdbFile::PdbAtomVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
+    char target_residue_alternate_location = residue->GetResidueAlternateLocation();
     stringstream ss;
-    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code;
+    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
     string target_key = ss.str();
 
     PdbAtomVector atoms_of_residue;
@@ -461,8 +465,9 @@ PdbFile::PdbAtomVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream sss;
-                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = sss.str();
                 if(target_key.compare(key) == 0)
                 {
@@ -482,8 +487,9 @@ PdbFile::PdbAtomVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream sss;
-                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = sss.str();
                 if(target_key.compare(key) == 0)
                 {
@@ -516,8 +522,9 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream ss;
-                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = ss.str();
                 if(!inserted_residues[key])
                 {
@@ -540,8 +547,9 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream ss;
-                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = ss.str();
                 if(!inserted_residues[key])
                 {
@@ -561,8 +569,9 @@ PdbFileSpace::PdbAtom* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, stri
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
+    char target_residue_alternate_location = residue->GetResidueAlternateLocation();
     stringstream ss;
-    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code;
+    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
     string target_key = ss.str();
     PdbAtomVector* atoms = residue_atom_map[target_key];
 
@@ -594,8 +603,9 @@ vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue, PdbFile::P
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
+    char target_residue_alternate_location = residue->GetResidueAlternateLocation();
     stringstream ss;
-    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code;
+    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
     string target_key = ss.str();
     PdbAtomVector* atoms = residue_atom_map[target_key];
 
@@ -630,8 +640,9 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
+    char target_residue_alternate_location = residue->GetResidueAlternateLocation();
     stringstream ss;
-    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code;
+    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
     string target_key = ss.str();
 
     PdbModelCard::PdbModelMap models = models_->GetModels();
@@ -654,8 +665,9 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream sss;
-                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
@@ -680,8 +692,9 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream sss;
-                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
@@ -705,8 +718,9 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
     char target_residue_chain_id = target_atom->GetAtomChainId();
     int target_residue_sequence_number = target_atom->GetAtomResidueSequenceNumber();
     char target_residue_insertion_code = target_atom->GetAtomInsertionCode();
+    char target_residue_alternate_location = target_atom->GetAtomAlternateLocation();
     stringstream ss;
-    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code;
+    ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
     string target_key = ss.str();
 
     PdbModelCard::PdbModelMap models = models_->GetModels();
@@ -729,8 +743,9 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream sss;
-                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
@@ -761,8 +776,9 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream sss;
-                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+                sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code; << "_" << alternate_location;
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
@@ -2268,7 +2284,7 @@ void PdbFile::ResolveSplitCard(std::ofstream& stream)
 
 }
 
-void PdbFile::CaveatCard(std::ofstream& stream)
+void PdbFile::ResolveCaveatCard(std::ofstream& stream)
 {
 
 }

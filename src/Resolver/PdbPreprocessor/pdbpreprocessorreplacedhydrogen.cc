@@ -73,7 +73,7 @@ void PdbPreprocessorReplacedHydrogen::SetResidueInsertionCode(char residue_inser
 //////////////////////////////////////////////////////////
 void PdbPreprocessorReplacedHydrogen::Print(ostream &out)
 {
-    cout << "Atom name: " << atom_name_
+    out << "Atom name: " << atom_name_
          << ", Serial number: " << atom_serial_number_
          << ", Residue name: " << residue_name_
          << ", Sequence number: " << residue_sequence_number_

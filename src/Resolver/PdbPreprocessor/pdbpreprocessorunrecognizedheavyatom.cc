@@ -73,7 +73,7 @@ void PdbPreprocessorUnrecognizedHeavyAtom::SetResidueInsertionCode(char residue_
 //////////////////////////////////////////////////////////
 void PdbPreprocessorUnrecognizedHeavyAtom::Print(ostream &out)
 {
-    cout << "Atom name: " << atom_name_
+    out << "Atom name: " << atom_name_
          << ", Serial number: " << atom_serial_number_
          << ", Chain id: " << residue_chain_id_
          << ", Residue name: " << residue_name_
