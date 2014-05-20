@@ -391,11 +391,11 @@ namespace PdbPreprocessorSpace
             void ExtractAminoAcidChains(std::string pdb_file_path);
             /*! \fn
               * A function in order to update the amino acid chains of a pdb file
-              * @param pdb_file_path The path to the pdb file
+              * @param pdb_file The object of a pdb file
               * @param lib_files The list of paths to the library files
               * @param gaps The list of chain terminations
               */
-            void UpdateAminoAcidChains(std::string pdb_file_path, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_termination);
+            void UpdateAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_termination);
 
             /*! \fn
               * A function in order to extract the gaps in amino acid chains of a pdb file
@@ -404,11 +404,11 @@ namespace PdbPreprocessorSpace
             void ExtractGapsInAminoAcidChains(std::string pdb_file_path);
             /*! \fn
               * A function in order to update the gaps in amino acid chains of a pdb file
-              * @param pdb_file_path The path to the pdb file
+              * @param pdb_file The object of a pdb file
               * @param lib_files The list of paths to the library files
               * @param gaps The list of missing residues
               */
-            void UpdateGapsInAminoAcidChains(std::string pdb_file_path, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps);
+            void UpdateGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps);
 
             /*! \fn
               * A function in order to access to the library residue by name from multiple library files
