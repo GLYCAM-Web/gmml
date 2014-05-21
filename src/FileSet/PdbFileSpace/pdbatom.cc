@@ -124,8 +124,9 @@ PdbAtom::PdbAtom(string &line)
     atom_charge_ = line.substr(78, 2);
     Trim(atom_charge_);
 }
-PdbAtom::PdbAtom(char residue_chain_id, string atom_name, string residue_name, int residue_sequence_number, char residue_insertion_code) :
-    atom_chain_id_(residue_chain_id), atom_name_(atom_name), atom_residue_name_(residue_name), atom_residue_sequence_number_(residue_sequence_number), atom_insertion_code_(residue_insertion_code) {}
+PdbAtom::PdbAtom(char residue_chain_id, string atom_name, string residue_name, int residue_sequence_number, char residue_insertion_code, char atom_alternate_location) :
+    atom_chain_id_(residue_chain_id), atom_name_(atom_name), atom_residue_name_(residue_name), atom_residue_sequence_number_(residue_sequence_number),
+    atom_insertion_code_(residue_insertion_code), atom_alternate_location_(atom_alternate_location) {}
 
 PdbAtom::PdbAtom(int atom_serial_number, string atom_name, char atom_alternate_location, string residue_name, char chain_id,
                  int residue_sequence_number, char insertion_code, Coordinate coordinate, double occupancy, double tempreture_factor,

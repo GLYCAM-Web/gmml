@@ -30,7 +30,7 @@ namespace PdbFileSpace
             PdbAtom(int atom_serial_number, std::string atom_name, char atom_alternate_location, std::string residue_name, char chain_id,
                     int residue_sequence_number, char insertion_code, Geometry::Coordinate coordinate, double occupancy, double tempreture_factor,
                     std::string element_symbol, std::string charge);
-            PdbAtom(char chain_id, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code);
+            PdbAtom(char chain_id, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code, char atom_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

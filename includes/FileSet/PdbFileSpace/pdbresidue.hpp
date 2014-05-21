@@ -17,7 +17,7 @@ namespace PdbFileSpace
               */
             PdbResidue();
 
-            PdbResidue(std::string residue_name, char chain_id, int sequence_number, char insertion_code = ' ');
+            PdbResidue(std::string residue_name, char chain_id, int sequence_number, char insertion_code = ' ', char residue_alternate_location = ' ');
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -42,6 +42,11 @@ namespace PdbFileSpace
               * @return residue_insertion_code_ attribute of the current object of this class
               */
             char GetResidueInsertionCode();
+            /*! \fn
+              * An accessor function in order to access to the residue alternate location
+              * @return residue_alternate_location_ attribute of the current object of this class
+              */
+            char GetResidueAlternateLocation();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -70,6 +75,12 @@ namespace PdbFileSpace
               * @param residue_insertion_code The residue insertion code attribute of the current object
               */
             void SetResidueInsertionCode(char residue_insertion_code);
+            /*! \fn
+              * A mutator function in order to set the residue alternate location of the current object
+              * Set the residue_alternate_location_ attribute of the current pdb residue
+              * @param residue_alternate_location The residue alternate location attribute of the current object
+              */
+            void SetResidueAlternateLocation(char residue_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -89,6 +100,7 @@ namespace PdbFileSpace
             std::string residue_name_;
             int residue_sequence_number_;
             char residue_insertion_code_;
+            char residue_alternate_location_;
 
     };
 }

@@ -9,8 +9,8 @@ using namespace PdbPreprocessorSpace;
 //////////////////////////////////////////////////////////
 PdbPreprocessorUnrecognizedResidue::PdbPreprocessorUnrecognizedResidue() {}
 
-PdbPreprocessorUnrecognizedResidue::PdbPreprocessorUnrecognizedResidue(string residue_name, char chain_id, int sequence_number, char residue_insertion_code) :
-    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(residue_insertion_code) {}
+PdbPreprocessorUnrecognizedResidue::PdbPreprocessorUnrecognizedResidue(string residue_name, char chain_id, int sequence_number, char residue_insertion_code, char residue_alternate_location) :
+    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(residue_insertion_code), residue_alternate_location_(residue_alternate_location) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -30,6 +30,10 @@ string PdbPreprocessorUnrecognizedResidue::GetResidueName()
 char PdbPreprocessorUnrecognizedResidue::GetResidueInsertionCode()
 {
     return residue_insertion_code_;
+}
+char PdbPreprocessorUnrecognizedResidue::GetResidueAlternateLocation()
+{
+    return residue_alternate_location_;
 }
 
 //////////////////////////////////////////////////////////
@@ -51,6 +55,10 @@ void PdbPreprocessorUnrecognizedResidue::SetResidueInsertionCode(char residue_in
 {
     residue_insertion_code_ = residue_insertion_code;
 }
+void PdbPreprocessorUnrecognizedResidue::SetResidueAlternateLocation(char residue_alternate_location)
+{
+    residue_alternate_location_ = residue_alternate_location;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -60,7 +68,8 @@ void PdbPreprocessorUnrecognizedResidue::Print(ostream &out)
     out << "Residue name: " << residue_name_
          << ", Chain id: " << residue_chain_id_
          << ", Sequence number: " << residue_sequence_number_
-            << ", Insertion code: " << residue_insertion_code_
+         << ", Insertion code: " << residue_insertion_code_
+         << ", Alternate location: " << residue_alternate_location_
          << endl;
 }
 

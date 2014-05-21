@@ -20,7 +20,7 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorHistidineMapping();
 
-            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, gmml::PdbPreprocessorHISMapping selected_mapping, char residue_insertion_code);
+            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, gmml::PdbPreprocessorHISMapping selected_mapping, char residue_insertion_code, char residue_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -45,6 +45,11 @@ namespace PdbPreprocessorSpace
               * @return residue_insertion_code_ attribute of the current object of this class
               */
             char GetResidueInsertionCode();
+            /*! \fn
+              * An accessor function in order to access to the residue alternate location
+              * @return residue_alternate_location_ attribute of the current object of this class
+              */
+            char GetResidueAlternateLocation();
 
             /*! \fn
               * An accessor function in order to access to the string format of selected mapping
@@ -86,10 +91,16 @@ namespace PdbPreprocessorSpace
             void SetSelectedMapping(gmml::PdbPreprocessorHISMapping selected_mapping);
             /*! \fn
               * A mutator function in order to set the insertion code of the current object
-              * Set the insertion_code_ attribute of the current pdb preprocessor histidine mapping
-              * @param insertion_code The insertion code attribute of the current object
+              * Set the residue_insertion_code_ attribute of the current pdb preprocessor histidine mapping
+              * @param insertion_code The residue insertion code attribute of the current object
               */
             void SetResidueInsertionCode(char residue_insertion_code);
+            /*! \fn
+              * A mutator function in order to set the residue alternate location of the current object
+              * Set the residue_alternate_location_ attribute of the current pdb preprocessor histidine mapping
+              * @param residue_alternate_location The residue alternate location attribute of the current object
+              */
+            void SetResidueAlternateLocation(char residue_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -109,6 +120,7 @@ namespace PdbPreprocessorSpace
             int residue_sequence_number_;
             gmml::PdbPreprocessorHISMapping selected_mapping_;
             char residue_insertion_code_;
+            char residue_alternate_location_;
 
     };
 }

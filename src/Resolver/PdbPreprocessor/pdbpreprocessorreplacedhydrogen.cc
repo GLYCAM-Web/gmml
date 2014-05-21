@@ -9,8 +9,10 @@ using namespace PdbPreprocessorSpace;
 //////////////////////////////////////////////////////////
 PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen() {}
 
-PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen(char residue_chain_id, int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number, char residue_insertion_code) :
-    atom_serial_number_(atom_serial_number), atom_name_(atom_name), residue_name_(residue_name), residue_sequence_number_(residue_sequence_number), residue_chain_id_(residue_chain_id), residue_insertion_code_(residue_insertion_code) {}
+PdbPreprocessorReplacedHydrogen::PdbPreprocessorReplacedHydrogen(char residue_chain_id, int atom_serial_number, string atom_name, string residue_name, int residue_sequence_number,
+                                                                 char residue_insertion_code, char residue_alternate_location) :
+    atom_serial_number_(atom_serial_number), atom_name_(atom_name), residue_name_(residue_name), residue_sequence_number_(residue_sequence_number), residue_chain_id_(residue_chain_id),
+    residue_insertion_code_(residue_insertion_code), residue_alternate_location_(residue_alternate_location) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -38,6 +40,10 @@ char PdbPreprocessorReplacedHydrogen::GetResidueChainId()
 char PdbPreprocessorReplacedHydrogen::GetResidueInsertionCode()
 {
     return residue_insertion_code_;
+}
+char PdbPreprocessorReplacedHydrogen::GetResidueAlternateLocation()
+{
+    return residue_alternate_location_;
 }
 
 //////////////////////////////////////////////////////////
@@ -67,6 +73,10 @@ void PdbPreprocessorReplacedHydrogen::SetResidueInsertionCode(char residue_inser
 {
     residue_insertion_code_ = residue_insertion_code;
 }
+void PdbPreprocessorReplacedHydrogen::SetResidueAlternateLocation(char residue_alternate_location)
+{
+    residue_alternate_location_ = residue_alternate_location;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -79,6 +89,7 @@ void PdbPreprocessorReplacedHydrogen::Print(ostream &out)
          << ", Sequence number: " << residue_sequence_number_
          << ", chain id: " << residue_chain_id_
          << ", insertion code: " << residue_insertion_code_
+         << ", Alternate location: " << residue_alternate_location_
          << endl;
 }
 

@@ -17,7 +17,7 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorUnrecognizedResidue();
 
-            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code);
+            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code,  char residue_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -42,6 +42,11 @@ namespace PdbPreprocessorSpace
               * @return residue_insertion_code_ attribute of the current object of this class
               */
             char GetResidueInsertionCode();
+            /*! \fn
+              * An accessor function in order to access to the residue alternate location
+              * @return residue_alternate_location_ attribute of the current object of this class
+              */
+            char GetResidueAlternateLocation();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -70,6 +75,12 @@ namespace PdbPreprocessorSpace
               * @param residue_insertion_code The residue insertion code attribute of the current object
               */
             void SetResidueInsertionCode(char residue_insertion_code);
+            /*! \fn
+              * A mutator function in order to set the residue alternate location of the current object
+              * Set the residue_alternate_location_ attribute of the current pdb preprocessor unrecognized residue
+              * @param residue_alternate_location The residue alternate location attribute of the current object
+              */
+            void SetResidueAlternateLocation(char residue_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -89,6 +100,7 @@ namespace PdbPreprocessorSpace
             int residue_sequence_number_;
             std::string residue_name_;
             char residue_insertion_code_;
+            char residue_alternate_location_;
 
     };
 }

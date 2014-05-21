@@ -17,7 +17,8 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorDisulfideBond();
 
-            PdbPreprocessorDisulfideBond(char chain_id_1, char chain_id_2, int residue_sequence_number_1, int residue_sequence_number_2, double distance, bool is_bonded, char residue_insertion_code_1, char residue_insertion_code_2);
+            PdbPreprocessorDisulfideBond(char chain_id_1, char chain_id_2, int residue_sequence_number_1, int residue_sequence_number_2, double distance, bool is_bonded,
+                                         char residue_insertion_code_1, char residue_insertion_code_2, char residue_alternate_location_1, char residue_alternate_location_2);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -62,6 +63,17 @@ namespace PdbPreprocessorSpace
               * @return residue_insertion_code_2_ attribute of the current object of this class
               */
             char GetResidueInsertionCode2();
+            /*! \fn
+              * An accessor function in order to access to the residue alternate location attribute of the first residue
+              * @return residue_alternate_location_1_ attribute of the current object of this class
+              */
+            char GetResidueAlternateLocation1();
+            /*! \fn
+              * An accessor function in order to access to the residue alternate location attribute of the second residue
+              * @return residue_alternate_location_2_ attribute of the current object of this class
+              */
+            char GetResidueAlternateLocation2();
+
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -114,6 +126,18 @@ namespace PdbPreprocessorSpace
               * @param residue_insertion_code_2 The insertion code 2 attribute of the current object
               */
             void SetResidueInsertionCode2(char residue_insertion_code_2);
+            /*! \fn
+              * A mutator function in order to set the first residue alternate location of the current object
+              * Set the residue_alternate_location_1_ attribute of the current pdb preprocessor disulfide bond
+              * @param residue_alternate_location_1 The residue alternate location 1 attribute of the current object
+              */
+            void SetResidueAlternateLocation1(char residue_alternate_location_1);
+            /*! \fn
+              * A mutator function in order to set the second residue alternate location of the current object
+              * Set the residue_alternate_location_2_ attribute of the current pdb preprocessor disulfide bond
+              * @param residue_alternate_location_2 The residue alternate location 2 attribute of the current object
+              */
+            void SetResidueAlternateLocation2(char residue_alternate_location_2);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -137,6 +161,8 @@ namespace PdbPreprocessorSpace
             bool is_bonded_;
             char residue_insertion_code_1_;
             char residue_insertion_code_2_;
+            char residue_alternate_location_1_;
+            char residue_alternate_location_2_;
 
     };
 }
