@@ -108,15 +108,15 @@ void PdbPreprocessorDisulfideBond::SetResidueAlternateLocation2(char residue_alt
 //////////////////////////////////////////////////////////
 void PdbPreprocessorDisulfideBond::Print(ostream &out)
 {
-    out << "Chain id: " << residue_chain_id_1_
+    out << "[Chain id: " << residue_chain_id_1_
          << ", Sequence number: " << residue_sequence_number_1_
-         << ", Chain id: " << residue_chain_id_2_
-         << ", Sequence number: " << residue_sequence_number_2_
-         << ", Distance: " << distance_
          << ", Insertion code: " << residue_insertion_code_1_
-         << ", Insertion code: " << residue_insertion_code_2_
          << ", Alternate location: " << residue_alternate_location_1_
+         << "]--[Chain id: " << residue_chain_id_2_
+         << ", Sequence number: " << residue_sequence_number_2_
+         << ", Insertion code: " << residue_insertion_code_2_
          << ", Alternate location: " << residue_alternate_location_2_
+         << "] => Distance: " << distance_
          << endl;
 }
 
