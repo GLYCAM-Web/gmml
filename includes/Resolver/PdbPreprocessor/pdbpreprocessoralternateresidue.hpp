@@ -18,7 +18,8 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorAlternateResidue();
 
-            PdbPreprocessorAlternateResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code, std::vector<char> residue_alternate_location, std::vector<bool> selected_alternate_location);
+            PdbPreprocessorAlternateResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code, std::vector<char> residue_alternate_location,
+                                            std::vector<bool> selected_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
