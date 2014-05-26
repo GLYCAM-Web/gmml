@@ -19,6 +19,7 @@ namespace PdbPreprocessorSpace
     class PdbPreprocessorUnrecognizedResidue;
     class PdbPreprocessorUnrecognizedHeavyAtom;
     class PdbPreprocessorReplacedHydrogen;
+    class PdbPreprocessorAlternateResidue;
     class PdbPreprocessor
     {
         public:
@@ -35,6 +36,7 @@ namespace PdbPreprocessorSpace
             typedef std::vector<PdbPreprocessorReplacedHydrogen*> PdbPreprocessorReplacedHydrogenVector;
             typedef std::map<char, std::vector<int> > PdbPreprocessorChainIdSequenceNumbersMap;
             typedef std::map<char, std::vector<char> > PdbPreprocessorChainIdInsertionCodeMap;
+            typedef std::map<std::string, PdbPreprocessorAlternateResidue*> PdbPreprocessorAlternateResidueMap;
 
 
             //////////////////////////////////////////////////////////
@@ -88,6 +90,11 @@ namespace PdbPreprocessorSpace
               * @return replaced_hydrogens_ attribute of the current object of this class
               */
             PdbPreprocessorReplacedHydrogenVector GetReplacedHydrogens();
+            /*! \fn
+              * An accessor function in order to access to the alternate residue map
+              * @return alternate_residue_map_ attribute of the current object of this class
+              */
+            PdbPreprocessorAlternateResidueMap GetAlternateResidueMap();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -418,6 +425,18 @@ namespace PdbPreprocessorSpace
               */
             LibraryFileSpace::LibraryFileResidue* GetLibraryResidueByNameFromMultipleLibraryFiles(std::string residue_name, std::vector<std::string> lib_files);
 
+            /*! \fn
+              * A function in order to extract the alternate residues of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              */
+            void ExtractAlternateResidue(std::string pdb_file_path);
+            /*! \fn
+              * A function in order to remove unselected alternate residues of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param alternate_residue_map
+              */
+            void RemoveUnselectedAlternateResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -440,6 +459,7 @@ namespace PdbPreprocessorSpace
             PdbPreprocessorRecognizedResidueVector recognized_residues_;
             PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms_;
             PdbPreprocessorReplacedHydrogenVector replaced_hydrogens_;
+            PdbPreprocessorAlternateResidueMap alternate_residue_map_;
 
     };
 }

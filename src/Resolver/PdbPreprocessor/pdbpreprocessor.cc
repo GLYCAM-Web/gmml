@@ -8,6 +8,7 @@
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp"
+#include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
@@ -55,6 +56,9 @@ PdbPreprocessor::PdbPreprocessorUnrecognizedHeavyAtomVector PdbPreprocessor::Get
 }
 PdbPreprocessor::PdbPreprocessorReplacedHydrogenVector PdbPreprocessor::GetReplacedHydrogens(){
     return replaced_hydrogens_;
+}
+PdbPreprocessor::PdbPreprocessorAlternateResidueMap PdbPreprocessor::GetAlternateResidueMap(){
+    return alternate_residue_map_;
 }
 
 //////////////////////////////////////////////////////////
@@ -1152,6 +1156,82 @@ LibraryFileSpace::LibraryFileResidue* PdbPreprocessor::GetLibraryResidueByNameFr
             break;
     }
     return library_residue;
+}
+
+void PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
+{
+    PdbFile* pdb_file = new PdbFile(pdb_file_path);
+    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        PdbFileSpace::PdbResidue* target_residue = *it;
+        string target_residue_name = target_residue->GetResidueName();
+        char target_chain_id = target_residue->GetResidueChainId();
+        int target_sequence_number = target_residue->GetResidueSequenceNumber();
+        char target_insertion_code = target_residue->GetResidueInsertionCode();
+        char target_alternate_location = target_residue->GetResidueAlternateLocation();
+        stringstream ss;
+        ss << target_residue_name << "_" << target_chain_id << "_" << target_sequence_number << "_" << target_insertion_code;
+        string target_key = ss.str();
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 =it+1 ; it1 != pdb_residues.end(); it1++)
+        {
+            PdbFileSpace::PdbResidue* residue = *it1;
+            string residue_name = residue->GetResidueName();
+            char chain_id = residue->GetResidueChainId();
+            int sequence_number = residue->GetResidueSequenceNumber();
+            char insertion_code = residue->GetResidueInsertionCode();
+            char alternate_location = residue->GetResidueAlternateLocation();
+            stringstream sss;
+            sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
+            string key = sss.str();
+            if(key.compare(target_key) == 0)
+            {
+                if(target_alternate_location != alternate_location)
+                {
+                    if (distance(alternate_residue_map_.begin() ,alternate_residue_map_.find(key)) < 0)
+                    {
+                        vector<bool> selected;
+                        selected.push_back(true);
+                        selected.push_back(false);
+                        vector<char> alternate_locations;
+                        alternate_locations.push_back(target_alternate_location);
+                        alternate_locations.push_back(alternate_location);
+                        alternate_residue_map_[target_key] = new PdbPreprocessorAlternateResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_locations, selected);
+                    }
+                    else
+                    {
+
+//                        if(alternate_residue_map_[target_key]->GetResidueAlternateLocation().find(alternate_location)  )
+                        {
+                            alternate_residue_map_[target_key]->GetResidueAlternateLocation().push_back(alternate_location);
+                            alternate_residue_map_[target_key]->GetSelectedAlternateLocation().push_back(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void PdbPreprocessor::RemoveUnselectedAlternateResidues(PdbFile *pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map)
+{
+    for(PdbPreprocessorAlternateResidueMap::iterator it = alternate_residue_map.begin(); it != alternate_residue_map.end(); it++)
+    {
+        PdbPreprocessorAlternateResidue* alternate_residue = (*it).second;
+        vector<bool> selected_alternate_locations = alternate_residue->GetSelectedAlternateLocation();
+        for(vector<bool>::iterator it1 = selected_alternate_locations.begin(); it1 != selected_alternate_locations.end(); it1++)
+        {
+            bool selected_alternate_location = (*it1);
+            char alternate_location = alternate_residue->GetResidueAlternateLocation().at(distance(selected_alternate_locations.begin(), it1));
+            if(!selected_alternate_location)
+            {
+                PdbResidue* pdb_residue = new PdbResidue(alternate_residue->GetResidueName() ,alternate_residue->GetResidueChainId(), alternate_residue->GetResidueSequenceNumber(),
+                                                         alternate_residue->GetResidueInsertionCode(), alternate_location);
+                pdb_file->DeleteResidue(pdb_residue);
+            }
+        }
+    }
+
 }
 
 //////////////////////////////////////////////////////////
