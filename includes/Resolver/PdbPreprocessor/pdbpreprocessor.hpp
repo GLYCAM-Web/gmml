@@ -437,6 +437,10 @@ namespace PdbPreprocessorSpace
               */
             void RemoveUnselectedAlternateResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map);
 
+            void RetrievePreprocessingInformation(std::string pdb_file_path, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
+
+
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

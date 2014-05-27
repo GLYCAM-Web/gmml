@@ -432,7 +432,7 @@ void PdbPreprocessor::UpdateCYSResidues(PdbFile *pdb_file, PdbPreprocessorDisulf
                     stringstream ss;
                     string pdb_residue_key;
                     ss << residue_name << "_" << pdb_residue->GetResidueChainId() << "_" << pdb_residue->GetResidueSequenceNumber() << "_" << pdb_residue->GetResidueInsertionCode()
-                          << pdb_residue->GetResidueAlternateLocation();
+                       << pdb_residue->GetResidueAlternateLocation();
                     pdb_residue_key = ss.str();
                     if(pdb_residue_key.compare(target_key1) == 0 || pdb_residue_key.compare(target_key2) == 0)
                     {
@@ -654,7 +654,7 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
     vector<string> recognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
     PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, recognized_residue_names);
-cout << recognized_residues.size() << endl;
+
     PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
     {
@@ -1186,27 +1186,35 @@ void PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
             stringstream sss;
             sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code;
             string key = sss.str();
+
             if(key.compare(target_key) == 0)
             {
                 if(target_alternate_location != alternate_location)
                 {
-                    if (distance(alternate_residue_map_.begin() ,alternate_residue_map_.find(key)) < 0)
+                    if (alternate_residue_map_.empty() || distance(alternate_residue_map_.begin() ,alternate_residue_map_.find(key)) < 0 ||
+                            distance(alternate_residue_map_.begin() ,alternate_residue_map_.find(key)) >= alternate_residue_map_.size())
                     {
-                        vector<bool> selected;
+                        vector<bool> selected = vector<bool>();
                         selected.push_back(true);
                         selected.push_back(false);
-                        vector<char> alternate_locations;
+                        vector<char> alternate_locations = vector<char>();
                         alternate_locations.push_back(target_alternate_location);
                         alternate_locations.push_back(alternate_location);
                         alternate_residue_map_[target_key] = new PdbPreprocessorAlternateResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_locations, selected);
                     }
                     else
                     {
-
-//                        if(alternate_residue_map_[target_key]->GetResidueAlternateLocation().find(alternate_location)  )
+                        PdbPreprocessorAlternateResidue* alternate_residue = alternate_residue_map_[target_key];
+                        vector<char> alternate_locations = alternate_residue->GetResidueAlternateLocation();
+                        if(distance(alternate_locations.begin(), find(alternate_locations.begin(),alternate_locations.end(),alternate_location)) < 0 ||
+                                distance(alternate_locations.begin(), find(alternate_locations.begin(),alternate_locations.end(),alternate_location)) >= alternate_locations.size())
                         {
-                            alternate_residue_map_[target_key]->GetResidueAlternateLocation().push_back(alternate_location);
-                            alternate_residue_map_[target_key]->GetSelectedAlternateLocation().push_back(false);
+
+                            alternate_locations.push_back(alternate_location);
+                            alternate_residue->SetResidueAlternateLocation(alternate_locations);
+                            vector<bool> selected_alternate_locations = alternate_residue->GetSelectedAlternateLocation();
+                            selected_alternate_locations.push_back(false);
+                            alternate_residue->SetSelectedAlternateLocation(selected_alternate_locations);
                         }
                     }
                 }
