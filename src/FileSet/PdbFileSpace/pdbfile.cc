@@ -2534,7 +2534,7 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
             {
                 stringstream ss;
-                ss << molecule_name;
+                ss << molecule_name.str();
                 stream << left << setw(6) << compound_->GetRecordName()
                        << left << setw(1) << " "
                        << right << setw(3) << counter
@@ -3265,7 +3265,7 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
             if(formula->GetComponentNumber() != iNotSet)
                 stream << right << setw(2) << formula->GetComponentNumber();
             else
-                stream << right << setw(2) << formula->GetComponentNumber();
+                stream << right << setw(2) << " ";
             stream << left << setw(2) << " "
                    << right << setw(3) << formula->GetHeterogenIdentifier()
                    << left << setw(1) << " "
@@ -3284,9 +3284,8 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
                     if(formula->GetComponentNumber() != iNotSet)
                         stream << right << setw(2) << formula->GetComponentNumber();
                     else
-                        stream << right << setw(2) << formula->GetComponentNumber();
+                        stream << right << setw(2) << " ";
                     stream << left << setw(2) << " "
-                           << left << setw(2) << " "
                            << right << setw(3) << formula->GetHeterogenIdentifier()
                            << left << setw(1) << " "
                            << right << setw(2) << i
@@ -3302,9 +3301,8 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
                     if(formula->GetComponentNumber()!= iNotSet)
                         stream << right << setw(2) << formula->GetComponentNumber();
                     else
-                        stream << right << setw(2) << formula->GetComponentNumber();
+                        stream << right << setw(2) << " ";
                     stream << left << setw(2) << " "
-                           << left << setw(2) << " "
                            << right << setw(3) << formula->GetHeterogenIdentifier()
                            << left << setw(1) << " "
                            << right << setw(2) << i
@@ -3322,9 +3320,8 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
             if(formula->GetComponentNumber() != iNotSet)
                 stream << right << setw(2) << formula->GetComponentNumber();
             else
-                stream << right << setw(2) << formula->GetComponentNumber();
+                stream << right << setw(2) << " ";
             stream << left << setw(2) << " "
-                   << left << setw(2) << " "
                    << right << setw(3) << formula->GetHeterogenIdentifier()
                    << left << setw(1) << " "
                    << right << setw(2) << " "

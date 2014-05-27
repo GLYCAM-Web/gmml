@@ -33,7 +33,7 @@ const char* PdbFileProcessingException::what() const throw()
             what_ += " (line " + ss.str() + ")";
             return what_.c_str();
         }
-        throw std::invalid_argument("to_string: invalid conversion");       /// Invalid conversion from int to string
+        throw std::invalid_argument(__LINE__ + "to_string: invalid conversion");       /// Invalid conversion from int to string
     }
     return "";
 }
