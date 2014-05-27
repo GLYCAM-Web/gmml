@@ -413,12 +413,12 @@ void PdbPreprocessor::UpdateCYSResidues(PdbFile *pdb_file, PdbPreprocessorDisulf
             pdb_file->DeleteAtom(pdb_atom_2);
             string target_key1;
             stringstream ss_1;
-            ss_1 << "CYS" << "_" << disulfide_bond->GetResidueChainId1() << "_" << disulfide_bond->GetResidueSequenceNumber1() << disulfide_bond->GetResidueInsertionCode1()
+            ss_1 << "CYS" << "_" << disulfide_bond->GetResidueChainId1() << "_" << disulfide_bond->GetResidueSequenceNumber1() << "_" << disulfide_bond->GetResidueInsertionCode1()
                  << "_" << disulfide_bond->GetResidueAlternateLocation1();
             target_key1 = ss_1.str();
             string target_key2;
             stringstream ss_2;
-            ss_2 << "CYS" << "_" << disulfide_bond->GetResidueChainId2() << "_" << disulfide_bond->GetResidueSequenceNumber2() << disulfide_bond->GetResidueInsertionCode2()
+            ss_2 << "CYS" << "_" << disulfide_bond->GetResidueChainId2() << "_" << disulfide_bond->GetResidueSequenceNumber2() << "_" << disulfide_bond->GetResidueInsertionCode2()
                  << "_" << disulfide_bond->GetResidueAlternateLocation2();
             target_key2 = ss_2.str();
             PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
@@ -432,11 +432,10 @@ void PdbPreprocessor::UpdateCYSResidues(PdbFile *pdb_file, PdbPreprocessorDisulf
                     stringstream ss;
                     string pdb_residue_key;
                     ss << residue_name << "_" << pdb_residue->GetResidueChainId() << "_" << pdb_residue->GetResidueSequenceNumber() << "_" << pdb_residue->GetResidueInsertionCode()
-                       << pdb_residue->GetResidueAlternateLocation();
+                       << "_" << pdb_residue->GetResidueAlternateLocation();
                     pdb_residue_key = ss.str();
                     if(pdb_residue_key.compare(target_key1) == 0 || pdb_residue_key.compare(target_key2) == 0)
                     {
-                        //                        pdb_residue->SetResidueName("CYX");
                         pdb_file->UpdateResidueName(pdb_residue, "CYX");
                     }
                 }

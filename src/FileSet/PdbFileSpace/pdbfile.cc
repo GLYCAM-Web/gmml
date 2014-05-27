@@ -837,7 +837,7 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
     PdbModelCard::PdbModelMap models = models_->GetModels();
     for(PdbModelCard::PdbModelMap::iterator it = models.begin();it != models.end(); it++)
     {
-        PdbModel* model = (*it).second;
+        PdbModel* model = (*it).second;        
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
         PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
         PdbModelResidueSet::AtomCardVector updated_atom_cards;
@@ -907,7 +907,7 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
 
         model->SetModelResidueSet(residue_set);
         (*it).second = model;
-    }
+    }    
     models_->SetModels(models);
 }
 
