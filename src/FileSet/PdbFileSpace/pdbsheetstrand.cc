@@ -28,11 +28,10 @@ PdbSheetStrand::PdbSheetStrand(const SheetStrandResidueVector strand_residues, P
 PdbSheetStrand::PdbSheetStrand(string &line)
 {
     int sense;
-    if(line.substr(38, 2) == "  ")
+    if(line.substr(38, 2).compare("  ") == 0)
         sense = iNotSet;
     else
         sense = ConvertString<int>(line.substr(38,2));
-
     switch(sense)
     {
         case -1:
@@ -54,15 +53,15 @@ PdbSheetStrand::PdbSheetStrand(string &line)
     int temp3;
     temp0 = line.substr(17,3);
     Trim(temp0);
-    if(line.substr(21,1) == " ")
+    if(line.substr(21,1).compare(" ") == 0)
         temp1 = ' ';
     else
         temp1 = ConvertString<char>(line.substr(21, 1));
-    if(line.substr(26,1) == " ")
+    if(line.substr(26,1).compare(" ") == 0)
         temp2 = ' ';
     else
         temp2 = ConvertString<char>(line.substr(26, 1));
-    if(line.substr(22, 4) == "    ")
+    if(line.substr(22, 4).compare("    ") == 0)
         temp3 = iNotSet;
     else
         temp3 = ConvertString<int>(line.substr(22, 4));
@@ -70,15 +69,15 @@ PdbSheetStrand::PdbSheetStrand(string &line)
 
     temp0 = line.substr(28, 3);
     Trim(temp0);
-    if(line.substr(32,1) == " ")
+    if(line.substr(32,1).compare(" ") == 0)
         temp1 = ' ';
     else
         temp1 = ConvertString<char>(line.substr(32, 1));
-    if(line.substr(37,1) == " ")
+    if(line.substr(37,1).compare(" ") == 0)
         temp2 = ' ';
     else
         temp2 = ConvertString<char>(line.substr(37, 1));
-    if(line.substr(33, 4) == "    ")
+    if(line.substr(33, 4).compare("    ") == 0)
         temp3 = iNotSet;
     else
         temp3 = ConvertString<int>(line.substr(33, 4));
@@ -89,29 +88,31 @@ PdbSheetStrand::PdbSheetStrand(string &line)
     {
         temp0 = line.substr(45, 3);
         Trim(temp0);
-        if(line.substr(49,1) == " ")
+        if(line.substr(49,1).compare(" ") == 0)
             temp1 = ' ';
         else
             temp1 = ConvertString<char>(line.substr(49, 1));
-        if(line.substr(54,1) == " ")
+        if(line.substr(54,1).compare(" ") == 0)
             temp2 = ' ';
         else
             temp2 = ConvertString<char>(line.substr(54, 1));
-        if(line.substr(50, 4) == "    ")
+        if(line.substr(50, 4).compare("    ") == 0)
+            temp3 = iNotSet;
+        else
             temp3 = ConvertString<int>(line.substr(50, 4));
         PdbSheetStrandResidue* current_residue = new PdbSheetStrandResidue(temp0, temp1, temp3, temp2);
 
         temp0 = line.substr(60, 3);
         Trim(temp0);
-        if(line.substr(64,1) == " ")
+        if(line.substr(64,1).compare(" ") == 0)
             temp1 = ' ';
         else
             temp1 = ConvertString<char>(line.substr(64, 1));
-        if(line.substr(69,1) == " ")
+        if(line.substr(69,1).compare(" ") == 0)
             temp2 = ' ';
         else
             temp2 = ConvertString<char>(line.substr(69, 1));
-        if(line.substr(65, 4) == "    ")
+        if(line.substr(65, 4).compare("    ") == 0)
             temp3 = iNotSet;
         else
             temp3 = ConvertString<int>(line.substr(65, 4));

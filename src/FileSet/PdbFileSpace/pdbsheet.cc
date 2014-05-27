@@ -43,7 +43,7 @@ PdbSheet::PdbSheet(stringstream& stream_block)
         }
         if(!is_number_of_strands_set)
         {
-            if(line.substr(14, 2) == "  ")
+            if(line.substr(14, 2).compare("  ") == 0)
                 number_of_strands_ = iNotSet;
             else
                 number_of_strands_ = ConvertString<int>(line.substr(14,2));
