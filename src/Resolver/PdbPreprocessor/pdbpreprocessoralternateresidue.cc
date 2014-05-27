@@ -11,8 +11,19 @@ PdbPreprocessorAlternateResidue::PdbPreprocessorAlternateResidue() {}
 
 PdbPreprocessorAlternateResidue::PdbPreprocessorAlternateResidue(string residue_name, char chain_id, int sequence_number, char residue_insertion_code,
                                                                  vector<char> residue_alternate_location, vector<bool> selected_alternate_location) :
-    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(residue_insertion_code),
-    residue_alternate_location_(residue_alternate_location), selected_alternate_location_(selected_alternate_location) {}
+    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(residue_insertion_code)
+{
+    residue_alternate_location_ = vector<char>();
+    for(vector<char>::iterator it = residue_alternate_location.begin(); it != residue_alternate_location.end(); it++)
+    {
+        residue_alternate_location_.push_back(*it);
+    }
+    selected_alternate_location_ = vector<bool>();
+    for(vector<bool>::iterator it = selected_alternate_location.begin(); it != selected_alternate_location.end(); it++)
+    {
+        selected_alternate_location_.push_back(*it);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -63,11 +74,19 @@ void PdbPreprocessorAlternateResidue::SetResidueInsertionCode(char residue_inser
 }
 void PdbPreprocessorAlternateResidue::SetResidueAlternateLocation(vector<char> residue_alternate_location)
 {
-    residue_alternate_location_ = residue_alternate_location;
+    residue_alternate_location_.clear();
+    for(vector<char>::iterator it = residue_alternate_location.begin(); it != residue_alternate_location.end(); it++)
+    {
+        residue_alternate_location_.push_back(*it);
+    }
 }
 void PdbPreprocessorAlternateResidue::SetSelectedAlternateLocation(vector<bool> selected_alternate_location)
 {
-    selected_alternate_location_ = selected_alternate_location;
+    selected_alternate_location_.clear();
+    for(vector<bool>::iterator it = selected_alternate_location.begin(); it != selected_alternate_location.end(); it++)
+    {
+        selected_alternate_location_.push_back(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -78,7 +97,7 @@ void PdbPreprocessorAlternateResidue::Print(ostream &out)
     out << "Residue name: " << residue_name_
          << ", Chain id: " << residue_chain_id_
          << ", Sequence number: " << residue_sequence_number_
-         << ", Insertion code: " << residue_insertion_code_;
+         << ", Insertion code: " << residue_insertion_code_ << endl;
          for(unsigned int i = 0; i < residue_alternate_location_.size(); i++)
          {
              out << "\t Alternate Location: " << residue_alternate_location_[i] << " " << selected_alternate_location_[i] << endl;
