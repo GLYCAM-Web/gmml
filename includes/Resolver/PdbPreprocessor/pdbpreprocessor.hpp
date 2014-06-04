@@ -361,8 +361,13 @@ namespace PdbPreprocessorSpace
               * @param pdb_file The object of a pdb file
               * @param unknown_heavy_atoms The list of unknown heavy atoms
               */
-            void RemoveUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
-
+            void RemoveUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);            
+            /*! \fn
+              * A function in order to remove residues of unknown heavy atoms of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param unknown_heavy_atoms The list of unknown heavy atoms
+              */
+            void RemoveResiduesOfUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
             /*! \fn
               * A function in order to access to the removed hydrogen names of a residue
               * @param pdb_atom_names_of_residue The list of atom names of a residue from pdb file
@@ -437,10 +442,9 @@ namespace PdbPreprocessorSpace
               */
             void RemoveUnselectedAlternateResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map);
 
-            void RetrievePreprocessingInformation(std::string pdb_file_path, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
+            void Preprocess(std::string pdb_file_path, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
 
-
-
+            void ApplyPreprocessing(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
