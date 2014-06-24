@@ -1,4 +1,6 @@
 #include "../../../includes/MolecularModeling/assembly.hpp"
+#include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/atom.hpp"
 
 using namespace std;
 using namespace MolecularModeling;

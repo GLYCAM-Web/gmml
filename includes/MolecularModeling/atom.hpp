@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-#include "../../includes/Geometry/coordinate.hpp"
+#include "Geometry/coordinate.hpp"
 #include "../../includes/MolecularModeling/md_atom.hpp"
 #include "../../includes/MolecularModeling/qm_atom.hpp"
 #include "../../includes/MolecularModeling/docking_atom.hpp"
