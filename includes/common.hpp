@@ -30,6 +30,23 @@ namespace gmml
         HIP = 2,
         HID = 3
     };
+
+    enum InputFileType
+    {
+        PDB,
+        LIB,
+        PREP,
+        PARAM,
+        TOP
+    };
+
+    enum GraphType
+    {
+        RESIDUE,
+        MOLECULE,
+        ASSEMBLY
+    };
+
 }
 
 #endif // COMMON_HPP
