@@ -1,17 +1,37 @@
+#include <fstream>
+#include <math.h>
 
 #include "../../../includes/FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatomtype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologybondtype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyangletype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
+#include "../../../includes/utils.hpp"
 
 using namespace std;
 using namespace TopologyFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 TopologyFile::TopologyFile() {}
+
+TopologyFile::TopologyFile(const string &top_file)
+{
+    ifstream in_file;
+    try
+    {
+        in_file.open(top_file.c_str());
+    }
+    catch(exception &ex)
+    {
+        throw TopologyFileProcessingException(__LINE__, "File not found");
+    }
+    Read(in_file);
+    in_file.close();            /// Close the parameter files
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -100,9 +120,9 @@ int TopologyFile::GetNumberOfDistinctHydrogenBonds()
 {
     return number_of_distinct_hydrogen_bonds_;
 }
-bool TopologyFile::GetHasPerturbation()
+int TopologyFile::GetPerturbationOption()
 {
-    return has_perturbation_;
+    return perturbation_option_;
 }
 int TopologyFile::GetNumberOfBondsPerturbed()
 {
@@ -124,17 +144,21 @@ int TopologyFile::GetNumberOfAnglesGroupPerturbed()
 {
     return number_of_angles_group_perturbed_;
 }
-bool TopologyFile::GetHasStandardPeriodicBox()
+int TopologyFile::GetNumberOfDihedralsGroupPerturbed()
 {
-    return has_standard_periodic_box_;
+    return number_of_dihedrals_group_perturbed_;
+}
+int TopologyFile::GetStandardPeriodicBoxOption()
+{
+    return standard_periodic_box_option_;
 }
 int TopologyFile::GetNumberOfAtomsInLargestResidue()
 {
     return number_of_atoms_in_largest_residue_;
 }
-bool TopologyFile::GetHasCapOption()
+int TopologyFile::GetCapOption()
 {
-    return has_cap_option_;
+    return cap_option_;
 }
 int TopologyFile::GetNumberOfExtraPoints()
 {
@@ -248,9 +272,9 @@ void TopologyFile::SetNumberOfDistinctHydrogenBonds(int number_of_distinct_hydro
 {
     number_of_distinct_hydrogen_bonds_ = number_of_distinct_hydrogen_bonds;
 }
-void TopologyFile::SetHasPerturbation(bool has_perturbation)
+void TopologyFile::SetPerturbationOption(int perturbation_option)
 {
-    has_perturbation_ = has_perturbation;
+    perturbation_option_ = perturbation_option;
 }
 void TopologyFile::SetNumberOfBondsPerturbed(int number_of_bonds_perturbed)
 {
@@ -272,17 +296,21 @@ void TopologyFile::SetNumberOfAnglesGroupPerturbed(int number_of_angles_group_pe
 {
     number_of_angles_group_perturbed_ = number_of_angles_group_perturbed;
 }
-void TopologyFile::SetHasStandardPeriodicBox(bool has_standard_periodic_box)
+void TopologyFile::SetNumberOfDihedralsGroupPerturbed(int number_of_dihedrals_group_perturbed)
 {
-    has_standard_periodic_box_ = has_standard_periodic_box;
+    number_of_dihedrals_group_perturbed_ = number_of_dihedrals_group_perturbed;
+}
+void TopologyFile::SetStandardPeriodicBoxOption(int standard_periodic_box_option)
+{
+    standard_periodic_box_option_ = standard_periodic_box_option;
 }
 void TopologyFile::SetNumberOfAtomsInLargestResidue(int number_of_atoms_in_largest_residue)
 {
     number_of_atoms_in_largest_residue_ = number_of_atoms_in_largest_residue;
 }
-void TopologyFile::SetHasCapOption(bool has_cap_option)
+void TopologyFile::SetCapOption(int cap_option)
 {
-    has_cap_option_ = has_cap_option;
+    cap_option_ = cap_option;
 }
 void TopologyFile::SetNumberOfExtraPoints(int number_of_extra_points)
 {
@@ -296,6 +324,409 @@ void TopologyFile::SetNumberOfBeads(int number_of_beads)
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
+void TopologyFile::Read(ifstream &in_file)
+{
+    this->ParseSections(in_file);
+}
+
+void TopologyFile::ParseSections(ifstream &in_stream)
+{
+    string line;
+    /// Unable to read file
+    if (!getline(in_stream, line))
+    {
+        throw TopologyFileProcessingException("Error reading file");
+    }
+    stringstream other;
+    while(!line.empty())
+    {
+        if(line.find("%FLAG") != string::npos)
+        {
+            stringstream section;
+            this->PartitionSection(in_stream, line, section);
+            string in_line;
+            getline(section, in_line);
+            if(in_line.find("%FLAG TITLE") != string::npos)
+            {
+                ParseTitlePartition(section);
+            }
+            if(in_line.find("%FLAG POINTERS") != string::npos)
+            {
+                ParsePointersPartition(section);
+            }
+            if(in_line.find("%FLAG ATOM_NAME") != string::npos)
+            {
+                vector<string> atom_names = ParseAtomNameSection(section);
+                // TODO: Use atom_names to build the structure
+            }
+            if(line.find("%FLAG CHARGE") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG ATOMIC_NUMBER") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG MASS") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG ATOM_TYPE_INDEX") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG NUMBER_EXCLUDED_ATOMS") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG NONBONDED_PARM_INDEX") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG RESIDUE_LABEL") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG RESIDUE_POINTER") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG BOND_FORCE_CONSTANT") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG BOND_EQUIL_VALUE") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG ANGLE_FORCE_CONSTANT") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG ANGLE_EQUIL_VALUE") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG DIHEDRAL_FORCE_CONSTANT") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG DIHEDRAL_PERIODICITY") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG DIHEDRAL_PHASE") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG SCEE_SCLAE_FACTOR") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG SCNB_SCALE_FACTOR") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG SOLTY") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG LENNARD_JONES_ACOEF") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG LENNARD_JONES_BCOEF") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG BONDS_INC_HYDROGEN") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG BONDS_WITHOUT_HYDROGEN") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG ANGLES_INC_HYDROGEN") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG ANGLES_WITHOUT_HYDROGEN") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG DIHEDRALS_INC_HYDROGEN") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG DIHEDRALS_WITHOUT_HYDROGEN") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG EXCLUDED_ATOMS_LIST") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG HBOND_ACOEF") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG HBOND_BCOEF") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG HBCUT") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG AMBER_ATOM_TYPE") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG TREE_CHAIN_CLASSIFICATION") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG JOIN_ARRAY") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG IROTAT") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG RADIUS_SET") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG RADII") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG SCREEN") != string::npos)
+            {
+
+            }
+            if(line.find("%FLAG IPOL") != string::npos)
+            {
+
+            }
+            //    if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
+            //    {
+
+            //    }
+            //    if(line.find("%FLAG ATOMS_PER_MOLECULE") != string::npos)
+            //    {
+
+            //    }
+            //    if(line.find("%FLAG BOX_DIMENSIONS") != string::npos)
+            //    {
+
+            //    }
+            //    if(line.find("%FLAG CAP_INFO") != string::npos)
+            //    {
+
+            //    }
+            //    if(line.find("%FLAG CAP_INFO2") != string::npos)
+            //    {
+
+            //    }
+            //    if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
+            //    {
+
+            //    }
+        }
+        else
+        {
+            other << line << endl;
+            getline(in_stream, line);
+        }
+    }
+}
+
+void TopologyFile::PartitionSection(ifstream &stream, string &line, stringstream& section)
+{
+    while(line[0] == '%')
+    {
+        if(line.find("%FLAG") != string::npos)
+        {
+            section << line << endl;
+        }
+        if(line.find("%FORMAT") != string::npos)
+        {
+            section << line << endl;
+        }
+        getline(stream, line);
+    }
+    while(line[0] != '%' && !line.empty())
+    {
+        section << line << endl;
+        getline(stream, line);
+    }
+}
+
+void TopologyFile::ParseTitlePartition(stringstream& stream)
+{
+    string line;
+    // Section Header
+    getline(stream, line);
+    // Section Format
+    getline(stream, line);
+    while(!line.empty())
+    {
+        string format = "20a4";
+        if(line[0] == '%')
+        {
+            if(line.find("%FORMAT") != string::npos)
+            {
+                format = line.substr(line.find_first_of('(', 0) + 1, line.find_last_of(')', line.length()) - line.find_first_of('(', 0) - 1);
+            }
+        }
+        else
+        {
+            title_ += line;
+        }
+        getline(stream, line);
+    }
+}
+
+void TopologyFile::ParsePointersPartition(stringstream &stream)
+{
+    string line;
+    vector<int> items = vector<int>();
+    // Section Header
+    getline(stream, line);
+    // Section Format
+    getline(stream, line);
+    while(!line.empty())
+    {
+        string format = "10I8";
+        if(line[0] == '%')
+        {
+            if(line.find("%FORMAT") != string::npos)
+            {
+                format = line.substr(line.find_first_of('(', 0) + 1, line.find_last_of(')', line.length()) - line.find_first_of('(', 0) - 1);
+            }
+        }
+        else
+        {
+            vector<int> line_items = PartitionLine<int>(line, format);
+            for(vector<int>::iterator it = line_items.begin(); it != line_items.end(); it++)
+            {
+                items.push_back(*it);
+            }
+        }
+        getline(stream, line);
+    }
+    number_of_atoms_ = items.at(0);
+    number_of_types_ = items.at(1);
+    number_of_bonds_including_hydrogen_ = items.at(2);
+    number_of_bonds_excluding_hydrogen_ = items.at(3);
+    number_of_angles_including_hydrogen_ = items.at(4);
+    number_of_angles_excluding_hydrogen_ = items.at(5);
+    number_of_dihedrals_including_hydrogen_ = items.at(6);
+    number_of_dihedrals_excluding_hydrogen_ = items.at(7);
+    number_of_hydrogen_parameters_ = items.at(8);
+    number_of_parameters_ = items.at(9);
+    number_of_excluded_atoms_ = items.at(10);
+    number_of_residues_ = items.at(11);
+    total_number_of_bonds_ = items.at(12);
+    total_number_of_angles_ = items.at(13);
+    total_number_of_dihedrals_ = items.at(14);
+    number_of_bond_types_ = items.at(15);
+    number_of_angle_types_ = items.at(16);
+    number_of_dihedral_types_ = items.at(17);
+    number_of_atom_types_in_parameter_file_ = items.at(18);
+    number_of_distinct_hydrogen_bonds_ = items.at(19);
+    perturbation_option_ = items.at(20);
+    number_of_bonds_perturbed_ = items.at(21);
+    number_of_angles_perturbed_ = items.at(22);
+    number_of_dihedrals_perturbed_ = items.at(23);
+    number_of_bonds_group_perturbed_ = items.at(24);
+    number_of_angles_group_perturbed_ = items.at(25);
+    number_of_dihedrals_group_perturbed_ = items.at(26);
+    standard_periodic_box_option_ = items.at(27);
+    number_of_atoms_in_largest_residue_ = items.at(28);
+    cap_option_ = items.at(29);
+    number_of_extra_points_ = items.at(30);
+    if(items.size() >= 31)
+        number_of_beads_ = items.at(30);
+}
+
+vector<string> TopologyFile::ParseAtomNameSection(stringstream &stream)
+{
+    string line;
+    vector<string> atom_names = vector<string>();
+    getline(stream, line);
+    while(!line.empty())
+    {
+        string format = "20a4";
+        if(line[0] == '%')
+        {
+            if(line.find("%FORMAT") != string::npos)
+            {
+                format = line.substr(line.find_first_of('(', 0) + 1, line.find_last_of(')', line.length()) - line.find_first_of('(', 0) - 1);
+            }
+        }
+        else
+        {
+            vector<string> line_items = PartitionLine<string>(line, format);
+            for(vector<string>::iterator it = line_items.begin(); it != line_items.end(); it++)
+            {
+                atom_names.push_back(*it);
+            }
+        }
+        getline(stream, line);
+    }
+    return atom_names;
+}
+
+template<typename T>
+vector<T> TopologyFile::PartitionLine(string line, string format)
+{
+    vector<T> items = vector<T>();
+    if(format.compare("10I8") == 0)
+    {
+        int number_of_items = 10;
+        int item_length = 8;
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        {
+            string token = line.substr(i*item_length, item_length);
+            token = Trim(token);
+            items.push_back(ConvertString<T>(token));
+        }
+        return items;
+    }
+    if(format.compare("20a4") == 0)
+    {
+        int number_of_items = 20;
+        int item_length = 4;
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        {
+            string token = line.substr(i*item_length, item_length);
+            token = Trim(token);
+            items.push_back(ConvertString<T>(token));
+        }
+        return items;
+    }
+    if(format.compare("5E16.8") == 0)
+    {
+        int number_of_items = 5;
+        int item_length = 16;
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        {
+            string token = line.substr(i*item_length, item_length);
+            token = Trim(token);
+            double base = ConvertString<double>(Split(token, "E")[0]);
+            int power = ConvertString<int>(Split(token, "E")[1]);
+            stringstream temp;
+            temp << base * pow10(power);
+            T item = ConvertString<T>(temp.str());
+            items.push_back(item);
+        }
+        return items;
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -303,7 +734,3 @@ void TopologyFile::SetNumberOfBeads(int number_of_beads)
 void TopologyFile::Print(ostream &out)
 {
 }
-
-
-
-

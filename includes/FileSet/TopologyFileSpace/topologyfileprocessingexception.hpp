@@ -1,30 +1,28 @@
-// Author: Alireza Khatamian
-
-#ifndef PDBFILEPROCESSINGEXCEPTION_HPP
-#define PDBFILEPROCESSINGEXCEPTION_HPP
+#ifndef TOPOLOGYFILEPROCESSINGEXCEPTION_HPP
+#define TOPOLOGYFILEPROCESSINGEXCEPTION_HPP
 
 #include <exception>
 #include <string>
 
-namespace PdbFileSpace
+namespace TopologyFileSpace
 {
-    class PdbFileProcessingException : public std::exception
+    class TopologyFileProcessingException : public std::exception
     {
         public:
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * Constructor of exception handler of pdb file class
+              * Constructor of exception handler of topology file class
               * @param message An appropriate message corresponding to an exception
               */
-            PdbFileProcessingException(const std::string& message);
+            TopologyFileProcessingException(const std::string& message);
             /*! \fn
-              * Constructor of exception handler of pdb file class feeded by the line number in which exception has been fired
+              * Constructor of exception handler of topology file class feeded by the line number in which exception has been fired
               * @param line_number The line number in which the exception has been occured
               * @param message An appropriate message corresponding to an exception
               */
-            PdbFileProcessingException(int line_number, const std::string& message);
+            TopologyFileProcessingException(int line_number, const std::string& message);
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
@@ -36,7 +34,7 @@ namespace PdbFileSpace
             /*! \fn
               * Destructor
               */
-            virtual ~PdbFileProcessingException() throw();
+            virtual ~TopologyFileProcessingException() throw();
 
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
@@ -47,4 +45,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBFILEPROCESSINGEXCEPTION_HPP
+#endif // TOPOLOGYFILEPROCESSINGEXCEPTION_HPP
