@@ -338,6 +338,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         throw TopologyFileProcessingException("Error reading file");
     }
     stringstream other;
+    vector<string> atom_names = vector<string>();
     while(!line.empty())
     {
         if(line.find("%FLAG") != string::npos)
@@ -350,191 +351,195 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             {
                 ParseTitlePartition(section);
             }
-            if(in_line.find("%FLAG POINTERS") != string::npos)
+            else if(in_line.find("%FLAG POINTERS") != string::npos)
             {
                 ParsePointersPartition(section);
             }
-            if(in_line.find("%FLAG ATOM_NAME") != string::npos)
+            else if(in_line.find("%FLAG ATOM_NAME") != string::npos)
             {
-                vector<string> atom_names = ParseAtomNameSection(section);
+                atom_names = ParseAtomNameSection(section);
                 // TODO: Use atom_names to build the structure
             }
-            if(line.find("%FLAG CHARGE") != string::npos)
+            else if(line.find("%FLAG CHARGE") != string::npos)
             {
 
             }
-            if(line.find("%FLAG ATOMIC_NUMBER") != string::npos)
+            else if(line.find("%FLAG ATOMIC_NUMBER") != string::npos)
             {
 
             }
-            if(line.find("%FLAG MASS") != string::npos)
+            else if(line.find("%FLAG MASS") != string::npos)
             {
 
             }
-            if(line.find("%FLAG ATOM_TYPE_INDEX") != string::npos)
+            else if(line.find("%FLAG ATOM_TYPE_INDEX") != string::npos)
             {
 
             }
-            if(line.find("%FLAG NUMBER_EXCLUDED_ATOMS") != string::npos)
+            else if(line.find("%FLAG NUMBER_EXCLUDED_ATOMS") != string::npos)
             {
 
             }
-            if(line.find("%FLAG NONBONDED_PARM_INDEX") != string::npos)
+            else if(line.find("%FLAG NONBONDED_PARM_INDEX") != string::npos)
             {
 
             }
-            if(line.find("%FLAG RESIDUE_LABEL") != string::npos)
+            else if(line.find("%FLAG RESIDUE_LABEL") != string::npos)
             {
 
             }
-            if(line.find("%FLAG RESIDUE_POINTER") != string::npos)
+            else if(line.find("%FLAG RESIDUE_POINTER") != string::npos)
             {
 
             }
-            if(line.find("%FLAG BOND_FORCE_CONSTANT") != string::npos)
+            else if(line.find("%FLAG BOND_FORCE_CONSTANT") != string::npos)
             {
 
             }
-            if(line.find("%FLAG BOND_EQUIL_VALUE") != string::npos)
+            else if(line.find("%FLAG BOND_EQUIL_VALUE") != string::npos)
             {
 
             }
-            if(line.find("%FLAG ANGLE_FORCE_CONSTANT") != string::npos)
+            else if(line.find("%FLAG ANGLE_FORCE_CONSTANT") != string::npos)
             {
 
             }
-            if(line.find("%FLAG ANGLE_EQUIL_VALUE") != string::npos)
+            else if(line.find("%FLAG ANGLE_EQUIL_VALUE") != string::npos)
             {
 
             }
-            if(line.find("%FLAG DIHEDRAL_FORCE_CONSTANT") != string::npos)
+            else if(line.find("%FLAG DIHEDRAL_FORCE_CONSTANT") != string::npos)
             {
 
             }
-            if(line.find("%FLAG DIHEDRAL_PERIODICITY") != string::npos)
+            else if(line.find("%FLAG DIHEDRAL_PERIODICITY") != string::npos)
             {
 
             }
-            if(line.find("%FLAG DIHEDRAL_PHASE") != string::npos)
+            else if(line.find("%FLAG DIHEDRAL_PHASE") != string::npos)
             {
 
             }
-            if(line.find("%FLAG SCEE_SCLAE_FACTOR") != string::npos)
+            else if(line.find("%FLAG SCEE_SCLAE_FACTOR") != string::npos)
             {
 
             }
-            if(line.find("%FLAG SCNB_SCALE_FACTOR") != string::npos)
+            else if(line.find("%FLAG SCNB_SCALE_FACTOR") != string::npos)
             {
 
             }
-            if(line.find("%FLAG SOLTY") != string::npos)
+            else if(line.find("%FLAG SOLTY") != string::npos)
             {
 
             }
-            if(line.find("%FLAG LENNARD_JONES_ACOEF") != string::npos)
+            else if(line.find("%FLAG LENNARD_JONES_ACOEF") != string::npos)
             {
 
             }
-            if(line.find("%FLAG LENNARD_JONES_BCOEF") != string::npos)
+            else if(line.find("%FLAG LENNARD_JONES_BCOEF") != string::npos)
             {
 
             }
-            if(line.find("%FLAG BONDS_INC_HYDROGEN") != string::npos)
+            else if(line.find("%FLAG BONDS_INC_HYDROGEN") != string::npos)
             {
 
             }
-            if(line.find("%FLAG BONDS_WITHOUT_HYDROGEN") != string::npos)
+            else if(line.find("%FLAG BONDS_WITHOUT_HYDROGEN") != string::npos)
             {
 
             }
-            if(line.find("%FLAG ANGLES_INC_HYDROGEN") != string::npos)
+            else if(line.find("%FLAG ANGLES_INC_HYDROGEN") != string::npos)
             {
 
             }
-            if(line.find("%FLAG ANGLES_WITHOUT_HYDROGEN") != string::npos)
+            else if(line.find("%FLAG ANGLES_WITHOUT_HYDROGEN") != string::npos)
             {
 
             }
-            if(line.find("%FLAG DIHEDRALS_INC_HYDROGEN") != string::npos)
+            else if(line.find("%FLAG DIHEDRALS_INC_HYDROGEN") != string::npos)
             {
 
             }
-            if(line.find("%FLAG DIHEDRALS_WITHOUT_HYDROGEN") != string::npos)
+            else if(line.find("%FLAG DIHEDRALS_WITHOUT_HYDROGEN") != string::npos)
             {
 
             }
-            if(line.find("%FLAG EXCLUDED_ATOMS_LIST") != string::npos)
+            else if(line.find("%FLAG EXCLUDED_ATOMS_LIST") != string::npos)
             {
 
             }
-            if(line.find("%FLAG HBOND_ACOEF") != string::npos)
+            else if(line.find("%FLAG HBOND_ACOEF") != string::npos)
             {
 
             }
-            if(line.find("%FLAG HBOND_BCOEF") != string::npos)
+            else if(line.find("%FLAG HBOND_BCOEF") != string::npos)
             {
 
             }
-            if(line.find("%FLAG HBCUT") != string::npos)
+            else if(line.find("%FLAG HBCUT") != string::npos)
             {
 
             }
-            if(line.find("%FLAG AMBER_ATOM_TYPE") != string::npos)
+            else if(line.find("%FLAG AMBER_ATOM_TYPE") != string::npos)
             {
 
             }
-            if(line.find("%FLAG TREE_CHAIN_CLASSIFICATION") != string::npos)
+            else if(line.find("%FLAG TREE_CHAIN_CLASSIFICATION") != string::npos)
             {
 
             }
-            if(line.find("%FLAG JOIN_ARRAY") != string::npos)
+            else if(line.find("%FLAG JOIN_ARRAY") != string::npos)
             {
 
             }
-            if(line.find("%FLAG IROTAT") != string::npos)
+            else if(line.find("%FLAG IROTAT") != string::npos)
             {
 
             }
-            if(line.find("%FLAG RADIUS_SET") != string::npos)
+            else if(line.find("%FLAG RADIUS_SET") != string::npos)
             {
 
             }
-            if(line.find("%FLAG RADII") != string::npos)
+            else if(line.find("%FLAG RADII") != string::npos)
             {
 
             }
-            if(line.find("%FLAG SCREEN") != string::npos)
+            else if(line.find("%FLAG SCREEN") != string::npos)
             {
 
             }
-            if(line.find("%FLAG IPOL") != string::npos)
+            else if(line.find("%FLAG IPOL") != string::npos)
             {
 
             }
-            //    if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
-            //    {
+            else if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
+            {
 
-            //    }
-            //    if(line.find("%FLAG ATOMS_PER_MOLECULE") != string::npos)
-            //    {
+            }
+            else if(line.find("%FLAG ATOMS_PER_MOLECULE") != string::npos)
+            {
 
-            //    }
-            //    if(line.find("%FLAG BOX_DIMENSIONS") != string::npos)
-            //    {
+            }
+            else if(line.find("%FLAG BOX_DIMENSIONS") != string::npos)
+            {
 
-            //    }
-            //    if(line.find("%FLAG CAP_INFO") != string::npos)
-            //    {
+            }
+            else if(line.find("%FLAG CAP_INFO") != string::npos)
+            {
 
-            //    }
-            //    if(line.find("%FLAG CAP_INFO2") != string::npos)
-            //    {
+            }
+            else if(line.find("%FLAG CAP_INFO2") != string::npos)
+            {
 
-            //    }
-            //    if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
-            //    {
+            }
+            else if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
+            {
 
-            //    }
+            }
+            else
+            {
+                // Ignore section
+            }
         }
         else
         {
@@ -723,6 +728,18 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
             temp << base * pow10(power);
             T item = ConvertString<T>(temp.str());
             items.push_back(item);
+        }
+        return items;
+    }
+    if(format.compare("1a80") == 0)
+    {
+        int number_of_items = 1;
+        int item_length = 80;
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        {
+            string token = line.substr(i*item_length, item_length);
+            token = Trim(token);
+            items.push_back(ConvertString<T>(token));
         }
         return items;
     }
