@@ -1,13 +1,13 @@
-
 #include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/assembly.hpp"
+#include "../../../includes/MolecularModeling/atom.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Residue::Residue() {}
+//Residue::Residue() {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -40,7 +40,7 @@ string Residue::GetDescription()
 {
     return description_;
 }
-Residue::Structure Residue::GetStructure()
+Residue::ResidueStructure Residue::GetStructure()
 {
     return structure_;
 }
@@ -80,7 +80,7 @@ void Residue::SetDescription(string description)
 {
     description_ = description;
 }
-void Residue::SetStructure(Structure structure)
+void Residue::SetStructure(ResidueStructure structure)
 {
     structure_ = structure;
 }
@@ -91,3 +91,4 @@ void Residue::SetStructure(Structure structure)
 void Residue::Print(ostream &out)
 {
 }
+

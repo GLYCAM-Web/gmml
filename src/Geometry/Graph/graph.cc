@@ -1,5 +1,6 @@
 
 #include "../../../includes/Geometry/Graph/graph.hpp"
+#include "../../../includes/Geometry/Graph/edge.hpp"
 
 using namespace std;
 using namespace Geometry;

@@ -5,9 +5,8 @@
 #include <iostream>
 #include <vector>
 
-#include "../../includes/Geometry/coordinate.hpp"
-#include "../../includes/Geometry/Graph/graph.hpp"
-#include "../Geometry/coordinate.hpp"
+#include "Geometry/coordinate.hpp"
+#include "Geometry/Graph/graph.hpp"
 
 namespace MolecularModeling
 {

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../includes/Geometry/Graph/graph.hpp"
+#include "Geometry/Graph/graph.hpp"
 
 namespace MolecularModeling
 {
@@ -17,8 +17,8 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            typedef Geometry::Graph<Atom*> ResidueStructure;
             typedef std::vector<Atom*> AtomVector;
-            typedef Geometry::Graph<Atom*> Structure;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -70,7 +70,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the structure graph
               * @return structure_ attribute of the current object of this class
               */
-            Structure GetStructure();
+            ResidueStructure GetStructure();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -128,7 +128,7 @@ namespace MolecularModeling
               * Set the structure_ attribute of the current residue
               * @param structure The structure attribute of the current object
               */
-            void SetStructure(Structure structure);
+            void SetStructure(ResidueStructure structure);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -151,10 +151,9 @@ namespace MolecularModeling
             Atom* tail_atom_;
             std::string chemical_type_;
             std::string description_;
-            Structure structure_;
+            ResidueStructure structure_;
 
     };
  }
-
 
 #endif // RESIDUE_HPP
