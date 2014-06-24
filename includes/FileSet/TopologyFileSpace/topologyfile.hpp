@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <vector>
 
 namespace TopologyFileSpace
 {
@@ -30,6 +31,8 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyFile();
+
+            TopologyFile(const std::string& top_file);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -141,9 +144,9 @@ namespace TopologyFileSpace
             int GetNumberOfDistinctHydrogenBonds();
             /*! \fn
               * An accessor function in order to access to the boolean attribute that indicates if topology file has perturbation
-              * @return has_perturbation_ attribute of the current object of this class
+              * @return perturbation_option attribute of the current object of this class
               */
-            bool GetHasPerturbation();
+            int GetPerturbationOption();
             /*! \fn
               * An accessor function in order to access to the number of bonds perturbed
               * @return number_of_bonds_perturbed_ attribute of the current object of this class
@@ -170,10 +173,15 @@ namespace TopologyFileSpace
               */
             int GetNumberOfAnglesGroupPerturbed();
             /*! \fn
-              * An accessor function in order to access to the boolean attribute that indicates if topology file has standard periodic box
-              * @return has_standard_periodic_box_ attribute of the current object of this class
+              * An accessor function in order to access to the number of dihedrals group perturbed
+              * @return number_of_dihedrals_group_perturbed_ attribute of the current object of this class
               */
-            bool GetHasStandardPeriodicBox();
+            int GetNumberOfDihedralsGroupPerturbed();
+            /*! \fn
+              * An accessor function in order to access to the boolean attribute that indicates if topology file has standard periodic box
+              * @return standard_periodic_box_option attribute of the current object of this class
+              */
+            int GetStandardPeriodicBoxOption();
             /*! \fn
               * An accessor function in order to access to the number of atoms in largest residue
               * @return number_of_atoms_in_largest_residue_ attribute of the current object of this class
@@ -181,9 +189,9 @@ namespace TopologyFileSpace
             int GetNumberOfAtomsInLargestResidue();
             /*! \fn
               * An accessor function in order to access to the boolean attribute that indicates if topology file has CAP option
-              * @return has_cap_option_ attribute of the current object of this class
+              * @return cap_option_ attribute of the current object of this class
               */
-            bool GetHasCapOption();
+            int GetCapOption();
             /*! \fn
               * An accessor function in order to access to the number of extra points
               * @return number_of_extra_points_ attribute of the current object of this class
@@ -346,10 +354,10 @@ namespace TopologyFileSpace
             void SetNumberOfDistinctHydrogenBonds(int number_of_distinct_hydrogen_bonds);
             /*! \fn
               * A mutator function in order to set the has perturbation attribute of the current object
-              * Set the has_perturbation_ attribute of the current topology file
-              * @param has_perturbation The has perturbation attribute of the current object
+              * Set the perturbation_option_ attribute of the current topology file
+              * @param perturbation_option The has perturbation attribute of the current object
               */
-            void SetHasPerturbation(bool has_perturbation);
+            void SetPerturbationOption(int perturbation_option);
             /*! \fn
               * A mutator function in order to set the number of bonds perturbed of the current object
               * Set the number_of_bonds_perturbed_ attribute of the current topology file
@@ -381,11 +389,17 @@ namespace TopologyFileSpace
               */
             void SetNumberOfAnglesGroupPerturbed(int number_of_angles_group_perturbed);
             /*! \fn
-              * A mutator function in order to set the has standard periodic box attribute of the current object
-              * Set the has_standard_periodic_box_ attribute of the current topology file
-              * @param has_standard_periodic_box The has standard periodic box attribute of the current object
+              * A mutator function in order to set the number of dihedrals group perturbed of the current object
+              * Set the number_of_dihedrals_group_perturbed_ attribute of the current topology file
+              * @param number_of_dihedrals_group_perturbed The number of dihedrals group perturbed attribute of the current object
               */
-            void SetHasStandardPeriodicBox(bool has_standard_periodic_box);
+            void SetNumberOfDihedralsGroupPerturbed(int number_of_dihedrals_group_perturbed);
+            /*! \fn
+              * A mutator function in order to set the has standard periodic box attribute of the current object
+              * Set the standard_periodic_box_option_ attribute of the current topology file
+              * @param standard_periodic_box_option The has standard periodic box attribute of the current object
+              */
+            void SetStandardPeriodicBoxOption(int standard_periodic_box_option);
             /*! \fn
               * A mutator function in order to set the number of atoms in largest residue attribute of the current object
               * Set the number_of_atoms_in_largest_residue_ attribute of the current topology file
@@ -394,10 +408,10 @@ namespace TopologyFileSpace
             void SetNumberOfAtomsInLargestResidue(int number_of_atoms_in_largest_residue);
             /*! \fn
               * A mutator function in order to set the has cap option attribute of the current object
-              * Set the has_cap_option_ attribute of the current topology file
-              * @param has_cap_option The has cap option attribute of the current object
+              * Set the cap_option_ attribute of the current topology file
+              * @param cap_option The has cap option attribute of the current object
               */
-            void SetHasCapOption(bool has_cap_option);
+            void SetCapOption(int cap_option);
             /*! \fn
               * A mutator function in order to set the number of extra points of the current object
               * Set the number_of_extra_points_ attribute of the current topology file
@@ -414,6 +428,16 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
+            void Read(std::ifstream& in_file);
+            void ParseSections(std::ifstream& in_stream);
+            void PartitionSection(std::ifstream& stream, std::string& line, std::stringstream& section);
+
+            void ParseTitlePartition(std::stringstream& stream);
+            void ParsePointersPartition(std::stringstream& stream);
+            std::vector<std::string> ParseAtomNameSection(std::stringstream& stream);
+
+            template<typename T>
+            std::vector<T> PartitionLine(std::string line, std::string format);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -450,22 +474,22 @@ namespace TopologyFileSpace
             int number_of_dihedral_types_;
             int number_of_atom_types_in_parameter_file_;
             int number_of_distinct_hydrogen_bonds_;
-            bool has_perturbation_;
+            int perturbation_option_;
             int number_of_bonds_perturbed_;
             int number_of_angles_perturbed_;
             int number_of_dihedrals_perturbed_;
             int number_of_bonds_group_perturbed_;
             int number_of_angles_group_perturbed_;
-            bool has_standard_periodic_box_;
+            int number_of_dihedrals_group_perturbed_;
+            int standard_periodic_box_option_;
             int number_of_atoms_in_largest_residue_;
-            bool has_cap_option_;
+            int cap_option_;
             int number_of_extra_points_;
             int number_of_beads_;
             TopologyAtomTypeMap atom_types_;
             TopologyBondTypeMap bond_types_;
             TopologyAngleTypeMap angle_types_;
             TopologyDihedralTypeMap dihedral_types_;
-
     };
 }
 
