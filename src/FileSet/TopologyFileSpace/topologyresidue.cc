@@ -13,6 +13,18 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyResidue::TopologyResidue() {}
 
+TopologyResidue::TopologyResidue(string residue_name, TopologyAtomMap atoms, int index, int starting_atom_index) :
+    residue_name_(residue_name), index_(index), starting_atom_index_(starting_atom_index)
+{
+    atoms_.clear();
+    for(TopologyAtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        string atom_name = *it.first;
+        TopologyAtom* atom = *it.second;
+        atoms_[atom_name] = atom;
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
