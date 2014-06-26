@@ -10,6 +10,11 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAtom::TopologyAtom() {}
 
+TopologyAtom::TopologyAtom(string atom_name, double atom_charge, int atomic_number, double atom_mass, int number_of_excluded_atoms,
+                           double radii, double screen, char tree_chain_classification) :
+    atom_name_(atom_name), atom_charge_(atom_charge), atomic_number_(atomic_number), atom_mass_(atom_mass), number_of_excluded_atoms_(number_of_excluded_atoms),
+    radii_(radii), screen_(screen), tree_chain_classification_(tree_chain_classification) {}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
