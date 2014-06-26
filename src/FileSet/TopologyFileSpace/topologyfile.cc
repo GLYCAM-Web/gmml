@@ -6,6 +6,9 @@
 #include "../../../includes/FileSet/TopologyFileSpace/topologybondtype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyangletype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 #include "../../../includes/utils.hpp"
 
@@ -589,6 +592,15 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             other << line << endl;
             getline(in_stream, line);
         }
+    }
+
+    TopologyAssembly::TopologyResidueMap residues;
+    for(vector<string>::iterator it = residue_labels.begin(); it != residue_labels.end(); it++)
+    {
+        string residue_name = *it;
+        residues[residue_name] = new TopologyResidue();
+        TopologyResidue::TopologyAtomMap atoms;
+
     }
 }
 
