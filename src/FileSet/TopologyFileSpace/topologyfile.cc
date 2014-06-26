@@ -594,14 +594,51 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
     }
 
+    for(int i = 0; i < number_of_atoms_; i++)
+    {
+        atom_types_[i] = new TopologyAtomType(atom_type_index, i);
+
+        for(int j = 0; j < number_of_atoms_; i++)
+        {
+            double coefficient_a;
+            double coefficient_b;
+            int index = nonbonded_parm_indexes.at(number_of_types_ * (atom_type_indexes.at(i) - 1) + atom_type_indexes.at(j));
+            if(index > 0)
+            {
+                coefficient_a = lennard_jones_acoefs.at(index);
+                coefficient_b = lennard_jones_bcoefs.at(index);
+            }
+            else
+            {
+                coefficient_a = hbond_acoefs.at(index);
+                coefficient_b = hbond_bcoefs.at(index);
+            }
+        }
+    }
     TopologyAssembly::TopologyResidueMap residues;
     for(vector<string>::iterator it = residue_labels.begin(); it != residue_labels.end(); it++)
     {
         string residue_name = *it;
-        residues[residue_name] = new TopologyResidue();
         TopologyResidue::TopologyAtomMap atoms;
-
+        int residue_index = distance(residue_labels.begin(), it) + 1;
+        int starting_atom_index = residue_pointers.at(residue_index);
+        int ending_atom_index;
+        if(residue_index < number_of_residues_)
+        {
+            ending_atom_index = residue_pointers.at(residue_index + 1);
+        }
+        else
+        {
+            ending_atom_index = number_of_atoms_;
+        }
+        for(int i = starting_atom_index - 1; i < ending_atom_index - 1; i++)
+        {
+            atoms[atom_names.at(i)] = new TopologyAtom(atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), number_excluded_atoms,
+                                                       radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
+        }
+        residues[residue_name] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);
     }
+    assembly_->SetAssemblyName(title_);
 }
 
 void TopologyFile::PartitionSection(ifstream &stream, string &line, stringstream& section)
