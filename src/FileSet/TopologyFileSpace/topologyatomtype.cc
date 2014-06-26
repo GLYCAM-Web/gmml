@@ -12,29 +12,43 @@ TopologyAtomType::TopologyAtomType() {}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string TopologyAtomType::GetAtomType()
+int TopologyAtomType::GetAtomTypeIndex()
 {
-    return atom_type_;
+    return atom_type_index_;
 }
-
 int TopologyAtomType::GetIndex()
 {
     return index_;
 }
-
-
+TopologyAtomType::TopologyCoefficientAMap TopologyAtomType::GetCoefficientA()
+{
+    return coefficient_a_;
+}
+TopologyAtomType::TopologyCoefficientBMap TopologyAtomType::GetCoefficientB()
+{
+    return coefficient_b_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAtomType::SetAtomType(const string atom_type)
+void TopologyAtomType::SetAtomTypeIndex(int atom_type_index)
 {
-    atom_type_ = atom_type;
+    atom_type_index_ = atom_type_index;
 }
 void TopologyAtomType::SetIndex(int index)
 {
     index_ = index;
 }
+void TopologyAtomType::SetCoefficientA(TopologyCoefficientAMap coefficient_a)
+{
+    coefficient_a_ = coefficient_a;
+}
+void TopologyAtomType::SetCoefficientB(TopologyCoefficientBMap coefficient_b)
+{
+    coefficient_b_ = coefficient_b;
+}
+
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////

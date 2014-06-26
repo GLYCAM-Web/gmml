@@ -36,6 +36,14 @@ TopologyResidue::TopologyDihedralMap TopologyResidue::GetDihedrals()
 {
     return dihedrals_;
 }
+int TopologyResidue::GetIndex()
+{
+    return index_;
+}
+int TopologyResidue::GetStartingAtomIndex()
+{
+    return starting_atom_index_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -43,6 +51,14 @@ TopologyResidue::TopologyDihedralMap TopologyResidue::GetDihedrals()
 void TopologyResidue::SetResidueName(const string residue_name)
 {
     residue_name_ = residue_name;
+}
+void TopologyResidue::SetIndex(int index)
+{
+    index_ = index;
+}
+void TopologyResidue::SetStartingAtomIndex(int starting_atom_index)
+{
+    starting_atom_index_ = starting_atom_index;
 }
 
 //////////////////////////////////////////////////////////

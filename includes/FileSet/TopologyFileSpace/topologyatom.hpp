@@ -8,8 +8,6 @@
 
 namespace TopologyFileSpace
 {
-    class TopologyAtomType;
-
     class TopologyAtom
     {
         public:
@@ -53,7 +51,7 @@ namespace TopologyFileSpace
               * An accessor function in order to access to the atom type
               * @return atom_type_ attribute of the current object of this class
               */
-            TopologyAtomType* GetAtomType();
+            std::string GetAtomType();
             /*! \fn
               * An accessor function in order to access to the excluded atoms
               * @return excluded_atoms_ attribute of the current object of this class
@@ -84,6 +82,11 @@ namespace TopologyFileSpace
               * @return lennard_jones_a_ attribute of the current object of this class
               */
             TopologyLennardJonesMap GetLennardJonesB();
+            /*! \fn
+              * An accessor function in order to access to the number of excluded atoms
+              * @return number_of_excluded_atoms_ attribute of the current object of this class
+              */
+            int GetNumberOfExcludedAtoms();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -117,7 +120,7 @@ namespace TopologyFileSpace
               * Set the atom_type_ attribute of the current topology atom
               * @param atom_type The atom type attribute of the current object
               */
-            void SetAtomType(TopologyAtomType atom_type);
+            void SetAtomType(std::string atom_type);
             /*! \fn
               * A mutator function in order to set the excluded atoms of the current object
               * Set the excluded_atoms_ attribute of the current topology atom
@@ -142,6 +145,12 @@ namespace TopologyFileSpace
               * @param tree_chain_classification The tree chain classification attribute of the current object
               */
             void SetTreeChainClasification(char tree_chain_classification);
+            /*! \fn
+              * A mutator function in order to set the number of excluded atoms of the current object
+              * Set the number_of_excluded_atoms_ attribute of the current topology atom
+              * @param number_of_excluded_atoms The number of excluded atoms attribute of the current object
+              */
+            void SetNumberOfExcludedAtoms(int number_of_excluded_atoms);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -165,13 +174,14 @@ namespace TopologyFileSpace
             double atom_charge_;
             int atomic_number_;
             double atom_mass_;
-            TopologyAtomType* atom_type_;
+            std::string atom_type_;
             std::vector<std::string> excluded_atoms_;
             double radii_;
             double screen_;
             char tree_chain_classification_;
             TopologyLennardJonesMap lennard_jones_a_;
             TopologyLennardJonesMap lennard_jones_b_;
+            int number_of_excluded_atoms_;
     };
 }
 

@@ -184,6 +184,10 @@ TopologyFile::TopologyDihedralTypeMap TopologyFile::GetDihedralTypes()
 {
     return dihedral_types_;
 }
+TopologyAssembly* TopologyFile::GetAssembly()
+{
+    return assembly_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -319,6 +323,10 @@ void TopologyFile::SetNumberOfExtraPoints(int number_of_extra_points)
 void TopologyFile::SetNumberOfBeads(int number_of_beads)
 {
     number_of_beads_ = number_of_beads;
+}
+void TopologyFile::SetAssembly(TopologyAssembly *assembly)
+{
+    assembly_ = assembly;
 }
 
 //////////////////////////////////////////////////////////

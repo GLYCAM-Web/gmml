@@ -60,6 +60,16 @@ namespace TopologyFileSpace
               * @return dihedrals_ attribute of the current object of this class
               */
             TopologyDihedralMap GetDihedrals();
+            /*! \fn
+              * An accessor function in order to access to the index
+              * @return index_ attribute of the current object of this class
+              */
+            int GetIndex();
+            /*! \fn
+              * An accessor function in order to access to the starting atom index
+              * @return starting_atom_index_ attribute of the current object of this class
+              */
+            int GetStartingAtomIndex();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -70,6 +80,18 @@ namespace TopologyFileSpace
               * @param residue_name The residue name attribute of the current object
               */
             void SetResidueName(std::string residue_name);
+            /*! \fn
+              * A mutator function in order to set the index of the current object
+              * Set the index_ attribute of the current topology residue
+              * @param index The index attribute of the current object
+              */
+            void SetIndex(int index);
+            /*! \fn
+              * A mutator function in order to set the starting atom residue of the current object
+              * Set the starting_atom_residue_ attribute of the current topology residue
+              * @param starting_atom_index The starting atom index attribute of the current object
+              */
+            void SetStartingAtomIndex(int starting_atom_index);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -94,6 +116,8 @@ namespace TopologyFileSpace
             TopologyBondMap bonds_;
             TopologyAngleMap angles_;
             TopologyDihedralMap dihedrals_;
+            int index_;
+            int starting_atom_index_;
 
     };
 }

@@ -29,7 +29,7 @@ double TopologyAtom::GetAtomMass()
 {
     return atom_mass_;
 }
-TopologyAtomType* TopologyAtom::GetAtomType()
+string TopologyAtom::GetAtomType()
 {
     return atom_type_;
 }
@@ -56,6 +56,10 @@ TopologyAtom::TopologyLennardJonesMap TopologyAtom::GetLennardJonesA()
 TopologyAtom::TopologyLennardJonesMap TopologyAtom::GetLennardJonesB()
 {
     return lennard_jones_b_;
+}
+int TopologyAtom::GetNumberOfExcludedAtoms()
+{
+    return number_of_excluded_atoms_;
 }
 
 //////////////////////////////////////////////////////////
@@ -97,7 +101,10 @@ void TopologyAtom::SetTreeChainClasification(char tree_chain_classification)
 {
     tree_chain_classification_ = tree_chain_classification;
 }
-
+void TopologyAtom::SetNumberOfExcludedAtoms(int number_of_excluded_atoms)
+{
+    number_of_excluded_atoms_ = number_of_excluded_atoms;
+}
 
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //

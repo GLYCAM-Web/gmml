@@ -12,10 +12,6 @@ TopologyAngleType::TopologyAngleType() {}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-vector<string> TopologyAngleType::GetAngleTypes()
-{
-    return angle_types_;
-}
 int TopologyAngleType::GetIndex()
 {
     return index_;
@@ -33,14 +29,6 @@ double TopologyAngleType::GetEquilibriumValue()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAngleType::SetAngleTypes(vector<string> angle_types)
-{   
-    angle_types_.clear();
-    for(vector<string>::iterator it = angle_types.begin(); it != angle_types.end(); it++)
-    {
-        angle_types_.push_back(*it);
-    }
-}
 void TopologyAngleType::SetIndex(int index)
 {
     index_ = index;

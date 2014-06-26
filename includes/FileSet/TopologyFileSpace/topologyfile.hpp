@@ -12,6 +12,7 @@ namespace TopologyFileSpace
     class TopologyBondType;
     class TopologyAngleType;
     class TopologyDihedralType;
+    class TopologyAssembly;
 
     class TopologyFile
     {
@@ -222,6 +223,11 @@ namespace TopologyFileSpace
               * @return atom_types_ attribute of the current object of this class
               */
             TopologyDihedralTypeMap GetDihedralTypes();
+            /*! \fn
+              * An accessor function in order to access to the assembly
+              * @return assembly_ attribute of the current object of this class
+              */
+            TopologyAssembly* GetAssembly();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -424,6 +430,12 @@ namespace TopologyFileSpace
               * @param number_of_beads The number of beads attribute of the current object
               */
             void SetNumberOfBeads(int number_of_beads);
+            /*! \fn
+              * A mutator function in order to set the assembly for the current object
+              * Set the assembly_ attribute of the current topology file
+              * @param assembly The number of beads attribute of the current object
+              */
+            void SetAssembly(TopologyAssembly* assembly);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -491,6 +503,7 @@ namespace TopologyFileSpace
             TopologyBondTypeMap bond_types_;
             TopologyAngleTypeMap angle_types_;
             TopologyDihedralTypeMap dihedral_types_;
+            TopologyAssembly* assembly_;
     };
 }
 

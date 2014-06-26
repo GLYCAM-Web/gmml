@@ -12,10 +12,6 @@ TopologyDihedralType::TopologyDihedralType() {}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-vector<string> TopologyDihedralType::GetDihedralTypes()
-{
-    return dihedral_types_;
-}
 int TopologyDihedralType::GetIndex()
 {
     return index_;
@@ -33,14 +29,6 @@ double TopologyDihedralType::GetPhase()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyDihedralType::SetDihedralType(vector<string> dihedral_types)
-{
-    dihedral_types_.clear();
-    for(vector<string>::iterator it = dihedral_types.begin(); it != dihedral_types.end(); it++)
-    {
-        dihedral_types_.push_back(*it);
-    }
-}
 void TopologyDihedralType::SetIndex(int index)
 {
     index_ = index;
