@@ -339,6 +339,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     }
     stringstream other;
     vector<string> atom_names = vector<string>();
+    vector<double> atom_charges = vector<double>();
     while(!line.empty())
     {
         if(line.find("%FLAG") != string::npos)
@@ -735,6 +736,18 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
     {
         int number_of_items = 1;
         int item_length = 80;
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        {
+            string token = line.substr(i*item_length, item_length);
+            token = Trim(token);
+            items.push_back(ConvertString<T>(token));
+        }
+        return items;
+    }
+    if(format.compare("1I8") == 0)
+    {
+        int number_of_items = 1;
+        int item_length = 8;
         for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
         {
             string token = line.substr(i*item_length, item_length);
