@@ -10,11 +10,7 @@ namespace TopologyFileSpace
 {
     class TopologyAtom
     {
-        public:
-            //////////////////////////////////////////////////////////
-            //                       TYPE DEFINITION                //
-            //////////////////////////////////////////////////////////
-            typedef std::map<std::string, double> TopologyLennardJonesMap;
+        public:                        
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -73,22 +69,17 @@ namespace TopologyFileSpace
               * An accessor function in order to access to the tree chain classification
               * @return tree_chain_classification_ attribute of the current object of this class
               */
-            char GetTreeChainClassification();
-            /*! \fn
-              * An accessor function in order to access to the lennard jones A
-              * @return lennard_jones_a_ attribute of the current object of this class
-              */
-            TopologyLennardJonesMap GetLennardJonesA();
-            /*! \fn
-              * An accessor function in order to access to the lennard jones b
-              * @return lennard_jones_a_ attribute of the current object of this class
-              */
-            TopologyLennardJonesMap GetLennardJonesB();
+            std::string GetTreeChainClassification();
             /*! \fn
               * An accessor function in order to access to the number of excluded atoms
               * @return number_of_excluded_atoms_ attribute of the current object of this class
               */
             int GetNumberOfExcludedAtoms();
+            /*! \fn
+              * An accessor function in order to access to the type
+              * @return type_ attribute of the current object of this class
+              */
+            std::string GetType();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -146,13 +137,19 @@ namespace TopologyFileSpace
               * Set the tree_chain_classification_ attribute of the current topology atom
               * @param tree_chain_classification The tree chain classification attribute of the current object
               */
-            void SetTreeChainClasification(char tree_chain_classification);
+            void SetTreeChainClasification(std::string tree_chain_classification);
             /*! \fn
               * A mutator function in order to set the number of excluded atoms of the current object
               * Set the number_of_excluded_atoms_ attribute of the current topology atom
               * @param number_of_excluded_atoms The number of excluded atoms attribute of the current object
               */
             void SetNumberOfExcludedAtoms(int number_of_excluded_atoms);
+            /*! \fn
+              * A mutator function in order to set the type of the current object
+              * Set the type_ attribute of the current topology atom
+              * @param type The type attribute of the current object
+              */
+            void SetType(std::string type);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -180,10 +177,9 @@ namespace TopologyFileSpace
             std::vector<std::string> excluded_atoms_;
             double radii_;
             double screen_;
-            char tree_chain_classification_;
-            TopologyLennardJonesMap lennard_jones_a_;
-            TopologyLennardJonesMap lennard_jones_b_;
+            std::string tree_chain_classification_;
             int number_of_excluded_atoms_;
+            std::string type_;
     };
 }
 

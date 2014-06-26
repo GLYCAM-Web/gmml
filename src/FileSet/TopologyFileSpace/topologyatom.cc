@@ -50,21 +50,17 @@ double TopologyAtom::GetScreen()
 {
     return screen_;
 }
-char TopologyAtom::GetTreeChainClassification()
+string TopologyAtom::GetTreeChainClassification()
 {
     return tree_chain_classification_;
-}
-TopologyAtom::TopologyLennardJonesMap TopologyAtom::GetLennardJonesA()
-{
-    return lennard_jones_a_;
-}
-TopologyAtom::TopologyLennardJonesMap TopologyAtom::GetLennardJonesB()
-{
-    return lennard_jones_b_;
 }
 int TopologyAtom::GetNumberOfExcludedAtoms()
 {
     return number_of_excluded_atoms_;
+}
+string TopologyAtom::GetType()
+{
+    return type_;
 }
 
 //////////////////////////////////////////////////////////
@@ -102,13 +98,17 @@ void TopologyAtom::SetScreen(double screen)
 {
     screen_ = screen;
 }
-void TopologyAtom::SetTreeChainClasification(char tree_chain_classification)
+void TopologyAtom::SetTreeChainClasification(std::string tree_chain_classification)
 {
     tree_chain_classification_ = tree_chain_classification;
 }
 void TopologyAtom::SetNumberOfExcludedAtoms(int number_of_excluded_atoms)
 {
     number_of_excluded_atoms_ = number_of_excluded_atoms;
+}
+void TopologyAtom::SetType(string type)
+{
+    type_ = type;
 }
 
 //////////////////////////////////////////////////////////
