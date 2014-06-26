@@ -434,7 +434,8 @@ namespace TopologyFileSpace
 
             void ParseTitlePartition(std::stringstream& stream);
             void ParsePointersPartition(std::stringstream& stream);
-            std::vector<std::string> ParseAtomNameSection(std::stringstream& stream);
+            template<typename T>
+            std::vector<T> ParsePartition(std::stringstream& stream);
 
             template<typename T>
             std::vector<T> PartitionLine(std::string line, std::string format);
