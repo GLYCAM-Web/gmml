@@ -32,6 +32,8 @@ namespace TopologyFileSpace
               */
             TopologyResidue();
 
+            TopologyResidue(std::string residue_name, TopologyAtomMap atoms, int index, int starting_atom_index);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

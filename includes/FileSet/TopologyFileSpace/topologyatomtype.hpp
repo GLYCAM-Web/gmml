@@ -24,6 +24,8 @@ namespace TopologyFileSpace
               */
             TopologyAtomType();
 
+            TopologyAtomType(int atom_type_index, int index);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
