@@ -22,11 +22,6 @@ namespace TopologyFileSpace
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * An accessor function in order to access to the dihedral type
-              * @return angle_type_ attribute of the current object of this class
-              */
-            std::vector<std::string> GetDihedralTypes();
-            /*! \fn
               * An accessor function in order to access to the dihedral type index
               * @return index_ attribute of the current object of this class
               */
@@ -55,12 +50,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            /*! \fn
-              * A mutator function in order to set the angle type of the current object
-              * Set the angle_type_ attribute of the current topology dihedral type
-              * @param angle_type The angle type attribute of the current object
-              */
-            void SetDihedralType(std::vector<std::string> dihedral_types);
             /*! \fn
               * A mutator function in order to set the index of the current object
               * Set the index_ attribute of the current topology dihedral type
@@ -110,7 +99,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::vector<std::string> dihedral_types_;
             int index_;
             double periodicity_;
             double phase_;

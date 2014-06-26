@@ -22,11 +22,6 @@ namespace TopologyFileSpace
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * An accessor function in order to access to the bond type
-              * @return bond_type_ attribute of the current object of this class
-              */
-            std::vector<std::string> GetBondTypes();
-            /*! \fn
               * An accessor function in order to access to the bond type index
               * @return index_ attribute of the current object of this class
               */
@@ -45,12 +40,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            /*! \fn
-              * A mutator function in order to set the bond type of the current object
-              * Set the bond_type_ attribute of the current topology bond type
-              * @param bond_type The bond type attribute of the current object
-              */
-            void SetBondTypes(std::vector<std::string> bond_types);
             /*! \fn
               * A mutator function in order to set the index of the current object
               * Set the index_ attribute of the current topology bond type
@@ -88,7 +77,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::vector<std::string> bond_types_;
             int index_;
             double force_constant_;
             double equilibrium_value_;
