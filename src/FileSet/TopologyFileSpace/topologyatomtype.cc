@@ -42,11 +42,23 @@ void TopologyAtomType::SetIndex(int index)
 }
 void TopologyAtomType::SetCoefficientA(TopologyCoefficientAMap coefficient_a)
 {
-    coefficient_a_ = coefficient_a;
+    coefficient_a_.clear();
+    for(TopologyCoefficientAMap::iterator it = coefficient_a.begin(); it != coefficient_a.end(); it++)
+    {
+       double coefficienta = (*it).second;
+       int atom_type_index = (*it).first;
+       coefficient_a_[atom_type_index] = coefficienta;
+    }
 }
 void TopologyAtomType::SetCoefficientB(TopologyCoefficientBMap coefficient_b)
 {
-    coefficient_b_ = coefficient_b;
+    coefficient_b_.clear();
+    for(TopologyCoefficientBMap::iterator it = coefficient_b.begin(); it != coefficient_b.end(); it++)
+    {
+       double coefficientb = (*it).second;
+       int atom_type_index = (*it).first;
+       coefficient_b_[atom_type_index] = coefficientb;
+    }
 }
 
 //////////////////////////////////////////////////////////

@@ -70,6 +70,30 @@ namespace TopologyFileSpace
               * @param assembly_name The assembly name attribute of the current object
               */
             void SetAssemblyName(std::string assembly_name);
+            /*! \fn
+              * A mutator function in order to set the residues of the current object
+              * Set the residues_ attribute of the current topology assembly
+              * @param residues The residues attribute of the current object
+              */
+            void SetResidues(TopologyResidueMap residues);
+            /*! \fn
+              * A mutator function in order to set the bonds of the current object
+              * Set the bonds_ attribute of the current topology assembly
+              * @param bonds The bonds attribute of the current object
+              */
+            void SetBonds(TopologyBondMap bonds);
+            /*! \fn
+              * A mutator function in order to set the angles of the current object
+              * Set the angles_ attribute of the current topology assembly
+              * @param angles The angles attribute of the current object
+              */
+            void SetAngles(TopologyAngleMap angles);
+            /*! \fn
+              * A mutator function in order to set the dihedrals of the current object
+              * Set the dihedrals_ attribute of the current topology assembly
+              * @param dihedrals The dihedrals attribute of the current object
+              */
+            void SetDihedrals(TopologyDihedralMap dihedrals);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
