@@ -339,7 +339,41 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     }
     stringstream other;
     vector<string> atom_names = vector<string>();
-    vector<double> atom_charges = vector<double>();
+    vector<double> charges = vector<double>();
+    vector<int> atomic_numbers = vector<int>();
+    vector<double> masses = vector<double>();
+    vector<int> atom_type_indexes = vector<int>();
+    vector<int> number_excluded_atoms = vector<int>();
+    vector<int> nonbonded_parm_indexes = vector<int>();
+    vector<string> residue_labels = vector<string>();
+    vector<int> residue_pointers = vector<int>();
+    vector<double> bond_force_constants = vector<double>();
+    vector<double> bond_equil_values = vector<double>();
+    vector<double> angle_force_constants = vector<double>();
+    vector<double> angle_equil_values = vector<double>();
+    vector<double> dihedral_force_constants = vector<double>();
+    vector<double> dihedral_periodicities = vector<double>();
+    vector<double> dihedral_phases = vector<double>();
+    vector<double> scee_scale_factors = vector<double>();
+    vector<double> scnb_scale_factors = vector<double>();
+    vector<double> lennard_jones_acoefs = vector<double>();
+    vector<double> lennard_jones_bcoefs = vector<double>();
+    vector<int> bonds_inc_hydrogens = vector<int>();
+    vector<int> bonds_without_hydrogens = vector<int>();
+    vector<int> angles_inc_hydrogens = vector<int>();
+    vector<int> angles_without_hydrogens = vector<int>();
+    vector<int> dihedrals_inc_hydrogens = vector<int>();
+    vector<int> dihedrals_without_hydrogens = vector<int>();
+    vector<int> excluded_atoms_lists = vector<int>();
+    vector<double> hbond_acoefs = vector<double>();
+    vector<double> hbond_bcoefs = vector<double>();
+    vector<double> hb_cuts = vector<double>();
+    vector<string> amber_atom_types = vector<string>();
+    vector<string> tree_chain_classifications = vector<string>();
+    vector<string> radius_sets = vector<string>();
+    vector<double> radiis = vector<double>();
+    vector<double> screens = vector<double>();
+    vector<int> ipols = vector<int>();
     while(!line.empty())
     {
         if(line.find("%FLAG") != string::npos)
@@ -358,76 +392,76 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             else if(in_line.find("%FLAG ATOM_NAME") != string::npos)
             {
-                atom_names = ParseAtomNameSection(section);
+                atom_names = ParsePartition<string>(section);
                 // TODO: Use atom_names to build the structure
             }
             else if(line.find("%FLAG CHARGE") != string::npos)
             {
-
+                charges = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG ATOMIC_NUMBER") != string::npos)
             {
-
+                atomic_numbers = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG MASS") != string::npos)
             {
-
+                masses = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG ATOM_TYPE_INDEX") != string::npos)
             {
-
+                atom_type_indexes = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG NUMBER_EXCLUDED_ATOMS") != string::npos)
             {
-
+                number_excluded_atoms =ParsePartition<int>(section);
             }
             else if(line.find("%FLAG NONBONDED_PARM_INDEX") != string::npos)
             {
-
+                nonbonded_parm_indexes = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG RESIDUE_LABEL") != string::npos)
             {
-
+                residue_labels = ParsePartition<string>(section);
             }
             else if(line.find("%FLAG RESIDUE_POINTER") != string::npos)
             {
-
+                residue_pointers = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG BOND_FORCE_CONSTANT") != string::npos)
             {
-
+                bond_force_constants = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG BOND_EQUIL_VALUE") != string::npos)
             {
-
+                bond_equil_values = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG ANGLE_FORCE_CONSTANT") != string::npos)
             {
-
+                angle_force_constants = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG ANGLE_EQUIL_VALUE") != string::npos)
             {
-
+                angle_equil_values = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG DIHEDRAL_FORCE_CONSTANT") != string::npos)
             {
-
+                dihedral_force_constants = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG DIHEDRAL_PERIODICITY") != string::npos)
             {
-
+                dihedral_periodicities = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG DIHEDRAL_PHASE") != string::npos)
             {
-
+                dihedral_phases = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG SCEE_SCLAE_FACTOR") != string::npos)
             {
-
+                scee_scale_factors = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG SCNB_SCALE_FACTOR") != string::npos)
             {
-
+                scnb_scale_factors = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG SOLTY") != string::npos)
             {
@@ -435,59 +469,59 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             else if(line.find("%FLAG LENNARD_JONES_ACOEF") != string::npos)
             {
-
+                lennard_jones_acoefs = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG LENNARD_JONES_BCOEF") != string::npos)
             {
-
+                lennard_jones_bcoefs = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG BONDS_INC_HYDROGEN") != string::npos)
             {
-
+                bonds_inc_hydrogens = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG BONDS_WITHOUT_HYDROGEN") != string::npos)
             {
-
+                bonds_without_hydrogens = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG ANGLES_INC_HYDROGEN") != string::npos)
             {
-
+                angles_inc_hydrogens = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG ANGLES_WITHOUT_HYDROGEN") != string::npos)
             {
-
+                angles_without_hydrogens = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG DIHEDRALS_INC_HYDROGEN") != string::npos)
             {
-
+                dihedrals_inc_hydrogens = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG DIHEDRALS_WITHOUT_HYDROGEN") != string::npos)
             {
-
+                dihedrals_without_hydrogens = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG EXCLUDED_ATOMS_LIST") != string::npos)
             {
-
+                excluded_atoms_lists = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG HBOND_ACOEF") != string::npos)
             {
-
+                hbond_acoefs = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG HBOND_BCOEF") != string::npos)
             {
-
+                hbond_bcoefs = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG HBCUT") != string::npos)
             {
-
+                hb_cuts = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG AMBER_ATOM_TYPE") != string::npos)
             {
-
+                amber_atom_types = ParsePartition<string>(section);
             }
             else if(line.find("%FLAG TREE_CHAIN_CLASSIFICATION") != string::npos)
             {
-
+                tree_chain_classifications = ParsePartition<string>(section);
             }
             else if(line.find("%FLAG JOIN_ARRAY") != string::npos)
             {
@@ -499,19 +533,19 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             else if(line.find("%FLAG RADIUS_SET") != string::npos)
             {
-
+                radius_sets = ParsePartition<string>(section);
             }
             else if(line.find("%FLAG RADII") != string::npos)
             {
-
+                radiis = ParsePartition<double>(section);
             }
             else if(line.find("%FLAG SCREEN") != string::npos)
             {
-
+                screens= ParsePartition<double>(section);
             }
             else if(line.find("%FLAG IPOL") != string::npos)
             {
-
+                ipols = ParsePartition<int>(section);
             }
             else if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
             {
@@ -659,14 +693,15 @@ void TopologyFile::ParsePointersPartition(stringstream &stream)
         number_of_beads_ = items.at(30);
 }
 
-vector<string> TopologyFile::ParseAtomNameSection(stringstream &stream)
+template<typename T>
+vector<T> TopologyFile::ParsePartition(stringstream &stream)
 {
     string line;
-    vector<string> atom_names = vector<string>();
+    vector<T> section = vector<T>();
     getline(stream, line);
     while(!line.empty())
     {
-        string format = "20a4";
+        string format;
         if(line[0] == '%')
         {
             if(line.find("%FORMAT") != string::npos)
@@ -676,16 +711,17 @@ vector<string> TopologyFile::ParseAtomNameSection(stringstream &stream)
         }
         else
         {
-            vector<string> line_items = PartitionLine<string>(line, format);
-            for(vector<string>::iterator it = line_items.begin(); it != line_items.end(); it++)
+            vector<T> line_items = PartitionLine<T>(line, format);
+            for(typename vector<T>::iterator it = line_items.begin(); it != line_items.end(); it++)
             {
-                atom_names.push_back(*it);
+                section.push_back(*it);
             }
         }
         getline(stream, line);
     }
-    return atom_names;
+    return section;
 }
+
 
 template<typename T>
 vector<T> TopologyFile::PartitionLine(string line, string format)
