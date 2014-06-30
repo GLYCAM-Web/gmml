@@ -614,11 +614,13 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     }
     for(int i = 0; i < number_of_atoms_; i++)
     {
-        atom_types_[i] = new TopologyAtomType(atom_type_indexes.at(i), i);
-        TopologyAtomType::TopologyCoefficientAMap coefficient_a_map;
-        TopologyAtomType::TopologyCoefficientBMap coefficient_b_map;
+        string atom_type_1 = amber_atom_types.at(i);
+//        int atom_type_index =
+        TopologyAtomPair::TopologyCoefficientMap coefficient_a_map;
+        TopologyAtomPair::TopologyCoefficientMap coefficient_b_map;
         for(int j = 0; j < number_of_atoms_; i++)
         {
+            string atom_type_2 = amber_atom_types.at(j);
             double coefficient_a;
             double coefficient_b;
             int index = nonbonded_parm_indexes.at(number_of_types_ * (atom_type_indexes.at(i) - 1) + atom_type_indexes.at(j));
@@ -632,7 +634,10 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 coefficient_a = hbond_acoefs.at(index);
                 coefficient_b = hbond_bcoefs.at(index);
             }
+            coefficient_a_map[atom_type_2] = coefficient_a;
+            coefficient_b_map[atom_type_2] = coefficient_b;
         }
+
     }
 
     TopologyAssembly::TopologyResidueMap residues;
