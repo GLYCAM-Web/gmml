@@ -24,6 +24,7 @@ namespace TopologyFileSpace
             typedef std::map<int, TopologyBondType*> TopologyBondTypeMap;
             typedef std::map<int, TopologyAngleType*> TopologyAngleTypeMap;
             typedef std::map<int, TopologyDihedralType*> TopologyDihedralTypeMap;
+            typedef std::vector<std::string> RadiusSet;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -228,6 +229,8 @@ namespace TopologyFileSpace
               * @return assembly_ attribute of the current object of this class
               */
             TopologyAssembly* GetAssembly();
+
+            RadiusSet GetRadiusSet();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -437,6 +440,8 @@ namespace TopologyFileSpace
               */
             void SetAssembly(TopologyAssembly* assembly);
 
+            void SetRadiusSet(RadiusSet radius_set);
+
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
@@ -504,6 +509,7 @@ namespace TopologyFileSpace
             TopologyAngleTypeMap angle_types_;
             TopologyDihedralTypeMap dihedral_types_;
             TopologyAssembly* assembly_;
+            RadiusSet radius_set_;
     };
 }
 

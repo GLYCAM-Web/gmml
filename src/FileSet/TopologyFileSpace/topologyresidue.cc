@@ -19,8 +19,8 @@ TopologyResidue::TopologyResidue(string residue_name, TopologyAtomMap atoms, int
     atoms_.clear();
     for(TopologyAtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
-        string atom_name = *it.first;
-        TopologyAtom* atom = *it.second;
+        string atom_name = (*it).first;
+        TopologyAtom* atom = (*it).second;
         atoms_[atom_name] = atom;
     }
 }

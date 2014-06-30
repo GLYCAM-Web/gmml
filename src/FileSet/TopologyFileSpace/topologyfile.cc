@@ -192,6 +192,11 @@ TopologyAssembly* TopologyFile::GetAssembly()
     return assembly_;
 }
 
+TopologyFile::RadiusSet TopologyFile::GetRadiusSet()
+{
+    return radius_set_;
+}
+
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -330,6 +335,15 @@ void TopologyFile::SetNumberOfBeads(int number_of_beads)
 void TopologyFile::SetAssembly(TopologyAssembly *assembly)
 {
     assembly_ = assembly;
+}
+
+void TopologyFile::SetRadiusSet(RadiusSet radius_set)
+{
+    radius_set_.clear();
+    for(RadiusSet::iterator it = radius_set.begin(); it != radius_set.end(); it++)
+    {
+        radius_set_.push_back(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -594,10 +608,15 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
     }
 
+    for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end; it++)
+    {
+        radius_set_.push_back(*it);
+    }
     for(int i = 0; i < number_of_atoms_; i++)
     {
-        atom_types_[i] = new TopologyAtomType(atom_type_index, i);
-
+        atom_types_[i] = new TopologyAtomType(atom_type_indexes.at(i), i);
+        TopologyAtomType::TopologyCoefficientAMap coefficient_a_map;
+        TopologyAtomType::TopologyCoefficientBMap coefficient_b_map;
         for(int j = 0; j < number_of_atoms_; i++)
         {
             double coefficient_a;
@@ -615,6 +634,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
         }
     }
+
     TopologyAssembly::TopologyResidueMap residues;
     for(vector<string>::iterator it = residue_labels.begin(); it != residue_labels.end(); it++)
     {
@@ -633,7 +653,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int i = starting_atom_index - 1; i < ending_atom_index - 1; i++)
         {
-            atoms[atom_names.at(i)] = new TopologyAtom(atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), number_excluded_atoms,
+            atoms[atom_names.at(i)] = new TopologyAtom(atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), number_excluded_atoms.at(i),
                                                        radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
         }
         residues[residue_name] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);
