@@ -18,6 +18,8 @@ namespace TopologyFileSpace
               */
             TopologyDihedralType();
 
+            TopologyDihedralType(int index, double force_constant, double periodicity, double phase, double scee, double scnb);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

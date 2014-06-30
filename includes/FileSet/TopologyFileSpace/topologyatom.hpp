@@ -10,7 +10,11 @@ namespace TopologyFileSpace
 {
     class TopologyAtom
     {
-        public:                        
+        public:
+            //////////////////////////////////////////////////////////
+            //                       TYPE DEFINITION                //
+            //////////////////////////////////////////////////////////
+            typedef std::vector<std::string> ExcludedAtomNames;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -19,8 +23,8 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyAtom();
-            TopologyAtom(std::string atom_name, std::string type, double atom_charge, int atomic_number, double atom_mass, int number_of_excluded_atoms,
-                         double radii, double screen, std::string tree_chain_classification);
+            TopologyAtom(std::string atom_name, std::string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
+                         int number_of_excluded_atoms, double radii, double screen, std::string tree_chain_classification);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

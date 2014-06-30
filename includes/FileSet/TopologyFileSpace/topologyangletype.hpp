@@ -18,6 +18,7 @@ namespace TopologyFileSpace
               */
             TopologyAngleType();
 
+            TopologyAngleType(int index, double force_constant, double equilibrium_value);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

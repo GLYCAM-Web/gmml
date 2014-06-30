@@ -9,6 +9,9 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyBondType::TopologyBondType() {}
 
+TopologyBondType::TopologyBondType(int index, double force_constant, double equilibrium_value) :
+    index_(index), force_constant_(force_constant), equilibrium_value_(equilibrium_value) {}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
