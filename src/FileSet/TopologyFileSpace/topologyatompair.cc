@@ -46,8 +46,8 @@ void TopologyAtomPair::SetCoefficientA(TopologyCoefficientMap coefficient_a)
     for(TopologyCoefficientMap::iterator it = coefficient_a.begin(); it != coefficient_a.end(); it++)
     {
        double coefficienta = (*it).second;
-       int atom_type_index = (*it).first;
-       coefficient_a_[atom_type_index] = coefficienta;
+       string atom_type = (*it).first;
+       coefficient_a_[atom_type] = coefficienta;
     }
 }
 void TopologyAtomPair::SetCoefficientB(TopologyCoefficientMap coefficient_b)
@@ -56,8 +56,8 @@ void TopologyAtomPair::SetCoefficientB(TopologyCoefficientMap coefficient_b)
     for(TopologyCoefficientMap::iterator it = coefficient_b.begin(); it != coefficient_b.end(); it++)
     {
        double coefficientb = (*it).second;
-       int atom_type_index = (*it).first;
-       coefficient_b_[atom_type_index] = coefficientb;
+       string atom_type = (*it).first;
+       coefficient_b_[atom_type] = coefficientb;
     }
 }
 

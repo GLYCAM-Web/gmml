@@ -13,7 +13,7 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
-            typedef std::map<int, double> TopologyCoefficientMap;
+            typedef std::map<std::string, double> TopologyCoefficientMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //

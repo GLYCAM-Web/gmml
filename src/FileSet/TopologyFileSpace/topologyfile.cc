@@ -608,7 +608,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
     }
 
-    for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end; it++)
+    for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end(); it++)
     {
         radius_set_.push_back(*it);
     }
