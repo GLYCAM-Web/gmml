@@ -9,13 +9,28 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAtomPair::TopologyAtomPair() {}
 
+TopologyAtomPair::TopologyAtomPair(string atom_type, TopologyCoefficientMap coefficient_a_map, TopologyCoefficientMap coefficient_b_map) :
+    atom_type_(atom_type)
+{
+    coefficient_a_.clear();
+    for(TopologyCoefficientMap::iterator it = coefficient_a_map.begin(); it != coefficient_a_map.end(); it++)
+    {
+        string atom_type = (*it).first;
+        double coefficient = (*it).second;
+        coefficient_a_[atom_type] = coefficient;
+    }
+    coefficient_b_.clear();
+    for(TopologyCoefficientMap::iterator it = coefficient_b_map.begin(); it != coefficient_b_map.end(); it++)
+    {
+        string atom_type = (*it).first;
+        double coefficient = (*it).second;
+        coefficient_b_[atom_type] = coefficient;
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-int TopologyAtomPair::GetAtomTypeIndex()
-{
-    return atom_type_index_;
-}
 string TopologyAtomPair::GetAtomType()
 {
     return atom_type_;
@@ -32,10 +47,6 @@ TopologyAtomPair::TopologyCoefficientMap TopologyAtomPair::GetCoefficientB()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAtomPair::SetAtomTypeIndex(int atom_type_index)
-{
-    atom_type_index_ = atom_type_index;
-}
 void TopologyAtomPair::SetAtomType(string atom_type)
 {
     atom_type_ = atom_type;

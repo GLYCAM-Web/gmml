@@ -10,10 +10,17 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAtom::TopologyAtom() {}
 
-TopologyAtom::TopologyAtom(string atom_name, string type, double atom_charge, int atomic_number, double atom_mass, int number_of_excluded_atoms,
-                           double radii, double screen, string tree_chain_classification) :
+TopologyAtom::TopologyAtom(string atom_name, string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
+                           int number_of_excluded_atoms, double radii, double screen, string tree_chain_classification, string atom_type) :
     atom_name_(atom_name), type_(type), atom_charge_(atom_charge), atomic_number_(atomic_number), atom_mass_(atom_mass), number_of_excluded_atoms_(number_of_excluded_atoms),
-    radii_(radii), screen_(screen), tree_chain_classification_(tree_chain_classification) {}
+    radii_(radii), screen_(screen), tree_chain_classification_(tree_chain_classification)
+{
+    excluded_atoms_.clear();
+    for(ExcludedAtomNames::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
+    {
+        excluded_atoms_.push_back(*it);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
