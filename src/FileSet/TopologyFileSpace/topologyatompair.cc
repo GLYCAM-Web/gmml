@@ -9,8 +9,6 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAtomPair::TopologyAtomPair() {}
 
-TopologyAtomType::TopologyAtomType(int atom_type_index, int index) : atom_type_index_(atom_type_index), index_(index) {}
-
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
