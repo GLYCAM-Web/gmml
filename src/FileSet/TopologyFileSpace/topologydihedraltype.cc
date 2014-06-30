@@ -24,6 +24,10 @@ double TopologyDihedralType::GetPhase()
 {
     return phase_;
 }
+double TopologyDihedralType::GetForceConstant()
+{
+    return force_constant_;
+}
 
 
 //////////////////////////////////////////////////////////
@@ -49,6 +53,11 @@ void TopologyDihedralType::SetScnb(double scnb)
 {
     scnb_ = scnb;
 }
+void TopologyDihedralType::SetForceConstant(double force_constant)
+{
+    force_constant_ = force_constant;
+}
+
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////

@@ -46,6 +46,11 @@ namespace TopologyFileSpace
               * @return scnb_ attribute of the current object of this class
               */
             double GetScnb();
+            /*! \fn
+              * An accessor function in order to access to the dihedral type force constant
+              * @return force_constant_ attribute of the current object of this class
+              */
+            double GetForceConstant();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -80,6 +85,12 @@ namespace TopologyFileSpace
               * @param scnb The scnb attribute of the current object
               */
             void SetScnb(double scnb);
+            /*! \fn
+              * A mutator function in order to set the force constant of the current object
+              * Set the force_constant_ attribute of the current topology dihedral type
+              * @param force_constant The force constant attribute of the current object
+              */
+            void SetForceConstant(double force_constant);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -104,6 +115,7 @@ namespace TopologyFileSpace
             double phase_;
             double scee_;
             double scnb_;
+            double force_constant_;
 
     };
 }
