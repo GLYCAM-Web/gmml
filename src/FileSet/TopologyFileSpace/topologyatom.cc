@@ -1,6 +1,6 @@
 
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../includes/FileSet/TopologyFileSpace/topologyatomtype.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
 
 using namespace std;
 using namespace TopologyFileSpace;
@@ -28,10 +28,6 @@ int TopologyAtom::GetAtomicNumber()
 double TopologyAtom::GetAtomMass()
 {
     return atom_mass_;
-}
-string TopologyAtom::GetAtomType()
-{
-    return atom_type_;
 }
 vector<string> TopologyAtom::GetExcludedAtoms()
 {
