@@ -2,7 +2,7 @@
 #include <math.h>
 
 #include "../../../includes/FileSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../../includes/FileSet/TopologyFileSpace/topologyatomtype.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologybondtype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyangletype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
@@ -171,9 +171,9 @@ int TopologyFile::GetNumberOfBeads()
 {
     return number_of_beads_;
 }
-TopologyFile::TopologyAtomTypeMap TopologyFile::GetAtomTypes()
+TopologyFile::TopologyAtomPairMap TopologyFile::GetPairs()
 {
-    return atom_types_;
+    return pairs_;
 }
 TopologyFile::TopologyBondTypeMap TopologyFile::GetBondTypes()
 {

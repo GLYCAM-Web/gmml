@@ -1,5 +1,5 @@
 
-#include "../../../includes/FileSet/TopologyFileSpace/topologyatomtype.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
 
 using namespace std;
 using namespace TopologyFileSpace;
@@ -7,26 +7,26 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-TopologyAtomType::TopologyAtomType() {}
+TopologyAtomPair::TopologyAtomPair() {}
 
 TopologyAtomType::TopologyAtomType(int atom_type_index, int index) : atom_type_index_(atom_type_index), index_(index) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-int TopologyAtomType::GetAtomTypeIndex()
+int TopologyAtomPair::GetAtomTypeIndex()
 {
     return atom_type_index_;
 }
-int TopologyAtomType::GetIndex()
+string TopologyAtomPair::GetAtomType()
 {
-    return index_;
+    return atom_type_;
 }
-TopologyAtomType::TopologyCoefficientAMap TopologyAtomType::GetCoefficientA()
+TopologyAtomPair::TopologyCoefficientMap TopologyAtomPair::GetCoefficientA()
 {
     return coefficient_a_;
 }
-TopologyAtomType::TopologyCoefficientBMap TopologyAtomType::GetCoefficientB()
+TopologyAtomPair::TopologyCoefficientMap TopologyAtomPair::GetCoefficientB()
 {
     return coefficient_b_;
 }
@@ -34,28 +34,28 @@ TopologyAtomType::TopologyCoefficientBMap TopologyAtomType::GetCoefficientB()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAtomType::SetAtomTypeIndex(int atom_type_index)
+void TopologyAtomPair::SetAtomTypeIndex(int atom_type_index)
 {
     atom_type_index_ = atom_type_index;
 }
-void TopologyAtomType::SetIndex(int index)
+void TopologyAtomPair::SetAtomType(string atom_type)
 {
-    index_ = index;
+    atom_type_ = atom_type;
 }
-void TopologyAtomType::SetCoefficientA(TopologyCoefficientAMap coefficient_a)
+void TopologyAtomPair::SetCoefficientA(TopologyCoefficientMap coefficient_a)
 {
     coefficient_a_.clear();
-    for(TopologyCoefficientAMap::iterator it = coefficient_a.begin(); it != coefficient_a.end(); it++)
+    for(TopologyCoefficientMap::iterator it = coefficient_a.begin(); it != coefficient_a.end(); it++)
     {
        double coefficienta = (*it).second;
        int atom_type_index = (*it).first;
        coefficient_a_[atom_type_index] = coefficienta;
     }
 }
-void TopologyAtomType::SetCoefficientB(TopologyCoefficientBMap coefficient_b)
+void TopologyAtomPair::SetCoefficientB(TopologyCoefficientMap coefficient_b)
 {
     coefficient_b_.clear();
-    for(TopologyCoefficientBMap::iterator it = coefficient_b.begin(); it != coefficient_b.end(); it++)
+    for(TopologyCoefficientMap::iterator it = coefficient_b.begin(); it != coefficient_b.end(); it++)
     {
        double coefficientb = (*it).second;
        int atom_type_index = (*it).first;
@@ -70,7 +70,7 @@ void TopologyAtomType::SetCoefficientB(TopologyCoefficientBMap coefficient_b)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyAtomType::Print(ostream &out)
+void TopologyAtomPair::Print(ostream &out)
 {
 }
 

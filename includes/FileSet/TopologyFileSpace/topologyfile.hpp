@@ -8,7 +8,7 @@
 
 namespace TopologyFileSpace
 {
-    class TopologyAtomType;
+    class TopologyAtomPair;
     class TopologyBondType;
     class TopologyAngleType;
     class TopologyDihedralType;
@@ -20,7 +20,7 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::map<int, TopologyAtomType*> TopologyAtomTypeMap;
+            typedef std::map<std::string, TopologyAtomPair*> TopologyAtomPairMap;
             typedef std::map<int, TopologyBondType*> TopologyBondTypeMap;
             typedef std::map<int, TopologyAngleType*> TopologyAngleTypeMap;
             typedef std::map<int, TopologyDihedralType*> TopologyDihedralTypeMap;
@@ -204,10 +204,10 @@ namespace TopologyFileSpace
               */
             int GetNumberOfBeads();
             /*! \fn
-              * An accessor function in order to access to the atom types
-              * @return atom_types_ attribute of the current object of this class
+              * An accessor function in order to access to the pairs
+              * @return pairs_ attribute of the current object of this class
               */
-            TopologyAtomTypeMap GetAtomTypes();
+            TopologyAtomPairMap GetPairs();
             /*! \fn
               * An accessor function in order to access to the bond types
               * @return bond_types_ attribute of the current object of this class
@@ -499,7 +499,7 @@ namespace TopologyFileSpace
             int cap_option_;
             int number_of_extra_points_;
             int number_of_beads_;
-            TopologyAtomTypeMap atom_types_;
+            TopologyAtomPairMap pairs_;
             TopologyBondTypeMap bond_types_;
             TopologyAngleTypeMap angle_types_;
             TopologyDihedralTypeMap dihedral_types_;
