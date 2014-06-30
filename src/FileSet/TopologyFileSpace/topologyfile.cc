@@ -608,6 +608,22 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
     }
 
+    TopologyFile::TopologyBondTypeMap bond_types;
+    for(int i = 0; i < number_of_bond_types_; i++)
+    {
+        bond_types[i] = new TopologyBondType(i, bond_force_constants.at(i), bond_equil_values.at(i));
+    }
+    TopologyFile::TopologyAngleTypeMap angle_types;
+    for(int i = 0; i < number_of_angle_types_; i++)
+    {
+        angle_types[i] = new TopologyAngleType(i, angle_force_constants.at(i), angle_equil_values.at(i));
+    }
+    TopologyFile::TopologyDihedralTypeMap dihedral_types;
+    for(int i = 0; i < number_of_dihedral_types_; i++)
+    {
+        dihedral_types[i] = new TopologyDihedralType(i, dihedral_force_constants.at(i), dihedral_periodicities.at(i), dihedral_phases.at(i),
+                                                     scee_scale_factors.at(i), scnb_scale_factors.at(i));
+    }
     for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end(); it++)
     {
         radius_set_.push_back(*it);
@@ -615,7 +631,6 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     for(int i = 0; i < number_of_atoms_; i++)
     {
         string atom_type_1 = amber_atom_types.at(i);
-//        int atom_type_index =
         TopologyAtomPair::TopologyCoefficientMap coefficient_a_map;
         TopologyAtomPair::TopologyCoefficientMap coefficient_b_map;
         for(int j = 0; j < number_of_atoms_; i++)
@@ -637,6 +652,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             coefficient_a_map[atom_type_2] = coefficient_a;
             coefficient_b_map[atom_type_2] = coefficient_b;
         }
+        pairs_[atom_type_1] = new TopologyAtomPair(atom_type_1, coefficient_a_map, coefficient_b_map);
 
     }
 
@@ -658,12 +674,22 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int i = starting_atom_index - 1; i < ending_atom_index - 1; i++)
         {
-            atoms[atom_names.at(i)] = new TopologyAtom(atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), number_excluded_atoms.at(i),
-                                                       radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
+            TopologyAtom::ExcludedAtomNames excluded_atoms = TopologyAtom::ExcludedAtomNames();
+            int start_index = 0;
+            if(i > 0)
+                start_index += number_excluded_atoms.at(i-1);
+            for(int j = start_index; j < start_index + number_excluded_atoms.at(i) - 1; j++)
+            {
+                excluded_atoms.push_back(atom_names.at(excluded_atoms_lists.at(j)));
+            }
+            atoms[atom_names.at(i)] = new TopologyAtom(atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
+                                                       number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
         }
+        // Bonds, Angles, Dihedrals
         residues[residue_name] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);
     }
     assembly_->SetAssemblyName(title_);
+    assembly_->SetResidues(residues);
 }
 
 void TopologyFile::PartitionSection(ifstream &stream, string &line, stringstream& section)

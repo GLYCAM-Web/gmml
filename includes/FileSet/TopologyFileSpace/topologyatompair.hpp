@@ -23,14 +23,11 @@ namespace TopologyFileSpace
               */
             TopologyAtomPair();
 
+            TopologyAtomPair(std::string atom_type, TopologyCoefficientMap coefficient_a_map, TopologyCoefficientMap coefficient_b_map);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
-            //////////////////////////////////////////////////////////
-            /*! \fn
-              * An accessor function in order to access to the atom type index
-              * @return atom_type_index_ attribute of the current object of this class
-              */
-            int GetAtomTypeIndex();
+            //////////////////////////////////////////////////////////           
             /*! \fn
               * An accessor function in order to access to the atom type
               * @return atom_type_ attribute of the current object of this class
@@ -50,12 +47,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-            /*! \fn
-              * A mutator function in order to set the atom type index of the current object
-              * Set the atom_type_index_ attribute of the current topology atom type
-              * @param atom_type_index The atom type attribute of the current object
-              */
-            void SetAtomTypeIndex(int atom_type_index);
             /*! \fn
               * A mutator function in order to set the atom type of the current object
               * Set the atom_type_ attribute of the current topology atom type
@@ -93,7 +84,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int atom_type_index_;
             std::string atom_type_;
             TopologyCoefficientMap coefficient_a_;
             TopologyCoefficientMap coefficient_b_;
