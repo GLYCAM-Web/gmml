@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-#include "Geometry/coordinate.hpp"
+#include "../../Geometry/coordinate.hpp"
 
 /*! \namespace CoordinateFileSpace */
 namespace CoordinateFileSpace

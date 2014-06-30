@@ -46,11 +46,6 @@ namespace TopologyFileSpace
               */
             double GetAtomMass();
             /*! \fn
-              * An accessor function in order to access to the atom type
-              * @return atom_type_ attribute of the current object of this class
-              */
-            std::string GetAtomType();
-            /*! \fn
               * An accessor function in order to access to the excluded atoms
               * @return excluded_atoms_ attribute of the current object of this class
               */
@@ -108,12 +103,6 @@ namespace TopologyFileSpace
               * @param atom_mass The atom mass attribute of the current object
               */
             void SetAtomMass(double atom_mass);
-            /*! \fn
-              * A mutator function in order to set the atom type of the current object
-              * Set the atom_type_ attribute of the current topology atom
-              * @param atom_type The atom type attribute of the current object
-              */
-            void SetAtomType(std::string atom_type);
             /*! \fn
               * A mutator function in order to set the excluded atoms of the current object
               * Set the excluded_atoms_ attribute of the current topology atom
@@ -173,7 +162,6 @@ namespace TopologyFileSpace
             double atom_charge_;
             int atomic_number_;
             double atom_mass_;
-            std::string atom_type_;
             std::vector<std::string> excluded_atoms_;
             double radii_;
             double screen_;
