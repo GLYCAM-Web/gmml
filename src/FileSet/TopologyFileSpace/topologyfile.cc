@@ -608,26 +608,28 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
     }
 
-    TopologyFile::TopologyBondTypeMap bond_types;
+    // Bond types
     for(int i = 0; i < number_of_bond_types_; i++)
     {
-        bond_types[i] = new TopologyBondType(i, bond_force_constants.at(i), bond_equil_values.at(i));
+        bond_types_[i] = new TopologyBondType(i, bond_force_constants.at(i), bond_equil_values.at(i));
     }
-    TopologyFile::TopologyAngleTypeMap angle_types;
+    // Angle types
     for(int i = 0; i < number_of_angle_types_; i++)
     {
-        angle_types[i] = new TopologyAngleType(i, angle_force_constants.at(i), angle_equil_values.at(i));
+        angle_types_[i] = new TopologyAngleType(i, angle_force_constants.at(i), angle_equil_values.at(i));
     }
-    TopologyFile::TopologyDihedralTypeMap dihedral_types;
+    // Dihedral types
     for(int i = 0; i < number_of_dihedral_types_; i++)
     {
-        dihedral_types[i] = new TopologyDihedralType(i, dihedral_force_constants.at(i), dihedral_periodicities.at(i), dihedral_phases.at(i),
+        dihedral_types_[i] = new TopologyDihedralType(i, dihedral_force_constants.at(i), dihedral_periodicities.at(i), dihedral_phases.at(i),
                                                      scee_scale_factors.at(i), scnb_scale_factors.at(i));
     }
+    // Radius set
     for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end(); it++)
     {
         radius_set_.push_back(*it);
     }
+    // Lennard Jones coefficients for atom pairs
     for(int i = 0; i < number_of_atoms_; i++)
     {
         string atom_type_1 = amber_atom_types.at(i);
@@ -656,6 +658,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
     }
 
+    // Residues in topology file
     TopologyAssembly::TopologyResidueMap residues;
     for(vector<string>::iterator it = residue_labels.begin(); it != residue_labels.end(); it++)
     {
