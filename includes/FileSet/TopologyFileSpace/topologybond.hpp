@@ -7,6 +7,8 @@
 
 namespace TopologyFileSpace
 {
+    class TopologyBondType;
+
     class TopologyBond
     {
         public:
@@ -29,6 +31,11 @@ namespace TopologyFileSpace
               */
             std::vector<std::string> GetBonds();
             /*! \fn
+              * An accessor function in order to access to the bond type
+              * @return bond_type_ attribute of the current object of this class
+              */
+            TopologyBondType* GetBondType();
+            /*! \fn
               * An accessor function in order to access to boolean value that indicates if bond includes hydrogen
               * @return including_hydrogen_ attribute of the current object of this class
               */
@@ -43,6 +50,12 @@ namespace TopologyFileSpace
               * @param bonds The bonds attribute of the current object
               */
             void SetBonds(std::vector<std::string> bonds);
+            /*! \fn
+              * A mutator function in order to set the bond type of the current object
+              * Set the bond_type_ attribute of the current topology bond type
+              * @param bond_type The bond type attribute of the current object
+              */
+            void SetBondType(TopologyBondType* bond_type);
             /*! \fn
               * A mutator function in order to set the boolean including hydrogen attribute of the current object
               * Set the including_hydrogen_ attribute of the current topology bond type
@@ -69,7 +82,9 @@ namespace TopologyFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::vector<std::string> bonds_;
+            TopologyBondType* bond_type_;
             bool including_hydrogen_;
+
     };
 }
 
