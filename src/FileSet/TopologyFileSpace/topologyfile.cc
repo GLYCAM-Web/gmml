@@ -8,6 +8,9 @@
 #include "../../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologybond.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyangle.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologydihedral.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologybond.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyangle.hpp"
@@ -625,7 +628,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     for(int i = 0; i < number_of_dihedral_types_; i++)
     {
         dihedral_types_[i] = new TopologyDihedralType(i, dihedral_force_constants.at(i), dihedral_periodicities.at(i), dihedral_phases.at(i),
-                                                     scee_scale_factors.at(i), scnb_scale_factors.at(i));
+                                                      scee_scale_factors.at(i), scnb_scale_factors.at(i));
     }
     // Radius set
     for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end(); it++)
@@ -691,6 +694,111 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         TopologyBondType* bond_type = bond_types_[bonds_inc_hydrogens[j]-1];
         topology_bond->SetBondType(bond_type);
         topology_bond->SetIncludingHydrogen(false);
+    }
+    // Angles in topology file
+    TopologyAssembly::TopologyAngleMap angles;
+    // Angles including hydrogen
+    for(int i = 0; i < number_of_angles_including_hydrogen_; i++)
+    {
+        vector<string> angle_atoms = vector<string>();
+
+        int atom_index_1 = angles_inc_hydrogens.at(i*4) / 3;
+        int atom_index_2 = angles_inc_hydrogens.at(i*4+1) / 3;
+        int atom_index_3 = angles_inc_hydrogens.at(i*4+2) / 3;
+
+        angle_atoms.push_back(atom_names.at(atom_index_1));
+        angle_atoms.push_back(atom_names.at(atom_index_2));
+        angle_atoms.push_back(atom_names.at(atom_index_3));
+
+        TopologyAngle* angle = new TopologyAngle(angle_atoms);
+
+        angle->SetIncludingHydrogen(true);
+        angle->SetAnlgeType(angle_types_[angles_inc_hydrogens.at(i*4+3)]);
+
+        angles[angle_atoms] = angle;
+    }
+    // Angles excluding hydrogen
+    for(int i = 0; i < number_of_angles_excluding_hydrogen_; i++)
+    {
+        vector<string> angle_atoms = vector<string>();
+
+        int atom_index_1 = angles_without_hydrogens.at(i*4) / 3;
+        int atom_index_2 = angles_without_hydrogens.at(i*4+1) / 3;
+        int atom_index_3 = angles_without_hydrogens.at(i*4+2) / 3;
+
+        angle_atoms.push_back(atom_names.at(atom_index_1));
+        angle_atoms.push_back(atom_names.at(atom_index_2));
+        angle_atoms.push_back(atom_names.at(atom_index_3));
+
+        TopologyAngle* angle = new TopologyAngle(angle_atoms);
+
+        angle->SetIncludingHydrogen(true);
+        angle->SetAnlgeType(angle_types_[angles_without_hydrogens.at(i*4+3)]);
+
+        angles[angle_atoms] = angle;
+    }
+    // Dihedrals in topology file
+    TopologyAssembly::TopologyDihedralMap dihedrals;
+    // Dihedrals including hydrogen
+    for(int i = 0; i < number_of_dihedrals_including_hydrogen_; i++)
+    {
+        vector<string> dihedral_atoms = vector<string>();
+
+        int atom_index_1 = abs(dihedrals_inc_hydrogens.at(i*5)) / 3;
+        int atom_index_2 = abs(dihedrals_inc_hydrogens.at(i*5+1)) / 3;
+        int atom_index_3 = abs(dihedrals_inc_hydrogens.at(i*5+2)) / 3;
+        int atom_index_4 = abs(dihedrals_inc_hydrogens.at(i*5+3)) / 3;
+
+        dihedral_atoms.push_back(atom_names.at(atom_index_1));
+        dihedral_atoms.push_back(atom_names.at(atom_index_2));
+        dihedral_atoms.push_back(atom_names.at(atom_index_3));
+        dihedral_atoms.push_back(atom_names.at(atom_index_4));
+
+        TopologyDihedral* dihedral = new TopologyDihedral(dihedral_atoms);
+
+        if(dihedrals_inc_hydrogens.at(i*5+2) < 0)
+            dihedral->SetIgnoredGroupInteraction(true);
+        else
+            dihedral->SetIgnoredGroupInteraction(false);
+        if(dihedrals_inc_hydrogens.at(i*5+3) < 0)
+            dihedral->SetIsImproper(true);
+        else
+            dihedral->SetIsImproper(false);
+
+        dihedral->SetIncludingHydrogen(true);
+        dihedral->SetDihedralType(dihedral_types_[dihedrals_inc_hydrogens.at(i*5+4)]);
+        dihedrals[dihedral_atoms] = dihedral;
+
+    }
+    // Dihedrals excluding hydrogen
+    for(int i = 0; i < number_of_dihedrals_excluding_hydrogen_; i++)
+    {
+        vector<string> dihedral_atoms = vector<string>();
+
+        int atom_index_1 = abs(dihedrals_without_hydrogens.at(i*5)) / 3;
+        int atom_index_2 = abs(dihedrals_without_hydrogens.at(i*5+1)) / 3;
+        int atom_index_3 = abs(dihedrals_without_hydrogens.at(i*5+2)) / 3;
+        int atom_index_4 = abs(dihedrals_without_hydrogens.at(i*5+3)) / 3;
+
+        dihedral_atoms.push_back(atom_names.at(atom_index_1));
+        dihedral_atoms.push_back(atom_names.at(atom_index_2));
+        dihedral_atoms.push_back(atom_names.at(atom_index_3));
+        dihedral_atoms.push_back(atom_names.at(atom_index_4));
+
+        TopologyDihedral* dihedral = new TopologyDihedral(dihedral_atoms);
+
+        if(dihedrals_without_hydrogens.at(i*5+2) < 0)
+            dihedral->SetIgnoredGroupInteraction(true);
+        else
+            dihedral->SetIgnoredGroupInteraction(false);
+        if(dihedrals_without_hydrogens.at(i*5+3) < 0)
+            dihedral->SetIsImproper(true);
+        else
+            dihedral->SetIsImproper(false);
+
+        dihedral->SetIncludingHydrogen(false);
+        dihedral->SetDihedralType(dihedral_types_[dihedrals_without_hydrogens.at(i*5+4)]);
+        dihedrals[dihedral_atoms] = dihedral;
     }
     // Residues in topology file
     TopologyAssembly::TopologyResidueMap residues;
@@ -943,4 +1051,22 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
 //////////////////////////////////////////////////////////
 void TopologyFile::Print(ostream &out)
 {
+    out << "============================ " << title_ << " ===========================" << endl;
+    assembly_->Print(out);
+    out << "------------------------------ Bond Types ------------------------------" << endl;
+    for(TopologyBondTypeMap::iterator it = bond_types_.begin(); it != bond_types_.end(); it++)
+    {
+
+    }
+    out << "------------------------------ Angle Types ------------------------------" << endl;
+    for(TopologyAngleTypeMap::iterator it = angle_types_.begin(); it != angle_types_.end(); it++)
+    {
+
+    }
+    out << "------------------------------ Dihedral Types ------------------------------" << endl;
+    for(TopologyDihedralTypeMap::iterator it = dihedral_types_.begin(); it != dihedral_types_.end(); it++)
+    {
+
+    }
+
 }

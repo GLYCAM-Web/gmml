@@ -18,6 +18,8 @@ namespace TopologyFileSpace
               */
             TopologyAngle();
 
+            TopologyAngle(std::vector<std::string> angle_atoms);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

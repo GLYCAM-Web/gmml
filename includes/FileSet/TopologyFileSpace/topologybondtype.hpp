@@ -19,7 +19,6 @@ namespace TopologyFileSpace
             TopologyBondType();
 
             TopologyBondType(int index, double force_constant, double equilibrium_value);
-
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
