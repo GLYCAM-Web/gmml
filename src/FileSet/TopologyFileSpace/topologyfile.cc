@@ -665,38 +665,41 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     }
     // Bonds, Angles, Dihedrals
     //Bonds in topology file
-    for(int i = 0; i < bonds_inc_hydrogens.size(); i+3)
+    for(int i = 0; i < number_of_bonds_including_hydrogen_; i++)
     {
-        int j = i;
         vector<string> bonds = vector<string>();
-        int first_atom_index = (bonds_inc_hydrogens[j])/3;
+
+        int first_atom_index = (bonds_inc_hydrogens[i*3])/3;
+        int second_atom_index = (bonds_inc_hydrogens[i*3+1])/3;
+
         bonds.push_back(atom_names[first_atom_index]);
-        j++;
-        int second_atom_index = (bonds_inc_hydrogens[j])/3;
         bonds.push_back(atom_names[second_atom_index]);
-        j++;
+
         TopologyBond* topology_bond = new TopologyBond(bonds);
-        TopologyBondType* bond_type = bond_types_[bonds_inc_hydrogens[i]-1];
-        topology_bond->SetBondType(bond_type);
+
+        topology_bond->SetBondType(bond_types_[bonds_inc_hydrogens[i*3+2]]);
         topology_bond->SetIncludingHydrogen(true);
+
+        bonds_[bonds] = topology_bond;
     }
-    for(int i = 0; i < bonds_without_hydrogens.size(); i+3)
+    for(int i = 0; i < number_of_bonds_excluding_hydrogen_; i++)
     {
-        int j = i;
         vector<string> bonds = vector<string>();
-        int first_atom_index = (bonds_inc_hydrogens[j])/3;
+
+        int first_atom_index = (bonds_inc_hydrogens[i*3])/3;
+        int second_atom_index = (bonds_inc_hydrogens[i*3+1])/3;
+
         bonds.push_back(atom_names[first_atom_index]);
-        j++;
-        int second_atom_index = (bonds_inc_hydrogens[j])/3;
         bonds.push_back(atom_names[second_atom_index]);
-        j++;
+
         TopologyBond* topology_bond = new TopologyBond(bonds);
-        TopologyBondType* bond_type = bond_types_[bonds_inc_hydrogens[j]-1];
-        topology_bond->SetBondType(bond_type);
+
+        topology_bond->SetBondType(bond_types_[bonds_inc_hydrogens[i*3+2]]);
         topology_bond->SetIncludingHydrogen(false);
+
+        bonds_[bonds] = topology_bond;
     }
     // Angles in topology file
-    TopologyAssembly::TopologyAngleMap angles;
     // Angles including hydrogen
     for(int i = 0; i < number_of_angles_including_hydrogen_; i++)
     {
@@ -715,7 +718,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle->SetIncludingHydrogen(true);
         angle->SetAnlgeType(angle_types_[angles_inc_hydrogens.at(i*4+3)]);
 
-        angles[angle_atoms] = angle;
+        angles_[angle_atoms] = angle;
     }
     // Angles excluding hydrogen
     for(int i = 0; i < number_of_angles_excluding_hydrogen_; i++)
@@ -735,10 +738,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle->SetIncludingHydrogen(true);
         angle->SetAnlgeType(angle_types_[angles_without_hydrogens.at(i*4+3)]);
 
-        angles[angle_atoms] = angle;
+        angles_[angle_atoms] = angle;
     }
     // Dihedrals in topology file
-    TopologyAssembly::TopologyDihedralMap dihedrals;
     // Dihedrals including hydrogen
     for(int i = 0; i < number_of_dihedrals_including_hydrogen_; i++)
     {
@@ -767,7 +769,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         dihedral->SetIncludingHydrogen(true);
         dihedral->SetDihedralType(dihedral_types_[dihedrals_inc_hydrogens.at(i*5+4)]);
-        dihedrals[dihedral_atoms] = dihedral;
+        dihedrals_[dihedral_atoms] = dihedral;
 
     }
     // Dihedrals excluding hydrogen
@@ -798,7 +800,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         dihedral->SetIncludingHydrogen(false);
         dihedral->SetDihedralType(dihedral_types_[dihedrals_without_hydrogens.at(i*5+4)]);
-        dihedrals[dihedral_atoms] = dihedral;
+        dihedrals_[dihedral_atoms] = dihedral;
     }
     // Residues in topology file
     TopologyAssembly::TopologyResidueMap residues;
@@ -1065,6 +1067,21 @@ void TopologyFile::Print(ostream &out)
     }
     out << "------------------------------ Dihedral Types ------------------------------" << endl;
     for(TopologyDihedralTypeMap::iterator it = dihedral_types_.begin(); it != dihedral_types_.end(); it++)
+    {
+
+    }
+    out << "------------------------------ Bonds ------------------------------" << endl;
+    for(TopologyBondMap::iterator it = bonds_.begin(); it != bonds_.end(); it++)
+    {
+
+    }
+    out << "------------------------------ Angles ------------------------------" << endl;
+    for(TopologyAngleMap::iterator it = angles_.begin(); it != angles_.end(); it++)
+    {
+
+    }
+    out << "------------------------------ Dihedrals ------------------------------" << endl;
+    for(TopologyDihedralTypeMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
     {
 
     }
