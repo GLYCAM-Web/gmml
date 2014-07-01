@@ -17,6 +17,10 @@ vector<string> TopologyAngle::GetAngles()
 {
     return angles_;
 }
+TopologyAngleType* TopologyAngle::GetAngleType()
+{
+    return angle_type_;
+}
 bool TopologyAngle::GetIncludingHydrogen()
 {
     return including_hydrogen_;
@@ -32,6 +36,10 @@ void TopologyAngle::SetAngles(vector<string> angles)
     {
         angles_.push_back(*it);
     }
+}
+void TopologyAngle::SetAnlgeType(TopologyAngleType* angle_type)
+{
+    angle_type_ = angle_type;
 }
 void TopologyAngle::SetIncludingHydrogen(bool including_hydrogen)
 {

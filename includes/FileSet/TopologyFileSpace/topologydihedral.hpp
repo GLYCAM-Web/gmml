@@ -7,6 +7,8 @@
 
 namespace TopologyFileSpace
 {
+    class TopologyDihedralType;
+
     class TopologyDihedral
     {
         public:
@@ -27,6 +29,11 @@ namespace TopologyFileSpace
               */
             std::vector<std::string> GetDihedrals();
             /*! \fn
+              * An accessor function in order to access to the dihedral type
+              * @return dihedral_type_ attribute of the current object of this class
+              */
+            TopologyDihedralType* GetDihedralType();
+            /*! \fn
               * An accessor function in order to access to boolean value that indicates if dihedral is improper
               * @return is_improper_ attribute of the current object of this class
               */
@@ -46,6 +53,12 @@ namespace TopologyFileSpace
               * @param dihedrals The dihedrals attribute of the current object
               */
             void SetDihedrals(std::vector<std::string> dihedrals);
+            /*! \fn
+              * A mutator function in order to set the dihedral type of the current object
+              * Set the dihedral_type_ attribute of the current topology dihedral type
+              * @param dihedral_type The dihedral type attribute of the current object
+              */
+            void SetDihedralType(TopologyDihedralType* dihedral_type);
             /*! \fn
               * A mutator function in order to set the boolean improper attribute of the current object
               * Set the is_improper_ attribute of the current topology dihedral type
@@ -78,6 +91,7 @@ namespace TopologyFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::vector<std::string> dihedrals_;
+            TopologyDihedralType* dihedral_type_;
             bool is_improper_;
             bool ignored_group_interaction_;
 

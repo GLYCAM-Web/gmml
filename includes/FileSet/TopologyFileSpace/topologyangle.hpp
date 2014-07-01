@@ -7,6 +7,8 @@
 
 namespace TopologyFileSpace
 {
+    class TopologyAngleType;
+
     class TopologyAngle
     {
         public:
@@ -27,6 +29,11 @@ namespace TopologyFileSpace
               */
             std::vector<std::string> GetAngles();
             /*! \fn
+              * An accessor function in order to access to the angle type
+              * @return angle_type_ attribute of the current object of this class
+              */
+            TopologyAngleType* GetAngleType();
+            /*! \fn
               * An accessor function in order to access to boolean value that indicates if angle includes hydrogen
               * @return including_hydrogen_ attribute of the current object of this class
               */
@@ -41,6 +48,12 @@ namespace TopologyFileSpace
               * @param angles The angles attribute of the current object
               */
             void SetAngles(std::vector<std::string> angles);
+            /*! \fn
+              * A mutator function in order to set the angle type of the current object
+              * Set the angle_type_ attribute of the current topology angle type
+              * @param angle_type The angle type attribute of the current object
+              */
+            void SetAnlgeType(TopologyAngleType* angle_type);
             /*! \fn
               * A mutator function in order to set the boolean including hydrogen attribute of the current object
               * Set the including_hydrogen_ attribute of the current topology angle type
@@ -67,6 +80,7 @@ namespace TopologyFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::vector<std::string> angles_;
+            TopologyAngleType* angle_type_;
             bool including_hydrogen_;
 
     };
