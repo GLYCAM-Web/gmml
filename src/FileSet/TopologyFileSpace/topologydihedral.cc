@@ -80,6 +80,27 @@ void TopologyDihedral::SetIncludingHydrogen(bool including_hydrogen)
 //////////////////////////////////////////////////////////
 void TopologyDihedral::Print(ostream &out)
 {
+    out << "Dihedral: " << dihedrals_.at(0) << "-" << dihedrals_.at(1) << "-" << dihedrals_.at(2) << "-" << dihedrals_.at(3) << endl;
+    out << "\t ";
+    dihedral_type_->Print(out);
+    out << "\t Including Hydrogen: ";
+    if(including_hydrogen_)
+        out << "YES";
+    else
+        out << "NO";
+    out << endl;
+    out << "\t Improper: ";
+    if(is_improper_)
+        out << "YES";
+    else
+        out << "NO";
+    out << endl;
+    out << "\t Ignored Group Interaction: ";
+    if(ignored_group_interaction_)
+        out << "YES";
+    else
+        out << "NO";
+    out << endl;
 }
 
 
