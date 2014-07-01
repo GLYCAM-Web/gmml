@@ -10,6 +10,15 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAngle::TopologyAngle() {}
 
+TopologyAngle::TopologyAngle(vector<string> angle_atoms)
+{
+    angles_.clear();
+    for(vector<string>::iterator it = angle_atoms.begin(); it != angle_atoms.end(); it++)
+    {
+        angles_.push_back(*it);
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
