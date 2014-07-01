@@ -64,6 +64,15 @@ void TopologyAngle::SetIncludingHydrogen(bool including_hydrogen)
 //////////////////////////////////////////////////////////
 void TopologyAngle::Print(ostream &out)
 {
+    out << "Angle: " << angles_.at(0) << "-" << angles_.at(1) << "-" << angles_.at(2) << endl;
+    out << "\t ";
+    angle_type_->Print(out);
+    out << "\t Including Hydrogen: ";
+    if(including_hydrogen_)
+        out << "YES";
+    else
+        out << "NO";
+    out << endl;
 }
 
 

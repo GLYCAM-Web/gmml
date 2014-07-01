@@ -1062,32 +1062,38 @@ void TopologyFile::Print(ostream &out)
     out << "------------------------------ Bond Types ------------------------------" << endl;
     for(TopologyBondTypeMap::iterator it = bond_types_.begin(); it != bond_types_.end(); it++)
     {
-
+        TopologyBondType* bond_type = (*it).second;
+        bond_type->Print(out);
     }
     out << "------------------------------ Angle Types ------------------------------" << endl;
     for(TopologyAngleTypeMap::iterator it = angle_types_.begin(); it != angle_types_.end(); it++)
     {
-
+        TopologyAngleType* angle_type = (*it).second;
+        angle_type->Print(out);
     }
     out << "------------------------------ Dihedral Types ------------------------------" << endl;
     for(TopologyDihedralTypeMap::iterator it = dihedral_types_.begin(); it != dihedral_types_.end(); it++)
     {
-
+        TopologyDihedralType* dihedral_type = (*it).second;
+        dihedral_type->Print(out);
     }
     out << "------------------------------ Bonds ------------------------------" << endl;
     for(TopologyBondMap::iterator it = bonds_.begin(); it != bonds_.end(); it++)
     {
-
+        TopologyBond* bond = (*it).second;
+        bond->Print(out);
     }
     out << "------------------------------ Angles ------------------------------" << endl;
     for(TopologyAngleMap::iterator it = angles_.begin(); it != angles_.end(); it++)
     {
-
+        TopologyAngle* angle = (*it).second;
+        angle->Print(out);
     }
     out << "------------------------------ Dihedrals ------------------------------" << endl;
-    for(TopologyDihedralTypeMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
+    for(TopologyDihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
     {
-
+        TopologyDihedral* dihedral = (*it).second;
+        dihedral->Print(out);
     }
 
 }

@@ -64,6 +64,15 @@ void TopologyBond::SetIncludingHydrogen(bool including_hydrogen)
 //////////////////////////////////////////////////////////
 void TopologyBond::Print(ostream &out)
 {
+    out << "Bond: " << bonds_.at(0) << "-" << bonds_.at(1) << endl;
+    out << "\t ";
+    bond_type_->Print(out);
+    out << "\t Including Hydrogen: ";
+    if(including_hydrogen_)
+        out << "YES";
+    else
+        out << "NO";
+    out << endl;
 }
 
 
