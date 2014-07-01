@@ -67,14 +67,10 @@ void TopologyDihedral::SetIgnoredGroupInteraction(bool ignored_group_interaction
 {
     ignored_group_interaction_ = ignored_group_interaction;
 }
-<<<<<<< HEAD
 void TopologyDihedral::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
-=======
-
->>>>>>> b96442df7c324d9edc7a4fcfdc8df696a4bbfb3e
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
