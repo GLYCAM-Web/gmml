@@ -53,6 +53,10 @@ void TopologyAngleType::SetEquilibriumValue(double equilibrium_value)
 //////////////////////////////////////////////////////////
 void TopologyAngleType::Print(ostream &out)
 {
+    out << "Angle index: " << index_
+         << ", Force constant: " << force_constant_
+         << ", Equilibrium value: " << equilibrium_value_
+         << endl;
 }
 
 

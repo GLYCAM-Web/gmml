@@ -70,6 +70,12 @@ void TopologyDihedralType::SetForceConstant(double force_constant)
 //////////////////////////////////////////////////////////
 void TopologyDihedralType::Print(ostream &out)
 {
+    out << "Dihedral index: " << index_
+         << ", Periodicity: " << periodicity_
+         << ", SCEE: " << scee_
+         << ", SCNB: " << scnb_
+         << ", Force constant: " << force_constant_
+         << endl;
 }
 
 
