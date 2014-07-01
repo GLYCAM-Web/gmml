@@ -1,5 +1,6 @@
 
 #include "../../../includes/FileSet/TopologyFileSpace/topologydihedral.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
 
 using namespace std;
 using namespace TopologyFileSpace;
@@ -25,6 +26,10 @@ vector<string> TopologyDihedral::GetDihedrals()
 {
     return dihedrals_;
 }
+TopologyDihedralType* TopologyDihedral::GetDihedralType()
+{
+    return dihedral_type_;
+}
 bool TopologyDihedral::GetIsImproper()
 {
     return is_improper_;
@@ -38,6 +43,7 @@ bool TopologyDihedral::GetIncludingHydrogen()
     return including_hydrogen_;
 }
 
+
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -49,6 +55,10 @@ void TopologyDihedral::SetDihedrals(vector<string> dihedrals)
         dihedrals_.push_back(*it);
     }
 }
+void TopologyDihedral::SetDihedralType(TopologyDihedralType* dihedral_type)
+{
+    dihedral_type_ = dihedral_type;
+}
 void TopologyDihedral::SetIsImproper(bool is_improper)
 {
     is_improper_ = is_improper;
@@ -57,10 +67,14 @@ void TopologyDihedral::SetIgnoredGroupInteraction(bool ignored_group_interaction
 {
     ignored_group_interaction_ = ignored_group_interaction;
 }
+<<<<<<< HEAD
 void TopologyDihedral::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
+=======
+
+>>>>>>> b96442df7c324d9edc7a4fcfdc8df696a4bbfb3e
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
