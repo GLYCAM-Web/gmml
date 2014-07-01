@@ -53,6 +53,11 @@ void TopologyBondType::SetEquilibriumValue(double equilibrium_value)
 //////////////////////////////////////////////////////////
 void TopologyBondType::Print(ostream &out)
 {
+    out << "Bond index: " << index_
+         << ", Force constant: " << force_constant_
+         << ", Equilibrium value: " << equilibrium_value_
+         << endl;
 }
+
 
 
