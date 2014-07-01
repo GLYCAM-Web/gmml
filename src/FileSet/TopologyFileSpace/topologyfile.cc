@@ -9,6 +9,9 @@
 #include "../../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologybond.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologyangle.hpp"
+#include "../../../includes/FileSet/TopologyFileSpace/topologydihedral.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 #include "../../../includes/utils.hpp"
 
@@ -657,7 +660,38 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         pairs_[atom_type_1] = new TopologyAtomPair(atom_type_1, coefficient_a_map, coefficient_b_map);
 
     }
-
+    // Bonds, Angles, Dihedrals
+    //Bonds in topology file
+    for(int i = 0; i < bonds_inc_hydrogens.size(); i+3)
+    {
+        int j = i;
+        vector<string> bonds = vector<string>();
+        int first_atom_index = (bonds_inc_hydrogens[j])/3;
+        bonds.push_back(atom_names[first_atom_index]);
+        j++;
+        int second_atom_index = (bonds_inc_hydrogens[j])/3;
+        bonds.push_back(atom_names[second_atom_index]);
+        j++;
+        TopologyBond* topology_bond = new TopologyBond(bonds);
+        TopologyBondType* bond_type = bond_types_[bonds_inc_hydrogens[i]-1];
+        topology_bond->SetBondType(bond_type);
+        topology_bond->SetIncludingHydrogen(true);
+    }
+    for(int i = 0; i < bonds_without_hydrogens.size(); i+3)
+    {
+        int j = i;
+        vector<string> bonds = vector<string>();
+        int first_atom_index = (bonds_inc_hydrogens[j])/3;
+        bonds.push_back(atom_names[first_atom_index]);
+        j++;
+        int second_atom_index = (bonds_inc_hydrogens[j])/3;
+        bonds.push_back(atom_names[second_atom_index]);
+        j++;
+        TopologyBond* topology_bond = new TopologyBond(bonds);
+        TopologyBondType* bond_type = bond_types_[bonds_inc_hydrogens[j]-1];
+        topology_bond->SetBondType(bond_type);
+        topology_bond->SetIncludingHydrogen(false);
+    }
     // Residues in topology file
     TopologyAssembly::TopologyResidueMap residues;
     for(vector<string>::iterator it = residue_labels.begin(); it != residue_labels.end(); it++)
@@ -688,7 +722,6 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             atoms[atom_names.at(i)] = new TopologyAtom(atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
                                                        number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
         }
-        // Bonds, Angles, Dihedrals
         residues[residue_name] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);
     }
     assembly_->SetAssemblyName(title_);

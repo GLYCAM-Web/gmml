@@ -9,9 +9,6 @@
 namespace TopologyFileSpace
 {
     class TopologyAtom;
-    class TopologyBond;
-    class TopologyAngle;
-    class TopologyDihedral;
 
     class TopologyResidue
     {
@@ -20,9 +17,6 @@ namespace TopologyFileSpace
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             typedef std::map<std::string, TopologyAtom*> TopologyAtomMap;
-            typedef std::map<std::vector<std::string>, TopologyBond*> TopologyBondMap;
-            typedef std::map<std::vector<std::string>, TopologyAngle*> TopologyAngleMap;
-            typedef std::map<std::vector<std::string>, TopologyDihedral*> TopologyDihedralMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -47,21 +41,6 @@ namespace TopologyFileSpace
               * @return atoms_ attribute of the current object of this class
               */
             TopologyAtomMap GetAtoms();
-            /*! \fn
-              * An accessor function in order to access to the bonds
-              * @return bonds_ attribute of the current object of this class
-              */
-            TopologyBondMap GetBonds();
-            /*! \fn
-              * An accessor function in order to access to the angles
-              * @return angles_ attribute of the current object of this class
-              */
-            TopologyAngleMap GetAngles();
-            /*! \fn
-              * An accessor function in order to access to the dihedrals
-              * @return dihedrals_ attribute of the current object of this class
-              */
-            TopologyDihedralMap GetDihedrals();
             /*! \fn
               * An accessor function in order to access to the index
               * @return index_ attribute of the current object of this class
@@ -115,9 +94,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             std::string residue_name_;
             TopologyAtomMap atoms_;
-            TopologyBondMap bonds_;
-            TopologyAngleMap angles_;
-            TopologyDihedralMap dihedrals_;
             int index_;
             int starting_atom_index_;
 

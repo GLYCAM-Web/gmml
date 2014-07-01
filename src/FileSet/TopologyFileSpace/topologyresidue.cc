@@ -1,9 +1,6 @@
 
 #include "../../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../includes/FileSet/TopologyFileSpace/topologybond.hpp"
-#include "../../../includes/FileSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../../includes/FileSet/TopologyFileSpace/topologydihedral.hpp"
 
 using namespace std;
 using namespace TopologyFileSpace;
@@ -35,18 +32,6 @@ string TopologyResidue::GetResidueName()
 TopologyResidue::TopologyAtomMap TopologyResidue::GetAtoms()
 {
     return atoms_;
-}
-TopologyResidue::TopologyBondMap TopologyResidue::GetBonds()
-{
-    return bonds_;
-}
-TopologyResidue::TopologyAngleMap TopologyResidue::GetAngles()
-{
-    return angles_;
-}
-TopologyResidue::TopologyDihedralMap TopologyResidue::GetDihedrals()
-{
-    return dihedrals_;
 }
 int TopologyResidue::GetIndex()
 {

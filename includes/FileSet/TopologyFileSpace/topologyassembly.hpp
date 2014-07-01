@@ -8,9 +8,6 @@
 
 namespace TopologyFileSpace
 {
-    class TopologyBond;
-    class TopologyAngle;
-    class TopologyDihedral;
     class TopologyResidue;
 
     class TopologyAssembly
@@ -20,9 +17,6 @@ namespace TopologyFileSpace
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             typedef std::map<std::string, TopologyResidue*> TopologyResidueMap;
-            typedef std::map<std::vector<std::string>, TopologyBond*> TopologyBondMap;
-            typedef std::map<std::vector<std::string>, TopologyAngle*> TopologyAngleMap;
-            typedef std::map<std::vector<std::string>, TopologyDihedral*> TopologyDihedralMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -45,21 +39,6 @@ namespace TopologyFileSpace
               * @return residues_ attribute of the current object of this class
               */
             TopologyResidueMap GetResidues();
-            /*! \fn
-              * An accessor function in order to access to the bonds
-              * @return bonds_ attribute of the current object of this class
-              */
-            TopologyBondMap GetBonds();
-            /*! \fn
-              * An accessor function in order to access to the angles
-              * @return angles_ attribute of the current object of this class
-              */
-            TopologyAngleMap GetAngles();
-            /*! \fn
-              * An accessor function in order to access to the dihedrals
-              * @return dihedrals_ attribute of the current object of this class
-              */
-            TopologyDihedralMap GetDihedrals();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -76,24 +55,6 @@ namespace TopologyFileSpace
               * @param residues The residues attribute of the current object
               */
             void SetResidues(TopologyResidueMap residues);
-            /*! \fn
-              * A mutator function in order to set the bonds of the current object
-              * Set the bonds_ attribute of the current topology assembly
-              * @param bonds The bonds attribute of the current object
-              */
-            void SetBonds(TopologyBondMap bonds);
-            /*! \fn
-              * A mutator function in order to set the angles of the current object
-              * Set the angles_ attribute of the current topology assembly
-              * @param angles The angles attribute of the current object
-              */
-            void SetAngles(TopologyAngleMap angles);
-            /*! \fn
-              * A mutator function in order to set the dihedrals of the current object
-              * Set the dihedrals_ attribute of the current topology assembly
-              * @param dihedrals The dihedrals attribute of the current object
-              */
-            void SetDihedrals(TopologyDihedralMap dihedrals);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -115,9 +76,6 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             std::string assembly_name_;
             TopologyResidueMap residues_;
-            TopologyBondMap bonds_;
-            TopologyAngleMap angles_;
-            TopologyDihedralMap dihedrals_;
 
     };
 }

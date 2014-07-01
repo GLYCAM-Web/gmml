@@ -13,6 +13,9 @@ namespace TopologyFileSpace
     class TopologyAngleType;
     class TopologyDihedralType;
     class TopologyAssembly;
+    class TopologyBond;
+    class TopologyAngle;
+    class TopologyDihedral;
 
     class TopologyFile
     {
@@ -25,6 +28,9 @@ namespace TopologyFileSpace
             typedef std::map<int, TopologyAngleType*> TopologyAngleTypeMap;
             typedef std::map<int, TopologyDihedralType*> TopologyDihedralTypeMap;
             typedef std::vector<std::string> RadiusSet;
+            typedef std::map<std::vector<std::string>, TopologyBond*> TopologyBondMap;
+            typedef std::map<std::vector<std::string>, TopologyAngle*> TopologyAngleMap;
+            typedef std::map<std::vector<std::string>, TopologyDihedral*> TopologyDihedralMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -231,6 +237,21 @@ namespace TopologyFileSpace
             TopologyAssembly* GetAssembly();
 
             RadiusSet GetRadiusSet();
+            /*! \fn
+              * An accessor function in order to access to the bonds
+              * @return bonds_ attribute of the current object of this class
+              */
+            TopologyBondMap GetBonds();
+            /*! \fn
+              * An accessor function in order to access to the angles
+              * @return angles_ attribute of the current object of this class
+              */
+            TopologyAngleMap GetAngles();
+            /*! \fn
+              * An accessor function in order to access to the dihedrals
+              * @return dihedrals_ attribute of the current object of this class
+              */
+            TopologyDihedralMap GetDihedrals();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -441,6 +462,24 @@ namespace TopologyFileSpace
             void SetAssembly(TopologyAssembly* assembly);
 
             void SetRadiusSet(RadiusSet radius_set);
+            /*! \fn
+              * A mutator function in order to set the bonds of the current object
+              * Set the bonds_ attribute of the current topology file
+              * @param bonds The bonds attribute of the current object
+              */
+            void SetBonds(TopologyBondMap bonds);
+            /*! \fn
+              * A mutator function in order to set the angles of the current object
+              * Set the angles_ attribute of the current topology file
+              * @param angles The angles attribute of the current object
+              */
+            void SetAngles(TopologyAngleMap angles);
+            /*! \fn
+              * A mutator function in order to set the dihedrals of the current object
+              * Set the dihedrals_ attribute of the current topology file
+              * @param dihedrals The dihedrals attribute of the current object
+              */
+            void SetDihedrals(TopologyDihedralMap dihedrals);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -510,6 +549,9 @@ namespace TopologyFileSpace
             TopologyDihedralTypeMap dihedral_types_;
             TopologyAssembly* assembly_;
             RadiusSet radius_set_;
+            TopologyBondMap bonds_;
+            TopologyAngleMap angles_;
+            TopologyDihedralMap dihedrals_;
     };
 }
 
