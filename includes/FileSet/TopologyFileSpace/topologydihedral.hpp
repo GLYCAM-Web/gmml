@@ -18,6 +18,8 @@ namespace TopologyFileSpace
               */
             TopologyDihedral();
 
+            TopologyDihedral(std::vector<std::string> dihedral_atoms);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -36,6 +38,7 @@ namespace TopologyFileSpace
               * @return ignored_group_interaction_ attribute of the current object of this class
               */
             bool GetIgnoredGroupInteraction();
+            bool GetIncludingHydrogen();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -58,6 +61,7 @@ namespace TopologyFileSpace
               * @param ignored_group_interaction The ignored group interactionr attribute of the current object
               */
             void SetIgnoredGroupInteraction(bool ignored_group_interaction);
+            void SetIncludingHydrogen(bool including_hydrogen);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -80,6 +84,7 @@ namespace TopologyFileSpace
             std::vector<std::string> dihedrals_;
             bool is_improper_;
             bool ignored_group_interaction_;
+            bool including_hydrogen_;
 
     };
 }

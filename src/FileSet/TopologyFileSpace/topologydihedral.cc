@@ -9,6 +9,15 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyDihedral::TopologyDihedral() {}
 
+TopologyDihedral::TopologyDihedral(vector<string> dihedral_atoms)
+{
+    dihedrals_.clear();
+    for(vector<string>::iterator it = dihedral_atoms.begin(); it != dihedral_atoms.end(); it++)
+    {
+        dihedrals_.push_back(*it);
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -23,6 +32,10 @@ bool TopologyDihedral::GetIsImproper()
 bool TopologyDihedral::GetIgnoredGroupInteraction()
 {
     return ignored_group_interaction_;
+}
+bool TopologyDihedral::GetIncludingHydrogen()
+{
+    return including_hydrogen_;
 }
 
 //////////////////////////////////////////////////////////
@@ -43,6 +56,10 @@ void TopologyDihedral::SetIsImproper(bool is_improper)
 void TopologyDihedral::SetIgnoredGroupInteraction(bool ignored_group_interaction)
 {
     ignored_group_interaction_ = ignored_group_interaction;
+}
+void TopologyDihedral::SetIncludingHydrogen(bool including_hydrogen)
+{
+    including_hydrogen_ = including_hydrogen;
 }
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
