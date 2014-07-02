@@ -1,4 +1,4 @@
-
+#include <iomanip>
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
 
@@ -123,6 +123,22 @@ void TopologyAtom::SetType(string type)
 //////////////////////////////////////////////////////////
 void TopologyAtom::Print(ostream &out)
 {
+    out << "Atom Name: " << atom_name_ << endl
+        << "Charge: " << scientific << setprecision(8) << atom_charge_  << endl
+        << "Atomic Number: " << atomic_number_ << endl
+        << "Mass: " << scientific << setprecision(8) << atom_mass_ << endl
+        << "Excluded Atoms: ";
+    for(vector<string>::iterator it = excluded_atoms_.begin(); it != excluded_atoms_.end(); it++)
+    {
+        string atom_name = (*it);
+        out << atom_name << "; ";
+    }
+    out << endl
+        << "Radii: " << scientific << setprecision(8) << radii_ << endl
+        << "Screen: " << scientific << setprecision(8) << screen_ << endl
+        << "Tree Chain Classification: " << tree_chain_classification_ << endl
+        << "Number of Excluded Atoms: " << number_of_excluded_atoms_ << endl
+        << "Atom Type: " << type_ << endl << endl;
 }
 
 

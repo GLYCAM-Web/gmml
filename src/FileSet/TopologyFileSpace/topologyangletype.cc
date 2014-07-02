@@ -55,8 +55,7 @@ void TopologyAngleType::Print(ostream &out)
 {
     out << "Angle index: " << index_
          << ", Force constant: " << force_constant_
-         << ", Equilibrium value: " << equilibrium_value_
-         << endl;
+         << ", Equilibrium value: " << equilibrium_value_;
 }
 
 

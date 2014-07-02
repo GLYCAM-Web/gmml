@@ -49,5 +49,13 @@ void TopologyAssembly::SetResidues(TopologyResidueMap residues)
 //////////////////////////////////////////////////////////
 void TopologyAssembly::Print(ostream &out)
 {
+    out << "Assembly Name: " << assembly_name_ << endl;
+    for(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        string residue_name = (*it).first;
+        TopologyResidue* residue = (*it).second;
+        out << "-------------------------- " << residue_name << " -------------------------" << endl;
+        residue->Print(out);
+    }
 }
 

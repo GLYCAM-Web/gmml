@@ -74,8 +74,7 @@ void TopologyDihedralType::Print(ostream &out)
          << ", Periodicity: " << periodicity_
          << ", SCEE: " << scee_
          << ", SCNB: " << scnb_
-         << ", Force constant: " << force_constant_
-         << endl;
+         << ", Force constant: " << force_constant_;
 }
 
 

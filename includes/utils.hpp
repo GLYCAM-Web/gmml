@@ -46,8 +46,9 @@ namespace gmml
     inline T ConvertString(const std::string& str) {
         T val;
         std::stringstream ss(str);
-        if (ss >> val)
-            return val;
+        ss >> val;
+//        if (ss >> val)
+        return val;
 
         throw std::invalid_argument("ConvertString: invalid conversion of string " + str);
     }

@@ -67,6 +67,14 @@ void TopologyResidue::SetStartingAtomIndex(int starting_atom_index)
 //////////////////////////////////////////////////////////
 void TopologyResidue::Print(ostream &out)
 {
+    out << "Residue Name: " << residue_name_ << ", Residue Index: " << index_ << ", Starting Atom Index: " << starting_atom_index_ << endl << endl;
+//    out << "------------------------------------- " << residue_name_ << " --------------------------------------" << endl;
+    for(TopologyAtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+//        string atom_name = (*it).first;
+        TopologyAtom* atom = (*it).second;
+        atom->Print(out);
+    }
 }
 
 

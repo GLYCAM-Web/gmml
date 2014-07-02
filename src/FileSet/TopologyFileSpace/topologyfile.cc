@@ -410,8 +410,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         if(line.find("%FLAG") != string::npos)
         {
             stringstream section;
-            this->PartitionSection(in_stream, line, section);
+            PartitionSection(in_stream, line, section);
             string in_line;
+//            cout << section.str() << endl;
             getline(section, in_line);
             if(in_line.find("%FLAG TITLE") != string::npos)
             {
@@ -424,183 +425,173 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             else if(in_line.find("%FLAG ATOM_NAME") != string::npos)
             {
                 atom_names = ParsePartition<string>(section);
-                // TODO: Use atom_names to build the structure
             }
-            else if(line.find("%FLAG CHARGE") != string::npos)
+            else if(in_line.find("%FLAG CHARGE") != string::npos)
             {
                 charges = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG ATOMIC_NUMBER") != string::npos)
+            else if(in_line.find("%FLAG ATOMIC_NUMBER") != string::npos)
             {
                 atomic_numbers = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG MASS") != string::npos)
+            else if(in_line.find("%FLAG MASS") != string::npos)
             {
                 masses = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG ATOM_TYPE_INDEX") != string::npos)
+            else if(in_line.find("%FLAG ATOM_TYPE_INDEX") != string::npos)
             {
                 atom_type_indexes = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG NUMBER_EXCLUDED_ATOMS") != string::npos)
+            else if(in_line.find("%FLAG NUMBER_EXCLUDED_ATOMS") != string::npos)
             {
                 number_excluded_atoms =ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG NONBONDED_PARM_INDEX") != string::npos)
+            else if(in_line.find("%FLAG NONBONDED_PARM_INDEX") != string::npos)
             {
                 nonbonded_parm_indexes = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG RESIDUE_LABEL") != string::npos)
+            else if(in_line.find("%FLAG RESIDUE_LABEL") != string::npos)
             {
                 residue_labels = ParsePartition<string>(section);
             }
-            else if(line.find("%FLAG RESIDUE_POINTER") != string::npos)
+            else if(in_line.find("%FLAG RESIDUE_POINTER") != string::npos)
             {
                 residue_pointers = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG BOND_FORCE_CONSTANT") != string::npos)
+            else if(in_line.find("%FLAG BOND_FORCE_CONSTANT") != string::npos)
             {
                 bond_force_constants = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG BOND_EQUIL_VALUE") != string::npos)
+            else if(in_line.find("%FLAG BOND_EQUIL_VALUE") != string::npos)
             {
                 bond_equil_values = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG ANGLE_FORCE_CONSTANT") != string::npos)
+            else if(in_line.find("%FLAG ANGLE_FORCE_CONSTANT") != string::npos)
             {
                 angle_force_constants = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG ANGLE_EQUIL_VALUE") != string::npos)
+            else if(in_line.find("%FLAG ANGLE_EQUIL_VALUE") != string::npos)
             {
                 angle_equil_values = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG DIHEDRAL_FORCE_CONSTANT") != string::npos)
+            else if(in_line.find("%FLAG DIHEDRAL_FORCE_CONSTANT") != string::npos)
             {
                 dihedral_force_constants = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG DIHEDRAL_PERIODICITY") != string::npos)
+            else if(in_line.find("%FLAG DIHEDRAL_PERIODICITY") != string::npos)
             {
                 dihedral_periodicities = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG DIHEDRAL_PHASE") != string::npos)
+            else if(in_line.find("%FLAG DIHEDRAL_PHASE") != string::npos)
             {
                 dihedral_phases = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG SCEE_SCLAE_FACTOR") != string::npos)
+            else if(in_line.find("%FLAG SCEE_SCALE_FACTOR") != string::npos)
             {
                 scee_scale_factors = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG SCNB_SCALE_FACTOR") != string::npos)
+            else if(in_line.find("%FLAG SCNB_SCALE_FACTOR") != string::npos)
             {
                 scnb_scale_factors = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG SOLTY") != string::npos)
+            else if(in_line.find("%FLAG SOLTY") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG LENNARD_JONES_ACOEF") != string::npos)
+            else if(in_line.find("%FLAG LENNARD_JONES_ACOEF") != string::npos)
             {
                 lennard_jones_acoefs = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG LENNARD_JONES_BCOEF") != string::npos)
+            else if(in_line.find("%FLAG LENNARD_JONES_BCOEF") != string::npos)
             {
                 lennard_jones_bcoefs = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG BONDS_INC_HYDROGEN") != string::npos)
+            else if(in_line.find("%FLAG BONDS_INC_HYDROGEN") != string::npos)
             {
                 bonds_inc_hydrogens = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG BONDS_WITHOUT_HYDROGEN") != string::npos)
+            else if(in_line.find("%FLAG BONDS_WITHOUT_HYDROGEN") != string::npos)
             {
                 bonds_without_hydrogens = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG ANGLES_INC_HYDROGEN") != string::npos)
+            else if(in_line.find("%FLAG ANGLES_INC_HYDROGEN") != string::npos)
             {
                 angles_inc_hydrogens = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG ANGLES_WITHOUT_HYDROGEN") != string::npos)
+            else if(in_line.find("%FLAG ANGLES_WITHOUT_HYDROGEN") != string::npos)
             {
                 angles_without_hydrogens = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG DIHEDRALS_INC_HYDROGEN") != string::npos)
+            else if(in_line.find("%FLAG DIHEDRALS_INC_HYDROGEN") != string::npos)
             {
                 dihedrals_inc_hydrogens = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG DIHEDRALS_WITHOUT_HYDROGEN") != string::npos)
+            else if(in_line.find("%FLAG DIHEDRALS_WITHOUT_HYDROGEN") != string::npos)
             {
                 dihedrals_without_hydrogens = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG EXCLUDED_ATOMS_LIST") != string::npos)
+            else if(in_line.find("%FLAG EXCLUDED_ATOMS_LIST") != string::npos)
             {
                 excluded_atoms_lists = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG HBOND_ACOEF") != string::npos)
+            else if(in_line.find("%FLAG HBOND_ACOEF") != string::npos)
             {
                 hbond_acoefs = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG HBOND_BCOEF") != string::npos)
+            else if(in_line.find("%FLAG HBOND_BCOEF") != string::npos)
             {
                 hbond_bcoefs = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG HBCUT") != string::npos)
+            else if(in_line.find("%FLAG HBCUT") != string::npos)
             {
                 hb_cuts = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG AMBER_ATOM_TYPE") != string::npos)
+            else if(in_line.find("%FLAG AMBER_ATOM_TYPE") != string::npos)
             {
                 amber_atom_types = ParsePartition<string>(section);
             }
-            else if(line.find("%FLAG TREE_CHAIN_CLASSIFICATION") != string::npos)
+            else if(in_line.find("%FLAG TREE_CHAIN_CLASSIFICATION") != string::npos)
             {
                 tree_chain_classifications = ParsePartition<string>(section);
             }
-            else if(line.find("%FLAG JOIN_ARRAY") != string::npos)
+            else if(in_line.find("%FLAG JOIN_ARRAY") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG IROTAT") != string::npos)
+            else if(in_line.find("%FLAG IROTAT") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG RADIUS_SET") != string::npos)
+            else if(in_line.find("%FLAG RADIUS_SET") != string::npos)
             {
                 radius_sets = ParsePartition<string>(section);
             }
-            else if(line.find("%FLAG RADII") != string::npos)
+            else if(in_line.find("%FLAG RADII") != string::npos)
             {
                 radiis = ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG SCREEN") != string::npos)
+            else if(in_line.find("%FLAG SCREEN") != string::npos)
             {
                 screens= ParsePartition<double>(section);
             }
-            else if(line.find("%FLAG IPOL") != string::npos)
+            else if(in_line.find("%FLAG IPOL") != string::npos)
             {
                 ipols = ParsePartition<int>(section);
             }
-            else if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
+            else if(in_line.find("%FLAG SOLVENT_POINTERS") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG ATOMS_PER_MOLECULE") != string::npos)
+            else if(in_line.find("%FLAG ATOMS_PER_MOLECULE") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG BOX_DIMENSIONS") != string::npos)
+            else if(in_line.find("%FLAG BOX_DIMENSIONS") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG CAP_INFO") != string::npos)
+            else if(in_line.find("%FLAG CAP_INFO") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG CAP_INFO2") != string::npos)
+            else if(in_line.find("%FLAG CAP_INFO2") != string::npos)
             {
-
             }
-            else if(line.find("%FLAG SOLVENT_POINTERS") != string::npos)
+            else if(in_line.find("%FLAG SOLVENT_POINTERS") != string::npos)
             {
-
             }
             else
             {
@@ -613,6 +604,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             getline(in_stream, line);
         }
     }
+
 
     // Bond types
     for(int i = 0; i < number_of_bond_types_; i++)
@@ -630,6 +622,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral_types_[i] = new TopologyDihedralType(i, dihedral_force_constants.at(i), dihedral_periodicities.at(i), dihedral_phases.at(i),
                                                       scee_scale_factors.at(i), scnb_scale_factors.at(i));
     }
+
     // Radius set
     for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end(); it++)
     {
@@ -641,21 +634,21 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         string atom_type_1 = amber_atom_types.at(i);
         TopologyAtomPair::TopologyCoefficientMap coefficient_a_map;
         TopologyAtomPair::TopologyCoefficientMap coefficient_b_map;
-        for(int j = 0; j < number_of_atoms_; i++)
+        for(int j = 0; j < number_of_atoms_; j++)
         {
             string atom_type_2 = amber_atom_types.at(j);
             double coefficient_a;
             double coefficient_b;
-            int index = nonbonded_parm_indexes.at(number_of_types_ * (atom_type_indexes.at(i) - 1) + atom_type_indexes.at(j));
+            int index = nonbonded_parm_indexes.at(number_of_types_ * (atom_type_indexes.at(i) - 1) + atom_type_indexes.at(j) - 1);
             if(index > 0)
             {
-                coefficient_a = lennard_jones_acoefs.at(index);
-                coefficient_b = lennard_jones_bcoefs.at(index);
+                coefficient_a = lennard_jones_acoefs.at(index - 1);
+                coefficient_b = lennard_jones_bcoefs.at(index - 1);
             }
             else
             {
-                coefficient_a = hbond_acoefs.at(index);
-                coefficient_b = hbond_bcoefs.at(index);
+                coefficient_a = hbond_acoefs.at(index - 1);
+                coefficient_b = hbond_bcoefs.at(index - 1);
             }
             coefficient_a_map[atom_type_2] = coefficient_a;
             coefficient_b_map[atom_type_2] = coefficient_b;
@@ -677,7 +670,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         TopologyBond* topology_bond = new TopologyBond(bonds);
 
-        topology_bond->SetBondType(bond_types_[bonds_inc_hydrogens[i*3+2]]);
+        topology_bond->SetBondType(bond_types_[bonds_inc_hydrogens[i*3+2] - 1]);
         topology_bond->SetIncludingHydrogen(true);
 
         bonds_[bonds] = topology_bond;
@@ -686,15 +679,15 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     {
         vector<string> bonds = vector<string>();
 
-        int first_atom_index = (bonds_inc_hydrogens[i*3])/3;
-        int second_atom_index = (bonds_inc_hydrogens[i*3+1])/3;
+        int first_atom_index = (bonds_without_hydrogens[i*3])/3;
+        int second_atom_index = (bonds_without_hydrogens[i*3+1])/3;
 
         bonds.push_back(atom_names[first_atom_index]);
         bonds.push_back(atom_names[second_atom_index]);
 
         TopologyBond* topology_bond = new TopologyBond(bonds);
 
-        topology_bond->SetBondType(bond_types_[bonds_inc_hydrogens[i*3+2]]);
+        topology_bond->SetBondType(bond_types_[bonds_without_hydrogens[i*3+2] - 1]);
         topology_bond->SetIncludingHydrogen(false);
 
         bonds_[bonds] = topology_bond;
@@ -716,7 +709,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         TopologyAngle* angle = new TopologyAngle(angle_atoms);
 
         angle->SetIncludingHydrogen(true);
-        angle->SetAnlgeType(angle_types_[angles_inc_hydrogens.at(i*4+3)]);
+        angle->SetAnlgeType(angle_types_[angles_inc_hydrogens.at(i*4+3) - 1]);
 
         angles_[angle_atoms] = angle;
     }
@@ -735,8 +728,8 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         TopologyAngle* angle = new TopologyAngle(angle_atoms);
 
-        angle->SetIncludingHydrogen(true);
-        angle->SetAnlgeType(angle_types_[angles_without_hydrogens.at(i*4+3)]);
+        angle->SetIncludingHydrogen(false);
+        angle->SetAnlgeType(angle_types_[angles_without_hydrogens.at(i*4+3) - 1]);
 
         angles_[angle_atoms] = angle;
     }
@@ -768,7 +761,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             dihedral->SetIsImproper(false);
 
         dihedral->SetIncludingHydrogen(true);
-        dihedral->SetDihedralType(dihedral_types_[dihedrals_inc_hydrogens.at(i*5+4)]);
+        dihedral->SetDihedralType(dihedral_types_[dihedrals_inc_hydrogens.at(i*5+4) - 1]);
         dihedrals_[dihedral_atoms] = dihedral;
 
     }
@@ -799,12 +792,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             dihedral->SetIsImproper(false);
 
         dihedral->SetIncludingHydrogen(false);
-        dihedral->SetDihedralType(dihedral_types_[dihedrals_without_hydrogens.at(i*5+4)]);
-<<<<<<< HEAD
-        dihedrals[dihedral_atoms] = dihedral;
-=======
+        dihedral->SetDihedralType(dihedral_types_[dihedrals_without_hydrogens.at(i*5+4) - 1]);
+
         dihedrals_[dihedral_atoms] = dihedral;
->>>>>>> ecc1b30fcabf086689d68f4c9b882adb4611942a
     }
     // Residues in topology file
     TopologyAssembly::TopologyResidueMap residues;
@@ -813,11 +803,11 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         string residue_name = *it;
         TopologyResidue::TopologyAtomMap atoms;
         int residue_index = distance(residue_labels.begin(), it) + 1;
-        int starting_atom_index = residue_pointers.at(residue_index);
+        int starting_atom_index = residue_pointers.at(residue_index - 1);
         int ending_atom_index;
         if(residue_index < number_of_residues_)
         {
-            ending_atom_index = residue_pointers.at(residue_index + 1);
+            ending_atom_index = residue_pointers.at(residue_index);
         }
         else
         {
@@ -838,6 +828,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         residues[residue_name] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);
     }
+    assembly_ = new TopologyAssembly();
     assembly_->SetAssemblyName(title_);
     assembly_->SetResidues(residues);
 }
@@ -856,10 +847,12 @@ void TopologyFile::PartitionSection(ifstream &stream, string &line, stringstream
         }
         getline(stream, line);
     }
-    while(line[0] != '%' && !line.empty())
+    while(line[0] != '%')
     {
         section << line << endl;
         getline(stream, line);
+        if(line.empty())
+            break;
     }
 }
 
@@ -886,6 +879,7 @@ void TopologyFile::ParseTitlePartition(stringstream& stream)
         }
         getline(stream, line);
     }
+    title_ = Trim(title_);
 }
 
 void TopologyFile::ParsePointersPartition(stringstream &stream)
@@ -957,9 +951,9 @@ vector<T> TopologyFile::ParsePartition(stringstream &stream)
     string line;
     vector<T> section = vector<T>();
     getline(stream, line);
+    string format;
     while(!line.empty())
     {
-        string format;
         if(line[0] == '%')
         {
             if(line.find("%FORMAT") != string::npos)
@@ -1019,8 +1013,10 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
             token = Trim(token);
             double base = ConvertString<double>(Split(token, "E")[0]);
             int power = ConvertString<int>(Split(token, "E")[1]);
-            stringstream temp;
-            temp << base * pow10(power);
+            stringstream temp, format;
+            double result = base * pow10(power);
+            format << setw(16) << fixed << setprecision(8);
+            temp << format.str() << result;
             T item = ConvertString<T>(temp.str());
             items.push_back(item);
         }
@@ -1064,18 +1060,21 @@ void TopologyFile::Print(ostream &out)
     {
         TopologyBondType* bond_type = (*it).second;
         bond_type->Print(out);
+        out << endl;
     }
     out << "------------------------------ Angle Types ------------------------------" << endl;
     for(TopologyAngleTypeMap::iterator it = angle_types_.begin(); it != angle_types_.end(); it++)
     {
         TopologyAngleType* angle_type = (*it).second;
         angle_type->Print(out);
+        out << endl;
     }
     out << "------------------------------ Dihedral Types ------------------------------" << endl;
     for(TopologyDihedralTypeMap::iterator it = dihedral_types_.begin(); it != dihedral_types_.end(); it++)
     {
         TopologyDihedralType* dihedral_type = (*it).second;
         dihedral_type->Print(out);
+        out << endl;
     }
     out << "------------------------------ Bonds ------------------------------" << endl;
     for(TopologyBondMap::iterator it = bonds_.begin(); it != bonds_.end(); it++)
