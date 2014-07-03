@@ -647,7 +647,6 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
     }
 
-
     // Bond types
     for(int i = 0; i < number_of_bond_types_; i++)
     {
@@ -855,6 +854,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         {
             ending_atom_index = number_of_atoms_;
         }
+        cout << "HERE" << endl;
         for(int i = starting_atom_index - 1; i < ending_atom_index - 1; i++)
         {
             TopologyAtom::ExcludedAtomNames excluded_atoms = TopologyAtom::ExcludedAtomNames();
@@ -863,7 +863,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 start_index += number_excluded_atoms.at(i-1);
             for(int j = start_index; j < start_index + number_excluded_atoms.at(i) - 1; j++)
             {
-                excluded_atoms.push_back(atom_names.at(excluded_atoms_lists.at(j)));
+                excluded_atoms.push_back(atom_names.at(excluded_atoms_lists.at(j) - 1));
             }
             atoms[atom_names.at(i)] = new TopologyAtom(i + 1, atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
                                                        number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
