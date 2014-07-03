@@ -202,6 +202,18 @@ TopologyFile::RadiusSet TopologyFile::GetRadiusSet()
 {
     return radius_set_;
 }
+TopologyFile::TopologyBondMap TopologyFile::GetBonds()
+{
+    return bonds_;
+}
+TopologyFile::TopologyAngleMap TopologyFile::GetAngles()
+{
+    return angles_;
+}
+TopologyFile::TopologyDihedralMap TopologyFile::GetDihedrals()
+{
+    return dihedrals_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -349,6 +361,36 @@ void TopologyFile::SetRadiusSet(RadiusSet radius_set)
     for(RadiusSet::iterator it = radius_set.begin(); it != radius_set.end(); it++)
     {
         radius_set_.push_back(*it);
+    }
+}
+void TopologyFile::SetBonds(TopologyBondMap bonds)
+{
+    bonds_.clear();
+    for(TopologyBondMap::iterator it = bonds.begin(); it != bonds.end(); it++)
+    {
+        vector<string> atom_bond = (*it).first;
+        TopologyBond* bond = (*it).second;
+        bonds_[atom_bond] = bond;
+    }
+}
+void TopologyFile::SetAngles(TopologyAngleMap angles)
+{
+    angles_.clear();
+    for(TopologyAngleMap::iterator it = angles.begin(); it != angles.end(); it++)
+    {
+        vector<string> atom_angle = (*it).first;
+        TopologyAngle* angle = (*it).second;
+        angles_[atom_angle] = angle;
+    }
+}
+void TopologyFile::SetDihedrals(TopologyDihedralMap dihedrals)
+{
+    dihedrals_.clear();
+    for(TopologyDihedralMap::iterator it = dihedrals.begin(); it != dihedrals.end(); it++)
+    {
+        vector<string> atom_dihedral = (*it).first;
+        TopologyDihedral* dihedral = (*it).second;
+        dihedrals_[atom_dihedral] = dihedral;
     }
 }
 
