@@ -838,6 +838,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedrals_[dihedral_atoms] = dihedral;
     }
     // Residues in topology file
+    int start_index = 0;
     TopologyAssembly::TopologyResidueMap residues;
     for(vector<string>::iterator it = residue_labels.begin(); it != residue_labels.end(); it++)
     {
@@ -857,12 +858,12 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         for(int i = starting_atom_index - 1; i < ending_atom_index - 1; i++)
         {
             TopologyAtom::ExcludedAtomNames excluded_atoms = TopologyAtom::ExcludedAtomNames();
-            int start_index = 0;
             if(i > 0)
                 start_index += number_excluded_atoms.at(i-1);
             for(int j = start_index; j < start_index + number_excluded_atoms.at(i); j++)
             {
-                excluded_atoms.push_back(atom_names.at(excluded_atoms_lists.at(j) - 1));
+                cout << excluded_atoms_lists.at(j) - 1 << endl;
+                excluded_atoms.push_back(atom_names.at((excluded_atoms_lists.at(j) - 1 == -1) ? 0 : excluded_atoms_lists.at(j) - 1));
             }
             atoms[atom_names.at(i)] = new TopologyAtom(i + 1, atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
                                                        number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
