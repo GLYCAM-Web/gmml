@@ -1,7 +1,7 @@
 #include <math.h>
 
-#include "../includes/Geometry/coordinate.hpp"
-#include "../includes/common.hpp"
+#include "../../includes/Geometry/coordinate.hpp"
+#include "../../includes/common.hpp"
 
 using namespace Geometry;
 using namespace gmml;

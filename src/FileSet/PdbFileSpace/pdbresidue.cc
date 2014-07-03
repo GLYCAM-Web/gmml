@@ -1,4 +1,3 @@
-
 #include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
 
 using namespace std;

@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-#include "../../../includes/Geometry/coordinate.hpp"
+#include "../../Geometry/coordinate.hpp"
 
 namespace PdbFileSpace
 {

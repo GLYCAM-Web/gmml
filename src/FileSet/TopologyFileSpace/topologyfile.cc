@@ -823,7 +823,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             {
                 excluded_atoms.push_back(atom_names.at(excluded_atoms_lists.at(j)));
             }
-            atoms[atom_names.at(i)] = new TopologyAtom(atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
+            atoms[atom_names.at(i)] = new TopologyAtom(i + 1, atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
                                                        number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
         }
         residues[residue_name] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);

@@ -5,10 +5,10 @@
 #include <iostream>
 #include <vector>
 
-#include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../../FileSet/PdbFileSpace/pdbresidue.hpp"
+#include "../../FileSet/PdbFileSpace/pdbfile.hpp"
+#include "../../FileSet/PdbFileSpace/pdbatom.hpp"
+#include "../../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 
 namespace PdbPreprocessorSpace
 {

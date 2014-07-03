@@ -6,9 +6,9 @@
 #include <map>
 #include <iostream>
 
-///////////////////// FORWARD DECLARATION //////////////////
 namespace ParameterFileSpace
 {
+    ///////////////////// FORWARD DECLARATION //////////////////
     class ParameterFileAtom;
     class ParameterFileBond;
     class ParameterFileAngle;

@@ -1,5 +1,4 @@
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
-//#include "../../../includes/Geometry/coordinate.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
