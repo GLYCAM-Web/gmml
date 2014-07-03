@@ -65,6 +65,10 @@ string TopologyAtom::GetType()
 {
     return type_;
 }
+int TopologyAtom::GetIndex()
+{
+    return index_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -113,6 +117,10 @@ void TopologyAtom::SetType(string type)
 {
     type_ = type;
 }
+void TopologyAtom::SetIndex(int index)
+{
+    index_ = index;
+}
 
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
@@ -123,7 +131,8 @@ void TopologyAtom::SetType(string type)
 //////////////////////////////////////////////////////////
 void TopologyAtom::Print(ostream &out)
 {
-    out << "Atom Name: " << atom_name_ << endl
+    out << "Index: " << index_ << endl
+        << "Atom Name: " << atom_name_ << endl
         << "Charge: " << scientific << setprecision(8) << atom_charge_  << endl
         << "Atomic Number: " << atomic_number_ << endl
         << "Mass: " << scientific << setprecision(8) << atom_mass_ << endl

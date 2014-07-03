@@ -27,6 +27,14 @@ double TopologyDihedralType::GetPhase()
 {
     return phase_;
 }
+double TopologyDihedralType::GetScee()
+{
+    return scee_;
+}
+double TopologyDihedralType::GetScnb()
+{
+    return scnb_;
+}
 double TopologyDihedralType::GetForceConstant()
 {
     return force_constant_;

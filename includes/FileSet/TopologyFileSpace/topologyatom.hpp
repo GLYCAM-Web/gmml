@@ -79,6 +79,11 @@ namespace TopologyFileSpace
               * @return type_ attribute of the current object of this class
               */
             std::string GetType();
+            /*! \fn
+              * An accessor function in order to access to the index
+              * @return index_ attribute of the current object of this class
+              */
+            int GetIndex();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -143,6 +148,12 @@ namespace TopologyFileSpace
               * @param type The type attribute of the current object
               */
             void SetType(std::string type);
+            /*! \fn
+              * A mutator function in order to set the index of the current object
+              * Set the index_ attribute of the current topology atom
+              * @param index The index attribute of the current object
+              */
+            void SetIndex(int index);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -172,6 +183,7 @@ namespace TopologyFileSpace
             std::string tree_chain_classification_;
             int number_of_excluded_atoms_;
             std::string type_;
+            int index_;
     };
 }
 
