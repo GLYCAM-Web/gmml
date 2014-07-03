@@ -854,14 +854,13 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         {
             ending_atom_index = number_of_atoms_;
         }
-        cout << "HERE" << endl;
         for(int i = starting_atom_index - 1; i < ending_atom_index - 1; i++)
         {
             TopologyAtom::ExcludedAtomNames excluded_atoms = TopologyAtom::ExcludedAtomNames();
             int start_index = 0;
             if(i > 0)
                 start_index += number_excluded_atoms.at(i-1);
-            for(int j = start_index; j < start_index + number_excluded_atoms.at(i) - 1; j++)
+            for(int j = start_index; j < start_index + number_excluded_atoms.at(i); j++)
             {
                 excluded_atoms.push_back(atom_names.at(excluded_atoms_lists.at(j) - 1));
             }
