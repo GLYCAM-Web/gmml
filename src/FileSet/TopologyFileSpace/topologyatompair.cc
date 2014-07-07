@@ -81,5 +81,6 @@ void TopologyAtomPair::SetCoefficientB(TopologyCoefficientMap coefficient_b)
 //////////////////////////////////////////////////////////
 void TopologyAtomPair::Print(ostream &out)
 {
+
 }
 
