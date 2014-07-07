@@ -20,7 +20,7 @@ namespace TopologyFileSpace
               */
             TopologyAngle();
 
-            TopologyAngle(std::vector<std::string> angle_atoms);
+            TopologyAngle(std::vector<std::string> angle_atoms, std::vector<std::string> residue_names);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -40,6 +40,11 @@ namespace TopologyFileSpace
               * @return including_hydrogen_ attribute of the current object of this class
               */
             bool GetIncludingHydrogen();
+            /*! \fn
+              * An accessor function in order to access to the residue names
+              * @return residue_names_ attribute of the current object of this class
+              */
+            std::vector<std::string> GetResidueNames();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -52,16 +57,22 @@ namespace TopologyFileSpace
             void SetAngles(std::vector<std::string> angles);
             /*! \fn
               * A mutator function in order to set the angle type of the current object
-              * Set the angle_type_ attribute of the current topology angle type
+              * Set the angle_type_ attribute of the current topology angle
               * @param angle_type The angle type attribute of the current object
               */
             void SetAnlgeType(TopologyAngleType* angle_type);
             /*! \fn
               * A mutator function in order to set the boolean including hydrogen attribute of the current object
-              * Set the including_hydrogen_ attribute of the current topology angle type
+              * Set the including_hydrogen_ attribute of the current topology angle
               * @param including_hydrogen The including hydrogen attribute of the current object
               */
             void SetIncludingHydrogen(bool including_hydrogen);
+            /*! \fn
+              * A mutator function in order to set residue names of the current object
+              * Set the residue_names_ attribute of the current topology angle
+              * @param residue_names The residue names of the current object
+              */
+            void SetResidueNames(std::vector<std::string> residue_names);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -84,6 +95,7 @@ namespace TopologyFileSpace
             std::vector<std::string> angles_;
             TopologyAngleType* angle_type_;
             bool including_hydrogen_;
+            std::vector<std::string> residue_names_;
 
     };
 }

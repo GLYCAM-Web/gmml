@@ -11,9 +11,9 @@ using namespace TopologyFileSpace;
 TopologyAtom::TopologyAtom() {}
 
 TopologyAtom::TopologyAtom(int atom_index, string atom_name, string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
-                           int number_of_excluded_atoms, double radii, double screen, string tree_chain_classification) :
+                           int number_of_excluded_atoms, double radii, double screen, string tree_chain_classification, string residue_name) :
     index_(atom_index), atom_name_(atom_name), type_(type), atom_charge_(atom_charge), atomic_number_(atomic_number), atom_mass_(atom_mass), number_of_excluded_atoms_(number_of_excluded_atoms),
-    radii_(radii), screen_(screen), tree_chain_classification_(tree_chain_classification)
+    radii_(radii), screen_(screen), tree_chain_classification_(tree_chain_classification), residue_name_(residue_name)
 {
     excluded_atoms_.clear();
     for(ExcludedAtomNames::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
@@ -69,6 +69,10 @@ int TopologyAtom::GetIndex()
 {
     return index_;
 }
+string TopologyAtom::GetResidueName()
+{
+    return residue_name_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -121,6 +125,10 @@ void TopologyAtom::SetIndex(int index)
 {
     index_ = index;
 }
+void TopologyAtom::SetResidueName(string residue_name)
+{
+    residue_name_ = residue_name;
+}
 
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
@@ -132,6 +140,7 @@ void TopologyAtom::SetIndex(int index)
 void TopologyAtom::Print(ostream &out)
 {
     out << "Index: " << index_ << endl
+           << "Residue Name: " << residue_name_ << endl
         << "Atom Name: " << atom_name_ << endl
         << "Charge: " << scientific << setprecision(8) << atom_charge_  << endl
         << "Atomic Number: " << atomic_number_ << endl

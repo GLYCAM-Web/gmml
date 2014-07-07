@@ -10,12 +10,17 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyBond::TopologyBond() {}
 
-TopologyBond::TopologyBond(vector<string> bonds)
+TopologyBond::TopologyBond(vector<string> bonds, vector<string> residue_names)
 {
     bonds_.clear();
     for(vector<string>::iterator it = bonds.begin(); it != bonds.end(); it++)
     {
         bonds_.push_back(*it);
+    }
+    residue_names_.clear();
+    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    {
+        residue_names_.push_back(*it);
     }
 }
 
@@ -33,6 +38,10 @@ TopologyBondType* TopologyBond::GetBondType()
 bool TopologyBond::GetIncludingHydrogen()
 {
     return including_hydrogen_;
+}
+vector<string> TopologyBond::GetResidueNames()
+{
+    return residue_names_;
 }
 
 //////////////////////////////////////////////////////////
@@ -54,6 +63,14 @@ void TopologyBond::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
+void TopologyBond::SetResidueNames(vector<string> residue_names)
+{
+    residue_names_.clear();
+    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    {
+        residue_names_.push_back(*it);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
@@ -64,7 +81,7 @@ void TopologyBond::SetIncludingHydrogen(bool including_hydrogen)
 //////////////////////////////////////////////////////////
 void TopologyBond::Print(ostream &out)
 {
-    out << "Bond: " << bonds_.at(0) << "-" << bonds_.at(1) << endl;
+    out << "Bond: " << residue_names_.at(0) << ":" << bonds_.at(0) << "-" << residue_names_.at(1) << ":" << bonds_.at(1) << endl;
     out << "\t ";
     bond_type_->Print(out);
     out << ", Including Hydrogen: ";
