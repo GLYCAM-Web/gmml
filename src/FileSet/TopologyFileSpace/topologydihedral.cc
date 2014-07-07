@@ -10,12 +10,17 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyDihedral::TopologyDihedral() {}
 
-TopologyDihedral::TopologyDihedral(vector<string> dihedral_atoms)
+TopologyDihedral::TopologyDihedral(vector<string> dihedral_atoms, vector<string> residue_names)
 {
     dihedrals_.clear();
     for(vector<string>::iterator it = dihedral_atoms.begin(); it != dihedral_atoms.end(); it++)
     {
         dihedrals_.push_back(*it);
+    }
+    residue_names_.clear();
+    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    {
+        residue_names_.push_back(*it);
     }
 }
 
@@ -42,7 +47,10 @@ bool TopologyDihedral::GetIncludingHydrogen()
 {
     return including_hydrogen_;
 }
-
+vector<string> TopologyDihedral::GetResidueNames()
+{
+    return residue_names_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -71,6 +79,15 @@ void TopologyDihedral::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
+void TopologyDihedral::SetResidueNames(vector<string> residue_names)
+{
+    residue_names_.clear();
+    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    {
+        residue_names_.push_back(*it);
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
@@ -80,7 +97,8 @@ void TopologyDihedral::SetIncludingHydrogen(bool including_hydrogen)
 //////////////////////////////////////////////////////////
 void TopologyDihedral::Print(ostream &out)
 {
-    out << "Dihedral: " << dihedrals_.at(0) << "-" << dihedrals_.at(1) << "-" << dihedrals_.at(2) << "-" << dihedrals_.at(3) << endl;
+    out << "Dihedral: " << residue_names_.at(0) << ":" << dihedrals_.at(0) << "-" << residue_names_.at(1) << ":" << dihedrals_.at(1) << "-" <<  residue_names_.at(3) << ":"  <<
+           dihedrals_.at(2) << "-" << residue_names_.at(3) << ":" << dihedrals_.at(3) << endl;
     out << "\t ";
     dihedral_type_->Print(out);
     out << ", Including Hydrogen: ";

@@ -10,12 +10,17 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAngle::TopologyAngle() {}
 
-TopologyAngle::TopologyAngle(vector<string> angle_atoms)
+TopologyAngle::TopologyAngle(vector<string> angle_atoms, vector<string> residue_names)
 {
     angles_.clear();
     for(vector<string>::iterator it = angle_atoms.begin(); it != angle_atoms.end(); it++)
     {
         angles_.push_back(*it);
+    }
+    residue_names_.clear();
+    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    {
+        residue_names_.push_back(*it);
     }
 }
 
@@ -33,6 +38,10 @@ TopologyAngleType* TopologyAngle::GetAngleType()
 bool TopologyAngle::GetIncludingHydrogen()
 {
     return including_hydrogen_;
+}
+vector<string> TopologyAngle::GetResidueNames()
+{
+    return residue_names_;
 }
 
 //////////////////////////////////////////////////////////
@@ -54,6 +63,14 @@ void TopologyAngle::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
+void TopologyAngle::SetResidueNames(vector<string> residue_names)
+{
+    residue_names_.clear();
+    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    {
+        residue_names_.push_back(*it);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
@@ -64,7 +81,7 @@ void TopologyAngle::SetIncludingHydrogen(bool including_hydrogen)
 //////////////////////////////////////////////////////////
 void TopologyAngle::Print(ostream &out)
 {
-    out << "Angle: " << angles_.at(0) << "-" << angles_.at(1) << "-" << angles_.at(2) << endl;
+    out << "Angle: " << residue_names_.at(0) << ":" << angles_.at(0) << "-" << residue_names_.at(1) << ":" << angles_.at(1) << "-" << residue_names_.at(2) << ":" << angles_.at(2) << endl;
     out << "\t ";
     angle_type_->Print(out);
     out << ", Including Hydrogen: ";

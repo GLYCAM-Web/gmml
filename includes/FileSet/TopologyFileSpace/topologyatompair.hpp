@@ -23,48 +23,48 @@ namespace TopologyFileSpace
               */
             TopologyAtomPair();
 
-            TopologyAtomPair(std::string atom_type, TopologyCoefficientMap coefficient_a_map, TopologyCoefficientMap coefficient_b_map);
+            TopologyAtomPair(std::string pair_type, double coefficient_a, double coefficient_b);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////           
             /*! \fn
-              * An accessor function in order to access to the atom type
-              * @return atom_type_ attribute of the current object of this class
+              * An accessor function in order to access to the pair type
+              * @return pair_type_ attribute of the current object of this class
               */
-            std::string GetAtomType();
+            std::string GetPairType();
             /*! \fn
               * An accessor function in order to access to the coefficient a
               * @return coefficient_a_ attribute of the current object of this class
               */
-            TopologyCoefficientMap GetCoefficientA();
+            double GetCoefficientA();
             /*! \fn
               * An accessor function in order to access to the coefficient b
               * @return coefficient_b_ attribute of the current object of this class
               */
-            TopologyCoefficientMap GetCoefficientB();
+            double GetCoefficientB();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A mutator function in order to set the atom type of the current object
-              * Set the atom_type_ attribute of the current topology atom type
-              * @param atom_type The atom type attribute of the current object
+              * A mutator function in order to set the pair type of the current object
+              * Set the pair_type_ attribute of the current topology atom type
+              * @param pair_type The pair type attribute of the current object
               */
-            void SetAtomType(std::string atom_type);
+            void SetPairType(std::string pair_type);
             /*! \fn
               * A mutator function in order to set the coefficient a of the current object
               * Set the coefficient_a_ attribute of the current topology atom type
               * @param coefficient_a The coefficient a attribute of the current object
               */
-            void SetCoefficientA(TopologyCoefficientMap coefficient_a);
+            void SetCoefficientA(double coefficient_a);
             /*! \fn
               * A mutator function in order to set the coefficient b of the current object
               * Set the coefficient_b_ attribute of the current topology atom type
               * @param coefficient_b The coefficient b attribute of the current object
               */
-            void SetCoefficientB(TopologyCoefficientMap coefficient_b);
+            void SetCoefficientB(double coefficient_b);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -84,9 +84,9 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string atom_type_;
-            TopologyCoefficientMap coefficient_a_;
-            TopologyCoefficientMap coefficient_b_;
+            std::string pair_type_;
+            double coefficient_a_;
+            double coefficient_b_;
 
     };
 }

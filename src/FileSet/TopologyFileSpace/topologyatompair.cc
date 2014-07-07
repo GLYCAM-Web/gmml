@@ -9,37 +9,21 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAtomPair::TopologyAtomPair() {}
 
-TopologyAtomPair::TopologyAtomPair(string atom_type, TopologyCoefficientMap coefficient_a_map, TopologyCoefficientMap coefficient_b_map) :
-    atom_type_(atom_type)
-{
-    coefficient_a_.clear();
-    for(TopologyCoefficientMap::iterator it = coefficient_a_map.begin(); it != coefficient_a_map.end(); it++)
-    {
-        string atom_type = (*it).first;
-        double coefficient = (*it).second;
-        coefficient_a_[atom_type] = coefficient;
-    }
-    coefficient_b_.clear();
-    for(TopologyCoefficientMap::iterator it = coefficient_b_map.begin(); it != coefficient_b_map.end(); it++)
-    {
-        string atom_type = (*it).first;
-        double coefficient = (*it).second;
-        coefficient_b_[atom_type] = coefficient;
-    }
-}
+TopologyAtomPair::TopologyAtomPair(string pair_type, double coefficient_a, double coefficient_b) :
+    pair_type_(pair_type), coefficient_a_(coefficient_a), coefficient_b_(coefficient_b) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string TopologyAtomPair::GetAtomType()
+string TopologyAtomPair::GetPairType()
 {
-    return atom_type_;
+    return pair_type_;
 }
-TopologyAtomPair::TopologyCoefficientMap TopologyAtomPair::GetCoefficientA()
+double TopologyAtomPair::GetCoefficientA()
 {
     return coefficient_a_;
 }
-TopologyAtomPair::TopologyCoefficientMap TopologyAtomPair::GetCoefficientB()
+double TopologyAtomPair::GetCoefficientB()
 {
     return coefficient_b_;
 }
@@ -47,29 +31,17 @@ TopologyAtomPair::TopologyCoefficientMap TopologyAtomPair::GetCoefficientB()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAtomPair::SetAtomType(string atom_type)
+void TopologyAtomPair::SetPairType(string pair_type)
 {
-    atom_type_ = atom_type;
+    pair_type_ = pair_type;
 }
-void TopologyAtomPair::SetCoefficientA(TopologyCoefficientMap coefficient_a)
+void TopologyAtomPair::SetCoefficientA(double coefficient_a)
 {
-    coefficient_a_.clear();
-    for(TopologyCoefficientMap::iterator it = coefficient_a.begin(); it != coefficient_a.end(); it++)
-    {
-       double coefficienta = (*it).second;
-       string atom_type = (*it).first;
-       coefficient_a_[atom_type] = coefficienta;
-    }
+    coefficient_a_ = coefficient_a;
 }
-void TopologyAtomPair::SetCoefficientB(TopologyCoefficientMap coefficient_b)
+void TopologyAtomPair::SetCoefficientB(double coefficient_b)
 {
-    coefficient_b_.clear();
-    for(TopologyCoefficientMap::iterator it = coefficient_b.begin(); it != coefficient_b.end(); it++)
-    {
-       double coefficientb = (*it).second;
-       string atom_type = (*it).first;
-       coefficient_b_[atom_type] = coefficientb;
-    }
+    coefficient_b_ = coefficient_b;
 }
 
 //////////////////////////////////////////////////////////
