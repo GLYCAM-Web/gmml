@@ -1468,6 +1468,12 @@ void TopologyFile::Print(ostream &out)
 {
     out << "============================ " << title_ << " ===========================" << endl;
     assembly_->Print(out);
+    out << "------------------------------ Atom Pairs ------------------------------" << endl;
+    for(TopologyAtomPairMap::iterator it = pairs_.begin(); it != pairs_.end(); it++)
+    {
+        TopologyAtomPair* atom_pair = (*it).second;
+        atom_pair->Print(out);
+    }
     out << "------------------------------ Bond Types ------------------------------" << endl;
     for(TopologyBondTypeMap::iterator it = bond_types_.begin(); it != bond_types_.end(); it++)
     {
