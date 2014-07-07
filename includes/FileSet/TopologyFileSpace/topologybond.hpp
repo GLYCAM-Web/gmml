@@ -20,7 +20,7 @@ namespace TopologyFileSpace
               */
             TopologyBond();
 
-            TopologyBond(std::vector<std::string> bonds);
+            TopologyBond(std::vector<std::string> bonds, std::vector<std::string> residue_names );
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -40,6 +40,11 @@ namespace TopologyFileSpace
               * @return including_hydrogen_ attribute of the current object of this class
               */
             bool GetIncludingHydrogen();
+            /*! \fn
+              * An accessor function in order to access to the residue names
+              * @return residue_names_ attribute of the current object of this class
+              */
+            std::vector<std::string> GetResidueNames();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -62,6 +67,12 @@ namespace TopologyFileSpace
               * @param including_hydrogen The including hydrogen attribute of the current object
               */
             void SetIncludingHydrogen(bool including_hydrogen);
+            /*! \fn
+              * A mutator function in order to set residue names of the current object
+              * Set the residue_names_ attribute of the current topology bond type
+              * @param residue_names The residue names of the current object
+              */
+            void SetResidueNames(std::vector<std::string> residue_names);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -84,6 +95,7 @@ namespace TopologyFileSpace
             std::vector<std::string> bonds_;
             TopologyBondType* bond_type_;
             bool including_hydrogen_;
+            std::vector<std::string> residue_names_;
 
     };
 }

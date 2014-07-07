@@ -24,7 +24,7 @@ namespace TopologyFileSpace
               */
             TopologyAtom();
             TopologyAtom(int atom_index, std::string atom_name, std::string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
-                         int number_of_excluded_atoms, double radii, double screen, std::string tree_chain_classification);
+                         int number_of_excluded_atoms, double radii, double screen, std::string tree_chain_classification, std::string residue_name);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -84,6 +84,11 @@ namespace TopologyFileSpace
               * @return index_ attribute of the current object of this class
               */
             int GetIndex();
+            /*! \fn
+              * An accessor function in order to access to the residue name
+              * @return residue_name_ attribute of the current object of this class
+              */
+            std::string GetResidueName();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -154,6 +159,12 @@ namespace TopologyFileSpace
               * @param index The index attribute of the current object
               */
             void SetIndex(int index);
+            /*! \fn
+              * A mutator function in order to set the residue name of the current object
+              * Set the residue_name_ attribute of the current topology atom
+              * @param residue_name The residue name attribute of the current object
+              */
+            void SetResidueName(std::string residue_name);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -184,6 +195,7 @@ namespace TopologyFileSpace
             int number_of_excluded_atoms_;
             std::string type_;
             int index_;
+            std::string residue_name_;
     };
 }
 

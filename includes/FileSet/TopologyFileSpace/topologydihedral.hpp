@@ -20,7 +20,7 @@ namespace TopologyFileSpace
               */
             TopologyDihedral();
 
-            TopologyDihedral(std::vector<std::string> dihedral_atoms);
+            TopologyDihedral(std::vector<std::string> dihedral_atoms, std::vector<std::string> residue_names);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -46,6 +46,11 @@ namespace TopologyFileSpace
               */
             bool GetIgnoredGroupInteraction();
             bool GetIncludingHydrogen();
+            /*! \fn
+              * An accessor function in order to access to the residue names
+              * @return residue_names_ attribute of the current object of this class
+              */
+            std::vector<std::string> GetResidueNames();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -58,23 +63,29 @@ namespace TopologyFileSpace
             void SetDihedrals(std::vector<std::string> dihedrals);
             /*! \fn
               * A mutator function in order to set the dihedral type of the current object
-              * Set the dihedral_type_ attribute of the current topology dihedral type
+              * Set the dihedral_type_ attribute of the current topology dihedral
               * @param dihedral_type The dihedral type attribute of the current object
               */
             void SetDihedralType(TopologyDihedralType* dihedral_type);
             /*! \fn
               * A mutator function in order to set the boolean improper attribute of the current object
-              * Set the is_improper_ attribute of the current topology dihedral type
+              * Set the is_improper_ attribute of the current topology dihedral
               * @param is_improper The is improper attribute of the current object
               */
             void SetIsImproper(bool is_improper);
             /*! \fn
               * A mutator function in order to set the boolean ignored group interaction of the current object
-              * Set the ignored_group_interaction_ attribute of the current topology dihedral type
+              * Set the ignored_group_interaction_ attribute of the current topology dihedral
               * @param ignored_group_interaction The ignored group interactionr attribute of the current object
               */
             void SetIgnoredGroupInteraction(bool ignored_group_interaction);
             void SetIncludingHydrogen(bool including_hydrogen);
+            /*! \fn
+              * A mutator function in order to set residue names of the current object
+              * Set the residue_names_ attribute of the current topology dihedral
+              * @param residue_names The residue names of the current object
+              */
+            void SetResidueNames(std::vector<std::string> residue_names);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -99,6 +110,7 @@ namespace TopologyFileSpace
             bool is_improper_;
             bool ignored_group_interaction_;
             bool including_hydrogen_;
+            std::vector<std::string> residue_names_;
     };
 }
 
