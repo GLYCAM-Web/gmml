@@ -368,7 +368,7 @@ void TopologyFile::SetBonds(TopologyBondMap bonds)
     bonds_.clear();
     for(TopologyBondMap::iterator it = bonds.begin(); it != bonds.end(); it++)
     {
-        vector<string> atom_bond = (*it).first;
+        string atom_bond = (*it).first;
         TopologyBond* bond = (*it).second;
         bonds_[atom_bond] = bond;
     }
@@ -378,7 +378,7 @@ void TopologyFile::SetAngles(TopologyAngleMap angles)
     angles_.clear();
     for(TopologyAngleMap::iterator it = angles.begin(); it != angles.end(); it++)
     {
-        vector<string> atom_angle = (*it).first;
+        string atom_angle = (*it).first;
         TopologyAngle* angle = (*it).second;
         angles_[atom_angle] = angle;
     }
@@ -388,7 +388,7 @@ void TopologyFile::SetDihedrals(TopologyDihedralMap dihedrals)
     dihedrals_.clear();
     for(TopologyDihedralMap::iterator it = dihedrals.begin(); it != dihedrals.end(); it++)
     {
-        vector<string> atom_dihedral = (*it).first;
+        string atom_dihedral = (*it).first;
         TopologyDihedral* dihedral = (*it).second;
         dihedrals_[atom_dihedral] = dihedral;
     }
@@ -714,7 +714,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         topology_bond->SetBondType(bond_types_[bonds_inc_hydrogens[i*3+2] - 1]);
         topology_bond->SetIncludingHydrogen(true);
 
-        bonds_[bonds] = topology_bond;
+        stringstream key;
+        key << bonds.at(0) << "(" << first_atom_index << ")" << "-" << bonds.at(1) << "(" << second_atom_index << ")" << "_" << topology_bond->GetBondType();
+        bonds_[key.str()] = topology_bond;
     }
     for(int i = 0; i < number_of_bonds_excluding_hydrogen_; i++)
     {
@@ -731,7 +733,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         topology_bond->SetBondType(bond_types_[bonds_without_hydrogens[i*3+2] - 1]);
         topology_bond->SetIncludingHydrogen(false);
 
-        bonds_[bonds] = topology_bond;
+        stringstream key;
+        key << bonds.at(0) << "(" << first_atom_index << ")" << "-" << bonds.at(1) << "(" << second_atom_index << ")" << "_" << topology_bond->GetBondType();
+        bonds_[key.str()] = topology_bond;
     }
     // Angles in topology file
     // Angles including hydrogen
@@ -752,7 +756,10 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle->SetIncludingHydrogen(true);
         angle->SetAnlgeType(angle_types_[angles_inc_hydrogens.at(i*4+3) - 1]);
 
-        angles_[angle_atoms] = angle;
+        stringstream key;
+        key << angle_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << angle_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
+            << angle_atoms.at(2) << "(" << atom_index_3 << ")" << "_" << angle->GetAngleType();
+        angles_[key.str()] = angle;
     }
     // Angles excluding hydrogen
     for(int i = 0; i < number_of_angles_excluding_hydrogen_; i++)
@@ -772,7 +779,10 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle->SetIncludingHydrogen(false);
         angle->SetAnlgeType(angle_types_[angles_without_hydrogens.at(i*4+3) - 1]);
 
-        angles_[angle_atoms] = angle;
+        stringstream key;
+        key << angle_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << angle_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
+            << angle_atoms.at(2) << "(" << atom_index_3 << ")" << "_" << angle->GetAngleType();
+        angles_[key.str()] = angle;
     }
     // Dihedrals in topology file
     // Dihedrals including hydrogen
@@ -803,7 +813,12 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         dihedral->SetIncludingHydrogen(true);
         dihedral->SetDihedralType(dihedral_types_[dihedrals_inc_hydrogens.at(i*5+4) - 1]);
-        dihedrals_[dihedral_atoms] = dihedral;
+        stringstream key;
+        key << dihedral_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << dihedral_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
+            << dihedral_atoms.at(2) << "(" << atom_index_3 << ")" << "-" << dihedral_atoms.at(3) << "(" << atom_index_4 << ")" << "_"
+            << dihedral->GetDihedralType() << "_"
+            << (dihedral->GetIsImproper() ? "IY" : "IN") << "_" << (dihedral->GetIgnoredGroupInteraction() ? "GY" : "GN");
+        dihedrals_[key.str()] = dihedral;
 
     }
     // Dihedrals excluding hydrogen
@@ -835,7 +850,12 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral->SetIncludingHydrogen(false);
         dihedral->SetDihedralType(dihedral_types_[dihedrals_without_hydrogens.at(i*5+4) - 1]);
 
-        dihedrals_[dihedral_atoms] = dihedral;
+        stringstream key;
+        key << dihedral_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << dihedral_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
+            << dihedral_atoms.at(2) << "(" << atom_index_3 << ")" << "-" << dihedral_atoms.at(3) << "(" << atom_index_4 << ")" << "_"
+            << dihedral->GetDihedralType() << "_"
+            << (dihedral->GetIsImproper() ? "IY" : "IN") << "_" << (dihedral->GetIgnoredGroupInteraction() ? "GY" : "GN");
+        dihedrals_[key.str()] = dihedral;
     }
     // Residues in topology file
     int start_index = 0;
@@ -862,7 +882,6 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 start_index += number_excluded_atoms.at(i-1);
             for(int j = start_index; j < start_index + number_excluded_atoms.at(i); j++)
             {
-                cout << excluded_atoms_lists.at(j) - 1 << endl;
                 excluded_atoms.push_back(atom_names.at((excluded_atoms_lists.at(j) - 1 == -1) ? 0 : excluded_atoms_lists.at(j) - 1));
             }
             atoms[atom_names.at(i)] = new TopologyAtom(i + 1, atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,

@@ -28,9 +28,9 @@ namespace TopologyFileSpace
             typedef std::map<int, TopologyAngleType*> TopologyAngleTypeMap;
             typedef std::map<int, TopologyDihedralType*> TopologyDihedralTypeMap;
             typedef std::vector<std::string> RadiusSet;
-            typedef std::map<std::vector<std::string>, TopologyBond*> TopologyBondMap;
-            typedef std::map<std::vector<std::string>, TopologyAngle*> TopologyAngleMap;
-            typedef std::map<std::vector<std::string>, TopologyDihedral*> TopologyDihedralMap;
+            typedef std::map<std::string, TopologyBond*> TopologyBondMap;
+            typedef std::map<std::string, TopologyAngle*> TopologyAngleMap;
+            typedef std::map<std::string, TopologyDihedral*> TopologyDihedralMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
