@@ -53,6 +53,6 @@ void TopologyAtomPair::SetCoefficientB(double coefficient_b)
 //////////////////////////////////////////////////////////
 void TopologyAtomPair::Print(ostream &out)
 {
-
+    out << pair_type_ << ": a = " << coefficient_a_ << "; b = " << coefficient_b_ << endl;
 }
 

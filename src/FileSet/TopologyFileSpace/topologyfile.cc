@@ -708,9 +708,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -726,9 +726,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -765,9 +765,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -783,9 +783,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -826,9 +826,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -844,9 +844,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -862,9 +862,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -905,9 +905,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -923,9 +923,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -941,9 +941,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -987,9 +987,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1005,9 +1005,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1023,9 +1023,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1041,9 +1041,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1097,9 +1097,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
 
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1115,9 +1115,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1133,9 +1133,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1151,9 +1151,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         for(int j = 0; j < residue_pointers.size(); j++)
         {
-            int start_index = residue_pointers.at(j);
+            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size())
+            if(j == residue_pointers.size() - 1)
             {
                 end_index = number_of_atoms_;
             }
@@ -1218,9 +1218,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 int index = (excluded_atoms_lists.at(j) - 1 == -1) ? 0 : excluded_atoms_lists.at(j) - 1;
                 for(int k = 0; k < residue_pointers.size(); k++)
                 {
-                    int start_index = residue_pointers.at(k);
+                    int start_index = residue_pointers.at(k) - 1;
                     int end_index;
-                    if(k == residue_pointers.size())
+                    if(k == residue_pointers.size() - 1)
                     {
                         end_index = number_of_atoms_;
                     }
