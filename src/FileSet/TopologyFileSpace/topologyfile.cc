@@ -673,8 +673,6 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     for(int i = 0; i < number_of_atoms_; i++)
     {
         string atom_type_1 = amber_atom_types.at(i);
-        TopologyAtomPair::TopologyCoefficientMap coefficient_a_map;
-        TopologyAtomPair::TopologyCoefficientMap coefficient_b_map;
         for(int j = 0; j < number_of_atoms_; j++)
         {
             string atom_type_2 = amber_atom_types.at(j);
@@ -691,10 +689,8 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 coefficient_a = hbond_acoefs.at(index - 1);
                 coefficient_b = hbond_bcoefs.at(index - 1);
             }
-            coefficient_a_map[atom_type_2] = coefficient_a;
-            coefficient_b_map[atom_type_2] = coefficient_b;
+            pairs_[atom_type_1 + "-" + atom_type_2] = new TopologyAtomPair(atom_type_1 + "-" + atom_type_2, coefficient_a, coefficient_b);
         }
-        pairs_[atom_type_1] = new TopologyAtomPair(atom_type_1, coefficient_a_map, coefficient_b_map);
 
     }
     // Bonds, Angles, Dihedrals
@@ -702,6 +698,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     for(int i = 0; i < number_of_bonds_including_hydrogen_; i++)
     {
         vector<string> bonds = vector<string>();
+        vector<string> bond_atoms_residue_names = vector<string>();
 
         int first_atom_index = (bonds_inc_hydrogens[i*3])/3;
         int second_atom_index = (bonds_inc_hydrogens[i*3+1])/3;
@@ -709,18 +706,56 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         bonds.push_back(atom_names[first_atom_index]);
         bonds.push_back(atom_names[second_atom_index]);
 
-        TopologyBond* topology_bond = new TopologyBond(bonds);
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(first_atom_index >= start_index && first_atom_index < end_index)
+            {
+                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(second_atom_index >= start_index && second_atom_index < end_index)
+            {
+                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+
+        TopologyBond* topology_bond = new TopologyBond(bonds, bond_atoms_residue_names);
 
         topology_bond->SetBondType(bond_types_[bonds_inc_hydrogens[i*3+2] - 1]);
         topology_bond->SetIncludingHydrogen(true);
 
         stringstream key;
-        key << bonds.at(0) << "(" << first_atom_index << ")" << "-" << bonds.at(1) << "(" << second_atom_index << ")" << "_" << topology_bond->GetBondType();
+        key << bond_atoms_residue_names.at(0) << ":" << bonds.at(0) << "-" << bond_atoms_residue_names.at(1) << ":" << bonds.at(1) << "_" << topology_bond->GetBondType();
         bonds_[key.str()] = topology_bond;
     }
     for(int i = 0; i < number_of_bonds_excluding_hydrogen_; i++)
     {
         vector<string> bonds = vector<string>();
+        vector<string> bond_atoms_residue_names = vector<string>();
 
         int first_atom_index = (bonds_without_hydrogens[i*3])/3;
         int second_atom_index = (bonds_without_hydrogens[i*3+1])/3;
@@ -728,13 +763,50 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         bonds.push_back(atom_names[first_atom_index]);
         bonds.push_back(atom_names[second_atom_index]);
 
-        TopologyBond* topology_bond = new TopologyBond(bonds);
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(first_atom_index >= start_index && first_atom_index < end_index)
+            {
+                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(second_atom_index >= start_index && second_atom_index < end_index)
+            {
+                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+
+        TopologyBond* topology_bond = new TopologyBond(bonds, bond_atoms_residue_names);
 
         topology_bond->SetBondType(bond_types_[bonds_without_hydrogens[i*3+2] - 1]);
         topology_bond->SetIncludingHydrogen(false);
 
         stringstream key;
-        key << bonds.at(0) << "(" << first_atom_index << ")" << "-" << bonds.at(1) << "(" << second_atom_index << ")" << "_" << topology_bond->GetBondType();
+        key << bond_atoms_residue_names.at(0) << ":" << bonds.at(0) << "-" << bond_atoms_residue_names.at(1) << ":" << bonds.at(1) << "_" << topology_bond->GetBondType();
         bonds_[key.str()] = topology_bond;
     }
     // Angles in topology file
@@ -742,6 +814,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     for(int i = 0; i < number_of_angles_including_hydrogen_; i++)
     {
         vector<string> angle_atoms = vector<string>();
+        vector<string> angle_atoms_residue_names = vector<string>();
 
         int atom_index_1 = angles_inc_hydrogens.at(i*4) / 3;
         int atom_index_2 = angles_inc_hydrogens.at(i*4+1) / 3;
@@ -751,20 +824,76 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle_atoms.push_back(atom_names.at(atom_index_2));
         angle_atoms.push_back(atom_names.at(atom_index_3));
 
-        TopologyAngle* angle = new TopologyAngle(angle_atoms);
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_1 >= start_index && atom_index_1 < end_index)
+            {
+                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_2 >= start_index && atom_index_2 < end_index)
+            {
+                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_3 >= start_index && atom_index_3 < end_index)
+            {
+                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+
+        TopologyAngle* angle = new TopologyAngle(angle_atoms, angle_atoms_residue_names);
 
         angle->SetIncludingHydrogen(true);
         angle->SetAnlgeType(angle_types_[angles_inc_hydrogens.at(i*4+3) - 1]);
 
         stringstream key;
-        key << angle_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << angle_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
-            << angle_atoms.at(2) << "(" << atom_index_3 << ")" << "_" << angle->GetAngleType();
+        key << angle_atoms_residue_names.at(0) << ":" << angle_atoms.at(0) << "-" << angle_atoms_residue_names.at(1) << ":" << angle_atoms.at(1) << "-"
+            << angle_atoms_residue_names.at(2) << ":" << angle_atoms.at(2) << "_" << angle->GetAngleType();
         angles_[key.str()] = angle;
     }
     // Angles excluding hydrogen
     for(int i = 0; i < number_of_angles_excluding_hydrogen_; i++)
     {
         vector<string> angle_atoms = vector<string>();
+        vector<string> angle_atoms_residue_names = vector<string>();
 
         int atom_index_1 = angles_without_hydrogens.at(i*4) / 3;
         int atom_index_2 = angles_without_hydrogens.at(i*4+1) / 3;
@@ -774,14 +903,69 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle_atoms.push_back(atom_names.at(atom_index_2));
         angle_atoms.push_back(atom_names.at(atom_index_3));
 
-        TopologyAngle* angle = new TopologyAngle(angle_atoms);
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_1 >= start_index && atom_index_1 < end_index)
+            {
+                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_2 >= start_index && atom_index_2 < end_index)
+            {
+                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_3 >= start_index && atom_index_3 < end_index)
+            {
+                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+
+        TopologyAngle* angle = new TopologyAngle(angle_atoms, angle_atoms_residue_names);
 
         angle->SetIncludingHydrogen(false);
         angle->SetAnlgeType(angle_types_[angles_without_hydrogens.at(i*4+3) - 1]);
 
         stringstream key;
-        key << angle_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << angle_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
-            << angle_atoms.at(2) << "(" << atom_index_3 << ")" << "_" << angle->GetAngleType();
+        key << angle_atoms_residue_names.at(0) << ":" << angle_atoms.at(0) << "-" << angle_atoms_residue_names.at(1) << ":" << angle_atoms.at(1) << "-"
+            << angle_atoms_residue_names.at(2) << ":" << angle_atoms.at(2) << "_" << angle->GetAngleType();
         angles_[key.str()] = angle;
     }
     // Dihedrals in topology file
@@ -789,6 +973,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     for(int i = 0; i < number_of_dihedrals_including_hydrogen_; i++)
     {
         vector<string> dihedral_atoms = vector<string>();
+        vector<string> dihedral_atoms_residue_names = vector<string>();
 
         int atom_index_1 = abs(dihedrals_inc_hydrogens.at(i*5)) / 3;
         int atom_index_2 = abs(dihedrals_inc_hydrogens.at(i*5+1)) / 3;
@@ -800,7 +985,80 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral_atoms.push_back(atom_names.at(atom_index_3));
         dihedral_atoms.push_back(atom_names.at(atom_index_4));
 
-        TopologyDihedral* dihedral = new TopologyDihedral(dihedral_atoms);
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_1 >= start_index && atom_index_1 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_2 >= start_index && atom_index_2 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_3 >= start_index && atom_index_3 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_4 >= start_index && atom_index_4 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+
+        TopologyDihedral* dihedral = new TopologyDihedral(dihedral_atoms, dihedral_atoms_residue_names);
 
         if(dihedrals_inc_hydrogens.at(i*5+2) < 0)
             dihedral->SetIgnoredGroupInteraction(true);
@@ -814,8 +1072,8 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral->SetIncludingHydrogen(true);
         dihedral->SetDihedralType(dihedral_types_[dihedrals_inc_hydrogens.at(i*5+4) - 1]);
         stringstream key;
-        key << dihedral_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << dihedral_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
-            << dihedral_atoms.at(2) << "(" << atom_index_3 << ")" << "-" << dihedral_atoms.at(3) << "(" << atom_index_4 << ")" << "_"
+        key << dihedral_atoms_residue_names.at(0) << ":" << dihedral_atoms.at(0) << "-" << dihedral_atoms_residue_names.at(1) << ":" << dihedral_atoms.at(1) << "-"
+            << dihedral_atoms_residue_names.at(2) << ":" << dihedral_atoms.at(2) << "-" << dihedral_atoms_residue_names.at(3) << ":" << dihedral_atoms.at(3) << "_"
             << dihedral->GetDihedralType() << "_"
             << (dihedral->GetIsImproper() ? "IY" : "IN") << "_" << (dihedral->GetIgnoredGroupInteraction() ? "GY" : "GN");
         dihedrals_[key.str()] = dihedral;
@@ -825,6 +1083,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     for(int i = 0; i < number_of_dihedrals_excluding_hydrogen_; i++)
     {
         vector<string> dihedral_atoms = vector<string>();
+        vector<string> dihedral_atoms_residue_names = vector<string>();
 
         int atom_index_1 = abs(dihedrals_without_hydrogens.at(i*5)) / 3;
         int atom_index_2 = abs(dihedrals_without_hydrogens.at(i*5+1)) / 3;
@@ -836,7 +1095,80 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral_atoms.push_back(atom_names.at(atom_index_3));
         dihedral_atoms.push_back(atom_names.at(atom_index_4));
 
-        TopologyDihedral* dihedral = new TopologyDihedral(dihedral_atoms);
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_1 >= start_index && atom_index_1 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_2 >= start_index && atom_index_2 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_3 >= start_index && atom_index_3 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+        for(int j = 0; j < residue_pointers.size(); j++)
+        {
+            int start_index = residue_pointers.at(j);
+            int end_index;
+            if(j == residue_pointers.size())
+            {
+                end_index = number_of_atoms_;
+            }
+            else
+            {
+                end_index = residue_pointers.at(j+1);
+            }
+            if(atom_index_4 >= start_index && atom_index_4 < end_index)
+            {
+                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                break;
+            }
+        }
+
+        TopologyDihedral* dihedral = new TopologyDihedral(dihedral_atoms, dihedral_atoms_residue_names);
 
         if(dihedrals_without_hydrogens.at(i*5+2) < 0)
             dihedral->SetIgnoredGroupInteraction(true);
@@ -851,8 +1183,8 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral->SetDihedralType(dihedral_types_[dihedrals_without_hydrogens.at(i*5+4) - 1]);
 
         stringstream key;
-        key << dihedral_atoms.at(0) << "(" << atom_index_1 << ")" << "-" << dihedral_atoms.at(1) << "(" << atom_index_2 << ")" << "-"
-            << dihedral_atoms.at(2) << "(" << atom_index_3 << ")" << "-" << dihedral_atoms.at(3) << "(" << atom_index_4 << ")" << "_"
+        key << dihedral_atoms_residue_names.at(0) << ":" << dihedral_atoms.at(0) << "-" << dihedral_atoms_residue_names.at(1) << ":" << dihedral_atoms.at(1) << "-"
+            << dihedral_atoms_residue_names.at(2) << ":" << dihedral_atoms.at(2) << "-" << dihedral_atoms_residue_names.at(3) << ":" << dihedral_atoms.at(3) << "_"
             << dihedral->GetDihedralType() << "_"
             << (dihedral->GetIsImproper() ? "IY" : "IN") << "_" << (dihedral->GetIgnoredGroupInteraction() ? "GY" : "GN");
         dihedrals_[key.str()] = dihedral;
@@ -882,10 +1214,30 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 start_index += number_excluded_atoms.at(i-1);
             for(int j = start_index; j < start_index + number_excluded_atoms.at(i); j++)
             {
-                excluded_atoms.push_back(atom_names.at((excluded_atoms_lists.at(j) - 1 == -1) ? 0 : excluded_atoms_lists.at(j) - 1));
+                string excluded_atom_residue_name;
+                int index = (excluded_atoms_lists.at(j) - 1 == -1) ? 0 : excluded_atoms_lists.at(j) - 1;
+                for(int k = 0; k < residue_pointers.size(); k++)
+                {
+                    int start_index = residue_pointers.at(k);
+                    int end_index;
+                    if(k == residue_pointers.size())
+                    {
+                        end_index = number_of_atoms_;
+                    }
+                    else
+                    {
+                        end_index = residue_pointers.at(k+1);
+                    }
+                    if(index >= start_index && index < end_index)
+                    {
+                        excluded_atom_residue_name = residue_labels.at(k);
+                        break;
+                    }
+                }
+                excluded_atoms.push_back(excluded_atom_residue_name + ":" + atom_names.at(index));
             }
             atoms[atom_names.at(i)] = new TopologyAtom(i + 1, atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
-                                                       number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i));
+                                                       number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i), residue_name);
         }
         residues[residue_name] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);
     }
