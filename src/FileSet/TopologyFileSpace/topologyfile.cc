@@ -706,17 +706,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         bonds.push_back(atom_names[first_atom_index]);
         bonds.push_back(atom_names[second_atom_index]);
 
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(first_atom_index >= start_index && first_atom_index < end_index)
             {
@@ -724,17 +724,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(second_atom_index >= start_index && second_atom_index < end_index)
             {
@@ -763,17 +763,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         bonds.push_back(atom_names[first_atom_index]);
         bonds.push_back(atom_names[second_atom_index]);
 
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j <number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(first_atom_index >= start_index && first_atom_index < end_index)
             {
@@ -781,17 +781,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
-            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            int start_index = residue_pointers.at(j) - 1;
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(second_atom_index >= start_index && second_atom_index < end_index)
             {
@@ -824,17 +824,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle_atoms.push_back(atom_names.at(atom_index_2));
         angle_atoms.push_back(atom_names.at(atom_index_3));
 
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
@@ -842,17 +842,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
@@ -860,17 +860,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
@@ -903,17 +903,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         angle_atoms.push_back(atom_names.at(atom_index_2));
         angle_atoms.push_back(atom_names.at(atom_index_3));
 
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
@@ -921,17 +921,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
@@ -939,17 +939,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
-            int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            int start_index = residue_pointers.at(j) - 1;
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
@@ -985,17 +985,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral_atoms.push_back(atom_names.at(atom_index_3));
         dihedral_atoms.push_back(atom_names.at(atom_index_4));
 
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
@@ -1003,17 +1003,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
@@ -1021,17 +1021,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
@@ -1039,17 +1039,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_4 >= start_index && atom_index_4 < end_index)
             {
@@ -1095,17 +1095,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral_atoms.push_back(atom_names.at(atom_index_3));
         dihedral_atoms.push_back(atom_names.at(atom_index_4));
 
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
@@ -1113,17 +1113,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
@@ -1131,17 +1131,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
@@ -1149,17 +1149,17 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 break;
             }
         }
-        for(int j = 0; j < residue_pointers.size(); j++)
+        for(int j = 0; j < number_of_residues_; j++)
         {
             int start_index = residue_pointers.at(j) - 1;
             int end_index;
-            if(j == residue_pointers.size() - 1)
+            if(j < number_of_residues_ - 1)
             {
-                end_index = number_of_atoms_;
+                end_index = residue_pointers.at(j+1) - 1;
             }
             else
             {
-                end_index = residue_pointers.at(j+1);
+                end_index = number_of_atoms_;
             }
             if(atom_index_4 >= start_index && atom_index_4 < end_index)
             {
@@ -1216,19 +1216,19 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             {
                 string excluded_atom_residue_name;
                 int index = (excluded_atoms_lists.at(j) - 1 == -1) ? 0 : excluded_atoms_lists.at(j) - 1;
-                for(int k = 0; k < residue_pointers.size(); k++)
+                for(int k = 0; k < number_of_residues_; k++)
                 {
-                    int start_index = residue_pointers.at(k) - 1;
-                    int end_index;
-                    if(k == residue_pointers.size() - 1)
+                    int start_atom_index = residue_pointers.at(k) - 1;
+                    int end_atom_index;
+                    if(k < number_of_residues_ - 1)
                     {
-                        end_index = number_of_atoms_;
+                        end_atom_index = residue_pointers.at(k+1) - 1;
                     }
                     else
                     {
-                        end_index = residue_pointers.at(k+1);
+                        end_atom_index = number_of_atoms_;
                     }
-                    if(index >= start_index && index < end_index)
+                    if(index >= start_atom_index && index < end_atom_index)
                     {
                         excluded_atom_residue_name = residue_labels.at(k);
                         break;
