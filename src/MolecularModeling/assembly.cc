@@ -2,13 +2,44 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 
+#include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp";
+
 using namespace std;
 using namespace MolecularModeling;
+using namespace TopologyFileSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 Assembly::Assembly() {}
+
+Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
+{
+    source_file_type_ = type;
+    switch(type)
+    {
+        case gmml::PDB:
+            source_file_ = file_paths.at(0);
+            BuildAssemblyFromPdbFile(source_file_);
+            break;
+        case gmml::TOP:
+            source_file_ = file_paths.at(0);
+            BuildAssemblyFromTopologyFile(source_file_);
+            break;
+        case gmml::LIB:
+            source_file_ = file_paths.at(0);
+            BuildAssemblyFromLibraryFile(source_file_);
+            break;
+        case gmml::PREP:
+            source_file_ = file_paths.at(0);
+            BuildAssemblyFromPrepFile(source_file_);
+            break;
+        case gmml::TOP_CRD:
+            source_file_ = file_paths.at(0)+";"+file_paths.at(1);
+            BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
+            break;
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -124,6 +155,15 @@ void Assembly::SetStructure(Structure structure)
 void Assembly::AddAtomGraph(AtomGraph atom_graph)
 {
     structure_.push_back(atom_graph);
+}
+
+//////////////////////////////////////////////////////////
+//                       FUNCTIONS                      //
+//////////////////////////////////////////////////////////
+void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
+{
+    TopologyFile* topology_file = new TopologyFile(topology_file_path);
+
 }
 
 //////////////////////////////////////////////////////////

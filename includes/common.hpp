@@ -36,8 +36,8 @@ namespace gmml
         PDB,
         LIB,
         PREP,
-        PARAM,
-        TOP
+        TOP,
+        TOP_CRD
     };
 
     enum GraphType
@@ -45,6 +45,14 @@ namespace gmml
         RESIDUE,
         MOLECULE,
         ASSEMBLY
+    };
+
+    enum EdgeTypeDescriptor
+    {
+        COVALENT,
+        IONIC,
+        HYDROGEN,
+        NONE
     };
 
 }

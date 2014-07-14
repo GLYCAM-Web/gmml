@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "../../common.hpp"
+
 namespace Geometry
 {
     class EdgeAttribute
@@ -34,6 +36,11 @@ namespace Geometry
               * @return length_ attribute of the current object of this class
               */
             double GetLength();
+            /*! \fn
+              * An accessor function in order to access to the edge type
+              * @return edge_type_ attribute of the current object of this class
+              */
+            gmml::EdgeTypeDescriptor GetEdgeType();
 
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
@@ -56,6 +63,12 @@ namespace Geometry
               * @param length The weight attribute of the current object
               */
             void SetLength(double length);
+            /*! \fn
+              * A mutator function in order to set the structure of the current object
+              * Set the edge_type_ attribute of the current edge attribute
+              * @param edge_type The edge type attribute of the current object
+              */
+            void SetEdgeType(gmml::EdgeTypeDescriptor edge_type);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -78,6 +91,7 @@ namespace Geometry
             double force_;
             double weight_;
             double length_;
+            gmml::EdgeTypeDescriptor edge_type_;
     };
 }
 

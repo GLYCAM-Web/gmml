@@ -19,9 +19,9 @@ string Atom::GetName()
 {
     return name_;
 }
-Geometry::Coordinate Atom::GetCoordinate()
+Atom::CoordinateVector Atom::GetCoordinates()
 {
-    return coordinate_;
+    return coordinates_;
 }
 string Atom::GetChemicalType()
 {
@@ -47,9 +47,13 @@ void Atom::SetName(string name)
 {
     name_ = name;
 }
-void Atom::SetCoordinate(Geometry::Coordinate coordinate)
+void Atom::SetCoordinates(CoordinateVector coordinates)
 {
-    coordinate_ = coordinate;
+    coordinates_ = coordinates;
+}
+void Atom::AddCoordinate(Geometry::Coordinate *coordinate)
+{
+    coordinates_.push_back(coordinate);
 }
 void Atom::SetChemicalType(string chemical_type)
 {

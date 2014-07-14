@@ -7,6 +7,7 @@
 
 #include "../Geometry/coordinate.hpp"
 #include "../Geometry/Graph/graph.hpp"
+#include "../common.hpp"
 
 namespace MolecularModeling
 {
@@ -30,6 +31,8 @@ namespace MolecularModeling
               * Default constructor
               */
             Assembly();
+
+            Assembly(std::vector<std::string> file_paths, gmml::InputFileType type);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -190,6 +193,15 @@ namespace MolecularModeling
             void AddAtomGraph(AtomGraph atom_graph);
 
             //////////////////////////////////////////////////////////
+            //                       FUNCTIONS                      //
+            //////////////////////////////////////////////////////////
+            void BuildAssemblyFromPdbFile(std::string pdb_file_path);
+            void BuildAssemblyFromTopologyFile(std::string topology_file_path);
+            void BuildAssemblyFromLibraryFile(std::string library_file_path);
+            void BuildAssemblyFromPrepFile(std::string prep_file_path);
+            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
+
+            //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             /*! \fn
@@ -215,6 +227,7 @@ namespace MolecularModeling
             std::string source_file_;
             gmml::InputFileType source_file_type_;
             Structure structure_;
+            gmml::EdgeTypeDescriptor edge_type_;
 
     };
 }

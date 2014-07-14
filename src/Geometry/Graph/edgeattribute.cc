@@ -24,6 +24,10 @@ double EdgeAttribute::GetLength()
 {
     return length_;
 }
+gmml::EdgeTypeDescriptor EdgeAttribute::GetEdgeType()
+{
+    return edge_type_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -39,6 +43,10 @@ void EdgeAttribute::SetWeight(double weight)
 void EdgeAttribute::SetLength(double length)
 {
     length_ = length;
+}
+void EdgeAttribute::SetEdgeType(gmml::EdgeTypeDescriptor edge_type)
+{
+    edge_type_ = edge_type;
 }
 
 //////////////////////////////////////////////////////////

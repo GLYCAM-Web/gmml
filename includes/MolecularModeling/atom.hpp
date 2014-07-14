@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 #include "../Geometry/coordinate.hpp"
 #include "moleculardynamicatom.hpp"
@@ -15,6 +16,11 @@ namespace MolecularModeling
     class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom
     {
         public:
+            //////////////////////////////////////////////////////////
+            //                    TYPE DEFINITION                   //
+            //////////////////////////////////////////////////////////
+            typedef std::vector<Geometry::Coordinate*> CoordinateVector;
+
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -37,10 +43,10 @@ namespace MolecularModeling
               */
             std::string GetName();
             /*! \fn
-              * An accessor function in order to access to the coordinate
-              * @return coordinate_ attribute of the current object of this class
+              * An accessor function in order to access to the coordinates
+              * @return coordinates_ attribute of the current object of this class
               */
-            Geometry::Coordinate GetCoordinate();
+            CoordinateVector GetCoordinates();
             /*! \fn
               * An accessor function in order to access to the chemical_type
               * @return chemical_type_ attribute of the current object of this class
@@ -73,11 +79,17 @@ namespace MolecularModeling
               */
             void SetName(std::string name);
             /*! \fn
-              * A mutator function in order to set the coordinate of the current object
-              * Set the coordinate_ attribute of the current atom
-              * @param coordinate The coordinate attribute of the current object
+              * A mutator function in order to set the coordinates of the current object
+              * Set the coordinates_ attribute of the current atom
+              * @param coordinates The coordinates attribute of the current object
               */
-            void SetCoordinate(Geometry::Coordinate coordinate);
+            void SetCoordinates(CoordinateVector coordinates);
+            /*! \fn
+              * A function in order to add the coordinate to the current object
+              * Set the coordinates_ attribute of the current atom
+              * @param coordinate The coordinate of the current object
+              */
+            void AddCoordinate(Geometry::Coordinate* coordinate);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current atom
@@ -113,7 +125,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             Residue* residue_;
             std::string name_;
-            Geometry::Coordinate coordinate_;
+            CoordinateVector coordinates_;
             std::string chemical_type_;
             std::string description_;
             std::string element_symbol_;
