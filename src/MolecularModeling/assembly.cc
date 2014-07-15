@@ -2,11 +2,18 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 
-#include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp";
+#include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
 using namespace TopologyFileSpace;
+using namespace PdbFileSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -28,15 +35,15 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
             break;
         case gmml::LIB:
             source_file_ = file_paths.at(0);
-            BuildAssemblyFromLibraryFile(source_file_);
+//            BuildAssemblyFromLibraryFile(source_file_);
             break;
         case gmml::PREP:
             source_file_ = file_paths.at(0);
-            BuildAssemblyFromPrepFile(source_file_);
+//            BuildAssemblyFromPrepFile(source_file_);
             break;
         case gmml::TOP_CRD:
             source_file_ = file_paths.at(0)+";"+file_paths.at(1);
-            BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
+//              BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
             break;
     }
 }
@@ -160,6 +167,26 @@ void Assembly::AddAtomGraph(AtomGraph atom_graph)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
+void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
+{
+    PdbFile* pdb_file = new PdbFile(pdb_file_path);
+    PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsOfResidues();
+    for(PdbFile::PdbResidueAtomsMap::iterator it = residue_atoms_map.begin(); it != residue_atoms_map.end(); it++)
+    {
+        string residue_name = (*it).first;
+        PdbFile::PdbAtomVector* atoms = (*it).second;
+        Residue* residue = new Residue();
+        residue->SetName(residue_name);
+        residue->SetAssembly(this);
+
+        for(PdbFile::PdbAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
+        {
+//            PdbAtom
+        }
+    }
+
+}
+
 void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
 {
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
@@ -172,9 +199,3 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
 void Assembly::Print(ostream &out)
 {
 }
-
-
-
-
-
-
