@@ -2,11 +2,20 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 
-#include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp";
+#include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp"
+#include "../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
+#include "../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
+#include "../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../includes/FileSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
 using namespace TopologyFileSpace;
+using namespace CoordinateFileSpace;
+using namespace PrepFileSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -163,7 +172,94 @@ void Assembly::AddAtomGraph(AtomGraph atom_graph)
 void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
 {
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
+    name_ = topology_file->GetTitle();
+    sequence_number_ = 1;
+    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    {
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        assembly_residue->SetName((*it).first);
+        TopologyResidue* topology_residue = (*it).second;
 
+        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            assembly_atom->SetName((*it1).first);
+            TopologyAtom* topology_atom = (*it1).second;
+
+            assembly_atom->SetResidue(assembly_residue);
+            assembly_atom->SetName(topology_atom->GetAtomName());
+
+            assembly_residue->AddAtom(assembly_atom);
+        }
+        residues_.push_back(assembly_residue);
+
+    }
+}
+
+void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path, string coordinate_file_path)
+{
+    TopologyFile* topology_file = new TopologyFile(topology_file_path);
+    name_ = topology_file->GetTitle();
+    sequence_number_ = 1;
+    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    {
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        assembly_residue->SetName((*it).first);
+        TopologyResidue* topology_residue = (*it).second;
+
+        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            assembly_atom->SetName((*it1).first);
+            TopologyAtom* topology_atom = (*it1).second;
+
+            int topology_atom_index = topology_atom->GetIndex();
+
+            assembly_atom->SetResidue(assembly_residue);
+            assembly_atom->SetName(topology_atom->GetAtomName());
+
+            CoordinateFile* coordinate_file = new CoordinateFile(coordinate_file_path);
+            vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index));
+            assembly_residue->AddAtom(assembly_atom);
+        }
+        residues_.push_back(assembly_residue);
+
+    }
+}
+
+void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
+{
+    PrepFile* prep_file = new PrepFile(prep_file_path);
+    sequence_number_ = 1;
+    PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
+    for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
+    {
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        assembly_residue->SetName((*it).first);
+        PrepFileResidue* prep_residue = (*it).second;
+
+        PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+        for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            PrepFileAtom* prep_atom = (*it1);
+
+            assembly_atom->SetResidue(assembly_residue);
+            assembly_atom->SetName(prep_atom->GetName());
+
+            assembly_residue->AddAtom(assembly_atom);
+        }
+        residues_.push_back(assembly_residue);
+
+    }
 }
 
 //////////////////////////////////////////////////////////

@@ -136,7 +136,6 @@ namespace PrepFileSpace
               */
               int GetAtomIndexByName(const std::string& name);
 
-///Delaram
             /*! \fn
               * An accessor function in order to access to the title attribute of the current object
               * The attribute is set by the contents of the given file
@@ -296,8 +295,6 @@ namespace PrepFileSpace
               * @param loops The loops of the current object
               */
             void SetLoops(Loop loops);
-
-///Delaram
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

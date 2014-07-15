@@ -73,7 +73,6 @@ namespace PrepFileSpace
               */
             void Print(std::ostream& out = std::cout);
 
-///Delaram
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -213,7 +212,6 @@ namespace PrepFileSpace
               */
             void SetCharge(double charge);
 
-///Delaram
 
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
