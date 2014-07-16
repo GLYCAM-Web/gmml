@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "../Geometry/coordinate.hpp"
-#include "../Geometry/Graph/graph.hpp"
 #include "../common.hpp"
 
 namespace MolecularModeling
@@ -21,8 +20,6 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             typedef std::vector<Assembly*> AssemblyVector;
             typedef std::vector<Residue*> ResidueVector;
-            typedef Geometry::Graph<Atom*> AtomGraph;
-            typedef std::vector<AtomGraph> Structure;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -91,12 +88,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the source file type
               * @return source_file_type_ attribute of the current object of this class
               */
-            gmml::InputFileType GetSourceFileType();
-            /*! \fn
-              * An accessor function in order to access to the structure graph
-              * @return structure_ attribute of the current object of this class
-              */
-            Structure GetStructure();
+            gmml::InputFileType GetSourceFileType();            
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -178,19 +170,7 @@ namespace MolecularModeling
               * Set the source_file_type_ attribute of the current assembly
               * @param source_file_type The residues attribute of the current object
               */
-            void SetSourceFileType(gmml::InputFileType source_file_type);
-            /*! \fn
-              * A mutator function in order to set the structure of the current object
-              * Set the structure_ attribute of the current assembly
-              * @param structure The structure attribute of the current object
-              */
-            void SetStructure(Structure structure);
-            /*! \fn
-              * A function in order to add the atom graph to the current structure
-              * Set the structure_ attribute of the current assembly
-              * @param atom_graph The atom graph of the current object
-              */
-            void AddAtomGraph(AtomGraph atom_graph);
+            void SetSourceFileType(gmml::InputFileType source_file_type);           
 
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -198,8 +178,8 @@ namespace MolecularModeling
             void BuildAssemblyFromPdbFile(std::string pdb_file_path);
             void BuildAssemblyFromTopologyFile(std::string topology_file_path);
 //            void BuildAssemblyFromLibraryFile(std::string library_file_path);
-//            void BuildAssemblyFromPrepFile(std::string prep_file_path);
-//            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
+            void BuildAssemblyFromPrepFile(std::string prep_file_path);
+            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -226,7 +206,6 @@ namespace MolecularModeling
             std::string description_;
             std::string source_file_;
             gmml::InputFileType source_file_type_;
-            Structure structure_;
             gmml::EdgeTypeDescriptor edge_type_;
 
     };
