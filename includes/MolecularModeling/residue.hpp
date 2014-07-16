@@ -5,7 +5,6 @@
 #include <iostream>
 #include <vector>
 
-#include "../Geometry/Graph/graph.hpp"
 
 namespace MolecularModeling
 {
@@ -18,7 +17,6 @@ namespace MolecularModeling
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             typedef std::vector<Atom*> AtomVector;
-            typedef Geometry::Graph<Atom*> ResidueStructure;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -65,12 +63,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the description
               * @return description_ attribute of the current object of this class
               */
-            std::string GetDescription();
-            /*! \fn
-              * An accessor function in order to access to the structure graph
-              * @return structure_ attribute of the current object of this class
-              */
-            ResidueStructure* GetStructure();
+            std::string GetDescription();            
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -123,12 +116,6 @@ namespace MolecularModeling
               * @param description The description attribute of the current object
               */
             void SetDescription(std::string description);
-            /*! \fn
-              * A mutator function in order to set the structure of the current object
-              * Set the structure_ attribute of the current residue
-              * @param structure The structure attribute of the current object
-              */
-            void SetStructure(ResidueStructure* structure);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -151,7 +138,6 @@ namespace MolecularModeling
             Atom* tail_atom_;
             std::string chemical_type_;
             std::string description_;
-            ResidueStructure* structure_;
 
     };
  }

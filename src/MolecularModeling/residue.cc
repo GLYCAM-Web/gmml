@@ -40,10 +40,6 @@ string Residue::GetDescription()
 {
     return description_;
 }
-Residue::ResidueStructure* Residue::GetStructure()
-{
-    return structure_;
-}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -79,10 +75,6 @@ void Residue::SetChemicalType(string chemical_type)
 void Residue::SetDescription(string description)
 {
     description_ = description;
-}
-void Residue::SetStructure(ResidueStructure* structure)
-{
-    structure_ = structure;
 }
 
 //////////////////////////////////////////////////////////
