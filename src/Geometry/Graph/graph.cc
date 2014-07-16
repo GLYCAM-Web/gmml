@@ -8,7 +8,7 @@ using namespace Geometry;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-template<class T>
+/*template<class T>
 Graph<T>::Graph() {}
 
 //////////////////////////////////////////////////////////
@@ -19,6 +19,7 @@ T Graph<T>::GetVertex()
 {
     return vertex_;
 }
+
 template<class T>
 typename Graph<T>::EdgeVector Graph<T>::GetEdges()
 {
@@ -29,6 +30,7 @@ gmml::GraphType Graph<T>::GetType()
 {
     return type_;
 }
+
 template<class T>
 int Graph<T>::GetVertexId()
 {
@@ -47,7 +49,16 @@ void Graph<T>::SetVertex(T vertex)
 template<class T>
 void Graph<T>::SetEdges(EdgeVector edges)
 {
-    edges_ = edges;
+    edges_.clear();
+    for(typename EdgeVector::iterator it = edges.begin(); it != edges.end(); it++)
+    {
+        edges_.push_back(*it);
+    }
+}
+template<class T>
+void Graph<T>::AddEdge(Edge<T> *edge)
+{
+    edges_.push_back(edge);
 }
 template<class T>
 void Graph<T>::SetType(gmml::GraphType type)
@@ -67,9 +78,7 @@ template<class T>
 void Graph<T>::Print(ostream &out)
 {
 }
-
-
-
+*/
 
 
 
