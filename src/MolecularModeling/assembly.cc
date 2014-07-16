@@ -18,6 +18,9 @@
 #include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
+#include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -26,6 +29,7 @@ using namespace CoordinateFileSpace;
 using namespace PrepFileSpace;
 using namespace PdbFileSpace;
 using namespace Geometry;
+using namespace LibraryFileSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -281,6 +285,42 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
     }
 }
 
+void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
+{
+    LibraryFile* library_file = new LibraryFile(library_file_path);
+    sequence_number_ = 1;
+    LibraryFile::ResidueMap library_residues = library_file->GetResidues();
+    stringstream ss;
+
+    for(LibraryFile::ResidueMap::iterator it = library_residues.begin(); it != library_residues.end(); it++)
+    {
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        assembly_residue->SetName((*it).first);
+        LibraryFileResidue* library_residue = (*it).second;
+        string library_residue_name = library_residue->GetName();
+        if(distance(library_residues.begin(), it) == library_residues.size()-1)
+            ss << library_residue_name;
+        else
+            ss << library_residue_name << "_";
+
+        LibraryFileResidue::AtomMap library_atoms = library_residue->GetAtoms();
+        for(LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            LibraryFileAtom* library_atom = (*it1).second;
+            assembly_atom->SetName(library_atom->GetName());
+
+            assembly_atom->SetResidue(assembly_residue);
+            assembly_atom->SetName(library_atom->GetName());
+
+            assembly_residue->AddAtom(assembly_atom);
+        }
+        residues_.push_back(assembly_residue);
+    }
+    name_ = ss.str();
+}
+
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path, string coordinate_file_path)
 {
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
@@ -321,12 +361,19 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
     PrepFile* prep_file = new PrepFile(prep_file_path);
     sequence_number_ = 1;
     PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
+    stringstream ss;
+
     for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
         assembly_residue->SetName((*it).first);
         PrepFileResidue* prep_residue = (*it).second;
+        string prep_residue_name = prep_residue->GetName();
+        if(distance(prep_residues.begin(), it) == prep_residues.size()-1)
+            ss << prep_residue_name;
+        else
+            ss << prep_residue_name << "_";
 
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
@@ -340,8 +387,8 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             assembly_residue->AddAtom(assembly_atom);
         }
         residues_.push_back(assembly_residue);
-
     }
+    name_ = ss.str();
 }
 
 //////////////////////////////////////////////////////////
