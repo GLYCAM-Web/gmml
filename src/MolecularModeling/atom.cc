@@ -52,7 +52,11 @@ void Atom::SetName(string name)
 }
 void Atom::SetCoordinates(CoordinateVector coordinates)
 {
-    coordinates_ = coordinates;
+    coordinates_.clear();
+    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    {
+        coordinates_.push_back(*it);
+    }
 }
 void Atom::AddCoordinate(Geometry::Coordinate *coordinate)
 {
