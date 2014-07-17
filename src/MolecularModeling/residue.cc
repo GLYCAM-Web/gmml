@@ -24,13 +24,13 @@ Residue::AtomVector Residue::GetAtoms()
 {
     return atoms_;
 }
-Atom* Residue::GetHeadAtom()
+Residue::AtomVector Residue::GetHeadAtoms()
 {
-    return head_atom_;
+    return head_atoms_;
 }
-Atom* Residue::GetTailAtom()
+Residue::AtomVector Residue::GetTailAtoms()
 {
-    return tail_atom_;
+    return tail_atoms_;
 }
 string Residue::GetChemicalType()
 {
@@ -60,13 +60,21 @@ void Residue::AddAtom(Atom *atom)
 {
     atoms_.push_back(atom);
 }
-void Residue::SetHeadAtom(Atom *head_atom)
+void Residue::SetHeadAtoms(AtomVector head_atoms)
 {
-    head_atom_ = head_atom;
+    head_atoms_ = head_atoms;
 }
-void Residue::SetTailAtom(Atom *tail_atom)
+void Residue::AddHeadAtom(Atom *head_atom)
 {
-    tail_atom_ = tail_atom;
+    head_atoms_.push_back(head_atom);
+}
+void Residue::SetTailAtoms(AtomVector tail_atoms)
+{
+    tail_atoms_ = tail_atoms;
+}
+void Residue::AddTailAtom(Atom *tail_atom)
+{
+    tail_atoms_.push_back(tail_atom);
 }
 void Residue::SetChemicalType(string chemical_type)
 {

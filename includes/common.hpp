@@ -40,21 +40,6 @@ namespace gmml
         TOP_CRD
     };
 
-    enum GraphType
-    {
-        RESIDUE,
-        MOLECULE,
-        ASSEMBLY
-    };
-
-    enum EdgeTypeDescriptor
-    {
-        COVALENT,
-        IONIC,
-        HYDROGEN,
-        NONE
-    };
-
 }
 
 #endif // COMMON_HPP
