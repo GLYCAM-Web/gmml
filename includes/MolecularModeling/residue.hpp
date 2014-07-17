@@ -45,15 +45,15 @@ namespace MolecularModeling
               */
             AtomVector GetAtoms();
             /*! \fn
-              * An accessor function in order to access to the head atom
-              * @return head_atom_ attribute of the current object of this class
+              * An accessor function in order to access to the head atoms
+              * @return head_atoms_ attribute of the current object of this class
               */
-            Atom* GetHeadAtom();
+            AtomVector GetHeadAtoms();
             /*! \fn
-              * An accessor function in order to access to the tail atom
-              * @return tail_atom_ attribute of the current object of this class
+              * An accessor function in order to access to the tail atoms
+              * @return tail_atoms_ attribute of the current object of this class
               */
-            Atom* GetTailAtom();
+            AtomVector GetTailAtoms();
             /*! \fn
               * An accessor function in order to access to the chemical type
               * @return chemical_residue_ attribute of the current object of this class
@@ -93,17 +93,29 @@ namespace MolecularModeling
               */
             void AddAtom(Atom* atom);
             /*! \fn
-              * A mutator function in order to set the head atom of the current object
-              * Set the head_atom_ attribute of the current residue
-              * @param head_atom The head atom attribute of the current object
+              * A mutator function in order to set the head atoms of the current object
+              * Set the head_atoms_ attribute of the current residue
+              * @param head_atoms The head atoms attribute of the current object
               */
-            void SetHeadAtom(Atom* head_atom);
+            void SetHeadAtoms(AtomVector head_atoms);
             /*! \fn
-              * A mutator function in order to set the tail atom of the current object
-              * Set the tail_atom_ attribute of the current residue
-              * @param tail_atom The head atom attribute of the current object
+              * A function in order to add the head atom to the current object
+              * Set the head_atom_ attribute of the current residue
+              * @param head_atom The head atom of the current object
               */
-            void SetTailAtom(Atom* tail_atom);
+            void AddHeadAtom(Atom* head_atom);
+            /*! \fn
+              * A mutator function in order to set the tail atoms of the current object
+              * Set the tail_atoms_ attribute of the current residue
+              * @param tail_atoms The head atoms attribute of the current object
+              */
+            void SetTailAtoms(AtomVector tail_atoms);
+            /*! \fn
+              * A function in order to add the tail atom to the current object
+              * Set the tail_atoms_ attribute of the current residue
+              * @param tail_atom The tail atom of the current object
+              */
+            void AddTailAtom(Atom* tail_atom);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current residue
@@ -134,8 +146,8 @@ namespace MolecularModeling
             Assembly* assembly_;
             std::string name_;
             AtomVector atoms_;
-            Atom* head_atom_;
-            Atom* tail_atom_;
+            AtomVector head_atoms_;
+            AtomVector tail_atoms_;
             std::string chemical_type_;
             std::string description_;
 

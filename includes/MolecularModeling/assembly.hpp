@@ -206,7 +206,6 @@ namespace MolecularModeling
             std::string description_;
             std::string source_file_;
             gmml::InputFileType source_file_type_;
-            gmml::EdgeTypeDescriptor edge_type_;
 
     };
 }

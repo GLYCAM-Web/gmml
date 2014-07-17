@@ -2,6 +2,7 @@
 #include "../../includes/MolecularModeling/quantommechanicatom.hpp"
 #include "../../includes/MolecularModeling/moleculardynamicatom.hpp"
 #include "../../includes/MolecularModeling/dockingatom.hpp"
+#include "../../includes/MolecularModeling/atomnode.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -38,6 +39,10 @@ string Atom::GetElementSymbol()
 {
     return element_symbol_;
 }
+AtomNode* Atom::GetNode()
+{
+    return node_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -73,6 +78,10 @@ void Atom::SetDescription(string description)
 void Atom::SetElementSymbol(string element_symbol)
 {
     element_symbol_ = element_symbol;
+}
+void Atom::SetNode(AtomNode *node)
+{
+    node_ = node;
 }
 
 //////////////////////////////////////////////////////////

@@ -13,6 +13,7 @@
 namespace MolecularModeling
 {
     class Residue;
+    class AtomNode;
     class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom
     {
         public:
@@ -62,6 +63,11 @@ namespace MolecularModeling
               * @return element_symbol_ attribute of the current object of this class
               */
             std::string GetElementSymbol();
+            /*! \fn
+              * An accessor function in order to access to the node
+              * @return node_ attribute of the current object of this class
+              */
+            AtomNode* GetNode();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -108,6 +114,12 @@ namespace MolecularModeling
               * @param element_symbol The element symbol attribute of the current object
               */
             void SetElementSymbol(std::string element_symbol);
+            /*! \fn
+              * A mutator function in order to set the node of the current object
+              * Set the node_ attribute of the current atom
+              * @param node The node attribute of the current object
+              */
+            void SetNode(AtomNode* node);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -129,6 +141,7 @@ namespace MolecularModeling
             std::string chemical_type_;
             std::string description_;
             std::string element_symbol_;
+            AtomNode* node_;
 
     };
 }
