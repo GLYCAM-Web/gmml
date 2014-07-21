@@ -35,7 +35,7 @@ namespace PdbFileSpace
               * A constructor that get a stream block of atom card and parse the whole block to fill the related fields
               * @param stream_block A whole block of atoms belonging to a model in a pdb file
               */
-            PdbAtomCard(std::stringstream& stream_block);
+            PdbAtomCard(std::stringstream& stream_block, std::string index);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

@@ -37,7 +37,8 @@ namespace gmml
         LIB,
         PREP,
         TOP,
-        TOP_CRD
+        TOP_CRD,
+        MULTIPLE
     };
 
 }

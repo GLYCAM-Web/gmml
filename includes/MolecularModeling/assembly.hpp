@@ -31,6 +31,8 @@ namespace MolecularModeling
 
             Assembly(std::vector<std::string> file_paths, gmml::InputFileType type);
 
+            Assembly(std::vector<std::vector<std::string> > file_paths, std::vector<gmml::InputFileType> types);
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -88,8 +90,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the source file type
               * @return source_file_type_ attribute of the current object of this class
               */
-            gmml::InputFileType GetSourceFileType();            
-
+            gmml::InputFileType GetSourceFileType();
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -179,7 +180,7 @@ namespace MolecularModeling
             void BuildAssemblyFromTopologyFile(std::string topology_file_path);
             void BuildAssemblyFromLibraryFile(std::string library_file_path);
             void BuildAssemblyFromPrepFile(std::string prep_file_path);
-            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
+            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);                         
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

@@ -28,7 +28,7 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbHeterogenAtomCard();
-            PdbHeterogenAtomCard(std::stringstream& stream_block);
+            PdbHeterogenAtomCard(std::stringstream& stream_block, std::string index);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

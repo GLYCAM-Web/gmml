@@ -184,6 +184,10 @@ string PdbAtom::GetAtomElementSymbol(){
 string PdbAtom::GetAtomCharge(){
     return atom_charge_;
 }
+string PdbAtom::GetAtomCardIndexInResidueSet()
+{
+    return atom_card_index_in_residue_sequence_;
+}
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
@@ -234,6 +238,10 @@ void PdbAtom::SetAtomElementSymbol(const string atom_element_symbol){
 
 void PdbAtom::SetAtomCharge(const string atom_charge){
     atom_charge_ = atom_charge;
+}
+void PdbAtom::SetAtomCardIndexInResidueSet(string atom_card_index_in_residue_sequence)
+{
+    atom_card_index_in_residue_sequence_ = atom_card_index_in_residue_sequence;
 }
 
 //////////////////////////////////////////////////////////

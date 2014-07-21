@@ -90,4 +90,10 @@ void Residue::SetDescription(string description)
 //////////////////////////////////////////////////////////
 void Residue::Print(ostream &out)
 {
+    out << "------------------------ " << name_ << " --------------------------" << endl;
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        atom->Print(out);
+    }
 }

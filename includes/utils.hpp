@@ -9,6 +9,7 @@
 #include <iomanip>
 #include "boost/tokenizer.hpp"
 #include "boost/foreach.hpp"
+#include "common.hpp"
 
 namespace gmml
 {
@@ -65,6 +66,40 @@ namespace gmml
             ss << line << std::setw(space) << " ";
             line = ss.str();
             return line;
+        }
+    }
+
+    inline InputFileType ConvertString2AssemblyInputFileType(std::string type)
+    {
+        if(type.compare("PDB") == 0)
+            return PDB;
+        if(type.compare("LIB") == 0)
+            return LIB;
+        if(type.compare("PREP") == 0)
+            return PREP;
+        if(type.compare("TOP") == 0)
+            return TOP;
+        if(type.compare("TOP_CRD") == 0)
+            return TOP_CRD;
+        if(type.compare("MULTIPLE") == 0)
+            return MULTIPLE;
+    }
+    inline std::string ConvertAssemblyInputFileType2String(InputFileType type)
+    {
+        switch(type)
+        {
+            case PDB:
+                return "PDB";
+            case LIB:
+                return "LIB";
+            case PREP:
+                return "PREP";
+            case TOP:
+                return "TOP";
+            case TOP_CRD:
+                return "TOP_CRD";
+            case MULTIPLE:
+                return "MULTIPLE";
         }
     }
 }

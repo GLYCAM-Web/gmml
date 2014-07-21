@@ -3,6 +3,7 @@
 #include "../../includes/MolecularModeling/moleculardynamicatom.hpp"
 #include "../../includes/MolecularModeling/dockingatom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
+#include "../../includes/MolecularModeling/residue.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -10,7 +11,10 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Atom::Atom() {}
+Atom::Atom()
+{
+    node_ = NULL;
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -89,4 +93,21 @@ void Atom::SetNode(AtomNode *node)
 //////////////////////////////////////////////////////////
 void Atom::Print(ostream &out)
 {
+    out << "Atom name: " << name_ << endl;
+    out << "Coordinates: " << endl;
+    if(coordinates_.size() != 0)
+    {
+        for(CoordinateVector::iterator it = coordinates_.begin(); it != coordinates_.end(); it++)
+        {
+            Geometry::Coordinate* coordinate = *it;
+            out << "\t";
+            coordinate->Print(out);
+            out << endl;
+        }
+    }
+    out << "**************** Structure *****************" << endl;
+    if(node_ != NULL)
+        node_->Print(out);
+    out << endl;
+
 }
