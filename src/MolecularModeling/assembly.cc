@@ -357,7 +357,8 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(library_atom->GetName());
 
-            assembly_atom->AddCoordinate(library_atom->GetCoordinate());
+            Coordinate* coordinate = new Coordinate(library_atom->GetCoordinate());
+            assembly_atom->AddCoordinate(coordinate);
             assembly_residue->AddAtom(assembly_atom);
         }
         residues_.push_back(assembly_residue);
