@@ -13,7 +13,7 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 PdbAtomCard::PdbAtomCard() {}
 
-PdbAtomCard::PdbAtomCard(stringstream &stream_block)
+PdbAtomCard::PdbAtomCard(stringstream &stream_block, string index)
 {
     string line;
     bool is_record_name_set = false;
@@ -28,6 +28,7 @@ PdbAtomCard::PdbAtomCard(stringstream &stream_block)
         }
 
         PdbAtom* atom = new PdbAtom(line);
+        atom->SetAtomCardIndexInResidueSet(index);
         atoms_[atom->GetAtomSerialNumber()] = atom;
 
         getline(stream_block, line);

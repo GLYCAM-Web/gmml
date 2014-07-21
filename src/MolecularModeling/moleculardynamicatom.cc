@@ -52,5 +52,5 @@ void MolecularDynamicAtom::SetRadius(double radius)
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 void MolecularDynamicAtom::Print(ostream &out)
-{
+{    
 }

@@ -95,6 +95,11 @@ namespace PdbFileSpace
               * @return atom_charge_ attribute of the current object of this class
               */
             std::string GetAtomCharge();
+            /*! \fn
+              * An accessor function in order to access to the atom card index in a residue set in a pdb atom
+              * @return atom_card_index_in_residue_set_ attribute of the current object of this class
+              */
+            std::string GetAtomCardIndexInResidueSet();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -171,7 +176,12 @@ namespace PdbFileSpace
               * @param atom_charge The atom charge of the current object
               */
             void SetAtomCharge(const std::string atom_charge);
-
+            /*! \fn
+              * A mutator function in order to set the atom card index in a residue set of the current object
+              * Set the atom_card_index_in_residue_sequence_ attribute of the current pdb atom
+              * @param atom_card_index_in_residue_sequence The atom card index in a residue set of the current object
+              */
+            void SetAtomCardIndexInResidueSet(std::string atom_card_index_in_residue_sequence);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -195,6 +205,7 @@ namespace PdbFileSpace
             double atom_temperature_factor_;                     /*!< Atom temperature factor */
             std::string atom_element_symbol_;                   /*!< Atom element symbol */
             std::string atom_charge_;                           /*!< Atom charge */
+            std::string atom_card_index_in_residue_sequence_;
 
     };
 }

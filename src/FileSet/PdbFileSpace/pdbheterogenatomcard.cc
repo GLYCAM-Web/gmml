@@ -12,7 +12,7 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 PdbHeterogenAtomCard::PdbHeterogenAtomCard() {}
 
-PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block)
+PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block, string index)
 {
     string line;
     bool is_record_name_set = false;
@@ -27,6 +27,7 @@ PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block)
         }
 
         PdbAtom* atom = new PdbAtom(line);
+        atom->SetAtomCardIndexInResidueSet(index);
         heterogen_atoms_[atom->GetAtomSerialNumber()] = atom;
 
         getline(stream_block, line);
