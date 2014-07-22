@@ -393,7 +393,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
 
             CoordinateFile* coordinate_file = new CoordinateFile(coordinate_file_path);
             vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
-            assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index));
+            assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
         residues_.push_back(assembly_residue);
@@ -421,6 +421,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             ss << prep_residue_name << "-";
 
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+        vector<Coordinate*> coordinates = vector<Coordinate*>();
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
             Atom* assembly_atom = new Atom();
@@ -429,6 +430,38 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(prep_atom->GetName());
 
+            if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
+            {
+                vector<Coordinate*> coordinate_list = vector<Coordinate*>();
+                int index = distance(prep_atoms.begin(), it1);
+                if(index == 0)
+                {
+
+                }
+                if(index == 1)
+                {
+                    coordinate_list.push_back(coordinates.at(index-1));
+                }
+                if(index == 2)
+                {
+                    coordinate_list.push_back(coordinates.at(index-2));
+                    coordinate_list.push_back(coordinates.at(index-1));
+                }
+                if(index > 2)
+                {
+                    coordinate_list.push_back(coordinates.at(index-3));
+                    coordinate_list.push_back(coordinates.at(index-2));
+                    coordinate_list.push_back(coordinates.at(index-1));
+                }
+                Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                                                                                       prep_atom->GetAngleIndex(), prep_atom->GetDihedral());
+                coordinates.push_back(coordinate);
+                assembly_atom->AddCoordinate(coordinate);
+            }
+            else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
+            {
+                assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+            }
             assembly_residue->AddAtom(assembly_atom);
         }
         residues_.push_back(assembly_residue);
