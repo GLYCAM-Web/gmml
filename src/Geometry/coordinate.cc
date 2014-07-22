@@ -75,6 +75,40 @@ double Coordinate::Distance(Coordinate coordinate)
     return sqrt(dist);
 }
 
+double Coordinate::length()
+{
+    double length = (x_ * x_) + (y_ * y_) + (z_ * z_);
+    return sqrt(length);
+}
+void Coordinate::Normalize()
+{
+    x_ = x_ / length();
+    y_ = y_ / length();
+    z_ = z_ / length();
+}
+double Coordinate::DotProduct(Coordinate coordinate)
+{
+    return ((x_ * coordinate.x_) + (y_ * coordinate.y_) + (z_ * coordinate.z_));
+}
+void Coordinate::CrossProduct(Coordinate coordinate)
+{
+    x_ = (y_ * coordinate.z_) - (coordinate.y_ * z_);
+    y_ = (z_ * coordinate.x_) - (coordinate.z_ * x_);
+    z_ = (x_ * coordinate.y_) - (coordinate.x_ * y_);
+}
+void Coordinate::operator+(Coordinate coordinate)
+{
+    x_ += coordinate.x_;
+    y_ += coordinate.y_;
+    z_ += coordinate.z_;
+}
+void Coordinate::operator-(Coordinate coordinate)
+{
+    x_ -= coordinate.x_;
+    y_ -= coordinate.y_;
+    z_ -= coordinate.z_;
+}
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////

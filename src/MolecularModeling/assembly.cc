@@ -17,10 +17,6 @@
 #include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
-<<<<<<< HEAD
-#include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
-=======
->>>>>>> 4ff61ad56f39762a5870a5f52fd48767d4ec1e2e
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
@@ -393,7 +389,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
 
             CoordinateFile* coordinate_file = new CoordinateFile(coordinate_file_path);
             vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
-            assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index));
+            assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
         residues_.push_back(assembly_residue);

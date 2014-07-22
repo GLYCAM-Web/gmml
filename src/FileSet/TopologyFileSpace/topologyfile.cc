@@ -1205,7 +1205,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         else
         {
-            ending_atom_index = number_of_atoms_;
+            ending_atom_index = number_of_atoms_+1;
         }
         for(int i = starting_atom_index - 1; i < ending_atom_index - 1; i++)
         {
