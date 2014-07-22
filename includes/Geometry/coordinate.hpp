@@ -85,6 +85,13 @@ namespace Geometry
               */
             double Distance(Coordinate coordinate);
 
+            double length();
+            void Normalize();
+            double DotProduct(Coordinate coordinate);
+            void CrossProduct(Coordinate coordinate);
+            void operator+(Coordinate coordinate);
+            void operator-(Coordinate coordinate);
+
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

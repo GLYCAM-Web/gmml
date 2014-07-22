@@ -17,10 +17,6 @@
 #include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
-<<<<<<< HEAD
-#include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
-=======
->>>>>>> 4ff61ad56f39762a5870a5f52fd48767d4ec1e2e
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
