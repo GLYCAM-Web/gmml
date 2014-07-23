@@ -11,7 +11,9 @@ namespace gmml
     const int iNotSet = -123456;
     const int iPdbLineLength = 80;
     const double dSulfurCutoff = 2.5;
-    const double PI = 4.0*atan(1.0);
+    const double PI_RADIAN = 4.0*atan(1.0);
+    const double PI_DEGREE = 180.0;
+    const double EPSILON = 0.001;
 
     enum PossibleNChainTermination
     {

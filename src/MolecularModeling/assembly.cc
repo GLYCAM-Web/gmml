@@ -450,7 +450,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
                     coordinate_list.push_back(coordinates.at(index-1));
                 }
                 Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                       prep_atom->GetAngleIndex(), prep_atom->GetDihedral());
+                                                                                             prep_atom->GetAngle(), prep_atom->GetDihedral());
                 coordinates.push_back(coordinate);
                 assembly_atom->AddCoordinate(coordinate);
             }

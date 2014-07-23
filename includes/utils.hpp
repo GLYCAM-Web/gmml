@@ -107,7 +107,7 @@ namespace gmml
 
     inline double ConvertDegree2Radian(double degree)
     {
-        return degree/180.0*gmml::PI;
+        return degree/PI_DEGREE*gmml::PI_RADIAN;
     }
 
     inline Geometry::Coordinate* ConvertInternalCoordinate2CartesianCoordinate(std::vector<Geometry::Coordinate*> coordinate_list, double distance, double angle, double torsion)
@@ -121,7 +121,7 @@ namespace gmml
                                             sin(gmml::ConvertDegree2Radian(angle)) * distance, 0.0);
         else
         {
-            torsion = gmml::PI - torsion;
+            torsion = gmml::PI_DEGREE - torsion;
 
             Geometry::Coordinate great_grandparent_vector = Geometry::Coordinate(coordinate_list.at(0)->GetX(), coordinate_list.at(0)->GetY(), coordinate_list.at(0)->GetZ());
             Geometry::Coordinate grandparent_vector = Geometry::Coordinate(coordinate_list.at(1)->GetX(), coordinate_list.at(1)->GetY(), coordinate_list.at(1)->GetZ());
@@ -136,19 +136,27 @@ namespace gmml
             v1.Normalize();
             v2.Normalize();
 
+            if(abs(v1.GetX() + v2.GetX()) < gmml::EPSILON &&
+                    abs(v1.GetY() + v2.GetY()) < gmml::EPSILON &&
+                    abs(v1.GetZ() + v2.GetZ()) < gmml::EPSILON)
+            {
+                great_grandparent_vector.Translate(1.0, -1.0, 2);
+                v1 = Geometry::Coordinate(grandparent_vector);
+                v1.operator-(great_grandparent_vector);
+            }
             Geometry::Coordinate r = Geometry::Coordinate(v1);
             r.CrossProduct(v2);
 
             r.Normalize();
 
             Geometry::Coordinate p = Geometry::Coordinate(r);
-            r.CrossProduct(v2);
+            p.CrossProduct(v2);
 
             std::vector<double> v = std::vector<double>();
 
-            v.push_back(distance * sin(angle) * cos(torsion));
-            v.push_back(distance * sin(angle) * sin(torsion));
-            v.push_back(distance * cos(angle));
+            v.push_back(distance * sin(gmml::ConvertDegree2Radian(angle)) * cos(gmml::ConvertDegree2Radian(torsion)));
+            v.push_back(distance * sin(gmml::ConvertDegree2Radian(angle)) * sin(gmml::ConvertDegree2Radian(torsion)));
+            v.push_back(distance * cos(gmml::ConvertDegree2Radian(angle)));
             v.push_back(1.0);
 
             return new Geometry::Coordinate(p.GetX() * v.at(0) + r.GetX() * v.at(1) + v2.GetX() * v.at(2) + parent_vector.GetX() * v.at(3),

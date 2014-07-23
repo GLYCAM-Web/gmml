@@ -82,9 +82,12 @@ double Coordinate::length()
 }
 void Coordinate::Normalize()
 {
-    x_ = x_ / length();
-    y_ = y_ / length();
-    z_ = z_ / length();
+    if(length() != 0.0)
+    {
+        x_ = x_ / length();
+        y_ = y_ / length();
+        z_ = z_ / length();
+    }
 }
 double Coordinate::DotProduct(Coordinate coordinate)
 {
