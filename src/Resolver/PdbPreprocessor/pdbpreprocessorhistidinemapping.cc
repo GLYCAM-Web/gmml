@@ -48,6 +48,8 @@ string PdbPreprocessorHistidineMapping::GetStringFormatOfSelectedMapping()
             return "HIP";
         case 3:
             return "HID";
+        default:
+            return "";
     }
 }
 string PdbPreprocessorHistidineMapping::GetStringFormatOfMapping(PdbPreprocessorHISMapping his_mapping)
@@ -60,6 +62,8 @@ string PdbPreprocessorHistidineMapping::GetStringFormatOfMapping(PdbPreprocessor
             return "HIP";
         case 3:
             return "HID";
+        default:
+            return "";
     }
 }
 vector<string> PdbPreprocessorHistidineMapping::GetAllHISMappingAsString()

@@ -59,7 +59,7 @@ namespace gmml
     /// Expand a given line to a desired length by adding space at the end of the original one
     inline std::string& ExpandLine(std::string& line, int length)
     {
-        if(line.length() >= length)
+        if((int)line.length() >= length)
             return line;
         else
         {
@@ -85,6 +85,7 @@ namespace gmml
             return TOP_CRD;
         if(type.compare("MULTIPLE") == 0)
             return MULTIPLE;
+        return UNKNOWN;
     }
     inline std::string ConvertAssemblyInputFileType2String(InputFileType type)
     {
@@ -102,6 +103,8 @@ namespace gmml
                 return "TOP_CRD";
             case MULTIPLE:
                 return "MULTIPLE";
+            case UNKNOWN:
+                return "UNKNOWN";
         }
     }
 
