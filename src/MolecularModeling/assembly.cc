@@ -34,11 +34,12 @@ using namespace LibraryFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Assembly::Assembly() {}
+Assembly::Assembly() : description_("") {}
 
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
 {
     source_file_type_ = type;
+    description_ = "";
     switch(type)
     {
         case gmml::PDB:
@@ -463,6 +464,89 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         residues_.push_back(assembly_residue);
     }
     name_ = ss.str();
+}
+
+void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vector<string> options, vector<string> file_paths)
+{
+    switch(building_option)
+    {
+        case gmml::DISTANCE:
+            if(options.size() == 1)
+            {
+                vector<string> tokens = gmml::Split(options.at(0), ":");
+                if(tokens.at(0).compare("cutoff") == 0)
+                {
+                    double cutoff = gmml::ConvertString<double>(tokens.at(1));
+                    stringstream ss(description_);
+                    ss << "Building option: Distance;";
+                    description_ = ss.str();
+                    BuildStructureByDistance(cutoff);
+                }
+            }
+            else
+            {
+                BuildStructureByDistance();
+            }
+            break;
+        case gmml::ORIGINAL:
+            if(options.size() == 1)
+            {
+                vector<string> tokens = gmml::Split(options.at(0), ":");
+                if(tokens.at(0).compare("type") == 0)
+                {
+                    gmml::InputFileType type = gmml::ConvertString2AssemblyInputFileType(tokens.at(1));
+                    if(file_paths.size() == 1)
+                    {
+                        stringstream ss(description_);
+                        ss << "Building option: Original;";
+                        ss << "File type: " << type << ";" << "File path: " << file_paths.at(0) << ";";
+                        description_ = ss.str();
+                        BuildStructureByOriginalFileBondingInformation(type, file_paths.at(0));
+                    }
+                }
+            }
+            break;
+        case gmml::DATABASE:
+            vector<gmml::InputFileType> types = vector<gmml::InputFileType>();
+            for(int i = 0; i < options.size(); i++)
+            {
+                vector<string> tokens = gmml::Split(options.at(i), ":");
+                if(tokens.at(0).compare("type") == 0)
+                {
+                    gmml::InputFileType type = gmml::ConvertString2AssemblyInputFileType(tokens.at(1));
+                    types.push_back(type);
+                }
+            }
+            if(types.size() == file_paths.size())
+            {
+                stringstream ss(description_);
+                ss << "Building option: Distance;";
+                for(int i = 0; i < types.size(); i++)
+                {
+                    ss << "File type: " << types.at(i) << ";" << "File path: " << file_paths.at(i) << ";";
+                }
+                description_ = ss.str();
+                BuildStructureByDatabaseFilesBondingInformation(types, file_paths);
+            }
+            break;
+    }
+}
+
+void Assembly::BuildStructureByDistance(double cutoff)
+{
+
+}
+
+void Assembly::BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, string file_path)
+{
+    switch(type)
+    {
+    }
+}
+
+void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
+{
+
 }
 
 //////////////////////////////////////////////////////////
