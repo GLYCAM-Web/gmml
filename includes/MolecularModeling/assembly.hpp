@@ -20,6 +20,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             typedef std::vector<Assembly*> AssemblyVector;
             typedef std::vector<Residue*> ResidueVector;
+            typedef std::vector<Atom*> AtomVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -183,9 +184,11 @@ namespace MolecularModeling
             void BuildAssemblyFromPrepFile(std::string prep_file_path);
 
             void BuildStructure(gmml::BuildingStructureOption building_option, std::vector<std::string> options, std::vector<std::string> file_paths);
-            void BuildStructureByDistance(double cutoff = gmml::dCutOff);
+            void BuildStructureByDistance(double cutoff = gmml::dCutOff, int model_index = 0);
             void BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, std::string file_path);
             void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
+            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
+            AtomVector GetAllAtomsOfAssembly();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

@@ -25,7 +25,11 @@ double Angle::GetAngle()
 //////////////////////////////////////////////////////////
 void Angle::SetCoordinates(CoordinateVector coordinates)
 {
-    coordinates_ = coordinates;
+    coordinates_.clear();
+    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    {
+        coordinates_.push_back(*it);
+    }
 }
 void Angle::AddCoordinate(Coordinate *coordinate)
 {

@@ -93,8 +93,12 @@ double PdbLink::GetLinkLength(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbLink::SetResidues(const LinkResidueVector residues){
-    residues_ = residues;
+void PdbLink::SetResidues(LinkResidueVector residues){
+    residues_.clear();
+    for(LinkResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        residues_.push_back(*it);
+    }
 }
 
 void PdbLink::AddResidue(PdbLinkResidue *residue)

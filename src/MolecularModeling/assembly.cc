@@ -1,6 +1,7 @@
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
+#include "../../includes/MolecularModeling/atomnode.hpp"
 
 #include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
@@ -153,7 +154,11 @@ void Assembly::SetName(string name)
 }
 void Assembly::SetAssemblies(AssemblyVector assemblies)
 {
-    assemblies_ = assemblies;
+    assemblies_.clear();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        assemblies_.push_back(*it);
+    }
 }
 void Assembly::AddAssembly(Assembly *assembly)
 {
@@ -161,7 +166,11 @@ void Assembly::AddAssembly(Assembly *assembly)
 }
 void Assembly::SetResidues(ResidueVector residues)
 {
-    residues_ = residues;
+    residues_.clear();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        residues_.push_back(*it);
+    }
 }
 void Assembly::AddResidue(Residue *residue)
 {
@@ -532,11 +541,6 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
     }
 }
 
-void Assembly::BuildStructureByDistance(double cutoff)
-{
-
-}
-
 void Assembly::BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, string file_path)
 {
     switch(type)
@@ -547,6 +551,46 @@ void Assembly::BuildStructureByOriginalFileBondingInformation(gmml::InputFileTyp
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
 {
 
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
+{
+    AtomVector all_atoms_of_assembly;
+    ResidueVector residues = GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        Residue* residue = (*it);
+        AtomVector atoms = residue->GetAtoms();
+        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    return all_atoms_of_assembly;
+}
+
+void Assembly::BuildStructureByDistance(double cutoff, int model_index)
+{
+    AtomVector all_atoms_of_assembly = GetAllAtomsOfAssembly();
+    int i = 0;
+    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* atom_node = new AtomNode();
+        atom_node->SetAtom(atom);
+        atom_node->SetId(i);
+        i++;
+        for(AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++)
+        {
+            Atom* neighbor_atom = (*it1);
+            if(it != it1)
+            {
+                if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
+                    atom_node->AddNodeNeighbor(neighbor_atom);
+            }
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////
