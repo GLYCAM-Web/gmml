@@ -35,7 +35,11 @@ void AtomNode::SetAtom(Atom *atom)
 }
 void AtomNode::SetNodeNeighbors(AtomVector node_neighbors)
 {
-    node_neighbors_ = node_neighbors;
+    node_neighbors_.clear();
+    for(AtomVector::iterator it = node_neighbors.begin(); it != node_neighbors.end(); it++)
+    {
+        node_neighbors_.push_back(*it);
+    }
 }
 void AtomNode::AddNodeNeighbor(Atom *node_neighbor)
 {

@@ -20,7 +20,6 @@ ParameterFileBond::ParameterFileBond(const std::vector<std::string> &types, doub
                                      const std::vector<double> &hbond_coefficients, const std::string &dscr)
     : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr), hbond_coefficients_(hbond_coefficients) {}
 
-///Delaram
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -58,9 +57,13 @@ std::vector<double> ParameterFileBond::GetHbondCoefficients()
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 /// Set the list of atom types involved in the current bond object
-void ParameterFileBond::SetTypes(const std::vector<std::string> types)
+void ParameterFileBond::SetTypes(std::vector<std::string> types)
 {
-    types_ = types;
+    types_.clear();
+    for(std::vector<std::string>::iterator it = types.begin(); it != types.end(); it++)
+    {
+        types_.push_back(*it);
+    }
 }
 
 /// Set force constant
@@ -80,10 +83,12 @@ void ParameterFileBond::SetDscr(const std::string dscr){
 }
 
 void ParameterFileBond::SetHbondCoefficients(std::vector<double> hbond_coefficients){
-    hbond_coefficients = hbond_coefficients_;
+    hbond_coefficients_.clear();
+    for(std::vector<double>::iterator it = hbond_coefficients.begin(); it != hbond_coefficients.end(); it++)
+    {
+        hbond_coefficients_.push_back(*it);
+    }
 }
-
-///Delaram
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //

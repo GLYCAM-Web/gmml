@@ -122,7 +122,11 @@ void ParameterFileAtom::SetIsHydrophilic(bool is_hydrophilic){
 }
 
 void ParameterFileAtom::SetEquivalentList( std::vector<std::string> equivalent_list){
-    equivalent_list_ = equivalent_list;
+    equivalent_list_.clear();
+    for(std::vector<std::string>::iterator it = equivalent_list.begin(); it != equivalent_list.end(); it++)
+    {
+        equivalent_list_.push_back(*it);
+    }
 }
 
 ///Delaram

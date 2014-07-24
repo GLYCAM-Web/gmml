@@ -118,7 +118,11 @@ void PrepFileResidue::SetCharge(double charge){
 }
 
 void PrepFileResidue::SetAtoms(PrepFileAtomVector atoms){
-    atoms_ = atoms;
+    atoms_.clear();
+    for(PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        atoms_.push_back(*it);
+    }
 }
 
 void PrepFileResidue::AddAtom(PrepFileAtom* atom){
@@ -126,7 +130,11 @@ void PrepFileResidue::AddAtom(PrepFileAtom* atom){
 }
 
 void PrepFileResidue::SetImproperDihedrals(DihedralVector improper_dihedrals){
-    improper_dihedrals_ = improper_dihedrals;
+    improper_dihedrals_.clear();
+    for(DihedralVector::iterator it = improper_dihedrals.begin(); it != improper_dihedrals.end(); it++)
+    {
+        improper_dihedrals_.push_back(*it);
+    }
 }
 
 void PrepFileResidue::AddImproperDihedral(Dihedral improper_dihedral){
