@@ -21,7 +21,6 @@ ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string> &typ
     terms_.push_back(term);
 }
 
-///Delaram
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -60,12 +59,20 @@ bool ParameterFileDihedral::GetIsImproper()
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 
-void ParameterFileDihedral::SetTypes(const std::vector<std::string> types){
-    types_ = types;
+void ParameterFileDihedral::SetTypes(std::vector<std::string> types){
+    types_.clear();
+    for(std::vector<std::string>::iterator it = types.begin(); it != types.end(); it++)
+    {
+        types_.push_back(*it);
+    }
 }
 
-void ParameterFileDihedral::SetTerms(const std::vector<ParameterFileDihedralTerm> terms){
-    terms_ = terms;
+void ParameterFileDihedral::SetTerms(std::vector<ParameterFileDihedralTerm> terms){
+    terms_.clear();
+    for(std::vector<ParameterFileDihedralTerm>::iterator it = terms.begin(); it != terms.end(); it++)
+    {
+        terms_.push_back(*it);
+    }
 }
 
 void ParameterFileDihedral::AddTerm(ParameterFileDihedralTerm term){
@@ -87,8 +94,6 @@ void ParameterFileDihedral::SetIsGeneric(bool is_generic){
 void ParameterFileDihedral::SetIsImproper(bool is_improper){
     is_improper_ = is_improper;
 }
-
-///Delaram
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //

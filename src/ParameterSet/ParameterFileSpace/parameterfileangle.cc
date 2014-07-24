@@ -15,7 +15,6 @@ ParameterFileAngle::ParameterFileAngle()
 ParameterFileAngle::ParameterFileAngle(const std::vector<std::string> &types, double force_constant, double angle, const std::string &dscr)
     : types_(types), force_constant_(force_constant), angle_(angle), dscr_(dscr) {}
 
-///Delaram
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -47,9 +46,13 @@ std::string ParameterFileAngle::GetDscr()
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 /// Set the list of atom types involved in the current angle object
-void ParameterFileAngle::SetTypes(const std::vector<std::string> types)
+void ParameterFileAngle::SetTypes(std::vector<std::string> types)
 {
-    types_ = types;
+    types_.clear();
+    for(std::vector<std::string>::iterator it = types.begin(); it != types.end(); it++)
+    {
+        types_.push_back(*it);
+    }
 }
 
 /// Set force constant
@@ -67,8 +70,6 @@ void ParameterFileAngle::SetAngle(double angle){
 void ParameterFileAngle::SetDscr(const std::string dscr){
     dscr_ = dscr;
 }
-
-///Delaram
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //

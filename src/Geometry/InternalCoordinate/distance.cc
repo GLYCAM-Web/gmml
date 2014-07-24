@@ -25,7 +25,11 @@ double Distance::GetLength()
 //////////////////////////////////////////////////////////
 void Distance::SetCoordinates(CoordinateVector coordinates)
 {
-    coordinates_ = coordinates;
+    coordinates_.clear();
+    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    {
+        coordinates_.push_back(*it);
+    }
 }
 void Distance::AddCoordinate(Coordinate *coordinate)
 {

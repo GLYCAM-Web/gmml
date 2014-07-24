@@ -54,7 +54,11 @@ void Residue::SetName(string name)
 }
 void Residue::SetAtoms(AtomVector atoms)
 {
-    atoms_ = atoms;
+    atoms_.clear();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        atoms_.push_back(*it);
+    }
 }
 void Residue::AddAtom(Atom *atom)
 {
@@ -62,7 +66,11 @@ void Residue::AddAtom(Atom *atom)
 }
 void Residue::SetHeadAtoms(AtomVector head_atoms)
 {
-    head_atoms_ = head_atoms;
+    head_atoms_.clear();
+    for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
+    {
+        head_atoms_.push_back(*it);
+    }
 }
 void Residue::AddHeadAtom(Atom *head_atom)
 {
@@ -70,7 +78,11 @@ void Residue::AddHeadAtom(Atom *head_atom)
 }
 void Residue::SetTailAtoms(AtomVector tail_atoms)
 {
-    tail_atoms_ = tail_atoms;
+    tail_atoms_.clear();
+    for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
+    {
+        tail_atoms_.push_back(*it);
+    }
 }
 void Residue::AddTailAtom(Atom *tail_atom)
 {

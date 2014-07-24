@@ -25,7 +25,11 @@ double Dihedral::GetTorsion()
 //////////////////////////////////////////////////////////
 void Dihedral::SetCoordinates(CoordinateVector coordinates)
 {
-    coordinates_ = coordinates;
+    coordinates_.clear();
+    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    {
+        coordinates_.push_back(*it);
+    }
 }
 void Dihedral::AddCoordinate(Coordinate *coordinate)
 {
