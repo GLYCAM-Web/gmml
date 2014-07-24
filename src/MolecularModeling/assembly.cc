@@ -68,6 +68,10 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
             BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
             assemblies_ = AssemblyVector();
             break;
+        case gmml::MULTIPLE:
+            break;
+        case gmml::UNKNOWN:
+            break;
     }
 }
 
@@ -75,7 +79,7 @@ Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileTyp
 {
     stringstream name;
     stringstream source_file;
-    for(int i = 0; i < file_paths.size(); i++)
+    for(unsigned int i = 0; i < file_paths.size(); i++)
     {
         vector<string> file = file_paths.at(i);
         gmml::InputFileType input_type = types.at(i);
@@ -348,7 +352,7 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
         assembly_residue->SetName((*it).first);
         LibraryFileResidue* library_residue = (*it).second;
         string library_residue_name = library_residue->GetName();
-        if(distance(library_residues.begin(), it) == library_residues.size()-1)
+        if(distance(library_residues.begin(), it) == (int)library_residues.size()-1)
             ss << library_residue_name;
         else
             ss << library_residue_name << "-";
@@ -421,7 +425,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         assembly_residue->SetName((*it).first);
         PrepFileResidue* prep_residue = (*it).second;
         string prep_residue_name = prep_residue->GetName();
-        if(distance(prep_residues.begin(), it) == prep_residues.size()-1)
+        if(distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
             ss << prep_residue_name;
         else
             ss << prep_residue_name << "-";
@@ -489,7 +493,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
                     stringstream ss(description_);
                     ss << "Building option: Distance;";
                     description_ = ss.str();
-                    BuildStructureByDistance(cutoff);
+                    this->BuildStructureByDistance(cutoff);
                 }
             }
             else
@@ -510,14 +514,14 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
                         ss << "Building option: Original;";
                         ss << "File type: " << type << ";" << "File path: " << file_paths.at(0) << ";";
                         description_ = ss.str();
-                        BuildStructureByOriginalFileBondingInformation(type, file_paths.at(0));
+                        this->BuildStructureByOriginalFileBondingInformation(type, file_paths.at(0));
                     }
                 }
             }
             break;
         case gmml::DATABASE:
             vector<gmml::InputFileType> types = vector<gmml::InputFileType>();
-            for(int i = 0; i < options.size(); i++)
+            for(unsigned int i = 0; i < options.size(); i++)
             {
                 vector<string> tokens = gmml::Split(options.at(i), ":");
                 if(tokens.at(0).compare("type") == 0)
@@ -530,49 +534,20 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
             {
                 stringstream ss(description_);
                 ss << "Building option: Distance;";
-                for(int i = 0; i < types.size(); i++)
+                for(unsigned int i = 0; i < types.size(); i++)
                 {
                     ss << "File type: " << types.at(i) << ";" << "File path: " << file_paths.at(i) << ";";
                 }
                 description_ = ss.str();
-                BuildStructureByDatabaseFilesBondingInformation(types, file_paths);
+                this->BuildStructureByDatabaseFilesBondingInformation(types, file_paths);
             }
             break;
     }
 }
 
-void Assembly::BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, string file_path)
-{
-    switch(type)
-    {
-    }
-}
-
-void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
-{
-
-}
-
-Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
-{
-    AtomVector all_atoms_of_assembly;
-    ResidueVector residues = GetResidues();
-    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-    {
-        Residue* residue = (*it);
-        AtomVector atoms = residue->GetAtoms();
-        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
-        {
-            Atom* atom = (*it1);
-            all_atoms_of_assembly.push_back(atom);
-        }
-    }
-    return all_atoms_of_assembly;
-}
-
 void Assembly::BuildStructureByDistance(double cutoff, int model_index)
 {
-    AtomVector all_atoms_of_assembly = GetAllAtomsOfAssembly();
+    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
@@ -591,6 +566,78 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
             }
         }
     }
+}
+
+void Assembly::BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, string file_path)
+{
+    switch(type)
+    {
+        case gmml::PDB:
+            this->BuildStructureByPDBFileInformation(file_path);
+            break;
+        case gmml::TOP:
+            this->BuildStructureByTOPFileInformation(file_path);
+            break;
+        case gmml::LIB:
+            this->BuildStructureByLIBFileInformation(file_path);
+            break;
+        case gmml::PREP:
+            break;
+        case gmml::TOP_CRD:
+            break;
+        case gmml::MULTIPLE:
+            break;
+        case gmml::UNKNOWN:
+            break;
+    }
+}
+
+void Assembly::BuildStructureByPDBFileInformation(string file_path)
+{
+
+}
+
+void Assembly::BuildStructureByTOPFileInformation(string file_path)
+{
+
+}
+
+void Assembly::BuildStructureByLIBFileInformation(string file_path)
+{
+
+}
+
+void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
+{
+
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
+{
+    AtomVector all_atoms_of_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
+        for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        Residue* residue = (*it);
+        AtomVector atoms = residue->GetAtoms();
+        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    return all_atoms_of_assembly;
 }
 
 //////////////////////////////////////////////////////////

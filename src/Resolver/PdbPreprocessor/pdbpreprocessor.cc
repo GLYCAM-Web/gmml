@@ -17,7 +17,7 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/common.hpp";
+#include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 using namespace std;
 using namespace PdbPreprocessorSpace;
@@ -706,7 +706,7 @@ void PdbPreprocessor::RemoveResiduesOfUnknownHeavyAtoms(PdbFile *pdb_file, PdbPr
            << "_" << unknown_heavy_atom->GetResidueInsertionCode() << "_" << unknown_heavy_atom->GetResidueAlternateLocation();
         string residue_key = ss.str();
         if(distance(removed_keys.begin(), find(removed_keys.begin(), removed_keys.end(), residue_key)) < 0 ||
-                distance(removed_keys.begin(), find(removed_keys.begin(), removed_keys.end(), residue_key)) >= removed_keys.size())
+                distance(removed_keys.begin(), find(removed_keys.begin(), removed_keys.end(), residue_key)) >= (int)removed_keys.size())
         {
             PdbResidue* pdb_residue = new PdbResidue(unknown_heavy_atom->GetResidueName(),unknown_heavy_atom->GetResidueChainId(), unknown_heavy_atom->GetResidueSequenceNumber(),
                                                      unknown_heavy_atom->GetResidueInsertionCode(), unknown_heavy_atom->GetResidueAlternateLocation());
@@ -1212,7 +1212,7 @@ void PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
                 if(target_alternate_location != alternate_location)
                 {
                     if (alternate_residue_map_.empty() || distance(alternate_residue_map_.begin() ,alternate_residue_map_.find(key)) < 0 ||
-                            distance(alternate_residue_map_.begin() ,alternate_residue_map_.find(key)) >= alternate_residue_map_.size())
+                            distance(alternate_residue_map_.begin() ,alternate_residue_map_.find(key)) >= (int)alternate_residue_map_.size())
                     {
                         vector<bool> selected = vector<bool>();
                         selected.push_back(true);
@@ -1227,7 +1227,7 @@ void PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
                         PdbPreprocessorAlternateResidue* alternate_residue = alternate_residue_map_[target_key];
                         vector<char> alternate_locations = alternate_residue->GetResidueAlternateLocation();
                         if(distance(alternate_locations.begin(), find(alternate_locations.begin(),alternate_locations.end(),alternate_location)) < 0 ||
-                                distance(alternate_locations.begin(), find(alternate_locations.begin(),alternate_locations.end(),alternate_location)) >= alternate_locations.size())
+                                distance(alternate_locations.begin(), find(alternate_locations.begin(),alternate_locations.end(),alternate_location)) >= (int)alternate_locations.size())
                         {
 
                             alternate_locations.push_back(alternate_location);

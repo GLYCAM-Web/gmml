@@ -1396,7 +1396,7 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
     {
         int number_of_items = 10;
         int item_length = 8;
-        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= (int)line.length(); i++)
         {
             string token = line.substr(i*item_length, item_length);
             token = Trim(token);
@@ -1408,7 +1408,7 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
     {
         int number_of_items = 20;
         int item_length = 4;
-        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= (int)line.length(); i++)
         {
             string token = line.substr(i*item_length, item_length);
             token = Trim(token);
@@ -1420,7 +1420,7 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
     {
         int number_of_items = 5;
         int item_length = 16;
-        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= (int)line.length(); i++)
         {
             string token = line.substr(i*item_length, item_length);
             token = Trim(token);
@@ -1439,7 +1439,7 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
     {
         int number_of_items = 1;
         int item_length = 80;
-        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= (int)line.length(); i++)
         {
             string token = line.substr(i*item_length, item_length);
             token = Trim(token);
@@ -1451,7 +1451,7 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
     {
         int number_of_items = 1;
         int item_length = 8;
-        for(int i = 0; i < number_of_items && item_length * (i+1) <= line.length(); i++)
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= (int)line.length(); i++)
         {
             string token = line.substr(i*item_length, item_length);
             token = Trim(token);
@@ -1459,6 +1459,7 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
         }
         return items;
     }
+    return items;
 }
 
 //////////////////////////////////////////////////////////

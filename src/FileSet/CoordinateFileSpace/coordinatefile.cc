@@ -143,7 +143,7 @@ void CoordinateFile::Read(std::ifstream& in_file)
         }
         getline(in_file, line);
     }
-    if(coordinates_.size() != number_of_coordinates_)
+    if((int)coordinates_.size() != number_of_coordinates_)
     {
         throw CoordinateFileProcessingException(__LINE__, "Corrupted file");
     }

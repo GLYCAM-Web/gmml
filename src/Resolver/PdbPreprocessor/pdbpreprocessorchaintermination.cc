@@ -58,6 +58,8 @@ string PdbPreprocessorChainTermination::GetStringFormatOfSelectedNTermination()
             return "ACE";
         case 2:
             return "NH3+";
+        default:
+            return "";
     }
 }
 
@@ -71,6 +73,8 @@ string PdbPreprocessorChainTermination::GetStringFormatOfSelectedCTermination()
             return "NME";
         case 3:
             return "CO2-";
+        default:
+            return "";
     }
 }
 
@@ -82,6 +86,8 @@ string PdbPreprocessorChainTermination::GetStringFormatOfNTermination(PossibleNC
             return "ACE";
         case 2:
             return "NH3+";
+        default:
+            return "";
     }
 }
 
@@ -95,6 +101,8 @@ string PdbPreprocessorChainTermination::GetStringFormatOfCTermination(PossibleCC
             return "NME";
         case 3:
             return "CO2-";
+        default:
+            return "";
     }
 }
 

@@ -2411,14 +2411,14 @@ void PdbFile::ResolveTitleCard(std::ofstream& stream)
     const int MAX_TITLE_LENGTH_IN_LINE = 70;
     stream << left << setw(6) << title_->GetRecordName()
            << left << setw(2) << " ";
-    if(title_->GetTitle().length() > MAX_TITLE_LENGTH_IN_LINE)
+    if((int)title_->GetTitle().length() > MAX_TITLE_LENGTH_IN_LINE)
     {
         stream << right << setw(2) << " "
                << left << setw(70) << title_->GetTitle().substr(0,MAX_TITLE_LENGTH_IN_LINE)
                << endl;
         
         int counter = ceil((double)(title_->GetTitle().length()) / MAX_TITLE_LENGTH_IN_LINE);
-        for(unsigned int i = 2; i <= counter; i++)
+        for(int i = 2; i <= counter; i++)
         {
             if(i != counter)
             {
@@ -2526,7 +2526,7 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             {
                 int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
                 
-                for(unsigned int i = 1; i <= number_of_lines; i++)
+                for(int i = 1; i <= number_of_lines; i++)
                 {
                     if(i != number_of_lines)
                     {
@@ -2583,7 +2583,7 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             else
             {
                 int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                for(unsigned int i = 1; i <= number_of_lines; i++)
+                for(int i = 1; i <= number_of_lines; i++)
                 {
                     if(i != number_of_lines)
                     {
@@ -2628,7 +2628,7 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             else
             {
                 int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                for(unsigned int i = 1; i <= number_of_lines; i++)
+                for(int i = 1; i <= number_of_lines; i++)
                 {
                     if(i != number_of_lines)
                     {
@@ -2682,7 +2682,7 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             else
             {
                 int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                for(unsigned int i = 1; i <= number_of_lines; i++)
+                for(int i = 1; i <= number_of_lines; i++)
                 {
                     if(i != number_of_lines)
                     {
@@ -2736,7 +2736,7 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             else
             {
                 int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                for(unsigned int i = 1; i <= number_of_lines; i++)
+                for(int i = 1; i <= number_of_lines; i++)
                 {
                     if(i != number_of_lines)
                     {
@@ -2805,7 +2805,7 @@ void PdbFile::ResolveCompoundCard(std::ofstream& stream)
             else
             {
                 int number_of_lines = ceil((double)(length) / MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                for(unsigned int i = 1; i <= number_of_lines; i++)
+                for(int i = 1; i <= number_of_lines; i++)
                 {
                     if(i != number_of_lines)
                     {
@@ -2887,7 +2887,7 @@ void PdbFile::ResolveModelTypeCard(std::ofstream& stream)
                << endl;
         
         int counter = ceil((double)(ss.str().length()) / 70);
-        for(unsigned int i = 2; i <= counter; i++)
+        for(int i = 2; i <= counter; i++)
         {
             if(i != counter)
             {
@@ -2968,7 +2968,7 @@ void PdbFile::ResolveSequenceResidueCard(std::ofstream& stream)
                 ss << right << setw(1) << " "
                    << right << setw(3) << (*it1);
             }
-            for(unsigned int i = 0; i < MAX_RESIDUE_IN_SINGLE_LINE - residue_sequence->GetNumberOfResidues(); i++)
+            for(int i = 0; i < MAX_RESIDUE_IN_SINGLE_LINE - residue_sequence->GetNumberOfResidues(); i++)
             {
                 ss << right << setw(1) << " "
                    << right << setw(3) << " ";
@@ -2991,7 +2991,7 @@ void PdbFile::ResolveSequenceResidueCard(std::ofstream& stream)
         else
         {
             int number_of_lines = ceil((double)(residue_sequence->GetNumberOfResidues()) / MAX_RESIDUE_IN_SINGLE_LINE);
-            for(unsigned int i = 0; i < number_of_lines; i++)
+            for(int i = 0; i < number_of_lines; i++)
             {
                 stringstream ss;
                 if(i != number_of_lines - 1)
@@ -3011,7 +3011,7 @@ void PdbFile::ResolveSequenceResidueCard(std::ofstream& stream)
                         ss << right << setw(1) << " "
                            << right << setw(3) << (*it1);
                     }
-                    for(unsigned int i = 0; i < MAX_RESIDUE_IN_SINGLE_LINE - residue_sequence->GetNumberOfResidues() % MAX_RESIDUE_IN_SINGLE_LINE; i++)
+                    for(int i = 0; i < MAX_RESIDUE_IN_SINGLE_LINE - residue_sequence->GetNumberOfResidues() % MAX_RESIDUE_IN_SINGLE_LINE; i++)
                     {
                         ss << right << setw(1) << " "
                            << right << setw(3) << " ";
@@ -3102,7 +3102,7 @@ void PdbFile::ResolveHeterogenNameCard(std::ofstream& stream)
     {
         PdbHeterogenName* heterogen_name = (*it).second;
         const int MAX_NAME_LENGTH_IN_LINE = 55;
-        if(heterogen_name->GetHeterogenName().length() > MAX_NAME_LENGTH_IN_LINE)
+        if((int)heterogen_name->GetHeterogenName().length() > MAX_NAME_LENGTH_IN_LINE)
         {
             stream << left << setw(6) << heterogens_name_->GetRecordName()
                    << left << setw(2) << " "
@@ -3114,7 +3114,7 @@ void PdbFile::ResolveHeterogenNameCard(std::ofstream& stream)
                    << left << setw(10) << " "
                    << endl;
             int counter = ceil((double)(heterogen_name->GetHeterogenName().length()) / MAX_NAME_LENGTH_IN_LINE);
-            for(unsigned int i = 2; i <= counter; i++)
+            for(int i = 2; i <= counter; i++)
             {
                 if(i != counter)
                 {
@@ -3177,7 +3177,7 @@ void PdbFile::ResolveHeterogenSynonymCard(std::ofstream& stream)
             }
         }
         const int MAX_SYNONYM_LENGTH_IN_LINE = 55;
-        if(ss.str().length() > MAX_SYNONYM_LENGTH_IN_LINE)
+        if((int)ss.str().length() > MAX_SYNONYM_LENGTH_IN_LINE)
         {
             stream << left << setw(6) << heterogen_synonyms_->GetRecordName()
                    << left << setw(2) << " "
@@ -3189,7 +3189,7 @@ void PdbFile::ResolveHeterogenSynonymCard(std::ofstream& stream)
                    << left << setw(10) << " "
                    << endl;
             int counter = ceil((double)(ss.str().length()) / MAX_SYNONYM_LENGTH_IN_LINE);
-            for(unsigned int i = 2; i <= counter; i++)
+            for(int i = 2; i <= counter; i++)
             {
                 if(i != counter)
                 {
@@ -3239,7 +3239,7 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
     {
         PdbFormula* formula = (*it).second;
         const int MAX_NAME_LENGTH_IN_LINE = 51;
-        if(formula->GetChemicalFormula().length() > MAX_NAME_LENGTH_IN_LINE)
+        if((int)formula->GetChemicalFormula().length() > MAX_NAME_LENGTH_IN_LINE)
         {
             stream << left << setw(6) << formulas_->GetRecordName()
                    << left << setw(2) << " ";
@@ -3256,7 +3256,7 @@ void PdbFile::ResolveFormulaCard(std::ofstream& stream)
                    << left << setw(10) << " "
                    << endl;
             int counter = ceil((double)(formula->GetChemicalFormula().length()) / MAX_NAME_LENGTH_IN_LINE);
-            for(unsigned int i = 2; i <= counter; i++)
+            for(int i = 2; i <= counter; i++)
             {
                 if(i != counter)
                 {
@@ -3821,7 +3821,7 @@ void PdbFile::ResolveMatrixCard(std::ofstream& stream)
 {
     PdbMatrixNCard::MatrixNVectorVector matrices = matrices_->GetMatrixN();
     int number_of_matrix_entries = matrices.at(0).size();
-    for(unsigned int i = 0; i < number_of_matrix_entries; i++)
+    for(int i = 0; i < number_of_matrix_entries; i++)
     {
         for(unsigned int j = 0; j < 3; j++)
         {
@@ -4179,7 +4179,7 @@ void PdbFile::ResolveConnectivityCard(std::ofstream& stream)
         else
         {
             int number_of_lines = ceil((double)(number_of_bonded_atoms) / MAX_SERIAL_NUMBER_IN_LINE);
-            for(unsigned int i = 1; i <= number_of_lines; i++)
+            for(int i = 1; i <= number_of_lines; i++)
             {
                 stream << left << setw(6) << connectivities_->GetRecordName();
                 if(source_atom_serial_number != iNotSet)

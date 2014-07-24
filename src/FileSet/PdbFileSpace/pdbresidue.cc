@@ -64,7 +64,7 @@ void PdbResidue::SetResidueAlternateLocation(char residue_alternate_location)
 //////////////////////////////////////////////////////////
 void PdbResidue::Print(ostream &out)
 {
-    cout << "Residue name: " << residue_name_
+    out << "Residue name: " << residue_name_
          << ", Chain id: " << residue_chain_id_
          << ", Sequence number: " << residue_sequence_number_
          << ", Insertion code: " << residue_insertion_code_

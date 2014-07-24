@@ -43,7 +43,8 @@ namespace gmml
         PREP,
         TOP,
         TOP_CRD,
-        MULTIPLE
+        MULTIPLE,
+        UNKNOWN
     };
 
     enum BuildingStructureOption
