@@ -179,8 +179,13 @@ namespace MolecularModeling
             void BuildAssemblyFromPdbFile(std::string pdb_file_path);
             void BuildAssemblyFromTopologyFile(std::string topology_file_path);
             void BuildAssemblyFromLibraryFile(std::string library_file_path);
+            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
             void BuildAssemblyFromPrepFile(std::string prep_file_path);
-            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);                         
+
+            void BuildStructure(gmml::BuildingStructureOption building_option, std::vector<std::string> options, std::vector<std::string> file_paths);
+            void BuildStructureByDistance(double cutoff = gmml::dCutOff);
+            void BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, std::string file_path);
+            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

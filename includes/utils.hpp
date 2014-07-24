@@ -105,6 +105,29 @@ namespace gmml
         }
     }
 
+    inline BuildingStructureOption ConvertString2AssemblyBuildingStructureOption(std::string option)
+    {
+        if(option.compare("Distance") == 0)
+            return DISTANCE;
+        if(option.compare("Original") == 0)
+            return ORIGINAL;
+        if(option.compare("Database") == 0)
+            return DATABASE;
+    }
+
+    inline std::string ConvertAssemblyBuildingStructureOption2String(BuildingStructureOption option)
+    {
+        switch(option)
+        {
+            case DISTANCE:
+                return "Distance";
+            case ORIGINAL:
+                return "Original";
+            case DATABASE:
+                return "Database";
+        }
+    }
+
     inline double ConvertDegree2Radian(double degree)
     {
         return degree/PI_DEGREE*gmml::PI_RADIAN;
