@@ -68,6 +68,11 @@ namespace MolecularModeling
               * @return node_ attribute of the current object of this class
               */
             AtomNode* GetNode();
+            /*! \fn
+              * An accessor function in order to access to the id
+              * @return id_ attribute of the current object of this class
+              */
+            std::string GetId();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -120,6 +125,12 @@ namespace MolecularModeling
               * @param node The node attribute of the current object
               */
             void SetNode(AtomNode* node);
+            /*! \fn
+              * A mutator function in order to set the id of the current object
+              * Set the id_ attribute of the current atom
+              * @param id The identification of the current object
+              */
+            void SetId(std::string id);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -142,6 +153,7 @@ namespace MolecularModeling
             std::string description_;
             std::string element_symbol_;
             AtomNode* node_;
+            std::string id_;
 
     };
 }

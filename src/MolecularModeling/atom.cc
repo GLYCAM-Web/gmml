@@ -47,6 +47,10 @@ AtomNode* Atom::GetNode()
 {
     return node_;
 }
+string Atom::GetId()
+{
+    return id_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -86,6 +90,10 @@ void Atom::SetElementSymbol(string element_symbol)
 void Atom::SetNode(AtomNode *node)
 {
     node_ = node;
+}
+void Atom::SetId(string id)
+{
+    id_ = id;
 }
 
 //////////////////////////////////////////////////////////
