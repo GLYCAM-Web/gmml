@@ -96,6 +96,16 @@ int LibraryFileResidue::GetTailAtomIndex()
 {
     return tail_atom_index_;
 }
+LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(string atom_name)
+{
+    LibraryFileAtom* library_file_atom = new LibraryFileAtom();
+    for(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+     if(it->second->GetName() == atom_name)
+        library_file_atom = it->second;
+    else
+        library_file_atom = NULL;
+    return library_file_atom;
+}
 
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
