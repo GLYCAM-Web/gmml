@@ -64,6 +64,11 @@ namespace MolecularModeling
               * @return description_ attribute of the current object of this class
               */
             std::string GetDescription();            
+            /*! \fn
+              * An accessor function in order to access to the id
+              * @return id_ attribute of the current object of this class
+              */
+            std::string GetId();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -128,6 +133,12 @@ namespace MolecularModeling
               * @param description The description attribute of the current object
               */
             void SetDescription(std::string description);
+            /*! \fn
+              * A mutator function in order to set the id of the current object
+              * Set the id attribute of the current residue
+              * @param id The identification attribute of the current object
+              */
+            void SetId(std::string id);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -150,6 +161,7 @@ namespace MolecularModeling
             AtomVector tail_atoms_;
             std::string chemical_type_;
             std::string description_;
+            std::string id_;
 
     };
  }

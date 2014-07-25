@@ -185,10 +185,10 @@ namespace MolecularModeling
 
             void BuildStructure(gmml::BuildingStructureOption building_option, std::vector<std::string> options, std::vector<std::string> file_paths);
             void BuildStructureByDistance(double cutoff = gmml::dCutOff, int model_index = 0);
-            void BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, std::string file_path);
-            void BuildStructureByPDBFileInformation(std::string file_path);
-            void BuildStructureByTOPFileInformation(std::string file_path);
-            void BuildStructureByLIBFileInformation(std::string file_path);
+            void BuildStructureByOriginalFileBondingInformation();
+            void BuildStructureByPDBFileInformation();
+            void BuildStructureByTOPFileInformation();
+            void BuildStructureByLIBFileInformation();
             void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
             AtomVector GetAllAtomsOfAssembly();
 

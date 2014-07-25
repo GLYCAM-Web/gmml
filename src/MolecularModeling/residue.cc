@@ -40,6 +40,10 @@ string Residue::GetDescription()
 {
     return description_;
 }
+string Residue::GetId()
+{
+    return id_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -95,6 +99,10 @@ void Residue::SetChemicalType(string chemical_type)
 void Residue::SetDescription(string description)
 {
     description_ = description;
+}
+void Residue::SetId(string id)
+{
+    id_ = id;
 }
 
 //////////////////////////////////////////////////////////

@@ -237,11 +237,16 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
             stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
             string key = ss.str();
+            residue->SetId(key);
 
             Atom* new_atom = new Atom();
             residue->SetName(residue_name);
-            new_atom->SetName(atom->GetAtomName());
+            string atom_name = atom->GetAtomName();
+            new_atom->SetName(atom_name);
             new_atom->SetResidue(residue);
+            stringstream atom_key;
+            atom_key << atom_name << "_" << key;
+            new_atom->SetId(atom_key.str());
             PdbModelCard* models = pdb_file->GetModels();
             PdbModelCard::PdbModelMap model_maps = models->GetModels();
             if(model_maps.size() == 1)
@@ -318,14 +323,20 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        assembly_residue->SetName((*it).first);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        assembly_residue->SetId(residue_name);
         TopologyResidue* topology_residue = (*it).second;
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             Atom* assembly_atom = new Atom();
-            assembly_atom->SetName((*it1).first);
+            string atom_name = (*it1).first;
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << residue_name << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
 
             assembly_atom->SetResidue(assembly_residue);
@@ -349,7 +360,9 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        assembly_residue->SetName((*it).first);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        assembly_residue->SetId(residue_name);
         LibraryFileResidue* library_residue = (*it).second;
         string library_residue_name = library_residue->GetName();
         if(distance(library_residues.begin(), it) == (int)library_residues.size()-1)
@@ -362,7 +375,11 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
         {
             Atom* assembly_atom = new Atom();
             LibraryFileAtom* library_atom = (*it1).second;
-            assembly_atom->SetName(library_atom->GetName());
+            string atom_name = library_atom->GetName();
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << residue_name << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
 
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(library_atom->GetName());
@@ -386,14 +403,20 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        assembly_residue->SetName((*it).first);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        assembly_residue->SetId(residue_name);
         TopologyResidue* topology_residue = (*it).second;
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             Atom* assembly_atom = new Atom();
-            assembly_atom->SetName((*it1).first);
+            string atom_name = (*it1).first;
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << residue_name << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
 
             int topology_atom_index = topology_atom->GetIndex();
@@ -422,7 +445,9 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        assembly_residue->SetName((*it).first);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        assembly_residue->SetId(residue_name);
         PrepFileResidue* prep_residue = (*it).second;
         string prep_residue_name = prep_residue->GetName();
         if(distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
@@ -438,7 +463,11 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             PrepFileAtom* prep_atom = (*it1);
 
             assembly_atom->SetResidue(assembly_residue);
-            assembly_atom->SetName(prep_atom->GetName());
+            string atom_name = prep_atom->GetName();
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << residue_name << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
 
             if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
             {
@@ -514,7 +543,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
                         ss << "Building option: Original;";
                         ss << "File type: " << type << ";" << "File path: " << file_paths.at(0) << ";";
                         description_ = ss.str();
-                        this->BuildStructureByOriginalFileBondingInformation(type, file_paths.at(0));
+                        this->BuildStructureByOriginalFileBondingInformation();
                     }
                 }
             }
@@ -568,18 +597,19 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
     }
 }
 
-void Assembly::BuildStructureByOriginalFileBondingInformation(gmml::InputFileType type, string file_path)
+void Assembly::BuildStructureByOriginalFileBondingInformation()
 {
+    gmml::InputFileType type = this->GetSourceFileType();
     switch(type)
     {
         case gmml::PDB:
-            this->BuildStructureByPDBFileInformation(file_path);
+            this->BuildStructureByPDBFileInformation();
             break;
         case gmml::TOP:
-            this->BuildStructureByTOPFileInformation(file_path);
+            this->BuildStructureByTOPFileInformation();
             break;
         case gmml::LIB:
-            this->BuildStructureByLIBFileInformation(file_path);
+            this->BuildStructureByLIBFileInformation();
             break;
         case gmml::PREP:
             break;
@@ -592,17 +622,28 @@ void Assembly::BuildStructureByOriginalFileBondingInformation(gmml::InputFileTyp
     }
 }
 
-void Assembly::BuildStructureByPDBFileInformation(string file_path)
+void Assembly::BuildStructureByPDBFileInformation()
+{
+    PdbFile* pdb_file = new PdbFile(this->GetSourceFile());
+    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    int i = 0;
+    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* atom_node = new AtomNode();
+        atom_node->SetAtom(atom);
+        atom_node->SetId(i);
+        i++;
+
+    }
+}
+
+void Assembly::BuildStructureByTOPFileInformation()
 {
 
 }
 
-void Assembly::BuildStructureByTOPFileInformation(string file_path)
-{
-
-}
-
-void Assembly::BuildStructureByLIBFileInformation(string file_path)
+void Assembly::BuildStructureByLIBFileInformation()
 {
 
 }
