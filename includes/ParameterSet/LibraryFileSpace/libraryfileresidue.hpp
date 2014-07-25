@@ -101,6 +101,12 @@ namespace LibraryFileSpace
               * @return tail_atom_index attribute of the current residue
               */
             int GetTailAtomIndex();
+            /*! \fn
+              * A function in order to access to library file atom by a atom name
+              * @param atom_name The name of the atom
+              * @return library_file_atom
+              */
+            LibraryFileAtom* GetLibraryAtomByAtomName(std::string atom_name);
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
