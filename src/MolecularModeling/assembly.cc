@@ -645,7 +645,36 @@ void Assembly::BuildStructureByTOPFileInformation()
 
 void Assembly::BuildStructureByLIBFileInformation()
 {
-
+    LibraryFile* library_file = new LibraryFile(this->GetSourceFile());
+    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    int i = 0;
+    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* atom_node = new AtomNode();
+        atom_node->SetAtom(atom);
+        atom_node->SetId(i);
+        i++;
+        Residue* assembly_residue = atom->GetResidue();
+        LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
+        LibraryFileAtom* library_atom = library_residue->GetLibraryAtomByAtomName(atom->GetName());
+        vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
+        for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
+        {
+            int library_bonded_atom_index = (*it1);
+            LibraryFileAtom* library_atom = library_residue->GetAtomByIndex(library_bonded_atom_index);
+            for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+            {
+                Atom* assembly_atom = (*it2);
+                string assembly_atom_id = assembly_atom->GetId();
+                stringstream ss;
+                ss << library_residue->GetName() << ":" << library_atom->GetName();
+                string library_atom_id = ss.str();
+                if(assembly_atom_id.compare(library_atom_id) == 0)
+                    atom_node->AddNodeNeighbor(assembly_atom);
+            }
+        }
+    }
 }
 
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
