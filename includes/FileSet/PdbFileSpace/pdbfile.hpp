@@ -89,6 +89,7 @@ namespace PdbFileSpace
             PdbResidueAtomsMap GetAllAtomsOfResidues();
             PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name, PdbResidueAtomsMap residue_atom_map);
             PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name);
+            PdbAtom* GetAtomOfResidueByAtomKey(std::string atom_key);
             std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue, PdbResidueAtomsMap residue_atom_map);
             std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue);            
 

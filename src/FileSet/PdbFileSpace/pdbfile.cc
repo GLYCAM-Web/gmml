@@ -578,6 +578,26 @@ PdbFileSpace::PdbAtom* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, stri
     return NULL;
 }
 
+PdbAtom* PdbFile::GetAtomOfResidueByAtomKey(string atom_key)
+{
+    PdbResidueAtomsMap residue_atom_map = this->GetAllAtomsOfResidues();
+
+    vector<string> key_tokens = Split(atom_key, "_");
+    stringstream residue_key;
+    string atom_serial_number = key_tokens.at(1);
+    residue_key << key_tokens.at(2) << "_" << key_tokens.at(3) << "_" << key_tokens.at(4) << "_" << key_tokens.at(5) << "_" << key_tokens.at(6);
+    PdbAtomVector* atoms = residue_atom_map[residue_key.str()];
+    for(PdbAtomVector::iterator it = atoms->begin(); it != atoms->end(); it++)
+    {
+        PdbAtom* atom = *it;
+        stringstream serial_number;
+        serial_number << atom->GetAtomSerialNumber();
+        if(serial_number.str().compare(atom_serial_number) == 0)
+            return atom;
+    }
+}
+
+
 vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue, PdbFile::PdbResidueAtomsMap residue_atom_map)
 {
     string target_residue_name = residue->GetResidueName();
