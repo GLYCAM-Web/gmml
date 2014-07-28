@@ -18,6 +18,7 @@
 #include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
@@ -245,7 +246,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
             new_atom->SetName(atom_name);
             new_atom->SetResidue(residue);
             stringstream atom_key;
-            atom_key << atom_name << "_" << key;
+            atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
             new_atom->SetId(atom_key.str());
             PdbModelCard* models = pdb_file->GetModels();
             PdbModelCard::PdbModelMap model_maps = models->GetModels();
@@ -587,13 +588,18 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
         i++;
         for(AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++)
         {
-            Atom* neighbor_atom = (*it1);
             if(it != it1)
             {
+                Atom* neighbor_atom = (*it1);
                 if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
+                {
+                    cout << "HERE" << endl;
                     atom_node->AddNodeNeighbor(neighbor_atom);
+                    break;
+                }
             }
         }
+        atom->SetNode(atom_node);
     }
 }
 
@@ -634,7 +640,38 @@ void Assembly::BuildStructureByPDBFileInformation()
         atom_node->SetAtom(atom);
         atom_node->SetId(i);
         i++;
-
+        PdbAtom* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
+        int atom_serial_number = pdb_atom->GetAtomSerialNumber();
+        PdbConnectCard* connectivities = pdb_file->GetConnectivities();
+        PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
+        vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
+        for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+        {
+            int bonded_atom_serial_number = *it1;
+            stringstream ss;
+            ss << bonded_atom_serial_number;
+            string key = ss.str();
+            PdbAtom* pdb_bonded_atom = pdb_file->GetAtomOfResidueByAtomKey(key);
+            stringstream sss;
+            sss << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName() << "_" << pdb_bonded_atom->GetAtomChainId()
+                << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber() << "_" << pdb_bonded_atom->GetAtomInsertionCode()
+                << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
+            string pdb_bonded_atom_key = sss.str();
+            for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+            {
+                if(it != it2)
+                {
+                    Atom* assembly_atom = (*it2);
+                    string assembly_atom_key = assembly_atom->GetId();
+                    if(assembly_atom_key.compare(pdb_bonded_atom_key) == 0)
+                    {
+                        atom_node->AddNodeNeighbor(assembly_atom);
+                        break;
+                    }
+                }
+            }
+        }
+        atom->SetNode(atom_node);
     }
 }
 
