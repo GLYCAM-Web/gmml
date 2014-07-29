@@ -657,29 +657,32 @@ void Assembly::BuildStructureByPDBFileInformation()
         atom_node->SetId(i);
         i++;
         PdbAtom* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
-        int atom_serial_number = pdb_atom->GetAtomSerialNumber();
-        PdbConnectCard* connectivities = pdb_file->GetConnectivities();
-        PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
-        vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
-        for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+        if(pdb_atom != NULL)
         {
-            int bonded_atom_serial_number = *it1;
-            PdbAtom* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
-            stringstream sss;
-            sss << pdb_bonded_atom->GetAtomName() << "_" << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName()
-                << "_" << pdb_bonded_atom->GetAtomChainId() << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber()
-                << "_" << pdb_bonded_atom->GetAtomInsertionCode() << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
-            string pdb_bonded_atom_key = sss.str();
-            for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+            int atom_serial_number = pdb_atom->GetAtomSerialNumber();
+            PdbConnectCard* connectivities = pdb_file->GetConnectivities();
+            PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
+            vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
+            for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
             {
-                if(it != it2)
+                int bonded_atom_serial_number = *it1;
+                PdbAtom* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
+                stringstream sss;
+                sss << pdb_bonded_atom->GetAtomName() << "_" << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName()
+                    << "_" << pdb_bonded_atom->GetAtomChainId() << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber()
+                    << "_" << pdb_bonded_atom->GetAtomInsertionCode() << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
+                string pdb_bonded_atom_key = sss.str();
+                for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                 {
-                    Atom* assembly_atom = (*it2);
-                    string assembly_atom_key = assembly_atom->GetId();
-                    if(assembly_atom_key.compare(pdb_bonded_atom_key) == 0)
+                    if(it != it2)
                     {
-                        atom_node->AddNodeNeighbor(assembly_atom);
-                        break;
+                        Atom* assembly_atom = (*it2);
+                        string assembly_atom_key = assembly_atom->GetId();
+                        if(assembly_atom_key.compare(pdb_bonded_atom_key) == 0)
+                        {
+                            atom_node->AddNodeNeighbor(assembly_atom);
+                            break;
+                        }
                     }
                 }
             }
@@ -709,31 +712,35 @@ void Assembly::BuildStructureByLIBFileInformation()
         i++;
         Residue* assembly_residue = atom->GetResidue();
         LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
-        LibraryFileAtom* library_atom = library_residue->GetLibraryAtomByAtomName(atom->GetName());
-        vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
-        cout << "HH" << endl;
-        cout << library_bonded_atom_indices.size() << endl;
-        for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
+        if(library_residue != NULL)
         {
-            int library_bonded_atom_index = (*it1);
-            LibraryFileAtom* library_atom = library_residue->GetAtomByIndex(library_bonded_atom_index);
-            for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+            LibraryFileAtom* library_atom = library_residue->GetLibraryAtomByAtomName(atom->GetName());
+            if(library_atom != NULL)
             {
-                Atom* assembly_atom = (*it2);
-                string assembly_atom_id = assembly_atom->GetId();
-                stringstream ss;
-                ss << library_residue->GetName() << ":" << library_atom->GetName();
-                string library_atom_id = ss.str();
-                if(assembly_atom_id.compare(library_atom_id) == 0)
+                vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
+                cout << library_bonded_atom_indices.size() << endl;
+                for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
                 {
-                    cout << assembly_atom_id << "__" << library_atom_id << endl;
-                    atom_node->AddNodeNeighbor(assembly_atom);
-                    break;
+                    int library_bonded_atom_index = (*it1);
+                    LibraryFileAtom* library_atom = library_residue->GetAtomByIndex(library_bonded_atom_index);
+                    for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+                    {
+                        Atom* assembly_atom = (*it2);
+                        string assembly_atom_id = assembly_atom->GetId();
+                        stringstream ss;
+                        ss << library_residue->GetName() << ":" << library_atom->GetName();
+                        string library_atom_id = ss.str();
+                        if(assembly_atom_id.compare(library_atom_id) == 0)
+                        {
+                            cout << assembly_atom_id << "__" << library_atom_id << endl;
+                            atom_node->AddNodeNeighbor(assembly_atom);
+                            break;
+                        }
+                    }
                 }
             }
         }
         atom->SetNode(atom_node);
-        cout << "HERE" << endl;
     }
 }
 
