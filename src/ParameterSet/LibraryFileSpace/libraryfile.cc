@@ -504,12 +504,14 @@ LibraryFileAtom* LibraryFile::ProcessAtom(string &line)
 LibraryFileResidue* LibraryFile::GetLibraryResidueByResidueName(string residue_name)
 {
     ResidueMap residue_map = this->GetResidues();
-    LibraryFileResidue* library_file_residue = new LibraryFileResidue();
-    if(distance(residue_map.begin(), residue_map.find(residue_name)) >= 0)
-        library_file_residue = residue_map[residue_name];
-    else
-        library_file_residue = NULL;
-    return library_file_residue;
+    for(ResidueMap::iterator it = residue_map.begin(); it != residue_map.end(); it++)
+    {
+        string name = (*it).first;
+        LibraryFileResidue* residue = (*it).second;
+        if(name.compare(residue_name) == 0)
+            return residue;
+    }
+    return NULL;
 }
 
 //////////////////////////////////////////////////////////

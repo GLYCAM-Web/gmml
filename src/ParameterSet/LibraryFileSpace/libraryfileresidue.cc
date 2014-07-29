@@ -98,13 +98,13 @@ int LibraryFileResidue::GetTailAtomIndex()
 }
 LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(string atom_name)
 {
-    LibraryFileAtom* library_file_atom = new LibraryFileAtom();
     for(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
-     if(it->second->GetName() == atom_name)
-        library_file_atom = it->second;
-    else
-        library_file_atom = NULL;
-    return library_file_atom;
+    {
+        LibraryFileAtom* atom = (*it).second;
+        if(atom->GetName().compare(atom_name) == 0)
+            return atom;
+    }
+    return NULL;
 }
 
 //////////////////////////////////////////////////////////

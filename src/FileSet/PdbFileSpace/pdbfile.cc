@@ -580,23 +580,53 @@ PdbFileSpace::PdbAtom* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, stri
 
 PdbAtom* PdbFile::GetAtomOfResidueByAtomKey(string atom_key)
 {
-    PdbResidueAtomsMap residue_atom_map = this->GetAllAtomsOfResidues();
-
     vector<string> key_tokens = Split(atom_key, "_");
-    stringstream residue_key;
-    string atom_serial_number = key_tokens.at(1);
-    residue_key << key_tokens.at(2) << "_" << key_tokens.at(3) << "_" << key_tokens.at(4) << "_" << key_tokens.at(5) << "_" << key_tokens.at(6);
-    PdbAtomVector* atoms = residue_atom_map[residue_key.str()];
-    for(PdbAtomVector::iterator it = atoms->begin(); it != atoms->end(); it++)
+    int serial_number = gmml::ConvertString<int>(key_tokens.at(1));
+    PdbModelCard::PdbModelMap models = models_->GetModels();
+    PdbModel* model = (*models.begin()).second;
+    PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+    PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+    for(PdbModelResidueSet::AtomCardVector::iterator it = atom_cards.begin(); it != atom_cards.end(); it++)
     {
-        PdbAtom* atom = *it;
-        stringstream serial_number;
-        serial_number << atom->GetAtomSerialNumber();
-        if(serial_number.str().compare(atom_serial_number) == 0)
-            return atom;
+        PdbAtomCard* atom_card = (*it);
+        PdbAtomCard::PdbAtomMap atom_map = atom_card->GetAtoms();
+        if(atom_map[serial_number] != NULL)
+            return atom_map[serial_number];
     }
+    PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
+    for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it = heterogen_atom_cards.begin(); it != heterogen_atom_cards.end(); it++)
+    {
+        PdbHeterogenAtomCard* heterogen_atom_card = (*it);
+        PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atom_map = heterogen_atom_card->GetHeterogenAtoms();
+        if(heterogen_atom_map[serial_number] != NULL)
+            return heterogen_atom_map[serial_number];
+    }
+    return NULL;
 }
 
+PdbAtom* PdbFile::GetAtomBySerialNumber(int serial_number)
+{
+    PdbModelCard::PdbModelMap models = models_->GetModels();
+    PdbModel* model = (*models.begin()).second;
+    PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+    PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+    for(PdbModelResidueSet::AtomCardVector::iterator it = atom_cards.begin(); it != atom_cards.end(); it++)
+    {
+        PdbAtomCard* atom_card = (*it);
+        PdbAtomCard::PdbAtomMap atom_map = atom_card->GetAtoms();
+        if(atom_map[serial_number] != NULL)
+            return atom_map[serial_number];
+    }
+    PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
+    for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it = heterogen_atom_cards.begin(); it != heterogen_atom_cards.end(); it++)
+    {
+        PdbHeterogenAtomCard* heterogen_atom_card = (*it);
+        PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atom_map = heterogen_atom_card->GetHeterogenAtoms();
+        if(heterogen_atom_map[serial_number] != NULL)
+            return heterogen_atom_map[serial_number];
+    }
+    return NULL;
+}
 
 vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue, PdbFile::PdbResidueAtomsMap residue_atom_map)
 {
