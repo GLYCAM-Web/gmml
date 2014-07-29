@@ -516,15 +516,40 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
         case gmml::DISTANCE:
             if(options.size() == 1)
             {
+                stringstream ss(description_);
+                ss << "Building option: Distance;";
+                description_ = ss.str();
                 vector<string> tokens = gmml::Split(options.at(0), ":");
                 if(tokens.at(0).compare("cutoff") == 0)
                 {
                     double cutoff = gmml::ConvertString<double>(tokens.at(1));
-                    stringstream ss(description_);
-                    ss << "Building option: Distance;";
-                    description_ = ss.str();
                     this->BuildStructureByDistance(cutoff);
                 }
+                if(tokens.at(0).compare("model_index") == 0)
+                {
+                    double cutoff = gmml::dCutOff;
+                    int model_index = gmml::ConvertString<int>(tokens.at(1));
+                    this->BuildStructureByDistance(cutoff, model_index);
+                }
+            }
+            if(options.size() == 2)
+            {
+                stringstream ss(description_);
+                ss << "Building option: Distance;";
+                description_ = ss.str();
+                vector<string> cutoff_tokens = gmml::Split(options.at(0), ":");
+                vector<string> model_tokens = gmml::Split(options.at(1), ":");
+                double cutoff = gmml::dCutOff;
+                int model_index = 0;
+                if(cutoff_tokens.at(0).compare("cutoff") == 0)
+                {
+                    cutoff = gmml::ConvertString<double>(cutoff_tokens.at(1));
+                }
+                if(model_tokens.at(0).compare("model_index") == 0)
+                {
+                    model_index = gmml::ConvertString<int>(model_tokens.at(1));
+                }
+                BuildStructureByDistance(cutoff, model_index);
             }
             else
             {
@@ -532,23 +557,15 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
             }
             break;
         case gmml::ORIGINAL:
-            if(options.size() == 1)
-            {
-                vector<string> tokens = gmml::Split(options.at(0), ":");
-                if(tokens.at(0).compare("type") == 0)
-                {
-                    gmml::InputFileType type = gmml::ConvertString2AssemblyInputFileType(tokens.at(1));
-                    if(file_paths.size() == 1)
-                    {
-                        stringstream ss(description_);
-                        ss << "Building option: Original;";
-                        ss << "File type: " << type << ";" << "File path: " << file_paths.at(0) << ";";
-                        description_ = ss.str();
-                        this->BuildStructureByOriginalFileBondingInformation();
-                    }
-                }
-            }
+        {
+            stringstream ss(description_);
+            ss << "Building option: Original;";
+            ss << "File type: " << gmml::ConvertAssemblyInputFileType2String(this->GetSourceFileType()) << ";"
+               << "File path: " << this->GetSourceFile() << ";";
+            description_ = ss.str();
+            this->BuildStructureByOriginalFileBondingInformation();
             break;
+        }
         case gmml::DATABASE:
             vector<gmml::InputFileType> types = vector<gmml::InputFileType>();
             for(unsigned int i = 0; i < options.size(); i++)
@@ -593,9 +610,7 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
                 Atom* neighbor_atom = (*it1);
                 if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                 {
-                    cout << "HERE" << endl;
                     atom_node->AddNodeNeighbor(neighbor_atom);
-                    break;
                 }
             }
         }
@@ -630,6 +645,7 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
 
 void Assembly::BuildStructureByPDBFileInformation()
 {
+    cout << "Building structure ..." << endl;
     PdbFile* pdb_file = new PdbFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -648,14 +664,11 @@ void Assembly::BuildStructureByPDBFileInformation()
         for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
         {
             int bonded_atom_serial_number = *it1;
-            stringstream ss;
-            ss << bonded_atom_serial_number;
-            string key = ss.str();
-            PdbAtom* pdb_bonded_atom = pdb_file->GetAtomOfResidueByAtomKey(key);
+            PdbAtom* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
             stringstream sss;
-            sss << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName() << "_" << pdb_bonded_atom->GetAtomChainId()
-                << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber() << "_" << pdb_bonded_atom->GetAtomInsertionCode()
-                << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
+            sss << pdb_bonded_atom->GetAtomName() << "_" << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName()
+                << "_" << pdb_bonded_atom->GetAtomChainId() << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber()
+                << "_" << pdb_bonded_atom->GetAtomInsertionCode() << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
             string pdb_bonded_atom_key = sss.str();
             for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
             {
@@ -677,11 +690,13 @@ void Assembly::BuildStructureByPDBFileInformation()
 
 void Assembly::BuildStructureByTOPFileInformation()
 {
+    cout << "Building structure ..." << endl;
 
 }
 
 void Assembly::BuildStructureByLIBFileInformation()
 {
+    cout << "Building structure ..." << endl;
     LibraryFile* library_file = new LibraryFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -696,6 +711,8 @@ void Assembly::BuildStructureByLIBFileInformation()
         LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
         LibraryFileAtom* library_atom = library_residue->GetLibraryAtomByAtomName(atom->GetName());
         vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
+        cout << "HH" << endl;
+        cout << library_bonded_atom_indices.size() << endl;
         for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
         {
             int library_bonded_atom_index = (*it1);
@@ -708,14 +725,21 @@ void Assembly::BuildStructureByLIBFileInformation()
                 ss << library_residue->GetName() << ":" << library_atom->GetName();
                 string library_atom_id = ss.str();
                 if(assembly_atom_id.compare(library_atom_id) == 0)
+                {
+                    cout << assembly_atom_id << "__" << library_atom_id << endl;
                     atom_node->AddNodeNeighbor(assembly_atom);
+                    break;
+                }
             }
         }
+        atom->SetNode(atom_node);
+        cout << "HERE" << endl;
     }
 }
 
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
 {
+    cout << "Building structure ..." << endl;
 
 }
 

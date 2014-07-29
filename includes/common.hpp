@@ -14,7 +14,7 @@ namespace gmml
     const double PI_RADIAN = 4.0*atan(1.0);
     const double PI_DEGREE = 180.0;
     const double EPSILON = 0.001;
-    const double dCutOff = 1.5;
+    const double dCutOff = 1.6;
 
     enum PossibleNChainTermination
     {
