@@ -365,6 +365,8 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
         assembly_residue->SetName(residue_name);
         assembly_residue->SetId(residue_name);
         LibraryFileResidue* library_residue = (*it).second;
+        int lib_res_tail_atom_index = library_residue->GetTailAtomIndex();
+        int lib_res_head_atom_index = library_residue->GetHeadAtomIndex();
         string library_residue_name = library_residue->GetName();
         if(distance(library_residues.begin(), it) == (int)library_residues.size()-1)
             ss << library_residue_name;
@@ -388,6 +390,11 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
             Coordinate* coordinate = new Coordinate(library_atom->GetCoordinate());
             assembly_atom->AddCoordinate(coordinate);
             assembly_residue->AddAtom(assembly_atom);
+
+            if(library_atom->GetAtomIndex() == lib_res_head_atom_index)
+                assembly_residue->AddHeadAtom(assembly_atom);
+            if(library_atom->GetAtomIndex() == lib_res_tail_atom_index)
+                assembly_residue->AddTailAtom(assembly_atom);
         }
         residues_.push_back(assembly_residue);
     }
@@ -691,7 +698,31 @@ void Assembly::BuildStructureByPDBFileInformation()
 void Assembly::BuildStructureByTOPFileInformation()
 {
     cout << "Building structure ..." << endl;
-
+    TopologyFile* topology_file = new TopologyFile(this->GetSourceFile());
+    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    int i = 0;
+    for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    {
+        Atom* atom_1 = (*it);
+        AtomNode* atom_node = new AtomNode();
+        atom_node->SetAtom(atom_1);
+        atom_node->SetId(i);
+        i++;
+        for(AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++)
+        {
+            if(it != it1)
+            {
+                Atom* atom_2 = (*it1);
+                stringstream ss;
+                ss << atom_1->GetId() << "-" << atom_2->GetId();
+                string key = ss.str();
+                TopologyFile::TopologyBondMap topology_bond = topology_file->GetBonds();
+                if(topology_bond[key] != NULL)
+                    atom_node->AddNodeNeighbor(atom_2);
+            }
+        }
+        atom_1->SetNode(atom_node);
+    }
 }
 
 void Assembly::BuildStructureByLIBFileInformation()
