@@ -207,6 +207,12 @@ namespace PrepFileSpace
               * @return loops_ of the current object of this class
               */
             Loop GetLoops();
+            /*! \fn
+              * An accessor function in order to access to an atom by atom name
+              * @param atom_name name of atom
+              * @return prep_file_atom prep file atom
+              */
+            PrepFileAtom* GetPrepAtomByName(std::string atom_name);
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
