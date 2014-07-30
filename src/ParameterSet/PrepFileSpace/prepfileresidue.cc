@@ -76,6 +76,17 @@ PrepFileResidue::DihedralVector PrepFileResidue::GetImproperDihedrals(){
 PrepFileResidue::Loop PrepFileResidue::GetLoops(){
     return loops_;
 }
+PrepFileAtom* PrepFileResidue::GetPrepAtomByName(string atom_name)
+{
+    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        PrepFileAtom* prep_file_atom = (*it);
+        string prep_file_atom_name = prep_file_atom->GetName();
+        if(prep_file_atom_name.compare(atom_name) == 0)
+            return prep_file_atom;
+    }
+    return NULL;
+}
 
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
