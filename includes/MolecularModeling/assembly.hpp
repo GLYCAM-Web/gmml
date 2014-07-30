@@ -189,6 +189,7 @@ namespace MolecularModeling
             void BuildStructureByPDBFileInformation();
             void BuildStructureByTOPFileInformation();
             void BuildStructureByLIBFileInformation();
+            void BuildStructureByPrepFileInformation();
             void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
             AtomVector GetAllAtomsOfAssembly();
 

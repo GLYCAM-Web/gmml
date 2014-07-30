@@ -71,12 +71,12 @@ void AtomNode::Print(ostream &out)
                 << node_neighbors_.at(1)->GetResidue()->GetName() << ":" << node_neighbors_.at(1)->GetName() << endl;
             break;
         case 3:
-            out << "\t" << node_neighbors_.at(0)->GetResidue()->GetName() << ":" << node_neighbors_.at(0)->GetName() << endl
-                << "\t" << "  |  " << endl
+            out << "\t\t" << node_neighbors_.at(0)->GetResidue()->GetName() << ":" << node_neighbors_.at(0)->GetName() << endl
+                << "\t\t" << "  |  " << endl
                 << "\t" << node_neighbors_.at(1)->GetResidue()->GetName() << ":" << node_neighbors_.at(1)->GetName() << " -- "
                 << atom_->GetResidue()->GetName() << ":" << atom_->GetName() << endl
-                << "\t" << "  |  " << endl
-                << "\t" <<  node_neighbors_.at(2)->GetResidue()->GetName() << ":" << node_neighbors_.at(2)->GetName() << endl;
+                << "\t\t" << "  |  " << endl
+                << "\t\t" <<  node_neighbors_.at(2)->GetResidue()->GetName() << ":" << node_neighbors_.at(2)->GetName() << endl;
             break;
         case 4:
             out << "\t\t\t" << node_neighbors_.at(0)->GetResidue()->GetName() << ":" << node_neighbors_.at(0)->GetName() << endl

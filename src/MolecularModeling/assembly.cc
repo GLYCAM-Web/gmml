@@ -7,6 +7,7 @@
 #include "../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
 #include "../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../includes/FileSet/TopologyFileSpace/topologybond.hpp"
 #include "../../includes/FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
@@ -719,9 +720,20 @@ void Assembly::BuildStructureByTOPFileInformation()
                 stringstream ss;
                 ss << atom_1->GetId() << "-" << atom_2->GetId();
                 string key = ss.str();
+                cout << key << endl;
                 TopologyFile::TopologyBondMap topology_bond = topology_file->GetBonds();
-                if(topology_bond[key] != NULL)
-                    atom_node->AddNodeNeighbor(atom_2);
+                for(TopologyFile::TopologyBondMap::iterator it2 = topology_bond.begin(); it2 != topology_bond.end(); it2++)
+                {
+                    TopologyBond* bond = (*it2).second;
+                    stringstream sss;
+                    sss << bond->GetResidueNames().at(0) << ":" << bond->GetBonds().at(0) << "-" << bond->GetResidueNames().at(1) << ":" << bond->GetBonds().at(1);
+                    string topology_bond_key = sss.str();
+                    if(key.compare(topology_bond_key) == 0)
+                    {
+                        atom_node->AddNodeNeighbor(atom_2);
+                        break;
+                    }
+                }
             }
         }
         atom_1->SetNode(atom_node);
@@ -749,7 +761,6 @@ void Assembly::BuildStructureByLIBFileInformation()
             if(library_atom != NULL)
             {
                 vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
-                cout << library_bonded_atom_indices.size() << endl;
                 for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
                 {
                     int library_bonded_atom_index = (*it1);
@@ -763,7 +774,6 @@ void Assembly::BuildStructureByLIBFileInformation()
                         string library_atom_id = ss.str();
                         if(assembly_atom_id.compare(library_atom_id) == 0)
                         {
-                            cout << assembly_atom_id << "__" << library_atom_id << endl;
                             atom_node->AddNodeNeighbor(assembly_atom);
                             break;
                         }
@@ -775,10 +785,104 @@ void Assembly::BuildStructureByLIBFileInformation()
     }
 }
 
+void Assembly::BuildStructureByPrepFileInformation()
+{
+    cout << "Building structure ..." << endl;
+    PrepFile* prep_file = new PrepFile(this->GetSourceFile());
+    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    int i = 0;
+    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* atom_node = new AtomNode();
+        atom_node->SetAtom(atom);
+        atom_node->SetId(i);
+        i++;
+        Residue* assembly_residue = atom->GetResidue();
+        PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
+        if(prep_residue != NULL)
+        {
+            PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
+            if(prep_atom != NULL)
+            {
+                // TODO:
+                // Find bonded atoms to prep_atom
+                // Foreach bonded atom find the corresponding assembly atom
+                // Add the bonded atom to the neighbors of atom_node
+            }
+        }
+        atom->SetNode(atom_node);
+    }
+}
+
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
 {
     cout << "Building structure ..." << endl;
+    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    int i = 0;
+    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    {
+        Atom* atom = (*it);
+        Residue* assembly_residue = atom->GetResidue();
+        for(int i = 0; i < types.size(); i++)
+        {
+            AtomNode* atom_node = new AtomNode();
+            atom_node->SetAtom(atom);
+            atom_node->SetId(i);
+            if(types.at(i) == gmml::LIB)
+            {
+                string lib_path = file_paths.at(i);
+                LibraryFile* library_file = new LibraryFile(lib_path);
+                LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
+                if(library_residue != NULL)
+                {
+                    LibraryFileAtom* library_atom = library_residue->GetLibraryAtomByAtomName(atom->GetName());
+                    if(library_atom != NULL)
+                    {
+                        vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
+                        for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
+                        {
+                            int library_bonded_atom_index = (*it1);
+                            LibraryFileAtom* library_atom = library_residue->GetAtomByIndex(library_bonded_atom_index);
+                            for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+                            {
+                                Atom* assembly_atom = (*it2);
+                                string assembly_atom_id = assembly_atom->GetId();
+                                stringstream ss;
+                                ss << library_residue->GetName() << ":" << library_atom->GetName();
+                                string library_atom_id = ss.str();
+                                if(assembly_atom_id.compare(library_atom_id) == 0)
+                                {
+                                    atom_node->AddNodeNeighbor(assembly_atom);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(types.at(i) == gmml::PREP)
+            {
+                string prep_path = file_paths.at(i);
+                PrepFile* prep_file = new PrepFile(prep_path);
+                PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
+                if(prep_residue != NULL)
+                {
+                    PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
+                    if(prep_atom != NULL)
+                    {
+                        // TODO:
+                        // Find bonded atoms to prep_atom
+                        // Foreach bonded atom find the corresponding assembly atom
+                        // Add the bonded atom to the neighbors of atom_node
+                    }
+                }
 
+            }
+            atom->SetNode(atom_node);
+        }
+        i++;
+    }
 }
 
 Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
