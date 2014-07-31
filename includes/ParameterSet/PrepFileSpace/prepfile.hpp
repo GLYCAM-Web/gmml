@@ -64,6 +64,8 @@ namespace PrepFileSpace
               * @param in_file A stream contains whole contents of a prep file
               */
             PrepFileResidue* ProcessResidueSection(std::ifstream& in_file);
+            void Write(const std::string& prep_file);
+            void BuildPrepFile(std::ofstream& out_stream);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

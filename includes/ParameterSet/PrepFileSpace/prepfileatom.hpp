@@ -140,7 +140,9 @@ namespace PrepFileSpace
               * @return charge_ of the current object of this class
               */
             double GetCharge();
-
+            std::string GetStringFormatOfTopologicalType(TopologicalType topological_type);
+            std::string GetStringFormatOfTopologicalType();
+            TopologicalType GetTopologicalTypeFromString(std::string topological_type);
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
