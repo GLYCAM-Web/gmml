@@ -188,7 +188,7 @@ void PrepFileAtom::Print(ostream &out)
         << setw(10) << bond_length_
         << setw(10) << angle_
         << setw(10) << dihedral_
-        << setw(10) << charge_
-        << endl;
+        << setw(10) << charge_;
+//        << endl;
 
 }

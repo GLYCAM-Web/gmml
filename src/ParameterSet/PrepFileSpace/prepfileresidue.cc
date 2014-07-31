@@ -24,8 +24,8 @@ PrepFileResidue::PrepFileResidue() {}
 int PrepFileResidue::GetAtomIndexByName(const std::string& name)
 {
     for (unsigned int i = 0; i < atoms_.size(); i++)
-        if (name == atoms_[i]->name_)
-            return i;
+        if (name.compare(atoms_[i]->GetName()) == 0)
+            return atoms_[i]->GetIndex();
     return -1;
 }
 
@@ -86,6 +86,135 @@ PrepFileAtom* PrepFileResidue::GetPrepAtomByName(string atom_name)
             return prep_file_atom;
     }
     return NULL;
+}
+PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
+{
+    BondedAtomNamesMap bonded_atoms_map = BondedAtomNamesMap();
+    vector<PrepFileAtom*> stack = vector<PrepFileAtom*>();
+    vector<int> number_of_bonds = vector<int>();
+
+    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        PrepFileAtom* atom = (*it);
+        bonded_atoms_map[atom->GetName()] = vector<string>();
+        if(stack.empty())
+        {
+            if(atom->GetTopologicalType() == kTopTypeM || atom->GetTopologicalType() == kTopTypeS
+                    || atom->GetTopologicalType() == kTopTypeB || atom->GetTopologicalType() == kTopType3)
+            {
+                stack.push_back(atom);
+                if(atom->GetTopologicalType() == kTopTypeM)
+                    number_of_bonds.push_back(4);
+                if(atom->GetTopologicalType() == kTopTypeS)
+                    number_of_bonds.push_back(2);
+                if(atom->GetTopologicalType() == kTopTypeB)
+                    number_of_bonds.push_back(3);
+                if(atom->GetTopologicalType() == kTopType3)
+                    number_of_bonds.push_back(4);
+            }
+        }
+        if(!stack.empty())
+        {
+            if(atom->GetTopologicalType() == kTopTypeE)
+            {
+                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
+                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                number_of_bonds.at(number_of_bonds.size()-1)--;
+                if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
+                {
+                    number_of_bonds.pop_back();
+                    stack.pop_back();
+                }
+            }
+            if(atom->GetTopologicalType() == kTopTypeM)
+            {
+                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                if(top_of_stack_atom->GetTopologicalType() == kTopTypeM)
+                {
+                    if(top_of_stack_atom->GetType().compare(this->GetDummyAtomType()) == 0)
+                    {
+                        bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
+                        bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                        stack.pop_back();;
+                        number_of_bonds.pop_back();
+                        stack.push_back(atom);
+                        number_of_bonds.push_back(3);
+                    }
+                    else
+                    {
+                        bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
+                        bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                        number_of_bonds.at(number_of_bonds.size()-1)--;
+                        if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
+                        {
+                            number_of_bonds.pop_back();
+                            stack.pop_back();
+                        }
+                        stack.push_back(atom);
+                        number_of_bonds.push_back(3);
+                    }
+                }
+                if(top_of_stack_atom->GetTopologicalType() == kTopTypeS || top_of_stack_atom->GetTopologicalType() == kTopTypeB
+                        || top_of_stack_atom->GetTopologicalType() == kTopType3)
+                {
+                    bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
+                    bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                    number_of_bonds.at(number_of_bonds.size()-1)--;
+                    if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
+                    {
+                        number_of_bonds.pop_back();
+                        stack.pop_back();
+                    }
+                    stack.push_back(atom);
+                    number_of_bonds.push_back(3);
+                }
+            }
+            if(atom->GetTopologicalType() == kTopTypeS)
+            {
+                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
+                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                number_of_bonds.at(number_of_bonds.size()-1)--;
+                if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
+                {
+                    number_of_bonds.pop_back();
+                    stack.pop_back();
+                }
+                stack.push_back(atom);
+                number_of_bonds.push_back(1);
+            }
+            if(atom->GetTopologicalType() == kTopTypeB)
+            {
+                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
+                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                number_of_bonds.at(number_of_bonds.size()-1)--;
+                if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
+                {
+                    number_of_bonds.pop_back();
+                    stack.pop_back();
+                }
+                stack.push_back(atom);
+                number_of_bonds.push_back(2);
+            }
+            if(atom->GetTopologicalType() == kTopType3)
+            {
+                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
+                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                number_of_bonds.at(number_of_bonds.size()-1)--;
+                if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
+                {
+                    number_of_bonds.pop_back();
+                    stack.pop_back();
+                }
+                stack.push_back(atom);
+                number_of_bonds.push_back(3);
+            }
+        }
+    }
+    return bonded_atoms_map;
 }
 
 //////////////////////////////////////////////////////////
@@ -396,6 +525,7 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
 //////////////////////////////////////////////////////////
 void PrepFileResidue::Print(std::ostream& out)
 {
+    BondedAtomNamesMap bonded_atoms_map = this->GetBondingsOfResidue();
     out << "Title: " << title_ << endl;
     out << setw(10) << "ResName"
         << setw(10) << "CrdType"
@@ -457,11 +587,23 @@ void PrepFileResidue::Print(std::ostream& out)
         << setw(10) << "Angle"
         << setw(10) << "Dihedral"
         << setw(10) << "Charge"
+        << setw(10) << "Bonded"
         << endl;
 
     for(vector<PrepFileAtom*>::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         (*it)->Print(out);
+        vector<string> bonded_atoms = bonded_atoms_map[(*it)->GetName()];
+        out << "\t";
+        for(int i = 0; i < bonded_atoms.size(); i++)
+        {
+            if(i != bonded_atoms.size() - 1)
+                out << bonded_atoms.at(i) << ", ";
+            else
+                out << bonded_atoms.at(i);
+        }
+        out << endl;
+
     }
 
     out << endl << "Improper dihedrals" << endl;
@@ -477,7 +619,7 @@ void PrepFileResidue::Print(std::ostream& out)
     out << endl << "Loops" << endl;
     for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
     {
-        out << setw(6) << it->first << setw(6) << it->second << endl;
+        out << setw(6) << this->GetAtomNameByIndex(it->first) << setw(6) << this->GetAtomNameByIndex(it->second) << endl;
     }
 
     out << endl;
