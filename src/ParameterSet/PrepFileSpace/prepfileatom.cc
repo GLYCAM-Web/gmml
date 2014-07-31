@@ -58,8 +58,6 @@ TopologicalType PrepFileAtom::ExtractAtomTopologicalType(istream &ss)
     else
         return kTopType3;
 }
-
-///Delaram
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -106,6 +104,57 @@ double PrepFileAtom::GetDihedral(){
 
 double PrepFileAtom::GetCharge(){
     return charge_;
+}
+string PrepFileAtom::GetStringFormatOfTopologicalType(TopologicalType topological_type)
+{
+    switch(topological_type)
+    {
+        case kTopTypeE:
+            return "E";
+        case kTopTypeS:
+            return "S";
+        case kTopTypeB:
+            return "B";
+        case kTopType3:
+            return "3";
+        case kTopType4:
+            return "4";
+        case kTopTypeM:
+            return "M";
+    }
+}
+string PrepFileAtom::GetStringFormatOfTopologicalType()
+{
+    switch(topological_type_)
+    {
+        case kTopTypeE:
+            return "E";
+        case kTopTypeS:
+            return "S";
+        case kTopTypeB:
+            return "B";
+        case kTopType3:
+            return "3";
+        case kTopType4:
+            return "4";
+        case kTopTypeM:
+            return "M";
+    }
+}
+TopologicalType PrepFileAtom::GetTopologicalTypeFromString(string topological_type)
+{
+    if(topological_type.compare("E") == 0)
+        return kTopTypeE;
+    if(topological_type.compare("S") == 0)
+        return kTopTypeS;
+    if(topological_type.compare("B") == 0)
+        return kTopTypeB;
+    if(topological_type.compare("3") == 0)
+        return kTopType3;
+    if(topological_type.compare("4") == 0)
+        return kTopType4;
+    if(topological_type.compare("M") == 0)
+        return kTopTypeM;
 }
 
 //////////////////////////////////////////////////////////
@@ -155,9 +204,6 @@ void PrepFileAtom::SetDihedral(double dihedral){
 void PrepFileAtom::SetCharge(double charge){
     charge_ = charge;
 }
-
-///Delaram
-
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
