@@ -451,7 +451,12 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
     stringstream ss;
 
     for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
-    {
+    {        
+        int head_atom_index = INFINITY;
+        int tail_atom_index = -INFINITY;
+        Atom* head_atom = new Atom();
+        Atom* tail_atom = new Atom();
+
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
         string residue_name = (*it).first;
@@ -463,13 +468,12 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             ss << prep_residue_name;
         else
             ss << prep_residue_name << "-";
-
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
         vector<Coordinate*> coordinates = vector<Coordinate*>();
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
             Atom* assembly_atom = new Atom();
-            PrepFileAtom* prep_atom = (*it1);
+            PrepFileAtom* prep_atom = (*it1);            
 
             assembly_atom->SetResidue(assembly_residue);
             string atom_name = prep_atom->GetName();
@@ -510,8 +514,23 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             {
                 assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
             }
+            if(prep_atom->GetTopologicalType() == kTopTypeM && prep_atom->GetType().compare(prep_residue->GetDummyAtomType()) != 0)
+            {
+                if(head_atom_index > prep_atom->GetIndex())
+                {
+                    head_atom_index = prep_atom->GetIndex();
+                    head_atom = assembly_atom;
+                }
+                if(tail_atom_index < prep_atom->GetIndex())
+                {
+                    tail_atom_index = prep_atom->GetIndex();
+                    tail_atom = assembly_atom;
+                }
+            }
             assembly_residue->AddAtom(assembly_atom);
         }
+        assembly_residue->AddHeadAtom(head_atom);
+        assembly_residue->AddTailAtom(tail_atom);
         residues_.push_back(assembly_residue);
     }
     name_ = ss.str();
@@ -804,11 +823,28 @@ void Assembly::BuildStructureByPrepFileInformation()
         {
             PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
             if(prep_atom != NULL)
-            {
+            {                                
                 // TODO:
                 // Find bonded atoms to prep_atom
                 // Foreach bonded atom find the corresponding assembly atom
                 // Add the bonded atom to the neighbors of atom_node
+                vector<string> bonded_atoms_name = prep_residue->GetBondingsOfResidue()[atom->GetName()];
+                for(vector<string>::iterator it1 = bonded_atoms_name.begin(); it1 != bonded_atoms_name.end(); it1++)
+                {
+                    string bonded_atom_name = (*it1);
+                    PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(bonded_atom_name);
+                    stringstream ss;
+                    ss << prep_residue->GetName() << ":" << bonded_atom->GetName();
+                    for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+                    {
+                        Atom* assembly_atom = (*it2);
+                        if(assembly_atom->GetId().compare(ss.str()) == 0)
+                        {
+                            atom_node->AddNodeNeighbor(assembly_atom);
+                            break;
+                        }
+                    }
+                }
             }
         }
         atom->SetNode(atom_node);
@@ -823,12 +859,13 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
         Atom* atom = (*it);
+        AtomNode* atom_node = new AtomNode();
+        atom_node->SetAtom(atom);
+        atom_node->SetId(i);
+        i++;
         Residue* assembly_residue = atom->GetResidue();
         for(int i = 0; i < types.size(); i++)
         {
-            AtomNode* atom_node = new AtomNode();
-            atom_node->SetAtom(atom);
-            atom_node->SetId(i);
             if(types.at(i) == gmml::LIB)
             {
                 string lib_path = file_paths.at(i);
@@ -875,13 +912,29 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
                         // Find bonded atoms to prep_atom
                         // Foreach bonded atom find the corresponding assembly atom
                         // Add the bonded atom to the neighbors of atom_node
+                        vector<string> bonded_atoms_name = prep_residue->GetBondingsOfResidue()[atom->GetName()];
+                        for(vector<string>::iterator it1 = bonded_atoms_name.begin(); it1 != bonded_atoms_name.end(); it1++)
+                        {
+                            string bonded_atom_name = (*it1);
+                            PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(bonded_atom_name);
+                            stringstream ss;
+                            ss << prep_residue->GetName() << ":" << bonded_atom->GetName();
+                            for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+                            {
+                                Atom* assembly_atom = (*it2);
+                                if(assembly_atom->GetId().compare(ss.str()) == 0)
+                                {
+                                    atom_node->AddNodeNeighbor(assembly_atom);
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
 
             }
             atom->SetNode(atom_node);
         }
-        i++;
     }
 }
 

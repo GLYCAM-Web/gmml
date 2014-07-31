@@ -50,6 +50,7 @@ namespace PrepFileSpace
             typedef std::vector<std::string> Dihedral;
             typedef std::vector<PrepFileAtom*> PrepFileAtomVector;
             typedef std::vector<Dihedral> DihedralVector;
+            typedef std::map<std::string, std::vector<std::string> > BondedAtomNamesMap;
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
@@ -213,6 +214,8 @@ namespace PrepFileSpace
               * @return prep_file_atom prep file atom
               */
             PrepFileAtom* GetPrepAtomByName(std::string atom_name);
+
+            BondedAtomNamesMap GetBondingsOfResidue();
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
