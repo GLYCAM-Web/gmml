@@ -87,6 +87,198 @@ PrepFileAtom* PrepFileResidue::GetPrepAtomByName(string atom_name)
     }
     return NULL;
 }
+string PrepFileResidue::GetAtomNameByIndex(int atom_index)
+{
+    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        PrepFileAtom* prep_file_atom = (*it);
+        if(prep_file_atom->GetIndex() == atom_index)
+            return prep_file_atom->GetName();
+    }
+    return NULL;
+}
+string PrepFileResidue::GetStringFormatOfCoordinateType(CoordinateType coordinate_type)
+{
+    switch(coordinate_type)
+    {
+        case kINT:
+            return "INT";
+        case kXYZ:
+            return "XYZ";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfCoordinateType()
+{
+    switch(coordinate_type_)
+    {
+        case kINT:
+            return "INT";
+        case kXYZ:
+            return "XYZ";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFromatOfOutputFormat(OutputFormat output_format)
+{
+    switch(output_format)
+    {
+        case kFormatted:
+            return "FRM";
+        case kBinary:
+            return "BIN";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFromatOfOutputFormat()
+{
+    switch(output_format_)
+    {
+        case kFormatted:
+            return "FRM";
+        case kBinary:
+            return "BIN";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfGeometryType(GeometryType geometry_type)
+{
+    switch(geometry_type)
+    {
+        case kGeometryCorrect:
+            return "CORRECT";
+        case kGeometryChange:
+            return "CHANGE";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfGeometryType()
+{
+    switch(geometry_type_)
+    {
+        case kGeometryCorrect:
+            return "CORRECT";
+        case kGeometryChange:
+            return "CHANGE";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position)
+{
+    switch(dummy_atom_position)
+    {
+        case kPositionAll:
+            return "ALL";
+        case kPositionBeg:
+            return "BEG";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfDummyAtomPosition()
+{
+    switch(dummy_atom_position_)
+    {
+        case kPositionAll:
+            return "ALL";
+        case kPositionBeg:
+            return "BEG";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfDummyAtomOmission(DummyAtomOmission dummy_atom_omission)
+{
+    switch(dummy_atom_omission)
+    {
+        case kOmit:
+            return "OMIT";
+        case kNomit:
+            return "NOMIT";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfDummyAtomOmission()
+{
+    switch(dummy_atom_omission_)
+    {
+        case kOmit:
+            return "OMIT";
+        case kNomit:
+            return "NOMIT";
+        default:
+            return "";
+    }
+}
+string PrepFileResidue::GetStringFormatOfSectionType(SectionType section_type)
+{
+    switch(section_type)
+    {
+        case kSectionLoop:
+            return "SectionLoop";
+        case kSectionImproper:
+            return "SectionImproper";
+        case kSectionDone:
+            return "kSectionDone";
+        case kSectionOther:
+            return "SectionOther";
+        default:
+            return "";
+    }
+}
+CoordinateType PrepFileResidue::GetCoordinateTypeFromString(string coordinate_type)
+{
+    if(coordinate_type.compare("INT") == 0)
+        return kINT;
+    if(coordinate_type.compare("XYZ") == 0)
+        return kXYZ;
+}
+OutputFormat PrepFileResidue::GetOutputFormatFromString(string output_format)
+{
+    if(output_format.compare("Formatted") == 0)
+        return kFormatted;
+    if(output_format.compare("Binary") == 0)
+        return kBinary;
+}
+GeometryType PrepFileResidue::GetGeometryTypeFromString(string geometry_type)
+{
+    if(geometry_type.compare("GeometryCorrect") == 0)
+        return kGeometryCorrect;
+    if(geometry_type.compare("GeometryChange") == 0)
+        return kGeometryChange;
+}
+DummyAtomPosition PrepFileResidue::GetDummyAtomPositionFromString(string dummy_atom_position)
+{
+    if(dummy_atom_position.compare("PositionAll") == 0)
+        return kPositionAll;
+    if(dummy_atom_position.compare("PositionBeg") == 0)
+        return kPositionBeg;
+}
+DummyAtomOmission PrepFileResidue::GetDummyAtomOmissionFromString(string dummy_atom_omission)
+{
+    if(dummy_atom_omission.compare("Omit") == 0)
+        return kOmit;
+    if(dummy_atom_omission.compare("Nomit") == 0)
+        return kNomit;
+}
+SectionType PrepFileResidue::GetSectionTypeFromString(string section_type)
+{
+    if(section_type.compare("SectionLoop") == 0)
+        return kSectionLoop;
+    if(section_type.compare("SectionImproper") == 0)
+        return kSectionImproper;
+    if(section_type.compare("SectionDone") == 0)
+        return kSectionDone;
+    if(section_type.compare("SectionOther") == 0)
+        return kSectionOther;
+}
 
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //

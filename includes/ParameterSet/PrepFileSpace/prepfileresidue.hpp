@@ -15,7 +15,7 @@ namespace PrepFileSpace
     /*! \enum
       * Output format enumerator
       */
-    enum OutputFormat { kFormatted, kBinary };
+    enum OutputFormat { kFormatted = 0, kBinary = 1 };
     /*! \enum
       * Geometry type enumerator
       */
@@ -58,9 +58,6 @@ namespace PrepFileSpace
               * Default constructor
               */
             PrepFileResidue();
-
-
-
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
@@ -213,6 +210,29 @@ namespace PrepFileSpace
               * @return prep_file_atom prep file atom
               */
             PrepFileAtom* GetPrepAtomByName(std::string atom_name);
+            /*! \fn
+              * An accessor function in order to access to an atom name by atom index
+              * @param atom_index index of atom
+              * @return atom_name name of prep atom
+              */
+            std::string GetAtomNameByIndex(int atom_index);
+            std::string GetStringFormatOfCoordinateType(CoordinateType coordinate_type);
+            std::string GetStringFormatOfCoordinateType();
+            std::string GetStringFromatOfOutputFormat(OutputFormat output_format);
+            std::string GetStringFromatOfOutputFormat();
+            std::string GetStringFormatOfGeometryType(GeometryType geometry_type);
+            std::string GetStringFormatOfGeometryType();
+            std::string GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position);
+            std::string GetStringFormatOfDummyAtomPosition();
+            std::string GetStringFormatOfDummyAtomOmission(DummyAtomOmission dummy_atom_omission);
+            std::string GetStringFormatOfDummyAtomOmission();
+            std::string GetStringFormatOfSectionType(SectionType    );
+            CoordinateType GetCoordinateTypeFromString(std::string coordinate_type);
+            OutputFormat GetOutputFormatFromString(std::string output_format);
+            GeometryType GetGeometryTypeFromString(std::string geometry_type);
+            DummyAtomPosition GetDummyAtomPositionFromString(std::string dummy_atom_position);
+            DummyAtomOmission GetDummyAtomOmissionFromString(std::string dummy_atom_omission);
+            SectionType GetSectionTypeFromString(std::string section_type);
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
