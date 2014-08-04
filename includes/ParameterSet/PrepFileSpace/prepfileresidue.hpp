@@ -50,7 +50,7 @@ namespace PrepFileSpace
             typedef std::vector<std::string> Dihedral;
             typedef std::vector<PrepFileAtom*> PrepFileAtomVector;
             typedef std::vector<Dihedral> DihedralVector;
-            typedef std::map<std::string, std::vector<std::string> > BondedAtomNamesMap;
+            typedef std::map<int, std::vector<int> > BondedAtomIndexMap;
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
@@ -235,7 +235,7 @@ namespace PrepFileSpace
             DummyAtomOmission GetDummyAtomOmissionFromString(std::string dummy_atom_omission);
             SectionType GetSectionTypeFromString(std::string section_type);
 
-            BondedAtomNamesMap GetBondingsOfResidue();
+            BondedAtomIndexMap GetBondingsOfResidue();
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //

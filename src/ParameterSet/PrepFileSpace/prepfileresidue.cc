@@ -87,16 +87,15 @@ PrepFileAtom* PrepFileResidue::GetPrepAtomByName(string atom_name)
     }
     return NULL;
 }
-PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
+PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
 {
-    BondedAtomNamesMap bonded_atoms_map = BondedAtomNamesMap();
+    BondedAtomIndexMap bonded_atoms_map = BondedAtomIndexMap();
     vector<PrepFileAtom*> stack = vector<PrepFileAtom*>();
     vector<int> number_of_bonds = vector<int>();
 
     for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileAtom* atom = (*it);
-        bonded_atoms_map[atom->GetName()] = vector<string>();
         if(stack.empty())
         {
             if(atom->GetTopologicalType() == kTopTypeM || atom->GetTopologicalType() == kTopTypeS
@@ -118,8 +117,8 @@ PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
             if(atom->GetTopologicalType() == kTopTypeE)
             {
                 PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
-                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
-                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
+                bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
                 if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
                 {
@@ -134,17 +133,17 @@ PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
                 {
                     if(top_of_stack_atom->GetType().compare(this->GetDummyAtomType()) == 0)
                     {
-                        bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
-                        bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
-                        stack.pop_back();;
+                        bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
+                        bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
+                        stack.pop_back();
                         number_of_bonds.pop_back();
                         stack.push_back(atom);
-                        number_of_bonds.push_back(3);
+                        number_of_bonds.push_back(4);
                     }
                     else
                     {
-                        bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
-                        bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                        bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
+                        bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                         number_of_bonds.at(number_of_bonds.size()-1)--;
                         if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
                         {
@@ -158,8 +157,8 @@ PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
                 if(top_of_stack_atom->GetTopologicalType() == kTopTypeS || top_of_stack_atom->GetTopologicalType() == kTopTypeB
                         || top_of_stack_atom->GetTopologicalType() == kTopType3)
                 {
-                    bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
-                    bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                    bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
+                    bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                     number_of_bonds.at(number_of_bonds.size()-1)--;
                     if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
                     {
@@ -173,8 +172,8 @@ PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
             if(atom->GetTopologicalType() == kTopTypeS)
             {
                 PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
-                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
-                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
+                bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
                 if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
                 {
@@ -187,8 +186,8 @@ PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
             if(atom->GetTopologicalType() == kTopTypeB)
             {
                 PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
-                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
-                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
+                bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
                 if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
                 {
@@ -201,8 +200,8 @@ PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
             if(atom->GetTopologicalType() == kTopType3)
             {
                 PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
-                bonded_atoms_map[top_of_stack_atom->GetName()].push_back(atom->GetName());
-                bonded_atoms_map[atom->GetName()].push_back(top_of_stack_atom->GetName());
+                bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
+                bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
                 if(number_of_bonds.at(number_of_bonds.size()-1) == 0)
                 {
@@ -213,6 +212,14 @@ PrepFileResidue::BondedAtomNamesMap PrepFileResidue::GetBondingsOfResidue()
                 number_of_bonds.push_back(3);
             }
         }
+    }
+    for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
+    {
+        int from = (*it).first;
+        int to = (*it).second;
+
+        bonded_atoms_map[from].push_back(to);
+        bonded_atoms_map[to].push_back(from);
     }
     return bonded_atoms_map;
 }
@@ -717,7 +724,7 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
 //////////////////////////////////////////////////////////
 void PrepFileResidue::Print(std::ostream& out)
 {
-    BondedAtomNamesMap bonded_atoms_map = this->GetBondingsOfResidue();
+    BondedAtomIndexMap bonded_atoms_map = this->GetBondingsOfResidue();
     out << "Title: " << title_ << endl;
     out << setw(10) << "ResName"
         << setw(10) << "CrdType"
@@ -785,14 +792,14 @@ void PrepFileResidue::Print(std::ostream& out)
     for(vector<PrepFileAtom*>::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         (*it)->Print(out);
-        vector<string> bonded_atoms = bonded_atoms_map[(*it)->GetName()];
+        vector<int> bonded_atoms = bonded_atoms_map[(*it)->GetIndex()];
         out << "\t";
         for(int i = 0; i < bonded_atoms.size(); i++)
         {
             if(i != bonded_atoms.size() - 1)
-                out << bonded_atoms.at(i) << ", ";
+                out << this->GetAtomNameByIndex(bonded_atoms.at(i)) << ", ";
             else
-                out << bonded_atoms.at(i);
+                out << this->GetAtomNameByIndex(bonded_atoms.at(i));
         }
         out << endl;
 
