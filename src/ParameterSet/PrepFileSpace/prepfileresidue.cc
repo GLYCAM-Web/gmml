@@ -375,12 +375,16 @@ CoordinateType PrepFileResidue::GetCoordinateTypeFromString(string coordinate_ty
         return kINT;
     if(coordinate_type.compare("XYZ") == 0)
         return kXYZ;
+    else
+        return kINT;
 }
 OutputFormat PrepFileResidue::GetOutputFormatFromString(string output_format)
 {
     if(output_format.compare("Formatted") == 0)
         return kFormatted;
     if(output_format.compare("Binary") == 0)
+        return kBinary;
+    else
         return kBinary;
 }
 GeometryType PrepFileResidue::GetGeometryTypeFromString(string geometry_type)
@@ -389,12 +393,16 @@ GeometryType PrepFileResidue::GetGeometryTypeFromString(string geometry_type)
         return kGeometryCorrect;
     if(geometry_type.compare("GeometryChange") == 0)
         return kGeometryChange;
+    else
+        return kGeometryCorrect;
 }
 DummyAtomPosition PrepFileResidue::GetDummyAtomPositionFromString(string dummy_atom_position)
 {
     if(dummy_atom_position.compare("PositionAll") == 0)
         return kPositionAll;
     if(dummy_atom_position.compare("PositionBeg") == 0)
+        return kPositionBeg;
+    else
         return kPositionBeg;
 }
 DummyAtomOmission PrepFileResidue::GetDummyAtomOmissionFromString(string dummy_atom_omission)
@@ -403,6 +411,8 @@ DummyAtomOmission PrepFileResidue::GetDummyAtomOmissionFromString(string dummy_a
         return kOmit;
     if(dummy_atom_omission.compare("Nomit") == 0)
         return kNomit;
+    else
+        return kOmit;
 }
 SectionType PrepFileResidue::GetSectionTypeFromString(string section_type)
 {
@@ -413,6 +423,8 @@ SectionType PrepFileResidue::GetSectionTypeFromString(string section_type)
     if(section_type.compare("SectionDone") == 0)
         return kSectionDone;
     if(section_type.compare("SectionOther") == 0)
+        return kSectionOther;
+    else
         return kSectionOther;
 }
 
@@ -794,7 +806,7 @@ void PrepFileResidue::Print(std::ostream& out)
         (*it)->Print(out);
         vector<int> bonded_atoms = bonded_atoms_map[(*it)->GetIndex()];
         out << "\t";
-        for(int i = 0; i < bonded_atoms.size(); i++)
+        for(unsigned int i = 0; i < bonded_atoms.size(); i++)
         {
             if(i != bonded_atoms.size() - 1)
                 out << this->GetAtomNameByIndex(bonded_atoms.at(i)) << ", ";

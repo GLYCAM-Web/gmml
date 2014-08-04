@@ -105,6 +105,8 @@ namespace gmml
                 return "MULTIPLE";
             case UNKNOWN:
                 return "UNKNOWN";
+            default:
+                return "UNKNOWN";
         }
     }
 
@@ -116,6 +118,8 @@ namespace gmml
             return ORIGINAL;
         if(option.compare("Database") == 0)
             return DATABASE;
+        else
+            return DISTANCE;
     }
 
     inline std::string ConvertAssemblyBuildingStructureOption2String(BuildingStructureOption option)
@@ -128,6 +132,8 @@ namespace gmml
                 return "Original";
             case DATABASE:
                 return "Database";
+            default:
+                return "Distance";
         }
     }
 

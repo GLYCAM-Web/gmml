@@ -121,6 +121,8 @@ string PrepFileAtom::GetStringFormatOfTopologicalType(TopologicalType topologica
             return "4";
         case kTopTypeM:
             return "M";
+        default:
+            return "E";
     }
 }
 string PrepFileAtom::GetStringFormatOfTopologicalType()
@@ -139,6 +141,8 @@ string PrepFileAtom::GetStringFormatOfTopologicalType()
             return "4";
         case kTopTypeM:
             return "M";
+        default:
+            return "E";
     }
 }
 TopologicalType PrepFileAtom::GetTopologicalTypeFromString(string topological_type)
@@ -155,6 +159,8 @@ TopologicalType PrepFileAtom::GetTopologicalTypeFromString(string topological_ty
         return kTopType4;
     if(topological_type.compare("M") == 0)
         return kTopTypeM;
+    else
+        return kTopTypeE;
 }
 
 //////////////////////////////////////////////////////////
