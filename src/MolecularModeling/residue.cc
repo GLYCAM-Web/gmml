@@ -111,6 +111,20 @@ void Residue::SetId(string id)
 void Residue::Print(ostream &out)
 {
     out << "------------------------ " << name_ << " --------------------------" << endl;
+    out << "Head atoms: ";
+    for(AtomVector::iterator it = head_atoms_.begin(); it != head_atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        out << atom->GetResidue()->GetName() << ":" << atom->GetName() << "; ";
+    }
+    out << endl;
+    out << "Tail atoms: ";
+    for(AtomVector::iterator it = tail_atoms_.begin(); it != tail_atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        out << atom->GetResidue()->GetName() << ":" << atom->GetName() << "; ";
+    }
+    out << endl;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         Atom* atom = *it;

@@ -660,6 +660,7 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
             this->BuildStructureByLIBFileInformation();
             break;
         case gmml::PREP:
+            this->BuildStructureByPrepFileInformation();
             break;
         case gmml::TOP_CRD:
             break;
@@ -828,11 +829,11 @@ void Assembly::BuildStructureByPrepFileInformation()
                 // Find bonded atoms to prep_atom
                 // Foreach bonded atom find the corresponding assembly atom
                 // Add the bonded atom to the neighbors of atom_node
-                vector<string> bonded_atoms_name = prep_residue->GetBondingsOfResidue()[atom->GetName()];
-                for(vector<string>::iterator it1 = bonded_atoms_name.begin(); it1 != bonded_atoms_name.end(); it1++)
+                vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
+                for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                 {
-                    string bonded_atom_name = (*it1);
-                    PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(bonded_atom_name);
+                    int bonded_atom_index = (*it1);
+                    PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(prep_residue->GetAtomNameByIndex(bonded_atom_index));
                     stringstream ss;
                     ss << prep_residue->GetName() << ":" << bonded_atom->GetName();
                     for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
@@ -912,11 +913,11 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
                         // Find bonded atoms to prep_atom
                         // Foreach bonded atom find the corresponding assembly atom
                         // Add the bonded atom to the neighbors of atom_node
-                        vector<string> bonded_atoms_name = prep_residue->GetBondingsOfResidue()[atom->GetName()];
-                        for(vector<string>::iterator it1 = bonded_atoms_name.begin(); it1 != bonded_atoms_name.end(); it1++)
+                        vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
+                        for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                         {
-                            string bonded_atom_name = (*it1);
-                            PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(bonded_atom_name);
+                            int bonded_atom_index = (*it1);
+                            PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(prep_residue->GetAtomNameByIndex(bonded_atom_index));
                             stringstream ss;
                             ss << prep_residue->GetName() << ":" << bonded_atom->GetName();
                             for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
