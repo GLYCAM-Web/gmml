@@ -865,7 +865,7 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
         atom_node->SetId(i);
         i++;
         Residue* assembly_residue = atom->GetResidue();
-        for(int i = 0; i < types.size(); i++)
+        for(unsigned int i = 0; i < types.size(); i++)
         {
             if(types.at(i) == gmml::LIB)
             {
