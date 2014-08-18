@@ -31,6 +31,7 @@ namespace TopologyFileSpace
             typedef std::map<std::string, TopologyBond*> TopologyBondMap;
             typedef std::map<std::string, TopologyAngle*> TopologyAngleMap;
             typedef std::map<std::string, TopologyDihedral*> TopologyDihedralMap;
+            typedef std::map<std::string, int> TopologyAtomTypeIndexMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -45,6 +46,11 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * An accessor function in order to access to the path
+              * @return path_ attribute of the current object of this class
+              */
+            std::string GetPath();
             /*! \fn
               * An accessor function in order to access to the title
               * @return title_ attribute of the current object of this class
@@ -253,9 +259,23 @@ namespace TopologyFileSpace
               */
             TopologyDihedralMap GetDihedrals();
 
+            TopologyAtomTypeIndexMap GetAtomTypeIndexMap();
+
+            TopologyBondType* GetBondTypeByIndex(int index);
+
+            TopologyAngleType* GetAngleTypeByIndex(int index);
+
+            TopologyDihedralType* GetDihedralTypeByIndex(int index);
+
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the path of the current object
+              * Set the path_ attribute of the current topology file
+              * @param path The path attribute of the current object
+              */
+            void SetPath(std::string path);
             /*! \fn
               * A mutator function in order to set the title of the current object
               * Set the title_ attribute of the current topology file
@@ -496,6 +516,50 @@ namespace TopologyFileSpace
             template<typename T>
             std::vector<T> PartitionLine(std::string line, std::string format);
 
+            void Write(const std::string& top_file);
+            void ResolveSections(std::ofstream& out_stream);
+            void ResolveTitleSection(std::ofstream& out);
+            void ResolvePointersSection(std::ofstream& out);
+            void ResolveAtomNameSection(std::ofstream& out);
+            void ResolveChargeSection(std::ofstream& out);
+            void ResolveAtomicNumberSection(std::ofstream& out);
+            void ResolveMassSection(std::ofstream& out);
+            void ResolveAtomTypeIndexSection(std::ofstream& out);
+            void ResolveNumberExcludedAtomsSection(std::ofstream& out);
+            void ResolveNonbondedParmIndexSection(std::ofstream& out);
+            void ResolveResidueLabelSection(std::ofstream& out);
+            void ResolveResiduePointersSection(std::ofstream& out);
+            void ResolveBondForceConstantSection(std::ofstream& out);
+            void ResolveBondEquilValueSection(std::ofstream& out);
+            void ResolveAngleForceConstantSection(std::ofstream& out);
+            void ResolveAngleEquilValueSection(std::ofstream& out);
+            void ResolveDihedralForceConstantSection(std::ofstream& out);
+            void ResolveDihedralPeriodicitySection(std::ofstream& out);
+            void ResolveDihedralPhaseSection(std::ofstream& out);
+            void ResolveSceeScaleFactorSection(std::ofstream& out);
+            void ResolveScnbScaleFactorSection(std::ofstream& out);
+            void ResolveSoltySection(std::ofstream& out);
+            void ResolveLennardJonesACoefSection(std::ofstream& out);
+            void ResolveLennardJonesBCoefSection(std::ofstream& out);
+            void ResolveBondsIncHydrogenSection(std::ofstream& out);
+            void ResolveBondsWithoutHydrogenSection(std::ofstream& out);
+            void ResolveAnglesIncHydrogenSection(std::ofstream& out);
+            void ResolveAnglesWithoutHydrogenSection(std::ofstream& out);
+            void ResolveDihedralsIncHydrogenSection(std::ofstream& out);
+            void ResolveDihedralsWithoutHydrogenSection(std::ofstream& out);
+            void ResolveExcludedAtomsListSection(std::ofstream& out);
+            void ResolveHydrogenBondACoefSection(std::ofstream& out);
+            void ResolveHydrogenBondBCoefSection(std::ofstream& out);
+            void ResolveHBCutSection(std::ofstream& out);
+            void ResolveAmberAtomTypeSection(std::ofstream& out);
+            void ResolveTreeChainClassificationSection(std::ofstream& out);
+            void ResolveJoinArraySection(std::ofstream& out);
+            void ResolveIRotatSection(std::ofstream& out);
+            void ResolveResidueSetSection(std::ofstream& out);
+            void ResolveRadiiSection(std::ofstream& out);
+            void ResolveScreenSection(std::ofstream& out);
+
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -510,6 +574,7 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
+            std::string path_;
             std::string title_;
             int number_of_atoms_;
             int number_of_types_;

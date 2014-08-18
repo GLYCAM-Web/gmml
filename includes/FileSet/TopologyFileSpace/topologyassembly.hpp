@@ -40,6 +40,10 @@ namespace TopologyFileSpace
               */
             TopologyResidueMap GetResidues();
 
+            TopologyResidue* GetResidueByIndex(int index);
+
+            int GetAtomIndexByName(std::string atom_name);
+
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////

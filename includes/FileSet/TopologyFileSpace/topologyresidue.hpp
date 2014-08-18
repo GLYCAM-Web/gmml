@@ -41,6 +41,9 @@ namespace TopologyFileSpace
               * @return atoms_ attribute of the current object of this class
               */
             TopologyAtomMap GetAtoms();
+
+            TopologyAtom* GetAtomByIndex(int index);
+
             /*! \fn
               * An accessor function in order to access to the index
               * @return index_ attribute of the current object of this class
