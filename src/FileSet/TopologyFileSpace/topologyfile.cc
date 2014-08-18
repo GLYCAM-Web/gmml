@@ -29,6 +29,7 @@ TopologyFile::TopologyFile() {}
 
 TopologyFile::TopologyFile(const string &top_file)
 {
+    path_ = top_file;
     ifstream in_file;
     try
     {
@@ -45,7 +46,11 @@ TopologyFile::TopologyFile(const string &top_file)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-std::string TopologyFile::GetTitle()
+string TopologyFile::GetPath()
+{
+    return path_;
+}
+string TopologyFile::GetTitle()
 {
     return title_;
 }
@@ -214,10 +219,67 @@ TopologyFile::TopologyDihedralMap TopologyFile::GetDihedrals()
 {
     return dihedrals_;
 }
+TopologyFile::TopologyAtomTypeIndexMap TopologyFile::GetAtomTypeIndexMap()
+{
+    TopologyAtomTypeIndexMap atom_type_index_map;
+    int index = 0;
+    int count = 1;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            if(atom_type_index_map[atom->GetType()] == 0)
+            {
+                atom_type_index_map[atom->GetType()] = count;
+                count++;
+            }
+        }
+    }
+    return atom_type_index_map;
+}
+TopologyBondType* TopologyFile::GetBondTypeByIndex(int index)
+{
+    for(TopologyBondTypeMap::iterator it = bond_types_.begin(); it != bond_types_.end(); it++)
+    {
+        TopologyBondType* bond_type = (*it).second;
+        if(bond_type->GetIndex() == index)
+            return bond_type;
+    }
+    return NULL;
+}
+TopologyAngleType* TopologyFile::GetAngleTypeByIndex(int index)
+{
+    for(TopologyAngleTypeMap::iterator it = angle_types_.begin(); it != angle_types_.end(); it++)
+    {
+        TopologyAngleType* angle_type = (*it).second;
+        if(angle_type->GetIndex() == index)
+            return angle_type;
+    }
+    return NULL;
+}
+TopologyDihedralType* TopologyFile::GetDihedralTypeByIndex(int index)
+{
+    for(TopologyDihedralTypeMap::iterator it = dihedral_types_.begin(); it != dihedral_types_.end(); it++)
+    {
+        TopologyDihedralType* dihedral_type = (*it).second;
+        if(dihedral_type->GetIndex() == index)
+        {
+            return dihedral_type;
+        }
+    }
+    return NULL;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
+void TopologyFile::SetPath(string path)
+{
+    path_ = path;
+}
 void TopologyFile::SetTitle(const string title)
 {
     title_ = title;
@@ -454,7 +516,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             stringstream section;
             PartitionSection(in_stream, line, section);
             string in_line;
-//            cout << section.str() << endl;
+            //            cout << section.str() << endl;
             getline(section, in_line);
             if(in_line.find("%FLAG TITLE") != string::npos)
             {
@@ -613,10 +675,6 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             {
                 screens= ParsePartition<double>(section);
             }
-            else if(in_line.find("%FLAG IPOL") != string::npos)
-            {
-                ipols = ParsePartition<int>(section);
-            }
             else if(in_line.find("%FLAG SOLVENT_POINTERS") != string::npos)
             {
             }
@@ -634,6 +692,10 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             else if(in_line.find("%FLAG SOLVENT_POINTERS") != string::npos)
             {
+            }
+            else if(in_line.find("%FLAG IPOL") != string::npos)
+            {
+                ipols = ParsePartition<int>(section);
             }
             else
             {
@@ -663,7 +725,6 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         dihedral_types_[i] = new TopologyDihedralType(i, dihedral_force_constants.at(i), dihedral_periodicities.at(i), dihedral_phases.at(i),
                                                       scee_scale_factors.at(i), scnb_scale_factors.at(i));
     }
-
     // Radius set
     for(RadiusSet::iterator it = radius_sets.begin(); it != radius_sets.end(); it++)
     {
@@ -1387,7 +1448,6 @@ vector<T> TopologyFile::ParsePartition(stringstream &stream)
     return section;
 }
 
-
 template<typename T>
 vector<T> TopologyFile::PartitionLine(string line, string format)
 {
@@ -1442,9 +1502,11 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
         for(int i = 0; i < number_of_items && item_length * (i+1) <= (int)line.length(); i++)
         {
             string token = line.substr(i*item_length, item_length);
+            std::replace_if(token.begin(), token.end(), ::isspace, '#');
             token = Trim(token);
             items.push_back(ConvertString<T>(token));
         }
+
         return items;
     }
     if(format.compare("1I8") == 0)
@@ -1460,6 +1522,1167 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
         return items;
     }
     return items;
+}
+
+void TopologyFile::Write(const string &top_file)
+{
+    std::ofstream out_file;
+    try
+    {
+        out_file.open(top_file.c_str());
+    }
+    catch(...)
+    {
+        throw TopologyFileProcessingException(__LINE__,"File could not be created");
+    }
+    try
+    {
+        this->ResolveSections(out_file);
+    }
+    catch(...)
+    {
+        out_file.close();            /// Close the parm7 files
+    }
+}
+
+void TopologyFile::ResolveSections(ofstream &out_stream)
+{
+    this->ResolveTitleSection(out_stream);
+    this->ResolvePointersSection(out_stream);
+    this->ResolveAtomNameSection(out_stream);
+    this->ResolveChargeSection(out_stream);
+    this->ResolveAtomicNumberSection(out_stream);
+    this->ResolveMassSection(out_stream);
+    this->ResolveAtomTypeIndexSection(out_stream);
+    this->ResolveNumberExcludedAtomsSection(out_stream);
+    this->ResolveNonbondedParmIndexSection(out_stream);
+    this->ResolveResidueLabelSection(out_stream);
+    this->ResolveResiduePointersSection(out_stream);
+    this->ResolveBondForceConstantSection(out_stream);
+    this->ResolveBondEquilValueSection(out_stream);
+    this->ResolveAngleForceConstantSection(out_stream);
+    this->ResolveAngleEquilValueSection(out_stream);
+    this->ResolveDihedralForceConstantSection(out_stream);
+    this->ResolveDihedralPeriodicitySection(out_stream);
+    this->ResolveDihedralPhaseSection(out_stream);
+    this->ResolveSceeScaleFactorSection(out_stream);
+    this->ResolveScnbScaleFactorSection(out_stream);
+    this->ResolveSoltySection(out_stream);
+    this->ResolveLennardJonesACoefSection(out_stream);
+    this->ResolveLennardJonesBCoefSection(out_stream);
+    this->ResolveBondsIncHydrogenSection(out_stream);
+    this->ResolveBondsWithoutHydrogenSection(out_stream);
+    this->ResolveAnglesIncHydrogenSection(out_stream);
+    this->ResolveAnglesWithoutHydrogenSection(out_stream);
+    this->ResolveDihedralsIncHydrogenSection(out_stream);
+    this->ResolveDihedralsWithoutHydrogenSection(out_stream);
+    this->ResolveExcludedAtomsListSection(out_stream);
+    this->ResolveHydrogenBondACoefSection(out_stream);
+    this->ResolveHydrogenBondBCoefSection(out_stream);
+    this->ResolveHBCutSection(out_stream);
+    this->ResolveAmberAtomTypeSection(out_stream);
+    this->ResolveTreeChainClassificationSection(out_stream);
+    this->ResolveJoinArraySection(out_stream);
+    this->ResolveIRotatSection(out_stream);
+    this->ResolveResidueSetSection(out_stream);
+    this->ResolveRadiiSection(out_stream);
+    this->ResolveScreenSection(out_stream);
+
+}
+
+void TopologyFile::ResolveTitleSection(ofstream &out)
+{
+    out << "%FLAG TITLE" << endl
+        << "%FORMAT(20a4)" << endl
+        << title_ << endl
+        << endl;
+}
+
+void TopologyFile::ResolvePointersSection(ofstream &out)
+{
+    out << "%FLAG POINTERS" << endl
+        << "%FORMAT(10I8)" << endl
+        << setw(8) << right << number_of_atoms_
+        << setw(8) << right << number_of_types_
+        << setw(8) << right << number_of_bonds_including_hydrogen_
+        << setw(8) << right << number_of_bonds_excluding_hydrogen_
+        << setw(8) << right << number_of_angles_including_hydrogen_
+        << setw(8) << right << number_of_angles_excluding_hydrogen_
+        << setw(8) << right << number_of_dihedrals_including_hydrogen_
+        << setw(8) << right << number_of_dihedrals_excluding_hydrogen_
+        << setw(8) << right << number_of_hydrogen_parameters_
+        << setw(8) << right << number_of_parameters_
+        << endl
+        << setw(8) << right << number_of_excluded_atoms_
+        << setw(8) << right << number_of_residues_
+        << setw(8) << right << total_number_of_bonds_
+        << setw(8) << right << total_number_of_angles_
+        << setw(8) << right << total_number_of_dihedrals_
+        << setw(8) << right << number_of_bond_types_
+        << setw(8) << right << number_of_angle_types_
+        << setw(8) << right << number_of_dihedral_types_
+        << setw(8) << right << number_of_atom_types_in_parameter_file_
+        << setw(8) << right << number_of_distinct_hydrogen_bonds_
+        << endl
+        << setw(8) << right << perturbation_option_
+        << setw(8) << right << number_of_bonds_perturbed_
+        << setw(8) << right << number_of_angles_perturbed_
+        << setw(8) << right << number_of_dihedrals_perturbed_
+        << setw(8) << right << number_of_bonds_group_perturbed_
+        << setw(8) << right << number_of_angles_group_perturbed_
+        << setw(8) << right << number_of_dihedrals_group_perturbed_
+        << setw(8) << right << standard_periodic_box_option_
+        << setw(8) << right << number_of_atoms_in_largest_residue_
+        << setw(8) << right << cap_option_
+        << endl
+        << setw(8) << number_of_extra_points_
+        << setw(8) << number_of_beads_ << endl
+        << endl;
+}
+
+void TopologyFile::ResolveAtomNameSection(ofstream& out)
+{
+    out << "%FLAG ATOM_NAME" << endl
+        << "%FORMAT(20a4)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 20;
+    const int ITEM_LENGTH = 4;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << left << atom->GetAtomName();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+
+}
+
+void TopologyFile::ResolveChargeSection(ofstream& out)
+{
+    out << "%FLAG CHARGE" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetAtomCharge();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveAtomicNumberSection(ofstream& out)
+{
+    out << "%FLAG ATOMIC_NUMBER" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << right << atom->GetAtomicNumber();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveMassSection(ofstream& out)
+{
+    out << "%FLAG MASS" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetAtomMass();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveAtomTypeIndexSection(ofstream& out)
+{
+    out << "%FLAG ATOM_TYPE_INDEX" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    TopologyAtomTypeIndexMap atom_type_index_map = this->GetAtomTypeIndexMap();
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << right << atom_type_index_map[atom->GetType()];
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveNumberExcludedAtomsSection(ofstream& out)
+{
+    out << "%FLAG NUMBER_EXCLUDED_ATOMS" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << right << atom->GetExcludedAtoms().size();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveNonbondedParmIndexSection(ofstream& out)
+{
+    out << "%FLAG NONBONDED_PARM_INDEX" << endl
+        << "%FORMAT(10I8)" << endl;
+    int index = 0;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    TopologyAtomTypeIndexMap atom_type_index_map = this->GetAtomTypeIndexMap();
+    vector<string> atom_types = vector<string>();
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            atom_types.push_back(atom->GetType());
+        }
+    }
+    for(int i = 0; i < number_of_atoms_; i++)
+    {
+        for(int j = 0; j < number_of_atoms_; j++)
+        {
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveResidueLabelSection(ofstream& out)
+{
+    out << "%FLAG RESIDUE_LABEL" << endl
+        << "%FORMAT(20a4)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 20;
+    const int ITEM_LENGTH = 4;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+
+        out << setw(ITEM_LENGTH) << left << residue->GetResidueName();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveResiduePointersSection(ofstream& out)
+{
+    out << "%FLAG RESIDUE_POINTER" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+
+        out << setw(ITEM_LENGTH) << right << residue->GetStartingAtomIndex();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveBondForceConstantSection(ofstream& out)
+{
+    out << "%FLAG BOND_FORCE_CONSTANT" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_bond_types_; i++)
+    {
+        TopologyBondType* bond_type = this->GetBondTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << bond_type->GetForceConstant();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveBondEquilValueSection(ofstream& out)
+{
+    out << "%FLAG BOND_EQUIL_VALUE" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_bond_types_; i++)
+    {
+        TopologyBondType* bond_type = this->GetBondTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << bond_type->GetEquilibriumValue();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveAngleForceConstantSection(ofstream& out)
+{
+    out << "%FLAG ANGLE_FORCE_CONSTANT" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_angle_types_; i++)
+    {
+        TopologyAngleType* angle_type = this->GetAngleTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << angle_type->GetForceConstant();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveAngleEquilValueSection(ofstream& out)
+{
+    out << "%FLAG ANGLE_EQUIL_VALUE" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_angle_types_; i++)
+    {
+        TopologyAngleType* angle_type = this->GetAngleTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << angle_type->GetEquilibriumValue();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveDihedralForceConstantSection(ofstream& out)
+{
+    out << "%FLAG DIHEDRAL_FORCE_CONSTANT" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_dihedral_types_; i++)
+    {
+        TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetForceConstant();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveDihedralPeriodicitySection(ofstream& out)
+{
+    out << "%FLAG DIHEDRAL_PERIODICITY" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_dihedral_types_; i++)
+    {
+        TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetPeriodicity();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveDihedralPhaseSection(ofstream& out)
+{
+    out << "%FLAG DIHEDRAL_PHASE" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_dihedral_types_; i++)
+    {
+        TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetPhase();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveSceeScaleFactorSection(ofstream& out)
+{
+    out << "%FLAG SCEE_SCALE_FACTOR" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_dihedral_types_; i++)
+    {
+        TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetScee();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveScnbScaleFactorSection(ofstream& out)
+{
+    out << "%FLAG SCNB_SCALE_FACTOR" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_dihedral_types_; i++)
+    {
+        TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetScnb();
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveSoltySection(ofstream& out)
+{
+    out << "%FLAG SOLTY" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    //
+    out << endl;
+}
+
+void TopologyFile::ResolveLennardJonesACoefSection(ofstream& out)
+{
+    out << "%FLAG LENNARD_JONES_ACOEF" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int index = 0;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    vector<string> atom_types = vector<string>();
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            atom_types.push_back(atom->GetType());
+        }
+    }
+
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveLennardJonesBCoefSection(ofstream& out)
+{
+    out << "%FLAG LENNARD_JONES_BCOEF" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int index = 0;
+    int count = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    vector<string> atom_types = vector<string>();
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            atom_types.push_back(atom->GetType());
+        }
+    }
+
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveBondsIncHydrogenSection(ofstream& out)
+{
+    out << "%FLAG BONDS_INC_HYDROGEN" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(TopologyBondMap::iterator it = bonds_.begin(); it != bonds_.end(); it++)
+    {
+        TopologyBond* bond = (*it).second;
+        vector<string> atom_names = bond->GetBonds();
+        if(bond->GetIncludingHydrogen())
+        {
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int bond_type_index = bond->GetBondType()->GetIndex();
+            out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_2-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << bond_type_index+1;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveBondsWithoutHydrogenSection(ofstream& out)
+{
+    out << "%FLAG BONDS_WITHOUT_HYDROGEN" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(TopologyBondMap::iterator it = bonds_.begin(); it != bonds_.end(); it++)
+    {
+        TopologyBond* bond = (*it).second;
+        vector<string> atom_names = bond->GetBonds();
+        if(!bond->GetIncludingHydrogen())
+        {
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int bond_type_index = bond->GetBondType()->GetIndex();
+            out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_2-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << bond_type_index+1;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveAnglesIncHydrogenSection(ofstream& out)
+{
+    out << "%FLAG ANGLES_INC_HYDROGEN" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(TopologyAngleMap::iterator it = angles_.begin(); it != angles_.end(); it++)
+    {
+        TopologyAngle* angle = (*it).second;
+        vector<string> atom_names = angle->GetAngles();
+        if(angle->GetIncludingHydrogen())
+        {
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
+            int angle_type_index = angle->GetAngleType()->GetIndex();
+            out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_2-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_3-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << angle_type_index+1;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveAnglesWithoutHydrogenSection(ofstream& out)
+{
+    out << "%FLAG ANGLES_WITHOUT_HYDROGEN" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(TopologyAngleMap::iterator it = angles_.begin(); it != angles_.end(); it++)
+    {
+        TopologyAngle* angle = (*it).second;
+        vector<string> atom_names = angle->GetAngles();
+        if(!angle->GetIncludingHydrogen())
+        {
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
+            int angle_type_index = angle->GetAngleType()->GetIndex();
+            out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_2-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_3-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << angle_type_index+1;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveDihedralsIncHydrogenSection(ofstream& out)
+{
+    out << "%FLAG DIHEDRALS_INC_HYDROGEN" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(TopologyDihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
+    {
+        TopologyDihedral* dihedral = (*it).second;
+        vector<string> atom_names = dihedral->GetDihedrals();
+        if(dihedral->GetIncludingHydrogen())
+        {
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
+            int atom_index_4 = this->assembly_->GetAtomIndexByName(atom_names.at(3));
+            int dihedral_type_index = dihedral->GetDihedralType()->GetIndex();
+            out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_2-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            if(dihedral->GetIgnoredGroupInteraction())
+                out << setw(ITEM_LENGTH) << right << -(atom_index_3-1)*3;
+            else
+                out << setw(ITEM_LENGTH) << right << (atom_index_3-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            if(dihedral->GetIsImproper())
+                out << setw(ITEM_LENGTH) << right << -(atom_index_4-1)*3;
+            else
+                out << setw(ITEM_LENGTH) << right << (atom_index_4-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << dihedral_type_index+1;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveDihedralsWithoutHydrogenSection(ofstream& out)
+{
+    out << "%FLAG DIHEDRALS_WITHOUT_HYDROGEN" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(TopologyDihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
+    {
+        TopologyDihedral* dihedral = (*it).second;
+        vector<string> atom_names = dihedral->GetDihedrals();
+        if(!dihedral->GetIncludingHydrogen())
+        {
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
+            int atom_index_4 = this->assembly_->GetAtomIndexByName(atom_names.at(3));
+            int dihedral_type_index = dihedral->GetDihedralType()->GetIndex();
+            out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << (atom_index_2-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            if(dihedral->GetIgnoredGroupInteraction())
+                out << setw(ITEM_LENGTH) << right << -(atom_index_3-1)*3;
+            else
+                out << setw(ITEM_LENGTH) << right << (atom_index_3-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            if(dihedral->GetIsImproper())
+                out << setw(ITEM_LENGTH) << right << -(atom_index_4-1)*3;
+            else
+                out << setw(ITEM_LENGTH) << right << (atom_index_4-1)*3;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+            out << setw(ITEM_LENGTH) << right << dihedral_type_index+1;
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
+{
+    out << "%FLAG EXCLUDED_ATOM_LIST" << endl
+        << "%FORMAT(10I8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            vector<string> excluded_atoms = atom->GetExcludedAtoms();
+            for(vector<string>::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
+            {
+                string atom_id = (*it);
+                int index = this->assembly_->GetAtomIndexByName(Split(atom_id, ":").at(1));
+                out << setw(ITEM_LENGTH) << right << index;
+                count++;
+                if(count == MAX_IN_LINE)
+                {
+                    count = 0;
+                    out << endl;
+                }
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveHydrogenBondACoefSection(ofstream& out)
+{
+    out << "%FLAG HBOND_ACOEF" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    //
+    out << endl;
+}
+
+void TopologyFile::ResolveHydrogenBondBCoefSection(ofstream& out)
+{
+    out << "%FLAG HBOND_BCOEF" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    //
+    out << endl;
+}
+
+void TopologyFile::ResolveHBCutSection(ofstream& out)
+{
+    out << "%FLAG HBCUT" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    //
+    out << endl;
+}
+
+void TopologyFile::ResolveAmberAtomTypeSection(ofstream& out)
+{
+    out << "%FLAG AMBER_ATOM_TYPE" << endl
+        << "%FORMAT(20a4)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 20;
+    const int ITEM_LENGTH = 4;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << left << atom->GetType();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveTreeChainClassificationSection(ofstream& out)
+{
+    out << "%FLAG TREE_CHAIN_CLASSIFICATION" << endl
+        << "%FORMAT(20a4)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 20;
+    const int ITEM_LENGTH = 4;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << left << atom->GetTreeChainClassification();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveJoinArraySection(ofstream& out)
+{
+    out << "%FLAG JOIN_ARRAY" << endl
+        << "%FORMAT(10I8)" << endl;
+    //
+    out << endl;
+}
+
+void TopologyFile::ResolveIRotatSection(ofstream& out)
+{
+    out << "%FLAG IROTAT" << endl
+        << "%FORMAT(10I8)" << endl;
+    //
+    out << endl;
+}
+
+void TopologyFile::ResolveResidueSetSection(ofstream& out)
+{
+    string radius_set = radius_set_.at(0);
+    std::replace(radius_set.begin(), radius_set.end(), '#', ' ');
+    out << "%FLAG RADIUS_SET" << endl
+        << "%FORMAT(1a80)" << endl
+        << radius_set << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveRadiiSection(ofstream& out)
+{
+    out << "%FLAG RADII" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetRadii();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
+}
+
+void TopologyFile::ResolveScreenSection(ofstream& out)
+{
+    out << "%FLAG SCREEN" << endl
+        << "%FORMAT(5E16.8)" << endl;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 5;
+    const int ITEM_LENGTH = 16;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetScreen();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE)
+        out << endl;
+    out << endl;
 }
 
 //////////////////////////////////////////////////////////

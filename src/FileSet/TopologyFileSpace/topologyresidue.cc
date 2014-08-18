@@ -33,6 +33,16 @@ TopologyResidue::TopologyAtomMap TopologyResidue::GetAtoms()
 {
     return atoms_;
 }
+TopologyAtom* TopologyResidue::GetAtomByIndex(int index)
+{
+    for(TopologyAtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        TopologyAtom* atom = (*it).second;
+        if(atom->GetIndex() == index)
+            return atom;
+    }
+    return NULL;
+}
 int TopologyResidue::GetIndex()
 {
     return index_;
