@@ -154,6 +154,8 @@ namespace ParameterFileSpace
               * @return A double value of the given key string
               */
             double ProcessDoubleDihedralDescription(const std::string& dscr, const std::string& key);
+            void Write(const std::string& parameter_file);
+            void BuildParameterFile(std::ofstream& out_stream);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

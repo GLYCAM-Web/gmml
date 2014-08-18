@@ -669,7 +669,7 @@ CM-H4-C -O          1.1          180.          2.           Junmei et al.1999
 C -CT-N -H          1.1          180.          2.           Junmei et al.1999
 C -CT-N -O          1.1          180.          2.           Junmei et al.1999
 
-  HW  OW  0000.     0000.                                4.  flag for fast water
+  HW  OW  0001.     0000.                                4.  flag for fast water
 
 N   NA  N2  N*  NC  NB  NT  NY
 C*  CA  CB  CC  CD  CK  CM  CN  CQ  CR  CV  CW  CY  CZ

@@ -95,6 +95,8 @@ namespace CoordinateFileSpace
               * @param in_file A stream contains whole contents of a coordinate file
               */
             void Read(std::ifstream& in_file);
+            void Write(const std::string& coordinate_file);
+            void BuildCoordinateFile(std::ofstream& out_stream);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

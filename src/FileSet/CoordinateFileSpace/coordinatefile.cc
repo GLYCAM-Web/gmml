@@ -148,6 +148,39 @@ void CoordinateFile::Read(std::ifstream& in_file)
         throw CoordinateFileProcessingException(__LINE__, "Corrupted file");
     }
 }
+void CoordinateFile::Write(const string &coordinate_file)
+{
+    std::ofstream out_file;
+    try
+    {
+        out_file.open(coordinate_file.c_str());
+    }
+    catch(...)
+    {
+        throw CoordinateFileProcessingException(__LINE__,"File could not be created");
+    }
+    try
+    {
+        this->BuildCoordinateFile(out_file);
+    }
+    catch(...)
+    {
+        out_file.close();
+    }
+}
+void CoordinateFile::BuildCoordinateFile(ofstream &stream)
+{
+    stream << left << setw(4) << GetTitle() << endl
+           << right << setw(6) << GetNumberOfCoodinates() << endl;
+    for(unsigned int i = 0; i < coordinates_.size(); i++)
+    {
+        stream << right << setw(12) << fixed << setprecision(7) << coordinates_.at(i)->GetX()
+               << right << setw(12) << fixed << setprecision(7) << coordinates_.at(i)->GetY()
+               << right << setw(12) << fixed << setprecision(7) << coordinates_.at(i)->GetZ();
+        if(i%2 == 1)
+            stream << endl;
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
