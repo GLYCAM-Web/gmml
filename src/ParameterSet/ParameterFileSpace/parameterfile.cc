@@ -243,16 +243,13 @@ void ParameterFile::ProcessAtomType(const std::string& line)
     double mass, polarizability;
     string type, dscr;
 
-    type = line.substr(0, 2);                           /// Extract type from the line
-    Trim(type);
-    mass = ConvertString<double>(line.substr(3, 10));  /// Extract mass from the line
-    try
-    {
-        polarizability = ConvertString<double>(line.substr(14, 10));   /// Extract polarizability from the line
-    } catch(...)
-    {
+    istringstream in(line);
+    in >> std::setw(2) >> type                          /// Extract type from the line
+       >> std::setw(10) >> mass                         /// Extract mass from the line
+       >> std::setw(10) >> polarizability;              /// Extract polarizability from the line
+    if(polarizability == 0)
         polarizability = dNotSet;
-    }
+    Trim(type);
     if (line.size() > 24)               /// Line has description
         dscr = line.substr(24);
 
@@ -267,7 +264,7 @@ void ParameterFile::ProcessHydrophilicAtomType(const std::string& line)
     istringstream in(line);             /// Create an stream from the read line
     while (in >> std::setw(4) >> type && !Trim(type).empty())         /// Iterate on the tokens in the read line
     {
-        if(atom_types_.find(type) != atom_types_.end())         /// Check for the existing atom type in the map
+        if(distance(atom_types_.begin(), atom_types_.find(type)) >= 0)         /// Check for the existing atom type in the map
         {
             atom_types_[type] -> SetIsHydrophilic(true);            /// Set is_hydrophilic_ attribute to true
         }
@@ -534,13 +531,17 @@ void ParameterFile::ProcessHydrogenBond(const std::string& line)
     inverse_types[0] = types[1];
     inverse_types[1] = types[0];
 
+    vector<double> inverse_coefficients(2);
+    inverse_coefficients[0] = coefficients[1];
+    inverse_coefficients[1] = coefficients[0];
+
     if(bonds_.find(types) != bonds_.end())          /// Check for existing bond
     {
         bonds_[types] ->  SetHbondCoefficients(coefficients);   /// Update hydrogen-bond attribute of the bond
     }
     else if (bonds_.find(inverse_types) != bonds_.end())        /// Check for existing inverse bond
     {
-        bonds_[inverse_types] -> SetHbondCoefficients(coefficients);    /// Update hydrogen-bond attribute of the bond
+        bonds_[inverse_types] -> SetHbondCoefficients(inverse_coefficients);    /// Update hydrogen-bond attribute of the bond
     }
 }
 
@@ -572,11 +573,11 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
 
     for(unsigned int i = 0; i < types.size(); i++)       /// For each atom type in the list create a list of equivalent atom types and update the corresponding attribute
     {
-        if(atom_types_.find(types[i]) != atom_types_.end())     /// Check for the existing atom type in the atom type map
+        if(distance(atom_types_.begin(), atom_types_.find(types[i])) >= 0)     /// Check for the existing atom type in the atom type map
         {
             vector<string> equivalent_types = types;
             equivalent_types.erase(equivalent_types.begin() + i);           /// Remove the base atom from the list
-            atom_types_[types[i]] -> GetEquivalentList() = equivalent_types;   /// Assign the equivalent list to the corresponding atom in the map
+            atom_types_[types[i]] -> SetEquivalentList(equivalent_types);   /// Assign the equivalent list to the corresponding atom in the map
         }
     }
 }
@@ -642,6 +643,166 @@ double ParameterFile::ProcessDoubleDihedralDescription(const std::string& dscr, 
     if (ss.fail())
         return dNotSet;
     return val;
+}
+void ParameterFile::Write(const string &parameter_file)
+{
+    std::ofstream out_file;
+    try
+    {
+        out_file.open(parameter_file.c_str());
+    }
+    catch(...)
+    {
+        throw ParameterFileProcessingException(__LINE__,"File could not be created");
+    }
+    try
+    {
+        this->BuildParameterFile(out_file);
+    }
+    catch(...)
+    {
+        out_file.close();
+    }
+}
+void ParameterFile::BuildParameterFile(ofstream &stream)
+{
+    stream << GetTitle() << endl;
+    ///
+    for(AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
+    {
+        ParameterFileAtom* atom = (*it).second;
+        stream << left << setw(2) << atom->GetType() << " " << left << setw(10) << fixed << atom->GetMass() << " " ;
+        if(atom->GetPolarizability() == dNotSet)
+            stream << left << setw(10) << " ";
+        else
+            stream << left << setw(10) << fixed << atom->GetPolarizability();
+        stream << " " << left << atom->GetDscr() << endl;
+    }
+    stream << endl;
+
+    ///
+    for(AtomTypeMap::iterator it1 = atom_types_.begin(); it1 != atom_types_.end(); it1++)
+    {
+        ParameterFileAtom* atom = (*it1).second;
+        if(atom->GetIsHydrophilic())
+        {
+            stream << left << setw(3) << atom->GetType() << " ";
+        }
+    }
+    stream << endl;
+
+    ///
+    for(BondMap::iterator it2 = bonds_.begin(); it2 != bonds_.end(); it2++)
+    {
+        vector<string> atom_types = (*it2).first;
+        ParameterFileBond* bond = (*it2).second;
+        stream << left << setw(2) << atom_types.at(0) << "-" << left << setw(2) << atom_types.at(1) << " " << left << setw(10) << fixed << bond->GetForceConstant()
+               << " " << left << setw(10) << fixed << bond->GetLength() << " " << left << bond->GetDscr() << endl;
+    }
+    stream << endl;
+
+    ///
+    for(AngleMap::iterator it3 = angles_.begin(); it3 != angles_.end(); it3++)
+    {
+        vector<string> angle_types = (*it3).first;
+        ParameterFileAngle* angle = (*it3).second;
+        stream << left << setw(2) << angle_types.at(0) << "-" << left << setw(2) << angle_types.at(1) << "-" << left << setw(2) << angle_types.at(2)
+               << " " << left << setw(10) << fixed << angle->GetForceConstant() << " " << left << setw(10) << fixed << angle->GetAngle() << " " << left << angle->GetDscr() << endl;
+    }
+    stream << endl;
+
+    ///
+    for(DihedralMap::iterator it4 = dihedrals_.begin(); it4 != dihedrals_.end(); it4++)
+    {
+        vector<string> dihedral_types = (*it4).first;
+        ParameterFileDihedral* dihedral = (*it4).second;
+        if(!dihedral->GetIsImproper())
+        {
+            vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
+            for(vector<ParameterFileDihedralTerm>::iterator it5 = dihedral_terms.begin(); it5 != dihedral_terms.end(); it5++)
+            {
+                ParameterFileDihedralTerm dihedral_term = (*it5);
+                stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
+                       << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3) << " "
+                       << left << setw(4) << dihedral_term.GetFactor() << " " << left << setw(15) << fixed << dihedral_term.GetForceConstant()
+                       << " " << left << setw(15) << fixed << dihedral_term.GetPhase() << " " << left << setw(15) << fixed << dihedral_term.GetPeriodicity()
+                       << " " << left << dihedral_term.GetDscr() << endl;
+            }
+        }
+    }
+    stream << endl;
+    for(DihedralMap::iterator it6 = dihedrals_.begin(); it6 != dihedrals_.end(); it6++)
+    {
+        vector<string> dihedral_types = (*it6).first;
+        ParameterFileDihedral* dihedral = (*it6).second;
+        if(dihedral->GetIsImproper())
+        {
+            vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
+            for(vector<ParameterFileDihedralTerm>::iterator it7 = dihedral_terms.begin(); it7 != dihedral_terms.end(); it7++)
+            {
+                ParameterFileDihedralTerm dihedral_term = (*it7);
+                stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
+                       << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3)
+                       << " " << left << setw(4) << " " << left << setw(15) << fixed << dihedral_term.GetForceConstant()
+                       << " " << left << setw(15) << fixed << dihedral_term.GetPhase() << " " << left << setw(15) << fixed << dihedral_term.GetPeriodicity()
+                       << " " << left << dihedral_term.GetDscr() << endl;
+            }
+        }
+    }
+    stream << endl;
+
+    ///
+    for(BondMap::iterator it8 = bonds_.begin(); it8 != bonds_.end(); it8++)
+    {
+        vector<string> atom_types = (*it8).first;
+        ParameterFileBond* bond = (*it8).second;
+        if(bond->GetHbondCoefficients().size() != 0)
+        {
+            stream << left << setw(3) << atom_types.at(0) << " " << left << setw(3) << atom_types.at(1) << " "
+                   << left << setw(10) << fixed << bond->GetHbondCoefficients().at(0) << " " << left << setw(10) << fixed << bond->GetHbondCoefficients().at(1) << endl;
+        }
+    }
+    stream << endl;
+
+    ///
+    vector<string> printed = vector<string>();
+    for(AtomTypeMap::iterator it9 = atom_types_.begin(); it9 != atom_types_.end(); it9++)
+    {
+        ParameterFileAtom* atom = (*it9).second;
+        if(atom->GetEquivalentList().size() != 0)
+        {
+            if(find(printed.begin(), printed.end(), atom->GetType()) != printed.end())
+            {
+
+            }
+            else
+            {
+                stream << left << setw(3) << atom->GetType() << " ";
+                for(unsigned int i = 0; i < atom->GetEquivalentList().size(); i++)
+                {
+                    stream << setw(3) << atom->GetEquivalentList().at(i) << " ";
+                    printed.push_back(atom->GetEquivalentList().at(i));
+                }
+                stream << endl;
+            }
+        }
+    }
+    stream << endl;
+
+    ///
+    stream << "MOD4" << endl;
+    for(AtomTypeMap::iterator it10 = atom_types_.begin(); it10 != atom_types_.end(); it10++)
+    {
+        ParameterFileAtom* atom = (*it10).second;
+        if(atom->GetRadius() != dNotSet || atom->GetWellDepth() != dNotSet)
+        {
+            stream << left << setw(2) << atom->GetType() << " " << left << setw(10) << fixed << atom->GetRadius() << " "
+                   << left << setw(10) << fixed << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
+        }
+    }
+    stream << endl;
+    stream << "END";
+
 }
 
 //////////////////////////////////////////////////////////

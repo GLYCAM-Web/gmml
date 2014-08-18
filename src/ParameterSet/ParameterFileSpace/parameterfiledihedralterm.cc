@@ -16,8 +16,6 @@ ParameterFileDihedralTerm::ParameterFileDihedralTerm() :
 ParameterFileDihedralTerm::ParameterFileDihedralTerm(double factor, double force_constant, double phase, double periodicity, const std::string& dscr) :
     factor_(factor), force_constant_(force_constant), phase_(phase), periodicity_(periodicity), dscr_(dscr) {}
 
-
-///Delaram
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -65,8 +63,6 @@ void ParameterFileDihedralTerm::SetPeriodicity(double periodicity){
 void ParameterFileDihedralTerm::SetDscr(const std::string dscr){
     dscr_ = dscr;
 }
-
-///Delaram
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
