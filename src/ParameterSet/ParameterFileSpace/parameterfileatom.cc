@@ -14,7 +14,7 @@ ParameterFileAtom::ParameterFileAtom()
     : type_(""), mass_(dNotSet), polarizability_(dNotSet), dscr_(""), radius_(dNotSet), well_depth_(dNotSet), mod4_dscr_("") {}
 
 ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, double polarizability, const std::string &dscr)
-    : type_(type), mass_(mass), polarizability_(polarizability),dscr_(dscr), radius_(dNotSet), well_depth_(dNotSet) {}
+    : type_(type), mass_(mass), polarizability_(polarizability),dscr_(dscr), radius_(dNotSet), well_depth_(dNotSet), is_hydrophilic_(false) {}
 
 ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, double polarizability, double radius,
                                      double well_depth, const std::string &dscr, const std::string &mod4_dscr)
@@ -25,7 +25,6 @@ ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, doubl
     : type_(type), mass_(mass), polarizability_(polarizability), dscr_(dscr), radius_(radius), well_depth_(well_depth), mod4_dscr_(mod4_dscr),
       is_hydrophilic_(is_hydrophilic), equivalent_list_(equivalent_list) {}
 
-///Delaram
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -128,8 +127,6 @@ void ParameterFileAtom::SetEquivalentList( std::vector<std::string> equivalent_l
         equivalent_list_.push_back(*it);
     }
 }
-
-///Delaram
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
