@@ -267,6 +267,8 @@ namespace TopologyFileSpace
 
             TopologyDihedralType* GetDihedralTypeByIndex(int index);
 
+            TopologyAtomPair* GetAtomPairByIndex(int index);
+
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
