@@ -513,6 +513,115 @@ LibraryFileResidue* LibraryFile::GetLibraryResidueByResidueName(string residue_n
     }
     return NULL;
 }
+void LibraryFile::Write(const string& library_file)
+{
+    std::ofstream out_file;
+    try
+    {
+        out_file.open(library_file.c_str());
+    }
+    catch(...)
+    {
+        throw LibraryFileProcessingException(__LINE__,"File could not be created");
+    }
+    try
+    {
+        this->BuildLibraryFile(out_file);
+    }
+    catch(...)
+    {
+        out_file.close();
+    }
+}
+void LibraryFile::BuildLibraryFile(ofstream& out_stream)
+{
+    out_stream << "!!index array str" << endl;
+    for(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        LibraryFileResidue* residue = (*it).second;
+        out_stream << "\"" << residue->GetName() << "\"" << endl;
+    }
+    for(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        LibraryFileResidue* residue = (*it).second;
+        ResolveAtomSection(out_stream, residue);
+        ResolveAtomPertInfoSection(out_stream, residue);
+        ResolveBondBoxSection(out_stream, residue);
+        ResolveChildSequenceSection(out_stream, residue);
+        ResolveConnectSection(out_stream, residue);
+        ResolveConnectivitySection(out_stream, residue);
+        ResolveHierarchySection(out_stream, residue);
+        ResolveNameSection(out_stream, residue);
+        ResolvePositionSection(out_stream, residue);
+        ResolveResidueConnectSection(out_stream, residue);
+        ResolveResiduesSection(out_stream, residue);
+        ResolveResiduePdbSequenceNumberSection(out_stream, residue);
+        ResolveSolventCapSection(out_stream, residue);
+        ResolveVelocitiesSection(out_stream, residue);
+    }
+}
+void LibraryFile::ResolveAtomSection(ofstream &stream, LibraryFileResidue *residue)
+{
+    LibraryFileResidue::AtomMap atoms = residue->GetAtoms();
+    for(LibraryFileResidue::AtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        LibraryFileAtom* atom = (*it).second;
+        stream << "!entry." << residue->GetName() << ".unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg" << endl;
+
+    }
+}
+void LibraryFile::ResolveAtomPertInfoSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveBondBoxSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveChildSequenceSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveConnectSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveConnectivitySection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveHierarchySection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveNameSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolvePositionSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveResidueConnectSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveResiduesSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveResiduePdbSequenceNumberSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveSolventCapSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
+void LibraryFile::ResolveVelocitiesSection(ofstream& stream, LibraryFileResidue* residue)
+{
+
+}
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //

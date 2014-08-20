@@ -13,14 +13,14 @@ using namespace ParameterFileSpace;
 ParameterFileDihedralTerm::ParameterFileDihedralTerm() :
     factor_(dNotSet), force_constant_(dNotSet), phase_(dNotSet), periodicity_(dNotSet), dscr_("") {}
 
-ParameterFileDihedralTerm::ParameterFileDihedralTerm(double factor, double force_constant, double phase, double periodicity, const std::string& dscr) :
+ParameterFileDihedralTerm::ParameterFileDihedralTerm(int factor, double force_constant, double phase, double periodicity, const std::string& dscr) :
     factor_(factor), force_constant_(force_constant), phase_(phase), periodicity_(periodicity), dscr_(dscr) {}
 
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
 
-double ParameterFileDihedralTerm::GetFactor(){
+int ParameterFileDihedralTerm::GetFactor(){
     return factor_;
 }
 
@@ -44,7 +44,7 @@ std::string ParameterFileDihedralTerm::GetDscr(){
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 
-void ParameterFileDihedralTerm::SetFactor(double factor){
+void ParameterFileDihedralTerm::SetFactor(int factor){
     factor_ = factor;
 }
 
