@@ -9,8 +9,8 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 TopologyAtomPair::TopologyAtomPair() {}
 
-TopologyAtomPair::TopologyAtomPair(string pair_type, double coefficient_a, double coefficient_b) :
-    pair_type_(pair_type), coefficient_a_(coefficient_a), coefficient_b_(coefficient_b) {}
+TopologyAtomPair::TopologyAtomPair(string pair_type, double coefficient_a, double coefficient_b, int index) :
+    pair_type_(pair_type), coefficient_a_(coefficient_a), coefficient_b_(coefficient_b), index_(index) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -27,6 +27,10 @@ double TopologyAtomPair::GetCoefficientB()
 {
     return coefficient_b_;
 }
+int TopologyAtomPair::GetIndex()
+{
+    return index_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -42,6 +46,10 @@ void TopologyAtomPair::SetCoefficientA(double coefficient_a)
 void TopologyAtomPair::SetCoefficientB(double coefficient_b)
 {
     coefficient_b_ = coefficient_b;
+}
+void TopologyAtomPair::SetIndex(int index)
+{
+    index_ = index;
 }
 
 //////////////////////////////////////////////////////////

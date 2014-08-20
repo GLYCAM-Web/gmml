@@ -272,6 +272,16 @@ TopologyDihedralType* TopologyFile::GetDihedralTypeByIndex(int index)
     }
     return NULL;
 }
+TopologyAtomPair* TopologyFile::GetAtomPairByIndex(int index)
+{
+    for(TopologyAtomPairMap::iterator it = pairs_.begin(); it != pairs_.end(); it++)
+    {
+        TopologyAtomPair* atom_pair = (*it).second;
+        if(atom_pair->GetIndex() == index)
+            return atom_pair;
+    }
+    return NULL;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -750,7 +760,15 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 coefficient_a = hbond_acoefs.at(index - 1);
                 coefficient_b = hbond_bcoefs.at(index - 1);
             }
-            pairs_[atom_type_1 + "-" + atom_type_2] = new TopologyAtomPair(atom_type_1 + "-" + atom_type_2, coefficient_a, coefficient_b);
+            if(pairs_.find(atom_type_1 + "-" + atom_type_2) != pairs_.end()|| pairs_.find(atom_type_2 + "-" + atom_type_1) != pairs_.end())
+            {
+
+            }
+            else
+            {
+                pairs_[atom_type_1 + "-" + atom_type_2] = new TopologyAtomPair(atom_type_1 + "-" + atom_type_2, coefficient_a, coefficient_b, index);
+//                cout << atom_type_1 + "-" + atom_type_2 << ":" << index << endl;
+            }
         }
 
     }
@@ -1824,6 +1842,7 @@ void TopologyFile::ResolveNonbondedParmIndexSection(ofstream& out)
     int count = 0;
     const int MAX_IN_LINE = 10;
     const int ITEM_LENGTH = 8;
+
     TopologyAtomTypeIndexMap atom_type_index_map = this->GetAtomTypeIndexMap();
     vector<string> atom_types = vector<string>();
     for(int i = 0; i < number_of_residues_; i++)
@@ -1836,10 +1855,39 @@ void TopologyFile::ResolveNonbondedParmIndexSection(ofstream& out)
             atom_types.push_back(atom->GetType());
         }
     }
+    map<string, bool> pair_set = map<string, bool>();
+    map<int, int> nonbond_index_map = map<int, int>();
     for(int i = 0; i < number_of_atoms_; i++)
     {
+        string atom_type_1 = atom_types.at(i);
         for(int j = 0; j < number_of_atoms_; j++)
         {
+            string atom_type_2 = atom_types.at(j);
+            if(!pair_set[atom_type_1 + "-" + atom_type_2])
+            {
+                int nonbond_index = number_of_types_ * (atom_type_index_map[atom_type_1] - 1) + atom_type_index_map[atom_type_2];
+                int parameter_index = 0;
+                if(pairs_.find(atom_type_1 + "-" + atom_type_2) != pairs_.end())
+                {
+                    parameter_index = pairs_[atom_type_1 + "-" + atom_type_2]->GetIndex();
+                }
+                else if(pairs_.find(atom_type_2 + "-" + atom_type_1) != pairs_.end())
+                {
+                    parameter_index = pairs_[atom_type_2 + "-" + atom_type_1]->GetIndex();
+                }
+                nonbond_index_map[nonbond_index] = parameter_index;
+                pair_set[atom_type_1 + "-" + atom_type_2] = true;
+            }
+        }
+    }
+    for(unsigned int i = 0; i < nonbond_index_map.size(); i++)
+    {
+        out << setw(ITEM_LENGTH) << right << nonbond_index_map[i+1];
+        count++;
+        if(count == MAX_IN_LINE)
+        {
+            count = 0;
+            out << endl;
         }
     }
     if(count < MAX_IN_LINE)
@@ -2114,19 +2162,18 @@ void TopologyFile::ResolveLennardJonesACoefSection(ofstream& out)
 {
     out << "%FLAG LENNARD_JONES_ACOEF" << endl
         << "%FORMAT(5E16.8)" << endl;
-    int index = 0;
     int count = 0;
     const int MAX_IN_LINE = 5;
     const int ITEM_LENGTH = 16;
-    vector<string> atom_types = vector<string>();
-    for(int i = 0; i < number_of_residues_; i++)
+    for(unsigned int i = 0; i < pairs_.size(); i++)
     {
-        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
-        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        TopologyAtomPair* atom_pair = this->GetAtomPairByIndex(i+1);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom_pair->GetCoefficientA();
+        count++;
+        if(count == MAX_IN_LINE)
         {
-            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
-            index++;
-            atom_types.push_back(atom->GetType());
+            count = 0;
+            out << endl;
         }
     }
 
@@ -2139,19 +2186,18 @@ void TopologyFile::ResolveLennardJonesBCoefSection(ofstream& out)
 {
     out << "%FLAG LENNARD_JONES_BCOEF" << endl
         << "%FORMAT(5E16.8)" << endl;
-    int index = 0;
     int count = 0;
     const int MAX_IN_LINE = 5;
     const int ITEM_LENGTH = 16;
-    vector<string> atom_types = vector<string>();
-    for(int i = 0; i < number_of_residues_; i++)
+    for(unsigned int i = 0; i < pairs_.size(); i++)
     {
-        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
-        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        TopologyAtomPair* atom_pair = this->GetAtomPairByIndex(i+1);
+        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom_pair->GetCoefficientB();
+        count++;
+        if(count == MAX_IN_LINE)
         {
-            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
-            index++;
-            atom_types.push_back(atom->GetType());
+            count = 0;
+            out << endl;
         }
     }
 
