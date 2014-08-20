@@ -76,6 +76,22 @@ namespace LibraryFileSpace
               * @return library_file_residue
               */
             LibraryFileResidue* GetLibraryResidueByResidueName(std::string residue_name);
+            void Write(const std::string& library_file);
+            void BuildLibraryFile(std::ofstream& out_stream);
+            void ResolveAtomSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveAtomPertInfoSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveBondBoxSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveChildSequenceSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveConnectSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveConnectivitySection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveHierarchySection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveNameSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolvePositionSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveResidueConnectSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveResiduesSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveResiduePdbSequenceNumberSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveSolventCapSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveVelocitiesSection(std::ofstream& stream, LibraryFileResidue* residue);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

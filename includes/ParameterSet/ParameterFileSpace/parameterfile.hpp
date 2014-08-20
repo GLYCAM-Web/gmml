@@ -156,6 +156,15 @@ namespace ParameterFileSpace
             double ProcessDoubleDihedralDescription(const std::string& dscr, const std::string& key);
             void Write(const std::string& parameter_file);
             void BuildParameterFile(std::ofstream& out_stream);
+            void ResolveAtomTypeSection(std::ofstream& stream);
+            void ResolveHydrophilicAtomTypeSection(std::ofstream& stream);
+            void ResolveBondSection(std::ofstream& stream);
+            void ResolveAngleSection(std::ofstream& stream);
+            void ResolveDihedralSection(std::ofstream& stream);
+            void ResolveImproperDihedralSection(std::ofstream& stream);
+            void ResolveHydrogenBondCoefficietSection(std::ofstream& stream);
+            void ResolveEquivalentSymbolsSection(std::ofstream& stream);
+            void ResolveMod4Section(std::ofstream& stream);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

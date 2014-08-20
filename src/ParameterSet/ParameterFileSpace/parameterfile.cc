@@ -328,7 +328,8 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
     ParameterFileDihedralTerm t;
     vector<ParameterFileDihedralTerm> terms;
     string dscr;
-    double scee, scnb, temp_factor, temp_force_constant, temp_phase, temp_periodicity;
+    double scee, scnb, temp_force_constant, temp_phase, temp_periodicity;
+    int temp_factor;
 
     istringstream in(line);                 /// Create an stream from the read bond line
     in >> std::setw(2) >> types[0] >> c
@@ -443,7 +444,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     if (in.fail())                              /// Invalid entry
         throw std::exception();
 
-    t.SetFactor(dNotSet);                        /// Improper dihedral doesn't have factor
+    t.SetFactor(iNotSet);                        /// Improper dihedral doesn't have factor
 
     if (line.size() > 60)                       /// Line has description
         dscr = line.substr(60);
@@ -664,54 +665,81 @@ void ParameterFile::Write(const string &parameter_file)
         out_file.close();
     }
 }
-void ParameterFile::BuildParameterFile(ofstream &stream)
+void ParameterFile::BuildParameterFile(ofstream& out_stream)
 {
-    stream << GetTitle() << endl;
-    ///
+    out_stream << GetTitle() << endl;
+    ResolveAtomTypeSection(out_stream);
+    ResolveHydrophilicAtomTypeSection(out_stream);
+    ResolveBondSection(out_stream);
+    ResolveAngleSection(out_stream);
+    ResolveDihedralSection(out_stream);
+    ResolveImproperDihedralSection(out_stream);
+    ResolveHydrogenBondCoefficietSection(out_stream);
+    ResolveEquivalentSymbolsSection(out_stream);
+    ResolveMod4Section(out_stream);
+    out_stream << "END";
+}
+void ParameterFile::ResolveAtomTypeSection(ofstream& stream)
+{
     for(AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
     {
         ParameterFileAtom* atom = (*it).second;
-        stream << left << setw(2) << atom->GetType() << " " << left << setw(10) << fixed << atom->GetMass() << " " ;
+        stream << left << setw(2) << atom->GetType() << " " << right << setw(10) << fixed << setprecision(2) << atom->GetMass() << " " ;
         if(atom->GetPolarizability() == dNotSet)
-            stream << left << setw(10) << " ";
+            stream << right << setw(10) << " ";
         else
-            stream << left << setw(10) << fixed << atom->GetPolarizability();
+            stream << right << setw(10) << fixed << setprecision(2) << atom->GetPolarizability();
         stream << " " << left << atom->GetDscr() << endl;
     }
     stream << endl;
-
-    ///
+}
+void ParameterFile::ResolveHydrophilicAtomTypeSection(ofstream& stream)
+{
+    int count = 0;
+    const int MAX_IN_LINE = 20;
     for(AtomTypeMap::iterator it1 = atom_types_.begin(); it1 != atom_types_.end(); it1++)
     {
         ParameterFileAtom* atom = (*it1).second;
         if(atom->GetIsHydrophilic())
         {
-            stream << left << setw(3) << atom->GetType() << " ";
+            stream << left << setw(2) << atom->GetType() << setw(2) << " ";
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                stream << endl;
+            }
         }
     }
+    if(count < MAX_IN_LINE)
+        stream << endl;
     stream << endl;
-
-    ///
+}
+void ParameterFile::ResolveBondSection(ofstream& stream)
+{
     for(BondMap::iterator it2 = bonds_.begin(); it2 != bonds_.end(); it2++)
     {
         vector<string> atom_types = (*it2).first;
         ParameterFileBond* bond = (*it2).second;
-        stream << left << setw(2) << atom_types.at(0) << "-" << left << setw(2) << atom_types.at(1) << " " << left << setw(10) << fixed << bond->GetForceConstant()
-               << " " << left << setw(10) << fixed << bond->GetLength() << " " << left << bond->GetDscr() << endl;
+        stream << left << setw(2) << atom_types.at(0) << "-" << left << setw(2) << atom_types.at(1) << " " << right << setw(10) << fixed << setprecision(2) << bond->GetForceConstant()
+               << " " << right << setw(10) << fixed << setprecision(2) << bond->GetLength() << " " << left << bond->GetDscr() << endl;
     }
     stream << endl;
-
-    ///
+}
+void ParameterFile::ResolveAngleSection(ofstream& stream)
+{
     for(AngleMap::iterator it3 = angles_.begin(); it3 != angles_.end(); it3++)
     {
         vector<string> angle_types = (*it3).first;
         ParameterFileAngle* angle = (*it3).second;
         stream << left << setw(2) << angle_types.at(0) << "-" << left << setw(2) << angle_types.at(1) << "-" << left << setw(2) << angle_types.at(2)
-               << " " << left << setw(10) << fixed << angle->GetForceConstant() << " " << left << setw(10) << fixed << angle->GetAngle() << " " << left << angle->GetDscr() << endl;
+               << " " << right << setw(10) << fixed << setprecision(2) << angle->GetForceConstant() << " " << right << setw(10) << fixed << setprecision(2) << angle->GetAngle()
+               << " " << left << angle->GetDscr() << endl;
     }
     stream << endl;
-
-    ///
+}
+void ParameterFile::ResolveDihedralSection(ofstream& stream)
+{
     for(DihedralMap::iterator it4 = dihedrals_.begin(); it4 != dihedrals_.end(); it4++)
     {
         vector<string> dihedral_types = (*it4).first;
@@ -724,13 +752,16 @@ void ParameterFile::BuildParameterFile(ofstream &stream)
                 ParameterFileDihedralTerm dihedral_term = (*it5);
                 stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
                        << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3) << " "
-                       << left << setw(4) << dihedral_term.GetFactor() << " " << left << setw(15) << fixed << dihedral_term.GetForceConstant()
-                       << " " << left << setw(15) << fixed << dihedral_term.GetPhase() << " " << left << setw(15) << fixed << dihedral_term.GetPeriodicity()
+                       << right << setw(4) << dihedral_term.GetFactor() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
+                       << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
                        << " " << left << dihedral_term.GetDscr() << endl;
             }
         }
     }
     stream << endl;
+}
+void ParameterFile::ResolveImproperDihedralSection(ofstream& stream)
+{
     for(DihedralMap::iterator it6 = dihedrals_.begin(); it6 != dihedrals_.end(); it6++)
     {
         vector<string> dihedral_types = (*it6).first;
@@ -743,28 +774,31 @@ void ParameterFile::BuildParameterFile(ofstream &stream)
                 ParameterFileDihedralTerm dihedral_term = (*it7);
                 stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
                        << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3)
-                       << " " << left << setw(4) << " " << left << setw(15) << fixed << dihedral_term.GetForceConstant()
-                       << " " << left << setw(15) << fixed << dihedral_term.GetPhase() << " " << left << setw(15) << fixed << dihedral_term.GetPeriodicity()
+                       << " " << right << setw(4) << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
+                       << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
                        << " " << left << dihedral_term.GetDscr() << endl;
             }
         }
     }
     stream << endl;
-
-    ///
+}
+void ParameterFile::ResolveHydrogenBondCoefficietSection(ofstream& stream)
+{
     for(BondMap::iterator it8 = bonds_.begin(); it8 != bonds_.end(); it8++)
     {
         vector<string> atom_types = (*it8).first;
         ParameterFileBond* bond = (*it8).second;
         if(bond->GetHbondCoefficients().size() != 0)
         {
-            stream << left << setw(3) << atom_types.at(0) << " " << left << setw(3) << atom_types.at(1) << " "
-                   << left << setw(10) << fixed << bond->GetHbondCoefficients().at(0) << " " << left << setw(10) << fixed << bond->GetHbondCoefficients().at(1) << endl;
+            stream << left << setw(2)  << " " << left << setw(2) << atom_types.at(0) << left << setw(2) << " " << left << setw(2) << atom_types.at(1) << left << setw(2) << " "
+                   << right << setw(10) << fixed << setprecision(2) << bond->GetHbondCoefficients().at(0) << " " << right << setw(10) << fixed << setprecision(2)
+                   << bond->GetHbondCoefficients().at(1) << endl;
         }
     }
     stream << endl;
-
-    ///
+}
+void ParameterFile::ResolveEquivalentSymbolsSection(ofstream& stream)
+{
     vector<string> printed = vector<string>();
     for(AtomTypeMap::iterator it9 = atom_types_.begin(); it9 != atom_types_.end(); it9++)
     {
@@ -772,15 +806,13 @@ void ParameterFile::BuildParameterFile(ofstream &stream)
         if(atom->GetEquivalentList().size() != 0)
         {
             if(find(printed.begin(), printed.end(), atom->GetType()) != printed.end())
-            {
-
-            }
+            {}
             else
             {
-                stream << left << setw(3) << atom->GetType() << " ";
+                stream << left << setw(2) << atom->GetType() << left << setw(2) << " ";
                 for(unsigned int i = 0; i < atom->GetEquivalentList().size(); i++)
                 {
-                    stream << setw(3) << atom->GetEquivalentList().at(i) << " ";
+                    stream << left << setw(2) << atom->GetEquivalentList().at(i) << left << setw(2) << " ";
                     printed.push_back(atom->GetEquivalentList().at(i));
                 }
                 stream << endl;
@@ -788,21 +820,21 @@ void ParameterFile::BuildParameterFile(ofstream &stream)
         }
     }
     stream << endl;
-
-    ///
+}
+void ParameterFile::ResolveMod4Section(ofstream& stream)
+{
     stream << "MOD4" << endl;
     for(AtomTypeMap::iterator it10 = atom_types_.begin(); it10 != atom_types_.end(); it10++)
     {
         ParameterFileAtom* atom = (*it10).second;
         if(atom->GetRadius() != dNotSet || atom->GetWellDepth() != dNotSet)
         {
-            stream << left << setw(2) << atom->GetType() << " " << left << setw(10) << fixed << atom->GetRadius() << " "
-                   << left << setw(10) << fixed << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
+            stream << left << setw(2) << " " << left << setw(2) << atom->GetType() << left << setw(6) << " " << left << setw(2) << " " << " "
+                   << right << setw(10) << fixed << setprecision(2) << atom->GetRadius() << " "
+                   << right << setw(10) << fixed << setprecision(2) << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
         }
     }
     stream << endl;
-    stream << "END";
-
 }
 
 //////////////////////////////////////////////////////////
