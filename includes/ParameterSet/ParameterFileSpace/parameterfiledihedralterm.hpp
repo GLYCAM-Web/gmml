@@ -24,7 +24,7 @@ namespace ParameterFileSpace
               * @param periodicity
               * @param dscr
               */
-            ParameterFileDihedralTerm(double factor, double force_constant, double phase, double periodicity, const std::string& dscr = "");
+            ParameterFileDihedralTerm(int factor, double force_constant, double phase, double periodicity, const std::string& dscr = "");
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -34,7 +34,7 @@ namespace ParameterFileSpace
               * The attribute is set by the contents of the given file
               * @return factor_ of the current object of this class
               */
-            double GetFactor();
+            int GetFactor();
             /*! \fn
               * An accessor function in order to access to force constant attribute of the current object
               * The attribute is set by the contents of the given file
@@ -67,7 +67,7 @@ namespace ParameterFileSpace
               * Set the factor_ attribute of the current term
               * @param factor The factor of the current object
               */
-            void SetFactor(double factor);
+            void SetFactor(int factor);
             /*! \fn
               * A mutator function in order to set the force_constant of the current object
               * Set the force_constant_ attribute of the current term
@@ -107,7 +107,7 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////
-            double factor_;                         /*!< Division factor; Fill by the second column of the 5th section of the parameter file (6th section doesn't have this value)*/
+            int factor_;                         /*!< Division factor; Fill by the second column of the 5th section of the parameter file (6th section doesn't have this value)*/
             double force_constant_;                 /*!< Dihedral force constant; Fill by the third column of the 5th section or second column of the 6th section of the parameter file*/
             double phase_;                          /*!< Dihedral phase; Fill by the fourth column of the 5th section of third column of the 6th section of the parameter file*/
             double periodicity_;                    /*!< Dihedral periodicity; Fill by the 5th column of the 5th section or fourth column of the 6th section of the parameter file*/
