@@ -23,7 +23,7 @@ namespace TopologyFileSpace
               */
             TopologyAtomPair();
 
-            TopologyAtomPair(std::string pair_type, double coefficient_a, double coefficient_b);
+            TopologyAtomPair(std::string pair_type, double coefficient_a, double coefficient_b, int index);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -43,28 +43,39 @@ namespace TopologyFileSpace
               * @return coefficient_b_ attribute of the current object of this class
               */
             double GetCoefficientB();
+            /*! \fn
+              * An accessor function in order to access to the index
+              * @return index_ attribute of the current object of this class
+              */
+            int GetIndex();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             /*! \fn
               * A mutator function in order to set the pair type of the current object
-              * Set the pair_type_ attribute of the current topology atom type
+              * Set the pair_type_ attribute of the current topology atom pair
               * @param pair_type The pair type attribute of the current object
               */
             void SetPairType(std::string pair_type);
             /*! \fn
               * A mutator function in order to set the coefficient a of the current object
-              * Set the coefficient_a_ attribute of the current topology atom type
+              * Set the coefficient_a_ attribute of the current topology atom pair
               * @param coefficient_a The coefficient a attribute of the current object
               */
             void SetCoefficientA(double coefficient_a);
             /*! \fn
               * A mutator function in order to set the coefficient b of the current object
-              * Set the coefficient_b_ attribute of the current topology atom type
+              * Set the coefficient_b_ attribute of the current topology atom pair
               * @param coefficient_b The coefficient b attribute of the current object
               */
             void SetCoefficientB(double coefficient_b);
+            /*! \fn
+              * A mutator function in order to set the index of the current object
+              * Set the index attribute of the current topology atom pair
+              * @param index The index attribute of the current object
+              */
+            void SetIndex(int index);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -87,6 +98,7 @@ namespace TopologyFileSpace
             std::string pair_type_;
             double coefficient_a_;
             double coefficient_b_;
+            int index_;
 
     };
 }
