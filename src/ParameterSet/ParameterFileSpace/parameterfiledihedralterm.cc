@@ -69,7 +69,7 @@ void ParameterFileDihedralTerm::SetDscr(const std::string dscr){
 //////////////////////////////////////////////////////////
 void ParameterFileDihedralTerm::Print(std::ostream& out)
 {
-    if(factor_ == dNotSet)
+    if(factor_ == iNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << factor_;

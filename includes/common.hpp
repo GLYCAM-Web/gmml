@@ -54,6 +54,12 @@ namespace gmml
         DATABASE
     };
 
+    enum ParameterFileType
+    {
+        MAIN = 0,
+        MODIFIED = 1
+    };
+
 }
 
 #endif // COMMON_HPP
