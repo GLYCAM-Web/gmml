@@ -257,8 +257,8 @@ void LibraryFile::Read(std::ifstream& in_file)
                     getline(in_file,line);
 
                     int tail_index;
-                    ss.str(line);
-                    ss >> tail_index;
+                    istringstream sss(line);
+                    sss >> tail_index;
                     getline(in_file,line);
 
                     it->second->SetHeadAtomIndex(head_index);
@@ -546,7 +546,7 @@ void LibraryFile::BuildLibraryFile(ofstream& out_stream)
         LibraryFileResidue* residue = (*it).second;
         ResolveAtomSection(out_stream, residue);
         ResolveAtomPertInfoSection(out_stream, residue);
-        ResolveBondBoxSection(out_stream, residue);
+        ResolveBoundBoxSection(out_stream, residue);
         ResolveChildSequenceSection(out_stream, residue);
         ResolveConnectSection(out_stream, residue);
         ResolveConnectivitySection(out_stream, residue);
@@ -563,64 +563,118 @@ void LibraryFile::BuildLibraryFile(ofstream& out_stream)
 void LibraryFile::ResolveAtomSection(ofstream &stream, LibraryFileResidue *residue)
 {
     LibraryFileResidue::AtomMap atoms = residue->GetAtoms();
-    for(LibraryFileResidue::AtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
+    const string FLAG = "131072";
+    stream << "!entry." << residue->GetName() << ".unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg" << endl;
+    for(unsigned int i = 0; i < atoms.size(); i++)
     {
-        LibraryFileAtom* atom = (*it).second;
-        stream << "!entry." << residue->GetName() << ".unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg" << endl;
-
+        LibraryFileAtom* atom = residue->GetAtomByOrder(i+1);
+        stream << "\"" << atom->GetName() << "\" " << "\"" << atom->GetType() << "\" " << "0" << " " << atom->GetResidueIndex() << " " << FLAG << " "
+               << atom->GetAtomIndex() << " " << atom->GetAtomicNumber() << " " << fixed << atom->GetCharge() << endl;
     }
 }
 void LibraryFile::ResolveAtomPertInfoSection(ofstream& stream, LibraryFileResidue* residue)
 {
+    stream << "!entry." << residue->GetName() << ".unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg" << endl;
+    stream << endl;
 
 }
-void LibraryFile::ResolveBondBoxSection(ofstream& stream, LibraryFileResidue* residue)
+void LibraryFile::ResolveBoundBoxSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.boundbox array dbl" << endl;
+    stream << "-1.000000" << endl;
+    if(residue->GetBoxAngle() == dNotSet)
+        stream << "0.0" << endl;
+    else
+        stream << residue->GetBoxAngle() << endl;
+    if(residue->GetBoxLength() == dNotSet)
+        stream << "0.0" << endl;
+    else
+        stream << fixed << residue->GetBoxLength() << endl;
+    if(residue->GetBoxWidth() == dNotSet)
+        stream << "0.0" << endl;
+    else
+        stream << fixed << residue->GetBoxWidth() << endl;
+    if(residue->GetBoxHeight() == dNotSet)
+        stream << "0.0" << endl;
+    else
+        stream << fixed << residue->GetBoxHeight() << endl;
 }
 void LibraryFile::ResolveChildSequenceSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.childsequence single int" << endl;
+    stream << endl;
 }
 void LibraryFile::ResolveConnectSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.connect array int" << endl;
+    if(residue->GetHeadAtomIndex() != iNotSet)
+        stream << residue->GetHeadAtomIndex() << endl;
+    if(residue->GetTailAtomIndex() != iNotSet)
+        stream << residue->GetTailAtomIndex() << endl;
 }
 void LibraryFile::ResolveConnectivitySection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.connectivity table  int atom1x  int atom2x  int flags" << endl;
+    LibraryFileResidue::AtomMap atoms = residue->GetAtoms();
+    for(unsigned int i = 0; i < atoms.size(); i++)
+    {
+        LibraryFileAtom* atom = residue->GetAtomByOrder(i+1);
+        vector<int> bonded_atoms_indices = atom->GetBondedAtomsIndices();
+        for(vector<int>::iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
+        {
+            int bonded_atom_index = (*it);
+            if(bonded_atom_index > atom->GetAtomIndex())
+            {
+                stream << atom->GetAtomIndex() << " " << bonded_atom_index << " " << "1" << endl;
+            }
+        }
+    }
 }
 void LibraryFile::ResolveHierarchySection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx" << endl;
+    stream << endl;
 }
 void LibraryFile::ResolveNameSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.name single str" << endl;
+    stream << "\"" << residue->GetName() << "\"" << endl;
 }
 void LibraryFile::ResolvePositionSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.positions table  dbl x  dbl y  dbl z" << endl;
+    LibraryFileResidue::AtomMap atoms = residue->GetAtoms();
+    for(unsigned int i = 0; i < atoms.size(); i++)
+    {
+        LibraryFileAtom* atom = residue->GetAtomByOrder(i+1);
+        Geometry::Coordinate coordinate = atom->GetCoordinate();
+        stream << fixed << coordinate.GetX() << " " << fixed << coordinate.GetY() << " " << fixed << coordinate.GetZ() << endl;
+    }
 }
 void LibraryFile::ResolveResidueConnectSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x" << endl;
+    stream << endl;
 }
 void LibraryFile::ResolveResiduesSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx" << endl;
+    stream << endl;
 }
 void LibraryFile::ResolveResiduePdbSequenceNumberSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() <<  ".unit.residuesPdbSequenceNumber array int" << endl;
+    stream << endl;
 }
 void LibraryFile::ResolveSolventCapSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.solventcap array dbl" << endl;
+    stream << endl;
 }
 void LibraryFile::ResolveVelocitiesSection(ofstream& stream, LibraryFileResidue* residue)
 {
-
+    stream << "!entry." << residue->GetName() << ".unit.velocities table  dbl x  dbl y  dbl z" << endl;
+    stream << endl;
 }
 
 //////////////////////////////////////////////////////////
