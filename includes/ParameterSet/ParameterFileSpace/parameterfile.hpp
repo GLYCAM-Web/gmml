@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include "common.hpp"
 
 namespace ParameterFileSpace
 {
@@ -43,7 +44,7 @@ namespace ParameterFileSpace
               * Constructor
               * @param param_file An existing library file path to be read
               */
-            ParameterFile(const std::string& param_file);
+            ParameterFile(const std::string& param_file, int type);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -78,7 +79,21 @@ namespace ParameterFileSpace
               * @return path_ attribute of the current object of this class
               */
             const DihedralMap& GetDihedrals() const;
+            /*! \fn
+              * An accessor function in order to access to the parameter file type of the current object
+              * @return file_type_ attribute of the current object of this class
+              */
+            const int GetParameterFileType() const;
 
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the file type of the current object
+              * Set the file_type_ attribute of the current parameter file
+              * @param file_type The file type attribute of the current object
+              */
+            void SetParameterFileType(int file_type);
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
@@ -87,7 +102,13 @@ namespace ParameterFileSpace
               * Parse the given stream and set the attributes of the current object accordingly
               * @param in_file A stream contains whole contents of a parameter file
               */
-            void Read(std::ifstream& in_file);
+            void ReadMainParameter(std::ifstream& in_file);
+            /*! \fn
+              * A function to parse the contents of a given stream of a file
+              * Parse the given stream and set the attributes of the current object accordingly
+              * @param in_file A stream contains whole contents of a frcmod parameter file
+              */
+            void ReadModifiedParameter(std::ifstream& in_file);
             /*! \fn
               * A function that parses a line of atom type section of the current object
               * Process the atom type lines of the parameter file
@@ -155,16 +176,17 @@ namespace ParameterFileSpace
               */
             double ProcessDoubleDihedralDescription(const std::string& dscr, const std::string& key);
             void Write(const std::string& parameter_file);
-            void BuildParameterFile(std::ofstream& out_stream);
+            void BuildMainParameterFile(std::ofstream& out_stream);
+            void BuildModifiedParameterFile(std::ofstream& out_stream);
             void ResolveAtomTypeSection(std::ofstream& stream);
             void ResolveHydrophilicAtomTypeSection(std::ofstream& stream);
             void ResolveBondSection(std::ofstream& stream);
             void ResolveAngleSection(std::ofstream& stream);
             void ResolveDihedralSection(std::ofstream& stream);
             void ResolveImproperDihedralSection(std::ofstream& stream);
-            void ResolveHydrogenBondCoefficietSection(std::ofstream& stream);
+            void ResolveHydrogenBondSection(std::ofstream& stream);
             void ResolveEquivalentSymbolsSection(std::ofstream& stream);
-            void ResolveMod4Section(std::ofstream& stream);
+            void ResolvePotentialParameterSection(std::ofstream& stream);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
@@ -186,6 +208,7 @@ namespace ParameterFileSpace
             BondMap bonds_;              /*!< A collection of mapping between bond (double atom types) and its attributes*/
             AngleMap angles_;            /*!< A collection of mapping between angle (tripple atom types) and its attributes*/
             DihedralMap dihedrals_;      /*!< A collection of mapping between dihedral (quad atom types) and its attributes*/
+            int file_type_;
 
     };
 }

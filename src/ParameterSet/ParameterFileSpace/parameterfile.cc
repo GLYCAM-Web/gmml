@@ -19,9 +19,10 @@ using namespace ParameterFileSpace;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-ParameterFile::ParameterFile(const std::string &param_file)
+ParameterFile::ParameterFile(const std::string &param_file, int file_type)
 {
     path_ = param_file;
+    file_type_ = file_type;
     std::ifstream in_file;
     try
     {
@@ -31,7 +32,15 @@ ParameterFile::ParameterFile(const std::string &param_file)
     {
         throw ParameterFileProcessingException(__LINE__,"File not found");
     }
-    Read(in_file);
+    switch(file_type_)
+    {
+        case MAIN:
+            ReadMainParameter(in_file);
+            break;
+        case MODIFIED:
+            ReadModifiedParameter(in_file);
+            break;
+    }
     in_file.close();            /// Close the parameter files
 
 }
@@ -69,13 +78,25 @@ const ParameterFile::DihedralMap& ParameterFile::GetDihedrals() const
     return dihedrals_;
 }
 
+const int ParameterFile::GetParameterFileType() const
+{
+    return file_type_;
+}
+//////////////////////////////////////////////////////////
+//                         MUTATOR                      //
+//////////////////////////////////////////////////////////
+void ParameterFile::SetParameterFileType(int file_type)
+{
+    file_type_ = file_type;
+}
+
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
 /// Read from the given stream and extract into the parameter file data structure
 /// This function reads the stream line-by-line and uses the whole structure of the file to point to the right position for data extraction
 /// For more information check a sample parameter file to find out how the function works
-void ParameterFile::Read(std::ifstream& in_file)
+void ParameterFile::ReadMainParameter(std::ifstream& in_file)
 {
     string line;
     int line_number = 0;
@@ -233,6 +254,148 @@ void ParameterFile::Read(std::ifstream& in_file)
         } catch(...)
         {
             throw ParameterFileProcessingException(line_number, "Error processing potential parameters");
+        }
+    }
+}
+
+void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
+{
+    string line;
+    int line_number = 0;
+
+    /// Unable to read file
+    if (!getline(in_file, line))
+    {
+        throw ParameterFileProcessingException("Error reading file");
+    }
+
+    /// Set the title of the parameter file
+    title_ = Trim(line);
+    line_number++;
+
+    /// Atom type section reading
+    getline(in_file, line);             /// Read the first line of the atom type section
+    line_number++;                      /// Increment line counter
+    if(Trim(line).compare("MASS") == 0)
+    {
+        getline(in_file, line);             /// Read the first line of the atom type section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessAtomType(line);      /// Processing atom type line
+                getline(in_file,line);      /// Read the next line
+                line_number++;              /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing atom type");
+            }
+        }
+    }
+
+    /// Bond section reading
+    getline(in_file, line);             /// Read the first line of the atom type section
+    line_number++;                      /// Increment line counter
+    if(Trim(line).compare("BOND") == 0)
+    {
+        getline(in_file, line);             /// Read the first line of the atom type section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessBond(line);          /// Processing bond line
+                getline(in_file, line);     /// Read the next line
+                line_number++;              /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing bond");
+            }
+        }
+    }
+
+    /// Angle section reading
+    getline(in_file, line);             /// Read the first line of the angle section
+    line_number++;                      /// Increment line counter
+    if(Trim(line).compare("ANGL") == 0)
+    {
+        getline(in_file, line);             /// Read the first line of the angle section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessAngle(line);         /// Processing angle line
+                getline(in_file, line);     /// Read the next line
+                line_number++;              /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing angle");
+            }
+        }
+    }
+
+    /// Dihedral section reading
+    getline(in_file, line);             /// Read the first line of the dihedral section
+    line_number++;                      /// Increment line counter
+    if(Trim(line).compare("DIHE") == 0)
+    {
+        getline(in_file, line);             /// Read the first line of the angle section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessDihedral(line, line_number, in_file);    /// Processing dihedral line
+                getline(in_file, line);                         /// Read the next line
+                line_number++;                                  /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing dihedral");
+            }
+        }
+    }
+
+    /// Improper dihedral section reading
+    getline(in_file, line);             /// Read the first line of the improper dihedral section
+    line_number++;                      /// Increment line counter
+    if(Trim(line).compare("IMPR") == 0)
+    {
+        getline(in_file, line);             /// Read the first line of the improper dihedral section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessImproperDihedral(line, line_number, in_file);        /// Processing improper dihedral line
+                getline(in_file, line);                                     /// Read the next line
+                line_number++;                                              /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing improper dihedral");
+            }
+        }
+    }
+
+    /// Potential parameter section reading
+    getline(in_file, line);         /// Read the first line of the potential parameter section
+    line_number++;                  /// Increment line counter
+    if(Trim(line).compare("NONB") == 0)
+    {
+        getline(in_file, line);             /// Read the first line of the improper dihedral section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessPotentialParameter(line);        /// Processing potential parameter line
+                getline(in_file, line);                 /// Read the next line
+                line_number++;                          /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing potential parameters");
+            }
         }
     }
 }
@@ -658,14 +821,23 @@ void ParameterFile::Write(const string &parameter_file)
     }
     try
     {
-        this->BuildParameterFile(out_file);
+        switch(file_type_)
+        {
+            case MAIN:
+                this->BuildMainParameterFile(out_file);
+                break;
+            case MODIFIED:
+                this->BuildModifiedParameterFile(out_file);
+                break;
+        }
+
     }
     catch(...)
     {
         out_file.close();
     }
 }
-void ParameterFile::BuildParameterFile(ofstream& out_stream)
+void ParameterFile::BuildMainParameterFile(ofstream& out_stream)
 {
     out_stream << GetTitle() << endl;
     ResolveAtomTypeSection(out_stream);
@@ -674,24 +846,43 @@ void ParameterFile::BuildParameterFile(ofstream& out_stream)
     ResolveAngleSection(out_stream);
     ResolveDihedralSection(out_stream);
     ResolveImproperDihedralSection(out_stream);
-    ResolveHydrogenBondCoefficietSection(out_stream);
+    ResolveHydrogenBondSection(out_stream);
     ResolveEquivalentSymbolsSection(out_stream);
-    ResolveMod4Section(out_stream);
+    ResolvePotentialParameterSection(out_stream);
     out_stream << "END";
+}
+
+void ParameterFile::BuildModifiedParameterFile(ofstream& out_stream)
+{
+    out_stream << GetTitle() << endl;
+    ResolveAtomTypeSection(out_stream);
+    ResolveBondSection(out_stream);
+    ResolveAngleSection(out_stream);
+    ResolveDihedralSection(out_stream);
+    ResolveImproperDihedralSection(out_stream);
+    ResolvePotentialParameterSection(out_stream);
 }
 void ParameterFile::ResolveAtomTypeSection(ofstream& stream)
 {
-    for(AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
+    switch(file_type_)
     {
-        ParameterFileAtom* atom = (*it).second;
-        stream << left << setw(2) << atom->GetType() << " " << right << setw(10) << fixed << setprecision(2) << atom->GetMass() << " " ;
-        if(atom->GetPolarizability() == dNotSet)
-            stream << right << setw(10) << " ";
-        else
-            stream << right << setw(10) << fixed << setprecision(2) << atom->GetPolarizability();
-        stream << " " << left << atom->GetDscr() << endl;
+        case MODIFIED:
+            stream << "MASS" << endl;
+        case MAIN:
+            for(AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
+            {
+                ParameterFileAtom* atom = (*it).second;
+                stream << left << setw(2) << atom->GetType() << " " << right << setw(10) << fixed << setprecision(2) << atom->GetMass() << " " ;
+                if(atom->GetPolarizability() == dNotSet)
+                    stream << right << setw(10) << " ";
+                else
+                    stream << right << setw(10) << fixed << setprecision(2) << atom->GetPolarizability();
+                stream << " " << left << atom->GetDscr() << endl;
+            }
+            stream << endl;
+            break;
     }
-    stream << endl;
+
 }
 void ParameterFile::ResolveHydrophilicAtomTypeSection(ofstream& stream)
 {
@@ -717,72 +908,102 @@ void ParameterFile::ResolveHydrophilicAtomTypeSection(ofstream& stream)
 }
 void ParameterFile::ResolveBondSection(ofstream& stream)
 {
-    for(BondMap::iterator it2 = bonds_.begin(); it2 != bonds_.end(); it2++)
+    switch(file_type_)
     {
-        vector<string> atom_types = (*it2).first;
-        ParameterFileBond* bond = (*it2).second;
-        stream << left << setw(2) << atom_types.at(0) << "-" << left << setw(2) << atom_types.at(1) << " " << right << setw(10) << fixed << setprecision(2) << bond->GetForceConstant()
-               << " " << right << setw(10) << fixed << setprecision(2) << bond->GetLength() << " " << left << bond->GetDscr() << endl;
+        case MODIFIED:
+            stream << "BOND" << endl;
+        case MAIN:
+            for(BondMap::iterator it2 = bonds_.begin(); it2 != bonds_.end(); it2++)
+            {
+                vector<string> atom_types = (*it2).first;
+                ParameterFileBond* bond = (*it2).second;
+                stream << left << setw(2) << atom_types.at(0) << "-" << left << setw(2) << atom_types.at(1) << " " << right << setw(10) << fixed << setprecision(2) << bond->GetForceConstant()
+                       << " " << right << setw(10) << fixed << setprecision(2) << bond->GetLength() << " " << left << bond->GetDscr() << endl;
+            }
+            stream << endl;
+            break;
     }
-    stream << endl;
+
 }
 void ParameterFile::ResolveAngleSection(ofstream& stream)
 {
-    for(AngleMap::iterator it3 = angles_.begin(); it3 != angles_.end(); it3++)
+    switch(file_type_)
     {
-        vector<string> angle_types = (*it3).first;
-        ParameterFileAngle* angle = (*it3).second;
-        stream << left << setw(2) << angle_types.at(0) << "-" << left << setw(2) << angle_types.at(1) << "-" << left << setw(2) << angle_types.at(2)
-               << " " << right << setw(10) << fixed << setprecision(2) << angle->GetForceConstant() << " " << right << setw(10) << fixed << setprecision(2) << angle->GetAngle()
-               << " " << left << angle->GetDscr() << endl;
+        case MODIFIED:
+            stream << "ANGL" << endl;
+        case MAIN:
+            for(AngleMap::iterator it3 = angles_.begin(); it3 != angles_.end(); it3++)
+            {
+                vector<string> angle_types = (*it3).first;
+                ParameterFileAngle* angle = (*it3).second;
+                stream << left << setw(2) << angle_types.at(0) << "-" << left << setw(2) << angle_types.at(1) << "-" << left << setw(2) << angle_types.at(2)
+                       << " " << right << setw(10) << fixed << setprecision(2) << angle->GetForceConstant() << " " << right << setw(10) << fixed << setprecision(2) << angle->GetAngle()
+                       << " " << left << angle->GetDscr() << endl;
+            }
+            stream << endl;
+            break;
     }
-    stream << endl;
+
 }
 void ParameterFile::ResolveDihedralSection(ofstream& stream)
 {
-    for(DihedralMap::iterator it4 = dihedrals_.begin(); it4 != dihedrals_.end(); it4++)
+    switch(file_type_)
     {
-        vector<string> dihedral_types = (*it4).first;
-        ParameterFileDihedral* dihedral = (*it4).second;
-        if(!dihedral->GetIsImproper())
-        {
-            vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
-            for(vector<ParameterFileDihedralTerm>::iterator it5 = dihedral_terms.begin(); it5 != dihedral_terms.end(); it5++)
+        case MODIFIED:
+            stream << "DIHE" << endl;
+        case MAIN:
+            for(DihedralMap::iterator it4 = dihedrals_.begin(); it4 != dihedrals_.end(); it4++)
             {
-                ParameterFileDihedralTerm dihedral_term = (*it5);
-                stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
-                       << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3) << " "
-                       << right << setw(4) << dihedral_term.GetFactor() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
-                       << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
-                       << " " << left << dihedral_term.GetDscr() << endl;
+                vector<string> dihedral_types = (*it4).first;
+                ParameterFileDihedral* dihedral = (*it4).second;
+                if(!dihedral->GetIsImproper())
+                {
+                    vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
+                    for(vector<ParameterFileDihedralTerm>::iterator it5 = dihedral_terms.begin(); it5 != dihedral_terms.end(); it5++)
+                    {
+                        ParameterFileDihedralTerm dihedral_term = (*it5);
+                        stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
+                               << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3) << " "
+                               << right << setw(4) << dihedral_term.GetFactor() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
+                               << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
+                               << " " << left << dihedral_term.GetDscr() << endl;
+                    }
+                }
             }
-        }
+            stream << endl;
+            break;
     }
-    stream << endl;
 }
 void ParameterFile::ResolveImproperDihedralSection(ofstream& stream)
 {
-    for(DihedralMap::iterator it6 = dihedrals_.begin(); it6 != dihedrals_.end(); it6++)
+    switch(file_type_)
     {
-        vector<string> dihedral_types = (*it6).first;
-        ParameterFileDihedral* dihedral = (*it6).second;
-        if(dihedral->GetIsImproper())
-        {
-            vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
-            for(vector<ParameterFileDihedralTerm>::iterator it7 = dihedral_terms.begin(); it7 != dihedral_terms.end(); it7++)
+        case MODIFIED:
+            stream << "IMPR" << endl;
+        case MAIN:
+            for(DihedralMap::iterator it6 = dihedrals_.begin(); it6 != dihedrals_.end(); it6++)
             {
-                ParameterFileDihedralTerm dihedral_term = (*it7);
-                stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
-                       << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3)
-                       << " " << right << setw(4) << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
-                       << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
-                       << " " << left << dihedral_term.GetDscr() << endl;
+                vector<string> dihedral_types = (*it6).first;
+                ParameterFileDihedral* dihedral = (*it6).second;
+                if(dihedral->GetIsImproper())
+                {
+                    vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
+                    for(vector<ParameterFileDihedralTerm>::iterator it7 = dihedral_terms.begin(); it7 != dihedral_terms.end(); it7++)
+                    {
+                        ParameterFileDihedralTerm dihedral_term = (*it7);
+                        stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
+                               << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3)
+                               << " " << right << setw(4) << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
+                               << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
+                               << " " << left << dihedral_term.GetDscr() << endl;
+                    }
+                }
             }
-        }
+            stream << endl;
+            break;
     }
-    stream << endl;
 }
-void ParameterFile::ResolveHydrogenBondCoefficietSection(ofstream& stream)
+void ParameterFile::ResolveHydrogenBondSection(ofstream& stream)
 {
     for(BondMap::iterator it8 = bonds_.begin(); it8 != bonds_.end(); it8++)
     {
@@ -821,9 +1042,17 @@ void ParameterFile::ResolveEquivalentSymbolsSection(ofstream& stream)
     }
     stream << endl;
 }
-void ParameterFile::ResolveMod4Section(ofstream& stream)
+void ParameterFile::ResolvePotentialParameterSection(ofstream& stream)
 {
-    stream << "MOD4" << endl;
+    switch(file_type_)
+    {
+        case MODIFIED:
+            stream << "NONB" << endl;
+            break;
+        case MAIN:
+            stream << "MOD4" << endl;
+            break;
+    }
     for(AtomTypeMap::iterator it10 = atom_types_.begin(); it10 != atom_types_.end(); it10++)
     {
         ParameterFileAtom* atom = (*it10).second;
