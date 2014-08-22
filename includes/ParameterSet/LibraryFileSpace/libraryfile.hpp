@@ -80,7 +80,7 @@ namespace LibraryFileSpace
             void BuildLibraryFile(std::ofstream& out_stream);
             void ResolveAtomSection(std::ofstream& stream, LibraryFileResidue* residue);
             void ResolveAtomPertInfoSection(std::ofstream& stream, LibraryFileResidue* residue);
-            void ResolveBondBoxSection(std::ofstream& stream, LibraryFileResidue* residue);
+            void ResolveBoundBoxSection(std::ofstream& stream, LibraryFileResidue* residue);
             void ResolveChildSequenceSection(std::ofstream& stream, LibraryFileResidue* residue);
             void ResolveConnectSection(std::ofstream& stream, LibraryFileResidue* residue);
             void ResolveConnectivitySection(std::ofstream& stream, LibraryFileResidue* residue);
