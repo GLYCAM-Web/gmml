@@ -31,17 +31,25 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             /*! \fn
               * An accessor function in order to access to the assembly name
-              * @return assembly_name_ attribute of the current object of this class
+              * @return assembly_name_ Attribute of the current object of this class
               */
             std::string GetAssemblyName();
             /*! \fn
               * An accessor function in order to access to the residues
-              * @return residues_ attribute of the current object of this class
+              * @return residues_ Attribute of the current object of this class
               */
             TopologyResidueMap GetResidues();
-
+            /*! \fn
+              * An accessor function in order to access to a residue of the current object using the index
+              * @param index The index of the desired resiude
+              * @return residue The residue with the given index
+              */
             TopologyResidue* GetResidueByIndex(int index);
-
+            /*! \fn
+              * An accessor function in order to access to atom index of an atom of the current object using the name
+              * @param atom_name The atom name of the desired atom index
+              * @return index_ The index of the given atom name
+              */
             int GetAtomIndexByName(std::string atom_name);
 
             //////////////////////////////////////////////////////////

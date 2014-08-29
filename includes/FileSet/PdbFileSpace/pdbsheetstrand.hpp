@@ -45,6 +45,10 @@ namespace PdbFileSpace
               * @param previous_atom
               */
             PdbSheetStrand(const SheetStrandResidueVector strand_residues, PdbSheetStrandSense sense, const std::string& current_atom, const std::string& previous_atom);
+            /*! \fn
+              * Constructor with required parameters
+              * @param line
+              */
             PdbSheetStrand(std::string& line);
 
             //////////////////////////////////////////////////////////
@@ -112,6 +116,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the pdb sheet strand contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

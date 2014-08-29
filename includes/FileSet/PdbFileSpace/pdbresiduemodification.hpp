@@ -31,6 +31,10 @@ namespace PdbFileSpace
               */
             PdbResidueModification(const std::string& id_code, const std::string& residue_name, char chain_id, int sequence_number,
                                    char insertion_code, const std::string& standard_residue_name, const std::string& dscr);
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
             PdbResidueModification(std::stringstream& stream_block);
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -124,6 +128,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the pdb residue modification contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

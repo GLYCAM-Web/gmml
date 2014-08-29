@@ -12,7 +12,6 @@
 namespace PdbFileSpace
 {
     class PdbAtom;
-
     class PdbAtomCard
     {
         public:
@@ -34,6 +33,7 @@ namespace PdbFileSpace
             /*! \fn
               * A constructor that get a stream block of atom card and parse the whole block to fill the related fields
               * @param stream_block A whole block of atoms belonging to a model in a pdb file
+              * @param index
               */
             PdbAtomCard(std::stringstream& stream_block, std::string index);
 
@@ -60,7 +60,6 @@ namespace PdbFileSpace
               * @param record_name The record name attribute of the current object
               */
             void SetRecordName(const std::string record_name);
-
             /*! \fn
               * A mutator function in order to set the atoms of the current object
               * Set the atoms_ attribute of the current atom card

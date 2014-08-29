@@ -28,6 +28,10 @@ namespace PdbFileSpace
               * @param residue_insertion_code
               */
             PdbSiteResidue(const std::string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code);
+            /*! \fn
+              * Constructor with required parameters
+              * @param section
+              */
             PdbSiteResidue(const std::string& section);
 
             //////////////////////////////////////////////////////////
@@ -85,6 +89,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the pdb site residue contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

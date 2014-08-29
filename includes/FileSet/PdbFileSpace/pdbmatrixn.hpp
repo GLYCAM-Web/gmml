@@ -22,6 +22,10 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbMatrixN();
+            /*! \fn
+              * Constructor with required parameters
+              * @param line
+              */
             PdbMatrixN(std::string& line);
 
             //////////////////////////////////////////////////////////
@@ -101,6 +105,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the matrix n contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

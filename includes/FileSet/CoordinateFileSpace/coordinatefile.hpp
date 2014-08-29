@@ -95,7 +95,15 @@ namespace CoordinateFileSpace
               * @param in_file A stream contains whole contents of a coordinate file
               */
             void Read(std::ifstream& in_file);
+            /*! \fn
+              * A function to write back the coordinate file
+              * @param coordinate_file The output file path
+              */
             void Write(const std::string& coordinate_file);
+            /*! \fn
+              * A function to wrtie into a stream that has been created from a file path
+              * @param out_stream The output stream
+              */
             void BuildCoordinateFile(std::ofstream& out_stream);
 
             //////////////////////////////////////////////////////////

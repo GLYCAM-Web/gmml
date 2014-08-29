@@ -26,6 +26,10 @@ namespace PdbFileSpace
               * @param number_of_models
               */
             PdbNumModelCard(const std::string& record_name, int number_of_models);
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
             PdbNumModelCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -65,6 +69,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the model card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

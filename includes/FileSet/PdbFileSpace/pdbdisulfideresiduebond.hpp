@@ -33,6 +33,10 @@ namespace PdbFileSpace
               * @param bond_length
               */
             PdbDisulfideResidueBond(int serial_number, const DisulfideResidueVector residues, double bond_length);
+            /*! \fn
+              * Constructor with required parameters
+              * @param line
+              */
             PdbDisulfideResidueBond(std::string& line);
 
             //////////////////////////////////////////////////////////
@@ -89,6 +93,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the disulfide residue bond contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:
