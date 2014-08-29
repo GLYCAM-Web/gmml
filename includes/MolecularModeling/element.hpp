@@ -161,17 +161,17 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string symbol_;
-            std::string name_;
-            double mass_;
-            double exact_mass_;
-            double ionization_energy_;
-            double election_affinity_;
-            double election_negativity_;
-            double covalent_radius_;
-            double van_der_waals_radius_;
-            double boiling_point_;
-            double melting_point_;
+            std::string symbol_;                    /*!< Chemical symbol for an element >*/
+            std::string name_;                      /*!< Name of an element >*/
+            double mass_;                           /*!< Mass of an element >*/
+            double exact_mass_;                     /*!< Exact mass of an element >*/
+            double ionization_energy_;              /*!< Ionizing energy of an element >*/
+            double election_affinity_;              /*!< Election affinity of an element >*/
+            double election_negativity_;            /*!< Election negativity of an element >*/
+            double covalent_radius_;                /*!< Covalent radius of an element >*/
+            double van_der_waals_radius_;           /*!< Van-der-waals radius of an element >*/
+            double boiling_point_;                  /*!< Boiling point of an element >*/
+            double melting_point_;                  /*!< Melting point of an element >*/
 
     };
 }

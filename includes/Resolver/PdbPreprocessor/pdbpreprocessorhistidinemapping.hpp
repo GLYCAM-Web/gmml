@@ -20,7 +20,17 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorHistidineMapping();
 
-            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, gmml::PdbPreprocessorHISMapping selected_mapping, char residue_insertion_code, char residue_alternate_location);
+            /*! \fn
+              * Constructor to initialized the attributes of an entity of histidine residue
+              * Residues with HIS name are defined as histidine residue
+              * @param chain_id Chain id of the histidine residue
+              * @param residue_sequence_number Sequence number of the histidine residue
+              * @param selected_mapping Selected type of the histidine residue from the all possible types that have been defined in PdbPreprocessorHISMapping enumerator
+              * @param residue_insertion_code Insertion code of the histidine residue
+              * @param residue_alternate_location Alternate location of the histidine residue
+              */
+            PdbPreprocessorHistidineMapping(char chain_id, int residue_sequence_number, gmml::PdbPreprocessorHISMapping selected_mapping,
+                                            char residue_insertion_code, char residue_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -116,11 +126,11 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            gmml::PdbPreprocessorHISMapping selected_mapping_;
-            char residue_insertion_code_;
-            char residue_alternate_location_;
+            char residue_chain_id_;                                 /*!< Chain id of the histidine resiude >*/
+            int residue_sequence_number_;                           /*!< Sequence number of the histidine residue >*/
+            gmml::PdbPreprocessorHISMapping selected_mapping_;      /*!< Selected mapping of the histidine residue >*/
+            char residue_insertion_code_;                           /*!< Insertion code of the histidine residue >*/
+            char residue_alternate_location_;                       /*!< Alternate location of the histidine residue >*/
 
     };
 }

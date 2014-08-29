@@ -21,7 +21,17 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorChainTermination();
-            PdbPreprocessorChainTermination(char chain_id, int starting_sequence_number, int ending_sequence_number, char starting_residue_insertion_code, char ending_residue_insertion_code);
+            /*! \fn
+              * Constructor to initialize the attributes of an entity of a chain termination
+              * (Ter card at the end of each chain determines the termination of that chain)
+              * @param chain_id Chain id of the current chain in order to evaluate
+              * @param starting_sequence_number Sequence number of the first residue in the chain
+              * @param ending_sequence_number Sequence number of the last residue in the chain
+              * @param starting_residue_insertion_code Insertion code of the first residue in the chain
+              * @param ending_residue_insertion_code Insertion code of the last residue in the chain
+              */
+            PdbPreprocessorChainTermination(char chain_id, int starting_sequence_number, int ending_sequence_number,
+                                            char starting_residue_insertion_code, char ending_residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -158,13 +168,13 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_;
-            int starting_residue_sequence_number_;
-            int ending_residue_sequence_number_;
-            gmml::PossibleNChainTermination selected_n_termination_;
-            gmml::PossibleCChainTermination selected_c_termination_;
-            char starting_residue_insertion_code_;
-            char ending_residue_insertion_code_;
+            char residue_chain_id_;                                     /*!< Chain id of the current under processing chain >*/
+            int starting_residue_sequence_number_;                      /*!< Sequence number of the first residue in the chain >*/
+            int ending_residue_sequence_number_;                        /*!< Sequence number of the last residue in the chain >*/
+            gmml::PossibleNChainTermination selected_n_termination_;    /*!< Selected n terminal residue from the all possible n terminals >*/
+            gmml::PossibleCChainTermination selected_c_termination_;    /*!< Selected c terminal residue from the all possible c terminals >*/
+            char starting_residue_insertion_code_;                      /*!< Insertion code of the first residue in the chain >*/
+            char ending_residue_insertion_code_;                        /*!< Insertion code of the last residue in the chain >*/
 
     };
 }

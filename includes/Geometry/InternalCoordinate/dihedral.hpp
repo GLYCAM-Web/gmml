@@ -14,6 +14,9 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of coordinates
+              */
             typedef std::vector<Coordinate*> CoordinateVector;
 
             //////////////////////////////////////////////////////////
@@ -74,8 +77,8 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            CoordinateVector coordinates_;
-            double torsion_;
+            CoordinateVector coordinates_;          /*!< Vector of four coordinates representing a dihedral between four points >*/
+            double torsion_;                        /*!< Torsion between the four points >*/
 
     };
 }

@@ -14,6 +14,9 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of coordinates
+              */
             typedef std::vector<Coordinate*> CoordinateVector;
 
             //////////////////////////////////////////////////////////
@@ -74,8 +77,8 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            CoordinateVector coordinates_;
-            double angle_;
+            CoordinateVector coordinates_;              /*!< Vector of three coordinates representing an angle between three points >*/
+            double angle_;                              /*!< Value of angle between three points >*/
 
     };
 }

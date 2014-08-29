@@ -14,6 +14,9 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of coordinates
+              */
             typedef std::vector<Coordinate*> CoordinateVector;
 
             //////////////////////////////////////////////////////////
@@ -74,8 +77,8 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            CoordinateVector coordinates_;
-            double length_;
+            CoordinateVector coordinates_;              /*!< Vector of two coordinates representing a bond between two points >*/
+            double length_;                             /*!< Length of the bond between two coordinates >*/
 
     };
 }

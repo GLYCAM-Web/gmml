@@ -86,9 +86,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            Atom* atom_;
-            AtomVector node_neighbors_;
-            int id_;
+            Atom* atom_;                        /*!< Pointer back to an atom that this node of graph indicates >*/
+            AtomVector node_neighbors_;         /*!< List of all neighbors of this atom in the graph >*/
+            int id_;                            /*!< An integer number that indicates the id of a node in the graph >*/
 
     };
 }

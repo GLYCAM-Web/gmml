@@ -16,6 +16,16 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorReplacedHydrogen();
+            /*! \fn
+              * Constructor in order to initialize the attributes of an entity of removed/replaced hydrogen atom
+              * @param residue_chain_id Chain id of the residue that the removed/replaced hydrogen atom belongs to
+              * @param atom_serial_number Serial number of the removed/replaced hydrogen atom
+              * @param atom_name Name of the removed/replaced hydrogen atom
+              * @param residue_name Name of the residue that the removed/replaced hydrogen atom belongs to
+              * @param residue_sequence_number Sequence number of the residue that the removed/replaced hydrogen atom belongs to
+              * @param residue_insertion_code Insertion code of the residue that the removed/replaced hydrogen atom belongs to
+              * @param residue_alternate_location Alternate location of the residue that the removed/replaced hydrogen atom belongs to
+              */
             PdbPreprocessorReplacedHydrogen(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number,
                                             char residue_insertion_code, char residue_alternate_location);
 
@@ -118,13 +128,13 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int atom_serial_number_;
-            std::string atom_name_;
-            std::string residue_name_;
-            int residue_sequence_number_;
-            char residue_chain_id_;
-            char residue_insertion_code_;
-            char residue_alternate_location_;
+            int atom_serial_number_;                /*!< Serial number of the removed/replaced hydrogen atom >*/
+            std::string atom_name_;                 /*!< Name of the removed/replaced hydrogen atom >*/
+            std::string residue_name_;              /*!< Name of the residue of the removed/replaced hydrogen atom >*/
+            int residue_sequence_number_;           /*!< Sequence number of the residue that the removed/replaced hydrogen atom belongs to >*/
+            char residue_chain_id_;                 /*!< Chain id of the residue that the removed/replaced hydrogen atom belongs to >*/
+            char residue_insertion_code_;           /*!< Insertion code of the residue that the removed/replaced hydrogen atom belongs to >*/
+            char residue_alternate_location_;       /*!< Alternate location of the residue that the removed/replaced hydrogen atom belongs to >*/
 
     };
 }

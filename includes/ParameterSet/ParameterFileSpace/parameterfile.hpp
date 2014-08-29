@@ -175,17 +175,65 @@ namespace ParameterFileSpace
               * @return A double value of the given key string
               */
             double ProcessDoubleDihedralDescription(const std::string& dscr, const std::string& key);
+            /*! \fn
+              * A function in order to write back a parameter file into an output file
+              * @param parameter_file Parameter output file name
+              */
             void Write(const std::string& parameter_file);
+            /*! \fn
+              * A function that writes back a main parameter file (mostly indicates as dat file) content into an output stream
+              * @param out_stream Main parameter file output stream
+              */
             void BuildMainParameterFile(std::ofstream& out_stream);
+            /*! \fn
+              * A function that writes back a modified parameter file (mostly indicates as frcmod file) content into an output stream
+              * @param out_stream Modified parameter file output stream
+              */
             void BuildModifiedParameterFile(std::ofstream& out_stream);
+            /*! \fn
+              * A function that writes back atom type section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveAtomTypeSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back hydrophilic atom type section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveHydrophilicAtomTypeSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back bond section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveBondSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back angle section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveAngleSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back dihedral section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveDihedralSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back improper dihedral section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveImproperDihedralSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back hydrogen bond section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveHydrogenBondSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back equivalent symbols section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolveEquivalentSymbolsSection(std::ofstream& stream);
+            /*! \fn
+              * A function that writes back potential parameter section of a parameter file into an output stream
+              * @param stream Parameter file output stream
+              */
             void ResolvePotentialParameterSection(std::ofstream& stream);
 
             //////////////////////////////////////////////////////////
@@ -208,7 +256,7 @@ namespace ParameterFileSpace
             BondMap bonds_;              /*!< A collection of mapping between bond (double atom types) and its attributes*/
             AngleMap angles_;            /*!< A collection of mapping between angle (tripple atom types) and its attributes*/
             DihedralMap dihedrals_;      /*!< A collection of mapping between dihedral (quad atom types) and its attributes*/
-            int file_type_;
+            int file_type_;              /*!< An integer number that indicates main parameter file and modified one from each other >*/
 
     };
 }

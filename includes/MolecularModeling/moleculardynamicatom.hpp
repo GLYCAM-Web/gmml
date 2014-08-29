@@ -83,10 +83,10 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string atom_type_;
-            double charge_;
-            double mass_;
-            double radius_;
+            std::string atom_type_;             /*!< Atom type >*/
+            double charge_;                     /*!< Charge of the atom >*/
+            double mass_;                       /*!< Mass of the atom >*/
+            double radius_;                     /*!< Radius of the atom >*/
 
     };
 }

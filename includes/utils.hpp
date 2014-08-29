@@ -15,7 +15,11 @@
 
 namespace gmml
 {
-    /// Removes spaces on both sides of the string.
+    /*! \fn
+      * Removes spaces on both sides of the string.
+      * @param str String with spaces either in the beginning or at the end
+      * @return Given string without spaces appeared in the beginning or at the end in the original one
+      */
     inline std::string& Trim(std::string& str)
     {
         str.erase(str.find_last_not_of(" ") + 1);
@@ -23,18 +27,32 @@ namespace gmml
         return str;
     }
 
-    /// Removes quotation marks from the begining and the end of the given string
+    /*! \fn
+      * Removes quotation marks from the begining and the end of the given string
+      * @param @param str String with qouates
+      * @return Given string without qouates appeared in the original one
+      */
     inline void RemoveQuotes(std::string& str)
     {
         str.erase(std::remove(str.begin(), str.end(), '\"'), str.end());
     }
 
-    /// Removes all spaces existing in the given string
+    /*! \fn
+      * Removes all spaces existing in the given string
+      * @param str String with space characters in it (anywhere in the string)
+      * @return String without any space in between
+      */
     inline void RemoveSpaces(std::string& str)
     {
         str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
     }
 
+    /*! \fn
+      * Split a line (series of characters) with the given delimiter
+      * @param line Input string in order to be split by the given delimiter
+      * @param delim Series of delimiters (each delimiter character is followed by the next one in a single string variable) in order to split the given string
+      * @return Vector of elements of the given string that have been split by the given delimiter(s)
+      */
     inline std::vector<std::string> Split(std::string line, std::string delim)
     {
         boost::char_separator<char> separator(delim.c_str());
@@ -44,7 +62,11 @@ namespace gmml
         return vectorTokens;
     }
 
-    /// String convertor
+    /*! \fn
+      * Convert string to the defined type
+      * @param str String that has to be converted to the defined type
+      * @return The given type version of the given string
+      */
     template<typename T>
     inline T ConvertString(const std::string& str) {
         T val;
@@ -56,7 +78,12 @@ namespace gmml
         throw std::invalid_argument("ConvertString: invalid conversion of string " + str);
     }
 
-    /// Expand a given line to a desired length by adding space at the end of the original one
+    /*! \fn
+      * Expand a given line to a desired length by adding space at the end of the original one
+      * @param line A line that have to be in a defined length
+      * @param length Thel fixed length that the line has to be
+      * @return An expanded line into the given length
+      */
     inline std::string& ExpandLine(std::string& line, int length)
     {
         if((int)line.length() >= length)
@@ -71,6 +98,11 @@ namespace gmml
         }
     }
 
+    /*! \fn
+      * Convert string version of input file type to the corresponding enum value
+      * @param type String indicates input file type
+      * @return A value selected from InputFileType enumerator correspondence to the given string
+      */
     inline InputFileType ConvertString2AssemblyInputFileType(std::string type)
     {
         if(type.compare("PDB") == 0)
@@ -87,6 +119,12 @@ namespace gmml
             return MULTIPLE;
         return UNKNOWN;
     }
+
+    /*! \fn
+      * Convert a value of InputFileType enumerator to the string version of it
+      * @param type A value of InputFileType has to be converted to string
+      * @return String format of the given InputFileType enumerator
+      */
     inline std::string ConvertAssemblyInputFileType2String(InputFileType type)
     {
         switch(type)
@@ -110,6 +148,11 @@ namespace gmml
         }
     }
 
+    /*! \fn
+      * Convert string version of assembly building structure option to the corresponding enum value
+      * @param type String indicates assembly building structure option
+      * @return A value selected from AssemblyBuildingStructureOption enumerator correspondence to the given string
+      */
     inline BuildingStructureOption ConvertString2AssemblyBuildingStructureOption(std::string option)
     {
         if(option.compare("Distance") == 0)
@@ -122,6 +165,11 @@ namespace gmml
             return DISTANCE;
     }
 
+    /*! \fn
+      * Convert a value of AssemblyBuildingStrucutreOption enumerator to the string version of it
+      * @param type A value of AssemblyBuildingStrucutreOption has to be converted to string
+      * @return String format of the given value of AssemblyBuildingStrucutreOption enumerator
+      */
     inline std::string ConvertAssemblyBuildingStructureOption2String(BuildingStructureOption option)
     {
         switch(option)
@@ -137,11 +185,24 @@ namespace gmml
         }
     }
 
+    /*! \fn
+      * Convert degree to radian
+      * @param degree Magnitude of an angle in degree
+      * @return Magnitude of the given angle in radian
+      */
     inline double ConvertDegree2Radian(double degree)
     {
         return degree/PI_DEGREE*gmml::PI_RADIAN;
     }
 
+    /*! \fn
+      * Convert internal coordinate to the corresponding cartesian coordinate
+      * @param coordinate_list List of at most three internal coordinates in order to calculate the cartesian coordinate of the given internal coordinate (distance, angle, torsion)
+      * @param distance X value of the internal coordinate
+      * @param angle Y value of the interanl coordinate
+      * @param torsion Z value of the internal coordinate
+      * @return Cartesian coordinate of the internal coordinate (distance, angle, torsion)
+      */
     inline Geometry::Coordinate* ConvertInternalCoordinate2CartesianCoordinate(std::vector<Geometry::Coordinate*> coordinate_list, double distance, double angle, double torsion)
     {
         if(coordinate_list.size() == 0)

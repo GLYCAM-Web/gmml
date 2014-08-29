@@ -26,16 +26,50 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of disulfide bonds
+              */
             typedef std::vector<PdbPreprocessorDisulfideBond*> PdbPreprocessorDisulfideBondVector;
+            /*! \typedef
+              * List of chain terminations
+              */
             typedef std::vector<PdbPreprocessorChainTermination*> PdbPreprocessorChainTerminationVector;
+            /*! \typedef
+              * List of histidine residues
+              */
             typedef std::vector<PdbPreprocessorHistidineMapping*> PdbPreprocessorHistidineMappingVector;
+            /*! \typedef
+              * List of missing residues (gaps)
+              */
             typedef std::vector<PdbPreprocessorMissingResidue*> PdbPreprocessorMissingResidueVector;
+            /*! \typedef
+              * List of unrecognized residues
+              */
+
             typedef std::vector<PdbPreprocessorUnrecognizedResidue*> PdbPreprocessorUnrecognizedResidueVector;
+            /*! \typedef
+              * List of Recognized residues
+              */
             typedef std::vector<PdbPreprocessorUnrecognizedResidue*> PdbPreprocessorRecognizedResidueVector;
+            /*! \typedef
+              * List of unrecognized heavy atoms
+              */
             typedef std::vector<PdbPreprocessorUnrecognizedHeavyAtom*> PdbPreprocessorUnrecognizedHeavyAtomVector;
+            /*! \typedef
+              * List of replaced/removed hydrogen atoms
+              */
             typedef std::vector<PdbPreprocessorReplacedHydrogen*> PdbPreprocessorReplacedHydrogenVector;
+            /*! \typedef
+              * A mapping between residue chain id and its sequence number in that chain
+              */
             typedef std::map<char, std::vector<int> > PdbPreprocessorChainIdSequenceNumbersMap;
+            /*! \typedef
+              * A mapping between residue chian id and its insertion code in that chain
+              */
             typedef std::map<char, std::vector<char> > PdbPreprocessorChainIdInsertionCodeMap;
+            /*! \typedef
+              * A mapping between residue key with alternate location(s) and its corresponding alternate residue object(s)
+              */
             typedef std::map<std::string, PdbPreprocessorAlternateResidue*> PdbPreprocessorAlternateResidueMap;
 
 
@@ -442,8 +476,19 @@ namespace PdbPreprocessorSpace
               */
             void RemoveUnselectedAlternateResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map);
 
+            /*! \fn
+              * A function to do all preprocessing sequentially
+              * @param pdb_file_path Path of a pdb file that has to be preprocessed
+              * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
+              * @param prep_files_path Paths of prep files as database in order for preprocessing of the given pdb file
+              */
             void Preprocess(std::string pdb_file_path, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
 
+            /*! \fn
+              * A function to apply all the updates on a pdb file
+              * @param pdb_file A pdb file object that has to modified to reflect the updates
+              * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
+              */
             void ApplyPreprocessing(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -459,15 +504,15 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            PdbPreprocessorDisulfideBondVector disulfide_bonds_;
-            PdbPreprocessorChainTerminationVector chain_terminations_;
-            PdbPreprocessorHistidineMappingVector histidine_mappings_;
-            PdbPreprocessorMissingResidueVector missing_residues_;
-            PdbPreprocessorUnrecognizedResidueVector unrecognized_residues_;
-            PdbPreprocessorRecognizedResidueVector recognized_residues_;
-            PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms_;
-            PdbPreprocessorReplacedHydrogenVector replaced_hydrogens_;
-            PdbPreprocessorAlternateResidueMap alternate_residue_map_;
+            PdbPreprocessorDisulfideBondVector disulfide_bonds_;                    /*!< List of detected disulfide bonds in a pdb file >*/
+            PdbPreprocessorChainTerminationVector chain_terminations_;              /*!< List of chains detected in a pdb file >*/
+            PdbPreprocessorHistidineMappingVector histidine_mappings_;              /*!< List of histidine residues detected in a pdb file >*/
+            PdbPreprocessorMissingResidueVector missing_residues_;                  /*!< List of gaps (missing residues) detected in a pdb file >*/
+            PdbPreprocessorUnrecognizedResidueVector unrecognized_residues_;        /*!< List of unrecognized residues detected in a pdb file >*/
+            PdbPreprocessorRecognizedResidueVector recognized_residues_;            /*!< List of recognized residues detected in a pdb file >*/
+            PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms_;   /*!< List of unrecognized heavy atoms detected in a pdb file >*/
+            PdbPreprocessorReplacedHydrogenVector replaced_hydrogens_;              /*!< List of removed/replaced hydrogen atoms detected in a pdb file >*/
+            PdbPreprocessorAlternateResidueMap alternate_residue_map_;              /*!< Map of alternate residues detected in a pdb file >*/
 
     };
 }

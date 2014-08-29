@@ -85,11 +85,36 @@ namespace Geometry
               */
             double Distance(Coordinate coordinate);
 
+            /*! \fn
+              * Calculate the length of the vector
+              * @return Length of the vector
+              */
             double length();
+            /*! \fn
+              * Normalize the vector and update it on the current object
+              */
             void Normalize();
+            /*! \fn
+              * Calculate the dot product of current object and the given one
+              * @param coordinate Second vector in the dot product operator
+              * @return Dot product value of two vectors
+              */
             double DotProduct(Coordinate coordinate);
+            /*! \fn
+              * Calculate the vector from cross producting the current object and the given one
+              * @param coordinate Second vector in the cross product operator
+              * @return Cross product vector of two vectors
+              */
             void CrossProduct(Coordinate coordinate);
+            /*! \fn
+              * Add current object to the given one and update the current one
+              * @param coordinate Second vector in the add operator
+              */
             void operator+(Coordinate coordinate);
+            /*! \fn
+              * Subtract current object to the given one and update the current one
+              * @param coordinate Second vector in the subtract operator
+              */
             void operator-(Coordinate coordinate);
 
             //////////////////////////////////////////////////////////

@@ -17,6 +17,19 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorDisulfideBond();
 
+            /*! \fn
+              * Constructor to initialize attributes of an entity of a disulfide bond
+              * @param chain_id_1 Chain id of one of the CYS residues involved in a disulfide bond
+              * @param chain_id_2 Chain id of the other CYS residue invoved in a disulfide bond
+              * @param residue_sequence_number_1 Sequence number of the first CYS residue involved in a disulfide bond
+              * @param residue_sequence_number_2 Sequence number of the second CYS residue involved in a disulfide bond
+              * @param distance The distance between the two sulfor atom in each CYS residue
+              * @param is_bonded Option to bond/unbond the two CYS residues in a disulfide bond
+              * @param residue_insertion_code_1 Insertion code of the first CYS residue invloved in a disulfide bond
+              * @param residue_indersion_code_2 Insertion code of the second CYS residue involved in a disulfide bond
+              * @param residue_alternate_location_1 Alternate location of the first CYS residue involved in a disulfide bond
+              * @param resiude_alternate_location_2 Alternate location of the second CYS residue involved in a disulfide bond
+              */
             PdbPreprocessorDisulfideBond(char chain_id_1, char chain_id_2, int residue_sequence_number_1, int residue_sequence_number_2, double distance, bool is_bonded,
                                          char residue_insertion_code_1, char residue_insertion_code_2, char residue_alternate_location_1, char residue_alternate_location_2);
 
@@ -153,16 +166,16 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_1_;
-            char residue_chain_id_2_;
-            int residue_sequence_number_1_;
-            int residue_sequence_number_2_;
-            double distance_;
-            bool is_bonded_;
-            char residue_insertion_code_1_;
-            char residue_insertion_code_2_;
-            char residue_alternate_location_1_;
-            char residue_alternate_location_2_;
+            char residue_chain_id_1_;                   /*!< Chian id of one of the CYS residues involved in the disulfide bond >*/
+            char residue_chain_id_2_;                   /*!< Chain id of the other CYS residue involved in the disulfide bond >*/
+            int residue_sequence_number_1_;             /*!< Sequence number of the first CYS residue invloved in the disulfide bond >*/
+            int residue_sequence_number_2_;             /*!< Sequence number of the second CYS residue involved in the disulfide bond >*/
+            double distance_;                           /*!< The distance between the two sulfor atoms in each CYS residue that are involved in the disulfide bond >*/
+            bool is_bonded_;                            /*!< Option to bond/unbond the two CYS residues involved in the disulfide bond >*/
+            char residue_insertion_code_1_;             /*!< Insertion code of the first CYS residue involved in the disulfide bond >*/
+            char residue_insertion_code_2_;             /*!< Insertion code of the second CYS residue involved in the disulfide bond >*/
+            char residue_alternate_location_1_;         /*!< Alternate location of the first CYS residue involved in the disulfide bond >*/
+            char residue_alternate_location_2_;         /*!< Alternate location of the second CYS residue involved in the disulfide bond >*/
 
     };
 }

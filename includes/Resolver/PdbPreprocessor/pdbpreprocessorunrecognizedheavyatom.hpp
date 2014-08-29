@@ -16,6 +16,16 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorUnrecognizedHeavyAtom();
+            /*! \fn
+              * Constructor to initialized essential attributes of an unrecognized heavy atom
+              * @param residue_chain_id Chain id of the residue that the heavy atom belongs to
+              * @param atom_serial_number Serial number of the heavy atom
+              * @param atom_name Name of the heavy atom
+              * @param residue_name Name of residue that the heavy atom belongs to
+              * @param residue_sequence_number Sequence number of the residue that the heavy atom belongs to
+              * @param residue_insertion_code Insersion code of the residue that the heavy atom belongs to
+              * @param residue_alternate_location Alternate location of the residue that the heavy atom belongs to
+              */
             PdbPreprocessorUnrecognizedHeavyAtom(char residue_chain_id, int atom_serial_number, std::string atom_name, std::string residue_name, int residue_sequence_number,
                                                  char residue_insertion_code, char residue_alternate_location);
 
@@ -118,13 +128,13 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_;
-            int atom_serial_number_;
-            std::string atom_name_;
-            std::string residue_name_;
-            int residue_sequence_number_;
-            char residue_insertion_code_;
-            char residue_alternate_location_;
+            char residue_chain_id_;                 /*!< Chain id of the residue of the unrecognized heavy atom >*/
+            int atom_serial_number_;                /*!< Serial number of the unrecognized heavy atom >*/
+            std::string atom_name_;                 /*!< Name of the unrecognized heavy atom >*/
+            std::string residue_name_;              /*!< Name of the residue of the unrecognized heavy atom >*/
+            int residue_sequence_number_;           /*!< Sequence number of the residue of the unrecognized heavy atom >*/
+            char residue_insertion_code_;           /*!< Insertion code of the residue of the unrecognized heavy atom >*/
+            char residue_alternate_location_;       /*!< Alternate location of the residue of the unrecognized heavy atom >*/
 
     };
 }
