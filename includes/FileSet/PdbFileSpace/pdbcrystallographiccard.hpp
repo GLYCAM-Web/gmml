@@ -144,8 +144,6 @@ namespace PdbFileSpace
               */
             void Print(std::ostream& out = std::cout);
 
-
-
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //

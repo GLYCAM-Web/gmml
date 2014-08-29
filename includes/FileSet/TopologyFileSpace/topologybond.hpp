@@ -19,7 +19,11 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyBond();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param bonds
+              * @param residue_names
+              */
             TopologyBond(std::vector<std::string> bonds, std::vector<std::string> residue_names );
 
             //////////////////////////////////////////////////////////

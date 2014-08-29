@@ -55,6 +55,10 @@ namespace PdbFileSpace
               */
             PdbHelix(const std::string& helix_id, int helix_serial_number, HelixResidueVector helix_residues,
                      PdbHelixClass helix_class, const std::string& comment, double helix_length);
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
             PdbHelix(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -144,6 +148,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the helix contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

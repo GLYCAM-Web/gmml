@@ -34,6 +34,10 @@ namespace PdbFileSpace
               */
             PdbHeterogen(const std::string& heterogen_id, char chain_identifier, int sequence_number,
                          char insertion_code, int number_of_heterogen_atoms, const std::string& dscr);
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
             PdbHeterogen(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -117,6 +121,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the heterogen contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

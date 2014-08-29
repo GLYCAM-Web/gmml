@@ -11,7 +11,6 @@
 namespace PdbFileSpace
 {
     class PdbCompoundSpecification;
-
     class PdbCompoundCard
     {
         public:

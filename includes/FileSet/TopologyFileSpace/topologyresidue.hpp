@@ -25,7 +25,12 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyResidue();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param residue_name
+              * @param atoms
+              * @param starting_atom_index
+              */
             TopologyResidue(std::string residue_name, TopologyAtomMap atoms, int index, int starting_atom_index);
 
             //////////////////////////////////////////////////////////
@@ -41,9 +46,12 @@ namespace TopologyFileSpace
               * @return atoms_ attribute of the current object of this class
               */
             TopologyAtomMap GetAtoms();
-
+            /*! \fn
+              * An accessor function in order to access to an atom of the current object using index
+              * @param index Index of the desired atom
+              * @return atom Atom of the current object with the given index
+              */
             TopologyAtom* GetAtomByIndex(int index);
-
             /*! \fn
               * An accessor function in order to access to the index
               * @return index_ attribute of the current object of this class

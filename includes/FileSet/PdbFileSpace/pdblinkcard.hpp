@@ -28,6 +28,10 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbLinkCard();
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
             PdbLinkCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -73,6 +77,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the link card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

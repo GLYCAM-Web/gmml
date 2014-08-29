@@ -16,7 +16,14 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbResidue();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param residue_name
+              * @param chain_id
+              * @param sequence_number
+              * @param insertion_code
+              * @param residue_alternate_location
+              */
             PdbResidue(std::string residue_name, char chain_id, int sequence_number, char insertion_code = ' ', char residue_alternate_location = ' ');
 
             //////////////////////////////////////////////////////////

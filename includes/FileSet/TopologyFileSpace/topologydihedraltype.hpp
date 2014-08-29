@@ -17,7 +17,15 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyDihedralType();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param index
+              * @param force_constant
+              * @param periodicity
+              * @param phase
+              * @param scee
+              * @param scnb
+              */
             TopologyDihedralType(int index, double force_constant, double periodicity, double phase, double scee, double scnb);
 
             //////////////////////////////////////////////////////////

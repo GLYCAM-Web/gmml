@@ -28,6 +28,10 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbModelCard();
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
             PdbModelCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -67,6 +71,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the model card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

@@ -17,7 +17,12 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyAngleType();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param index
+              * @param force_constant
+              * @param equilibrium_value
+              */
             TopologyAngleType(int index, double force_constant, double equilibrium_value);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

@@ -28,6 +28,10 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbSite();
+            /*! \fn
+              * Constructor with required parameters
+              * @param site_block
+              */
             PdbSite(std::stringstream& site_block);
 
             //////////////////////////////////////////////////////////
@@ -84,6 +88,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the pdb site contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

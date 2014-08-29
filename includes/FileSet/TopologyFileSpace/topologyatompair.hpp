@@ -22,7 +22,13 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyAtomPair();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param pair_type
+              * @param coefficient_a
+              * @param coefficient_b
+              * @param index
+              */
             TopologyAtomPair(std::string pair_type, double coefficient_a, double coefficient_b, int index);
 
             //////////////////////////////////////////////////////////

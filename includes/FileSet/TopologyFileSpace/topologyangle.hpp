@@ -19,7 +19,11 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyAngle();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param angle_atoms
+              * @param residue_names
+              */
             TopologyAngle(std::vector<std::string> angle_atoms, std::vector<std::string> residue_names);
 
             //////////////////////////////////////////////////////////
