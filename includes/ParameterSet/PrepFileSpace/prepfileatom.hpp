@@ -140,8 +140,22 @@ namespace PrepFileSpace
               * @return charge_ of the current object of this class
               */
             double GetCharge();
+            /*! \fn
+              * Convert a value of TopologicalType enumerator to the string version of it
+              * @param topological_type A value of TopologicalType has to be converted to string
+              * @return String format of the given value of TopologicalType enumerator
+              */
             std::string GetStringFormatOfTopologicalType(TopologicalType topological_type);
+            /*! \fn
+              * Convert the value of TopologicalType attribute of the current object (topological_type_) to the string version of it
+              * @return String format of the value of topological_type_ attribute of the current object
+              */
             std::string GetStringFormatOfTopologicalType();
+            /*! \fn
+              * Convert string version of TopologicalType to the corresponding enum value
+              * @param topological_type String indicates TopologicalType
+              * @return A value selected from TopologicalType enumerator correspondence to the given string
+              */
             TopologicalType GetTopologicalTypeFromString(std::string topological_type);
 
             //////////////////////////////////////////////////////////

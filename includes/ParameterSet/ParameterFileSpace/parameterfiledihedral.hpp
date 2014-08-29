@@ -20,11 +20,11 @@ namespace ParameterFileSpace
               */
             ParameterFileDihedral();
             /*! \fn
-              * Constructor with essential parameters
+              * Constructor to initialize the attributes of a dihedral that exists in a prep file
               * @param types Vector of four atom types involving in a dihedral
               * @param term Set of parameters according to a dihedral
-              * @param scee
-              * @param scnb
+              * @param scee A float number that indicates scee coefficient of a dihedral
+              * @param scnb A float number that indicates scnb coefficient of a dihedral
               * @param is_generic Boolean value to distinguish between generic and non-generic dihedrals
               * @param is_improper Boolean value to distinguish between proper and improper dihedrals
               */

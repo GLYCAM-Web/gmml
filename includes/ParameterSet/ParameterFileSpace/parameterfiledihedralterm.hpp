@@ -17,12 +17,12 @@ namespace ParameterFileSpace
               */
             ParameterFileDihedralTerm();
             /*! \fn
-              * Constructor with essential parameters
-              * @param factor
-              * @param force_constant
-              * @param phase
-              * @param periodicity
-              * @param dscr
+              * Constructor to initialized the attributes of a dihedral in a parameter file
+              * @param factor An integer number that indicates the value of factor of a dihedral
+              * @param force_constant A float number that indicates the value of force constant of a dihedral
+              * @param phase A float number that indicates the value of phase of a dihedral
+              * @param periodicity A float number that indicates the value of priodicity of a dihedral
+              * @param dscr A short description for a dihedral
               */
             ParameterFileDihedralTerm(int factor, double force_constant, double phase, double periodicity, const std::string& dscr = "");
 

@@ -64,7 +64,15 @@ namespace PrepFileSpace
               * @param in_file A stream contains whole contents of a prep file
               */
             PrepFileResidue* ProcessResidueSection(std::ifstream& in_file);
+            /*! \fn
+              * A function in order to write back a prep file into an output file
+              * @param prep_file Output prep file name
+              */
             void Write(const std::string& prep_file);
+            /*! \fn
+              * A function in order to write sections of a prep file in an output stream in order for writing into an output file
+              * @param out_stream Output stream
+              */
             void BuildPrepFile(std::ofstream& out_stream);
 
             //////////////////////////////////////////////////////////

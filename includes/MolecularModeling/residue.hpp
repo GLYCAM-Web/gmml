@@ -154,14 +154,14 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            Assembly* assembly_;
-            std::string name_;
-            AtomVector atoms_;
-            AtomVector head_atoms_;
-            AtomVector tail_atoms_;
-            std::string chemical_type_;
-            std::string description_;
-            std::string id_;
+            Assembly* assembly_;                /*!< Pointer back to the assembly that the current residue belongs to >*/
+            std::string name_;                  /*!< Name of residue >*/
+            AtomVector atoms_;                  /*!< List of atoms building the residue >*/
+            AtomVector head_atoms_;             /*!< List of head atoms in the residue >*/
+            AtomVector tail_atoms_;             /*!< List of tail atoms in the residue >*/
+            std::string chemical_type_;         /*!< A descriptor in order to describe chemical type of the residue >*/
+            std::string description_;           /*!< A short description of the residue >*/
+            std::string id_;                    /*!< An identifier for a residue that is generated based on the type of the given file from which the structure has to be built >*/
 
     };
  }

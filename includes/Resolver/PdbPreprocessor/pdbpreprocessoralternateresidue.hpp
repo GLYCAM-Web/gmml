@@ -18,8 +18,18 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorAlternateResidue();
 
-            PdbPreprocessorAlternateResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code, std::vector<char> residue_alternate_location,
-                                            std::vector<bool> selected_alternate_location);
+            /*! \fn
+              * Constructor to initialize the attributes of an entity of an alternate resiude
+              * (Residues with same description and different alternate location attributes are declared as alternate residues)
+              * @param residue_name Name of residue that has alternate location(s)
+              * @param chain_id Chain id of the residue with alternate location(s)
+              * @param sequence_number Sequence number of the residue with alternate location(s)
+              * @param residue_insertion_code Insertion code of the residue with alternate location(s)
+              * @param residue_alternate_location List of alternate locations that the residue has
+              * @param selected_alternate_location List of true/false values corresponding to each alternate location that indicates which one is selected
+              */
+            PdbPreprocessorAlternateResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code,
+                                            std::vector<char> residue_alternate_location, std::vector<bool> selected_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -109,12 +119,12 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            std::string residue_name_;
-            char residue_insertion_code_;
-            std::vector<char> residue_alternate_location_;
-            std::vector<bool> selected_alternate_location_;
+            char residue_chain_id_;                             /*!< Chain id of a residue with alternate location(s) >*/
+            int residue_sequence_number_;                       /*!< Sequence number of a residue with alternate location(s) >*/
+            std::string residue_name_;                          /*!< Name of the residue with alternate location(s) >*/
+            char residue_insertion_code_;                       /*!< Insertion code of the residue with alternate location(s) >*/
+            std::vector<char> residue_alternate_location_;      /*!< List of alternate locations of the residue with different possible location(s) >*/
+            std::vector<bool> selected_alternate_location_;     /*!< List of true/false values that indicate which one of the alternate location(s) is selected *>/
 
     };
 }

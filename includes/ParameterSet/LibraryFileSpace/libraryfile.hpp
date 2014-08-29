@@ -76,21 +76,99 @@ namespace LibraryFileSpace
               * @return library_file_residue
               */
             LibraryFileResidue* GetLibraryResidueByResidueName(std::string residue_name);
+            /*! \fn
+              * A function to write back a library file into an output file
+              * @param library_file Library output file name
+              */
             void Write(const std::string& library_file);
+            /*! \fn
+              * A function to write a library file into an output stream
+              * @param out_stream Output stream
+              */
             void BuildLibraryFile(std::ofstream& out_stream);
+            /*! \fn
+              * A function in order to write the atom section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveAtomSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the atom pert info section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveAtomPertInfoSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the bound box section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveBoundBoxSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the child sequence section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveChildSequenceSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the connect section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveConnectSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the connectivity section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveConnectivitySection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the hierarchy section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveHierarchySection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the name section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveNameSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the position section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolvePositionSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the residue connect section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveResidueConnectSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the residues section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveResiduesSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the residue pdb sequence number section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveResiduePdbSequenceNumberSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the solvent cap section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveSolventCapSection(std::ofstream& stream, LibraryFileResidue* residue);
+            /*! \fn
+              * A function in order to write the velocities section of a specified residue into an output stream
+              * @param stream Output stream
+              * @param residue Specified residue in the library file that has to be written into an output stream
+              */
             void ResolveVelocitiesSection(std::ofstream& stream, LibraryFileResidue* residue);
 
             //////////////////////////////////////////////////////////

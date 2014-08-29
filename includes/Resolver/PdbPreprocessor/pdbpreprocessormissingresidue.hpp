@@ -19,7 +19,19 @@ namespace PdbPreprocessorSpace
               * Default constructor
               */
             PdbPreprocessorMissingResidue();
-            PdbPreprocessorMissingResidue(char chain_id, int start_index, int end_index, int index_before_gap, int index_after_gap, char starting_residue_insertion_code, char ending_residue_insertion_code);
+            /*! \fn
+              * Constructor to initialized the attributes of an entity of missing residue in a pdb file
+              * (absence of some sequence number in the middle of a chain defined as gap)
+              * @param chain_id Chain id of the missing residue
+              * @param start_index Sequence number of the first residue in a chain
+              * @param end_index Sequence number of the last residue in a chain
+              * @param index_before_gap Sequence number of the residue that is placed before the gap
+              * @param index_after_gap Sequence number of the resiude that is placed after the gap
+              * @param starting_residue_insertion_code Insertion code of the residue that is placed before gap
+              * @param ending_residue_insertion_code Insertion code of the residue that is placed after gap
+              */
+            PdbPreprocessorMissingResidue(char chain_id, int start_index, int end_index, int index_before_gap, int index_after_gap,
+                                          char starting_residue_insertion_code, char ending_residue_insertion_code);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -70,13 +82,38 @@ namespace PdbPreprocessorSpace
               */
             char GetEndingResidueInsertionCode();
 
+            /*! \fn
+              * Convert a selected value of PossibleNChainTermination enumerator (selected_n_termination_) to the string version of it
+              */
             std::string GetStringFormatOfSelectedNTermination();
+
+            /*! \fn
+              * Convert a selected value of PossibleCChainTermination enumerator (selected_c_termination_) to the string version of it
+              */
             std::string GetStringFormatOfSelectedCTermination();
 
+            /*! \fn
+              * Convert a value of PossibleNChainTermination enumerator to the string version of it
+              * @param n_termination A value of PossibleNChainTermination has to be converted to string
+              * @return String format of the given PossibleNChainTermination enumerator
+              */
             std::string GetStringFormatOfNTermination(gmml::PossibleNChainTermination n_termination);
+            /*! \fn
+              * Convert a value of PossibleCChainTermination enumerator to the string version of it
+              * @param c_termination A value of PossibleCChainTermination has to be converted to string
+              * @return String format of the given PossibleCChainTermination enumerator
+              */
             std::string GetStringFormatOfCTermination(gmml::PossibleCChainTermination c_termination);
 
+            /*! \fn
+              * Convert all values of PossibleNChainTermination enumerator to the string version of them
+              * @return Vector of string formats of the all entries of PossibleNChainTermination enumerator
+              */
             std::vector<std::string> GetAllPossibleNChainTerminationAsString();
+            /*! \fn
+              * Convert all values of PossibleCChainTermination enumerator to the string version of them
+              * @return Vector of string formats of the all entries of PossibleCChainTermination enumerator
+              */
             std::vector<std::string> GetAllPossibleCChainTerminationAsString();
 
             //////////////////////////////////////////////////////////
@@ -151,15 +188,15 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_;
-            int starting_residue_sequence_number_;
-            int ending_residue_sequence_number_;
-            int residue_before_gap_;
-            int residue_after_gap_;
-            gmml::PossibleNChainTermination selected_n_termination_;
-            gmml::PossibleCChainTermination selected_c_termination_;
-            char starting_residue_insertion_code_;
-            char ending_residue_insertion_code_;
+            char residue_chain_id_;                                         /*!< Chain id of the chian that the missing residue belongs to >*/
+            int starting_residue_sequence_number_;                          /*!< Sequence number of the first residue in the chain >*/
+            int ending_residue_sequence_number_;                            /*!< Sequence number of the last residue in the chain >*/
+            int residue_before_gap_;                                        /*!< Sequence number of the resiude that is placed before the gap (missing residue) >*/
+            int residue_after_gap_;                                         /*!< Sequence number of the residue that is placed after the gap (missing residue) >*/
+            gmml::PossibleNChainTermination selected_n_termination_;        /*!< Selected n terminal residue from the possible n terminals for the detected gap >*/
+            gmml::PossibleCChainTermination selected_c_termination_;        /*!< Selected c terminal residue from the possible c terminals for the detected gap >*/
+            char starting_residue_insertion_code_;                          /*!< Insertion code of the residue that is placed before the gap >*/
+            char ending_residue_insertion_code_;                            /*!< Insertion code of the tesidue that is placed after the gap >*/
 
     };
 }

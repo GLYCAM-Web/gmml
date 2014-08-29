@@ -40,16 +40,25 @@ namespace PrepFileSpace
             //////////////////////////////////////////////////////////
             //                     TYPE DEFINITION                  //
             //////////////////////////////////////////////////////////
-            /*! \def
+            /*! \typedef
               * A mapping between two indices of atoms indicates a loop
               */
             typedef std::map<int, int> Loop;
-            /*! \def
+            /*! \typedef
               * A collection of four atom types
               */
             typedef std::vector<std::string> Dihedral;
+            /*! \typedef
+              * List of prep file atoms
+              */
             typedef std::vector<PrepFileAtom*> PrepFileAtomVector;
+            /*! \typedef
+              * List of dihedrals
+              */
             typedef std::vector<Dihedral> DihedralVector;
+            /*! \typedef
+              * Mapping between an atom index and atom indices that are bonded to it
+              */
             typedef std::map<int, std::vector<int> > BondedAtomIndexMap;
 
             //////////////////////////////////////////////////////////
@@ -217,24 +226,110 @@ namespace PrepFileSpace
               * @return atom_name name of prep atom
               */
             std::string GetAtomNameByIndex(int atom_index);
+            /*! \fn
+              * Convert a value of CoordinateType enumerator to the string version of it
+              * @param coordinate_type A value of CoordinateType has to be converted to string
+              * @return String format of the given value of CoordinateType enumerator
+              */
             std::string GetStringFormatOfCoordinateType(CoordinateType coordinate_type);
+            /*! \fn
+              * Convert the value of CoordinateType attribute of the current object (coordinate_type_) to the string version of it
+              * @return String format of the value of coordinate_type_ attribute of the current object
+              */
             std::string GetStringFormatOfCoordinateType();
+            /*! \fn
+              * Convert a value of OutputFormat enumerator to the string version of it
+              * @param output_format A value of OutputFormat has to be converted to string
+              * @return String format of the given value of OutputFormat enumerator
+              */
             std::string GetStringFromatOfOutputFormat(OutputFormat output_format);
+            /*! \fn
+              * Convert the value of OutputFormat attribute of the current object (output_format_) to the string version of it
+              * @return String format of the value of output_format_ attribute of the current object
+              */
             std::string GetStringFromatOfOutputFormat();
+            /*! \fn
+              * Convert a value of GeometryType enumerator to the string version of it
+              * @param geometry_type A value of GeometryType has to be converted to string
+              * @return String format of the given value of GeometryType enumerator
+              */
             std::string GetStringFormatOfGeometryType(GeometryType geometry_type);
+            /*! \fn
+              * Convert the value of GeometryType attribute of the current object (geometry_type_) to the string version of it
+              * @return String format of the value of geometry_type_ attribute of the current object
+              */
             std::string GetStringFormatOfGeometryType();
+            /*! \fn
+              * Convert a value of DummyAtomPosition enumerator to the string version of it
+              * @param dummy_atom_position A value of DummyAtomPosition has to be converted to string
+              * @return String format of the given value of DummyAtomPosition enumerator
+              */
             std::string GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position);
+            /*! \fn
+              * Convert the value of DummyAtomPosition attribute of the current object (dummy_atom_position_) to the string version of it
+              * @return String format of the value of dummy_atom_position_ attribute of the current object
+              */
             std::string GetStringFormatOfDummyAtomPosition();
+            /*! \fn
+              * Convert a value of DummyAtomOmission enumerator to the string version of it
+              * @param dummy_atom_omission A value of DummyAtomOmission has to be converted to string
+              * @return String format of the given value of DummyAtomOmission enumerator
+              */
             std::string GetStringFormatOfDummyAtomOmission(DummyAtomOmission dummy_atom_omission);
+            /*! \fn
+              * Convert the value of DummyAtomOmission attribute of the current object (dummy_atom_omission_) to the string version of it
+              * @return String format of the value of dummy_atom_omission_ attribute of the current object
+              */
             std::string GetStringFormatOfDummyAtomOmission();
-            std::string GetStringFormatOfSectionType(SectionType    );
+            /*! \fn
+              * Convert a value of SectionType enumerator to the string version of it
+              * @param section_type A value of SectionType has to be converted to string
+              * @return String format of the given value of SectionType enumerator
+              */
+            std::string GetStringFormatOfSectionType(SectionType section_type);
+
+            /*! \fn
+              * Convert string version of CoordinateType to the corresponding enum value
+              * @param coordinate_type String indicates CoordinateType
+              * @return A value selected from CoordinateType enumerator correspondence to the given string
+              */
             CoordinateType GetCoordinateTypeFromString(std::string coordinate_type);
+            /*! \fn
+              * Convert string version of OutputFormat to the corresponding enum value
+              * @param output_format String indicates OutputFormat
+              * @return A value selected from OutputFormat enumerator correspondence to the given string
+              */
             OutputFormat GetOutputFormatFromString(std::string output_format);
+            /*! \fn
+              * Convert string version of GeometryType to the corresponding enum value
+              * @param geometry_type String indicates GeometryType
+              * @return A value selected from GeometryType enumerator correspondence to the given string
+              */
             GeometryType GetGeometryTypeFromString(std::string geometry_type);
+            /*! \fn
+              * Convert string version of DummyAtomPosition to the corresponding enum value
+              * @param dummy_atom_position String indicates DummyAtomPosition
+              * @return A value selected from DummyAtomPosition enumerator correspondence to the given string
+              */
             DummyAtomPosition GetDummyAtomPositionFromString(std::string dummy_atom_position);
+            /*! \fn
+              * Convert string version of DummyAtomOmission to the corresponding enum value
+              * @param dummy_atom_omission String indicates DummyAtomOmission
+              * @return A value selected from DummyAtomOmission enumerator correspondence to the given string
+              */
             DummyAtomOmission GetDummyAtomOmissionFromString(std::string dummy_atom_omission);
+            /*! \fn
+              * Convert string version of SectionType to the corresponding enum value
+              * @param section_type String indicates SectionType
+              * @return A value selected from SectionType enumerator correspondence to the given string
+              */
             SectionType GetSectionTypeFromString(std::string section_type);
 
+            /*! \fn
+              * A function that extracts and returns bonding information encoded into a residue of a prep file
+              * (Converts internal coordinates to cartesian coordinates and then extracts bonding atoms to each one based on tree chain classification of each atom in the residue)
+              * @return A map which indicates each atom index in a residue is bonded to which atom (atom index)
+              */
             BondedAtomIndexMap GetBondingsOfResidue();
 
             //////////////////////////////////////////////////////////

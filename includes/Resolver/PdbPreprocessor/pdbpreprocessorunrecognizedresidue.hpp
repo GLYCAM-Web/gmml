@@ -17,6 +17,14 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorUnrecognizedResidue();
 
+            /*! \fn
+              * Constructor to initialized the attributes of the object
+              * @param residue_name Name of the unrecognized residue
+              * @param chain_id Chain id of the unrecognized residue
+              * @param sequence_number Sequence number of the unrecognnized residue
+              * @param residue_insertion_code Insertion code of the unrecognized residue
+              * @param residue_alternate_location Alternated location of the unrecognized residue
+              */
             PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code,  char residue_alternate_location);
 
             //////////////////////////////////////////////////////////
@@ -96,11 +104,11 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            std::string residue_name_;
-            char residue_insertion_code_;
-            char residue_alternate_location_;
+            char residue_chain_id_;                     /*!< Chain id of the unrecognized residue in a pdb file >*/
+            int residue_sequence_number_;               /*!< Sequence number of the unrecognized residue in an specific chain id >*/
+            std::string residue_name_;                  /*!< Name of the unrecognized residue >*/
+            char residue_insertion_code_;               /*!< Insertion code of the unrecognized residue >*/
+            char residue_alternate_location_;           /*!< Alternate location of the unrecognized residue >*/
 
     };
 }

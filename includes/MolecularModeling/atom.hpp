@@ -20,6 +20,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of coordinates
+              */
             typedef std::vector<Geometry::Coordinate*> CoordinateVector;
 
             //////////////////////////////////////////////////////////
@@ -146,14 +149,15 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            Residue* residue_;
-            std::string name_;
-            CoordinateVector coordinates_;
-            std::string chemical_type_;
-            std::string description_;
-            std::string element_symbol_;
-            AtomNode* node_;
-            std::string id_;
+            Residue* residue_;                      /*!< A pointer back to the residue that this atom belongs to >*/
+            std::string name_;                      /*!< Name of the atom >*/
+            CoordinateVector coordinates_;          /*!< Position of the atom >*/
+            std::string chemical_type_;             /*!< A descriptor to determines the chemical type of the atom >*/
+            std::string description_;               /*!< Short description of the atom >*/
+            std::string element_symbol_;            /*!< Element symbol of the atom >*/
+            AtomNode* node_;                        /*!< A Pointer to a node of the graph structure that indicates this atom >*/
+            std::string id_;                        /*!< An identifier for an atom which is generated based on the type of the input file from which the structure has to be built
+                                                      Mostly it is like "residue_name:atom_name" >*/
 
     };
 }
