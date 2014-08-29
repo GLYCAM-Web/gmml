@@ -27,9 +27,33 @@ namespace PdbFileSpace
               * @param line A single line in a pdb file that represents pdb atom in model card
               */
             PdbAtom(std::string& line);
+            /*! \fn
+              * Constructor with required parameters
+              * @param atom_serial_number
+              * @param atom_name
+              * @param atom_alternate_location
+              * @param residue_name
+              * @param chain_id
+              * @param residue_sequence_number
+              * @param insertion_code
+              * @param coordinate
+              * @param occupancy
+              * @param tempreture_factor
+              * @param element_symbol
+              * @param charge
+              */
             PdbAtom(int atom_serial_number, std::string atom_name, char atom_alternate_location, std::string residue_name, char chain_id,
                     int residue_sequence_number, char insertion_code, Geometry::Coordinate coordinate, double occupancy, double tempreture_factor,
                     std::string element_symbol, std::string charge);
+            /*! \fn
+              * Constructor with required parameters
+              * @param chain_id
+              * @param atom_name
+              * @param residue_name
+              * @param residue_sequence_number
+              * @param residue_insertion_code
+              * @param atom_alternate_location
+              */
             PdbAtom(char chain_id, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code, char atom_alternate_location);
 
             //////////////////////////////////////////////////////////
@@ -185,9 +209,12 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the pdb atom contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
-
-
 
         private:
             //////////////////////////////////////////////////////////
@@ -206,7 +233,6 @@ namespace PdbFileSpace
             std::string atom_element_symbol_;                   /*!< Atom element symbol */
             std::string atom_charge_;                           /*!< Atom charge */
             std::string atom_card_index_in_residue_sequence_;
-
     };
 }
 

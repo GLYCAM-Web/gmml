@@ -30,6 +30,10 @@ namespace PdbFileSpace
               * @param chemical_formula
               */
             PdbFormula(const std::string& heterogen_identifier, int component_number, const std::string& chemical_formula);
+            /*! \fn
+              * Constructor with required parameters
+              * @param specification_block
+              */
             PdbFormula(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
@@ -80,6 +84,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the formula contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

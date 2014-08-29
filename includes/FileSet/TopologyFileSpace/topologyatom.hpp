@@ -23,6 +23,21 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyAtom();
+            /*! \fn
+              * Constructor with required parameters
+              * @param atom_index
+              * @param atom_name
+              * @param type
+              * @param atom_charge
+              * @param atomic_number
+              * @param atom_mass
+              * @param excluded_atoms
+              * @param number_of_excluded_atoms
+              * @param radii
+              * @param screen
+              * @param tree_chain_classification
+              * @param residue_name
+              */
             TopologyAtom(int atom_index, std::string atom_name, std::string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
                          int number_of_excluded_atoms, double radii, double screen, std::string tree_chain_classification, std::string residue_name);
 

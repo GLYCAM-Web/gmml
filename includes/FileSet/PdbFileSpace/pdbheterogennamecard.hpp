@@ -32,6 +32,10 @@ namespace PdbFileSpace
               * @param record_name
               */
             PdbHeterogenNameCard(const std::string& record_name);
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
             PdbHeterogenNameCard(std::stringstream& stream_block);
 
             //////////////////////////////////////////////////////////
@@ -65,6 +69,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the heterogen name card contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

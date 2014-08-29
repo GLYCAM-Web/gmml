@@ -27,6 +27,10 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbLink();
+            /*! \fn
+              * Constructor with required parameters
+              * @param line
+              */
             PdbLink(std::string& line);
 
             //////////////////////////////////////////////////////////
@@ -72,6 +76,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the link contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

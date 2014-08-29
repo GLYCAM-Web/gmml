@@ -34,6 +34,10 @@ namespace PdbFileSpace
               * @param strands
               */
             PdbSheet(const std::string& sheet_id, int number_of_strands, const SheetStrandVector strands);
+            /*! \fn
+              * Constructor with required parameters
+              * @param sheet_block
+              */
             PdbSheet(std::stringstream& sheet_block);
 
             //////////////////////////////////////////////////////////
@@ -90,6 +94,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the pdb sheet contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

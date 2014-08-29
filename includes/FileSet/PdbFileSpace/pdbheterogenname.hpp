@@ -29,6 +29,10 @@ namespace PdbFileSpace
               * @param heterogen_name
               */
             PdbHeterogenName(const std::string& heterogen_identifier, const std::string& heterogen_name);
+            /*! \fn
+              * Constructor with required parameters
+              * @param specification_block
+              */
             PdbHeterogenName(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
@@ -68,6 +72,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to print out the heterogen name contents in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out = std::cout);
 
         private:

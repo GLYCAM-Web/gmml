@@ -16,7 +16,6 @@ namespace TopologyFileSpace
     class TopologyBond;
     class TopologyAngle;
     class TopologyDihedral;
-
     class TopologyFile
     {
         public:
@@ -40,7 +39,10 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyFile();
-
+            /*! \fn
+              * Constructor
+              * @param top_file An existing topology file path to be read
+              */
             TopologyFile(const std::string& top_file);
 
             //////////////////////////////////////////////////////////
@@ -506,7 +508,16 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to parse the contents of a given stream of a file
+              * Parse the given stream and set the attributes of the current object accordingly
+              * @param in_file A stream contains whole contents of a topology file
+              */
             void Read(std::ifstream& in_file);
+            /*! \fn
+              * A function to parse the contents of a given stream of a file
+              * @param in_stream A stream contains whole contents of a topology file
+              */
             void ParseSections(std::ifstream& in_stream);
             void PartitionSection(std::ifstream& stream, std::string& line, std::stringstream& section);
 
@@ -518,49 +529,212 @@ namespace TopologyFileSpace
             template<typename T>
             std::vector<T> PartitionLine(std::string line, std::string format);
 
+            /*! \fn
+              * A function to create an output topology file with the given name
+              * @param top_file Output topology file name
+              */
             void Write(const std::string& top_file);
             void ResolveSections(std::ofstream& out_stream);
+            /*! \fn
+              * A function to write back title section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write title section
+              */
             void ResolveTitleSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back pointer section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write pointer section
+              */
             void ResolvePointersSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back atom name section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write atom name section
+              */
             void ResolveAtomNameSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back charge section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write charge section
+              */
             void ResolveChargeSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back atomic number section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write atomic number section
+              */
             void ResolveAtomicNumberSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back mass section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write mass section
+              */
             void ResolveMassSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back atom type index section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write atom type index section
+              */
             void ResolveAtomTypeIndexSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back number excluded atoms section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write number excluded atoms section
+              */
             void ResolveNumberExcludedAtomsSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back non bonded parm index section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write non bonded parm index section
+              */
             void ResolveNonbondedParmIndexSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back residue lab section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write residue lab section
+              */
             void ResolveResidueLabelSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back residue pointers section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write residue pointers section
+              */
             void ResolveResiduePointersSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back bond force constant section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write bond force constant section
+              */
             void ResolveBondForceConstantSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back bond equil value section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write bond equil value section
+              */
             void ResolveBondEquilValueSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back angle force constant section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write angle force constant section
+              */
             void ResolveAngleForceConstantSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back angle equil value section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write angle equil value section
+              */
             void ResolveAngleEquilValueSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back dihedral force constant section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write dihedral force constant section
+              */
             void ResolveDihedralForceConstantSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back dihedral periodicity section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write dihedral periodicity section
+              */
             void ResolveDihedralPeriodicitySection(std::ofstream& out);
+            /*! \fn
+              * A function to write back dihedral phase section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write dihedral phase section
+              */
             void ResolveDihedralPhaseSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back scee scale factor section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write scee scale factor section
+              */
             void ResolveSceeScaleFactorSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back scnb scale factor section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write scnb scale factor section
+              */
             void ResolveScnbScaleFactorSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back solty section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write solty section
+              */
             void ResolveSoltySection(std::ofstream& out);
+            /*! \fn
+              * A function to write back lennard jones a coefficient section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write lennard jones a coefficient section
+              */
             void ResolveLennardJonesACoefSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back lennard jones b coefficient section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write lennard jones b coefficient section
+              */
             void ResolveLennardJonesBCoefSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back bonds inc hydrogen section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write bonds inc hydrogen section
+              */
             void ResolveBondsIncHydrogenSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back bonds without hydrogen section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write bonds without hydrogen section
+              */
             void ResolveBondsWithoutHydrogenSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back angles inc hydrogen section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write angles including hydrogen section
+              */
             void ResolveAnglesIncHydrogenSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back angles without hydrogen section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write angles without hydrogen section
+              */
             void ResolveAnglesWithoutHydrogenSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back dihedrals inc hydrogen section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write dihedrals inc hydrogen section
+              */
             void ResolveDihedralsIncHydrogenSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back dihedrals without hydrogen section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write dihedral without hydrogen section
+              */
             void ResolveDihedralsWithoutHydrogenSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back excluded atoms list section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write excluded atoms list section
+              */
             void ResolveExcludedAtomsListSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back hydrogen bond a coefficient section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write hydrogen bond a coefficient section
+              */
             void ResolveHydrogenBondACoefSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back hydrogen bond b coefficient section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write hydrogen bond coefficient section
+              */
             void ResolveHydrogenBondBCoefSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back hb cut section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write hb cut section
+              */
             void ResolveHBCutSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back amber atom type section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write amber atom type section
+              */
             void ResolveAmberAtomTypeSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back tree chain classification section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write tree chain classification section
+              */
             void ResolveTreeChainClassificationSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back join array section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write join array section
+              */
             void ResolveJoinArraySection(std::ofstream& out);
+            /*! \fn
+              * A function to write back irotat section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write title section
+              */
             void ResolveIRotatSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back residue set section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write residue set section
+              */
             void ResolveResidueSetSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back radii section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write radii section
+              */
             void ResolveRadiiSection(std::ofstream& out);
+            /*! \fn
+              * A function to write back screen section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write screen section
+              */
             void ResolveScreenSection(std::ofstream& out);
-
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

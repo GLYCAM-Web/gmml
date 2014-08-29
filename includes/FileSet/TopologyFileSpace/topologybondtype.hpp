@@ -17,7 +17,11 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyBondType();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param force_constant
+              * @param equilibrium_value
+              */
             TopologyBondType(int index, double force_constant, double equilibrium_value);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

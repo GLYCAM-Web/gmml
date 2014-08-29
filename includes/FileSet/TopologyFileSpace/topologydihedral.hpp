@@ -8,7 +8,6 @@
 namespace TopologyFileSpace
 {
     class TopologyDihedralType;
-
     class TopologyDihedral
     {
         public:
@@ -19,7 +18,11 @@ namespace TopologyFileSpace
               * Default constructor
               */
             TopologyDihedral();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param dihedral_atoms
+              * @param residue_names
+              */
             TopologyDihedral(std::vector<std::string> dihedral_atoms, std::vector<std::string> residue_names);
 
             //////////////////////////////////////////////////////////
@@ -45,6 +48,10 @@ namespace TopologyFileSpace
               * @return ignored_group_interaction_ attribute of the current object of this class
               */
             bool GetIgnoredGroupInteraction();
+            /*! \fn
+              * An accessor function in order to access to boolean value that indicates if dihedral includes hydrogen
+              * @return including_hydrogen_ attribute of the current object of this class
+              */
             bool GetIncludingHydrogen();
             /*! \fn
               * An accessor function in order to access to the residue names
@@ -74,11 +81,16 @@ namespace TopologyFileSpace
               */
             void SetIsImproper(bool is_improper);
             /*! \fn
-              * A mutator function in order to set the boolean ignored group interaction of the current object
+              * A mutator function in order to set the boolean ignored group interaction attribute of the current object
               * Set the ignored_group_interaction_ attribute of the current topology dihedral
               * @param ignored_group_interaction The ignored group interactionr attribute of the current object
               */
             void SetIgnoredGroupInteraction(bool ignored_group_interaction);
+            /*! \fn
+              * A mutator function in order to set the boolean including hydrogen attribute of the current object
+              * Set the including_hydrogen_ attribute of the current topology dihedral
+              * @param including_hydrogen The ignored group interactionr attribute of the current object
+              */
             void SetIncludingHydrogen(bool including_hydrogen);
             /*! \fn
               * A mutator function in order to set residue names of the current object
