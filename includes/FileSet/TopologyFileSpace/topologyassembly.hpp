@@ -16,6 +16,9 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * A mapping between a residue name and the residue itself
+              */
             typedef std::map<std::string, TopologyResidue*> TopologyResidueMap;
 
             //////////////////////////////////////////////////////////
@@ -86,8 +89,8 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string assembly_name_;
-            TopologyResidueMap residues_;
+            std::string assembly_name_;             /*!< Name of the assembly made by the all residue involving in the assembly >*/
+            TopologyResidueMap residues_;           /*!< Vector of residues that are involving in an assembly >*/
 
     };
 }

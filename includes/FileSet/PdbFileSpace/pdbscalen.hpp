@@ -95,10 +95,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            int n_;
-            Geometry::Coordinate scale_vector_;
-            double u_;
+            std::string record_name_;               /*!< Name of scale record that appears in the first column of each line of a pdb file >*/
+            int n_;                                 /*!< n >*/
+            Geometry::Coordinate scale_vector_;     /*!< Scale vector which is displayed in a coordinate >*/
+            double u_;                              /*!< u value of a scale >*/
     };
 }
 

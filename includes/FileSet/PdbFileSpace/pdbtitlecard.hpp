@@ -22,8 +22,8 @@ namespace PdbFileSpace
             PdbTitleCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
-              * @param title
+              * @param record_name Name for a title card record which appears in the first column of each line in a pdb file
+              * @param title Title of a pdb file
               */
             PdbTitleCard(const std::string& record_name, const std::string& title);
             /*! \fn
@@ -80,8 +80,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            std::string title_;
+            std::string record_name_;           /*!< Record name which appears in the first column of each line in a pdb file >*/
+            std::string title_;                 /*!< Title that appears in TITLE record of a pdb file >*/
     };
 }
 

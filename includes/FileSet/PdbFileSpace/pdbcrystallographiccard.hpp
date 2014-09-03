@@ -149,14 +149,14 @@ namespace PdbFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::string record_name_;           /*!< Record name of crystallography card in a pdb file: "CRYST1" */
-            double a_;
-            double b_;
-            double c_;
-            double alpha_;
-            double beta_;
-            double gamma_;
-            std::string space_group_;
-            int z_value_;
+            double a_;                          /*!< a >*/
+            double b_;                          /*!< b >*/
+            double c_;                          /*!< c >*/
+            double alpha_;                      /*!< alpha >*/
+            double beta_;                       /*!< beta >*/
+            double gamma_;                      /*!< gamma >*/
+            std::string space_group_;           /*!< space group >*/
+            int z_value_;                       /*!< z value >*/
 
     };
 }

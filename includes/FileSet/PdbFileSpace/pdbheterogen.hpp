@@ -25,12 +25,12 @@ namespace PdbFileSpace
             PdbHeterogen();
             /*! \fn
               * Constructor with required parameters
-              * @param heterogen_id
-              * @param chain_identifier
-              * @param sequence_number
-              * @param insertion_code
-              * @param number_of_heterogen_atoms
-              * @param dscr
+              * @param heterogen_id Heterogen identifier
+              * @param chain_identifier Residue chain identifier
+              * @param sequence_number Residue sequence number
+              * @param insertion_code Residue insertion code
+              * @param number_of_heterogen_atoms Number of heterogen atoms in the heterogen
+              * @param dscr Short description for a heterogen
               */
             PdbHeterogen(const std::string& heterogen_id, char chain_identifier, int sequence_number,
                          char insertion_code, int number_of_heterogen_atoms, const std::string& dscr);
@@ -132,12 +132,12 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string heterogen_id_;
-            char chain_identifier_;
-            int sequence_number_;
-            char insertion_code_;
-            int number_of_heterogen_atoms_;
-            std::string dscr_;
+            std::string heterogen_id_;          /*!< Heterogen identifier >*/
+            char chain_identifier_;             /*!< Residue chain identifier >*/
+            int sequence_number_;               /*!< Residue sequence number >*/
+            char insertion_code_;               /*!< Residue insertion code >*/
+            int number_of_heterogen_atoms_;     /*!< Number of hetrogen atoms in the current heterogen >*/
+            std::string dscr_;                  /*!< Short description for a heterogen >*/
     };
 }
 #endif // PDBHETEROGEN_HPP

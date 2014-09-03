@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between sheet id and the sheet itself
+              */
             typedef std::map<std::string, PdbSheet*> SheetMap;
 
             //////////////////////////////////////////////////////////
@@ -80,8 +83,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            SheetMap sheets_;
+            std::string record_name_;       /*!< Name of the sheet card record that appears in the first column of each line of a pdb file >*/
+            SheetMap sheets_;               /*!< All sheets that are in a sheet card of a pdb file in a map data structure >*/
     };
 }
 

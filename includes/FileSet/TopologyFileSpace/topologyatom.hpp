@@ -14,6 +14,9 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of atom names in this cases excluded from interaction with another atom
+              */
             typedef std::vector<std::string> ExcludedAtomNames;
 
             //////////////////////////////////////////////////////////
@@ -25,18 +28,18 @@ namespace TopologyFileSpace
             TopologyAtom();
             /*! \fn
               * Constructor with required parameters
-              * @param atom_index
-              * @param atom_name
-              * @param type
-              * @param atom_charge
-              * @param atomic_number
-              * @param atom_mass
-              * @param excluded_atoms
-              * @param number_of_excluded_atoms
-              * @param radii
-              * @param screen
-              * @param tree_chain_classification
-              * @param residue_name
+              * @param atom_index Index of appearing of the atom in a topology file
+              * @param atom_name Name of the atom that appears in the topology file
+              * @param type Amber type of the atom that appears in the topology file
+              * @param atom_charge Charge of the atom that appears in the topology file
+              * @param atomic_number Atomic number of the atom that appears in the topology file
+              * @param atom_mass Atom mass that appears in the topology file
+              * @param excluded_atoms List of atoms that are excluded from interaction with the current atom
+              * @param number_of_excluded_atoms The number of excluded atoms
+              * @param radii Radius of the atom appears in the topology file
+              * @param screen Screen value of the atom appears in the topology file
+              * @param tree_chain_classification Tree chain classification of the atom in order to extract bonding information of the atoms in a residue
+              * @param residue_name Name of the residue that the atom belongs to
               */
             TopologyAtom(int atom_index, std::string atom_name, std::string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
                          int number_of_excluded_atoms, double radii, double screen, std::string tree_chain_classification, std::string residue_name);
@@ -199,18 +202,18 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string atom_name_;
-            double atom_charge_;
-            int atomic_number_;
-            double atom_mass_;
-            std::vector<std::string> excluded_atoms_;
-            double radii_;
-            double screen_;
-            std::string tree_chain_classification_;
-            int number_of_excluded_atoms_;
-            std::string type_;
-            int index_;
-            std::string residue_name_;
+            std::string atom_name_;                     /*!< Name of the atom appears in a topology file >*/
+            double atom_charge_;                        /*!< Charge of the atom that appears in a topology file >*/
+            int atomic_number_;                         /*!< Atomic number of the atom that appears in a topology file >*/
+            double atom_mass_;                          /*!< Mass of the atom  that appears in a topology file >*/
+            std::vector<std::string> excluded_atoms_;   /*!< List of atom names that are excluded from interaction with the current atom >*/
+            double radii_;                              /*!< Radius of the atom that appears in a topology file >*/
+            double screen_;                             /*!< Screen value of the atom that appears in a topology file >*/
+            std::string tree_chain_classification_;     /*!< Tree chain classification of the atom appears in a topology file in order to extract the bonding information inside a residue >*/
+            int number_of_excluded_atoms_;              /*!< Number of atoms that are excluded from interaction with the current atom >*/
+            std::string type_;                          /*!< Amber type of the atom that appears in a topology file >*/
+            int index_;                                 /*!< Index of appearing o the atom in a topology file >*/
+            std::string residue_name_;                  /*!< Name of the residue that the current atom belongs to >*/
     };
 }
 

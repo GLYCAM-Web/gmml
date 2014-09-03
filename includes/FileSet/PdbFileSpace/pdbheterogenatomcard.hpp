@@ -18,7 +18,13 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Heterogen atom
+              */
             typedef PdbAtom PdbHeterogenAtom;
+            /*! \typedef
+              * Mapping between heterogen atom serial number and heterogen atom itself
+              */
             typedef std::map<int, PdbHeterogenAtom*> PdbHeterogenAtomMap;            
 
             //////////////////////////////////////////////////////////
@@ -84,8 +90,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            PdbHeterogenAtomMap heterogen_atoms_;
+            std::string record_name_;               /*!< Record name of heterogen atom card in a pdb file >*/
+            PdbHeterogenAtomMap heterogen_atoms_;   /*!< Heterogen atom map >*/
 
     };
 }

@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between heterogen identifier and heterogen synonym
+              */
             typedef std::map<std::string, PdbHeterogenSynonym*> HeterogenSynonymMap;
 
             //////////////////////////////////////////////////////////
@@ -80,8 +83,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            HeterogenSynonymMap heterogens_synonyms_;
+            std::string record_name_;                   /*!< Record name of a heterogen synonym card >*/
+            HeterogenSynonymMap heterogens_synonyms_;   /*!< Map of heterogen synonyms with heterogen identifier as key >*/
     };
 }
 #endif // PDBHETEROGENSYNONYMCARD_HPP

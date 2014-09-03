@@ -25,13 +25,13 @@ namespace PdbFileSpace
             PdbLinkResidue();
             /*! \fn
               * Constructor with required parameters
-              * @param atom_name
-              * @param alternate_location_indicator
-              * @param residue_name
-              * @param residue_chain_id
-              * @param residue_sequence_number
-              * @param residue_insertion_code
-              * @param symmetry_operator
+              * @param atom_name Name of the atom involving in a link
+              * @param alternate_location_indicator Residue alternate location
+              * @param residue_name Name of the residue
+              * @param residue_chain_id Chain identifier of the residue
+              * @param residue_sequence_number Sequence number of the residue
+              * @param residue_insertion_code Insertion code of the residue
+              * @param symmetry_operator Symmetry operator
               */
             PdbLinkResidue(const std::string& atom_name, char alternate_location_indicator, const std::string& residue_name, char residue_chain_id,
                            int residue_sequence_number, char residue_insertion_code, int symmetry_operator);
@@ -139,13 +139,13 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string atom_name_;
-            char alternate_location_indicator_;
-            std::string residue_name_;
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            char residue_insertion_code_;
-            int symmetry_operator_;
+            std::string atom_name_;                 /*!< Name of the atom involving in a link >*/
+            char alternate_location_indicator_;     /*!< Residue alternate location >*/
+            std::string residue_name_;              /*!< Name of the residue >*/
+            char residue_chain_id_;                 /*!< Chain identifier of the residue >*/
+            int residue_sequence_number_;           /*!< Sequence number of the residue >*/
+            char residue_insertion_code_;           /*!< Insertion code of the residue >*/
+            int symmetry_operator_;                 /*!< Symmetry operator of a link >*/
     };
 }
 

@@ -21,8 +21,8 @@ namespace TopologyFileSpace
             TopologyBond();
             /*! \fn
               * Constructor with required parameters
-              * @param bonds
-              * @param residue_names
+              * @param bonds Atom names involving in a bond (two bonded atom names)
+              * @param residue_names Name of residues of the atoms involved in a bond
               */
             TopologyBond(std::vector<std::string> bonds, std::vector<std::string> residue_names );
 
@@ -96,10 +96,10 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::vector<std::string> bonds_;
-            TopologyBondType* bond_type_;
-            bool including_hydrogen_;
-            std::vector<std::string> residue_names_;
+            std::vector<std::string> bonds_;            /*!< Atom names involved in a bond >*/
+            TopologyBondType* bond_type_;               /*!< Bond type regarding to topology bond type >*/
+            bool including_hydrogen_;                   /*!< Indicates that the bond has a hydrogen atom or not >*/
+            std::vector<std::string> residue_names_;    /*!< Names of residues of the atoms invovled in a bond >*/
 
     };
 }

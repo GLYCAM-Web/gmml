@@ -40,7 +40,7 @@ namespace TopologyFileSpace
               */
             TopologyFile();
             /*! \fn
-              * Constructor
+              * Constructor to build the current topology file from the given file name
               * @param top_file An existing topology file path to be read
               */
             TopologyFile(const std::string& top_file);
@@ -261,14 +261,34 @@ namespace TopologyFileSpace
               */
             TopologyDihedralMap GetDihedrals();
 
+            /*! \fn
+              * A function to return a map with atom type key and corresponding index
+              * @return Mapping of all atom types in the topology file and their corresponding index
+              */
             TopologyAtomTypeIndexMap GetAtomTypeIndexMap();
-
+            /*! \fn
+              * A function to retreive a bond type correspondence to the given index
+              * @param index Target bond index
+              * @return A pointer to a topology bond type object corresponding to the given index
+              */
             TopologyBondType* GetBondTypeByIndex(int index);
-
+            /*! \fn
+              * A function to retreive an angle type correspondence to the given index
+              * @param index Target angle index
+              * @return A pointer to a topology angle type object corresponding to the given index
+              */
             TopologyAngleType* GetAngleTypeByIndex(int index);
-
+            /*! \fn
+              * A function to retreive a dihedral type correspondence to the given index
+              * @param index Target dihedral index
+              * @return A pointer to a topology dihedral type corresponding to the given index
+              */
             TopologyDihedralType* GetDihedralTypeByIndex(int index);
-
+            /*! \fn
+              * A function to retreive a pair of atoms correspondence to the given index
+              * @param index Target topology pair
+              * @return A Pointer to a topology pair corresponding to the given index
+              */
             TopologyAtomPair* GetAtomPairByIndex(int index);
 
             //////////////////////////////////////////////////////////
@@ -484,7 +504,11 @@ namespace TopologyFileSpace
               * @param assembly The number of beads attribute of the current object
               */
             void SetAssembly(TopologyAssembly* assembly);
-
+            /*! \fn
+              * A mutator function in order to set the residue set for the current object
+              * Set the residue_set_ attribute of the current topology file
+              * @param residue_set Residue set
+              */
             void SetRadiusSet(RadiusSet radius_set);
             /*! \fn
               * A mutator function in order to set the bonds of the current object
@@ -519,21 +543,47 @@ namespace TopologyFileSpace
               * @param in_stream A stream contains whole contents of a topology file
               */
             void ParseSections(std::ifstream& in_stream);
+            /*! \fn
+              * A function to partition a topology file to its sections
+              * @param stream Input stream built from topology input file
+              * @param line The line that the reader is currently at
+              * @param section Stream that the output section will be written on
+              */
             void PartitionSection(std::ifstream& stream, std::string& line, std::stringstream& section);
-
+            /*! \fn
+              * A function to parse title section of a pdb file
+              * @param stream Title section of a topology file as stream
+              */
             void ParseTitlePartition(std::stringstream& stream);
+            /*! \fn
+              * A function to parse the pointer section of a topology file
+              * @param stream Pointer section of a topology file as stream
+              */
             void ParsePointersPartition(std::stringstream& stream);
+            /*! \fn
+              * A function to parse the other partitions of a topology file which have same template
+              * @param stream Stream of a section that has to be parsed
+              * @return Vector of types according to the section
+              */
             template<typename T>
             std::vector<T> ParsePartition(std::stringstream& stream);
-
+            /*! \fn
+              * A function to parse a line of a section to its values
+              * @param line Line of a section
+              * @param format Format of the line which indicates the number and type of the values
+              * @return A vector of values in the given line parsed based on the given format
+              */
             template<typename T>
             std::vector<T> PartitionLine(std::string line, std::string format);
-
             /*! \fn
               * A function to create an output topology file with the given name
               * @param top_file Output topology file name
               */
             void Write(const std::string& top_file);
+            /*! \fn
+              * A function that resolve sections of a topology file in order to write into an output stream
+              * @param out_stream Stream the the result has to be written into
+              */
             void ResolveSections(std::ofstream& out_stream);
             /*! \fn
               * A function to write back title section of the topology file into an output stream
@@ -750,40 +800,40 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string path_;
-            std::string title_;
-            int number_of_atoms_;
-            int number_of_types_;
-            int number_of_bonds_including_hydrogen_;
-            int number_of_angles_including_hydrogen_;
-            int number_of_dihedrals_including_hydrogen_;
-            int number_of_bonds_excluding_hydrogen_;
-            int number_of_angles_excluding_hydrogen_;
-            int number_of_dihedrals_excluding_hydrogen_;
-            int number_of_hydrogen_parameters_;
-            int number_of_parameters_;
-            int number_of_excluded_atoms_;
-            int number_of_residues_;
-            int total_number_of_bonds_;
-            int total_number_of_angles_;
-            int total_number_of_dihedrals_;
-            int number_of_bond_types_;
-            int number_of_angle_types_;
-            int number_of_dihedral_types_;
-            int number_of_atom_types_in_parameter_file_;
-            int number_of_distinct_hydrogen_bonds_;
-            int perturbation_option_;
-            int number_of_bonds_perturbed_;
-            int number_of_angles_perturbed_;
-            int number_of_dihedrals_perturbed_;
-            int number_of_bonds_group_perturbed_;
-            int number_of_angles_group_perturbed_;
-            int number_of_dihedrals_group_perturbed_;
-            int standard_periodic_box_option_;
-            int number_of_atoms_in_largest_residue_;
-            int cap_option_;
-            int number_of_extra_points_;
-            int number_of_beads_;
+            std::string path_;                              /*!< Path of the file >*/
+            std::string title_;                             /*!< Title of the file >*/
+            int number_of_atoms_;                           /*!< Number of atoms >*/
+            int number_of_types_;                           /*!< Number of types in a topology file >*/
+            int number_of_bonds_including_hydrogen_;        /*!< Number of bonds including hydrogen in a topology file >*/
+            int number_of_angles_including_hydrogen_;       /*!< Number of angles including hydrogen in a topology file >*/
+            int number_of_dihedrals_including_hydrogen_;    /*!< Number of dihedrals including hydrogen in a topology file >*/
+            int number_of_bonds_excluding_hydrogen_;        /*!< Number of bonds excluding hydrogen in a topology file >*/
+            int number_of_angles_excluding_hydrogen_;       /*!< Number of angles excluding hydrogen in a topology file >*/
+            int number_of_dihedrals_excluding_hydrogen_;    /*!< Number of dihedrals excluding hydrogen in a topology file >*/
+            int number_of_hydrogen_parameters_;             /*!< Number of hydrogen parameters in a topology file >*/
+            int number_of_parameters_;                      /*!< Number of parameters in a topology file >*/
+            int number_of_excluded_atoms_;                  /*!< Number of excluded atoms in a topology file >*/
+            int number_of_residues_;                        /*!< Number of residues in a topology file >*/
+            int total_number_of_bonds_;                     /*!< Total number of bonds in a topology file >*/
+            int total_number_of_angles_;                    /*!< Total number of angles in a topology file >*/
+            int total_number_of_dihedrals_;                 /*!< Total number of dihedrals in a topology file >*/
+            int number_of_bond_types_;                      /*!< Number of bond types in a topology file >*/
+            int number_of_angle_types_;                     /*!< Number of angle types in a topology file >*/
+            int number_of_dihedral_types_;                  /*!< Number of dihedral types in a topology file >*/
+            int number_of_atom_types_in_parameter_file_;    /*!< Number of atom types in parameter file in a topology file >*/
+            int number_of_distinct_hydrogen_bonds_;         /*!< Number of distinct hydrogen bonds in a topology file >*/
+            int perturbation_option_;                       /*!< Perturbation option in a topology file >*/
+            int number_of_bonds_perturbed_;                 /*!< Number of bonds perturbed in a topology file >*/
+            int number_of_angles_perturbed_;                /*!< Number of angles perturbed in a topology file >*/
+            int number_of_dihedrals_perturbed_;             /*!< Number of dihedrals perturbed in a topology file >*/
+            int number_of_bonds_group_perturbed_;           /*!< Number of bonds group perturbed in a topology file >*/
+            int number_of_angles_group_perturbed_;          /*!< Number of angles group perturbed in a topology file >*/
+            int number_of_dihedrals_group_perturbed_;       /*!< Number of dihedrals group perturbed in a topology file >*/
+            int standard_periodic_box_option_;              /*!< Standard periodic box option in a topology file >*/
+            int number_of_atoms_in_largest_residue_;        /*!< Number of atoms in largest residue in a topology file >*/
+            int cap_option_;                                /*!< Cap option in a topology file >*/
+            int number_of_extra_points_;                    /*!< Number of extra points in a topology file >*/
+            int number_of_beads_;                           /*!< Number of beads in a topology file >*/
             TopologyAtomPairMap pairs_;
             TopologyBondTypeMap bond_types_;
             TopologyAngleTypeMap angle_types_;

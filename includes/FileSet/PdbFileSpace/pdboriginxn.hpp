@@ -95,10 +95,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            int n_;
-            Geometry::Coordinate origin_;
-            double t_;
+            std::string record_name_;           /*!< Name of origin record which is the first column of each line >*/
+            int n_;                             /*!< n >*/
+            Geometry::Coordinate origin_;       /*!< Origin coordinate >*/
+            double t_;                          /*!< t value of the origin >*/
     };
 }
 

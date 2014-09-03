@@ -83,8 +83,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string heterogen_identifier_;
-            std::string heterogen_name_;
+            std::string heterogen_identifier_;      /*!< Heterogen identifier >*/
+            std::string heterogen_name_;            /*!< Heterogen name >*/
     };
 }
 #endif // PDBHETEROGENNAME_HPP

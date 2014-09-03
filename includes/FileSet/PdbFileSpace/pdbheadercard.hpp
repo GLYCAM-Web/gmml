@@ -22,10 +22,10 @@ namespace PdbFileSpace
             PdbHeaderCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
-              * @param classification
-              * @param deposition_date
-              * @param identifier_code
+              * @param record_name Record name of header card appears in the first column of each line in a pdb file
+              * @param classification Classification of the pdb file
+              * @param deposition_date Date that the file has been deposited
+              * @param identifier_code Identifier code of the pdb file
               */
             PdbHeaderCard(const std::string& record_name, const std::string& classification, const std::string& deposition_date, const std::string& identifier_code);
             /*! \fn
@@ -104,10 +104,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            std::string classification_;
-            std::string deposition_date_;
-            std::string identifier_code_;
+            std::string record_name_;           /*!< Record name of headr card in a pdb file >*/
+            std::string classification_;        /*!< Classification of the pdb file >*/
+            std::string deposition_date_;       /*!< Date of deposition >*/
+            std::string identifier_code_;       /*!< Identifier code of the pdb file >*/
 
     };
 }

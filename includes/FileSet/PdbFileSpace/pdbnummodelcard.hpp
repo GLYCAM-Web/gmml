@@ -80,8 +80,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            int number_of_models_;
+            std::string record_name_;           /*!< Name of the number of model card record which is the first column of each line in a pdb file >*/
+            int number_of_models_;              /*!< Number of models >*/
 
     };
 }

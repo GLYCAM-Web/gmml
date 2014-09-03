@@ -18,11 +18,11 @@ namespace PdbFileSpace
             PdbResidue();
             /*! \fn
               * Constructor with required parameters
-              * @param residue_name
-              * @param chain_id
-              * @param sequence_number
-              * @param insertion_code
-              * @param residue_alternate_location
+              * @param residue_name Name of the residue
+              * @param chain_id Chain identifier of the residue
+              * @param sequence_number Sequence number of the residue
+              * @param insertion_code Insertion code of the residue
+              * @param residue_alternate_location Alternate location of a residue
               */
             PdbResidue(std::string residue_name, char chain_id, int sequence_number, char insertion_code = ' ', char residue_alternate_location = ' ');
 
@@ -103,11 +103,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            char residue_chain_id_;
-            std::string residue_name_;
-            int residue_sequence_number_;
-            char residue_insertion_code_;
-            char residue_alternate_location_;
+            char residue_chain_id_;             /*!< Chain identifier of a residue >*/
+            std::string residue_name_;          /*!< Name of a residue >*/
+            int residue_sequence_number_;       /*!< Sequence number of a residue >*/
+            char residue_insertion_code_;       /*!< Insertion code of a residue >*/
+            char residue_alternate_location_;   /*!< Alternate location of a residue >*/
 
     };
 }

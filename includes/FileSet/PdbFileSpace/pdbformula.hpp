@@ -25,9 +25,9 @@ namespace PdbFileSpace
             PdbFormula();
             /*! \fn
               * Constructor with required parameters
-              * @param heterogen_identifier
-              * @param component_number
-              * @param chemical_formula
+              * @param heterogen_identifier Heterogen identifier
+              * @param component_number Component number of the formula
+              * @param chemical_formula Chemical formula of the object
               */
             PdbFormula(const std::string& heterogen_identifier, int component_number, const std::string& chemical_formula);
             /*! \fn
@@ -95,9 +95,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string heterogen_identifier_;
-            int component_number_;
-            std::string chemical_formula_;
+            std::string heterogen_identifier_;      /*!< Heterogen identifier >*/
+            int component_number_;                  /*!< Component number >*/
+            std::string chemical_formula_;          /*!< Chemical formula of the object >*/
     };
 }
 #endif // PDBFORMULA_HPP

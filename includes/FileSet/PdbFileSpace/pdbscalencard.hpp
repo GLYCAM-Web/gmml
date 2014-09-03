@@ -19,6 +19,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of scales
+              */
             typedef std::vector< PdbScaleN* > ScaleNVector;
 
             //////////////////////////////////////////////////////////
@@ -77,7 +80,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            ScaleNVector scale_n_;
+            ScaleNVector scale_n_;      /*!< Vector of scales are in scalen card of a pdb file >*/
 
     };
 }

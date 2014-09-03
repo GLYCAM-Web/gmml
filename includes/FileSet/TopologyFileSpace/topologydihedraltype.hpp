@@ -19,12 +19,12 @@ namespace TopologyFileSpace
             TopologyDihedralType();
             /*! \fn
               * Constructor with required parameters
-              * @param index
-              * @param force_constant
-              * @param periodicity
-              * @param phase
-              * @param scee
-              * @param scnb
+              * @param index Index of the dihedral in the topology file
+              * @param force_constant Force constant value of the dihedral
+              * @param periodicity Periodicity value of the dihedral
+              * @param phase Phase value of the dihedral
+              * @param scee SCEE coefficient of the dihedral
+              * @param scnb SCNB coefficient of the dihedral
               */
             TopologyDihedralType(int index, double force_constant, double periodicity, double phase, double scee, double scnb);
 
@@ -120,12 +120,12 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int index_;
-            double periodicity_;
-            double phase_;
-            double scee_;
-            double scnb_;
-            double force_constant_;
+            int index_;                     /*!< Index of dihedral type in a topology file >*/
+            double periodicity_;            /*!< Periodicity of a dihedral >*/
+            double phase_;                  /*!< Phase of a dihedral >*/
+            double scee_;                   /*!< SCEE coefficient of a dihedral >*/
+            double scnb_;                   /*!< SCNB coefficient of a dihedral >*/
+            double force_constant_;         /*!< Force constant of dihedral >*/
 
     };
 }

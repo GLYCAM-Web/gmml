@@ -17,6 +17,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between chain identifier of a residue sequence and the residue sequence itself
+              */
             typedef std::map<char, PdbResidueSequence*> ResidueSequenceMap;
 
             //////////////////////////////////////////////////////////
@@ -79,8 +82,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            ResidueSequenceMap residue_sequence_chains_;
+            std::string record_name_;                       /*!< Name of the residue sequence record which is the first column in each line of a pdb file >*/
+            ResidueSequenceMap residue_sequence_chains_;    /*!< Mapping of all residue sequences with chain identifier as the key >*/
 
     };
 }

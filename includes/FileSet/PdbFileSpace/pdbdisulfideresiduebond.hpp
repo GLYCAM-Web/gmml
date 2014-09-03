@@ -17,6 +17,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of disulfide residues
+              */
             typedef std::vector<PdbDisulfideResidue*> DisulfideResidueVector;
 
             //////////////////////////////////////////////////////////
@@ -28,9 +31,9 @@ namespace PdbFileSpace
             PdbDisulfideResidueBond();
             /*! \fn
               * Constructor with required parameters
-              * @param serial_number
-              * @param residues
-              * @param bond_length
+              * @param serial_number Serial number of the disulfide bond
+              * @param residues Residues involving in the bond
+              * @param bond_length Length of the bond
               */
             PdbDisulfideResidueBond(int serial_number, const DisulfideResidueVector residues, double bond_length);
             /*! \fn
@@ -104,9 +107,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            int serial_number_;
-            DisulfideResidueVector residues_;
-            double bond_length_;
+            int serial_number_;                 /*!< Serial number of the disulfide bond >*/
+            DisulfideResidueVector residues_;   /*!< Residues involving in the disulfide bond >*/
+            double bond_length_;                /*!< Length of the bond >*/
     };
 }
 

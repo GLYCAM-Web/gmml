@@ -19,6 +19,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of links
+              */
             typedef std::vector< PdbLink* > LinkVector;
 
             //////////////////////////////////////////////////////////
@@ -88,8 +91,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            LinkVector residue_links_;
+            std::string record_name_;       /*!< Record name of a link card in a pdb file >*/
+            LinkVector residue_links_;      /*!< List of links involving in a pdb file >*/
 
     };
 }

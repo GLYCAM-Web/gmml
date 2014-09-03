@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of residues in a link
+              */
             typedef std::vector< PdbLinkResidue* > LinkResidueVector;
 
             //////////////////////////////////////////////////////////
@@ -87,8 +90,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            LinkResidueVector residues_;
-            double link_length_;
+            LinkResidueVector residues_;        /*!< List of residues in a link >*/
+            double link_length_;                /*!< Link length >*/
 
     };
 }

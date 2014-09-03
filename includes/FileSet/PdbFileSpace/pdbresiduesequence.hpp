@@ -22,9 +22,9 @@ namespace PdbFileSpace
             PdbResidueSequence();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
-              * @param number_of_residues
-              * @param residue_names
+              * @param record_name Record name which is the first column of each line in a pdb file
+              * @param number_of_residues  Number of residues involving in a sequence residue
+              * @param residue_names Name of residues in the sequence residue
               */
             PdbResidueSequence(char chain_id, int number_of_residues, const std::vector<std::string>& residue_names);
             /*! \fn
@@ -98,9 +98,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            char chain_id_;
-            int number_of_residues_;
-            std::vector<std::string> residue_names_;
+            char chain_id_;                         /*!< Chain identifier of the residue sequence >*/
+            int number_of_residues_;                /*!< Number of residues in the residue sequence >*/
+            std::vector<std::string> residue_names_;/*!< Name of all residues in the residue sequence >*/
     };
 }
 

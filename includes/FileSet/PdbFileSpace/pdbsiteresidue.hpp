@@ -22,10 +22,10 @@ namespace PdbFileSpace
             PdbSiteResidue();
             /*! \fn
               * Constructor with required parameters
-              * @param residue_name
-              * @param residue_chain_id
-              * @param residue_sequence_number
-              * @param residue_insertion_code
+              * @param residue_name Name of site residue card record that appears in the first column of each line of a pdb file
+              * @param residue_chain_id Chain identifier of a residue in a pdb file
+              * @param residue_sequence_number Sequence number of a residue in a pdb file
+              * @param residue_insertion_code Insertion code of a residue in a pdb file
               */
             PdbSiteResidue(const std::string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code);
             /*! \fn
@@ -100,10 +100,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string residue_name_;
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            char residue_insertion_code_;
+            std::string residue_name_;          /*!< Name of the residue appears in site residue card of a pdb file >*/
+            char residue_chain_id_;             /*!< Chain identifier of a residue that apears in site residue card of a pdb file >*/
+            int residue_sequence_number_;       /*!< Sequence number of a residue that appears in a site residue card of a pdb file >*/
+            char residue_insertion_code_;       /*!< Insertion code of a residue that appears in a site card residue card of a pdb file >*/
     };
 }
 

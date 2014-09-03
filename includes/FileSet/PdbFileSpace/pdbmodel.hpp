@@ -81,8 +81,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int model_serial_number_;
-            PdbModelResidueSet* model_residue_set_;
+            int model_serial_number_;               /*!< Serial number of a model >*/
+            PdbModelResidueSet* model_residue_set_; /*!< Residue sets involving in a model >*/
 
     };
 }
