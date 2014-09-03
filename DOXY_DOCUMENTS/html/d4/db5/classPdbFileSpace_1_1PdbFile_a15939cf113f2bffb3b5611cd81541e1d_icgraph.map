@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ac8799516bd919a7db07dcba57646cc8d" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractRecognizedResidues" alt="" coords="351,5,791,35"/>
+<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a2c19aff80493c0a001524e9a6e6a78d9" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractRemovedHydrogens" alt="" coords="353,59,788,88"/>
+<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a7759918b7dd9d58bafcce19caeb41501" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractUnknownHeavyAtoms" alt="" coords="347,112,795,141"/>
+<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ab7d93212515ffced06988fedf6a56b92" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractUnrecognizedResidues" alt="" coords="345,165,796,195"/>
+</map>

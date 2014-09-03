@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae0b0cf80fd7d5de243191e8890a2f1d2" title="MolecularModeling::Assembly::BuildAssemblyFromPdbFile" alt="" coords="173,5,539,35"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1612,84,1897,113"/>
+<area shape="rect" id="node7" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a06b761c7e6b6288f8e5ebc7b1763cbae" title="PdbFileSpace::PdbFile::GetAtomOfResidueByAtomKey" alt="" coords="183,109,529,139"/>
+<area shape="rect" id="node14" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a60aaead25a5d341f200c35f871530455" title="TopologyFileSpace::TopologyFile::PartitionLine" alt="" coords="209,163,503,192"/>
+<area shape="rect" id="node16" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a3df20868f502b878585a72ccd4f732e6" title="TopologyFileSpace::TopologyFile::ResolveExcludedAtomsListSection" alt="" coords="143,216,569,245"/>
+<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a85910fffc9a818c16b19cb00d80cce84" title="MolecularModeling::Assembly::BuildStructureByPDBFileInformation" alt="" coords="619,109,1035,139"/>
+<area shape="rect" id="node11" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1084,109,1561,139"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$da/d64/classMolecularModeling_1_1Residue.html#a42f934ced8c7f024c7e23633f9bfd2f4" title="MolecularModeling::Residue::AddAtom" alt="" coords="492,5,740,35"/>
+<area shape="rect" id="node5" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a30d7dd917f7097aac462a1f53708a8cb" title="TopologyFileSpace::TopologyFile::GetAssembly" alt="" coords="465,59,767,88"/>
+<area shape="rect" id="node7" href="$d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a6a8e901c7c645c9aa73231c64309195f" title="TopologyFileSpace::TopologyAtom::GetAtomName" alt="" coords="456,112,776,141"/>
+<area shape="rect" id="node9" href="$d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#abbb6719b22d6537dc36b8d4d84131a13" title="TopologyFileSpace::TopologyResidue::GetAtoms" alt="" coords="461,165,771,195"/>
+<area shape="rect" id="node11" href="$d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a469185811341f8a7b7ef7fd3fe264e5c" title="TopologyFileSpace::TopologyAssembly::GetResidues" alt="" coords="448,219,784,248"/>
+<area shape="rect" id="node13" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a06d201fb77434148a0fb68fec071be2d" title="TopologyFileSpace::TopologyFile::GetTitle" alt="" coords="481,272,751,301"/>
+<area shape="rect" id="node15" href="$da/d64/classMolecularModeling_1_1Residue.html#a03b1653be3c925efeed920933f5c282a" title="MolecularModeling::Residue::SetAssembly" alt="" coords="480,325,752,355"/>
+<area shape="rect" id="node17" href="$de/da2/classMolecularModeling_1_1Atom.html#ae0ed6b079962f58203b1bc81c549e19d" title="MolecularModeling::Atom::SetId" alt="" coords="512,379,720,408"/>
+<area shape="rect" id="node19" href="$da/d64/classMolecularModeling_1_1Residue.html#ad1620c4c10d3d747ddf2b2c13ed98c6f" title="MolecularModeling::Residue::SetId" alt="" coords="504,432,728,461"/>
+<area shape="rect" id="node21" href="$da/d64/classMolecularModeling_1_1Residue.html#a1d43dbe9fd025966fd11456a049acfa4" title="MolecularModeling::Residue::SetName" alt="" coords="492,485,740,515"/>
+<area shape="rect" id="node23" href="$de/da2/classMolecularModeling_1_1Atom.html#a7ba5d0e4ce356708707492e256f21b96" title="MolecularModeling::Atom::SetName" alt="" coords="500,539,732,568"/>
+<area shape="rect" id="node25" href="$de/da2/classMolecularModeling_1_1Atom.html#a93666f413cb1726de659ed9488573b9a" title="MolecularModeling::Atom::SetResidue" alt="" coords="493,592,739,621"/>
+</map>

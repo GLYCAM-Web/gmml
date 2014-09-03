@@ -1,0 +1,22 @@
+<map id="G" name="G">
+<area shape="rect" id="node7" href="$d4/d96/pdbpreprocessor_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessor.hpp" alt="" coords="4612,83,5001,112"/>
+<area shape="rect" id="node15" href="$da/d36/pdbresidue_8hpp.html" title="../../FileSet/PdbFileSpace/pdbresidue.hpp" alt="" coords="1712,160,1976,189"/>
+<area shape="rect" id="node19" href="$df/d7e/pdbfile_8hpp.html" title="../../FileSet/PdbFileSpace/pdbfile.hpp" alt="" coords="4883,160,5120,189"/>
+<area shape="rect" id="node26" href="$dd/dbf/pdbatom_8hpp.html" title="../../FileSet/PdbFileSpace/pdbatom.hpp" alt="" coords="5525,160,5776,189"/>
+<area shape="rect" id="node37" href="$d6/d97/libraryfile_8hpp.html" title="../../ParameterSet/LibraryFileSpace/libraryfile.hpp" alt="" coords="5144,160,5451,189"/>
+<area shape="rect" id="node43" href="$de/d53/pdbpreprocessordisulfidebond_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.hpp" alt="" coords="3429,160,3896,189"/>
+<area shape="rect" id="node47" href="$df/d93/pdbpreprocessorchaintermination_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.hpp" alt="" coords="3071,83,3556,112"/>
+<area shape="rect" id="node52" href="$dd/d3a/common_8hpp.html" title="../../common.hpp" alt="" coords="3285,160,3405,189"/>
+<area shape="rect" id="node58" href="$d8/d4d/pdbpreprocessorhistidinemapping_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.hpp" alt="" coords="2057,83,2545,112"/>
+<area shape="rect" id="node64" href="$d4/d71/pdbpreprocessormissingresidue_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.hpp" alt="" coords="2569,83,3047,112"/>
+<area shape="rect" id="node70" href="$d6/d1f/pdbpreprocessorunrecognizedresidue_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp" alt="" coords="5,160,515,189"/>
+<area shape="rect" id="node74" href="$d4/db4/pdbpreprocessorunrecognizedheavyatom_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp" alt="" coords="539,160,1069,189"/>
+<area shape="rect" id="node78" href="$d2/d7c/pdbpreprocessorreplacedhydrogen_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp" alt="" coords="1144,160,1637,189"/>
+<area shape="rect" id="node82" href="$dc/d23/pdbpreprocessoralternateresidue_8hpp.html" title="../../../includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp" alt="" coords="2000,160,2483,189"/>
+<area shape="rect" id="node90" href="$d3/d54/libraryfileresidue_8hpp.html" title="../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp" alt="" coords="4021,160,4435,189"/>
+<area shape="rect" id="node96" href="$d6/dbb/libraryfileatom_8hpp.html" title="../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp" alt="" coords="2861,160,3261,189"/>
+<area shape="rect" id="node102" href="$de/db5/prepfile_8hpp.html" title="../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp" alt="" coords="4459,160,4808,189"/>
+<area shape="rect" id="node109" href="$dd/d02/pdbatomcard_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp" alt="" coords="6411,160,6749,189"/>
+<area shape="rect" id="node117" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="5911,83,6068,112"/>
+<area shape="rect" id="node30" href="$d2/dca/coordinate_8hpp.html" title="../../Geometry/coordinate.hpp" alt="" coords="5627,237,5819,267"/>
+</map>

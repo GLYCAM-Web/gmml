@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$dd/df2/assembly_8cc.html" title="src/MolecularModeling/assembly.cc" alt="" coords="5,83,235,112"/>
+<area shape="rect" id="node5" href="$d5/d68/libraryfile_8cc.html" title="src/ParameterSet/LibraryFileSpace/libraryfile.cc" alt="" coords="259,83,557,112"/>
+<area shape="rect" id="node7" href="$d7/d6a/libraryfileatom_8cc.html" title="src/ParameterSet/LibraryFileSpace/libraryfileatom.cc" alt="" coords="581,83,909,112"/>
+<area shape="rect" id="node9" href="$d1/d39/libraryfileresidue_8cc.html" title="src/ParameterSet/LibraryFileSpace/libraryfileresidue.cc" alt="" coords="933,83,1275,112"/>
+<area shape="rect" id="node11" href="$da/d8b/pdbpreprocessor_8cc.html" title="src/Resolver/PdbPreprocessor/pdbpreprocessor.cc" alt="" coords="1299,83,1616,112"/>
+</map>

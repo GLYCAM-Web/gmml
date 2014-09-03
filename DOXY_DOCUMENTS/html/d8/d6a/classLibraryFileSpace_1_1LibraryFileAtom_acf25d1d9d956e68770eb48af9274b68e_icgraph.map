@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="377,5,759,35"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="883,83,1381,112"/>
+<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31" title="MolecularModeling::Assembly::BuildStructureByLIBFileInformation" alt="" coords="928,136,1336,165"/>
+<area shape="rect" id="node14" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6056f8116b2dc97a12b7bb40c2c4de21" title="LibraryFileSpace::LibraryFile::GetAllAtomNamesOfResidue" alt="" coords="385,213,751,243"/>
+<area shape="rect" id="node18" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a4bc50d1502aa4e5454b68169c3860241" title="LibraryFileSpace::LibraryFileResidue::GetLibraryAtomByAtomName" alt="" coords="360,109,776,139"/>
+<area shape="rect" id="node22" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="409,267,727,296"/>
+<area shape="rect" id="node24" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a3b523e3ce93e1af0cbf2e6853f8b0f83" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChains" alt="" coords="357,320,779,349"/>
+<area shape="rect" id="node26" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="337,373,799,403"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1993,111,2279,140"/>
+<area shape="rect" id="node11" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1465,136,1943,165"/>
+<area shape="rect" id="node16" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a9720410d9689628dfb5f0a94768734ab" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles" alt="" coords="849,213,1415,243"/>
+</map>

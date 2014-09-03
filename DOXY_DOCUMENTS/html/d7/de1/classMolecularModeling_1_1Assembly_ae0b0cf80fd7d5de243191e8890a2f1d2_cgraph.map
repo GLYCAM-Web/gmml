@@ -1,0 +1,29 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$da/d64/classMolecularModeling_1_1Residue.html#a42f934ced8c7f024c7e23633f9bfd2f4" title="MolecularModeling::Residue::AddAtom" alt="" coords="477,5,725,35"/>
+<area shape="rect" id="node5" href="$de/da2/classMolecularModeling_1_1Atom.html#a3ff174dd7c20bbdefd6328a8b2efbfa1" title="MolecularModeling::Atom::AddCoordinate" alt="" coords="471,59,732,88"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a347f338d61f26d407266bbbd89b30c1b" title="MolecularModeling::Assembly::AddResidue" alt="" coords="464,112,739,141"/>
+<area shape="rect" id="node9" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#aee6be28b33c81910cb7ffd07cbd1cf88" title="PdbFileSpace::PdbFile::GetAllAtomsOfResidues" alt="" coords="448,419,755,448"/>
+<area shape="rect" id="node11" href="$d0/d75/classPdbFileSpace_1_1PdbModel.html#a787503c8bb97d21251dd741a49f2c52f" title="PdbFileSpace::PdbModel::GetModelResidueSet" alt="" coords="872,165,1173,195"/>
+<area shape="rect" id="node13" href="$d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html#a16a169bfbb3c716608d7f413cf1614de" title="PdbFileSpace::PdbModelResidueSet::GetAtoms" alt="" coords="871,219,1175,248"/>
+<area shape="rect" id="node15" href="$d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ab07c3d7c02fbeeff68d48c768f2807c5" title="PdbFileSpace::PdbAtomCard::GetAtoms" alt="" coords="893,272,1152,301"/>
+<area shape="rect" id="node17" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#acc9a177ac9b4686b8fc7d481bef93abf" title="PdbFileSpace::PdbAtom::GetAtomResidueName" alt="" coords="869,325,1176,355"/>
+<area shape="rect" id="node19" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a8d21869af11b88a4f8f055b5f238b745" title="PdbFileSpace::PdbAtom::GetAtomChainId" alt="" coords="888,379,1157,408"/>
+<area shape="rect" id="node21" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a9904d4ec77de04c10ce7c77a35d92e16" title="PdbFileSpace::PdbAtom::GetAtomResidueSequenceNumber" alt="" coords="835,432,1211,461"/>
+<area shape="rect" id="node23" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#aa2dbc7ac701bbcb4d92537eec569ad8f" title="PdbFileSpace::PdbAtom::GetAtomInsertionCode" alt="" coords="869,487,1176,516"/>
+<area shape="rect" id="node25" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#aed8dc3d4c8de468f3769ad748e1479b2" title="PdbFileSpace::PdbAtom::GetAtomAlternateLocation" alt="" coords="860,541,1185,571"/>
+<area shape="rect" id="node27" href="$d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html#aa37cb07507690d3306b37925fb5e194f" title="PdbFileSpace::PdbModelResidueSet::GetHeterogenAtoms" alt="" coords="841,599,1204,628"/>
+<area shape="rect" id="node29" href="$d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#a2e78118aec4e240c7265f31a6bd02c26" title="PdbFileSpace::PdbHeterogenAtomCard::GetHeterogenAtoms" alt="" coords="833,659,1212,688"/>
+<area shape="rect" id="node32" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a8d3adc8ca9873d9df9496262fc3376a7" title="PdbFileSpace::PdbAtom::GetAtomCardIndexInResidueSet" alt="" coords="420,725,783,755"/>
+<area shape="rect" id="node36" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#ab317ef2b2ab116da72c6991b56be495d" title="PdbFileSpace::PdbAtom::GetAtomName" alt="" coords="472,779,731,808"/>
+<area shape="rect" id="node38" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#af4f4523bd067f2b1b38c8899f47d8032" title="PdbFileSpace::PdbAtom::GetAtomOrthogonalCoordinate" alt="" coords="427,832,776,861"/>
+<area shape="rect" id="node44" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#afb0709c68cd7da62b81a639c7109915d" title="PdbFileSpace::PdbAtom::GetAtomSerialNumber" alt="" coords="449,885,753,915"/>
+<area shape="rect" id="node49" href="$d0/d18/classPdbFileSpace_1_1PdbModelCard.html#a087b4ebceaf0579c070a8e06a87a8bc6" title="PdbFileSpace::PdbModelCard::GetModels" alt="" coords="468,939,735,968"/>
+<area shape="rect" id="node51" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a2c3b611313b2e0edf75a9859e14ec346" title="PdbFileSpace::PdbFile::GetModels" alt="" coords="488,992,715,1021"/>
+<area shape="rect" id="node53" href="$da/d64/classMolecularModeling_1_1Residue.html#a03b1653be3c925efeed920933f5c282a" title="MolecularModeling::Residue::SetAssembly" alt="" coords="465,1045,737,1075"/>
+<area shape="rect" id="node55" href="$de/da2/classMolecularModeling_1_1Atom.html#ae0ed6b079962f58203b1bc81c549e19d" title="MolecularModeling::Atom::SetId" alt="" coords="497,1099,705,1128"/>
+<area shape="rect" id="node57" href="$da/d64/classMolecularModeling_1_1Residue.html#ad1620c4c10d3d747ddf2b2c13ed98c6f" title="MolecularModeling::Residue::SetId" alt="" coords="489,1152,713,1181"/>
+<area shape="rect" id="node59" href="$da/d64/classMolecularModeling_1_1Residue.html#a1d43dbe9fd025966fd11456a049acfa4" title="MolecularModeling::Residue::SetName" alt="" coords="477,1205,725,1235"/>
+<area shape="rect" id="node61" href="$de/da2/classMolecularModeling_1_1Atom.html#a7ba5d0e4ce356708707492e256f21b96" title="MolecularModeling::Atom::SetName" alt="" coords="485,1259,717,1288"/>
+<area shape="rect" id="node63" href="$de/da2/classMolecularModeling_1_1Atom.html#a93666f413cb1726de659ed9488573b9a" title="MolecularModeling::Atom::SetResidue" alt="" coords="479,1312,724,1341"/>
+<area shape="rect" id="node65" href="$d0/ddd/namespacegmml.html#ab28bcbd71e857a37c5d650261aa38128" title="gmml::Split" alt="" coords="557,1365,645,1395"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="1080,5,1579,35"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31" title="MolecularModeling::Assembly::BuildStructureByLIBFileInformation" alt="" coords="540,57,948,87"/>
+<area shape="rect" id="node12" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af5ef412a1d0761ea273465b78add00bd" title="PdbPreprocessorSpace::PdbPreprocessor::GetLibraryResidueByNameFromMultipleLibraryFiles" alt="" coords="456,111,1032,140"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1628,32,1913,61"/>
+<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1091,59,1568,88"/>
+</map>
