@@ -8,7 +8,6 @@
 namespace TopologyFileSpace
 {
     class TopologyBondType;
-
     class TopologyBond
     {
         public:
