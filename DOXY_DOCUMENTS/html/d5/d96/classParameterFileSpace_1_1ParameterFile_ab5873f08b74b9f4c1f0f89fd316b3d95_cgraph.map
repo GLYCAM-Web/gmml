@@ -1,0 +1,13 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#ad09a6509d7aba84cc8dc8e984f222535" title="ParameterFileSpace::ParameterFileDihedral::AddTerm" alt="" coords="479,5,817,35"/>
+<area shape="rect" id="node5" href="$d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#a58ba5ca75d634b005e6dfbaeb5facc18" title="ParameterFileSpace::ParameterFileDihedral::GetTerms" alt="" coords="477,59,819,88"/>
+<area shape="rect" id="node7" href="$d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#aadba96d4025475666730f1584b446ea2" title="ParameterFileSpace::ParameterFileDihedral::GetTypes" alt="" coords="477,112,819,141"/>
+<area shape="rect" id="node9" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#a2b6304aa7498fa7dc18f9393ecce9597" title="ParameterFileSpace::ParameterFileDihedralTerm::SetDscr" alt="" coords="467,165,829,195"/>
+<area shape="rect" id="node11" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#a11111024291347614bd3d8f3ad00a40b" title="ParameterFileSpace::ParameterFileDihedralTerm::SetFactor" alt="" coords="463,219,833,248"/>
+<area shape="rect" id="node13" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#a089daafbc1bf39bc492e2bf39ea8c764" title="ParameterFileSpace::ParameterFileDihedralTerm::SetForceConstant" alt="" coords="437,272,859,301"/>
+<area shape="rect" id="node15" href="$d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#aaf7567eff829b6fc88051de047add8f1" title="ParameterFileSpace::ParameterFileDihedral::SetIsGeneric" alt="" coords="468,325,828,355"/>
+<area shape="rect" id="node17" href="$d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#af6b5c7b7eb3eb9aa60c0c725f20d28ed" title="ParameterFileSpace::ParameterFileDihedral::SetIsImproper" alt="" coords="465,379,831,408"/>
+<area shape="rect" id="node19" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#a9878810927c5eaf4350724ecaedfd297" title="ParameterFileSpace::ParameterFileDihedralTerm::SetPeriodicity" alt="" coords="451,432,845,461"/>
+<area shape="rect" id="node21" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#acad44f1df77e2ec49bad977b2530305a" title="ParameterFileSpace::ParameterFileDihedralTerm::SetPhase" alt="" coords="463,485,833,515"/>
+<area shape="rect" id="node23" href="$d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="604,539,692,568"/>
+</map>

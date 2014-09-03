@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a557bea44ea73435bb2b59ad1499ea238" title="Process the dihedral lines of the parameter file." alt="" coords="445,5,779,35"/>
+<area shape="rect" id="node5" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#ab5873f08b74b9f4c1f0f89fd316b3d95" title="Process the improper dihedral lines of the parameter file." alt="" coords="420,59,804,88"/>
+<area shape="rect" id="node7" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="424,112,800,141"/>
+<area shape="rect" id="node9" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="399,165,825,195"/>
+</map>

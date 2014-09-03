@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a226e8c5e597cbe28c4c9783cfc579532" title="Parse the improper dihedral section of each residue section and return a vector of improper dihedrals..." alt="" coords="373,5,733,35"/>
+<area shape="rect" id="node5" href="$d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="781,57,869,87"/>
+<area shape="rect" id="node7" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#aa848cdb87efa051514ab16db8598b024" title="Parse the loop section of each residue section and return a loop map." alt="" coords="405,109,701,139"/>
+</map>

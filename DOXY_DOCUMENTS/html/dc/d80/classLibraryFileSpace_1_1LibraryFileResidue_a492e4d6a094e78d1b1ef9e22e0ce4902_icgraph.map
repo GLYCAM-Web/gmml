@@ -1,0 +1,22 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="393,5,775,35"/>
+<area shape="rect" id="node5" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="443,59,725,88"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="864,111,1363,140"/>
+<area shape="rect" id="node11" href="$d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31" title="MolecularModeling::Assembly::BuildStructureByLIBFileInformation" alt="" coords="380,163,788,192"/>
+<area shape="rect" id="node16" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa8ec7beb93a8eef0a346e74eb14ccade" title="LibraryFileSpace::LibraryFile::ResolveAtomPertInfoSection" alt="" coords="403,216,765,245"/>
+<area shape="rect" id="node18" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="425,269,743,299"/>
+<area shape="rect" id="node20" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="411,323,757,352"/>
+<area shape="rect" id="node22" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a5937a056fd10323e51ea1b42ae6b2cfe" title="LibraryFileSpace::LibraryFile::ResolveChildSequenceSection" alt="" coords="397,376,771,405"/>
+<area shape="rect" id="node24" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="404,429,764,459"/>
+<area shape="rect" id="node26" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="416,483,752,512"/>
+<area shape="rect" id="node28" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ab1bf388d464db7c8eeec94045a6ca0ba" title="LibraryFileSpace::LibraryFile::ResolveHierarchySection" alt="" coords="413,536,755,565"/>
+<area shape="rect" id="node30" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a8065b902c600c86148457f2532363dfd" title="LibraryFileSpace::LibraryFile::ResolveNameSection" alt="" coords="423,589,745,619"/>
+<area shape="rect" id="node32" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="417,643,751,672"/>
+<area shape="rect" id="node34" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1392b1b06e5a2438a2f3f72b461cda79" title="LibraryFileSpace::LibraryFile::ResolveResidueConnectSection" alt="" coords="392,696,776,725"/>
+<area shape="rect" id="node36" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a05f58eb185d979030274ab8f062a66b4" title="LibraryFileSpace::LibraryFile::ResolveResiduePdbSequenceNumberSection" alt="" coords="353,749,815,779"/>
+<area shape="rect" id="node38" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a888c9e2d9f2c89e7541f2e91c60f01b2" title="LibraryFileSpace::LibraryFile::ResolveResiduesSection" alt="" coords="413,803,755,832"/>
+<area shape="rect" id="node40" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aef3ea7be40137c9523c0c35978b2df7e" title="LibraryFileSpace::LibraryFile::ResolveSolventCapSection" alt="" coords="407,856,761,885"/>
+<area shape="rect" id="node42" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac119e6a2f0409103ec1a732cdcf240b0" title="LibraryFileSpace::LibraryFile::ResolveVelocitiesSection" alt="" coords="412,909,756,939"/>
+<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1412,137,1697,167"/>
+<area shape="rect" id="node13" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="875,164,1352,193"/>
+</map>

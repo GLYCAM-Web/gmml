@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d4/d96/pdbpreprocessor_8hpp.html" title="includes/Resolver/PdbPreprocessor/pdbpreprocessor.hpp" alt="" coords="5,83,360,112"/>
+<area shape="rect" id="node5" href="$da/d8b/pdbpreprocessor_8cc.html" title="src/Resolver/PdbPreprocessor/pdbpreprocessor.cc" alt="" coords="131,160,448,189"/>
+<area shape="rect" id="node7" href="$d1/d6f/pdbatom_8cc.html" title="src/FileSet/PdbFileSpace/pdbatom.cc" alt="" coords="435,83,677,112"/>
+<area shape="rect" id="node9" href="$db/da1/pdbatomcard_8cc.html" title="src/FileSet/PdbFileSpace/pdbatomcard.cc" alt="" coords="701,83,968,112"/>
+<area shape="rect" id="node11" href="$d8/dd5/pdbfile_8cc.html" title="src/FileSet/PdbFileSpace/pdbfile.cc" alt="" coords="992,83,1221,112"/>
+<area shape="rect" id="node13" href="$df/d43/pdbheterogenatomcard_8cc.html" title="src/FileSet/PdbFileSpace/pdbheterogenatomcard.cc" alt="" coords="1245,83,1568,112"/>
+<area shape="rect" id="node15" href="$dd/df2/assembly_8cc.html" title="src/MolecularModeling/assembly.cc" alt="" coords="1592,83,1821,112"/>
+</map>

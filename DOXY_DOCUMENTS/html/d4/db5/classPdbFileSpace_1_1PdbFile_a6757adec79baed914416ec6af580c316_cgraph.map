@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#aed8dc3d4c8de468f3769ad748e1479b2" title="PdbFileSpace::PdbAtom::GetAtomAlternateLocation" alt="" coords="424,5,749,35"/>
+<area shape="rect" id="node5" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a8d21869af11b88a4f8f055b5f238b745" title="PdbFileSpace::PdbAtom::GetAtomChainId" alt="" coords="452,59,721,88"/>
+<area shape="rect" id="node7" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#aa2dbc7ac701bbcb4d92537eec569ad8f" title="PdbFileSpace::PdbAtom::GetAtomInsertionCode" alt="" coords="433,112,740,141"/>
+<area shape="rect" id="node9" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#acc9a177ac9b4686b8fc7d481bef93abf" title="PdbFileSpace::PdbAtom::GetAtomResidueName" alt="" coords="433,165,740,195"/>
+<area shape="rect" id="node11" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a9904d4ec77de04c10ce7c77a35d92e16" title="PdbFileSpace::PdbAtom::GetAtomResidueSequenceNumber" alt="" coords="399,219,775,248"/>
+<area shape="rect" id="node13" href="$d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ab07c3d7c02fbeeff68d48c768f2807c5" title="PdbFileSpace::PdbAtomCard::GetAtoms" alt="" coords="457,272,716,301"/>
+<area shape="rect" id="node15" href="$d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html#a16a169bfbb3c716608d7f413cf1614de" title="PdbFileSpace::PdbModelResidueSet::GetAtoms" alt="" coords="435,325,739,355"/>
+<area shape="rect" id="node17" href="$d0/d75/classPdbFileSpace_1_1PdbModel.html#a787503c8bb97d21251dd741a49f2c52f" title="PdbFileSpace::PdbModel::GetModelResidueSet" alt="" coords="436,379,737,408"/>
+</map>
