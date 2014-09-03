@@ -21,19 +21,19 @@ namespace PdbFileSpace
             PdbResidueModification();
             /*! \fn
               * Constructor with required parameters
-              * @param id_code
-              * @param residue_name
-              * @param chain_id
-              * @param sequence_number
-              * @param insertion_code
-              * @param standard_residue_name
-              * @param dscr
+              * @param id_code Identification code of a residue modification
+              * @param residue_name Name of the residue in the residue modification
+              * @param chain_id Chain identifier of the residue modification
+              * @param sequence_number Sequence number of the residue modification
+              * @param insertion_code Insertion code of the residue modification
+              * @param standard_residue_name Standard name of the residue in the residue modification
+              * @param dscr Short description for residue modification object
               */
             PdbResidueModification(const std::string& id_code, const std::string& residue_name, char chain_id, int sequence_number,
                                    char insertion_code, const std::string& standard_residue_name, const std::string& dscr);
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param stream_block Block of stream consists of residue modifications
               */
             PdbResidueModification(std::stringstream& stream_block);
             //////////////////////////////////////////////////////////
@@ -139,13 +139,13 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string id_code_;
-            std::string residue_name_;
-            char chain_id_;
-            int sequence_number_;
-            char insertion_code_;
-            std::string standard_residue_name_;
-            std::string dscr_;
+            std::string id_code_;                   /*!< Identification code of a residue modification >*/
+            std::string residue_name_;              /*!< Name of the residue in a residue modification >*/
+            char chain_id_;                         /*!< Chain identification of a residue in a residue modification >*/
+            int sequence_number_;                   /*!< Sequence number of a residue in a residue modification >*/
+            char insertion_code_;                   /*!< Insertion code of a residue in a residue modification >*/
+            std::string standard_residue_name_;     /*!< Standard residue name of a residue in a residue modification >*/
+            std::string dscr_;                      /*!< Short description for a residue in a residue modification >*/
     };
 }
 

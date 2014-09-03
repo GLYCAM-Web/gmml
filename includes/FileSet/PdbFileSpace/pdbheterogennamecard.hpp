@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between heterogen identifier and heterogen name
+              */
             typedef std::map<std::string, PdbHeterogenName*> HeterogenNameMap;
 
             //////////////////////////////////////////////////////////
@@ -80,8 +83,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            HeterogenNameMap heterogen_names_;
+            std::string record_name_;           /*!< Record name of heterogen name card in a pdb file >*/
+            HeterogenNameMap heterogen_names_;  /*!< Heterogen name map >*/
     };
 }
 

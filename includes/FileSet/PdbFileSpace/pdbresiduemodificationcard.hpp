@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between residue modification id code and the residue modification itself
+              */
             typedef std::map<std::string, PdbResidueModification*> ResidueModificationMap;
 
             //////////////////////////////////////////////////////////
@@ -80,8 +83,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            ResidueModificationMap residue_modifications_;
+            std::string record_name_;                           /*!< Record name of this card appears in the first column of each line in a pdb file >*/
+            ResidueModificationMap residue_modifications_;      /*!< Residue modification object map consists of all residue modification objects in the residue modification card of a pdb file >*/
     };
 }
 

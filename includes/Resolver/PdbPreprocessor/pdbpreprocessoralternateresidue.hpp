@@ -124,7 +124,7 @@ namespace PdbPreprocessorSpace
             std::string residue_name_;                          /*!< Name of the residue with alternate location(s) >*/
             char residue_insertion_code_;                       /*!< Insertion code of the residue with alternate location(s) >*/
             std::vector<char> residue_alternate_location_;      /*!< List of alternate locations of the residue with different possible location(s) >*/
-            std::vector<bool> selected_alternate_location_;     /*!< List of true/false values that indicate which one of the alternate location(s) is selected *>/
+            std::vector<bool> selected_alternate_location_;     /*!< List of true/false values that indicate which one of the alternate location(s) is selected >*/
 
     };
 }

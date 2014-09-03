@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between helix identifier and helix itself
+              */
             typedef std::map<std::string, PdbHelix*> HelixMap;
 
             //////////////////////////////////////////////////////////
@@ -80,8 +83,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            HelixMap helixes_;
+            std::string record_name_;       /*!< Record name of helix card in a pdb file >*/
+            HelixMap helixes_;              /*!< Mapping of helix with helix identifier as key >*/
     };
 }
 #endif // PDBHELIXCARD_HPP

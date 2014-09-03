@@ -21,8 +21,8 @@ namespace TopologyFileSpace
             TopologyAngle();
             /*! \fn
               * Constructor with required parameters
-              * @param angle_atoms
-              * @param residue_names
+              * @param angle_atoms Names of atoms involving in an angle (three bonded atom names)
+              * @param residue_names Names of residues of the atoms that are involving in an angle
               */
             TopologyAngle(std::vector<std::string> angle_atoms, std::vector<std::string> residue_names);
 
@@ -96,10 +96,10 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::vector<std::string> angles_;
-            TopologyAngleType* angle_type_;
-            bool including_hydrogen_;
-            std::vector<std::string> residue_names_;
+            std::vector<std::string> angles_;               /*!< Name of atoms involving in an angle in a topology file >*/
+            TopologyAngleType* angle_type_;                 /*!< Type of the angle corresponding to the angle type definition >*/
+            bool including_hydrogen_;                       /*!< Indicates that the angle has a hydrogen atom or not >*/
+            std::vector<std::string> residue_names_;        /*!< Names of residues of the atoms that are invovling in an angle >*/
 
     };
 }

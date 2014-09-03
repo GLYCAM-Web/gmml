@@ -39,7 +39,7 @@ namespace PdbFileSpace
             PdbSheetStrand();
             /*! \fn
               * Constructor with required parameters
-              * @param strand_residues
+              * @param strand_residues Vector of strands in a sheet
               * @param sense
               * @param current_atom
               * @param previous_atom
@@ -47,7 +47,7 @@ namespace PdbFileSpace
             PdbSheetStrand(const SheetStrandResidueVector strand_residues, PdbSheetStrandSense sense, const std::string& current_atom, const std::string& previous_atom);
             /*! \fn
               * Constructor with required parameters
-              * @param line
+              * @param line A single line consists of sheet strand information
               */
             PdbSheetStrand(std::string& line);
 
@@ -127,10 +127,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            SheetStrandResidueVector strand_residues_;
-            PdbSheetStrandSense sense_;
-            std::string current_atom_;
-            std::string previous_atom_;
+            SheetStrandResidueVector strand_residues_;      /*!< Vector of residues involving in a strand >*/
+            PdbSheetStrandSense sense_;                     /*!< Sense variable which indicates interaction of strands to each other in a sheet >*/
+            std::string current_atom_;                      /*!< Current atom in a strand >*/
+            std::string previous_atom_;                     /*!< Previous atom in a strand >*/
     };
 }
 

@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of sheet strands
+              */
             typedef std::vector<PdbSheetStrand*> SheetStrandVector;
 
             //////////////////////////////////////////////////////////
@@ -29,9 +32,9 @@ namespace PdbFileSpace
             PdbSheet();
             /*! \fn
               * Constructor with required parameters
-              * @param sheet_id
-              * @param number_of_strands
-              * @param strands
+              * @param sheet_id Sheet identifier of a sheet in a pdb file
+              * @param number_of_strands Number of strands that are involved in a sheet in a pdb file
+              * @param strands Vector of involving strands in the current sheet
               */
             PdbSheet(const std::string& sheet_id, int number_of_strands, const SheetStrandVector strands);
             /*! \fn
@@ -105,9 +108,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string sheet_id_;
-            int number_of_strands_;
-            SheetStrandVector strands_;
+            std::string sheet_id_;          /*!< Sheet identifier >*/
+            int number_of_strands_;         /*!< Number of strands involving in a sheet >*/
+            SheetStrandVector strands_;     /*!< Strands involving in a sheet >*/
     };
 }
 

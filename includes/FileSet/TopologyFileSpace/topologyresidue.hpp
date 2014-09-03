@@ -27,9 +27,9 @@ namespace TopologyFileSpace
             TopologyResidue();
             /*! \fn
               * Constructor with required parameters
-              * @param residue_name
-              * @param atoms
-              * @param starting_atom_index
+              * @param residue_name Residue name in a topology file
+              * @param atoms Atoms belonging to the current residue
+              * @param starting_atom_index Index of the first atom that belongs to the residue among all atoms in a topology file
               */
             TopologyResidue(std::string residue_name, TopologyAtomMap atoms, int index, int starting_atom_index);
 
@@ -103,10 +103,10 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string residue_name_;
-            TopologyAtomMap atoms_;
-            int index_;
-            int starting_atom_index_;
+            std::string residue_name_;              /*!< Residue name >*/
+            TopologyAtomMap atoms_;                 /*!< List of atoms those belong to this residue >*/
+            int index_;                             /*!< Index of this residue among the others in a topology file >*/
+            int starting_atom_index_;               /*!< Index of the first atom belongs to this residue among all other atoms in a topology file >*/
 
     };
 }

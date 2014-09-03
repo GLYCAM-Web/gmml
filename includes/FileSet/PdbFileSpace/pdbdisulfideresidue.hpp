@@ -25,11 +25,11 @@ namespace PdbFileSpace
             PdbDisulfideResidue();
             /*! \fn
               * Constructor with required parameters
-              * @param residue_name
-              * @param residue_chain_id
-              * @param residue_sequence_number
-              * @param residue_insertion_code
-              * @param symmetry_operator
+              * @param residue_name Name of residue involving in a disulfide bond
+              * @param residue_chain_id Chain id of the residue involving in a disulfide bond
+              * @param residue_sequence_number Sequence number of the residue in a disulfide bond
+              * @param residue_insertion_code Insertion code of the residue in a disulfide bond
+              * @param symmetry_operator Symmetry operator of a disulfide bond
               */
             PdbDisulfideResidue(const std::string& residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code, int symmetry_operator);
 
@@ -114,11 +114,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string residue_name_;
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            char residue_insertion_code_;
-            int symmetry_operator_;
+            std::string residue_name_;          /*!< Residue name involving in a disulfide bond >*/
+            char residue_chain_id_;             /*!< Chain identifier of the residue involving in a disulfide bond >*/
+            int residue_sequence_number_;       /*!< Sequence number of the residue involving in a disulfide bond >*/
+            char residue_insertion_code_;       /*!< Insertion code of the residue involving in a disulfide bond >*/
+            int symmetry_operator_;             /*!< Symmetry operator of a disulfide bond >*/
     };
 }
 

@@ -23,8 +23,8 @@ namespace PdbFileSpace
             PdbModelTypeCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
-              * @param comments
+              * @param record_name Name of the model type card record
+              * @param comments List of comments that are in the model type card
               */
             PdbModelTypeCard(const std::string& record_name, const std::vector<std::string>& comments);
             /*! \fn
@@ -81,8 +81,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            std::vector<std::string> comments_;
+            std::string record_name_;               /*!< Record name of model type card which is the first column of each line in a pdb file >*/
+            std::vector<std::string> comments_;     /*!< List of comments for a model type card >*/
     };
 }
 

@@ -20,8 +20,8 @@ namespace TopologyFileSpace
             TopologyDihedral();
             /*! \fn
               * Constructor with required parameters
-              * @param dihedral_atoms
-              * @param residue_names
+              * @param dihedral_atoms Atoms invovled in a dihedral (four bonded atoms)
+              * @param residue_names Residue names of the atoms involved in a dihedral (four residue names)
               */
             TopologyDihedral(std::vector<std::string> dihedral_atoms, std::vector<std::string> residue_names);
 
@@ -117,12 +117,12 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::vector<std::string> dihedrals_;
-            TopologyDihedralType* dihedral_type_;
-            bool is_improper_;
-            bool ignored_group_interaction_;
-            bool including_hydrogen_;
-            std::vector<std::string> residue_names_;
+            std::vector<std::string> dihedrals_;            /*!< Four bonded atom names involved in a dihedral >*/
+            TopologyDihedralType* dihedral_type_;           /*!< Type of the dihedral regarding to topology dihedral types >*/
+            bool is_improper_;                              /*!< Indicates that the dihedral is proper or not >*/
+            bool ignored_group_interaction_;                /*!< Indicates that the dihedral has to be ignored in group interaction or not >*/
+            bool including_hydrogen_;                       /*!< Indicates that the dihedral has a hydrogen atom or not >*/
+            std::vector<std::string> residue_names_;        /*!< Names of residues of the atoms involved in a dihedral >*/
     };
 }
 

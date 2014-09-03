@@ -19,9 +19,9 @@ namespace TopologyFileSpace
             TopologyAngleType();
             /*! \fn
               * Constructor with required parameters
-              * @param index
-              * @param force_constant
-              * @param equilibrium_value
+              * @param index Index of appearing of the angle type in a topology file
+              * @param force_constant Force constant value of the angle appears in a topology file
+              * @param equilibrium_value Equilibrium value of the angle appears in a topology file
               */
             TopologyAngleType(int index, double force_constant, double equilibrium_value);
             //////////////////////////////////////////////////////////
@@ -83,9 +83,9 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int index_;
-            double force_constant_;
-            double equilibrium_value_;
+            int index_;                 /*!< Index of appearing of an angle type in a topology file >*/
+            double force_constant_;     /*!< Force constant value of the angle appears in a topology file >*/
+            double equilibrium_value_;  /*!< Equilibrium value of the angle appears in a topology file >*/
 
     };
 }

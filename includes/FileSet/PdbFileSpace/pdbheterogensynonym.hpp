@@ -90,8 +90,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string heterogen_identifier_;
-            std::vector<std::string> heterogen_synonyms_;
+            std::string heterogen_identifier_;              /*!< Hetrogen identifier >*/
+            std::vector<std::string> heterogen_synonyms_;   /*!< List of synonyms for a heterogen specified by its identifier >*/
     };
 }
 #endif // PDBHETEROGENSYNONYM_HPP

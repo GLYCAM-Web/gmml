@@ -19,6 +19,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * A mapping between between site identifier and the site itself
+              */
             typedef std::map<std::string, PdbSite*> PdbSiteMap;
 
             //////////////////////////////////////////////////////////
@@ -30,7 +33,7 @@ namespace PdbFileSpace
             PdbSiteCard();
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param stream_block The whole block of site card as a stream
               */
             PdbSiteCard(std::stringstream& stream_block);
 
@@ -76,8 +79,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            PdbSiteMap residue_sites_;
+            std::string record_name_;       /*!< Name of the record for site card that appears in first column of each line of a pdb file >*/
+            PdbSiteMap residue_sites_;      /*!< Mapping of all site ids in a pdb file and their corresponding site residue object >*/
 
     };
 }

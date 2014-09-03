@@ -18,7 +18,13 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of matrices
+              */
             typedef std::vector<PdbMatrixN*> MatrixNVector;
+            /*! \typedef
+              * List of three lists of matrices
+              */
             typedef std::vector<MatrixNVector> MatrixNVectorVector;
 
             //////////////////////////////////////////////////////////
@@ -77,7 +83,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            MatrixNVectorVector matrix_n_;
+            MatrixNVectorVector matrix_n_;      /*!< List of three lists of matrices >*/
 
     };
 }

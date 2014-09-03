@@ -28,15 +28,15 @@ namespace PdbFileSpace
             PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name);
             /*! \fn
               * Constructor with required parameters
-              * @param molecule_id
-              * @param molecule_name
-              * @param chain_ids
-              * @param fragment
-              * @param molecule_synonyms
-              * @param enzyme_commission_numbers
-              * @param is_engineered
-              * @param has_mutation
-              * @param comments
+              * @param molecule_id Molecule identifier
+              * @param molecule_name Molecule name
+              * @param chain_ids Chain identifiers of the molecule
+              * @param fragment Fragment
+              * @param molecule_synonyms Molecule synonyms
+              * @param enzyme_commission_numbers Enzyme omission numbers of the molecule
+              * @param is_engineered Indicates that the molecule is engineered or not
+              * @param has_mutation Indicates that the molecule has been mutated or not
+              * @param comments Comments
               */
             PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name, const std::vector<std::string>& chain_ids,
                                      const std::string& fragment, const std::vector<std::string>& molecule_synonyms, std::vector<std::string>& enzyme_commission_numbers,
@@ -189,15 +189,15 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string molecule_id_;
-            std::string molecule_name_;
-            std::vector<std::string> chain_ids_;
-            std::string fragment_;
-            std::vector<std::string> molecule_synonyms_;
-            std::vector<std::string> enzyme_commission_numbers_;
-            bool is_engineered_;
-            bool has_mutation_;
-            std::string comments_;
+            std::string molecule_id_;                               /*!< Molecule identifier >*/
+            std::string molecule_name_;                             /*!< Molecule name >*/
+            std::vector<std::string> chain_ids_;                    /*!< Chain identifiers involving in the molecule >*/
+            std::string fragment_;                                  /*!< Fragment specification >*/
+            std::vector<std::string> molecule_synonyms_;            /*!< Synonyms of the molecule >*/
+            std::vector<std::string> enzyme_commission_numbers_;    /*!< List of enzyme commission numbers >*/
+            bool is_engineered_;                                    /*!< Indicates that the molecule is engineered or not >*/
+            bool has_mutation_;                                     /*!< Indicates that the molecule has been mutated or not >*/
+            std::string comments_;                                  /*!< Comments >*/
     };
 }
 #endif // PDBCOMPOUNDSPECIFICATION_HPP
