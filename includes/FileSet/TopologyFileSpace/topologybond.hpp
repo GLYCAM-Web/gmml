@@ -8,7 +8,6 @@
 namespace TopologyFileSpace
 {
     class TopologyBondType;
-
     class TopologyBond
     {
         public:
@@ -100,7 +99,6 @@ namespace TopologyFileSpace
             TopologyBondType* bond_type_;               /*!< Bond type regarding to topology bond type >*/
             bool including_hydrogen_;                   /*!< Indicates that the bond has a hydrogen atom or not >*/
             std::vector<std::string> residue_names_;    /*!< Names of residues of the atoms invovled in a bond >*/
-
     };
 }
 
