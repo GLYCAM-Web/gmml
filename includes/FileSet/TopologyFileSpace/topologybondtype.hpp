@@ -19,8 +19,9 @@ namespace TopologyFileSpace
             TopologyBondType();
             /*! \fn
               * Constructor with required parameters
-              * @param force_constant
-              * @param equilibrium_value
+              * @param index Index of the bond in the topology file
+              * @param force_constant Force constant value of a bond
+              * @param equilibrium_value Equilibrium value of a bond
               */
             TopologyBondType(int index, double force_constant, double equilibrium_value);
             //////////////////////////////////////////////////////////
@@ -82,9 +83,9 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int index_;
-            double force_constant_;
-            double equilibrium_value_;
+            int index_;                     /*!< Index of a bond in a topology file >*/
+            double force_constant_;         /*!< Force constant value of a bond in a topology file >*/
+            double equilibrium_value_;      /*!< Equilibrium value of a bond in a topology file >*/
 
     };
 }

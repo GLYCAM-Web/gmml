@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d2/d2b/classGeometry_1_1Coordinate.html#a6508724e0f0761370b55781c21b07bb5" title="Geometry::Coordinate::CompareTo" alt="" coords="360,5,587,35"/>
+<area shape="rect" id="node5" href="$d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#a197b3f67e6cac871fbfdf578b851980d" title="PdbFileSpace::PdbOriginXn::GetN" alt="" coords="363,59,584,88"/>
+<area shape="rect" id="node7" href="$d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#a13733e36d3faeed9bdedc9373b83faba" title="PdbFileSpace::PdbOriginXn::GetOrigin" alt="" coords="351,112,596,141"/>
+<area shape="rect" id="node9" href="$d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#a4037063c8262824f29290bc1e14b9e85" title="PdbFileSpace::PdbOriginXn::GetRecordName" alt="" coords="328,165,619,195"/>
+<area shape="rect" id="node11" href="$d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#a097a25680d867d34892d6142b263aa3c" title="PdbFileSpace::PdbOriginXn::GetT" alt="" coords="363,219,584,248"/>
+<area shape="rect" id="node13" href="$d2/d2b/classGeometry_1_1Coordinate.html#a55e182a5e7770b43f714ae369a162305" title="Geometry::Coordinate::GetX" alt="" coords="380,272,567,301"/>
+<area shape="rect" id="node15" href="$d2/d2b/classGeometry_1_1Coordinate.html#ac05b81bef24e96883627abcf1935b12a" title="Geometry::Coordinate::GetY" alt="" coords="380,325,567,355"/>
+<area shape="rect" id="node17" href="$d2/d2b/classGeometry_1_1Coordinate.html#a34c71a037166bb286c489780b31895be" title="Geometry::Coordinate::GetZ" alt="" coords="380,379,567,408"/>
+</map>

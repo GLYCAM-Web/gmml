@@ -1,0 +1,9 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$da/d64/classMolecularModeling_1_1Residue.html#afd17cb3fc122cb00d084b523b9a82d28" title="MolecularModeling::Residue::GetName" alt="" coords="275,5,525,35"/>
+<area shape="rect" id="node5" href="$de/da2/classMolecularModeling_1_1Atom.html#abd0076e9598f241fa89f5a60a533eeda" title="MolecularModeling::Atom::GetName" alt="" coords="284,59,516,88"/>
+<area shape="rect" id="node7" href="$de/da2/classMolecularModeling_1_1Atom.html#ac8f24c3baaa363b9ca4c20291ffc3b70" title="MolecularModeling::Atom::GetResidue" alt="" coords="277,112,523,141"/>
+<area shape="rect" id="node9" href="$de/da2/classMolecularModeling_1_1Atom.html#a73c69923b72dafa8aeda694677baf1a4" title="MolecularModeling::Atom::Print" alt="" coords="299,165,501,195"/>
+<area shape="rect" id="node11" href="$d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca" title="Geometry::Coordinate::Print" alt="" coords="575,165,759,195"/>
+<area shape="rect" id="node13" href="$d2/d2b/classGeometry_1_1Coordinate.html#a6508724e0f0761370b55781c21b07bb5" title="Geometry::Coordinate::CompareTo" alt="" coords="808,139,1035,168"/>
+<area shape="rect" id="node15" href="$d2/d2b/classGeometry_1_1Coordinate.html#aac6f323a685fc1e88fbea9c86f1e600d" title="Geometry::Coordinate::Coordinate" alt="" coords="811,192,1032,221"/>
+</map>

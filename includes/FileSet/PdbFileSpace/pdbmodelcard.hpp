@@ -19,6 +19,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between model serial number and the model
+              */
             typedef std::map<int, PdbModel*> PdbModelMap;
 
             //////////////////////////////////////////////////////////
@@ -82,8 +85,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            PdbModelMap models_;
+            std::string record_name_;           /*!< Name of model card record which is in the first column of each line of a pdb file >*/
+            PdbModelMap models_;                /*!< Models that are in model card of a pdb file >*/
 
     };
 }

@@ -41,6 +41,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of residues
+              */
             typedef std::vector<PdbResidue*> PdbResidueVector;
             typedef std::vector<PdbAtom*> PdbAtomVector;
             /*! \typedef
@@ -744,29 +747,29 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string path_;
-            PdbHeaderCard* header_;
-            PdbTitleCard* title_;
-            PdbCompoundCard* compound_;
-            PdbNumModelCard* number_of_models_;
-            PdbModelTypeCard* model_type_;
-            PdbResidueSequenceCard* residues_sequence_;
-            PdbResidueModificationCard* residue_modification_;
-            PdbHeterogenCard* heterogens_;
-            PdbHeterogenNameCard* heterogens_name_;
-            PdbHeterogenSynonymCard* heterogen_synonyms_;
-            PdbFormulaCard* formulas_;
-            PdbHelixCard* helixes_;
-            PdbSheetCard* sheets_;
-            PdbDisulfideBondCard* disulfide_bonds_;
-            PdbLinkCard* links_;
-            PdbSiteCard* sites_;
-            PdbCrystallographicCard* crystallography_;
-            PdbOriginXnCard* origins_;
-            PdbScaleNCard* scales_;
-            PdbMatrixNCard* matrices_;
-            PdbModelCard* models_;
-            PdbConnectCard* connectivities_;
+            std::string path_;                                      /*!< Path of the given pdb file >*/
+            PdbHeaderCard* header_;                                 /*!< Header card >*/
+            PdbTitleCard* title_;                                   /*!< Title carde >*/
+            PdbCompoundCard* compound_;                             /*!< Compound card >*/
+            PdbNumModelCard* number_of_models_;                     /*!< Number of models card >*/
+            PdbModelTypeCard* model_type_;                          /*!< Model type card >*/
+            PdbResidueSequenceCard* residues_sequence_;             /*!< Residue sequence card >*/
+            PdbResidueModificationCard* residue_modification_;      /*!< Residue modification card >*/
+            PdbHeterogenCard* heterogens_;                          /*!< Heterogen card >*/
+            PdbHeterogenNameCard* heterogens_name_;                 /*!< Heterogen name card >*/
+            PdbHeterogenSynonymCard* heterogen_synonyms_;           /*!< Heterogen synonym card >*/
+            PdbFormulaCard* formulas_;                              /*!< Formula card >*/
+            PdbHelixCard* helixes_;                                 /*!< Helix card >*/
+            PdbSheetCard* sheets_;                                  /*!< Sheet card >*/
+            PdbDisulfideBondCard* disulfide_bonds_;                 /*!< Disulfide bond card >*/
+            PdbLinkCard* links_;                                    /*!< Link card >*/
+            PdbSiteCard* sites_;                                    /*!< Site card >*/
+            PdbCrystallographicCard* crystallography_;              /*!< Crystallography card >*/
+            PdbOriginXnCard* origins_;                              /*!< Origin card >*/
+            PdbScaleNCard* scales_;                                 /*!< Scale card >*/
+            PdbMatrixNCard* matrices_;                              /*!< Matrix card >*/
+            PdbModelCard* models_;                                  /*!< Model card >*/
+            PdbConnectCard* connectivities_;                        /*!< Connectivity card >*/
     };
 }
 

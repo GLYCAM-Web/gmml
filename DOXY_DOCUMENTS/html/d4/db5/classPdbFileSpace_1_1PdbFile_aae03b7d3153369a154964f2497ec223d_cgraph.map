@@ -1,0 +1,11 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#a8a6f45141784820fe738bc926e6dd38f" title="PdbFileSpace::PdbCompoundSpecification::GetChainIds" alt="" coords="419,5,771,35"/>
+<area shape="rect" id="node5" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#a0256a7648e4104ad16dd5908d9e256f9" title="PdbFileSpace::PdbCompoundSpecification::GetComments" alt="" coords="412,59,777,88"/>
+<area shape="rect" id="node7" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#aa71fe3610a0c9a1b6415011a685b66a6" title="PdbFileSpace::PdbCompoundSpecification::GetEnzymeCommissionNumbers" alt="" coords="357,112,832,141"/>
+<area shape="rect" id="node9" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#a5e7bd0ce3094e3cb2a71170d32d0326a" title="PdbFileSpace::PdbCompoundSpecification::GetFragment" alt="" coords="417,165,772,195"/>
+<area shape="rect" id="node11" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#ad3fe95b685e8882d720dfd47321942d5" title="PdbFileSpace::PdbCompoundSpecification::GetHasMutation" alt="" coords="408,219,781,248"/>
+<area shape="rect" id="node13" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#a5afb9f6ea8954de5dde321785b190637" title="PdbFileSpace::PdbCompoundSpecification::GetIsEngineered" alt="" coords="407,272,783,301"/>
+<area shape="rect" id="node15" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#a8e9e1e5a9412de25118adf6534f75d5b" title="PdbFileSpace::PdbCompoundSpecification::GetMoleculeId" alt="" coords="413,325,776,355"/>
+<area shape="rect" id="node17" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#a7ba718a0fae164399bb02b28f732710c" title="PdbFileSpace::PdbCompoundSpecification::GetMoleculeName" alt="" coords="401,379,788,408"/>
+<area shape="rect" id="node19" href="$d6/dc7/classPdbFileSpace_1_1PdbCompoundSpecification.html#a07b29e3acc6291d73c7b105f3a35df85" title="PdbFileSpace::PdbCompoundSpecification::GetMoleculeSynonyms" alt="" coords="388,432,801,461"/>
+</map>

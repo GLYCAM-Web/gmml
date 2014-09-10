@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$db/dfe/classMolecularModeling_1_1MolecularDynamicAtom.html" title="{MolecularModeling::MolecularDynamicAtom\n||+ MolecularDynamicAtom()\l+ GetAtomType()\l+ GetCharge()\l+ GetMass()\l+ GetRadius()\l+ SetAtomType()\l+ SetCharge()\l+ SetMass()\l+ SetRadius()\l+ Print()\l}" alt="" coords="5,6,283,247"/>
+<area shape="rect" id="node4" href="$d9/d78/classMolecularModeling_1_1QuantomMechanicAtom.html" title="{MolecularModeling::QuantomMechanicAtom\n||+ QuantomMechanicAtom()\l}" alt="" coords="307,84,584,169"/>
+<area shape="rect" id="node6" href="$d0/dbc/classMolecularModeling_1_1DockingAtom.html" title="{MolecularModeling::DockingAtom\n||+ DockingAtom()\l}" alt="" coords="608,84,824,169"/>
+</map>

@@ -25,10 +25,10 @@ namespace PdbFileSpace
             PdbSheetStrandResidue();
             /*! \fn
               * Constructor with required parameters
-              * @param residue_name
-              * @param residue_chain_id
-              * @param residue_sequence_number
-              * @param residue_insertion_code
+              * @param residue_name Name of the residue that involves in a strand of a sheet
+              * @param residue_chain_id Chain identifier of the residue
+              * @param residue_sequence_number Sequence number of the residue
+              * @param residue_insertion_code Insertion code of the residue
               */
             PdbSheetStrandResidue(const std::string& residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code);
 
@@ -102,10 +102,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string residue_name_;
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            char residue_insertion_code_;
+            std::string residue_name_;          /*!< Name of the residue in the strand of a sheet >*/
+            char residue_chain_id_;             /*!< Chain identifier of the residue in the current strand >*/
+            int residue_sequence_number_;       /*!< Sequence number of the residue in the current strand >*/
+            char residue_insertion_code_;       /*!< Insertion code of the residue in the current strand >*/
     };
 }
 

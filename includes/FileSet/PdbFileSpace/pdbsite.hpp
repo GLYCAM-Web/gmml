@@ -19,6 +19,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of site residues
+              */
             typedef std::vector< PdbSiteResidue* > SiteResidueVector;
 
             //////////////////////////////////////////////////////////
@@ -99,9 +102,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string site_id_;
-            SiteResidueVector residues_;
-            int number_of_residues_;
+            std::string site_id_;           /*!< Site identifier that appears in a site card for each site >*/
+            SiteResidueVector residues_;    /*!< Residues that are in the site card of a pdb file >*/
+            int number_of_residues_;        /*!< Number of residues in the current site object >*/
     };
 }
 

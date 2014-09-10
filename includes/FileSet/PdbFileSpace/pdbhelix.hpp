@@ -35,6 +35,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of helix residues
+              */
             typedef std::vector<PdbHelixResidue*> HelixResidueVector;
 
             //////////////////////////////////////////////////////////
@@ -46,12 +49,12 @@ namespace PdbFileSpace
             PdbHelix();
             /*! \fn
               * Constructor with required parameters
-              * @param helix_id
-              * @param helix_serial_number
-              * @param helix_residues
-              * @param helix_class
-              * @param comment
-              * @param helix_length
+              * @param helix_id Helix identifier
+              * @param helix_serial_number Serial number of the helix
+              * @param helix_residues List of residues in the helix
+              * @param helix_class Classification of the helix
+              * @param comment Comment
+              * @param helix_length Length of the helix
               */
             PdbHelix(const std::string& helix_id, int helix_serial_number, HelixResidueVector helix_residues,
                      PdbHelixClass helix_class, const std::string& comment, double helix_length);
@@ -159,12 +162,12 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string helix_id_;
-            int helix_serial_number_;
-            HelixResidueVector helix_residues_;
-            PdbHelixClass helix_class_;
-            std::string comment_;
-            double helix_length_;
+            std::string helix_id_;                  /*!< Helix identifier >*/
+            int helix_serial_number_;               /*!< Helix serial number >*/
+            HelixResidueVector helix_residues_;     /*!< List of helix residues >*/
+            PdbHelixClass helix_class_;             /*!< Classification of the helix >*/
+            std::string comment_;                   /*!< Comment >*/
+            double helix_length_;                   /*!< Length of the helix >*/
     };
 }
 

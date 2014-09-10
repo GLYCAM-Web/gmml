@@ -116,12 +116,12 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            int n_;
-            int serial_number_;
-            Geometry::Coordinate transfomration_vector_;
-            double v_;
-            int i_given_;
+            std::string record_name_;                       /*!< Record name of matrix card which is the first column of each line of the card >*/
+            int n_;                                         /*!< n >*/
+            int serial_number_;                             /*!< Model serial number >*/
+            Geometry::Coordinate transfomration_vector_;    /*!< Transformation vector >*/
+            double v_;                                      /*!< velocity >*/
+            int i_given_;                                   /*!< i_given >*/
     };
 }
 

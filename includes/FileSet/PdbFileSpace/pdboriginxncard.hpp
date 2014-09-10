@@ -19,6 +19,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Vector of origins
+              */
             typedef std::vector< PdbOriginXn* > OriginXnVector;
 
             //////////////////////////////////////////////////////////
@@ -77,7 +80,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            OriginXnVector origin_x_n_;
+            OriginXnVector origin_x_n_;     /*!< Vector of origins >*/
 
     };
 }

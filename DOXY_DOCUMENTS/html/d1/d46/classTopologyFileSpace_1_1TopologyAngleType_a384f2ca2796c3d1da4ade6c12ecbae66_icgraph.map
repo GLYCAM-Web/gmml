@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a57cbf42a4da09b9c2e2e8e6c7ba8f8d8" title="TopologyFileSpace::TopologyFile::GetAngleTypeByIndex" alt="" coords="421,5,776,35"/>
+<area shape="rect" id="node5" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a6e884692174945e4cbbe81ba5944069f" title="TopologyFileSpace::TopologyFile::ResolveAnglesIncHydrogenSection" alt="" coords="384,59,813,88"/>
+<area shape="rect" id="node7" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a3e3f28b93711640405d660495dcaa54e" title="TopologyFileSpace::TopologyFile::ResolveAnglesWithoutHydrogenSection" alt="" coords="371,112,827,141"/>
+</map>

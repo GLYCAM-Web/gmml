@@ -18,6 +18,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * Mapping between heterogen identifier and its chemical formula
+              */
             typedef std::map<std::string, PdbFormula*> FormulaMap;
 
             //////////////////////////////////////////////////////////
@@ -80,8 +83,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;
-            FormulaMap formulas_;
+            std::string record_name_;       /*!< Record name of formula card in a pdb file >*/
+            FormulaMap formulas_;           /*!< Map of formulas with heterogen identifier as key >*/
     };
 }
 #endif // PDBFORMULACARD_HPP

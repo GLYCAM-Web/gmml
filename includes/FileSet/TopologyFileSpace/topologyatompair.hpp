@@ -13,6 +13,9 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * A Mapping between atom pair string and their corresponding coefficient
+              */
             typedef std::map<std::string, double> TopologyCoefficientMap;
 
             //////////////////////////////////////////////////////////
@@ -24,10 +27,10 @@ namespace TopologyFileSpace
             TopologyAtomPair();
             /*! \fn
               * Constructor with required parameters
-              * @param pair_type
-              * @param coefficient_a
-              * @param coefficient_b
-              * @param index
+              * @param pair_type Atom types involving in a pair
+              * @param coefficient_a Coefficient A corresponding to the atom pair
+              * @param coefficient_b Coefficient B corresponding to the atom pair
+              * @param index Index of atom pair in the topology file
               */
             TopologyAtomPair(std::string pair_type, double coefficient_a, double coefficient_b, int index);
 
@@ -101,10 +104,10 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string pair_type_;
-            double coefficient_a_;
-            double coefficient_b_;
-            int index_;
+            std::string pair_type_;         /*!< Pair of atom types invovling in a pair >*/
+            double coefficient_a_;          /*!< Coefficient A corresponding to the current pair >*/
+            double coefficient_b_;          /*!< Coefficient B corresponding to the current pair >*/
+            int index_;                     /*!< Index of appearing of the pair in a topopolgy file >*/
 
     };
 }

@@ -25,10 +25,10 @@ namespace PdbFileSpace
             PdbHelixResidue();
             /*! \fn
               * Constructor with required parameters
-              * @param residue_name
-              * @param residue_chain_id
-              * @param residue_sequence_number
-              * @param residue_insertion_code
+              * @param residue_name Name of the helix residue
+              * @param residue_chain_id Chain id of the helix residue
+              * @param residue_sequence_number Sequence number of the helix residue
+              * @param residue_insertion_code Insertion code of the helix residue
               */
             PdbHelixResidue(const std::string& residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code);
 
@@ -102,10 +102,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string residue_name_;
-            char residue_chain_id_;
-            int residue_sequence_number_;
-            char residue_insertion_code_;
+            std::string residue_name_;          /*!< Name of the helix residue >*/
+            char residue_chain_id_;             /*!< Chain identifier of the helix residue >*/
+            int residue_sequence_number_;       /*!< Sequence number of the helix residue >*/
+            char residue_insertion_code_;       /*!< Insertion code of the helix residue >*/
     };
 }
 #endif // PDBHELIXRESIDUE_HPP

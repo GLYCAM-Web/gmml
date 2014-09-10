@@ -1,0 +1,28 @@
+var classLibraryFileSpace_1_1LibraryFileResidue =
+[
+    [ "AtomMap", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a7bbef867996806ce65caa170131c75cc", null ],
+    [ "LibraryFileResidue", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2ade012b07e57226ec6cf5d28f43e162", null ],
+    [ "LibraryFileResidue", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2b58e63f484a2c0ab474ae31459a19c5", null ],
+    [ "LibraryFileResidue", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aedb593b4b5a8ad5d6d904858df58144c", null ],
+    [ "AddAtom", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a17e8ba1b892d839d8b3aabc32798fe69", null ],
+    [ "GetAtomByIndex", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a599393d5c62602e7e8793dee44972cd2", null ],
+    [ "GetAtomByOrder", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53", null ],
+    [ "GetAtoms", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d", null ],
+    [ "GetBoxAngle", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a6117e6eaf44af00149f743439c39f8f2", null ],
+    [ "GetBoxHeight", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a39250c7aae5809fb88667a6d1dc554ad", null ],
+    [ "GetBoxLength", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ab101a9f528beee33403889e40451a887", null ],
+    [ "GetBoxWidth", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#add51d869b0522850b2e79cd3e81ce128", null ],
+    [ "GetHeadAtomIndex", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2435f62b867e1f653f7af667f477f8ca", null ],
+    [ "GetLibraryAtomByAtomName", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a4bc50d1502aa4e5454b68169c3860241", null ],
+    [ "GetName", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902", null ],
+    [ "GetTailAtomIndex", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aeba0bdd7c4de0f60469d4ebb53ac814d", null ],
+    [ "Print", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a39751ba07d14ef41518264f58a010bec", null ],
+    [ "SetAtoms", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aab5ceee046db926b470c85c5d106fb89", null ],
+    [ "SetBoxAngle", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a007ec5d2d8df75f8dc7ddc546e6a948c", null ],
+    [ "SetBoxHeight", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ac5311a64b7db9c492959021cf80c55b5", null ],
+    [ "SetBoxLength", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ab83775b57a32c83bb37a99497c6d83b4", null ],
+    [ "SetBoxWidth", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a0a1b71f59058f0a8e17b658184dc42f9", null ],
+    [ "SetHeadAtomIndex", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a869c2179d0d7fede1f2b48aa8800bee6", null ],
+    [ "SetName", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a9d3a047a226484a0d6657058569c347a", null ],
+    [ "SetTailAtomIndex", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a1e615e03f941e34baca58567bc51971b", null ]
+];

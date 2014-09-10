@@ -20,7 +20,13 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of atom cards in a model residue set
+              */
             typedef std::vector<PdbAtomCard*> AtomCardVector;
+            /*! \typedef
+              * List of heterogen atom cards
+              */
             typedef std::vector<PdbHeterogenAtomCard*> HeterogenAtomCardVector;
 
             //////////////////////////////////////////////////////////
@@ -96,8 +102,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            AtomCardVector atoms_;
-            HeterogenAtomCardVector heterogen_atoms_;
+            AtomCardVector atoms_;                          /*!< List of atom cards that are in a model >*/
+            HeterogenAtomCardVector heterogen_atoms_;       /*!< List of heterogen atom cards that are in a model >*/
 
     };
 }
