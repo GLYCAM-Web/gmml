@@ -665,6 +665,11 @@ vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue)
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
+void PdbFile::SetPath(string pdb_path)
+{
+    path_ = pdb_path;
+}
+
 void PdbFile::DeleteResidue(PdbResidue *residue)
 {
     string target_residue_name = residue->GetResidueName();
