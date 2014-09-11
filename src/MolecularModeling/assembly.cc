@@ -168,7 +168,16 @@ void Assembly::SetAssemblies(AssemblyVector assemblies)
 }
 void Assembly::AddAssembly(Assembly *assembly)
 {
-    assemblies_.push_back(assembly);
+    if(assemblies_.size() == 0)
+    {
+
+    }
+    else
+    {
+        stringstream ss(this->name_);
+        ss << "-" << assembly->GetName();
+        assemblies_.push_back(assembly);
+    }
 }
 void Assembly::SetResidues(ResidueVector residues)
 {
@@ -245,6 +254,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
             residue->SetName(residue_name);
             string atom_name = atom->GetAtomName();
             new_atom->SetName(atom_name);
+            new_atom->MolecularDynamicAtom::SetCharge(gmml::ConvertString<double>(atom->GetAtomCharge()));
             new_atom->SetResidue(residue);
             stringstream atom_key;
             atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
@@ -327,8 +337,10 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
         assembly_residue->SetAssembly(this);
         string residue_name = (*it).first;
         assembly_residue->SetName(residue_name);
-        assembly_residue->SetId(residue_name);
         TopologyResidue* topology_residue = (*it).second;
+        stringstream id;
+        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        assembly_residue->SetId(id.str());
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
@@ -340,6 +352,10 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
             atom_id << residue_name << ":" << atom_name;
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
+            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
+            assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
+            assembly_atom->MolecularDynamicAtom::SetRadius(topology_atom->GetRadii());
+            assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
 
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(topology_atom->GetAtomName());
@@ -388,6 +404,9 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(library_atom->GetName());
 
+            assembly_atom->MolecularDynamicAtom::SetCharge(library_atom->GetCharge());
+            assembly_atom->MolecularDynamicAtom::SetAtomType(library_atom->GetType());
+
             Coordinate* coordinate = new Coordinate(library_atom->GetCoordinate());
             assembly_atom->AddCoordinate(coordinate);
             assembly_residue->AddAtom(assembly_atom);
@@ -414,8 +433,10 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
         assembly_residue->SetAssembly(this);
         string residue_name = (*it).first;
         assembly_residue->SetName(residue_name);
-        assembly_residue->SetId(residue_name);
         TopologyResidue* topology_residue = (*it).second;
+        stringstream id;
+        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        assembly_residue->SetId(id.str());
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
@@ -427,6 +448,11 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
             atom_id << residue_name << ":" << atom_name;
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
+
+            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
+            assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
+            assembly_atom->MolecularDynamicAtom::SetRadius(topology_atom->GetRadii());
+            assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
 
             int topology_atom_index = topology_atom->GetIndex();
 
@@ -482,6 +508,9 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             atom_id << residue_name << ":" << atom_name;
             assembly_atom->SetId(atom_id.str());
 
+            assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
+            assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
+
             if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
             {
                 vector<Coordinate*> coordinate_list = vector<Coordinate*>();
@@ -534,6 +563,17 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         residues_.push_back(assembly_residue);
     }
     name_ = ss.str();
+}
+
+void Assembly::BuildPdbFileFromAssembly(PdbFileSpace::PdbFile *pdb_file)
+{
+    gmml::InputFileType type = this->GetSourceFileType();
+    switch(type)
+    {
+        case gmml::PDB:
+            pdb_file->SetPath(this->GetSourceFile());
+            break;
+    }
 }
 
 void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vector<string> options, vector<string> file_paths)
