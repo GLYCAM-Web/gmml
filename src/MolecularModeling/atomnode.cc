@@ -59,33 +59,33 @@ void AtomNode::Print(ostream &out)
     switch(number_of_bonds)
     {
         case 0:
-            out << atom_->GetResidue()->GetName() << ":" << atom_->GetName() << endl;
+            out << atom_->GetResidue()->GetId() << ":" << atom_->GetName() << endl;
             break;
         case 1:
-            out << node_neighbors_.at(0)->GetResidue()->GetName() << ":" << node_neighbors_.at(0)->GetName() << " -- "
-                << atom_->GetResidue()->GetName() << ":" << atom_->GetName() << endl;
+            out << node_neighbors_.at(0)->GetResidue()->GetId() << ":" << node_neighbors_.at(0)->GetName() << " -- "
+                << atom_->GetResidue()->GetId() << ":" << atom_->GetName() << endl;
             break;
         case 2:
-            out << node_neighbors_.at(0)->GetResidue()->GetName() << ":" << node_neighbors_.at(0)->GetName() << " -- "
-                << atom_->GetResidue()->GetName() << ":" << atom_->GetName() << " -- "
-                << node_neighbors_.at(1)->GetResidue()->GetName() << ":" << node_neighbors_.at(1)->GetName() << endl;
+            out << node_neighbors_.at(0)->GetResidue()->GetId() << ":" << node_neighbors_.at(0)->GetName() << " -- "
+                << atom_->GetResidue()->GetId() << ":" << atom_->GetName() << " -- "
+                << node_neighbors_.at(1)->GetResidue()->GetId() << ":" << node_neighbors_.at(1)->GetName() << endl;
             break;
         case 3:
-            out << "\t\t" << node_neighbors_.at(0)->GetResidue()->GetName() << ":" << node_neighbors_.at(0)->GetName() << endl
+            out << "\t\t" << node_neighbors_.at(0)->GetResidue()->GetId() << ":" << node_neighbors_.at(0)->GetName() << endl
                 << "\t\t" << "  |  " << endl
-                << "\t" << node_neighbors_.at(1)->GetResidue()->GetName() << ":" << node_neighbors_.at(1)->GetName() << " -- "
-                << atom_->GetResidue()->GetName() << ":" << atom_->GetName() << endl
+                << "\t" << node_neighbors_.at(1)->GetResidue()->GetId() << ":" << node_neighbors_.at(1)->GetName() << " -- "
+                << atom_->GetResidue()->GetId() << ":" << atom_->GetName() << endl
                 << "\t\t" << "  |  " << endl
-                << "\t\t" <<  node_neighbors_.at(2)->GetResidue()->GetName() << ":" << node_neighbors_.at(2)->GetName() << endl;
+                << "\t\t" <<  node_neighbors_.at(2)->GetResidue()->GetId() << ":" << node_neighbors_.at(2)->GetName() << endl;
             break;
         case 4:
-            out << "\t\t\t" << node_neighbors_.at(0)->GetResidue()->GetName() << ":" << node_neighbors_.at(0)->GetName() << endl
+            out << "\t\t\t" << node_neighbors_.at(0)->GetResidue()->GetId() << ":" << node_neighbors_.at(0)->GetName() << endl
                 << "\t\t\t" << "  |  " << endl
-                << "\t" << node_neighbors_.at(1)->GetResidue()->GetName() << ":" << node_neighbors_.at(1)->GetName() << " -- "
-                << atom_->GetResidue()->GetName() << ":" << atom_->GetName() << " -- "
-                << node_neighbors_.at(2)->GetResidue()->GetName() << ":" << node_neighbors_.at(2)->GetName() << endl
+                << "\t" << node_neighbors_.at(1)->GetResidue()->GetId() << ":" << node_neighbors_.at(1)->GetName() << " -- "
+                << atom_->GetResidue()->GetId() << ":" << atom_->GetName() << " -- "
+                << node_neighbors_.at(2)->GetResidue()->GetId() << ":" << node_neighbors_.at(2)->GetName() << endl
                 << "\t\t\t" << "  |  " << endl
-                << "\t\t\t" << node_neighbors_.at(3)->GetResidue()->GetName() << ":" << node_neighbors_.at(3)->GetName() << endl;
+                << "\t\t\t" << node_neighbors_.at(3)->GetResidue()->GetId() << ":" << node_neighbors_.at(3)->GetName() << endl;
             break;
         case 5:
             break;
