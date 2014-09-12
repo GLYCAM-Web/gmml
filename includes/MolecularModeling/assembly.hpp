@@ -184,9 +184,9 @@ namespace MolecularModeling
             /*! \fn
               * A mutator function in order to set the source file type of the current object
               * Set the source_file_type_ attribute of the current assembly
-              * @param source_file_type The residues attribute of the current object
+              * @param source_file_type The source file type attribute of the current object
               */
-            void SetSourceFileType(gmml::InputFileType source_file_type);           
+            void SetSourceFileType(gmml::InputFileType source_file_type);
 
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -222,6 +222,22 @@ namespace MolecularModeling
               * @param prep_file_path Path to a prep file
               */
             void BuildAssemblyFromPrepFile(std::string prep_file_path);
+            /*! \fn
+              * A function to build a pdb file structure from the current assembly object
+              * Exports data from assembly data structure into pdb file structure
+              */
+            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly();
+            /*! \fn
+              * A function to build a topology file structure from the current assembly object
+              * Exports data from assembly data structure into topology file structure
+              */
+            TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly();
+            /*! \fn
+              * A function to build a coordinate file structure from the current assembly object
+              * Exports data from assembly data structure into coordinate file structure
+              */
+            CoordinateFileSpace::CoordinateFile* BuildCoordinateFileStructureFromAssembly();
+
             /*! \fn
               * A function to build a graph structure (bonding information) for the current object of central data structure
               * @param building_option A building option that can be selected from BuildingStructureOption enumerator
