@@ -34,5 +34,5 @@ How to Install packages:
 		
 How to use the software:
 	1. Use one of the samples in gems directory to write your own python script
-		(In order to use a correct syntax and format for a command, it is recommended to open one the example files and use the first line as a sample command format)
+		(In order to run the sample files use the line following the #SAMPLE COMMAND section, if there is no such section simply write the name of the file after the python command)
 	2. Run the written python script
