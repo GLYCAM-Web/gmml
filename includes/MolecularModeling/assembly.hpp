@@ -34,7 +34,6 @@ namespace MolecularModeling
               * Default constructor
               */
             Assembly();
-
             /*! \fn
               * Constructor to build a structure from the given set of input files
               * @param file_paths Set of file paths that are required to build a structure
@@ -42,7 +41,6 @@ namespace MolecularModeling
               * @param type Type of the input which is selected from InputFileType enumerator
               */
             Assembly(std::vector<std::string> file_paths, gmml::InputFileType type);
-
             /*! \fn
               * Constructor to build a structure from multiple file types, a general version of the previous one
               * @param file_paths Set of set of file paths that are required to build a structure
@@ -223,8 +221,7 @@ namespace MolecularModeling
               * Imports data from prep file data structure into central data structure
               * @param prep_file_path Path to a prep file
               */
-            void BuildAssemblyFromPrepFile(std::string prep_file_path);            
-
+            void BuildAssemblyFromPrepFile(std::string prep_file_path);
             /*! \fn
               * A function to build a graph structure (bonding information) for the current object of central data structure
               * @param building_option A building option that can be selected from BuildingStructureOption enumerator
@@ -274,6 +271,7 @@ namespace MolecularModeling
               * @return Vector of atoms all in the current object of assembly
               */
             AtomVector GetAllAtomsOfAssembly();
+            void CalculateCenterOfGeometry(int model_index = 0);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
