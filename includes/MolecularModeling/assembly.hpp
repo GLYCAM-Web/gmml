@@ -7,6 +7,11 @@
 
 #include "../Geometry/coordinate.hpp"
 #include "../common.hpp"
+#include "../FileSet/PdbFileSpace/pdbfile.hpp"
+#include "../FileSet/TopologyFileSpace/topologyfile.hpp"
+#include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "../PrepFileSpace/prepfile.hpp"
+#include "../LibraryFileSpace/libraryfile.hpp"
 
 namespace MolecularModeling
 {
@@ -218,7 +223,7 @@ namespace MolecularModeling
               * Imports data from prep file data structure into central data structure
               * @param prep_file_path Path to a prep file
               */
-            void BuildAssemblyFromPrepFile(std::string prep_file_path);
+            void BuildAssemblyFromPrepFile(std::string prep_file_path);            
 
             /*! \fn
               * A function to build a graph structure (bonding information) for the current object of central data structure

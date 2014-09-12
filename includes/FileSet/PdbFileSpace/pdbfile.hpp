@@ -55,6 +55,11 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             /*! \fn
+              * Default constructor
+              */
+            PdbFile();
+
+            /*! \fn
               * Constructor
               * @param pdb_file An existing pdb file path to be read
               */
@@ -253,6 +258,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function in order to set the path of the pdb file
+              * @param pdb_path Pdb file path
+              */
+            void SetPath(std::string pdb_path);
             /*! \fn
               * A function in order to delete a residue from the current object
               * @param residue A residue of the current object of this class
