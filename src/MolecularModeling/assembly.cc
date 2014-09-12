@@ -170,12 +170,28 @@ void Assembly::AddAssembly(Assembly *assembly)
 {
     if(assemblies_.size() == 0)
     {
-
+        assemblies_.push_back(this);
+        assembly->SetSequenceNumber(assemblies_.size() + 1);
+        assemblies_.push_back(assembly);
+        stringstream ss;
+        ss << this->name_ << "-" << assembly->GetName();
+        this->name_ = ss.str();
+        this->residues_ = ResidueVector();
+        this->chemical_type_ = "";
+        this->sequence_number_ = 1;
+        this->total_mass_ = 0;
+        this->center_of_geometry_ = Coordinate();
+        this->center_of_mass_ = Coordinate();
+        stringstream sss;
+        sss << this->source_file_ << "#" << assembly->GetSourceFile();
+        this->source_file_ = sss.str();
+        source_file_type_ = gmml::MULTIPLE;
     }
     else
     {
-        stringstream ss(this->name_);
-        ss << "-" << assembly->GetName();
+        stringstream ss;
+        ss << this->name_ << "-" << assembly->GetName();
+        assembly->SetSequenceNumber(assemblies_.size() + 1);
         assemblies_.push_back(assembly);
     }
 }
@@ -563,17 +579,6 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         residues_.push_back(assembly_residue);
     }
     name_ = ss.str();
-}
-
-void Assembly::BuildPdbFileFromAssembly(PdbFileSpace::PdbFile *pdb_file)
-{
-    gmml::InputFileType type = this->GetSourceFileType();
-    switch(type)
-    {
-        case gmml::PDB:
-            pdb_file->SetPath(this->GetSourceFile());
-            break;
-    }
 }
 
 void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vector<string> options, vector<string> file_paths)
