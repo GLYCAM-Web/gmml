@@ -68,6 +68,33 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
+PdbFile::PdbFile()
+{
+    path_ = "GMML-Generated";
+    header_ = NULL;
+    title_ = NULL;
+    compound_ = NULL;
+    number_of_models_ = NULL;
+    model_type_ = NULL;
+    residues_sequence_ = NULL;
+    residue_modification_ = NULL;
+    heterogens_ = NULL;
+    heterogens_name_ = NULL;
+    heterogen_synonyms_ = NULL;
+    formulas_ = NULL;
+    helixes_ = NULL;
+    sheets_ = NULL;
+    disulfide_bonds_ = NULL;
+    links_ = NULL;
+    sites_ = NULL;
+    crystallography_ = NULL;
+    origins_ = NULL;
+    scales_ = NULL;
+    matrices_ = NULL;
+    models_ = NULL;
+    connectivities_ = NULL;
+}
+
 PdbFile::PdbFile(const std::string &pdb_file)
 {
     path_ = pdb_file;
