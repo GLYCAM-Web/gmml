@@ -37,7 +37,7 @@ using namespace LibraryFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Assembly::Assembly() : description_("") {}
+Assembly::Assembly() : description_(""), center_of_geometry_(0,0,0) {}
 
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
 {
@@ -1005,6 +1005,33 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
         }
     }
     return all_atoms_of_assembly;
+}
+void Assembly::CalculateCenterOfGeometry(int model_index)
+{
+    Coordinate center_of_geometry = Coordinate();
+    int counter = 0;
+    for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        assembly->CalculateCenterOfGeometry();
+        counter++;
+        center_of_geometry.operator +(assembly->GetCenterOfGeometry());
+    }
+    for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        Residue::AtomVector atoms = residue->GetAtoms();
+        for(Residue::AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        {
+            Atom* atom = (*it2);
+            Atom::CoordinateVector coordinates = atom->GetCoordinates();
+            Geometry::Coordinate coordinate = *coordinates[model_index];
+            center_of_geometry.operator +(coordinate);
+            counter++;
+        }
+    }
+    center_of_geometry.operator /(counter);
+    center_of_geometry_ = Coordinate(center_of_geometry);
 }
 
 //////////////////////////////////////////////////////////
