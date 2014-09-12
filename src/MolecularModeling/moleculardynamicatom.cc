@@ -6,7 +6,7 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-MolecularDynamicAtom::MolecularDynamicAtom() {}
+MolecularDynamicAtom::MolecularDynamicAtom() : atom_type_(""), charge_(0.0), mass_(0.0), radius_(0.0) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
