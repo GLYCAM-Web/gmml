@@ -312,16 +312,11 @@ namespace MolecularModeling
               * @param types List of types of the database files
               * @param file_paths List of the database file paths
               */
-            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
-            /*! \fn
-              * A function that extracts all atoms of an assembly
-              * @return Vector of atoms all in the current object of assembly
-              */
-            AtomVector GetAllAtomsOfAssembly();
+            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);            
             /*! \fn
               * A function to calculate the center of geometry of the assembly
               */
-            void CalculateCenterOfGeometry(int model_index = 0);
+            void CalculateCenterOfGeometry();
             /*! \fn
               * A functions that counts the number of atoms in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly

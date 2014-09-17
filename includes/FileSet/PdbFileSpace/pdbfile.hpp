@@ -55,6 +55,10 @@ namespace PdbFileSpace
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
             /*! \fn
+              * Default constructor
+              */
+            PdbFile();
+            /*! \fn
               * Constructor
               * @param pdb_file An existing pdb file path to be read
               */
