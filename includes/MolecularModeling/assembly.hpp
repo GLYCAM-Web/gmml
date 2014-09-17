@@ -26,6 +26,7 @@ namespace MolecularModeling
             typedef std::vector<Assembly*> AssemblyVector;
             typedef std::vector<Residue*> ResidueVector;
             typedef std::vector<Atom*> AtomVector;
+            typedef std::vector<Geometry::Coordinate*> CoordinateVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -106,6 +107,26 @@ namespace MolecularModeling
               * @return source_file_type_ attribute of the current object of this class
               */
             gmml::InputFileType GetSourceFileType();
+            /*! \fn
+              * An accessor function in order to access to the model index
+              * @return model_index_ attribute of the current object of this class
+              */
+            int GetModelIndex();
+            /*! \fn
+              * A functions that extracts all atoms of an assembly
+              * @return Vector of all atoms in the current object of assembly
+              */
+            AtomVector GetAllAtomsOfAssembly();
+            /*! \fn
+              * A functions that extracts all residues of an assembly
+              * @return Vector of all residues in the current object of assembly
+              */
+            ResidueVector GetAllResiduesOfAssembly();
+            /*! \fn
+              * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
+              * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
+              */
+            CoordinateVector GetAllCoordinates();
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -187,7 +208,12 @@ namespace MolecularModeling
               * @param source_file_type The source file type attribute of the current object
               */
             void SetSourceFileType(gmml::InputFileType source_file_type);
-
+            /*! \fn
+              * A mutator function in order to set the selected model index of the current object
+              * Set the model_index_ attribute of the current assembly
+              * @param model_index The target model index attribute of the current object
+              */
+            void SetModelIndex(int model_index);
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
@@ -237,6 +263,11 @@ namespace MolecularModeling
               * Exports data from assembly data structure into coordinate file structure
               */
             CoordinateFileSpace::CoordinateFile* BuildCoordinateFileStructureFromAssembly();
+            /*! \fn
+              * A function to build a library file structure from the current assembly object
+              * Exports data from assembly data structure into library file structure
+              */
+            LibraryFileSpace::LibraryFile* BuildLibraryFileStructureFromAssembly();
 
             /*! \fn
               * A function to build a graph structure (bonding information) for the current object of central data structure
@@ -281,13 +312,8 @@ namespace MolecularModeling
               * @param types List of types of the database files
               * @param file_paths List of the database file paths
               */
-            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
-            /*! \fn
-              * A functions that extracts all atoms of an assembly
-              * @return Vector of atoms all in the current object of assembly
-              */
-            AtomVector GetAllAtomsOfAssembly();
-            void CalculateCenterOfGeometry(int model_index = 0);
+            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);            
+            void CalculateCenterOfGeometry();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -314,7 +340,7 @@ namespace MolecularModeling
             std::string description_;                       /*!< Short description for the current assembly >*/
             std::string source_file_;                       /*!< File name that the current assembly has been built upon >*/
             gmml::InputFileType source_file_type_;          /*!< Type of the file that the current assembly has been built upon >*/
-
+            int model_index_;                               /*!< In case that there are more than one models for an assembly, this attribute indicated which model is the target model >*/
     };
 }
 

@@ -25,6 +25,10 @@ namespace LibraryFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             /*! \fn
+              * Default constructor
+              */
+            LibraryFile();
+            /*! \fn
               * Constructor
               * @param lib_file An existing library file path to be read
               */
@@ -55,6 +59,21 @@ namespace LibraryFileSpace
               */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
 
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the path of the current library file
+              * Set the path_ attribute of the current library file
+              * @param path The path attribute of the current object
+              */
+            void SetPath(std::string path);
+            /*! \fn
+              * A mutator function in order to set the residues of the current library file
+              * Set the residues_ attribute of the current library file
+              * @param residues The residue map attribute of the current object
+              */
+            void SetResidues(ResidueMap residues);
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////

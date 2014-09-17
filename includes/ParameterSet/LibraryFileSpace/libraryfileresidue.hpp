@@ -116,7 +116,7 @@ namespace LibraryFileSpace
               * Set the name_ attribute of the current atom
               * @param name Residue name
               */
-            void SetName(std::string& name);
+            void SetName(std::string name);
             /*! \fn
               * A mutator function in order to set the atoms belonging to the current object
               * Set the atoms_ attribute of the current atom

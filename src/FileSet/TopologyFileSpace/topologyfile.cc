@@ -799,7 +799,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(first_atom_index >= start_index && first_atom_index < end_index)
             {
-                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                bond_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -817,7 +819,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(second_atom_index >= start_index && second_atom_index < end_index)
             {
-                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                bond_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -856,7 +860,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(first_atom_index >= start_index && first_atom_index < end_index)
             {
-                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                bond_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -874,7 +880,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(second_atom_index >= start_index && second_atom_index < end_index)
             {
-                bond_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                bond_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -917,7 +925,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
-                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                angle_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -935,7 +945,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
-                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                angle_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -953,7 +965,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
-                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                angle_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -996,7 +1010,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
-                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                angle_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1014,7 +1030,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
-                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                angle_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1032,7 +1050,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
-                angle_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                angle_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1078,7 +1098,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1096,7 +1118,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1114,7 +1138,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1132,7 +1158,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_4 >= start_index && atom_index_4 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1188,7 +1216,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_1 >= start_index && atom_index_1 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1206,7 +1236,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_2 >= start_index && atom_index_2 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1224,7 +1256,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_3 >= start_index && atom_index_3 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
@@ -1242,7 +1276,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             if(atom_index_4 >= start_index && atom_index_4 < end_index)
             {
-                dihedral_atoms_residue_names.push_back(residue_labels.at(j));
+                stringstream r;
+                r << residue_labels.at(j) << "(" << (j+1) << ")";
+                dihedral_atoms_residue_names.push_back(r.str());
                 break;
             }
         }
