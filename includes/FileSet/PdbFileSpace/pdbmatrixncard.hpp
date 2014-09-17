@@ -55,13 +55,13 @@ namespace PdbFileSpace
             /*! \fn
               * A mutator function in order to set the matrix n attribute of the current object
               * Set the matrix_n_ attribute of the current matrix n card
-              * @param a The matrix_n attribute of the current object
+              * @param matrix_n The matrix_n attribute of the current object
               */
             void SetMatrixN(MatrixNVector matrix_n);
             /*! \fn
               * A function in order to add the matrix n attribute to the current object
               * Set the matrix_ attribute of the current matrix n card
-              * @param a The matrix attribute of the current object
+              * @param matrix The matrix attribute of the current object
               */
             void AddMatrixN(MatrixNVector matrix);
 
