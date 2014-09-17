@@ -33,6 +33,7 @@ using namespace PrepFileSpace;
 using namespace PdbFileSpace;
 using namespace Geometry;
 using namespace LibraryFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -564,18 +565,6 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
     }
     name_ = ss.str();
 }
-
-void Assembly::BuildPdbFileFromAssembly(PdbFileSpace::PdbFile *pdb_file)
-{
-    gmml::InputFileType type = this->GetSourceFileType();
-    switch(type)
-    {
-        case gmml::PDB:
-            pdb_file->SetPath(this->GetSourceFile());
-            break;
-    }
-}
-
 void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vector<string> options, vector<string> file_paths)
 {
     switch(building_option)
@@ -1033,6 +1022,115 @@ void Assembly::CalculateCenterOfGeometry(int model_index)
     center_of_geometry.operator /(counter);
     center_of_geometry_ = Coordinate(center_of_geometry);
 }
+int Assembly::CountNumberOfAtoms()
+{
+    int counter = 0;
+    for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        counter += assembly->CountNumberOfAtoms();
+    }
+    for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        Residue::AtomVector atoms = residue->GetAtoms();
+        counter += atoms.size();
+    }
+    return counter;
+}
+int Assembly::CountNumberOfAtomTypes()
+{
+    vector<string> type_list = vector<string>();
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        string atom_type = atom->GetAtomType();
+        if(find(type_list.begin(), type_list.end(), atom_type) != type_list.end())
+        {}
+        else
+        {
+           type_list.push_back(atom_type);
+        }
+    }
+    return type_list.size();
+}
+int Assembly::CountNumberOfBondsIncludingHydrogen()
+{
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    int counter = 0;
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        string atom_name = atom->GetName();
+        AtomNode* atom_node = atom->GetNode();
+        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+        if((atom_name.substr(0,1).compare("H") == 0 ||
+            (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+        {
+            counter += node_neighbors.size();
+        }
+        else
+        {
+            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            {
+                Atom* node_neighbor = (*it1);
+                string node_neighbor_name = node_neighbor->GetName();
+                if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
+                    (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                {
+                    counter++;
+                }
+            }
+        }
+    }
+    return counter/2;
+}
+int Assembly::CountNumberOfBondsExcludingHydrogen()
+{
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    int counter = 0;
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        string atom_name = atom->GetName();
+        AtomNode* atom_node = atom->GetNode();
+        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+        if((atom_name.substr(0,1).compare("H") == 0 ||
+            (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+        {}
+        else
+        {
+            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            {
+                Atom* node_neighbor = (*it1);
+                string node_neighbor_name = node_neighbor->GetName();
+                if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
+                    (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                {}
+                else
+                {
+                    counter++;
+                }
+            }
+        }
+    }
+    return counter/2;
+}
+int Assembly::CountNumberOfBonds()
+{
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    int counter = 0;
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* atom_node = atom->GetNode();
+        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+        counter += node_neighbors.size();
+    }
+    return counter/2;
+}
+
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

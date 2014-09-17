@@ -669,7 +669,117 @@ void PdbFile::SetPath(string pdb_path)
 {
     path_ = pdb_path;
 }
+void PdbFile::SetHeader(PdbHeaderCard *header)
+{
+    header_ = new PdbHeaderCard();
+    header_ = header;
 
+}
+void PdbFile::SetTitle(PdbTitleCard *title)
+{
+    title_ = new PdbTitleCard();
+    title_ = title;
+}
+void PdbFile::SetCompound(PdbCompoundCard *compound)
+{
+    compound_ = new PdbCompoundCard();
+    compound_ = compound;
+}
+void PdbFile::SetNumberOfModels(PdbNumModelCard *number_of_models)
+{
+    number_of_models_ = new PdbNumModelCard();
+    number_of_models_ = number_of_models;
+}
+void PdbFile::SetModelType(PdbModelTypeCard *model_type)
+{
+    model_type_ = new PdbModelTypeCard();
+    model_type_ = model_type;
+}
+void PdbFile::SetResiduesSequence(PdbResidueSequenceCard *residues_sequence)
+{
+    residues_sequence_ = new PdbResidueSequenceCard();
+    residues_sequence_ = residues_sequence;
+}
+void PdbFile::SetResidueModification(PdbResidueModificationCard *residue_modification)
+{
+    residue_modification_ = new PdbResidueModificationCard();
+    residue_modification_ = residue_modification;
+}
+void PdbFile::SetHeterogens(PdbHeterogenCard *heterogens)
+{
+    heterogens_ = new PdbHeterogenCard();
+    heterogens_ = heterogens;
+}
+void PdbFile::SetHeterogensName(PdbHeterogenNameCard *heterogens_name)
+{
+    heterogens_name_ = new PdbHeterogenNameCard();
+    heterogens_name_ = heterogens_name;
+}
+void PdbFile::SetHeterogenSynonyms(PdbHeterogenSynonymCard *heterogen_synonyms)
+{
+    heterogen_synonyms_ = new PdbHeterogenSynonymCard();
+    heterogen_synonyms_ = heterogen_synonyms;
+}
+void PdbFile::SetFormulas(PdbFormulaCard *formulas)
+{
+    formulas_ = new PdbFormulaCard();
+    formulas_ = formulas;
+}
+void PdbFile::SetHelixes(PdbHelixCard *helixes)
+{
+    helixes_ = new PdbHelixCard();
+    helixes_ = helixes;
+}
+void PdbFile::SetSheets(PdbSheetCard *sheets)
+{
+    sheets_ = new PdbSheetCard();
+    sheets_ = sheets;
+}
+void PdbFile::SetDisulfideBonds(PdbDisulfideBondCard *disulfide_bonds)
+{
+    disulfide_bonds_ = new PdbDisulfideBondCard();\
+    disulfide_bonds_ = disulfide_bonds;
+}
+void PdbFile::SetLinks(PdbLinkCard *links)
+{
+    links_ = new PdbLinkCard();
+    links_ = links;
+}
+void PdbFile::SetSites(PdbSiteCard *sites)
+{
+    sites_ = new PdbSiteCard();
+    sites_ = sites;
+}
+void PdbFile::SetCrystallography(PdbCrystallographicCard *crystallography)
+{
+    crystallography_ = new PdbCrystallographicCard();
+    crystallography_ = crystallography;
+}
+void PdbFile::SetOrigins(PdbOriginXnCard *origins)
+{
+    origins_ = new PdbOriginXnCard();
+    origins_ = origins;
+}
+void PdbFile::SetScales(PdbScaleNCard *scales)
+{
+    scales_ = new PdbScaleNCard();
+    scales_ = scales;
+}
+void PdbFile::SetMatrices(PdbMatrixNCard *matrices)
+{
+    matrices_ = new PdbMatrixNCard();
+    matrices_ = matrices;
+}
+void PdbFile::SetModels(PdbModelCard *models)
+{
+    models_ = new PdbModelCard();
+    models_ = models;
+}
+void PdbFile::SetConnectivities(PdbConnectCard *connectivities)
+{
+    connectivities_ = new PdbConnectCard();
+    connectivities_ = connectivities;
+}
 void PdbFile::DeleteResidue(PdbResidue *residue)
 {
     string target_residue_name = residue->GetResidueName();
