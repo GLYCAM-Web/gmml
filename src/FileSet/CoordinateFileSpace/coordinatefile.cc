@@ -15,6 +15,11 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
+CoordinateFile::CoordinateFile()
+{
+    path_ = "GMML-Generated";
+}
+
 CoordinateFile::CoordinateFile(const string &crd_file)
 {
     path_ = crd_file;

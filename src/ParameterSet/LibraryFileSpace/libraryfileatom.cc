@@ -12,12 +12,12 @@ using namespace std;
 LibraryFileAtom::LibraryFileAtom() : type_(""), name_(""), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
     atom_order_(0) {}
 
-LibraryFileAtom::LibraryFileAtom(const string &type, const string &name, int residue_index, int atom_index, int atomic_number, double charge) :
+LibraryFileAtom::LibraryFileAtom(string type, string name, int residue_index, int atom_index, int atomic_number, double charge) :
     type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge), coordinate_(),
     atom_order_(0) {}
 
-LibraryFileAtom::LibraryFileAtom(const string &type, const string &name, int residue_index, int atom_index, int atomic_number, double charge,
-                                 const Coordinate &coordinate, const vector<int> bonded_atoms_indices, int atom_order) :
+LibraryFileAtom::LibraryFileAtom(string type, string name, int residue_index, int atom_index, int atomic_number, double charge,
+                                 Coordinate coordinate, vector<int> bonded_atoms_indices, int atom_order) :
     type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge),
     coordinate_(coordinate), atom_order_(atom_order)
 {

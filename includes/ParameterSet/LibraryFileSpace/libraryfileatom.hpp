@@ -27,7 +27,7 @@ namespace LibraryFileSpace
               * @param atomic_number Atomic number of the atom
               * @param charge Charge of the atom
               */
-            LibraryFileAtom(const std::string& type, const std::string& name, int residue_index, int atom_index, int atomic_number, double charge);
+            LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index, int atomic_number, double charge);
             /*! \fn
               * Constructor with given set of values for all attributes
               * @param type Atom type
@@ -40,8 +40,8 @@ namespace LibraryFileSpace
               * @param bondend_atom_indices List of atom indeces connected (bonded) to the atom
               * @param atom_order Order of the atom in which the atom information has been written in a library file
               */
-            LibraryFileAtom(const std::string& type, const std::string& name, int residue_index, int atom_index, int atomic_number, double charge,
-                            const Geometry::Coordinate& coordinate, const std::vector<int> bonded_atoms_indices, int atom_order);
+            LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index, int atomic_number, double charge,
+                            Geometry::Coordinate coordinate, std::vector<int> bonded_atoms_indices, int atom_order);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
