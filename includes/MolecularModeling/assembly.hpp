@@ -10,8 +10,8 @@
 #include "../FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
-#include "../PrepFileSpace/prepfile.hpp"
-#include "../LibraryFileSpace/libraryfile.hpp"
+#include "../ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 
 namespace MolecularModeling
 {
@@ -312,8 +312,41 @@ namespace MolecularModeling
               * @param types List of types of the database files
               * @param file_paths List of the database file paths
               */
-            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);            
-            void CalculateCenterOfGeometry();
+            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
+            /*! \fn
+              * A function that extracts all atoms of an assembly
+              * @return Vector of atoms all in the current object of assembly
+              */
+            AtomVector GetAllAtomsOfAssembly();
+            /*! \fn
+              * A function to calculate the center of geometry of the assembly
+              */
+            void CalculateCenterOfGeometry(int model_index = 0);
+            /*! \fn
+              * A functions that counts the number of atoms in all assemblies and residues of the assembly
+              * @return counter Number of atoms in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfAtoms();
+            /*! \fn
+              * A functions that counts the number of atoms types in all assemblies and residues of the assembly
+              * @return counter Number of atoms in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfAtomTypes();
+            /*! \fn
+              * A functions that counts the number of bonds including hydrogen in all assemblies and residues of the assembly
+              * @return counter Number of bonds including hydrogen in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfBondsIncludingHydrogen();
+            /*! \fn
+              * A functions that counts the number of bonds excluding hydrogen in all assemblies and residues of the assembly
+              * @return counter Number of bonds excluding hydrogen in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfBondsExcludingHydrogen();
+            /*! \fn
+              * A functions that counts the number of bonds in all assemblies and residues of the assembly
+              * @return counter Number of bonds in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfBonds();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
