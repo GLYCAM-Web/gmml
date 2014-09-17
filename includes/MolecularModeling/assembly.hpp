@@ -10,8 +10,8 @@
 #include "../FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
-#include "../PrepFileSpace/prepfile.hpp"
-#include "../LibraryFileSpace/libraryfile.hpp"
+#include "../ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 
 namespace MolecularModeling
 {
