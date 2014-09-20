@@ -18,6 +18,10 @@ namespace CoordinateFileSpace
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             /*!
+              * Default constructor
+              */
+            CoordinateFile();
+            /*!
               * Constructor
               * @param crd_file An existing coordinate file path to be read
               */

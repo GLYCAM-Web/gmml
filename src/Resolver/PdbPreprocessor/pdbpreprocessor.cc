@@ -241,7 +241,9 @@ PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetRecognizedResidues(P
                 is_recognized = false;
         }
         if(is_recognized)
+        {
             recognized_residues.push_back(pdb_residue);
+        }
     }
     return recognized_residues;
 }
@@ -550,7 +552,7 @@ vector<string> PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles(str
             vector<string> residue_names = lib_file->GetAllResidueNames();
             for(vector<string>::iterator it1 = residue_names.begin(); it1 != residue_names.end(); it1++)
             {
-                string residue_name_from_lib = (*it);
+                string residue_name_from_lib = (*it1);
                 if((residue_name).compare(residue_name_from_lib) == 0)
                 {
                     all_atom_names_of_residue = lib_file->GetAllAtomNamesOfResidue(residue_name);
@@ -577,7 +579,7 @@ vector<string> PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles(st
             vector<string> residue_names = prep_files->GetAllResidueNames();
             for(vector<string>::iterator it1 = residue_names.begin(); it1 != residue_names.end(); it1++)
             {
-                string residue_name_from_prep = (*it);
+                string residue_name_from_prep = (*it1);
                 if((residue_name).compare(residue_name_from_prep) == 0)
                 {
                     all_atom_names_of_residue = prep_files->GetAllAtomNamesOfResidue(residue_name);
@@ -597,19 +599,13 @@ vector<string> PdbPreprocessor::GetAllAtomNamesOfResidueFromDatasetFiles(string 
     vector<string> all_atom_names_of_residue_from_lib = GetAllAtomNamesOfResidueFromMultipleLibFiles(residue_name, lib_files);
     vector<string> all_atom_names_of_residue_from_prep = GetAllAtomNamesOfResidueFromMultiplePrepFiles(residue_name, prep_files);
     vector<string> all_atom_names;
-    if(all_atom_names_of_residue_from_prep.size() == 0)
+    for(vector<string>::iterator it1 = all_atom_names_of_residue_from_lib.begin(); it1 != all_atom_names_of_residue_from_lib.end(); it1++)
     {
-        for(vector<string>::iterator it1 = all_atom_names_of_residue_from_lib.begin(); it1 != all_atom_names_of_residue_from_lib.end(); it1++)
-        {
-            all_atom_names.push_back(*it1);
-        }
+        all_atom_names.push_back(*it1);
     }
-    else
+    for(vector<string>::iterator it1 = all_atom_names_of_residue_from_prep.begin(); it1 != all_atom_names_of_residue_from_prep.end(); it1++)
     {
-        for(vector<string>::iterator it1 = all_atom_names_of_residue_from_prep.begin(); it1 != all_atom_names_of_residue_from_prep.end(); it1++)
-        {
-            all_atom_names.push_back(*it1);
-        }
+        all_atom_names.push_back(*it1);
     }
     return all_atom_names;
 }
@@ -621,24 +617,13 @@ PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetUnknownHeavyAtomsOfResi
     {
         PdbAtom* pdb_atom = *it;
         string pdb_atom_name = pdb_atom->GetAtomName();
-        bool found = false;
         if(!(pdb_atom_name.substr(0,1).compare("H") == 0 ||
              (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+            if(find(dataset_atom_names_of_residue.begin(), dataset_atom_names_of_residue.end(), pdb_atom_name) == dataset_atom_names_of_residue.end())
             {
-                string dataset_atom_name = (*it1);
-
-                if( pdb_atom_name.compare(dataset_atom_name) != 0)
-                    continue;
-                else
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if(!found)
                 unknown_heavy_atoms_of_residue.push_back(pdb_atom);
+            }
         }
     }
     return unknown_heavy_atoms_of_residue;
@@ -668,7 +653,9 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
         ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
         string key = ss.str();
         PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
+
         vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+
         PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
 
         for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)

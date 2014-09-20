@@ -13,6 +13,7 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbtitlecard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
@@ -33,16 +34,18 @@ using namespace PrepFileSpace;
 using namespace PdbFileSpace;
 using namespace Geometry;
 using namespace LibraryFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Assembly::Assembly() : description_(""), center_of_geometry_(0,0,0) {}
+Assembly::Assembly() : description_(""), center_of_geometry_(0,0,0), model_index_(0) {}
 
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
 {
     source_file_type_ = type;
     description_ = "";
+    model_index_ = 0;
     switch(type)
     {
         case gmml::PDB:
@@ -101,6 +104,7 @@ Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileTyp
     }
     source_file_type_ = gmml::MULTIPLE;
     name_ = name.str();
+    model_index_ = 0;
 }
 
 //////////////////////////////////////////////////////////
@@ -150,7 +154,96 @@ gmml::InputFileType Assembly::GetSourceFileType()
 {
     return source_file_type_;
 }
+int Assembly::GetModelIndex()
+{
+    return model_index_;
+}
+Assembly::CoordinateVector Assembly::GetAllCoordinates()
+{
+    CoordinateVector coordinates = CoordinateVector();
+    for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
+        if(assembly_coordinate.size() == 0)
+        {
+            cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << endl;
+            return CoordinateVector();
+        }
+        for(CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
+        {
+            coordinates.push_back(*it1);
+        }
+    }
+    for(ResidueVector::iterator it = this->residues_.begin(); it != this->residues_.end(); it++)
+    {
+        Residue* residue = (*it);
+        AtomVector residue_atoms = residue->GetAtoms();
+        for(AtomVector::iterator it1 = residue_atoms.begin(); it1 != residue_atoms.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            if(atom->GetCoordinates().size() == 0)
+            {
+                cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << endl;
+                return CoordinateVector();
+            }
+            else
+            {
+                coordinates.push_back(atom->GetCoordinates()[model_index_]);
+            }
+        }
+    }
+    return coordinates;
+}
 
+Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
+{
+    AtomVector all_atoms_of_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
+        for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        Residue* residue = (*it);
+        AtomVector atoms = residue->GetAtoms();
+        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    return all_atoms_of_assembly;
+}
+
+Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
+{
+    ResidueVector all_residues_of_assembly = ResidueVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        ResidueVector residues_of_assembly = assembly->GetAllResiduesOfAssembly();
+        for(ResidueVector::iterator it1 = residues_of_assembly.begin(); it1 != residues_of_assembly.end(); it1++)
+        {
+            all_residues_of_assembly.push_back(*it1);
+        }
+    }
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        all_residues_of_assembly.push_back(*it);
+    }
+    return all_residues_of_assembly;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -186,6 +279,7 @@ void Assembly::AddAssembly(Assembly *assembly)
         sss << this->source_file_ << "#" << assembly->GetSourceFile();
         this->source_file_ = sss.str();
         source_file_type_ = gmml::MULTIPLE;
+        model_index_ = 0;
     }
     else
     {
@@ -239,6 +333,11 @@ void Assembly::SetSourceFileType(gmml::InputFileType source_file_type)
 {
     source_file_type_ = source_file_type;
 }
+void Assembly::SetModelIndex(int model_index)
+{
+    model_index_ = model_index;
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -365,7 +464,7 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
             string atom_name = (*it1).first;
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << residue_name << ":" << atom_name;
+            atom_id << id.str() << ":" << atom_name;
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
@@ -461,7 +560,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
             string atom_name = (*it1).first;
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << residue_name << ":" << atom_name;
+            atom_id << id.str() << ":" << atom_name;
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
 
@@ -581,6 +680,92 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
     name_ = ss.str();
 }
 
+PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
+{
+    PdbFile* pdb_file = new PdbFile();
+    PdbTitleCard* title_card = new PdbTitleCard();
+    title_card->SetTitle("Generated by GMML");
+    // Set pdb_file title card
+
+    PdbModelCard* model_card = new PdbModelCard();
+    PdbModelCard::PdbModelMap models = PdbModelCard::PdbModelMap();
+    for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
+    {
+
+    }
+
+
+    return pdb_file;
+}
+
+TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
+{
+    TopologyFile* topology_file = new TopologyFile();
+
+    return topology_file;
+}
+
+CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
+{
+    vector<Coordinate*> coordinates = this->GetAllCoordinates();
+    CoordinateFile* coordinate_file = new CoordinateFile();
+    coordinate_file->SetCoordinates(coordinates);
+    coordinate_file->SetNumberOfCoordinates(coordinates.size());
+    string title = "Generated by GMML";
+    coordinate_file->SetTitle(title);
+    return coordinate_file;
+}
+
+LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
+{
+    LibraryFile* library_file = new LibraryFile();
+    LibraryFile::ResidueMap residue_map = LibraryFile::ResidueMap();
+    ResidueVector residues_of_assembly = this->GetAllResiduesOfAssembly();
+    for(ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
+    {
+        Residue* assembly_residue = *it;
+        int residue_index = distance(residues_of_assembly.begin(), it) + 1;
+        AtomVector assembly_residue_atoms = assembly_residue->GetAtoms();
+        LibraryFileResidue* library_residue = new LibraryFileResidue();
+        library_residue->SetName(assembly_residue->GetName());
+        AtomVector head_atoms = assembly_residue->GetHeadAtoms();
+        AtomVector tail_atoms = assembly_residue->GetTailAtoms();
+        if(!head_atoms.empty())
+        {
+            int head_atom_index = distance(assembly_residue_atoms.begin(), find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(), head_atoms.at(0))) + 1;
+            library_residue->SetHeadAtomIndex(head_atom_index);
+        }
+        if(!tail_atoms.empty())
+        {
+            int tail_atom_index = distance(assembly_residue_atoms.begin(), find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(), tail_atoms.at(0))) + 1;
+            library_residue->SetTailAtomIndex(tail_atom_index);
+        }
+        int order = 1;
+        for(AtomVector::iterator it1 = assembly_residue_atoms.begin(); it1 != assembly_residue_atoms.end(); it1++)
+        {
+            Atom* residue_atom = (*it1);
+            int atom_index = distance(assembly_residue_atoms.begin(), it1) + 1;
+            vector<int> bonded_atom_indices = vector<int>();
+            AtomNode* atom_node = residue_atom->GetNode();
+            AtomVector atom_neighbours = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it2 = atom_neighbours.begin(); it2 != atom_neighbours.end(); it2++)
+            {
+                int bonded_atom_index = distance(assembly_residue_atoms.begin(), it2);
+                bonded_atom_indices.push_back(bonded_atom_index);
+            }
+            LibraryFileAtom* atom = new LibraryFileAtom(residue_atom->GetAtomType(), residue_atom->GetName(), residue_index, atom_index,
+                                                        gmml::iNotSet, residue_atom->GetCharge(),
+                                                        *(residue_atom->GetCoordinates()[assembly_residue->GetAssembly()->GetModelIndex()]), bonded_atom_indices,
+                                                        order);
+            order++;
+            library_residue->AddAtom(atom);
+        }
+        residue_map[library_residue->GetName()] = library_residue;
+    }
+    library_file->SetResidues(residue_map);
+    return library_file;
+}
+
 void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vector<string> options, vector<string> file_paths)
 {
     switch(building_option)
@@ -666,6 +851,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
 
 void Assembly::BuildStructureByDistance(double cutoff, int model_index)
 {
+    model_index_ = model_index;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
@@ -785,7 +971,6 @@ void Assembly::BuildStructureByTOPFileInformation()
                 stringstream ss;
                 ss << atom_1->GetId() << "-" << atom_2->GetId();
                 string key = ss.str();
-                cout << key << endl;
                 TopologyFile::TopologyBondMap topology_bond = topology_file->GetBonds();
                 for(TopologyFile::TopologyBondMap::iterator it2 = topology_bond.begin(); it2 != topology_bond.end(); it2++)
                 {
@@ -793,6 +978,14 @@ void Assembly::BuildStructureByTOPFileInformation()
                     stringstream sss;
                     sss << bond->GetResidueNames().at(0) << ":" << bond->GetBonds().at(0) << "-" << bond->GetResidueNames().at(1) << ":" << bond->GetBonds().at(1);
                     string topology_bond_key = sss.str();
+                    if(key.compare(topology_bond_key) == 0)
+                    {
+                        atom_node->AddNodeNeighbor(atom_2);
+                        break;
+                    }
+                    stringstream ssss;
+                    ssss << bond->GetResidueNames().at(1) << ":" << bond->GetBonds().at(1) << "-" << bond->GetResidueNames().at(0) << ":" << bond->GetBonds().at(0);
+                    topology_bond_key = ssss.str();
                     if(key.compare(topology_bond_key) == 0)
                     {
                         atom_node->AddNodeNeighbor(atom_2);
@@ -869,11 +1062,7 @@ void Assembly::BuildStructureByPrepFileInformation()
         {
             PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
             if(prep_atom != NULL)
-            {                                
-                // TODO:
-                // Find bonded atoms to prep_atom
-                // Foreach bonded atom find the corresponding assembly atom
-                // Add the bonded atom to the neighbors of atom_node
+            {
                 vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
                 for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                 {
@@ -954,10 +1143,6 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
                     PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
                     if(prep_atom != NULL)
                     {
-                        // TODO:
-                        // Find bonded atoms to prep_atom
-                        // Foreach bonded atom find the corresponding assembly atom
-                        // Add the bonded atom to the neighbors of atom_node
                         vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
                         for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                         {
@@ -984,34 +1169,7 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
     }
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
-{
-    AtomVector all_atoms_of_assembly = AtomVector();
-    AssemblyVector assemblies = this->GetAssemblies();
-    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
-    {
-        Assembly* assembly = (*it);
-        AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
-        for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
-        {
-            Atom* atom = (*it1);
-            all_atoms_of_assembly.push_back(atom);
-        }
-    }
-    ResidueVector residues = this->GetResidues();
-    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-    {
-        Residue* residue = (*it);
-        AtomVector atoms = residue->GetAtoms();
-        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
-        {
-            Atom* atom = (*it1);
-            all_atoms_of_assembly.push_back(atom);
-        }
-    }
-    return all_atoms_of_assembly;
-}
-void Assembly::CalculateCenterOfGeometry(int model_index)
+void Assembly::CalculateCenterOfGeometry()
 {
     Coordinate center_of_geometry = Coordinate();
     int counter = 0;
@@ -1030,7 +1188,7 @@ void Assembly::CalculateCenterOfGeometry(int model_index)
         {
             Atom* atom = (*it2);
             Atom::CoordinateVector coordinates = atom->GetCoordinates();
-            Geometry::Coordinate coordinate = *coordinates[model_index];
+            Geometry::Coordinate coordinate = *coordinates[this->model_index_];
             center_of_geometry.operator +(coordinate);
             counter++;
         }
@@ -1038,6 +1196,115 @@ void Assembly::CalculateCenterOfGeometry(int model_index)
     center_of_geometry.operator /(counter);
     center_of_geometry_ = Coordinate(center_of_geometry);
 }
+int Assembly::CountNumberOfAtoms()
+{
+    int counter = 0;
+    for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        counter += assembly->CountNumberOfAtoms();
+    }
+    for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        Residue::AtomVector atoms = residue->GetAtoms();
+        counter += atoms.size();
+    }
+    return counter;
+}
+int Assembly::CountNumberOfAtomTypes()
+{
+    vector<string> type_list = vector<string>();
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        string atom_type = atom->GetAtomType();
+        if(find(type_list.begin(), type_list.end(), atom_type) != type_list.end())
+        {}
+        else
+        {
+           type_list.push_back(atom_type);
+        }
+    }
+    return type_list.size();
+}
+int Assembly::CountNumberOfBondsIncludingHydrogen()
+{
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    int counter = 0;
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        string atom_name = atom->GetName();
+        AtomNode* atom_node = atom->GetNode();
+        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+        if((atom_name.substr(0,1).compare("H") == 0 ||
+            (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+        {
+            counter += node_neighbors.size();
+        }
+        else
+        {
+            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            {
+                Atom* node_neighbor = (*it1);
+                string node_neighbor_name = node_neighbor->GetName();
+                if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
+                    (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                {
+                    counter++;
+                }
+            }
+        }
+    }
+    return counter/2;
+}
+int Assembly::CountNumberOfBondsExcludingHydrogen()
+{
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    int counter = 0;
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        string atom_name = atom->GetName();
+        AtomNode* atom_node = atom->GetNode();
+        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+        if((atom_name.substr(0,1).compare("H") == 0 ||
+            (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+        {}
+        else
+        {
+            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            {
+                Atom* node_neighbor = (*it1);
+                string node_neighbor_name = node_neighbor->GetName();
+                if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
+                    (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                {}
+                else
+                {
+                    counter++;
+                }
+            }
+        }
+    }
+    return counter/2;
+}
+int Assembly::CountNumberOfBonds()
+{
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    int counter = 0;
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* atom_node = atom->GetNode();
+        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+        counter += node_neighbors.size();
+    }
+    return counter/2;
+}
+
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

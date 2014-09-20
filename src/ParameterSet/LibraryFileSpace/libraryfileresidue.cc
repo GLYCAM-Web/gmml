@@ -111,7 +111,7 @@ LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(string atom_name)
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 /// Set the residue name
-void LibraryFileResidue::SetName(std::string& name)
+void LibraryFileResidue::SetName(std::string name)
 {
     name_ = name;
 }

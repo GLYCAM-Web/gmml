@@ -10,7 +10,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbModelCard::PdbModelCard() {}
+PdbModelCard::PdbModelCard() : record_name_("MODEL") {}
 
 PdbModelCard::PdbModelCard(stringstream &stream_block)
 {
