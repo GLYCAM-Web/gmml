@@ -116,6 +116,7 @@ namespace Geometry
               * @param coordinate Second vector in the subtract operator
               */
             void operator-(Coordinate coordinate);
+            void operator/(double divisor);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

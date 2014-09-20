@@ -111,6 +111,12 @@ void Coordinate::operator-(Coordinate coordinate)
     y_ -= coordinate.y_;
     z_ -= coordinate.z_;
 }
+void Coordinate::operator/(double divisor)
+{
+    x_ /= divisor;
+    y_ /= divisor;
+    z_ /= divisor;
+}
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //

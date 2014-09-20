@@ -17,6 +17,8 @@ using namespace Geometry;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
+LibraryFile::LibraryFile() : path_("GMML-Generated"){}
+
 LibraryFile::LibraryFile(const std::string &lib_file)
 {
     path_ = lib_file;
@@ -70,6 +72,25 @@ vector<string> LibraryFile::GetAllAtomNamesOfResidue(string residue_name)
         atom_names_of_residue.push_back(atom->GetName());
     }
     return atom_names_of_residue;
+}
+
+//////////////////////////////////////////////////////////
+//                         MUTATORS                     //
+//////////////////////////////////////////////////////////
+void LibraryFile::SetPath(string path)
+{
+    path_ = path;
+}
+
+void LibraryFile::SetResidues(ResidueMap residues)
+{
+    residues_.clear();
+    for(ResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        LibraryFileResidue* residue = (*it).second;
+        string residue_name = (*it).first;
+        residues_[residue_name] = residue;
+    }
 }
 
 //////////////////////////////////////////////////////////

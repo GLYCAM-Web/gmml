@@ -58,7 +58,6 @@ namespace PdbFileSpace
               * Default constructor
               */
             PdbFile();
-
             /*! \fn
               * Constructor
               * @param pdb_file An existing pdb file path to be read
@@ -263,6 +262,138 @@ namespace PdbFileSpace
               * @param pdb_path Pdb file path
               */
             void SetPath(std::string pdb_path);
+            /*! \fn
+              * A mutator function in order to set the header card of the current object
+              * Set the header_ attribute of the current pdb file
+              * @param header The header attribute of the current object
+              */
+            void SetHeader(PdbHeaderCard* header);
+            /*! \fn
+              * A mutator function in order to set the title card of the current object
+              * Set the title_ attribute of the current pdb file
+              * @param title The title attribute of the current object
+              */
+            void SetTitle(PdbTitleCard* title);
+            /*! \fn
+              * A mutator function in order to set the compound card of the current object
+              * Set the compound_ attribute of the current pdb file
+              * @param compound The compound attribute of the current object
+              */
+            void SetCompound(PdbCompoundCard* compound);
+            /*! \fn
+              * A mutator function in order to set the number of models card of the current object
+              * Set the number_of_models_ attribute of the current pdb file
+              * @param number_of_models The number of models attribute of the current object
+              */
+            void SetNumberOfModels(PdbNumModelCard* number_of_models);
+            /*! \fn
+              * A mutator function in order to set the model_type card of the current object
+              * Set the model_type_ attribute of the current pdb file
+              * @param model_type The model type attribute of the current object
+              */
+            void SetModelType(PdbModelTypeCard* model_type);
+            /*! \fn
+              * A mutator function in order to set the residues sequence card of the current object
+              * Set the residues_sequence_ attribute of the current pdb file
+              * @param residues_sequence The residues sequence attribute of the current object
+              */
+            void SetResiduesSequence(PdbResidueSequenceCard* residues_sequence);
+            /*! \fn
+              * A mutator function in order to set the residue modification card of the current object
+              * Set the residue_modification_ attribute of the current pdb file
+              * @param residue_modification The residue modification attribute of the current object
+              */
+            void SetResidueModification(PdbResidueModificationCard* residue_modification);
+            /*! \fn
+              * A mutator function in order to set the heterogens card of the current object
+              * Set the heterogens_ attribute of the current pdb file
+              * @param heterogens The heterogens attribute of the current object
+              */
+            void SetHeterogens(PdbHeterogenCard* heterogens);
+            /*! \fn
+              * A mutator function in order to set the heterogens name card of the current object
+              * Set the heterogens_name_ attribute of the current pdb file
+              * @param heterogens_name The heterogens name attribute of the current object
+              */
+            void SetHeterogensName(PdbHeterogenNameCard* heterogens_name);
+            /*! \fn
+              * A mutator function in order to set the heterogen synonyms card of the current object
+              * Set the heterogen_synonyms_ attribute of the current pdb file
+              * @param heterogen_synonyms The heterogen synonyms attribute of the current object
+              */
+            void SetHeterogenSynonyms(PdbHeterogenSynonymCard* heterogen_synonyms);
+            /*! \fn
+              * A mutator function in order to set the formulas card of the current object
+              * Set the formulas_ attribute of the current pdb file
+              * @param formulas The formulas attribute of the current object
+              */
+            void SetFormulas(PdbFormulaCard* formulas);
+            /*! \fn
+              * A mutator function in order to set the helixes card of the current object
+              * Set the helixes_ attribute of the current pdb file
+              * @param helixes The helixes attribute of the current object
+              */
+            void SetHelixes(PdbHelixCard* helixes);
+            /*! \fn
+              * A mutator function in order to set the sheets card of the current object
+              * Set the sheets_ attribute of the current pdb file
+              * @param sheets The sheets attribute of the current object
+              */
+            void SetSheets(PdbSheetCard* sheets);
+            /*! \fn
+              * A mutator function in order to set the disulfide bonds card of the current object
+              * Set the disulfide_bonds_ attribute of the current pdb file
+              * @param disulfide_bonds The disulfide bonds attribute of the current object
+              */
+            void SetDisulfideBonds(PdbDisulfideBondCard* disulfide_bonds);
+            /*! \fn
+              * A mutator function in order to set the links card of the current object
+              * Set the links_ attribute of the current pdb file
+              * @param links The links attribute of the current object
+              */
+            void SetLinks(PdbLinkCard* links);
+            /*! \fn
+              * A mutator function in order to set the sites card of the current object
+              * Set the sites_ attribute of the current pdb file
+              * @param sites The compound attribute of the current object
+              */
+            void SetSites(PdbSiteCard* sites);
+            /*! \fn
+              * A mutator function in order to set the crystallography card of the current object
+              * Set the crystallography_ attribute of the current pdb file
+              * @param crystallography The crystallography attribute of the current object
+              */
+            void SetCrystallography(PdbCrystallographicCard* crystallography);
+            /*! \fn
+              * A mutator function in order to set the origins card of the current object
+              * Set the origins_ attribute of the current pdb file
+              * @param origins The origins attribute of the current object
+              */
+            void SetOrigins(PdbOriginXnCard* origins);
+            /*! \fn
+              * A mutator function in order to set the scales card of the current object
+              * Set the scales_ attribute of the current pdb file
+              * @param scales The scales attribute of the current object
+              */
+            void SetScales(PdbScaleNCard* scales);
+            /*! \fn
+              * A mutator function in order to set the matrices card of the current object
+              * Set the matrices_ attribute of the current pdb file
+              * @param matrices The matrices attribute of the current object
+              */
+            void SetMatrices(PdbMatrixNCard* matrices);
+            /*! \fn
+              * A mutator function in order to set the models card of the current object
+              * Set the models_ attribute of the current pdb file
+              * @param models The models attribute of the current object
+              */
+            void SetModels(PdbModelCard* models);
+            /*! \fn
+              * A mutator function in order to set the connectivities card of the current object
+              * Set the connectivities_ attribute of the current pdb file
+              * @param connectivities The connectivities attribute of the current object
+              */
+            void SetConnectivities(PdbConnectCard* connectivities);
             /*! \fn
               * A function in order to delete a residue from the current object
               * @param residue A residue of the current object of this class
