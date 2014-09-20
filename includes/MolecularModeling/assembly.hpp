@@ -318,6 +318,7 @@ namespace MolecularModeling
               */
             void CalculateCenterOfGeometry();
             /*! \fn
+
               * A functions that counts the number of atoms in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
               */

@@ -196,6 +196,54 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
     return coordinates;
 }
 
+Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
+{
+    AtomVector all_atoms_of_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
+        for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        Residue* residue = (*it);
+        AtomVector atoms = residue->GetAtoms();
+        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    return all_atoms_of_assembly;
+}
+
+Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
+{
+    ResidueVector all_residues_of_assembly = ResidueVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        ResidueVector residues_of_assembly = assembly->GetAllResiduesOfAssembly();
+        for(ResidueVector::iterator it1 = residues_of_assembly.begin(); it1 != residues_of_assembly.end(); it1++)
+        {
+            all_residues_of_assembly.push_back(*it1);
+        }
+    }
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        all_residues_of_assembly.push_back(*it);
+    }
+    return all_residues_of_assembly;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -715,6 +763,7 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
         residue_map[library_residue->GetName()] = library_residue;
     }
     library_file->SetResidues(residue_map);
+    return library_file;
 }
 
 void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vector<string> options, vector<string> file_paths)
@@ -1013,11 +1062,7 @@ void Assembly::BuildStructureByPrepFileInformation()
         {
             PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
             if(prep_atom != NULL)
-            {                                
-                // TODO:
-                // Find bonded atoms to prep_atom
-                // Foreach bonded atom find the corresponding assembly atom
-                // Add the bonded atom to the neighbors of atom_node
+            {
                 vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
                 for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                 {
@@ -1098,10 +1143,6 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
                     PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
                     if(prep_atom != NULL)
                     {
-                        // TODO:
-                        // Find bonded atoms to prep_atom
-                        // Foreach bonded atom find the corresponding assembly atom
-                        // Add the bonded atom to the neighbors of atom_node
                         vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
                         for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                         {
@@ -1126,55 +1167,6 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
             atom->SetNode(atom_node);
         }
     }
-}
-
-Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
-{
-    AtomVector all_atoms_of_assembly = AtomVector();
-    AssemblyVector assemblies = this->GetAssemblies();
-    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
-    {
-        Assembly* assembly = (*it);
-        AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
-        for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
-        {
-            Atom* atom = (*it1);
-            all_atoms_of_assembly.push_back(atom);
-        }
-    }
-    ResidueVector residues = this->GetResidues();
-    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-    {
-        Residue* residue = (*it);
-        AtomVector atoms = residue->GetAtoms();
-        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
-        {
-            Atom* atom = (*it1);
-            all_atoms_of_assembly.push_back(atom);
-        }
-    }
-    return all_atoms_of_assembly;
-}
-
-Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
-{
-    ResidueVector all_residues_of_assembly = ResidueVector();
-    AssemblyVector assemblies = this->GetAssemblies();
-    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
-    {
-        Assembly* assembly = (*it);
-        ResidueVector residues_of_assembly = assembly->GetAllResiduesOfAssembly();
-        for(ResidueVector::iterator it1 = residues_of_assembly.begin(); it1 != residues_of_assembly.end(); it1++)
-        {
-            all_residues_of_assembly.push_back(*it1);
-        }
-    }
-    ResidueVector residues = this->GetResidues();
-    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-    {
-        all_residues_of_assembly.push_back(*it);
-    }
-    return all_residues_of_assembly;
 }
 
 void Assembly::CalculateCenterOfGeometry()
