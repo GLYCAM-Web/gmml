@@ -60,6 +60,12 @@ namespace PdbFileSpace
               * @param record_name The atom serial number of the current object
               */
             void SetRecordName(const std::string record_name);
+            /*! \fn
+              * A mutator function in order to set the bonded atoms serial numbers map of the current object
+              * Set the bonded_atom_serial_numbers_ attribute of the current connect card
+              * @param bonded_atom_serial_number The mapping of bonded atom serial numbers of the current object
+              */
+            void SetBondedAtomsSerialNumbers(BondedAtomsSerialNumbersMap bonded_atom_serial_numbers);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

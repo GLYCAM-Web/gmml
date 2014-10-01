@@ -75,6 +75,17 @@ void PdbConnectCard::SetRecordName(const string record_name)
     record_name_ = record_name;
 }
 
+void PdbConnectCard::SetBondedAtomsSerialNumbers(BondedAtomsSerialNumbersMap bonded_atom_serial_numbers)
+{
+    bonded_atom_serial_numbers_.clear();
+    for(BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers.begin(); it != bonded_atom_serial_numbers.end(); it++)
+    {
+        int source_serial_number = (*it).first;
+        vector<int> bonded_serial_numbers = (*it).second;
+        bonded_atom_serial_numbers_[source_serial_number] = bonded_serial_numbers;
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////

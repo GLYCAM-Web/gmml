@@ -93,6 +93,7 @@ PdbFile::PdbFile()
     matrices_ = NULL;
     models_ = NULL;
     connectivities_ = NULL;
+    serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
 }
 
 PdbFile::PdbFile(const std::string &pdb_file)
@@ -120,6 +121,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     matrices_ = NULL;
     models_ = NULL;
     connectivities_ = NULL;
+    serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
     
     std::ifstream in_file;
     try
@@ -130,7 +132,8 @@ PdbFile::PdbFile(const std::string &pdb_file)
     {
         throw PdbFileProcessingException(__LINE__, "File not found");
     }
-    Read(in_file);
+    if(!Read(in_file))
+        return;
     in_file.close();            /// Close the parameter files
 }
 
@@ -250,6 +253,10 @@ PdbModelCard* PdbFile::GetModels()
 PdbConnectCard* PdbFile::GetConnectivities()
 {
     return connectivities_;
+}
+PdbFile::PdbSerialNumberMapping PdbFile::GetSerialNumberMapping()
+{
+    return serial_number_mapping_;
 }
 
 vector<string> PdbFile::GetAllResidueNames()
@@ -807,6 +814,17 @@ void PdbFile::SetConnectivities(PdbConnectCard *connectivities)
     connectivities_ = new PdbConnectCard();
     connectivities_ = connectivities;
 }
+void PdbFile::SetSerialNumberMapping(PdbSerialNumberMapping serial_number_mapping)
+{
+    serial_number_mapping_.clear();
+    for(PdbSerialNumberMapping::iterator it = serial_number_mapping.begin(); it != serial_number_mapping.end(); it++)
+    {
+        int source_serial = (*it).first;
+        int mapped_serial = (*it).second;
+        serial_number_mapping_[source_serial] = mapped_serial;
+    }
+}
+
 void PdbFile::DeleteResidue(PdbResidue *residue)
 {
     string target_residue_name = residue->GetResidueName();
@@ -845,6 +863,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
+                    serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
                     serial_number++;
@@ -875,6 +894,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
+                    serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
                     serial_number++;
@@ -889,6 +909,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
         (*it).second = model;
     }
     models_->SetModels(models);
+    this->UpdateConnectCard();
 }
 
 void PdbFile::DeleteAtom(PdbAtom* target_atom)
@@ -930,6 +951,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
+                    serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
                     serial_number++;
@@ -939,6 +961,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                     string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
+                        serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_atoms[serial_number] = atom;
                         serial_number++;
@@ -970,6 +993,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                 string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
+                    serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
                     serial_number++;
@@ -979,6 +1003,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                     string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
+                        serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_heterogen_atoms[serial_number] = atom;
                         serial_number++;
@@ -994,6 +1019,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
         (*it).second = model;
     }
     models_->SetModels(models);
+    this->UpdateConnectCard();
 }
 
 void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name)
@@ -1451,21 +1477,49 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
     models_->SetModels(updated_models);
 }
 
+void PdbFile::UpdateConnectCard()
+{
+    PdbConnectCard::BondedAtomsSerialNumbersMap bondedAtomsSerialNumbersMap = connectivities_->GetBondedAtomsSerialNumbers();
+    PdbConnectCard::BondedAtomsSerialNumbersMap new_bonded_atoms_serial_numbers_map = PdbConnectCard::BondedAtomsSerialNumbersMap();
+    for(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bondedAtomsSerialNumbersMap.begin(); it != bondedAtomsSerialNumbersMap.end(); it++)
+    {
+        int source_serial_number = (*it).first;
+        vector<int> bonded_serial_numbers = (*it).second;
+        if(serial_number_mapping_.find(source_serial_number) != serial_number_mapping_.end())
+        {
+            int new_source_serial_number = serial_number_mapping_[source_serial_number];
+            new_bonded_atoms_serial_numbers_map[new_source_serial_number] = vector<int>();
+            for(vector<int>::iterator it1 = bonded_serial_numbers.begin(); it1 != bonded_serial_numbers.end(); it1++)
+            {
+                int bonded_serial_number = (*it1);
+                if(serial_number_mapping_.find(bonded_serial_number) != serial_number_mapping_.end())
+                {
+                    int new_bonded_serial_number = serial_number_mapping_[bonded_serial_number];
+                    new_bonded_atoms_serial_numbers_map[new_source_serial_number].push_back(new_bonded_serial_number);
+                }
+            }
+        }
+    }
+    connectivities_->SetBondedAtomsSerialNumbers(new_bonded_atoms_serial_numbers_map);
+}
+
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
-void PdbFile::Read(ifstream &in_file)
+bool PdbFile::Read(ifstream &in_file)
 {
-    this->ParseCards(in_file);
+    if(!this->ParseCards(in_file))
+        return false;
 }
 
-void PdbFile::ParseCards(ifstream &in_stream)
+bool PdbFile::ParseCards(ifstream &in_stream)
 {
     string line;
     
     /// Unable to read file
     if (!getline(in_stream, line))
     {
+        cout << "Wrong input file format" << endl;
         throw PdbFileProcessingException("Error reading file");
     }
     
@@ -1474,237 +1528,282 @@ void PdbFile::ParseCards(ifstream &in_stream)
     record_name = Trim(record_name);
     if(record_name == "HEADER")
     {
-        ParseHeaderCard(in_stream, line);
+        if(!ParseHeaderCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "OBSLTE")
     {
-        ParseObsoleteCard(in_stream, line);
+        if(!ParseObsoleteCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "TITLE")
     {
-        ParseTitleCard(in_stream, line);
+        if(!ParseTitleCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SPLIT")
     {
-        ParseSplitCard(in_stream, line);
+        if(!ParseSplitCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "CAVEAT")
     {
-        ParseCaveatCard(in_stream, line);
+        if(!ParseCaveatCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "COMPND")
     {
-        ParseCompoundCard(in_stream, line);
+        if(!ParseCompoundCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SOURCE")
     {
-        ParseSourceCard(in_stream, line);
+        if(!ParseSourceCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "KEYWDS")
     {
-        ParseKeywordCard(in_stream, line);
+        if(!ParseKeywordCard(in_stream, line))
+                return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "EXPDTA")
     {
-        ParseExpirationDateCard(in_stream, line);
+        if(!ParseExpirationDateCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "NUMMDL")
     {
-        ParseNumModelCard(in_stream, line);
+        if(!ParseNumModelCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "MDLTYP")
     {
-        ParseModelTypeCard(in_stream, line);
+        if(!ParseModelTypeCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "AUTHOR")
     {
-        ParseAuthorCard(in_stream, line);
+        if(!ParseAuthorCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "REVDAT")
     {
-        ParseRevisionDateCard(in_stream, line);
+        if(!ParseRevisionDateCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SPRSDE")
     {
-        ParseSupersededEntriesCard(in_stream, line);
+        if(!ParseSupersededEntriesCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "JRNL")
     {
-        ParseJournalCard(in_stream, line);
+        if(!ParseJournalCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "REMARK")
     {
-        ParseRemarkCard(in_stream, line);
+        if(!ParseRemarkCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name.find("DBREF") != string::npos)
     {
-        ParseDatabaseReferenceCard(in_stream, line);
+        if(!ParseDatabaseReferenceCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SEQADV")
     {
-        ParseSequenceAdvancedCard(in_stream, line);
+        if(!ParseSequenceAdvancedCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SEQRES")
     {
-        ParseSequenceResidueCard(in_stream, line);
+        if(!ParseSequenceResidueCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "MODRES")
     {
-        ParseModificationResidueCard(in_stream, line);
+        if(!ParseModificationResidueCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "HET")
     {
-        ParseHeterogenCard(in_stream, line);
+        if(!ParseHeterogenCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "HETNAM")
     {
-        ParseHeterogenNameCard(in_stream, line);
+        if(!ParseHeterogenNameCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "HETSYN")
     {
-        ParseHeterogenSynonymCard(in_stream, line);
+        if(!ParseHeterogenSynonymCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "FORMUL")
     {
-        ParseFormulaCard(in_stream, line);
+        if(!ParseFormulaCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "HELIX")
     {
-        ParseHelixCard(in_stream, line);
+        if(!ParseHelixCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SHEET")
     {
-        ParseSheetCard(in_stream, line);
+        if(!ParseSheetCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SSBOND")
     {
-        ParseDisulfideBondCard(in_stream, line);
+        if(!ParseDisulfideBondCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "LINK")
     {
-        ParseLinkCard(in_stream, line);
+        if(!ParseLinkCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "CISPEP")
     {
-        ParseCISPeptideCard(in_stream, line);
+        if(!ParseCISPeptideCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "SITE")
     {
-        ParseSiteCard(in_stream, line);
+        if(!ParseSiteCard(in_stream, line))
+           return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "CRYST1")
     {
-        ParseCrystallographyCard(in_stream, line);
+        if(!ParseCrystallographyCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name.find("ORIGX") != string::npos)
     {
-        ParseOriginCard(in_stream, line);
+        if(!ParseOriginCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name.find("SCALE") != string::npos)
     {
-        ParseScaleCard(in_stream, line);
+        if(!ParseScaleCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name.find("MTRIX") != string::npos)
     {
-        ParseMatrixCard(in_stream, line);
+        if(!ParseMatrixCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "MODEL" || record_name == "ATOM" || record_name == "HETATM")
     {
-        ParseModelCard(in_stream, line);
+        if(!ParseModelCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "CONECT")
     {
-        ParseConnectivityCard(in_stream, line);
+        if(!ParseConnectivityCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "MASTER")
     {
-        ParseMasterCard(in_stream, line);
+        if(!ParseMasterCard(in_stream, line))
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name == "END")
     {
-        ParseEndCard(in_stream, line);
+        if(!ParseEndCard(in_stream, line))
+            return false;
+        return true;
     }
+    return true;
 }
 
-void PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Header card corupption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1712,20 +1811,34 @@ void PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
     while(record_name == "HEADER")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Header card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     header_ = new PdbHeaderCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Obsolete card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1733,18 +1846,32 @@ void PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
     while(record_name == "OBSLTE")
     {
         stream_block << line << endl;
-        getline(stream, line);
+        if(getline(stream, line))
+        {
         line = ExpandLine(line, iPdbLineLength);
         record_name = line.substr(0,6);
         record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Obsolete card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Title card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1752,20 +1879,34 @@ void PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
     while(record_name == "TITLE")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Title card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     title_ = new PdbTitleCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Split card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1773,18 +1914,32 @@ void PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
     while(record_name == "SPLIT")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Split card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Caveat card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1792,18 +1947,32 @@ void PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
     while(record_name == "CAVEAT")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Caveat card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Compound card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1811,20 +1980,34 @@ void PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
     while(record_name == "COMPND")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Compound card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     compound_ = new PdbCompoundCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Source card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1832,18 +2015,32 @@ void PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
     while(record_name == "SOURCE")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Source card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Keyword card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1851,18 +2048,32 @@ void PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
     while(record_name == "KEYWDS")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Keyword card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Expiration date card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1870,18 +2081,32 @@ void PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
     while(record_name == "EXPDTA")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Expiration date card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Number of model card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1889,20 +2114,34 @@ void PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     while(record_name == "NUMMDL")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Number of model card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     number_of_models_ = new PdbNumModelCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Model type card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1910,20 +2149,34 @@ void PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
     while(record_name == "MDLTYP")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Model type card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     model_type_ = new PdbModelTypeCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Author card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1931,18 +2184,32 @@ void PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
     while(record_name == "AUTHOR")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Author card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Revision date card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1950,18 +2217,32 @@ void PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
     while(record_name == "REVDAT")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Revision date card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Superseded entries card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1969,18 +2250,32 @@ void PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
     while(record_name == "SPRSDE")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Superseded entries card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Journal card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -1988,18 +2283,32 @@ void PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
     while(record_name == "JRNL")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Journal card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Remark card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2007,18 +2316,32 @@ void PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
     while(record_name == "REMARK")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Remark card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "database reference card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2026,18 +2349,32 @@ void PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
     while(record_name == "DBREF")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "database reference card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Sequence advanced card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2045,18 +2382,32 @@ void PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
     while(record_name == "SEQADV")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Sequence advanced card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Sequence residue card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2064,20 +2415,34 @@ void PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
     while(record_name == "SEQRES")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Sequence residue card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     residues_sequence_ = new PdbResidueSequenceCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Modification residue card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2085,20 +2450,34 @@ void PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
     while(record_name == "MODRES")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Modification residue card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     residue_modification_ = new PdbResidueModificationCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Heterogen card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2106,20 +2485,34 @@ void PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
     while(record_name == "HET")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Heterogen card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     heterogens_ = new PdbHeterogenCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Heterogen name card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2127,20 +2520,34 @@ void PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
     while(record_name == "HETNAM")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Heterogen name card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     heterogens_name_ = new PdbHeterogenNameCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Heterogen synonym card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2148,20 +2555,34 @@ void PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
     while(record_name == "HETSYN")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Heterogen synonym card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     heterogen_synonyms_ = new PdbHeterogenSynonymCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Formula card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2169,20 +2590,34 @@ void PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
     while(record_name == "FORMUL")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Formula card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     formulas_ = new PdbFormulaCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Helix card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2190,20 +2625,34 @@ void PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
     while(record_name == "HELIX")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Helix card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     helixes_ = new PdbHelixCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Sheet card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2211,20 +2660,34 @@ void PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
     while(record_name == "SHEET")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Sheet card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     sheets_ = new PdbSheetCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Disulfide bond card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2232,20 +2695,34 @@ void PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
     while(record_name == "SSBOND")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Disulfide bond card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     disulfide_bonds_ = new PdbDisulfideBondCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Link card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2253,20 +2730,34 @@ void PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
     while(record_name == "LINK")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Link card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     links_ = new PdbLinkCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "CIS peptide card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2274,18 +2765,32 @@ void PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
     while(record_name == "CISPEP")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "CIS peptide card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Site card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2293,20 +2798,34 @@ void PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
     while(record_name == "SITE")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Site card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     sites_ = new PdbSiteCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Crystallography card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2314,20 +2833,34 @@ void PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
     while(record_name == "CRYST1")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Crystallography card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     crystallography_ = new PdbCrystallographicCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Origin card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
@@ -2335,20 +2868,34 @@ void PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
     while(record_name == "ORIGX")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,5);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,5);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Origin card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     origins_ = new PdbOriginXnCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Scale card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
@@ -2356,20 +2903,34 @@ void PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
     while(record_name == "SCALE")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,5);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,5);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Scale card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     scales_ = new PdbScaleNCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Matrix card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
@@ -2377,20 +2938,34 @@ void PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
     while(record_name == "MTRIX")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,5);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,5);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Matrix card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     matrices_ = new PdbMatrixNCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Model card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2399,20 +2974,34 @@ void PdbFile::ParseModelCard(std::ifstream& stream, string& line)
           || record_name == "TER" || record_name == "HETATM" || record_name == "ENDMDL" )
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Model card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     models_ = new PdbModelCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Connectivity card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2420,20 +3009,34 @@ void PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
     while(record_name == "CONECT")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Connectivity card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
     
     connectivities_ = new PdbConnectCard(stream_block);
+    return true;
 }
 
-void PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "Master card corruption" << endl;
+        cout << "Wrong input file format" << endl;
+        return false;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2441,18 +3044,31 @@ void PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
     while(record_name == "MASTER")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "Master card corruption" << endl;
+            cout << "Wrong input file format" << endl;
+            return false;
+        }
     }
+    return true;
 }
 
-void PdbFile::ParseEndCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseEndCard(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
-    getline(stream, line);
+    if(!getline(stream, line))
+    {
+        cout << "End of file" << endl;
+        return true;
+    }
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -2460,11 +3076,19 @@ void PdbFile::ParseEndCard(std::ifstream& stream, string& line)
     while(record_name == "END")
     {
         stream_block << line << endl;
-        getline(stream, line);
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+        if(getline(stream, line))
+        {
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
+        }
+        else
+        {
+            cout << "End of file" << endl;
+            return true;
+        }
     }
+    return true;
 }
 
 
