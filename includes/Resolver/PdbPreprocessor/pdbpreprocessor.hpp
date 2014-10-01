@@ -261,7 +261,6 @@ namespace PdbPreprocessorSpace
               * @return recognized_residues
               */
             PdbFileSpace::PdbFile::PdbResidueVector GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> recognized_residue_names);
-
             /*! \fn
               * A function in order to access to the list of all residue names from lib files
               * @param lib_files The list of paths to library files
@@ -289,12 +288,18 @@ namespace PdbPreprocessorSpace
               */
             void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
+              * A function in order to extract the unrecognized residues of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
+            void ExtractUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
               * A function in order to remove the unrecognized residues of a pdb file
               * @param pdb_file The object of a pdb file
               * @param unknown_heavy_atoms The list of unrecognized residues
               */
             void RemoveUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues);
-
             /*! \fn
               * A function in order to extract the recognized residues of a pdb file
               * @param pdb_file_path The path to the pdb file
@@ -302,7 +307,13 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               */
             void ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
-
+            /*! \fn
+              * A function in order to extract the recognized residues of a pdb file
+              * @param pdb_file The object of pdb file
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
+            void ExtractRecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to access to the list of CYS residues
               * @param pdb_residues The list of pdb residues
@@ -324,12 +335,16 @@ namespace PdbPreprocessorSpace
               */
             void ExtractCYSResidues(std::string pdb_file_path);
             /*! \fn
+              * A function in order to extract the CYS residues of a pdb file
+              * @param pdb_file The object of pdb file
+              */
+            void ExtractCYSResidues(PdbFileSpace::PdbFile* pdb_file);
+            /*! \fn
               * A function in order to remove the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
               * @param disulfide_bonds The list of disulfide bonds
               */
             void UpdateCYSResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds);
-
             /*! \fn
               * A function in order to access to the list of HIS residues
               * @param pdb_residues The list of pdb residues
@@ -342,12 +357,16 @@ namespace PdbPreprocessorSpace
               */
             void ExtractHISResidues(std::string pdb_file_path);
             /*! \fn
+              * A function in order to extract the HIS residues of a pdb file
+              * @param pdb_file The object of pdb file
+              */
+            void ExtractHISResidues(PdbFileSpace::PdbFile* pdb_file);
+            /*! \fn
               * A function in order to update histidine mapping of a pdb file
               * @param pdb_file The object of a pdb file
               * @param histidine_mappings The list of histidine mappings
               */
             void UpdateHISMapping(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings);
-
             /*! \fn
               * A function in order to access to the list of unknown heavy atoms of a residue
               * @param pdb_atom_names_of_residue The list of atom names of a pdb residue
@@ -391,6 +410,13 @@ namespace PdbPreprocessorSpace
               */
             void ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
+              * A function in order to extract the unknown heavy atoms of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
+            void ExtractUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
               * A function in order to remove the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
               * @param unknown_heavy_atoms The list of unknown heavy atoms
@@ -424,17 +450,28 @@ namespace PdbPreprocessorSpace
               */
             void ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
+              * A function in order to extract the removed hydrogens of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param lib_files The list of paths to the library files
+              * @param prep_files The list of paths to the prep files
+              */
+            void ExtractRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            /*! \fn
               * A function in order to remove the removed hydrogens of a pdb file
               * @param pdb_file The object of a pdb file
               * @param replaced_hydrogens The list of replaced hydrogens
               */
             void RemoveRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens);
-
             /*! \fn
               * A function in order to extract the amino acid chains of a pdb file
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractAminoAcidChains(std::string pdb_file_path);
+            /*! \fn
+              * A function in order to extract the amino acid chains of a pdb file
+              * @param pdb_file The object of pdb file
+              */
+            void ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
               * A function in order to update the amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file
@@ -442,12 +479,16 @@ namespace PdbPreprocessorSpace
               * @param gaps The list of chain terminations
               */
             void UpdateAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_termination);
-
             /*! \fn
               * A function in order to extract the gaps in amino acid chains of a pdb file
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractGapsInAminoAcidChains(std::string pdb_file_path);
+            /*! \fn
+              * A function in order to extract the gaps in amino acid chains of a pdb file
+              * @param pdb_file The object of pdb file
+              */
+            void ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
               * A function in order to update the gaps in amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file
@@ -455,7 +496,6 @@ namespace PdbPreprocessorSpace
               * @param gaps The list of missing residues
               */
             void UpdateGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps);
-
             /*! \fn
               * A function in order to access to the library residue by name from multiple library files
               * @param residue_name The name of a residue
@@ -463,19 +503,22 @@ namespace PdbPreprocessorSpace
               * @return library_residue
               */
             LibraryFileSpace::LibraryFileResidue* GetLibraryResidueByNameFromMultipleLibraryFiles(std::string residue_name, std::vector<std::string> lib_files);
-
             /*! \fn
               * A function in order to extract the alternate residues of a pdb file
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractAlternateResidue(std::string pdb_file_path);
             /*! \fn
+              * A function in order to extract the alternate residues of a pdb file
+              * @param pdb_file The object of a pdb file
+              */
+            void ExtractAlternateResidue(PdbFileSpace::PdbFile* pdb_file);
+            /*! \fn
               * A function in order to remove unselected alternate residues of a pdb file
               * @param pdb_file The object of a pdb file
               * @param alternate_residue_map
               */
             void RemoveUnselectedAlternateResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map);
-
             /*! \fn
               * A function to do all preprocessing sequentially
               * @param pdb_file_path Path of a pdb file that has to be preprocessed
@@ -483,7 +526,6 @@ namespace PdbPreprocessorSpace
               * @param prep_files_path Paths of prep files as database in order for preprocessing of the given pdb file
               */
             void Preprocess(std::string pdb_file_path, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
-
             /*! \fn
               * A function to apply all the updates on a pdb file
               * @param pdb_file A pdb file object that has to modified to reflect the updates

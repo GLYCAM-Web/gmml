@@ -25,7 +25,7 @@ namespace PdbPreprocessorSpace
               * @param residue_insertion_code Insertion code of the unrecognized residue
               * @param residue_alternate_location Alternated location of the unrecognized residue
               */
-            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code,  char residue_alternate_location);
+            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code, char residue_alternate_location, bool middle_of_chain);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -55,6 +55,11 @@ namespace PdbPreprocessorSpace
               * @return residue_alternate_location_ attribute of the current object of this class
               */
             char GetResidueAlternateLocation();
+            /*! \fn
+              * An accessor function in order to access to the middle of chain attribute of the current object
+              * @return middle_of_chain_ attribute of the current object of this class
+              */
+            bool GetMiddleOfChain();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -89,6 +94,12 @@ namespace PdbPreprocessorSpace
               * @param residue_alternate_location The residue alternate location attribute of the current object
               */
             void SetResidueAlternateLocation(char residue_alternate_location);
+            /*! \fn
+              * A mutator function in order to set if this residue is in the middle of a chain in the current object
+              * Set the middle_of_chain_ attribute of the current pdb preprocessor unrecognized residue
+              * @param middle_of_chain The boolean value of middle of chain attribute of the current object
+              */
+            void SetMiddleOfChain(bool middle_of_chain);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -109,7 +120,7 @@ namespace PdbPreprocessorSpace
             std::string residue_name_;                  /*!< Name of the unrecognized residue >*/
             char residue_insertion_code_;               /*!< Insertion code of the unrecognized residue >*/
             char residue_alternate_location_;           /*!< Alternate location of the unrecognized residue >*/
-
+            bool middle_of_chain_;
     };
 }
 

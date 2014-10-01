@@ -321,12 +321,17 @@ namespace MolecularModeling
               * A functions that counts the number of atoms in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAtoms();
+            int CountNumberOfAtoms();            
             /*! \fn
               * A functions that counts the number of atoms types in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
               */
             int CountNumberOfAtomTypes();
+            /*! \fn
+              * A functions that counts the number of residues in all assemblies and residues of the assembly
+              * @return type_list Number of residues in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfResidues();
             /*! \fn
               * A functions that counts the number of bonds including hydrogen in all assemblies and residues of the assembly
               * @return counter Number of bonds including hydrogen in all assemblies and residues in the current object of assembly
@@ -342,6 +347,55 @@ namespace MolecularModeling
               * @return counter Number of bonds in all assemblies and residues in the current object of assembly
               */
             int CountNumberOfBonds();
+            /*! \fn
+              * A functions that counts the number of bond types in all assemblies and residues of the assembly
+              * @return type_list Number of bond types in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfBondTypes();
+            /*! \fn
+              * A functions that counts the number of angles including hydrogen in all assemblies and residues of the assembly
+              * @return counter Number of angles including hydrogen in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfAnglesIncludingHydrogen();
+            /*! \fn
+              * A functions that counts the number of angles excluding hydrogen in all assemblies and residues of the assembly
+              * @return counter Number of angles excluding hydrogen in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfAnglesExcludingHydrogen();
+            /*! \fn
+              * A functions that counts the number of angles in all assemblies and residues of the assembly
+              * @return counter Number of angles in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfAngles();
+            /*! \fn
+              * A functions that counts the number of angle types in all assemblies and residues of the assembly
+              * @return type_list Number of angle types in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfAngleTypes();
+            /*! \fn
+              * A functions that counts the number of dihedrals includig hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
+              * @return type_list Number of dihedrals including hydrogen in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfDihedralsIncludingHydrogen(std::string parameter_file_path);
+            /*! \fn
+              * A functions that counts the number of dihedrals excluding hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
+              * @return counter Number of dihedrals excluding hydrogen in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfDihedralsExcludingHydrogen(std::string parameter_file_path);
+            /*! \fn
+              * A functions that counts the number of dihedrals in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
+              * @return counter Number of dihedrals in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfDihedrals(std::string parameter_file_path);
+            /*! \fn
+              * A functions that counts the number of dihedral types in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
+              * @return type_list Number of dihedral types in all assemblies and residues in the current object of assembly
+              */
+            int CountNumberOfDihedralTypes(std::string parameter_file_path);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
