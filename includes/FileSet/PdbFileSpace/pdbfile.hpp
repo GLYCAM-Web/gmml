@@ -45,11 +45,18 @@ namespace PdbFileSpace
               * List of residues
               */
             typedef std::vector<PdbResidue*> PdbResidueVector;
+            /*! \typedef
+              * List of pdb atom
+              */
             typedef std::vector<PdbAtom*> PdbAtomVector;
             /*! \typedef
               * A mapping between a
               */
             typedef std::map<std::string, PdbAtomVector* > PdbResidueAtomsMap;
+            /*! \typedef
+              * Mapping between old serial number and new one that has been changed during a process
+              */
+            typedef std::map<int, int> PdbSerialNumberMapping;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -182,6 +189,11 @@ namespace PdbFileSpace
               * @return connectivities_ attribute of the current object of this class
               */
             PdbConnectCard* GetConnectivities();
+            /*! \fn
+              * An accessor function in order to access to the serial number mapping attribute of the current object
+              * @return serial_number_mapping attribute of the current object of this class
+              */
+            PdbSerialNumberMapping GetSerialNumberMapping();
             /*! \fn
               * An accessor function in order to access to all residue names of the current object
               * @return residue_names All residue names of the current object of this class
@@ -395,6 +407,12 @@ namespace PdbFileSpace
               */
             void SetConnectivities(PdbConnectCard* connectivities);
             /*! \fn
+              * A mutator function in order to set the serial number mapping of the current object
+              * Set the serial_number_mapping_ attribute of the current pdb file
+              * @param serial_number_mapping The serial number mapping attribute of the current object
+              */
+            void SetSerialNumberMapping(PdbSerialNumberMapping serial_number_mapping);
+            /*! \fn
               * A function in order to delete a residue from the current object
               * @param residue A residue of the current object of this class
               */
@@ -427,6 +445,11 @@ namespace PdbFileSpace
               */
             void SplitAtomCardOfModelCard(char split_point_chain_id, int split_point_sequence_number);
 
+            /*! \fn
+              * A function to adjust the serial numbers of atoms that have been changed in connect card
+              */
+            void UpdateConnectCard();
+
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
@@ -437,240 +460,279 @@ namespace PdbFileSpace
               * Parse the given stream and set the attributes of the current object accordingly
               * @param in_file A stream contains whole contents of a pdb file
               */
-            void Read(std::ifstream& in_file);
+            bool Read(std::ifstream& in_file);
             /*! \fn
               * A function to parse the contents of a given stream of a file
               * @param in_stream A stream contains whole contents of a pdb file
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseCards(std::ifstream& in_stream);
+            bool ParseCards(std::ifstream& in_stream);
             /*! \fn
               * A function to parse the header crad that has been given as a stream
               * @param stream A stream contains header card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseHeaderCard(std::ifstream& stream, std::string& line);
+            bool ParseHeaderCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the obsolete crad that has been given as a stream
               * @param stream A stream contains obsolete card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseObsoleteCard(std::ifstream& stream, std::string& line);
+            bool ParseObsoleteCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the title crad that has been given as a stream
               * @param stream A stream contains title card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseTitleCard(std::ifstream& stream, std::string& line);
+            bool ParseTitleCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the split crad that has been given as a stream
               * @param stream A stream contains split card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseSplitCard(std::ifstream& stream, std::string& line);
+            bool ParseSplitCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the caveat crad that has been given as a stream
               * @param stream A stream contains caveat card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseCaveatCard(std::ifstream& stream, std::string& line);
+            bool ParseCaveatCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the compound crad that has been given as a stream
               * @param stream A stream contains compound card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseCompoundCard(std::ifstream& stream, std::string& line);
+            bool ParseCompoundCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the source crad that has been given as a stream
               * @param stream A stream contains source card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseSourceCard(std::ifstream& stream, std::string& line);
+            bool ParseSourceCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the keyword crad that has been given as a stream
               * @param stream A stream contains keyword card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseKeywordCard(std::ifstream& stream, std::string& line);
+            bool ParseKeywordCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the expiration date crad that has been given as a stream
               * @param stream A stream contains expiration date card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseExpirationDateCard(std::ifstream& stream, std::string& line);
+            bool ParseExpirationDateCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the num model crad that has been given as a stream
               * @param stream A stream contains num model card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseNumModelCard(std::ifstream& stream, std::string& line);
+            bool ParseNumModelCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the model type crad that has been given as a stream
               * @param stream A stream contains model type card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseModelTypeCard(std::ifstream& stream, std::string& line);
+            bool ParseModelTypeCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the author crad that has been given as a stream
               * @param stream A stream contains author card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseAuthorCard(std::ifstream& stream, std::string& line);
+            bool ParseAuthorCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the revision date crad that has been given as a stream
               * @param stream A stream contains revision date card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseRevisionDateCard(std::ifstream& stream, std::string& line);
+            bool ParseRevisionDateCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the superseded entries crad that has been given as a stream
               * @param stream A stream contains superseded entries card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseSupersededEntriesCard(std::ifstream& stream, std::string& line);
+            bool ParseSupersededEntriesCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the journal crad that has been given as a stream
               * @param stream A stream contains journal card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseJournalCard(std::ifstream& stream, std::string& line);
+            bool ParseJournalCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the remark crad that has been given as a stream
               * @param stream A stream contains remark card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseRemarkCard(std::ifstream& stream, std::string& line);
+            bool ParseRemarkCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the database reference crad that has been given as a stream
               * @param stream A stream contains database reference card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseDatabaseReferenceCard(std::ifstream& stream, std::string& line);
+            bool ParseDatabaseReferenceCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the sequence advanced crad that has been given as a stream
               * @param stream A stream contains sequence advanced card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseSequenceAdvancedCard(std::ifstream& stream, std::string& line);
+            bool ParseSequenceAdvancedCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the sequence residue crad that has been given as a stream
               * @param stream A stream contains sequence reisdue card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseSequenceResidueCard(std::ifstream& stream, std::string& line);
+            bool ParseSequenceResidueCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the modification residue crad that has been given as a stream
               * @param stream A stream contains modification residue card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseModificationResidueCard(std::ifstream& stream, std::string& line);
+            bool ParseModificationResidueCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the heterogen crad that has been given as a stream
               * @param stream A stream contains heterogen card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseHeterogenCard(std::ifstream& stream, std::string& line);
+            bool ParseHeterogenCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the heterogen name crad that has been given as a stream
               * @param stream A stream contains heterogen name card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseHeterogenNameCard(std::ifstream& stream, std::string& line);
+            bool ParseHeterogenNameCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the heterogen synonym crad that has been given as a stream
               * @param stream A stream contains heterogen synonym card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseHeterogenSynonymCard(std::ifstream& stream, std::string& line);
+            bool ParseHeterogenSynonymCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the formula crad that has been given as a stream
               * @param stream A stream contains formula card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseFormulaCard(std::ifstream& stream, std::string& line);
+            bool ParseFormulaCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the helix crad that has been given as a stream
               * @param stream A stream contains helix card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseHelixCard(std::ifstream& stream, std::string& line);
+            bool ParseHelixCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the sheet crad that has been given as a stream
               * @param stream A stream contains sheet card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseSheetCard(std::ifstream& stream, std::string& line);
+            bool ParseSheetCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the disulfide bond crad that has been given as a stream
               * @param stream A stream contains disulfide bond card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseDisulfideBondCard(std::ifstream& stream, std::string& line);
+            bool ParseDisulfideBondCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the link crad that has been given as a stream
               * @param stream A stream contains link card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseLinkCard(std::ifstream& stream, std::string& line);
+            bool ParseLinkCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the cis peptide crad that has been given as a stream
               * @param stream A stream contains cis peptide card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseCISPeptideCard(std::ifstream& stream, std::string& line);
+            bool ParseCISPeptideCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the site crad that has been given as a stream
               * @param stream A stream contains site card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseSiteCard(std::ifstream& stream, std::string& line);
+            bool ParseSiteCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the crystallography crad that has been given as a stream
               * @param stream A stream contains crystallography card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseCrystallographyCard(std::ifstream& stream, std::string& line);
+            bool ParseCrystallographyCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the origin crad that has been given as a stream
               * @param stream A stream contains origin card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseOriginCard(std::ifstream& stream, std::string& line);
+            bool ParseOriginCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the scale crad that has been given as a stream
               * @param stream A stream contains scale card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseScaleCard(std::ifstream& stream, std::string& line);
+            bool ParseScaleCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the matrix crad that has been given as a stream
               * @param stream A stream contains matrix card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseMatrixCard(std::ifstream& stream, std::string& line);
+            bool ParseMatrixCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the model crad that has been given as a stream
               * @param stream A stream contains model card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseModelCard(std::ifstream& stream, std::string& line);
+            bool ParseModelCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the connectivity crad that has been given as a stream
               * @param stream A stream contains connectivity card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseConnectivityCard(std::ifstream& stream, std::string& line);
+            bool ParseConnectivityCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the master crad that has been given as a stream
               * @param stream A stream contains master card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseMasterCard(std::ifstream& stream, std::string& line);
+            bool ParseMasterCard(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the end crad that has been given as a stream
               * @param stream A stream contains end card of a pdb file
               * @param line Current line in the stream
+              * @return Boolean value that indicates parsing has been done successfully or not
               */
-            void ParseEndCard(std::ifstream& stream, std::string& line);
+            bool ParseEndCard(std::ifstream& stream, std::string& line);
 
             /// Writers
             /*! \fn
@@ -911,6 +973,7 @@ namespace PdbFileSpace
             PdbMatrixNCard* matrices_;                              /*!< Matrix card >*/
             PdbModelCard* models_;                                  /*!< Model card >*/
             PdbConnectCard* connectivities_;                        /*!< Connectivity card >*/
+            PdbSerialNumberMapping serial_number_mapping_;          /*!< A map that keeps track of serial numbers that have been changed during a process >*/
     };
 }
 

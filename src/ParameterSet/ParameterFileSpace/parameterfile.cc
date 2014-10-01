@@ -19,7 +19,7 @@ using namespace ParameterFileSpace;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-ParameterFile::ParameterFile(const std::string &param_file, int file_type)
+ParameterFile::ParameterFile(std::string param_file, int file_type)
 {
     path_ = param_file;
     file_type_ = file_type;
