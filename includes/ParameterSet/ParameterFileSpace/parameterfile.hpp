@@ -44,7 +44,7 @@ namespace ParameterFileSpace
               * Constructor
               * @param param_file An existing library file path to be read
               */
-            ParameterFile(const std::string& param_file, int type);
+            ParameterFile(std::string param_file, int type = gmml::MAIN);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //

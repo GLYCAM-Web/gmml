@@ -9,8 +9,10 @@ using namespace PdbPreprocessorSpace;
 //////////////////////////////////////////////////////////
 PdbPreprocessorUnrecognizedResidue::PdbPreprocessorUnrecognizedResidue() {}
 
-PdbPreprocessorUnrecognizedResidue::PdbPreprocessorUnrecognizedResidue(string residue_name, char chain_id, int sequence_number, char residue_insertion_code, char residue_alternate_location) :
-    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(residue_insertion_code), residue_alternate_location_(residue_alternate_location) {}
+PdbPreprocessorUnrecognizedResidue::PdbPreprocessorUnrecognizedResidue(string residue_name, char chain_id, int sequence_number, char residue_insertion_code,
+                                                                       char residue_alternate_location, bool middle_of_chain) :
+    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(residue_insertion_code),
+    residue_alternate_location_(residue_alternate_location), middle_of_chain_(middle_of_chain) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -34,6 +36,10 @@ char PdbPreprocessorUnrecognizedResidue::GetResidueInsertionCode()
 char PdbPreprocessorUnrecognizedResidue::GetResidueAlternateLocation()
 {
     return residue_alternate_location_;
+}
+bool PdbPreprocessorUnrecognizedResidue::GetMiddleOfChain()
+{
+    return middle_of_chain_;
 }
 
 //////////////////////////////////////////////////////////
@@ -59,6 +65,10 @@ void PdbPreprocessorUnrecognizedResidue::SetResidueAlternateLocation(char residu
 {
     residue_alternate_location_ = residue_alternate_location;
 }
+void PdbPreprocessorUnrecognizedResidue::SetMiddleOfChain(bool middle_of_chain)
+{
+    middle_of_chain_ = middle_of_chain;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -70,6 +80,7 @@ void PdbPreprocessorUnrecognizedResidue::Print(ostream &out)
          << ", Sequence number: " << residue_sequence_number_
          << ", Insertion code: " << residue_insertion_code_
          << ", Alternate location: " << residue_alternate_location_
+         << ", In the middle of chain: " << middle_of_chain_
          << endl;
 }
 
