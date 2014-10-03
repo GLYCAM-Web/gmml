@@ -23,13 +23,11 @@ LibraryFile::LibraryFile(const std::string &lib_file)
 {
     path_ = lib_file;
     std::ifstream in_file;
-    try
-    {
+    if(std::ifstream(lib_file.c_str()))
         in_file.open(lib_file.c_str());
-    }
-    catch(...)
+    else
     {
-        throw LibraryFileProcessingException(__LINE__,"File not found");
+        throw LibraryFileProcessingException(__LINE__, "Library file not found");
     }
     Read(in_file);
     in_file.close();            /// Close the parameter files

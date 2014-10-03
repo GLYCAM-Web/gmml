@@ -23,14 +23,12 @@ CoordinateFile::CoordinateFile()
 CoordinateFile::CoordinateFile(const string &crd_file)
 {
     path_ = crd_file;
-    std::ifstream in_file;
-    try
-    {
+    std::ifstream in_file;        
+    if(std::ifstream(crd_file.c_str()))
         in_file.open(crd_file.c_str());
-    }
-    catch(...)
+    else
     {
-        throw CoordinateFileProcessingException(__LINE__,"File not found");
+        throw CoordinateFileProcessingException(__LINE__, "Coordinate file not found");
     }
     Read(in_file);
     in_file.close();            /// Close the parameter files

@@ -24,13 +24,11 @@ ParameterFile::ParameterFile(std::string param_file, int file_type)
     path_ = param_file;
     file_type_ = file_type;
     std::ifstream in_file;
-    try
-    {
+    if(std::ifstream(param_file.c_str()))
         in_file.open(param_file.c_str());
-    }
-    catch(...)
+    else
     {
-        throw ParameterFileProcessingException(__LINE__,"File not found");
+        throw ParameterFileProcessingException(__LINE__, "Parameter file not found");
     }
     switch(file_type_)
     {

@@ -124,17 +124,18 @@ PdbFile::PdbFile(const std::string &pdb_file)
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
     
     std::ifstream in_file;
-    try
-    {
+    if(std::ifstream(pdb_file.c_str()))
         cout << "Opening PDB file ..." << endl;
         in_file.open(pdb_file.c_str());
-    }
-    catch(exception &ex)
+    else
     {
-        throw PdbFileProcessingException(__LINE__, "File not found");
+        throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
+
     if(!Read(in_file))
-        return;
+    {
+        throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
+    }
     in_file.close();            /// Close the parameter files
 }
 
