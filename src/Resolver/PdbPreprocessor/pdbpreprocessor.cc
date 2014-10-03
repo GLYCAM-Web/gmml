@@ -597,26 +597,27 @@ void PdbPreprocessor::ExtractHISResidues(string pdb_file_path)
         {
             PdbResidue* his_residue = (*it);
 
-        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") == NULL)
-        {
-            PdbPreprocessorHistidineMapping* histidine_mapping =
-                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE,
-                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-            histidine_mappings_.push_back(histidine_mapping);
-        }
-        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
-        {
-            PdbPreprocessorHistidineMapping* histidine_mapping =
-                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HID,
-                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-            histidine_mappings_.push_back(histidine_mapping);
-        }
-        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
-        {
-            PdbPreprocessorHistidineMapping* histidine_mapping =
-                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIP,
-                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-            histidine_mappings_.push_back(histidine_mapping);
+            if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") == NULL)
+            {
+                PdbPreprocessorHistidineMapping* histidine_mapping =
+                        new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE,
+                                                            his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+                histidine_mappings_.push_back(histidine_mapping);
+            }
+            if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
+            {
+                PdbPreprocessorHistidineMapping* histidine_mapping =
+                        new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HID,
+                                                            his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+                histidine_mappings_.push_back(histidine_mapping);
+            }
+            if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
+            {
+                PdbPreprocessorHistidineMapping* histidine_mapping =
+                        new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIP,
+                                                            his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+                histidine_mappings_.push_back(histidine_mapping);
+            }
         }
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
