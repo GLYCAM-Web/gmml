@@ -17,6 +17,7 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 using namespace std;
@@ -575,10 +576,27 @@ void PdbPreprocessor::ExtractHISResidues(string pdb_file_path)
     {
         PdbResidue* his_residue = (*it);
 
-        PdbPreprocessorHistidineMapping* histidine_mapping =
-                new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE,
-                                                    his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-        histidine_mappings_.push_back(histidine_mapping);
+        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") == NULL)
+        {
+            PdbPreprocessorHistidineMapping* histidine_mapping =
+                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE,
+                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+            histidine_mappings_.push_back(histidine_mapping);
+        }
+        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
+        {
+            PdbPreprocessorHistidineMapping* histidine_mapping =
+                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HID,
+                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+            histidine_mappings_.push_back(histidine_mapping);
+        }
+        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
+        {
+            PdbPreprocessorHistidineMapping* histidine_mapping =
+                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIP,
+                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+            histidine_mappings_.push_back(histidine_mapping);
+        }
     }
 }
 void PdbPreprocessor::ExtractHISResidues(PdbFile* pdb_file)
@@ -588,10 +606,31 @@ void PdbPreprocessor::ExtractHISResidues(PdbFile* pdb_file)
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = his_residues.begin(); it != his_residues.end(); it++)
     {
         PdbResidue* his_residue = (*it);
-        PdbPreprocessorHistidineMapping* histidine_mapping =
-                new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE,
-                                                    his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-        histidine_mappings_.push_back(histidine_mapping);
+
+        // HIE residue
+        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") == NULL)
+        {
+            PdbPreprocessorHistidineMapping* histidine_mapping =
+                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIE,
+                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+            histidine_mappings_.push_back(histidine_mapping);
+        }
+        // HID residue
+        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
+        {
+            PdbPreprocessorHistidineMapping* histidine_mapping =
+                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HID,
+                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+            histidine_mappings_.push_back(histidine_mapping);
+        }
+        // HIP residue
+        if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
+        {
+            PdbPreprocessorHistidineMapping* histidine_mapping =
+                    new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), HIP,
+                                                        his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
+            histidine_mappings_.push_back(histidine_mapping);
+        }
     }
 }
 void PdbPreprocessor::UpdateHISMapping(PdbFile *pdb_file, PdbPreprocessor::PdbPreprocessorHistidineMappingVector histidine_mappings)
@@ -611,7 +650,7 @@ void PdbPreprocessor::UpdateHISMapping(PdbFile *pdb_file, PdbPreprocessor::PdbPr
 
             string residue_name = pdb_residue->GetResidueName();
             if((residue_name).compare("HIS") == 0)
-            {
+            {                
                 stringstream ss1;
                 string pdb_residue_key;
                 ss1 << residue_name << "_" << pdb_residue->GetResidueChainId() << "_" << pdb_residue->GetResidueSequenceNumber()
@@ -619,7 +658,41 @@ void PdbPreprocessor::UpdateHISMapping(PdbFile *pdb_file, PdbPreprocessor::PdbPr
                 pdb_residue_key = ss1.str();
                 if(pdb_residue_key.compare(target_key) == 0)
                 {
-                    //                    pdb_residue->SetResidueName(histidine_mapping->GetStringFormatOfSelectedMapping());
+                    // HIE residue
+                    PdbAtom* HE2 = pdb_file->GetAtomOfResidueByName(pdb_residue, "HE2");
+                    PdbAtom* HD1 = pdb_file->GetAtomOfResidueByName(pdb_residue, "HD1");
+                    if(HE2 != NULL && HD1 == NULL)
+                    {
+                        if(histidine_mapping->GetSelectedMapping() == HID)
+                        {
+                            // Delete HE2
+                            pdb_file->DeleteAtom(HE2);
+                        }
+                    }
+                    // HID residue
+                    if(HE2 == NULL && HD1 != NULL)
+                    {
+                        if(histidine_mapping->GetSelectedMapping() == HIE)
+                        {
+                            // Delete HD1
+                            pdb_file->DeleteAtom(HD1);
+                        }
+
+                    }
+                    // HIP residue
+                    if(HE2 != NULL && HD1 != NULL)
+                    {
+                        if(histidine_mapping->GetSelectedMapping() == HIE)
+                        {
+                            // Delete HD1
+                            pdb_file->DeleteAtom(HD1);
+                        }
+                        if(histidine_mapping->GetSelectedMapping() == HID)
+                        {
+                            // Delete HE2
+                            pdb_file->DeleteAtom(HE2);
+                        }
+                    }
                     pdb_file->UpdateResidueName(pdb_residue, histidine_mapping->GetStringFormatOfSelectedMapping());
                 }
             }
@@ -1566,34 +1639,40 @@ void PdbPreprocessor::RemoveUnselectedAlternateResidues(PdbFile *pdb_file, PdbPr
 
 void PdbPreprocessor::Preprocess(string pdb_file_path, vector<string> lib_files_path, vector<string> prep_files_path)
 {
-    time_t t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Start preprocessing ..." << endl;
-    ExtractHISResidues(pdb_file_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "HIS residues extraction: done" << endl;
-    ExtractCYSResidues(pdb_file_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "CYS residues extraction: done" << endl;
-    ExtractAlternateResidue(pdb_file_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Alternate residues extraction: done" << endl;
-    ExtractUnrecognizedResidues(pdb_file_path, lib_files_path, prep_files_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unrecognized residues extraction: done" << endl;
-    ExtractUnknownHeavyAtoms(pdb_file_path, lib_files_path, prep_files_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms extraction: done" << endl;
-    ExtractRemovedHydrogens(pdb_file_path, lib_files_path, prep_files_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Removed hydrogens extraction: done" << endl;
-    ExtractAminoAcidChains(pdb_file_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Amino acid chains extraction: done" << endl;
-    ExtractGapsInAminoAcidChains(pdb_file_path);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains extraction: done" << endl;
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Preprocessing done" << endl;
+    try
+    {
+        PdbFile* pdb_file = new PdbFile(pdb_file_path);
+        time_t t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Start preprocessing ..." << endl;
+        ExtractHISResidues(pdb_file);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "HIS residues extraction: done" << endl;
+        ExtractCYSResidues(pdb_file);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "CYS residues extraction: done" << endl;
+        ExtractAlternateResidue(pdb_file);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Alternate residues extraction: done" << endl;
+        ExtractUnrecognizedResidues(pdb_file, lib_files_path, prep_files_path);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Unrecognized residues extraction: done" << endl;
+        ExtractUnknownHeavyAtoms(pdb_file, lib_files_path, prep_files_path);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms extraction: done" << endl;
+        ExtractRemovedHydrogens(pdb_file, lib_files_path, prep_files_path);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Removed hydrogens extraction: done" << endl;
+        ExtractAminoAcidChains(pdb_file);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Amino acid chains extraction: done" << endl;
+        ExtractGapsInAminoAcidChains(pdb_file);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains extraction: done" << endl;
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Preprocessing done" << endl;
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
 }
 
 void PdbPreprocessor::ApplyPreprocessing(PdbFile *pdb_file, vector<string> lib_files_path)

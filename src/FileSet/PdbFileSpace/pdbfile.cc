@@ -126,6 +126,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     std::ifstream in_file;
     try
     {
+        cout << "Opening PDB file ..." << endl;
         in_file.open(pdb_file.c_str());
     }
     catch(exception &ex)
