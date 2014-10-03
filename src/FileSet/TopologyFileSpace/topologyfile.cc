@@ -30,14 +30,12 @@ TopologyFile::TopologyFile() {}
 TopologyFile::TopologyFile(const string &top_file)
 {
     path_ = top_file;
-    ifstream in_file;
-    try
-    {
+    ifstream in_file;        
+    if(std::ifstream(top_file.c_str()))
         in_file.open(top_file.c_str());
-    }
-    catch(exception &ex)
+    else
     {
-        throw TopologyFileProcessingException(__LINE__, "File not found");
+        throw TopologyFileProcessingException(__LINE__, "Topology file not found");
     }
     Read(in_file);
     in_file.close();            /// Close the parameter files
