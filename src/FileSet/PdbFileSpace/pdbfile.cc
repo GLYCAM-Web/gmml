@@ -125,8 +125,10 @@ PdbFile::PdbFile(const std::string &pdb_file)
     
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
+    {
         cout << "Opening PDB file ..." << endl;
         in_file.open(pdb_file.c_str());
+    }
     else
     {
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
