@@ -20,13 +20,11 @@ PrepFile::PrepFile(const std::string& prep_file)
 {
     path_ = prep_file;
     std::ifstream in_file;
-    try
-    {
+    if(std::ifstream(prep_file.c_str()))
         in_file.open(prep_file.c_str());
-    }
-    catch(...)
+    else
     {
-        throw PrepFileProcessingException(__LINE__,"File not found");
+        throw PrepFileProcessingException(__LINE__, "Prep file not found");
     }
     Read(in_file);
     in_file.close();            /// Close the parameter files

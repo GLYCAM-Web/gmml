@@ -21,6 +21,7 @@
 #include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
@@ -347,101 +348,104 @@ void Assembly::SetModelIndex(int model_index)
 //////////////////////////////////////////////////////////
 void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
 {
-    PdbFile* pdb_file = new PdbFile(pdb_file_path);
-    PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsOfResidues();
-
-    for(PdbFile::PdbResidueAtomsMap::iterator it = residue_atoms_map.begin(); it != residue_atoms_map.end(); it++)
+    try
     {
-        PdbFile::PdbAtomVector* atoms = (*it).second;
-        Residue* residue = new Residue();
-        residue->SetAssembly(this);
-
-        for(PdbFile::PdbAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
+        PdbFile* pdb_file = new PdbFile(pdb_file_path);
+        PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsOfResidues();
+        for(PdbFile::PdbResidueAtomsMap::iterator it = residue_atoms_map.begin(); it != residue_atoms_map.end(); it++)
         {
-            PdbAtom* atom = (*it1);
-            string residue_name = atom->GetAtomResidueName();
-            char chain_id = atom->GetAtomChainId();
-            int sequence_number = atom->GetAtomResidueSequenceNumber();
-            char insertion_code = atom->GetAtomInsertionCode();
-            char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
-            ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
-            residue->SetId(key);
+            PdbFile::PdbAtomVector* atoms = (*it).second;
+            Residue* residue = new Residue();
+            residue->SetAssembly(this);
 
-            Atom* new_atom = new Atom();
-            residue->SetName(residue_name);
-            string atom_name = atom->GetAtomName();
-            new_atom->SetName(atom_name);
-            new_atom->MolecularDynamicAtom::SetCharge(gmml::ConvertString<double>(atom->GetAtomCharge()));
-            new_atom->SetResidue(residue);
-            stringstream atom_key;
-            atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
-            new_atom->SetId(atom_key.str());
-            PdbModelCard* models = pdb_file->GetModels();
-            PdbModelCard::PdbModelMap model_maps = models->GetModels();
-            if(model_maps.size() == 1)
+            for(PdbFile::PdbAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
             {
-                new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
-            }
-            else
-            {
-                for(PdbModelCard::PdbModelMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
+                PdbAtom* atom = (*it1);
+                string residue_name = atom->GetAtomResidueName();
+                char chain_id = atom->GetAtomChainId();
+                int sequence_number = atom->GetAtomResidueSequenceNumber();
+                char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
+                stringstream ss;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+                string key = ss.str();
+                residue->SetId(key);
+
+                Atom* new_atom = new Atom();
+                residue->SetName(residue_name);
+                string atom_name = atom->GetAtomName();
+                new_atom->SetName(atom_name);
+                new_atom->MolecularDynamicAtom::SetCharge(gmml::ConvertString<double>(atom->GetAtomCharge()));
+                new_atom->SetResidue(residue);
+                stringstream atom_key;
+                atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
+                new_atom->SetId(atom_key.str());
+                PdbModelCard* models = pdb_file->GetModels();
+                PdbModelCard::PdbModelMap model_maps = models->GetModels();
+                if(model_maps.size() == 1)
                 {
-                    PdbModel* model = (*it2).second;
-                    PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-                    PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
-                    vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
-                    if(card_index.at(0).compare("ATOM") == 0)
+                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                }
+                else
+                {
+                    for(PdbModelCard::PdbModelMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
                     {
-                        PdbAtomCard* atom_card = atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
-                        PdbAtomCard::PdbAtomMap atom_map = atom_card->GetAtoms();
-                        PdbAtom* matching_atom = atom_map[atom->GetAtomSerialNumber()];
-                        string matching_residue_name = matching_atom->GetAtomResidueName();
-                        char matching_chain_id = matching_atom->GetAtomChainId();
-                        int matching_sequence_number = matching_atom->GetAtomResidueSequenceNumber();
-                        char matching_insertion_code = matching_atom->GetAtomInsertionCode();
-                        char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
-                        stringstream sss;
-                        sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
-                            << matching_insertion_code << "_" << matching_alternate_location;
-                        string matching_key = sss.str();
-
-                        if(key.compare(matching_key) == 0)
+                        PdbModel* model = (*it2).second;
+                        PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+                        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+                        vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
+                        if(card_index.at(0).compare("ATOM") == 0)
                         {
-                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
-                            new_atom->AddCoordinate(coordinate);
+                            PdbAtomCard* atom_card = atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
+                            PdbAtomCard::PdbAtomMap atom_map = atom_card->GetAtoms();
+                            PdbAtom* matching_atom = atom_map[atom->GetAtomSerialNumber()];
+                            string matching_residue_name = matching_atom->GetAtomResidueName();
+                            char matching_chain_id = matching_atom->GetAtomChainId();
+                            int matching_sequence_number = matching_atom->GetAtomResidueSequenceNumber();
+                            char matching_insertion_code = matching_atom->GetAtomInsertionCode();
+                            char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
+                            stringstream sss;
+                            sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
+                                << matching_insertion_code << "_" << matching_alternate_location;
+                            string matching_key = sss.str();
+
+                            if(key.compare(matching_key) == 0)
+                            {
+                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                                new_atom->AddCoordinate(coordinate);
+                            }
                         }
-                    }
-                    else if(card_index.at(0).compare("HETATOM") == 0)
-                    {
-                        PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
-                        PdbHeterogenAtomCard* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
-                        PdbAtomCard::PdbAtomMap heterogen_atom_map = heterogen_atom_card->GetHeterogenAtoms();
-                        PdbAtom* matching_heterogen_atom = heterogen_atom_map[atom->GetAtomSerialNumber()];
-                        string matching_heterogen_residue_name = matching_heterogen_atom->GetAtomResidueName();
-                        char matching_heterogen_chain_id = matching_heterogen_atom->GetAtomChainId();
-                        int matching_heterogen_sequence_number = matching_heterogen_atom->GetAtomResidueSequenceNumber();
-                        char matching_heterogen_insertion_code = matching_heterogen_atom->GetAtomInsertionCode();
-                        char matching_heterogen_alternate_location = matching_heterogen_atom->GetAtomAlternateLocation();
-                        stringstream ssss;
-                        ssss << matching_heterogen_residue_name << "_" << matching_heterogen_chain_id << "_" << matching_heterogen_sequence_number << "_"
-                             << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location;
-                        string matching_heterogen_key = ssss.str();
-
-                        if(key.compare(matching_heterogen_key) == 0)
+                        else if(card_index.at(0).compare("HETATOM") == 0)
                         {
-                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
-                            new_atom->AddCoordinate(coordinate);
+                            PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
+                            PdbHeterogenAtomCard* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
+                            PdbAtomCard::PdbAtomMap heterogen_atom_map = heterogen_atom_card->GetHeterogenAtoms();
+                            PdbAtom* matching_heterogen_atom = heterogen_atom_map[atom->GetAtomSerialNumber()];
+                            string matching_heterogen_residue_name = matching_heterogen_atom->GetAtomResidueName();
+                            char matching_heterogen_chain_id = matching_heterogen_atom->GetAtomChainId();
+                            int matching_heterogen_sequence_number = matching_heterogen_atom->GetAtomResidueSequenceNumber();
+                            char matching_heterogen_insertion_code = matching_heterogen_atom->GetAtomInsertionCode();
+                            char matching_heterogen_alternate_location = matching_heterogen_atom->GetAtomAlternateLocation();
+                            stringstream ssss;
+                            ssss << matching_heterogen_residue_name << "_" << matching_heterogen_chain_id << "_" << matching_heterogen_sequence_number << "_"
+                                 << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location;
+                            string matching_heterogen_key = ssss.str();
+
+                            if(key.compare(matching_heterogen_key) == 0)
+                            {
+                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
+                                new_atom->AddCoordinate(coordinate);
+                            }
                         }
                     }
                 }
+                residue->AddAtom(new_atom);
             }
-            residue->AddAtom(new_atom);
+            this->AddResidue(residue);
         }
-        this->AddResidue(residue);
     }
-
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
 }
 
 void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
@@ -908,50 +912,54 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
 
 void Assembly::BuildStructureByPDBFileInformation()
 {
-    cout << "Building structure ..." << endl;
-    PdbFile* pdb_file = new PdbFile(this->GetSourceFile());
-    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
-    int i = 0;
-    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
-    {
-        Atom* atom = (*it);
-        AtomNode* atom_node = new AtomNode();
-        atom_node->SetAtom(atom);
-        atom_node->SetId(i);
-        i++;
-        PdbAtom* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
-        if(pdb_atom != NULL)
+    try{
+        cout << "Building structure ..." << endl;
+        PdbFile* pdb_file = new PdbFile(this->GetSourceFile());
+        AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+        int i = 0;
+        for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
         {
-            int atom_serial_number = pdb_atom->GetAtomSerialNumber();
-            PdbConnectCard* connectivities = pdb_file->GetConnectivities();
-            PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
-            vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
-            for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+            Atom* atom = (*it);
+            AtomNode* atom_node = new AtomNode();
+            atom_node->SetAtom(atom);
+            atom_node->SetId(i);
+            i++;
+            PdbAtom* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
+            if(pdb_atom != NULL)
             {
-                int bonded_atom_serial_number = *it1;
-                PdbAtom* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
-                stringstream sss;
-                sss << pdb_bonded_atom->GetAtomName() << "_" << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName()
-                    << "_" << pdb_bonded_atom->GetAtomChainId() << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber()
-                    << "_" << pdb_bonded_atom->GetAtomInsertionCode() << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
-                string pdb_bonded_atom_key = sss.str();
-                for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
+                int atom_serial_number = pdb_atom->GetAtomSerialNumber();
+                PdbConnectCard* connectivities = pdb_file->GetConnectivities();
+                PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
+                vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
+                for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
                 {
-                    if(it != it2)
+                    int bonded_atom_serial_number = *it1;
+                    PdbAtom* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
+                    stringstream sss;
+                    sss << pdb_bonded_atom->GetAtomName() << "_" << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName()
+                        << "_" << pdb_bonded_atom->GetAtomChainId() << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber()
+                        << "_" << pdb_bonded_atom->GetAtomInsertionCode() << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
+                    string pdb_bonded_atom_key = sss.str();
+                    for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                     {
-                        Atom* assembly_atom = (*it2);
-                        string assembly_atom_key = assembly_atom->GetId();
-                        if(assembly_atom_key.compare(pdb_bonded_atom_key) == 0)
+                        if(it != it2)
                         {
-                            atom_node->AddNodeNeighbor(assembly_atom);
-                            break;
+                            Atom* assembly_atom = (*it2);
+                            string assembly_atom_key = assembly_atom->GetId();
+                            if(assembly_atom_key.compare(pdb_bonded_atom_key) == 0)
+                            {
+                                atom_node->AddNodeNeighbor(assembly_atom);
+                                break;
+                            }
                         }
                     }
                 }
             }
+            atom->SetNode(atom_node);
         }
-        atom->SetNode(atom_node);
     }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
 }
 
 void Assembly::BuildStructureByTOPFileInformation()
