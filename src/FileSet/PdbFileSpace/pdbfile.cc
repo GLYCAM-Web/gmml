@@ -124,8 +124,6 @@ PdbFile::PdbFile(const std::string &pdb_file)
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
     
     std::ifstream in_file;
-    try
-    {
     if(std::ifstream(pdb_file.c_str()))
         cout << "Opening PDB file ..." << endl;
         in_file.open(pdb_file.c_str());
