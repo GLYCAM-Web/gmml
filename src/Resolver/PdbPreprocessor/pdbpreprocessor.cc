@@ -894,28 +894,31 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
         {
             PdbFileSpace::PdbResidue* recognized_residue = *it;
             string residue_name = recognized_residue->GetResidueName();
-            char chain_id = recognized_residue->GetResidueChainId();
-            int sequence_number = recognized_residue->GetResidueSequenceNumber();
-            char insertion_code = recognized_residue->GetResidueInsertionCode();
-            char alternate_location = recognized_residue->GetResidueAlternateLocation();
-
-            stringstream ss;
-            ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
-            PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
-
-            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
-
-            PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
-
-            for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)
+            if(residue_name.compare("HIS") != 0)
             {
-                PdbAtom* heavy_atom = (*it1);
-                PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom =
-                        new PdbPreprocessorUnrecognizedHeavyAtom(heavy_atom->GetAtomChainId(), heavy_atom->GetAtomSerialNumber(),
-                                                                 heavy_atom->GetAtomName(), heavy_atom->GetAtomResidueName(),
-                                                                 heavy_atom->GetAtomResidueSequenceNumber(), heavy_atom->GetAtomInsertionCode(), heavy_atom->GetAtomAlternateLocation());
-                unrecognized_heavy_atoms_.push_back(unknown_heavy_atom);
+                char chain_id = recognized_residue->GetResidueChainId();
+                int sequence_number = recognized_residue->GetResidueSequenceNumber();
+                char insertion_code = recognized_residue->GetResidueInsertionCode();
+                char alternate_location = recognized_residue->GetResidueAlternateLocation();
+
+                stringstream ss;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+                string key = ss.str();
+                PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
+
+                vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+
+                PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
+
+                for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)
+                {
+                    PdbAtom* heavy_atom = (*it1);
+                    PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom =
+                            new PdbPreprocessorUnrecognizedHeavyAtom(heavy_atom->GetAtomChainId(), heavy_atom->GetAtomSerialNumber(),
+                                                                     heavy_atom->GetAtomName(), heavy_atom->GetAtomResidueName(),
+                                                                     heavy_atom->GetAtomResidueSequenceNumber(), heavy_atom->GetAtomInsertionCode(), heavy_atom->GetAtomAlternateLocation());
+                    unrecognized_heavy_atoms_.push_back(unknown_heavy_atom);
+                }
             }
         }
     }
@@ -935,26 +938,29 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string>
     {
         PdbFileSpace::PdbResidue* recognized_residue = *it;
         string residue_name = recognized_residue->GetResidueName();
-        char chain_id = recognized_residue->GetResidueChainId();
-        int sequence_number = recognized_residue->GetResidueSequenceNumber();
-        char insertion_code = recognized_residue->GetResidueInsertionCode();
-        char alternate_location = recognized_residue->GetResidueAlternateLocation();
-
-        stringstream ss;
-        ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-        string key = ss.str();
-        PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
-        vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
-        PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
-
-        for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)
+        if(residue_name.compare("HIS") != 0)
         {
-            PdbAtom* heavy_atom = (*it1);
-            PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom =
-                    new PdbPreprocessorUnrecognizedHeavyAtom(heavy_atom->GetAtomChainId(), heavy_atom->GetAtomSerialNumber(),
-                                                             heavy_atom->GetAtomName(), heavy_atom->GetAtomResidueName(),
-                                                             heavy_atom->GetAtomResidueSequenceNumber(), heavy_atom->GetAtomInsertionCode(), heavy_atom->GetAtomAlternateLocation());
-            unrecognized_heavy_atoms_.push_back(unknown_heavy_atom);
+            char chain_id = recognized_residue->GetResidueChainId();
+            int sequence_number = recognized_residue->GetResidueSequenceNumber();
+            char insertion_code = recognized_residue->GetResidueInsertionCode();
+            char alternate_location = recognized_residue->GetResidueAlternateLocation();
+
+            stringstream ss;
+            ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+            string key = ss.str();
+            PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
+            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
+
+            for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)
+            {
+                PdbAtom* heavy_atom = (*it1);
+                PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom =
+                        new PdbPreprocessorUnrecognizedHeavyAtom(heavy_atom->GetAtomChainId(), heavy_atom->GetAtomSerialNumber(),
+                                                                 heavy_atom->GetAtomName(), heavy_atom->GetAtomResidueName(),
+                                                                 heavy_atom->GetAtomResidueSequenceNumber(), heavy_atom->GetAtomInsertionCode(), heavy_atom->GetAtomAlternateLocation());
+                unrecognized_heavy_atoms_.push_back(unknown_heavy_atom);
+            }
         }
     }
 }
