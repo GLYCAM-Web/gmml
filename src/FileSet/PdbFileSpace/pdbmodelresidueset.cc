@@ -22,18 +22,21 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
     while(!Trim(temp).empty())
     {
         stringstream atom_block;
-        /// Extract ATOM section of the given residue set block
-        while(line.find("ATOM") != string::npos)
+        while(line.find("TER") == string::npos && !Trim(temp).empty())
         {
-            atom_block << line << endl;             /// Append all lines of ATOM section to create a block of stream of each atom set
-            getline(residue_set_block, line);       /// Read next line
-            temp = line;
-        }
-        /// Discard ANISOU section
-        while(line.find("ANISOU") != string::npos)
-        {
-            getline(residue_set_block,line);        /// Skip lines
-            temp = line;
+            /// Extract ATOM section of the given residue set block
+            while(line.find("ATOM") != string::npos)
+            {
+                atom_block << line << endl;             /// Append all lines of ATOM section to create a block of stream of each atom set
+                getline(residue_set_block, line);       /// Read next line
+                temp = line;
+            }
+            /// Discard ANISOU section
+            while(line.find("ANISOU") != string::npos)
+            {
+                getline(residue_set_block,line);        /// Skip lines
+                temp = line;
+            }
         }
         /// End of an ATOM section in the given residue set block
         if(line.find("TER") != string::npos || Trim(temp).empty())
