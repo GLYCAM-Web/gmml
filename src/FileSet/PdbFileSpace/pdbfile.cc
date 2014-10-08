@@ -846,13 +846,13 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
         PdbModel* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
         PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::AtomCardVector updated_atom_cards = PdbModelResidueSet::AtomCardVector();
         int serial_number = 1;
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
             PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-            PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomMap updated_atoms = PdbAtomCard::PdbAtomMap();
             
             for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
@@ -879,7 +879,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
         }
         residue_set->SetAtoms(updated_atom_cards);
         PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
-        PdbModelResidueSet::HeterogenAtomCardVector updated_heterogen_atom_cards;
+        PdbModelResidueSet::HeterogenAtomCardVector updated_heterogen_atom_cards = PdbModelResidueSet::HeterogenAtomCardVector();
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
@@ -1483,28 +1483,31 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
 
 void PdbFile::UpdateConnectCard()
 {
-    PdbConnectCard::BondedAtomsSerialNumbersMap bondedAtomsSerialNumbersMap = connectivities_->GetBondedAtomsSerialNumbers();
-    PdbConnectCard::BondedAtomsSerialNumbersMap new_bonded_atoms_serial_numbers_map = PdbConnectCard::BondedAtomsSerialNumbersMap();
-    for(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bondedAtomsSerialNumbersMap.begin(); it != bondedAtomsSerialNumbersMap.end(); it++)
+    if(connectivities_ != NULL)
     {
-        int source_serial_number = (*it).first;
-        vector<int> bonded_serial_numbers = (*it).second;
-        if(serial_number_mapping_.find(source_serial_number) != serial_number_mapping_.end())
+        PdbConnectCard::BondedAtomsSerialNumbersMap bondedAtomsSerialNumbersMap = connectivities_->GetBondedAtomsSerialNumbers();
+        PdbConnectCard::BondedAtomsSerialNumbersMap new_bonded_atoms_serial_numbers_map = PdbConnectCard::BondedAtomsSerialNumbersMap();
+        for(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bondedAtomsSerialNumbersMap.begin(); it != bondedAtomsSerialNumbersMap.end(); it++)
         {
-            int new_source_serial_number = serial_number_mapping_[source_serial_number];
-            new_bonded_atoms_serial_numbers_map[new_source_serial_number] = vector<int>();
-            for(vector<int>::iterator it1 = bonded_serial_numbers.begin(); it1 != bonded_serial_numbers.end(); it1++)
+            int source_serial_number = (*it).first;
+            vector<int> bonded_serial_numbers = (*it).second;
+            if(serial_number_mapping_.find(source_serial_number) != serial_number_mapping_.end())
             {
-                int bonded_serial_number = (*it1);
-                if(serial_number_mapping_.find(bonded_serial_number) != serial_number_mapping_.end())
+                int new_source_serial_number = serial_number_mapping_[source_serial_number];
+                new_bonded_atoms_serial_numbers_map[new_source_serial_number] = vector<int>();
+                for(vector<int>::iterator it1 = bonded_serial_numbers.begin(); it1 != bonded_serial_numbers.end(); it1++)
                 {
-                    int new_bonded_serial_number = serial_number_mapping_[bonded_serial_number];
-                    new_bonded_atoms_serial_numbers_map[new_source_serial_number].push_back(new_bonded_serial_number);
+                    int bonded_serial_number = (*it1);
+                    if(serial_number_mapping_.find(bonded_serial_number) != serial_number_mapping_.end())
+                    {
+                        int new_bonded_serial_number = serial_number_mapping_[bonded_serial_number];
+                        new_bonded_atoms_serial_numbers_map[new_source_serial_number].push_back(new_bonded_serial_number);
+                    }
                 }
             }
         }
+        connectivities_->SetBondedAtomsSerialNumbers(new_bonded_atoms_serial_numbers_map);
     }
-    connectivities_->SetBondedAtomsSerialNumbers(new_bonded_atoms_serial_numbers_map);
 }
 
 //////////////////////////////////////////////////////////

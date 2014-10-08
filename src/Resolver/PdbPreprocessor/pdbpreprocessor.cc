@@ -1725,11 +1725,10 @@ void PdbPreprocessor::RemoveUnselectedAlternateResidues(PdbFile *pdb_file, PdbPr
 
 }
 
-void PdbPreprocessor::Preprocess(string pdb_file_path, vector<string> lib_files_path, vector<string> prep_files_path)
+void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> lib_files_path, vector<string> prep_files_path)
 {
     try
     {
-        PdbFile* pdb_file = new PdbFile(pdb_file_path);
         time_t t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Start preprocessing ..." << endl;
         ExtractHISResidues(pdb_file);

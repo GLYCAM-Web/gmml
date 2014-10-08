@@ -554,7 +554,7 @@ namespace PdbPreprocessorSpace
               * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
               * @param prep_files_path Paths of prep files as database in order for preprocessing of the given pdb file
               */
-            void Preprocess(std::string pdb_file_path, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
+            void Preprocess(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
             /*! \fn
               * A function to apply all the updates on a pdb file
               * @param pdb_file A pdb file object that has to modified to reflect the updates
