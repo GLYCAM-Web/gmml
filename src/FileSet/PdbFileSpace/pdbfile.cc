@@ -134,6 +134,25 @@ PdbFile::PdbFile(const std::string &pdb_file)
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
+    string line;
+    stringstream ss;
+    while(!in_file.eof())
+    {
+        if(!getline(in_file, line))
+            break;
+        else
+            if(!line.empty())
+                ss << line << endl;
+    }
+    in_file.close();
+    if(line.compare("END") != 0)
+    {
+        std::ofstream out_file;
+        out_file.open(pdb_file.c_str());
+        out_file << ss.str() << "END";
+        out_file.close();
+    }
+    in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");

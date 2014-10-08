@@ -48,7 +48,7 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
                 is_record_name_set = true;
             }
             stringstream model_block;
-            while(!Trim(temp).empty())
+            while(!Trim(temp).empty() && line.find("ENDMDL") == string::npos)
             {
                 model_block << line << endl;
                 getline(stream_block,line);
