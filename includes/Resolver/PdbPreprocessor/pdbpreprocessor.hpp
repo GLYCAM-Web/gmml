@@ -550,7 +550,7 @@ namespace PdbPreprocessorSpace
             void RemoveUnselectedAlternateResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map);
             /*! \fn
               * A function to do all preprocessing sequentially
-              * @param pdb_file_path Path of a pdb file that has to be preprocessed
+              * @param pdb_file Pdb file object that has to be preprocessed
               * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
               * @param prep_files_path Paths of prep files as database in order for preprocessing of the given pdb file
               */
