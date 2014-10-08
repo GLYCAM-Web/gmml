@@ -61,6 +61,12 @@ PdbPreprocessor::PdbPreprocessorReplacedHydrogenVector PdbPreprocessor::GetRepla
 PdbPreprocessor::PdbPreprocessorAlternateResidueMap PdbPreprocessor::GetAlternateResidueMap(){
     return alternate_residue_map_;
 }
+PdbPreprocessor::PdbPreprocessorToBeDeletedAtomVector PdbPreprocessor::GetToBeDeletedAtoms(){
+    return to_be_deleted_atoms_;
+}
+PdbPreprocessor::PdbPreprocessorToBeDeletedResidueVector PdbPreprocessor::GetToBeDeletedResidues(){
+    return to_be_deleted_residues_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -152,6 +158,22 @@ void PdbPreprocessor::SetReplacedHydrogens(PdbPreprocessor::PdbPreprocessorRepla
 void PdbPreprocessor::AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen *replaced_hydrogen)
 {
     replaced_hydrogens_.push_back(replaced_hydrogen);
+}
+void PdbPreprocessor::SetToBeDeletedAtoms(PdbPreprocessorToBeDeletedAtomVector to_be_deleted_atoms)
+{
+    to_be_deleted_atoms_.clear();
+    for(PdbPreprocessorToBeDeletedAtomVector::iterator it = to_be_deleted_atoms.begin(); it != to_be_deleted_atoms.end(); it++)
+    {
+        to_be_deleted_atoms_.push_back(*it);
+    }
+}
+void PdbPreprocessor::SetToBeDeletedResidues(PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues)
+{
+    to_be_deleted_residues_.clear();
+    for(PdbPreprocessorToBeDeletedResidueVector::iterator it = to_be_deleted_residues.begin(); it != to_be_deleted_residues.end(); it++)
+    {
+        to_be_deleted_residues_.push_back(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -1751,6 +1773,22 @@ void PdbPreprocessor::ApplyPreprocessing(PdbFile *pdb_file, vector<string> lib_f
     cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains update: done" << endl;
     t = time(0);
     cout << std::asctime(std::localtime(&t)) << "Applying changes done" << endl;
+}
+void PdbPreprocessor::DeleteAllToBeDeletedEntities(PdbFile *pdb_file)
+{
+    for(PdbPreprocessorToBeDeletedAtomVector::iterator it = to_be_deleted_atoms_.begin(); it != to_be_deleted_atoms_.end(); it++)
+    {
+        PdbAtom* atom = (*it);
+        pdb_file->DeleteAtom(atom);
+
+    }
+    for(PdbPreprocessorToBeDeletedResidueVector::iterator it = to_be_deleted_residues_.begin(); it != to_be_deleted_residues_.end(); it++)
+    {
+        PdbResidue* residue = (*it);
+        pdb_file->DeleteResidue(residue);
+
+    }
+
 }
 
 //////////////////////////////////////////////////////////
