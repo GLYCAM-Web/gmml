@@ -1108,25 +1108,28 @@ void PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> 
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
     {
         PdbFileSpace::PdbResidue* recognized_residue = *it;
-        string residue_name = recognized_residue->GetResidueName();
-        char chain_id = recognized_residue->GetResidueChainId();
-        int sequence_number = recognized_residue->GetResidueSequenceNumber();
-        char insertion_code = recognized_residue->GetResidueInsertionCode();
-        char alternate_location = recognized_residue->GetResidueAlternateLocation();
-        stringstream ss;
-        ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-        string key = ss.str();
-        PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
-        vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
-        PdbFile::PdbAtomVector removed_hydrogens = GetRemovedHydrogensOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
-        for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = removed_hydrogens.begin(); it1 != removed_hydrogens.end(); it1++)
+        if(recognized_residue->GetResidueName().compare("HIS") != 0)
         {
-            PdbAtom* removed_hydrogen = (*it1);
-            PdbPreprocessorReplacedHydrogen* removed_hydrogen_atom =
-                    new PdbPreprocessorReplacedHydrogen(removed_hydrogen->GetAtomChainId(), removed_hydrogen->GetAtomSerialNumber(), removed_hydrogen->GetAtomName(),
-                                                        removed_hydrogen->GetAtomResidueName(), removed_hydrogen->GetAtomResidueSequenceNumber(),
-                                                        removed_hydrogen->GetAtomInsertionCode(), removed_hydrogen->GetAtomAlternateLocation());
-            replaced_hydrogens_.push_back(removed_hydrogen_atom);
+            string residue_name = recognized_residue->GetResidueName();
+            char chain_id = recognized_residue->GetResidueChainId();
+            int sequence_number = recognized_residue->GetResidueSequenceNumber();
+            char insertion_code = recognized_residue->GetResidueInsertionCode();
+            char alternate_location = recognized_residue->GetResidueAlternateLocation();
+            stringstream ss;
+            ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+            string key = ss.str();
+            PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
+            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            PdbFile::PdbAtomVector removed_hydrogens = GetRemovedHydrogensOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
+            for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = removed_hydrogens.begin(); it1 != removed_hydrogens.end(); it1++)
+            {
+                PdbAtom* removed_hydrogen = (*it1);
+                PdbPreprocessorReplacedHydrogen* removed_hydrogen_atom =
+                        new PdbPreprocessorReplacedHydrogen(removed_hydrogen->GetAtomChainId(), removed_hydrogen->GetAtomSerialNumber(), removed_hydrogen->GetAtomName(),
+                                                            removed_hydrogen->GetAtomResidueName(), removed_hydrogen->GetAtomResidueSequenceNumber(),
+                                                            removed_hydrogen->GetAtomInsertionCode(), removed_hydrogen->GetAtomAlternateLocation());
+                replaced_hydrogens_.push_back(removed_hydrogen_atom);
+            }
         }
     }
 }
@@ -1725,6 +1728,23 @@ void PdbPreprocessor::RemoveUnselectedAlternateResidues(PdbFile *pdb_file, PdbPr
 
 }
 
+void PdbPreprocessor::DeleteAllToBeDeletedEntities(PdbFile *pdb_file)
+{
+    for(PdbPreprocessorToBeDeletedAtomVector::iterator it = to_be_deleted_atoms_.begin(); it != to_be_deleted_atoms_.end(); it++)
+    {
+        PdbAtom* atom = (*it);
+        pdb_file->DeleteAtom(atom);
+
+    }
+    for(PdbPreprocessorToBeDeletedResidueVector::iterator it = to_be_deleted_residues_.begin(); it != to_be_deleted_residues_.end(); it++)
+    {
+        PdbResidue* residue = (*it);
+        pdb_file->DeleteResidue(residue);
+
+    }
+
+}
+
 void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> lib_files_path, vector<string> prep_files_path)
 {
     try
@@ -1793,22 +1813,7 @@ void PdbPreprocessor::ApplyPreprocessing(PdbFile *pdb_file, vector<string> lib_f
     t = time(0);
     cout << std::asctime(std::localtime(&t)) << "Applying changes done" << endl;
 }
-void PdbPreprocessor::DeleteAllToBeDeletedEntities(PdbFile *pdb_file)
-{
-    for(PdbPreprocessorToBeDeletedAtomVector::iterator it = to_be_deleted_atoms_.begin(); it != to_be_deleted_atoms_.end(); it++)
-    {
-        PdbAtom* atom = (*it);
-        pdb_file->DeleteAtom(atom);
 
-    }
-    for(PdbPreprocessorToBeDeletedResidueVector::iterator it = to_be_deleted_residues_.begin(); it != to_be_deleted_residues_.end(); it++)
-    {
-        PdbResidue* residue = (*it);
-        pdb_file->DeleteResidue(residue);
-
-    }
-
-}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
