@@ -22,7 +22,7 @@ CoordinateFileProcessingException::CoordinateFileProcessingException(int line_nu
 /// Exception handler for parameter file exceptions
 const char* CoordinateFileProcessingException::what() const throw()
 {
-    what_ = "ParameterFile: " + message_;
+    what_ = "CoordinateFile: " + message_;
     if (line_number_ != dNotSet)
     {
         std::stringstream ss;
@@ -31,9 +31,10 @@ const char* CoordinateFileProcessingException::what() const throw()
             what_ += " (line " + ss.str() + ")";
             return what_.c_str();
         }
-        throw std::invalid_argument("to_string: invalid conversion");       /// Invalid conversion from int to string
+        else
+            throw std::invalid_argument("to_string: invalid conversion");       /// Invalid conversion from int to string
     }
-    return "";
+    return what_.c_str();
 }
 
 CoordinateFileProcessingException::~CoordinateFileProcessingException() throw() {}

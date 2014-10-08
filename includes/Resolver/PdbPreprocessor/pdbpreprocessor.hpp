@@ -71,7 +71,14 @@ namespace PdbPreprocessorSpace
               * A mapping between residue key with alternate location(s) and its corresponding alternate residue object(s)
               */
             typedef std::map<std::string, PdbPreprocessorAlternateResidue*> PdbPreprocessorAlternateResidueMap;
-
+            /*! \typedef
+              * List of atoms to be deleted
+              */
+            typedef std::vector<PdbFileSpace::PdbAtom*> PdbPreprocessorToBeDeletedAtomVector;
+            /*! \typedef
+              * List of residues to be deleted
+              */
+            typedef std::vector<PdbFileSpace::PdbResidue*> PdbPreprocessorToBeDeletedResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -129,6 +136,16 @@ namespace PdbPreprocessorSpace
               * @return alternate_residue_map_ attribute of the current object of this class
               */
             PdbPreprocessorAlternateResidueMap GetAlternateResidueMap();
+            /*! \fn
+              * An accessor function in order to access to the list of to be deleted atoms
+              * @return to_be_deleted_atoms_ attribute of the current object of this class
+              */
+            PdbPreprocessorToBeDeletedAtomVector GetToBeDeletedAtoms();
+            /*! \fn
+              * An accessor function in order to access to the list of to be deleted residues
+              * @return to_be_deleted_residues_ attribute of the current object of this class
+              */
+            PdbPreprocessorToBeDeletedResidueVector GetToBeDeletedResidues();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -229,6 +246,18 @@ namespace PdbPreprocessorSpace
               * @param replaced_hydrogen The replaced hydrogen atom attribute of the current object
               */
             void AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen* replaced_hydrogen);
+            /*! \fn
+              * A mutator function in order to set the to be deleted atoms of the current object
+              * Set the to_be_deleted_atoms attribute of the current pdb preprocessor
+              * @param to_be_deleted_atoms The to be deleted atoms attribute of the current object
+              */
+            void SetToBeDeletedAtoms(PdbPreprocessorToBeDeletedAtomVector to_be_deleted_atoms);
+            /*! \fn
+              * A mutator function in order to set the to be deleted residues of the current object
+              * Set the to_be_deleted_residues attribute of the current pdb preprocessor
+              * @param to_be_deleted_residues The to be deleted residues attribute of the current object
+              */
+            void SetToBeDeletedResidues(PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues);
 
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -532,6 +561,11 @@ namespace PdbPreprocessorSpace
               * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
               */
             void ApplyPreprocessing(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path);
+            /*! \fn
+              * A function to delete all to be deleted atoms and residues in a pdb file
+              * @param pdb_file A pdb file object that has to modified to reflect the updates
+              */
+            void DeleteAllToBeDeletedEntities(PdbFileSpace::PdbFile* pdb_file);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -555,6 +589,8 @@ namespace PdbPreprocessorSpace
             PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms_;   /*!< List of unrecognized heavy atoms detected in a pdb file >*/
             PdbPreprocessorReplacedHydrogenVector replaced_hydrogens_;              /*!< List of removed/replaced hydrogen atoms detected in a pdb file >*/
             PdbPreprocessorAlternateResidueMap alternate_residue_map_;              /*!< Map of alternate residues detected in a pdb file >*/
+            PdbPreprocessorToBeDeletedAtomVector to_be_deleted_atoms_;              /*!< List of atoms to be deleted in a pdb file >*/
+            PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues_;              /*!< List of residues to be deleted in a pdb file >*/
 
     };
 }
