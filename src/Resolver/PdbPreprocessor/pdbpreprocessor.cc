@@ -1810,5 +1810,53 @@ void PdbPreprocessor::DeleteAllToBeDeletedEntities(PdbFile *pdb_file)
 //////////////////////////////////////////////////////////
 void PdbPreprocessor::Print(ostream &out)
 {
+    out << "================================== Disulfide Bonds =====================================" << endl;
+    for(PdbPreprocessorDisulfideBondVector::iterator it = disulfide_bonds_.begin(); it != disulfide_bonds_.end(); it++)
+    {
+        PdbPreprocessorDisulfideBond* disulfide_bond = (*it);
+        disulfide_bond->Print(out);
+    }
+    out << "================================== Chains =====================================" << endl;
+    for(PdbPreprocessorChainTerminationVector::iterator it = chain_terminations_.begin(); it != chain_terminations_.end(); it++)
+    {
+        PdbPreprocessorChainTermination* chain = (*it);
+        chain->Print(out);
+    }
+    out << "================================== HIS Residues =====================================" << endl;
+    for(PdbPreprocessorHistidineMappingVector::iterator it = histidine_mappings_.begin(); it != histidine_mappings_.end(); it++)
+    {
+        PdbPreprocessorHistidineMapping* his_residue = (*it);
+        his_residue->Print(out);
+    }
+    out << "================================== Gaps =====================================" << endl;
+    for(PdbPreprocessorMissingResidueVector::iterator it = missing_residues_.begin(); it != missing_residues_.end(); it++)
+    {
+        PdbPreprocessorMissingResidue* gap = (*it);
+        gap->Print(out);
+    }
+    out << "================================== Unrecognized Residues =====================================" << endl;
+    for(PdbPreprocessorUnrecognizedResidueVector::iterator it = unrecognized_residues_.begin(); it != unrecognized_residues_.end(); it++)
+    {
+        PdbPreprocessorUnrecognizedResidue* unrecognized_residue = (*it);
+        unrecognized_residue->Print(out);
+    }
+    out << "================================== Unknown Heavy Atoms =====================================" << endl;
+    for(PdbPreprocessorUnrecognizedHeavyAtomVector::iterator it = unrecognized_heavy_atoms_.begin(); it != unrecognized_heavy_atoms_.end(); it++)
+    {
+        PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom = (*it);
+        unknown_heavy_atom->Print(out);
+    }
+    out << "================================== Removed Hydrogens =====================================" << endl;
+    for(PdbPreprocessorReplacedHydrogenVector::iterator it = replaced_hydrogens_.begin(); it != replaced_hydrogens_.end(); it++)
+    {
+        PdbPreprocessorReplacedHydrogen* removed_hydrogen = (*it);
+        removed_hydrogen->Print(out);
+    }
+    out << "================================== Alternate Residues =====================================" << endl;
+    for(PdbPreprocessorAlternateResidueMap::iterator it = alternate_residue_map_.begin(); it != alternate_residue_map_.end(); it++)
+    {
+        PdbPreprocessorAlternateResidue* alternate_residue = (*it).second;
+        alternate_residue->Print(out);
+    }
 }
 
