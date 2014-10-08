@@ -22,7 +22,7 @@ TopologyFileProcessingException::TopologyFileProcessingException(int line_number
 /// Exception handler for parameter file exceptions
 const char* TopologyFileProcessingException::what() const throw()
 {
-    what_ = "ParameterFile: " + message_;
+    what_ = "TopologyFile: " + message_;
     if (line_number_ != dNotSet)
     {
         std::stringstream ss;
@@ -31,9 +31,10 @@ const char* TopologyFileProcessingException::what() const throw()
             what_ += " (line " + ss.str() + ")";
             return what_.c_str();
         }
-        throw std::invalid_argument(__LINE__ + "to_string: invalid conversion");       /// Invalid conversion from int to string
+        else
+            throw std::invalid_argument(__LINE__ + "to_string: invalid conversion");       /// Invalid conversion from int to string
     }
-    return "";
+    return what_.c_str();
 }
 
 TopologyFileProcessingException::~TopologyFileProcessingException() throw() {}
