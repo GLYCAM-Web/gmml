@@ -141,8 +141,14 @@ PdbFile::PdbFile(const std::string &pdb_file)
         if(!getline(in_file, line))
             break;
         else
-            if(!line.empty())
+        {
+            string temp = line.substr(0,6);
+            temp = Trim(temp);
+            if(temp.compare("END") == 0)
+                break;
+            else if(!line.empty())
                 ss << line << endl;
+        }
     }
     in_file.close();
     if(line.compare("END") != 0)
@@ -448,8 +454,8 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
 
 PdbFile::PdbResidueVector PdbFile::GetAllResiduesFromAtomCard()
 {
-    PdbFile::PdbResidueVector residues;
-    map<string, bool> inserted_residues;
+    PdbFile::PdbResidueVector residues = PdbFile::PdbResidueVector();
+    map<string, bool> inserted_residues = map<string, bool>();
     PdbModelCard::PdbModelMap models = models_->GetModels();
     PdbModel* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -1552,112 +1558,112 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "HEADER")
+    if(record_name.compare("HEADER") == 0)
     {
         if(!ParseHeaderCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "OBSLTE")
+    if(record_name.compare("OBSLTE") == 0)
     {
         if(!ParseObsoleteCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "TITLE")
+    if(record_name.compare("TITLE") == 0)
     {
         if(!ParseTitleCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SPLIT")
+    if(record_name.compare("SPLIT") == 0)
     {
         if(!ParseSplitCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "CAVEAT")
+    if(record_name.compare("CAVEAT") == 0)
     {
         if(!ParseCaveatCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "COMPND")
+    if(record_name.compare("COMPND") == 0)
     {
         if(!ParseCompoundCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SOURCE")
+    if(record_name.compare("SOURCE") == 0)
     {
         if(!ParseSourceCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "KEYWDS")
+    if(record_name.compare("KEYWDS") == 0)
     {
         if(!ParseKeywordCard(in_stream, line))
                 return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "EXPDTA")
+    if(record_name.compare("EXPDTA") == 0)
     {
         if(!ParseExpirationDateCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "NUMMDL")
+    if(record_name.compare("NUMMDL") == 0)
     {
         if(!ParseNumModelCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "MDLTYP")
+    if(record_name.compare("MDLTYP") == 0)
     {
         if(!ParseModelTypeCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "AUTHOR")
+    if(record_name.compare("AUTHOR") == 0)
     {
         if(!ParseAuthorCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "REVDAT")
+    if(record_name.compare("REVDAT") == 0)
     {
         if(!ParseRevisionDateCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SPRSDE")
+    if(record_name.compare("SPRSDE") == 0)
     {
         if(!ParseSupersededEntriesCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "JRNL")
+    if(record_name.compare("JRNL") == 0)
     {
         if(!ParseJournalCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "REMARK")
+    if(record_name.compare("REMARK") == 0)
     {
         if(!ParseRemarkCard(in_stream, line))
             return false;
@@ -1671,98 +1677,98 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SEQADV")
+    if(record_name.compare("SEQADV") == 0)
     {
         if(!ParseSequenceAdvancedCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SEQRES")
+    if(record_name.compare("SEQRES") == 0)
     {
         if(!ParseSequenceResidueCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "MODRES")
+    if(record_name.compare("MODRES") == 0)
     {
         if(!ParseModificationResidueCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "HET")
+    if(record_name.compare("HET") == 0)
     {
         if(!ParseHeterogenCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "HETNAM")
+    if(record_name.compare("HETNAM") == 0)
     {
         if(!ParseHeterogenNameCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "HETSYN")
+    if(record_name.compare("HETSYN") == 0)
     {
         if(!ParseHeterogenSynonymCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "FORMUL")
+    if(record_name.compare("FORMUL") == 0)
     {
         if(!ParseFormulaCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "HELIX")
+    if(record_name.compare("HELIX") == 0)
     {
         if(!ParseHelixCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SHEET")
+    if(record_name.compare("SHEET") == 0)
     {
         if(!ParseSheetCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SSBOND")
+    if(record_name.compare("SSBOND") == 0)
     {
         if(!ParseDisulfideBondCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "LINK")
+    if(record_name.compare("LINK") == 0)
     {
         if(!ParseLinkCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "CISPEP")
+    if(record_name.compare("CISPEP") == 0)
     {
         if(!ParseCISPeptideCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "SITE")
+    if(record_name.compare("SITE") == 0)
     {
         if(!ParseSiteCard(in_stream, line))
            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "CRYST1")
+    if(record_name.compare("CRYST1") == 0)
     {
         if(!ParseCrystallographyCard(in_stream, line))
             return false;
@@ -1790,32 +1796,43 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "MODEL" || record_name == "ATOM" || record_name == "HETATM")
+    cout << record_name << endl;
+    if(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("HETATM") == 0)
     {
         if(!ParseModelCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "CONECT")
+    if(record_name.compare("CONECT") == 0)
     {
         if(!ParseConnectivityCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "MASTER")
+    if(record_name.compare("MODEL") == 0)
+    {
+        cout << "Multiple connect card between model cards --> Unexpected entry"  << endl;
+        return false;
+    }
+    if(record_name.compare("MASTER") == 0)
     {
         if(!ParseMasterCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name == "END")
+    if(record_name.compare("END") == 0)
     {
         if(!ParseEndCard(in_stream, line))
             return false;
         return true;
+    }
+    else
+    {
+        cout << "Wrong input file format" << endl;
+        return false;
     }
     return true;
 }
