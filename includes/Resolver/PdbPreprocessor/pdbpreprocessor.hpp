@@ -9,6 +9,7 @@
 #include "../../FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../../common.hpp"
 
 namespace PdbPreprocessorSpace
 {
@@ -269,6 +270,12 @@ namespace PdbPreprocessorSpace
               * @return unrecognized_residue_names
               */
             std::vector<std::string> GetUnrecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+
+            //**************************************************
+            gmml::ResidueNameMap GetUnrecognizedResidueNamesMap(std::vector<std::string> pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the recognized residue names of pdb
               * @param pdb_residue_names The list of residue names in the current pdb file
@@ -276,6 +283,12 @@ namespace PdbPreprocessorSpace
               * @return recognized_residue_names
               */
             std::vector<std::string> GetRecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+
+            //**************************************************
+            gmml::ResidueNameMap GetRecognizedResidueNamesMap(std::vector<std::string> pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the unrecognized residues of pdb
               * @param pdb_residues The list of residues in the current pdb file
@@ -283,6 +296,12 @@ namespace PdbPreprocessorSpace
               * @return unrecognized_residues
               */
             PdbFileSpace::PdbFile::PdbResidueVector GetUnrecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> unrecognized_residue_names);
+
+            //**************************************************
+            PdbFileSpace::PdbFile::PdbResidueVector GetUnrecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, gmml::ResidueNameMap unrecognized_residue_names);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the recognized residues of pdb
               * @param pdb_residues The list of residues in the current pdb file
@@ -290,18 +309,36 @@ namespace PdbPreprocessorSpace
               * @return recognized_residues
               */
             PdbFileSpace::PdbFile::PdbResidueVector GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> recognized_residue_names);
+
+            //**************************************************
+            PdbFileSpace::PdbFile::PdbResidueVector GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, gmml::ResidueNameMap recognized_residue_names);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the list of all residue names from lib files
               * @param lib_files The list of paths to library files
               * @return all_residue_names
               */
             std::vector<std::string> GetAllResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
+
+            //**************************************************
+            gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the list of all residue names from prep files
               * @param prep_files The list of paths to prep files
               * @return all_residue_names
               */
             std::vector<std::string> GetAllResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
+
+            //**************************************************
+            gmml::ResidueNameMap GetAllResidueNamesFromMultiplePrepFilesMap(std::vector<std::string> prep_files);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the list of all residue names from library and prep files
               * @param lib_files The list of paths to library files
@@ -309,6 +346,12 @@ namespace PdbPreprocessorSpace
               * @return all_residue_names
               */
             std::vector<std::string> GetAllResidueNamesFromDatasetFiles(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+
+            //**************************************************
+            gmml::ResidueNameMap GetAllResidueNamesFromDatasetFilesMap(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to extract the unrecognized residues of a pdb file
               * @param pdb_file_path The path to the pdb file
@@ -403,6 +446,12 @@ namespace PdbPreprocessorSpace
               * @return unknown_heavy_atom_names_of_residue
               */
             std::vector<std::string> GetUnknownHeavyAtomNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
+
+            //**************************************************
+            gmml::AtomNameMap GetUnknownHeavyAtomNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, gmml::AtomNameMap dataset_atom_names_of_residue);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the list of atom names of a residue from multiple library files
               * @param residue_name The name of the residue
@@ -410,6 +459,12 @@ namespace PdbPreprocessorSpace
               * @return all_atom_names_of_residue
               */
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultipleLibFiles(std::string residue_name, std::vector<std::string> lib_files);
+
+            //**************************************************
+            gmml::AtomNameMap GetAllAtomNamesOfResidueFromMultipleLibFilesMap(std::string residue_name, std::vector<std::string> lib_files);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the list of atom names of a residue from multiple prep files
               * @param residue_name The name of the residue
@@ -417,6 +472,12 @@ namespace PdbPreprocessorSpace
               * @return all_atom_names_of_residue
               */
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultiplePrepFiles(std::string residue_name, std::vector<std::string> prep_files);
+
+            //**************************************************
+            gmml::AtomNameMap GetAllAtomNamesOfResidueFromMultiplePrepFilesMap(std::string residue_name, std::vector<std::string> prep_files);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the list of all atom names of a residue from library and prep files
               * @param lib_files The list of paths to library files
@@ -424,6 +485,12 @@ namespace PdbPreprocessorSpace
               * @return all_atom_names
               */
             std::vector<std::string> GetAllAtomNamesOfResidueFromDatasetFiles(std::string residue_name, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+
+            //**************************************************
+            gmml::AtomNameMap GetAllAtomNamesOfResidueFromDatasetFilesMap(std::string residue_name, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+
+            //**************************************************
+
             /*! \fn
               * A function in order to access to the unknown heavy atoms of a residue
               * @param pdb_atoms The list of pbd atoms
@@ -431,6 +498,11 @@ namespace PdbPreprocessorSpace
               * @return unknown_heavy_atoms_of_residue
               */
             PdbFileSpace::PdbFile::PdbAtomVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+
+            //*************************************************
+            PdbFileSpace::PdbFile::PdbAtomVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, gmml::AtomNameMap dataset_atom_names_of_residue);
+
+            //*************************************************
             /*! \fn
               * A function in order to extract the unknown heavy atoms of a pdb file
               * @param pdb_file_path The path to the pdb file

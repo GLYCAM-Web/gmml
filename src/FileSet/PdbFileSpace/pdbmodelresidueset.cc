@@ -22,7 +22,7 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
     while(!Trim(temp).empty())
     {
         stringstream atom_block;
-        while(line.find("TER") == string::npos && !Trim(temp).empty())
+        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos)
         {
             /// Extract ATOM section of the given residue set block
             while(line.find("ATOM") != string::npos)
