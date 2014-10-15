@@ -84,6 +84,16 @@ namespace ParameterFileSpace
               * @return file_type_ attribute of the current object of this class
               */
             const int GetParameterFileType() const;
+            /*! \fn
+              * An accessor function in order to access all improper dihedrals of the current object
+              * @return improper_dihedrals Improper dihedrals the current object of this class
+              */
+            DihedralMap GetAllImproperDihedrals();
+            /*! \fn
+              * An accessor function in order to access all proper dihedrals of the current object
+              * @return proper_dihedrals proper dihedrals the current object of this class
+              */
+            DihedralMap GetAllproperDihedrals();
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //

@@ -1672,6 +1672,16 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
             }
         }
     }
+//    ParameterFileSpace::ParameterFile::DihedralMap dihedral_maps = parameter_file->GetAllImproperDihedrals();
+//    AtomVector atoms_with_at_least_three_neighbors = this->GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors();
+//    for(ParameterFile::DihedralMap::iterator it4 = dihedral_maps.begin(); it4 != dihedral_maps.end(); it4++)
+//    {
+//        for(AtomVector::iterator it5 = atoms_with_at_least_three_neighbors.begin(); it5 != atoms_with_at_least_three_neighbors.end(); it5++)
+//        {
+
+//        }
+//    }
+
     cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
     return counter/2;
 }
@@ -1840,6 +1850,70 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
         }
     }
     cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
+    return counter/2;
+}
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors()
+{
+    AtomVector all_atoms = GetAllAtomsOfAssembly();
+    AtomVector atoms_with_at_least_three_neighbors = AtomVector();
+    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* node = atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        if(neighbors.size() > 2)
+            atoms_with_at_least_three_neighbors.push_back(atom);
+    }
+    return atoms_with_at_least_three_neighbors;
+}
+int Assembly::CountNumberOfExcludedAtoms()
+{
+    int counter = 0;
+    AtomVector atoms = GetAllAtomsOfAssembly();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        int c = 0;
+        Atom* atom = (*it);
+        stringstream ss;
+        ss << atom->GetId();
+        AtomNode* node = atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        counter += neighbors.size();
+        c += neighbors.size();
+        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+            Atom* neighbor = (*it1);
+            stringstream ss1;
+            ss1 << neighbor->GetId();
+            AtomNode* neighbor_node = neighbor->GetNode();
+            AtomVector neighbor_of_neighbors = neighbor_node->GetNodeNeighbors();
+            for(AtomVector::iterator it2 = neighbor_of_neighbors.begin(); it2 != neighbor_of_neighbors.end(); it2++)
+            {
+                Atom* neighbor_of_neighbor = (*it2);
+                stringstream ss2;
+                ss2 << neighbor_of_neighbor->GetId();
+                if(ss.str().compare(ss2.str()) != 0)
+                {
+                    counter++;
+                    c++;
+                    AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
+                    AtomVector neighbor_of_neighbor_of_neighbors = neighbor_of_neighbor_node->GetNodeNeighbors();
+                    for(AtomVector::iterator it3 = neighbor_of_neighbor_of_neighbors.begin(); it3 != neighbor_of_neighbor_of_neighbors.end(); it3++)
+                    {
+                        Atom* neighbor_of_neighbor_of_neighbor = (*it3);
+                        stringstream ss3;
+                        ss3 << neighbor_of_neighbor_of_neighbor->GetId();
+                        if(ss1.str().compare(ss3.str()) != 0)
+                        {
+                            counter++;
+                            c++;
+                        }
+                    }
+                }
+            }
+        }
+        cout << atom->GetId() << ": " << c << endl;
+    }
     return counter/2;
 }
 
