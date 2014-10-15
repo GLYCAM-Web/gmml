@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "../../common.hpp"
 
 namespace PrepFileSpace
 {
@@ -42,12 +43,23 @@ namespace PrepFileSpace
               * @return residue_names residue names of the current object of this class
               */
             std::vector<std::string> GetAllResidueNames();
+
+            //**************************************
+            gmml::ResidueNameMap GetAllResidueNamesMap();
+
+            //**************************************
+
             /*! \fn
               * An accessor function in order to access to all atom names of the current object
               * @param residue_name the residue name of the current object
               * @return atom_names_of_residue The atom names of the current object of this class
               */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
+
+            //***************************************
+            gmml::AtomNameMap GetAllAtomNamesOfResidueMap(std::string residue_name);
+
+            //***************************************
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //

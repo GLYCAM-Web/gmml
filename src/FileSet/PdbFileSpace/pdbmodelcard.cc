@@ -14,7 +14,6 @@ PdbModelCard::PdbModelCard() : record_name_("MODEL") {}
 
 PdbModelCard::PdbModelCard(stringstream &stream_block)
 {
-    models_ = PdbModelMap();
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
@@ -36,7 +35,7 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
                 temp = line;
             }
             model_block << line << endl;
-            PdbModel* pdb_model = new PdbModel(model_block);            
+            PdbModel* pdb_model = new PdbModel(model_block);
             models_[pdb_model->GetModelSerialNumber()] = pdb_model;
             getline(stream_block, line);
             temp = line;

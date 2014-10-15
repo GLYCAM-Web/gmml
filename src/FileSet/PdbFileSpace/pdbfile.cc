@@ -1796,7 +1796,6 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    cout << record_name << endl;
     if(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("HETATM") == 0)
     {
         if(!ParseModelCard(in_stream, line))
@@ -1811,6 +1810,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
+
     if(record_name.compare("MODEL") == 0)
     {
         cout << "Multiple connect card between model cards --> Unexpected entry"  << endl;
@@ -1851,7 +1851,7 @@ bool PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "HEADER")
+    while(record_name.compare("HEADER") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -1886,7 +1886,7 @@ bool PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "OBSLTE")
+    while(record_name.compare("OBSLTE") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -1919,7 +1919,7 @@ bool PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "TITLE")
+    while(record_name.compare("TITLE") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -1954,7 +1954,7 @@ bool PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "SPLIT")
+    while(record_name.compare("SPLIT") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -1987,7 +1987,7 @@ bool PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "CAVEAT")
+    while(record_name.compare("CAVEAT") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2020,7 +2020,7 @@ bool PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "COMPND")
+    while(record_name.compare("COMPND") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2055,7 +2055,7 @@ bool PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "SOURCE")
+    while(record_name.compare("SOURCE") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2088,7 +2088,7 @@ bool PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "KEYWDS")
+    while(record_name.compare("KEYWDS") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2121,7 +2121,7 @@ bool PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "EXPDTA")
+    while(record_name.compare("EXPDTA") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2154,7 +2154,7 @@ bool PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "NUMMDL")
+    while(record_name.compare("NUMMDL") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2189,7 +2189,7 @@ bool PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "MDLTYP")
+    while(record_name.compare("MDLTYP") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2224,7 +2224,7 @@ bool PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "AUTHOR")
+    while(record_name.compare("AUTHOR") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2257,7 +2257,7 @@ bool PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "REVDAT")
+    while(record_name.compare("REVDAT") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2290,7 +2290,7 @@ bool PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "SPRSDE")
+    while(record_name.compare("SPRSDE") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2323,7 +2323,7 @@ bool PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "JRNL")
+    while(record_name.compare("JRNL") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2356,7 +2356,7 @@ bool PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "REMARK")
+    while(record_name.compare("REMARK") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2389,7 +2389,7 @@ bool PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "DBREF")
+    while(record_name.compare("DBREF") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2422,7 +2422,7 @@ bool PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "SEQADV")
+    while(record_name.compare("SEQADV") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2455,7 +2455,7 @@ bool PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "SEQRES")
+    while(record_name.compare("SEQRES") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2490,7 +2490,7 @@ bool PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "MODRES")
+    while(record_name.compare("MODRES") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2525,7 +2525,7 @@ bool PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "HET")
+    while(record_name.compare("HET") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2560,7 +2560,7 @@ bool PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "HETNAM")
+    while(record_name.compare("HETNAM") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2595,7 +2595,7 @@ bool PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "HETSYN")
+    while(record_name.compare("HETSYN") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2630,7 +2630,7 @@ bool PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "FORMUL")
+    while(record_name.compare("FORMUL") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2665,7 +2665,7 @@ bool PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "HELIX")
+    while(record_name.compare("HELIX") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2699,8 +2699,8 @@ bool PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    
-    while(record_name == "SHEET")
+
+    while(record_name.compare("SHEET") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2735,7 +2735,7 @@ bool PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "SSBOND")
+    while(record_name.compare("SSBOND") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2770,7 +2770,7 @@ bool PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "LINK")
+    while(record_name.compare("LINK") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2805,7 +2805,7 @@ bool PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "CISPEP")
+    while(record_name.compare("CISPEP") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2838,7 +2838,7 @@ bool PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "SITE")
+    while(record_name.compare("SITE") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2873,7 +2873,7 @@ bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "CRYST1")
+    while(record_name.compare("CRYST1") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2908,7 +2908,7 @@ bool PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
     
-    while(record_name == "ORIGX")
+    while(record_name.compare("ORIGX") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2943,7 +2943,7 @@ bool PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
     
-    while(record_name == "SCALE")
+    while(record_name.compare("SCALE") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -2978,7 +2978,7 @@ bool PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,5);
     record_name = Trim(record_name);
     
-    while(record_name == "MTRIX")
+    while(record_name.compare("MTRIX") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -3012,9 +3012,9 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    
-    while(record_name == "MODEL" || record_name == "ATOM" || record_name == "ANISOU"
-          || record_name == "TER" || record_name == "HETATM" || record_name == "ENDMDL" )
+
+    while(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("ANISOU") == 0
+          || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0 )
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -3031,6 +3031,7 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
         }
     }
     
+    // Model card
     models_ = new PdbModelCard(stream_block);
     return true;
 }
@@ -3049,7 +3050,7 @@ bool PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "CONECT")
+    while(record_name.compare("CONECT") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -3084,7 +3085,7 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "MASTER")
+    while(record_name.compare("MASTER") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -3116,7 +3117,7 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
     
-    while(record_name == "END")
+    while(record_name.compare("END") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))

@@ -37,12 +37,23 @@ PrepFile::ResidueMap& PrepFile::GetResidues()
 {
     return residues_;
 }
+
 vector<string> PrepFile::GetAllResidueNames()
 {    
     vector<string> residue_names;
     for(PrepFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++){
         string residue_name = (*it).first;
         residue_names.push_back(residue_name);
+    }
+    return residue_names;
+}
+
+ResidueNameMap PrepFile::GetAllResidueNamesMap()
+{
+    ResidueNameMap residue_names = ResidueNameMap();
+    for(PrepFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++){
+        string residue_name = (*it).first;
+        residue_names[residue_name] = residue_name;
     }
     return residue_names;
 }
@@ -57,6 +68,20 @@ vector<string> PrepFile::GetAllAtomNamesOfResidue(string residue_name)
     {
         PrepFileAtom* atom = (*it);
         atom_names_of_residue.push_back(atom->GetName());
+    }
+    return atom_names_of_residue;
+}
+
+AtomNameMap PrepFile::GetAllAtomNamesOfResidueMap(string residue_name)
+{
+    AtomNameMap atom_names_of_residue = AtomNameMap();
+    ResidueMap residue_map = GetResidues();
+    PrepFileResidue* prep_file_residue = residue_map[residue_name];
+    vector<PrepFileAtom*> atoms = prep_file_residue->GetAtoms();
+    for(vector<PrepFileAtom*>::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        PrepFileAtom* atom = (*it);
+        atom_names_of_residue[atom->GetName()] = atom->GetName();
     }
     return atom_names_of_residue;
 }

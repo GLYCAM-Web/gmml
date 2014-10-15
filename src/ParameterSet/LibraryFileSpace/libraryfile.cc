@@ -58,6 +58,17 @@ vector<string> LibraryFile::GetAllResidueNames()
     return residue_names;
 }
 
+ResidueNameMap LibraryFile::GetAllResidueNamesMap()
+{
+    ResidueNameMap residue_names = ResidueNameMap();
+    for(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        string residue_name = (*it).first;
+        residue_names[residue_name] = residue_name;
+    }
+    return residue_names;
+}
+
 vector<string> LibraryFile::GetAllAtomNamesOfResidue(string residue_name)
 {
     vector<string> atom_names_of_residue;
@@ -68,6 +79,20 @@ vector<string> LibraryFile::GetAllAtomNamesOfResidue(string residue_name)
     {
         LibraryFileAtom* atom = (*it).second;
         atom_names_of_residue.push_back(atom->GetName());
+    }
+    return atom_names_of_residue;
+}
+
+AtomNameMap LibraryFile::GetAllAtomNamesOfResidueMap(string residue_name)
+{
+    AtomNameMap atom_names_of_residue = AtomNameMap();
+    ResidueMap residue_map = GetResidues();
+    LibraryFileResidue* library_file_residue = residue_map[residue_name];
+    LibraryFileResidue::AtomMap atoms = library_file_residue->GetAtoms();
+    for(LibraryFileResidue::AtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        LibraryFileAtom* atom = (*it).second;
+        atom_names_of_residue[atom->GetName()] = atom->GetName();
     }
     return atom_names_of_residue;
 }

@@ -4,9 +4,17 @@
 #include <string>
 #include <vector>
 #include <math.h>
+#include <map>
 
 namespace gmml
 {
+
+    //*******************************************
+    typedef std::map<std::string, std::string> ResidueNameMap;
+    typedef ResidueNameMap AtomNameMap;
+
+    //*******************************************
+
     const double dNotSet = 123456789.0;
     const int iNotSet = -123456;
     const int iPdbLineLength = 80;
