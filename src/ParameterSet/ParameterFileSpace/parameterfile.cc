@@ -50,36 +50,53 @@ const std::string& ParameterFile::GetFilePath() const
 {
     return path_;
 }
-
 const std::string& ParameterFile::GetTitle() const
 {
     return title_;
 }
-
 const ParameterFile::AtomTypeMap& ParameterFile::GetAtomTypes() const
 {
     return atom_types_;
 }
-
 const ParameterFile::BondMap& ParameterFile::GetBonds() const
 {
     return bonds_;
 }
-
 const ParameterFile::AngleMap& ParameterFile::GetAngles() const
 {
     return angles_;
 }
-
 const ParameterFile::DihedralMap& ParameterFile::GetDihedrals() const
 {
     return dihedrals_;
 }
-
 const int ParameterFile::GetParameterFileType() const
 {
     return file_type_;
 }
+ParameterFile::DihedralMap ParameterFile::GetAllImproperDihedrals()
+{
+    DihedralMap improper_dihedral_map = DihedralMap();
+    for(DihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
+    {
+        ParameterFileDihedral* dihedral = (*it).second;
+        if(dihedral->GetIsImproper())
+            improper_dihedral_map[(*it).first] = dihedral;///???
+    }
+    return improper_dihedral_map;
+}
+ParameterFile::DihedralMap ParameterFile::GetAllproperDihedrals()
+{
+    DihedralMap proper_dihedral_map = DihedralMap();
+    for(DihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
+    {
+        ParameterFileDihedral* dihedral = (*it).second;
+        if(!dihedral->GetIsImproper())
+            proper_dihedral_map[(*it).first] = dihedral;///???
+    }
+    return proper_dihedral_map;
+}
+
 //////////////////////////////////////////////////////////
 //                         MUTATOR                      //
 //////////////////////////////////////////////////////////
