@@ -1916,6 +1916,24 @@ int Assembly::CountNumberOfExcludedAtoms()
     }
     return counter/2;
 }
+int Assembly::CountMaxNumberOfAtomsInLargestResidue()
+{
+    int max = 0;
+    for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        if(max <= assembly->CountNumberOfAtoms())
+            max = assembly->CountNumberOfAtoms();
+    }
+    for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        Residue::AtomVector atoms = residue->GetAtoms();
+        if(max <= atoms.size())
+            max = atoms.size();
+    }
+    return max;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
