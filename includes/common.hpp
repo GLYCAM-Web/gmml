@@ -23,6 +23,7 @@ namespace gmml
     const double PI_DEGREE = 180.0;
     const double EPSILON = 0.001;
     const double dCutOff = 1.6;
+    const int PdbResidueThreshold = 500;
 
     /*! \enum
       * Enumerator to possible n chain termination

@@ -536,6 +536,11 @@ namespace PdbPreprocessorSpace
               * @return removed_hydrogen_names_of_residue
               */
             std::vector<std::string> GetRemovedHydrogenNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
+
+            //***********************************************
+            std::vector<std::string> GetRemovedHydrogenNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, gmml::AtomNameMap dataset_atom_names_of_residue);
+
+            //***********************************************
             /*! \fn
               * A function in order to access to the removed hydrogens of a residue
               * @param pdb_atoms The list of pdb atoms
@@ -543,6 +548,12 @@ namespace PdbPreprocessorSpace
               * @return removed_hydrogens_of_residue
               */
             PdbFileSpace::PdbFile::PdbAtomVector GetRemovedHydrogensOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+
+            //***********************************************
+            PdbFileSpace::PdbFile::PdbAtomVector GetRemovedHydrogensOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, gmml::AtomNameMap dataset_atom_names_of_residue);
+
+            //***********************************************
+
             /*! \fn
               * A function in order to extract the removed hydrogens of a pdb file
               * @param pdb_file_path The path to the pdb file

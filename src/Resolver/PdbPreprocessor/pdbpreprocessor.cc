@@ -1153,6 +1153,12 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
         PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
         PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, recognized_residue_names);
 
+        if(recognized_residues.size() > PdbResidueThreshold)
+        {
+            cout << "Number of recognized residues in this pdb file is more than a threshold." << endl;
+            cout << "If you are using prep file, this may take a while, please wait ..." << endl;
+        }
+
         PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
         for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
         {
@@ -1169,8 +1175,11 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
                 ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
                 string key = ss.str();
                 PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
+                // Slow version
+//                vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+                // Advanced version
+                AtomNameMap dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(residue_name, lib_files, prep_files);
 
-                vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
 
                 PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
 
@@ -1205,6 +1214,12 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string>
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
     PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, recognized_residue_names);
 
+    if(recognized_residues.size() > PdbResidueThreshold)
+    {
+        cout << "Number of recognized residues in this pdb file is more than a threshold." << endl;
+        cout << "If you are using prep file, this may take a while, please wait ..." << endl;
+    }
+
     PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
     {
@@ -1221,7 +1236,11 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string>
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
             string key = ss.str();
             PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
-            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            // Slow version
+//            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            // Advanced version
+            AtomNameMap dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(residue_name, lib_files, prep_files);
+
             PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
 
             for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)
@@ -1299,6 +1318,24 @@ vector<string> PdbPreprocessor::GetRemovedHydrogenNamesOfResidue(vector<string> 
     return removed_hydrogen_names_of_residue;
 }
 
+vector<string> PdbPreprocessor::GetRemovedHydrogenNamesOfResidue(vector<string> pdb_atom_names_of_residue, AtomNameMap dataset_atom_names_of_residue)
+{
+    vector<string> removed_hydrogen_names_of_residue;
+    for(vector<string>::iterator it = pdb_atom_names_of_residue.begin(); it != pdb_atom_names_of_residue.end(); it++)
+    {
+        string pdb_atom_name = (*it);
+        if((pdb_atom_name.substr(0,1).compare("H") == 0 ||
+            (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
+        {
+            if(dataset_atom_names_of_residue.find(pdb_atom_name) == dataset_atom_names_of_residue.end())
+            {
+                removed_hydrogen_names_of_residue.push_back(pdb_atom_name);
+            }
+        }
+    }
+    return removed_hydrogen_names_of_residue;
+}
+
 PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetRemovedHydrogensOfResidue(PdbFile::PdbAtomVector pdb_atoms, vector<string> dataset_atom_names_of_residue)
 {
     PdbFile::PdbAtomVector removed_hydrogens_of_residue;
@@ -1328,6 +1365,24 @@ PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetRemovedHydrogensOfResid
     }
     return removed_hydrogens_of_residue;
 }
+
+PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetRemovedHydrogensOfResidue(PdbFile::PdbAtomVector pdb_atoms, AtomNameMap dataset_atom_names_of_residue)
+{
+    PdbFile::PdbAtomVector removed_hydrogens_of_residue;
+    for(PdbFile::PdbAtomVector::iterator it = pdb_atoms.begin(); it != pdb_atoms.end(); it++)
+    {
+        PdbAtom* pdb_atom = *it;
+        string pdb_atom_name = pdb_atom->GetAtomName();
+
+        if((pdb_atom_name.substr(0,1).compare("H") == 0 ||
+            (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
+        {
+            if(dataset_atom_names_of_residue.find(pdb_atom_name) == dataset_atom_names_of_residue.end())
+                removed_hydrogens_of_residue.push_back(pdb_atom);
+        }
+    }
+    return removed_hydrogens_of_residue;
+}
 void PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
 {
     try
@@ -1345,6 +1400,12 @@ void PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<strin
         PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
         PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, recognized_residue_names);
 
+        if(recognized_residues.size() > PdbResidueThreshold)
+        {
+            cout << "Number of recognized residues in this pdb file is more than a threshold." << endl;
+            cout << "If you are using prep file, this may take a while, please wait ..." << endl;
+        }
+
         PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
         for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
         {
@@ -1358,7 +1419,10 @@ void PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<strin
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
             string key = ss.str();
             PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
-            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            // Slow version
+//            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            // Advanced version
+            AtomNameMap dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(residue_name, lib_files, prep_files);
             PdbFile::PdbAtomVector removed_hydrogens = GetRemovedHydrogensOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
             for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = removed_hydrogens.begin(); it1 != removed_hydrogens.end(); it1++)
             {
@@ -1388,6 +1452,12 @@ void PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> 
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
     PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, recognized_residue_names);
 
+    if(recognized_residues.size() > PdbResidueThreshold)
+    {
+        cout << "Number of recognized residues in this pdb file is more than a threshold." << endl;
+        cout << "If you are using prep file, this may take a while, please wait ..." << endl;
+    }
+
     PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
     {
@@ -1403,7 +1473,10 @@ void PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> 
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
             string key = ss.str();
             PdbFile::PdbAtomVector atoms_of_residue = *(residue_atom_map[key]);
-            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            // Slow version
+//            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
+            // Advanced version
+            AtomNameMap dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(residue_name, lib_files, prep_files);
             PdbFile::PdbAtomVector removed_hydrogens = GetRemovedHydrogensOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
             for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = removed_hydrogens.begin(); it1 != removed_hydrogens.end(); it1++)
             {
