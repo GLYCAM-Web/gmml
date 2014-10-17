@@ -406,6 +406,11 @@ namespace MolecularModeling
               * @return counter Number of excluded atoms in all assemblies and residues in the current object of assembly
               */
             int CountNumberOfExcludedAtoms();
+            /*! \fn
+              * A function that counts the number of atoms in largest residue in all assemblies and residues of the assembly
+              * @return max Number of atoms in largest residue in all assemblies and residues in the current object of assembly
+              */
+            int CountMaxNumberOfAtomsInLargestResidue();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
