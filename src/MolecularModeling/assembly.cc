@@ -228,7 +228,6 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
     }
     return all_atoms_of_assembly;
 }
-
 Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
 {
     ResidueVector all_residues_of_assembly = ResidueVector();
@@ -709,7 +708,61 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
 {
     TopologyFile* topology_file = new TopologyFile();
+    TopologyAssembly* topology_assembly = new TopologyAssembly();
+    ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
+    int residue_counter = 0;
+    int atom_counter = 1;
+    stringstream ss;
+    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+    {
+        Residue* assembly_residue = *it;
+        TopologyResidue* topology_residue = new TopologyResidue();
+        residue_counter++;
+        topology_residue->SetIndex(residue_counter);
+        topology_residue->SetResidueName(assembly_residue->GetName());
+        if(distance(assembly_residues.begin(), it) == (int)assembly_residues.size()-1)
+            ss << assembly_residue->GetName();
+        else
+            ss << assembly_residue->GetName() << "-";
+        topology_residue->SetStartingAtomIndex(atom_counter);
+        AtomVector assembly_atoms = assembly_residue->GetAtoms();
+        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = (*it1);
+            TopologyAtom* topology_atom = new TopologyAtom();
+            atom_counter++;
+            topology_atom->SetAtomName(assembly_atom->GetName());
+            topology_atom->SetAtomCharge(assembly_atom->GetCharge());
+            topology_atom->SetAtomMass(assembly_atom->GetMass());
+            topology_atom->SetRadii(assembly_atom->GetRadius());
+            topology_atom->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());
+            topology_atom->SetType(assembly_atom->GetAtomType());
+            topology_atom->SetResidueName(assembly_residue->GetName());
+            topology_residue->AddAtom(topology_atom);
+        }
+        topology_assembly->AddResidue(topology_residue);
+    }
+    topology_assembly->SetAssemblyName(ss.str());
 
+
+    topology_file->SetAssembly(topology_assembly);
+//    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
+    topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
+    topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes());
+    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
+    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
+    topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes());
+    topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
+    topology_file->SetNumberOfAtomsInLargestResidue(this->CountMaxNumberOfAtomsInLargestResidue());
+    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
+    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
+    topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes());
+//    topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen());
+//    topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen());
+//    topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes());
+    topology_file->SetTotalNumberOfBonds(this->CountNumberOfBonds());
+    topology_file->SetTotalNumberOfAngles(this->CountNumberOfAngles());
+//    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedrals());
     return topology_file;
 }
 

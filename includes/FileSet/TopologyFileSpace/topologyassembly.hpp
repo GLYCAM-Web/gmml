@@ -70,6 +70,7 @@ namespace TopologyFileSpace
               * @param residues The residues attribute of the current object
               */
             void SetResidues(TopologyResidueMap residues);
+            void AddResidue(TopologyResidue* residue);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

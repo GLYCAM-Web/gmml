@@ -67,7 +67,10 @@ void TopologyAssembly::SetResidues(TopologyResidueMap residues)
         residues_[residue->GetResidueName()] = residue;
     }
 }
-
+void TopologyAssembly::AddResidue(TopologyResidue *residue)
+{
+    residues_[residue->GetResidueName()] = residue;
+}
 
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //

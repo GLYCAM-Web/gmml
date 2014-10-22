@@ -416,12 +416,24 @@ namespace PdbFileSpace
               * A function in order to delete a residue from the current object
               * @param residue A residue of the current object of this class
               */
-            void DeleteResidue(PdbResidue* residue);            
+            void DeleteResidue(PdbResidue* residue);
+            /*! \fn
+              * A function in order to delete a residue from the current object
+              * @param residue A residue of the current object of this class
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void DeleteResidueWithTheGivenModelNumber(PdbResidue* residue, int model_number = 1);
             /*! \fn
               * A function in order to delete an atom from the current object
               * @param atom An atom of the current object of this class
               */
             void DeleteAtom(PdbAtom* atom);
+            /*! \fn
+              * A function in order to delete an atom from the current object
+              * @param atom An atom of the current object of this class
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void DeleteAtomWithTheGivenModelNumber(PdbAtom* atom, int model_number = 1);
             /*! \fn
               * A function in order to update the residue name of a residue of the current object
               * @param residue A residue of the current object of this class
@@ -429,22 +441,47 @@ namespace PdbFileSpace
               */
             void UpdateResidueName(PdbResidue* residue, std::string residue_name);
             /*! \fn
+              * A function in order to update the residue name of a residue of the current object
+              * @param residue A residue of the current object of this class
+              * @param residue_name The new residue name for the given residue of the current object of this class
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void UpdateResidueNameWithTheGivenModelNumber(PdbResidue* residue, std::string residue_name, int model_number = 1);
+            /*! \fn
               * A function in order to insert a residue before the given residue in a chain
               * @param residue A residue of the current object of this class
               */
             void InsertResidueBefore(PdbAtomCard* residue);
+            /*! \fn
+              * A function in order to insert a residue before the given residue in a chain
+              * @param residue A residue of the current object of this class
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, int model_number = 1);
             /*! \fn
               * A function in order to insert a residue after the given residue in a chain
               * @param residue A residue of the current object of this class
               */
             void InsertResidueAfter(PdbAtomCard* residue);
             /*! \fn
+              * A function in order to insert a residue after the given residue in a chain
+              * @param residue A residue of the current object of this class
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, int model_number = 1);
+            /*! \fn
               * A function in order to split a chian of a model in atom card and put ter card at the given point
               * @param split_point_chain_id Residue chain id at the split point
               * @param split_point_sequence_number
               */
             void SplitAtomCardOfModelCard(char split_point_chain_id, int split_point_sequence_number);
-
+            /*! \fn
+              * A function in order to split a chian of a model in atom card and put ter card at the given point
+              * @param split_point_chain_id Residue chain id at the split point
+              * @param split_point_sequence_number
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_chain_id, int split_point_sequence_number, int model_number = 1);
             /*! \fn
               * A function to adjust the serial numbers of atoms that have been changed in connect card
               */
@@ -741,10 +778,22 @@ namespace PdbFileSpace
               */
             void Write(const std::string& pdb_file);
             /*! \fn
+              * A function to create an output pdb file with the given name
+              * @param pdb_file Output pdb file name
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void WriteWithTheGivenModelNumber(const std::string& pdb_file, int model_number = 1);
+            /*! \fn
               * A function to write back all card of the pdb file into an output stream
               * @param out_stream Primary output stream to write into an output file
               */
             void ResolveCards(std::ofstream& out_stream);
+            /*! \fn
+              * A function to write back all card of the pdb file into an output stream
+              * @param out_stream Primary output stream to write into an output file
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int model_number = 1);
             /*! \fn
               * A function to write back header card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write header card
@@ -920,6 +969,12 @@ namespace PdbFileSpace
               * @param stream Intermediate output stream in order to write model card
               */
             void ResolveModelCard(std::ofstream& stream);
+            /*! \fn
+              * A function to write back model card of the pdb file into an output stream
+              * @param stream Intermediate output stream in order to write model card
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int model_number = 1);
             /*! \fn
               * A function to write back connectivity card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write connectivity card

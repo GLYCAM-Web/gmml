@@ -73,6 +73,12 @@ namespace TopologyFileSpace
               */
             void SetResidueName(std::string residue_name);
             /*! \fn
+              * A function in order to add an atom to the current object
+              * Add a new entry to the atoms_ attribute of the current topology residue
+              * @param atom A new atom to be added to the current topology residue
+              */
+            void AddAtom(TopologyAtom* atom);
+            /*! \fn
               * A mutator function in order to set the index of the current object
               * Set the index_ attribute of the current topology residue
               * @param index The index attribute of the current object

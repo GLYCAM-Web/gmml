@@ -357,15 +357,17 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the unrecognized residues of a pdb file
               * @param pdb_file The object of a pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to remove the unrecognized residues of a pdb file
               * @param pdb_file The object of a pdb file
@@ -373,19 +375,28 @@ namespace PdbPreprocessorSpace
               */
             void RemoveUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues);
             /*! \fn
+              * A function in order to remove the unrecognized residues of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param unknown_heavy_atoms The list of unrecognized residues
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void RemoveUnrecognizedResiduesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues, int model_number = 1);
+            /*! \fn
               * A function in order to extract the recognized residues of a pdb file
               * @param pdb_file_path The path to the pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the recognized residues of a pdb file
               * @param pdb_file The object of pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractRecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to access to the list of CYS residues
               * @param pdb_residues The list of pdb residues
@@ -404,19 +415,28 @@ namespace PdbPreprocessorSpace
             /*! \fn
               * A function in order to extract the CYS residues of a pdb file
               * @param pdb_file_path The path to the pdb file
+              * @return bool value
               */
-            void ExtractCYSResidues(std::string pdb_file_path);
+            bool ExtractCYSResidues(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the CYS residues of a pdb file
               * @param pdb_file The object of pdb file
+              * @return bool value
               */
-            void ExtractCYSResidues(PdbFileSpace::PdbFile* pdb_file);
+            bool ExtractCYSResidues(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
               * A function in order to remove the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
               * @param disulfide_bonds The list of disulfide bonds
               */
             void UpdateCYSResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds);
+            /*! \fn
+              * A function in order to remove the unknown heavy atoms of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param disulfide_bonds The list of disulfide bonds
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void UpdateCYSResiduesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds, int model_number = 1);
             /*! \fn
               * A function in order to access to the list of HIS residues
               * @param pdb_residues The list of pdb residues
@@ -426,19 +446,28 @@ namespace PdbPreprocessorSpace
             /*! \fn
               * A function in order to extract the HIS residues of a pdb file
               * @param pdb_file_path The path to the pdb file
+              * @return bool value
               */
-            void ExtractHISResidues(std::string pdb_file_path);
+            bool ExtractHISResidues(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the HIS residues of a pdb file
               * @param pdb_file The object of pdb file
+              * @return bool value
               */
-            void ExtractHISResidues(PdbFileSpace::PdbFile* pdb_file);
+            bool ExtractHISResidues(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
               * A function in order to update histidine mapping of a pdb file
               * @param pdb_file The object of a pdb file
               * @param histidine_mappings The list of histidine mappings
               */
             void UpdateHISMapping(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings);
+            /*! \fn
+              * A function in order to update histidine mapping of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param histidine_mappings The list of histidine mappings
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void UpdateHISMappingWithTheGivenNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings, int model_number = 1);
             /*! \fn
               * A function in order to access to the list of unknown heavy atoms of a residue
               * @param pdb_atom_names_of_residue The list of atom names of a pdb residue
@@ -508,27 +537,43 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to remove the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
               * @param unknown_heavy_atoms The list of unknown heavy atoms
               */
-            void RemoveUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);            
+            void RemoveUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
+            /*! \fn
+              * A function in order to remove the unknown heavy atoms of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param unknown_heavy_atoms The list of unknown heavy atoms
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void RemoveUnknownHeavyAtomsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms, int model_number = 1);
             /*! \fn
               * A function in order to remove residues of unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
               * @param unknown_heavy_atoms The list of unknown heavy atoms
               */
             void RemoveResiduesOfUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
+            /*! \fn
+              * A function in order to remove residues of unknown heavy atoms of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param unknown_heavy_atoms The list of unknown heavy atoms
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms, int model_number = 1);
             /*! \fn
               * A function in order to access to the removed hydrogen names of a residue
               * @param pdb_atom_names_of_residue The list of atom names of a residue from pdb file
@@ -559,15 +604,17 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the removed hydrogens of a pdb file
               * @param pdb_file The object of a pdb file
               * @param lib_files The list of paths to the library files
               * @param prep_files The list of paths to the prep files
+              * @return bool value
               */
-            void ExtractRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to remove the removed hydrogens of a pdb file
               * @param pdb_file The object of a pdb file
@@ -575,32 +622,51 @@ namespace PdbPreprocessorSpace
               */
             void RemoveRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens);
             /*! \fn
+              * A function in order to remove the removed hydrogens of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param replaced_hydrogens The list of replaced hydrogens
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void RemoveRemovedHydrogensWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens, int model_number = 1);
+            /*! \fn
               * A function in order to extract the amino acid chains of a pdb file
               * @param pdb_file_path The path to the pdb file
+              * @return bool value
               */
-            void ExtractAminoAcidChains(std::string pdb_file_path);
+            bool ExtractAminoAcidChains(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the amino acid chains of a pdb file
               * @param pdb_file The object of pdb file
+              * @return bool value
               */
-            void ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
+            bool ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
               * A function in order to update the amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file
               * @param lib_files The list of paths to the library files
               * @param gaps The list of chain terminations
               */
-            void UpdateAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_termination);
+            void UpdateAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations);
+            /*! \fn
+              * A function in order to update the amino acid chains of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param lib_files The list of paths to the library files
+              * @param gaps The list of chain terminations
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations, int model_number = 1);
             /*! \fn
               * A function in order to extract the gaps in amino acid chains of a pdb file
               * @param pdb_file_path The path to the pdb file
+              * @return bool value
               */
-            void ExtractGapsInAminoAcidChains(std::string pdb_file_path);
+            bool ExtractGapsInAminoAcidChains(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the gaps in amino acid chains of a pdb file
               * @param pdb_file The object of pdb file
+              * @return bool value
               */
-            void ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
+            bool ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
               * A function in order to update the gaps in amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file
@@ -608,6 +674,14 @@ namespace PdbPreprocessorSpace
               * @param gaps The list of missing residues
               */
             void UpdateGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps);
+            /*! \fn
+              * A function in order to update the gaps in amino acid chains of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param lib_files The list of paths to the library files
+              * @param gaps The list of missing residues
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps, int model_number = 1);
             /*! \fn
               * A function in order to access to the library residue by name from multiple library files
               * @param residue_name The name of a residue
@@ -618,19 +692,28 @@ namespace PdbPreprocessorSpace
             /*! \fn
               * A function in order to extract the alternate residues of a pdb file
               * @param pdb_file_path The path to the pdb file
+              * @return bool value
               */
-            void ExtractAlternateResidue(std::string pdb_file_path);
+            bool ExtractAlternateResidue(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the alternate residues of a pdb file
               * @param pdb_file The object of a pdb file
+              * @return bool value
               */
-            void ExtractAlternateResidue(PdbFileSpace::PdbFile* pdb_file);
+            bool ExtractAlternateResidue(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
               * A function in order to remove unselected alternate residues of a pdb file
               * @param pdb_file The object of a pdb file
               * @param alternate_residue_map
               */
             void RemoveUnselectedAlternateResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map);
+            /*! \fn
+              * A function in order to remove unselected alternate residues of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @param alternate_residue_map
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map, int model_number = 1);
             /*! \fn
               * A function to do all preprocessing sequentially
               * @param pdb_file Pdb file object that has to be preprocessed
@@ -645,10 +728,24 @@ namespace PdbPreprocessorSpace
               */
             void ApplyPreprocessing(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path);
             /*! \fn
+              * A function to apply all the updates on a pdb file
+              * @param pdb_file A pdb file object that has to modified to reflect the updates
+              * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
+              */
+            void ApplyPreprocessingWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path, int model_number = 1);
+            /*! \fn
               * A function to delete all to be deleted atoms and residues in a pdb file
               * @param pdb_file A pdb file object that has to modified to reflect the updates
               */
             void DeleteAllToBeDeletedEntities(PdbFileSpace::PdbFile* pdb_file);
+            /*! \fn
+              * A function to delete all to be deleted atoms and residues in a pdb file
+              * @param pdb_file A pdb file object that has to modified to reflect the updates
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void DeleteAllToBeDeletedEntitiesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, int model_number = 1);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

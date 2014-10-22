@@ -460,7 +460,7 @@ ResidueNameMap PdbPreprocessor::GetAllResidueNamesFromDatasetFilesMap(vector<str
     return all_residue_names;
 }
 
-void PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
+bool PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
 {
     try
     {
@@ -507,11 +507,13 @@ void PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
                 unrecognized_residue->SetMiddleOfChain(true);
             unrecognized_residues_.push_back(unrecognized_residue);
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
+
 }
-void PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
+bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
 {
     // Slow version
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
@@ -555,6 +557,7 @@ void PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<stri
             unrecognized_residue->SetMiddleOfChain(true);
         unrecognized_residues_.push_back(unrecognized_residue);
     }
+    return true;
 }
 void PdbPreprocessor::RemoveUnrecognizedResidues(PdbFile *pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues)
 {
@@ -567,7 +570,18 @@ void PdbPreprocessor::RemoveUnrecognizedResidues(PdbFile *pdb_file, PdbPreproces
         pdb_file->DeleteResidue(pdb_residue);
     }
 }
-void PdbPreprocessor::ExtractRecognizedResidues(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
+void PdbPreprocessor::RemoveUnrecognizedResiduesWithTheGivenModelNumber(PdbFile *pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues, int model_number)
+{
+    for(PdbPreprocessorUnrecognizedResidueVector::iterator it = unrecognized_residues.begin(); it != unrecognized_residues.end(); it++)
+    {
+        PdbPreprocessorUnrecognizedResidue* unrecognized_residue = (*it);
+        PdbResidue* pdb_residue =
+                new PdbResidue(unrecognized_residue->GetResidueName(), unrecognized_residue->GetResidueChainId(),
+                               unrecognized_residue->GetResidueSequenceNumber(), unrecognized_residue->GetResidueInsertionCode(), unrecognized_residue->GetResidueAlternateLocation());
+        pdb_file->DeleteResidueWithTheGivenModelNumber(pdb_residue, model_number);
+    }
+}
+bool PdbPreprocessor::ExtractRecognizedResidues(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
 {
     try
     {
@@ -593,11 +607,12 @@ void PdbPreprocessor::ExtractRecognizedResidues(string pdb_file_path, vector<str
                                                            pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
             recognized_residues_.push_back(recognized_residue);
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractRecognizedResidues(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
+bool PdbPreprocessor::ExtractRecognizedResidues(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
 {
     // Slow version
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
@@ -619,6 +634,7 @@ void PdbPreprocessor::ExtractRecognizedResidues(PdbFile* pdb_file, vector<string
                                                        pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
         recognized_residues_.push_back(recognized_residue);
     }
+    return true;
 }
 PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetAllCYSResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues)
 {
@@ -644,7 +660,7 @@ double PdbPreprocessor::GetDistanceofCYS(PdbResidue* first_residue, PdbResidue* 
         distance = first_residue_sulfur_atom->GetAtomOrthogonalCoordinate().Distance(second_residue_sulfur_atom->GetAtomOrthogonalCoordinate());
     return distance;
 }
-void PdbPreprocessor::ExtractCYSResidues(string pdb_file_path)
+bool PdbPreprocessor::ExtractCYSResidues(string pdb_file_path)
 {
     try
     {
@@ -671,11 +687,12 @@ void PdbPreprocessor::ExtractCYSResidues(string pdb_file_path)
                 }
             }
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractCYSResidues(PdbFile* pdb_file)
+bool PdbPreprocessor::ExtractCYSResidues(PdbFile* pdb_file)
 {
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
     PdbFileSpace::PdbFile::PdbResidueVector cys_residues = GetAllCYSResidues(pdb_residues);
@@ -699,6 +716,7 @@ void PdbPreprocessor::ExtractCYSResidues(PdbFile* pdb_file)
             }
         }
     }
+    return true;
 }
 void PdbPreprocessor::UpdateCYSResidues(PdbFile *pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds)
 {
@@ -749,6 +767,55 @@ void PdbPreprocessor::UpdateCYSResidues(PdbFile *pdb_file, PdbPreprocessorDisulf
     }
 }
 
+void PdbPreprocessor::UpdateCYSResiduesWithTheGivenModelNumber(PdbFile *pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds, int model_number)
+{
+    for(PdbPreprocessorDisulfideBondVector::iterator it = disulfide_bonds.begin(); it != disulfide_bonds.end(); it++)
+    {
+        PdbPreprocessorDisulfideBond* disulfide_bond = (*it);
+        if(disulfide_bond->GetIsBonded())
+        {
+            PdbAtom* pdb_atom_1 =
+                    new PdbAtom(disulfide_bond->GetResidueChainId1(), "HG", "CYS",
+                                disulfide_bond->GetResidueSequenceNumber1(), disulfide_bond->GetResidueInsertionCode1(), disulfide_bond->GetResidueAlternateLocation1());
+            pdb_file->DeleteAtomWithTheGivenModelNumber(pdb_atom_1, model_number);
+            PdbAtom* pdb_atom_2 =
+                    new PdbAtom(disulfide_bond->GetResidueChainId2(), "HG", "CYS",
+                                disulfide_bond->GetResidueSequenceNumber2(), disulfide_bond->GetResidueInsertionCode2(), disulfide_bond->GetResidueAlternateLocation2());
+            pdb_file->DeleteAtomWithTheGivenModelNumber(pdb_atom_2, model_number);
+            string target_key1;
+            stringstream ss_1;
+            ss_1 << "CYS" << "_" << disulfide_bond->GetResidueChainId1() << "_" << disulfide_bond->GetResidueSequenceNumber1() << "_" << disulfide_bond->GetResidueInsertionCode1()
+                 << "_" << disulfide_bond->GetResidueAlternateLocation1();
+            target_key1 = ss_1.str();
+            string target_key2;
+            stringstream ss_2;
+            ss_2 << "CYS" << "_" << disulfide_bond->GetResidueChainId2() << "_" << disulfide_bond->GetResidueSequenceNumber2() << "_" << disulfide_bond->GetResidueInsertionCode2()
+                 << "_" << disulfide_bond->GetResidueAlternateLocation2();
+            target_key2 = ss_2.str();
+            PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+            for(PdbFile::PdbResidueVector::iterator it1 = pdb_residues.begin(); it1 != pdb_residues.end(); it1++)
+            {
+                PdbResidue* pdb_residue = (*it1);
+
+                string residue_name = pdb_residue->GetResidueName();
+                if((residue_name).compare("CYS") == 0)
+                {
+                    stringstream ss;
+                    string pdb_residue_key;
+                    ss << residue_name << "_" << pdb_residue->GetResidueChainId() << "_" << pdb_residue->GetResidueSequenceNumber() << "_" << pdb_residue->GetResidueInsertionCode()
+                       << "_" << pdb_residue->GetResidueAlternateLocation();
+                    pdb_residue_key = ss.str();
+                    if(pdb_residue_key.compare(target_key1) == 0 || pdb_residue_key.compare(target_key2) == 0)
+                    {
+                        pdb_file->UpdateResidueNameWithTheGivenModelNumber(pdb_residue, "CYX", model_number);
+                    }
+                }
+            }
+
+        }
+    }
+}
+
 PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetAllHISResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues)
 {
     PdbFileSpace::PdbFile::PdbResidueVector all_his_residues;
@@ -763,7 +830,7 @@ PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetAllHISResidues(PdbFi
     }
     return all_his_residues;
 }
-void PdbPreprocessor::ExtractHISResidues(string pdb_file_path)
+bool PdbPreprocessor::ExtractHISResidues(string pdb_file_path)
 {
     try
     {
@@ -803,11 +870,12 @@ void PdbPreprocessor::ExtractHISResidues(string pdb_file_path)
                 histidine_mappings_.push_back(histidine_mapping);
             }
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractHISResidues(PdbFile* pdb_file)
+bool PdbPreprocessor::ExtractHISResidues(PdbFile* pdb_file)
 {
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
     PdbFileSpace::PdbFile::PdbResidueVector his_residues = GetAllHISResidues(pdb_residues);
@@ -847,6 +915,7 @@ void PdbPreprocessor::ExtractHISResidues(PdbFile* pdb_file)
             histidine_mappings_.push_back(histidine_mapping);
         }
     }
+    return true;
 }
 void PdbPreprocessor::UpdateHISMapping(PdbFile *pdb_file, PdbPreprocessor::PdbPreprocessorHistidineMappingVector histidine_mappings)
 {
@@ -909,6 +978,73 @@ void PdbPreprocessor::UpdateHISMapping(PdbFile *pdb_file, PdbPreprocessor::PdbPr
                         }
                     }
                     pdb_file->UpdateResidueName(pdb_residue, histidine_mapping->GetStringFormatOfSelectedMapping());
+                }
+            }
+        }
+    }
+}
+
+void PdbPreprocessor::UpdateHISMappingWithTheGivenNumber(PdbFile *pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings, int model_number)
+{
+    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    for(PdbPreprocessorHistidineMappingVector::iterator it = histidine_mappings.begin(); it != histidine_mappings.end(); it++)
+    {
+        PdbPreprocessorHistidineMapping* histidine_mapping = (*it);
+        string target_key;
+        stringstream ss;
+        ss << "HIS" << "_" << histidine_mapping->GetResidueChainId() << "_" << histidine_mapping->GetResidueSequenceNumber()
+           << "_" << histidine_mapping->GetResidueInsertionCode() << "_" << histidine_mapping->GetResidueAlternateLocation();
+        target_key = ss.str();
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = pdb_residues.begin(); it1 != pdb_residues.end(); it1++)
+        {
+            PdbResidue* pdb_residue = (*it1);
+
+            string residue_name = pdb_residue->GetResidueName();
+            if((residue_name).compare("HIS") == 0)
+            {
+                stringstream ss1;
+                string pdb_residue_key;
+                ss1 << residue_name << "_" << pdb_residue->GetResidueChainId() << "_" << pdb_residue->GetResidueSequenceNumber()
+                    << "_" << pdb_residue->GetResidueInsertionCode() << "_" << pdb_residue->GetResidueAlternateLocation();
+                pdb_residue_key = ss1.str();
+                if(pdb_residue_key.compare(target_key) == 0)
+                {
+                    // HIE residue
+                    PdbAtom* HE2 = pdb_file->GetAtomOfResidueByName(pdb_residue, "HE2");
+                    PdbAtom* HD1 = pdb_file->GetAtomOfResidueByName(pdb_residue, "HD1");
+                    if(HE2 != NULL && HD1 == NULL)
+                    {
+                        if(histidine_mapping->GetSelectedMapping() == HID)
+                        {
+                            // Delete HE2
+                            pdb_file->DeleteAtomWithTheGivenModelNumber(HE2, model_number);
+                        }
+                    }
+                    // HID residue
+                    if(HE2 == NULL && HD1 != NULL)
+                    {
+                        if(histidine_mapping->GetSelectedMapping() == HIE)
+                        {
+                            // Delete HD1
+                            pdb_file->DeleteAtomWithTheGivenModelNumber(HD1, model_number);
+                        }
+
+                    }
+                    // HIP residue
+                    if(HE2 != NULL && HD1 != NULL)
+                    {
+                        if(histidine_mapping->GetSelectedMapping() == HIE)
+                        {
+                            // Delete HD1
+                            pdb_file->DeleteAtomWithTheGivenModelNumber(HD1, model_number);
+                        }
+                        if(histidine_mapping->GetSelectedMapping() == HID)
+                        {
+                            // Delete HE2
+                            pdb_file->DeleteAtomWithTheGivenModelNumber(HE2, model_number);
+                        }
+                    }
+                    pdb_file->UpdateResidueNameWithTheGivenModelNumber(pdb_residue, histidine_mapping->GetStringFormatOfSelectedMapping(), model_number);
                 }
             }
         }
@@ -1134,7 +1270,7 @@ PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetUnknownHeavyAtomsOfResi
     return unknown_heavy_atoms_of_residue;
 }
 
-void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
+bool PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
 {
     try
     {
@@ -1194,11 +1330,12 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
                 }
             }
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
+bool PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
 {
     // Slow version
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
@@ -1254,6 +1391,7 @@ void PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string>
             }
         }
     }    
+    return true;
 }
 void PdbPreprocessor::RemoveUnknownHeavyAtoms(PdbFile *pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms)
 {
@@ -1264,6 +1402,17 @@ void PdbPreprocessor::RemoveUnknownHeavyAtoms(PdbFile *pdb_file, PdbPreprocessor
                 new PdbAtom(unknown_heavy_atom->GetResidueChainId(),unknown_heavy_atom->GetAtomName(),
                             unknown_heavy_atom->GetResidueName(), unknown_heavy_atom->GetResidueSequenceNumber(), unknown_heavy_atom->GetResidueInsertionCode(), unknown_heavy_atom->GetResidueAlternateLocation());
         pdb_file->DeleteAtom(pdb_atom);
+    }
+}
+void PdbPreprocessor::RemoveUnknownHeavyAtomsWithTheGivenModelNumber(PdbFile *pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms,int model_number)
+{
+    for(PdbPreprocessorUnrecognizedHeavyAtomVector::iterator it = unknown_heavy_atoms.begin(); it != unknown_heavy_atoms.end(); it++)
+    {
+        PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom = (*it);
+        PdbAtom* pdb_atom =
+                new PdbAtom(unknown_heavy_atom->GetResidueChainId(),unknown_heavy_atom->GetAtomName(),
+                            unknown_heavy_atom->GetResidueName(), unknown_heavy_atom->GetResidueSequenceNumber(), unknown_heavy_atom->GetResidueInsertionCode(), unknown_heavy_atom->GetResidueAlternateLocation());
+        pdb_file->DeleteAtomWithTheGivenModelNumber(pdb_atom, model_number);
     }
 }
 
@@ -1283,6 +1432,27 @@ void PdbPreprocessor::RemoveResiduesOfUnknownHeavyAtoms(PdbFile *pdb_file, PdbPr
             PdbResidue* pdb_residue = new PdbResidue(unknown_heavy_atom->GetResidueName(),unknown_heavy_atom->GetResidueChainId(), unknown_heavy_atom->GetResidueSequenceNumber(),
                                                      unknown_heavy_atom->GetResidueInsertionCode(), unknown_heavy_atom->GetResidueAlternateLocation());
             pdb_file->DeleteResidue(pdb_residue);
+            removed_keys.push_back(residue_key);
+        }
+    }
+}
+
+void PdbPreprocessor::RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(PdbFile *pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms, int model_number)
+{
+    vector<string> removed_keys = vector<string>();
+    for(PdbPreprocessorUnrecognizedHeavyAtomVector::iterator it = unknown_heavy_atoms.begin(); it != unknown_heavy_atoms.end(); it++)
+    {
+        PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom = (*it);
+        stringstream ss;
+        ss << unknown_heavy_atom->GetResidueInsertionCode() << "_" << unknown_heavy_atom->GetResidueChainId() << "_" << unknown_heavy_atom->GetResidueSequenceNumber()
+           << "_" << unknown_heavy_atom->GetResidueInsertionCode() << "_" << unknown_heavy_atom->GetResidueAlternateLocation();
+        string residue_key = ss.str();
+        if(distance(removed_keys.begin(), find(removed_keys.begin(), removed_keys.end(), residue_key)) < 0 ||
+                distance(removed_keys.begin(), find(removed_keys.begin(), removed_keys.end(), residue_key)) >= (int)removed_keys.size())
+        {
+            PdbResidue* pdb_residue = new PdbResidue(unknown_heavy_atom->GetResidueName(),unknown_heavy_atom->GetResidueChainId(), unknown_heavy_atom->GetResidueSequenceNumber(),
+                                                     unknown_heavy_atom->GetResidueInsertionCode(), unknown_heavy_atom->GetResidueAlternateLocation());
+            pdb_file->DeleteResidueWithTheGivenModelNumber(pdb_residue , model_number);
             removed_keys.push_back(residue_key);
         }
     }
@@ -1383,7 +1553,7 @@ PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetRemovedHydrogensOfResid
     }
     return removed_hydrogens_of_residue;
 }
-void PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
+bool PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<string> lib_files, vector<string> prep_files)
 {
     try
     {
@@ -1434,11 +1604,12 @@ void PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<strin
                 replaced_hydrogens_.push_back(removed_hydrogen_atom);
             }
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
+bool PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> lib_files, vector<string> prep_files)
 {
     // Slow version
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
@@ -1489,6 +1660,7 @@ void PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> 
             }
         }
     }
+    return true;
 }
 void PdbPreprocessor::RemoveRemovedHydrogens(PdbFile *pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens)
 {
@@ -1501,7 +1673,18 @@ void PdbPreprocessor::RemoveRemovedHydrogens(PdbFile *pdb_file, PdbPreprocessorR
         pdb_file->DeleteAtom(pdb_atom);
     }
 }
-void PdbPreprocessor::ExtractAminoAcidChains(string pdb_file_path)
+void PdbPreprocessor::RemoveRemovedHydrogensWithTheGivenModelNumber(PdbFile *pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens, int model_number)
+{
+    for(PdbPreprocessorReplacedHydrogenVector::iterator it = replaced_hydrogens.begin(); it != replaced_hydrogens.end(); it++)
+    {
+        PdbPreprocessorReplacedHydrogen* replaced_hydrogen = (*it);
+        PdbAtom* pdb_atom =
+                new PdbAtom(replaced_hydrogen->GetResidueChainId(),replaced_hydrogen->GetAtomName(),
+                            replaced_hydrogen->GetResidueName(), replaced_hydrogen->GetResidueSequenceNumber(), replaced_hydrogen->GetResidueInsertionCode(), replaced_hydrogen->GetResidueAlternateLocation());
+        pdb_file->DeleteAtomWithTheGivenModelNumber(pdb_atom, model_number);
+    }
+}
+bool PdbPreprocessor::ExtractAminoAcidChains(string pdb_file_path)
 {
     try
     {
@@ -1537,11 +1720,12 @@ void PdbPreprocessor::ExtractAminoAcidChains(string pdb_file_path)
 
             chain_terminations_.push_back(chain);
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file)
+bool PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file)
 {
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
 
@@ -1573,6 +1757,7 @@ void PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file)
                                                                                      insertion_codes.at(starting_index), insertion_codes.at(ending_index) );
         chain_terminations_.push_back(chain);
     }
+    return true;
 }
 void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations)
 {
@@ -1692,7 +1877,127 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> li
         }
     }
 }
-void PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path)
+
+void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_file, vector<string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations, int model_number)
+{
+    for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
+    {
+        PdbPreprocessorChainTermination* chain = (*it1);
+        // Zwitterionic in n terminal
+        if(chain->GetStringFormatOfSelectedNTermination().find("+") != string::npos || chain->GetStringFormatOfSelectedNTermination().find("-") != string::npos)
+        {
+            // Zwitterionic in c terminal
+            if(chain->GetStringFormatOfSelectedCTermination().find("+") != string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != string::npos)
+            {
+                // End of chain
+                // Do nothing
+            }
+            else
+            {
+                // Add c terminal at the end of the chain
+                PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
+                string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_c_termination, lib_files);
+                if(lib_file_residue != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                    pdb_atom_card->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, chain->GetResidueChainId(),
+                                                                      chain->GetEndingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card->SetAtoms(atom_map);
+                    pdb_file->InsertResidueAfterWithTheGivenModelNumber(pdb_atom_card, model_number);
+                }
+            }
+        }
+        else
+        {
+            // Zwitterionic in c terminal
+            if(chain->GetStringFormatOfSelectedCTermination().find("+") != string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != string::npos)
+            {
+                // Add n terminal residue at the beginning of the chain
+                PossibleNChainTermination n_termination = chain->GetSelectedNTermination();
+                string string_n_termination = chain->GetStringFormatOfNTermination(n_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_n_termination, lib_files);
+                if(lib_file_residue != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                    pdb_atom_card->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, chain->GetResidueChainId(),
+                                                                      chain->GetStartingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card->SetAtoms(atom_map);
+                    pdb_file->InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
+                }
+            }
+            else
+            {
+                // Add c terminal residue at the end of the chain
+                PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
+                string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue_from_c_termination = GetLibraryResidueByNameFromMultipleLibraryFiles(string_c_termination, lib_files);
+                if(lib_file_residue_from_c_termination != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card_for_c_termination = new PdbAtomCard();
+                    pdb_atom_card_for_c_termination->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map_for_c_termination;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it3).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, chain->GetResidueChainId(),
+                                                                      chain->GetEndingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map_for_c_termination[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card_for_c_termination->SetAtoms(atom_map_for_c_termination);
+                    pdb_file->InsertResidueAfterWithTheGivenModelNumber(pdb_atom_card_for_c_termination, model_number);
+                }
+                // Add n terminal residue at the beginning of the chain
+                PossibleNChainTermination n_termination = chain->GetSelectedNTermination();
+                string string_n_termination = chain->GetStringFormatOfNTermination(n_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_n_termination, lib_files);
+                if(lib_file_residue != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                    pdb_atom_card->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, chain->GetResidueChainId(),
+                                                                      chain->GetStartingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card->SetAtoms(atom_map);
+                    pdb_file->InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
+                }
+            }
+        }
+    }
+}
+
+bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path)
 {
     try
     {
@@ -1736,11 +2041,12 @@ void PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path)
                 }
             }
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile* pdb_file)
+bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile* pdb_file)
 {
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
     PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
@@ -1781,6 +2087,7 @@ void PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile* pdb_file)
             }
         }
     }
+    return true;
 }
 void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<string> lib_files, PdbPreprocessorMissingResidueVector gaps)
 {
@@ -1921,7 +2228,146 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<stri
             }
         }
     }
+}
+void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_file, vector<string> lib_files, PdbPreprocessorMissingResidueVector gaps, int model_number)
+{
+    for(PdbPreprocessor::PdbPreprocessorMissingResidueVector::iterator it1 = gaps.begin(); it1 != gaps.end(); it1++)
+    {
+        PdbPreprocessorMissingResidue* gap = (*it1);
+        pdb_file->SplitAtomCardOfModelCardWithTheGivenModelNumber(gap->GetResidueChainId(), gap->GetResidueAfterGap(), model_number);
+    }
+    for(PdbPreprocessor::PdbPreprocessorMissingResidueVector::iterator it1 = gaps.begin(); it1 != gaps.end(); it1++)
+    {
+        PdbPreprocessorMissingResidue* gap = (*it1);
+        // Zwitterionic in n terminal
+        if(gap->GetStringFormatOfSelectedNTermination().find("+") != string::npos || gap->GetStringFormatOfSelectedNTermination().find("-") != string::npos)
+        {
+            // Zwitterionic in c terminal
+            if(gap->GetStringFormatOfSelectedCTermination().find("+") != string::npos || gap->GetStringFormatOfSelectedCTermination().find("-") != string::npos)
+            {
 
+            }
+            else
+            {
+                // Add c terminal at the end of the chain
+                PossibleCChainTermination c_termination = gap->GetSelectedCTermination();
+                string string_c_termination = gap->GetStringFormatOfCTermination(c_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_c_termination, lib_files);
+                if(lib_file_residue != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                    pdb_atom_card->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, gap->GetResidueChainId(),
+                                                                      gap->GetResidueBeforeGap(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card->SetAtoms(atom_map);
+                    pdb_file->InsertResidueAfterWithTheGivenModelNumber(pdb_atom_card, model_number);
+                }
+            }
+        }
+        else
+        {
+            // Zwitterionic in c terminal
+            if(gap->GetStringFormatOfSelectedCTermination().find("+") != string::npos || gap->GetStringFormatOfSelectedCTermination().find("-") != string::npos)
+            {
+                // Add n terminal residue at the beginning of the chain
+                PossibleNChainTermination n_termination = gap->GetSelectedNTermination();
+                string string_n_termination = gap->GetStringFormatOfNTermination(n_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_n_termination, lib_files);
+                if(lib_file_residue != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                    pdb_atom_card->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, gap->GetResidueChainId(),
+                                                                      gap->GetResidueAfterGap(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card->SetAtoms(atom_map);
+                    pdb_file->InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
+                    if(it1 != --gaps.end())
+                    {
+                        PdbPreprocessorMissingResidue* next_gap = (*(++it1));
+                        if(gap->GetResidueChainId() == next_gap->GetResidueChainId())
+                        {
+                            (*it1)->SetResidueBeforeGap((*it1)->GetResidueBeforeGap()+1);
+                        }
+                        it1--;
+                    }
+                }
+            }
+            else
+            {
+                // Add c terminal residue at the end of the chain
+                PossibleCChainTermination c_termination = gap->GetSelectedCTermination();
+                string string_c_termination = gap->GetStringFormatOfCTermination(c_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue_from_c_termination = GetLibraryResidueByNameFromMultipleLibraryFiles(string_c_termination, lib_files);
+                if(lib_file_residue_from_c_termination != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card_for_c_termination = new PdbAtomCard();
+                    pdb_atom_card_for_c_termination->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map_for_c_termination;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it3).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, gap->GetResidueChainId(),
+                                                                      gap->GetResidueBeforeGap(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map_for_c_termination[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card_for_c_termination->SetAtoms(atom_map_for_c_termination);
+                    pdb_file->InsertResidueAfterWithTheGivenModelNumber(pdb_atom_card_for_c_termination, model_number);
+                    if(it1 != --gaps.end())
+                    {
+                        PdbPreprocessorMissingResidue* next_gap = (*(++it1));
+                        if(gap->GetResidueChainId() == next_gap->GetResidueChainId())
+                        {
+                            (*it1)->SetResidueBeforeGap((*it1)->GetResidueBeforeGap()+1);
+                        }
+                        it1--;
+                    }
+                }
+                // Add n terminal residue at the beginning of the chain
+                PossibleNChainTermination n_termination = gap->GetSelectedNTermination();
+                string string_n_termination = gap->GetStringFormatOfNTermination(n_termination);
+                LibraryFileSpace::LibraryFileResidue* lib_file_residue = GetLibraryResidueByNameFromMultipleLibraryFiles(string_n_termination, lib_files);
+                if(lib_file_residue != NULL)
+                {
+                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                    PdbFileSpace::PdbAtomCard* pdb_atom_card = new PdbAtomCard();
+                    pdb_atom_card->SetRecordName("ATOM");
+                    PdbFileSpace::PdbAtomCard::PdbAtomMap atom_map;
+                    int serial_number = 0;
+                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
+                    {
+                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                        PdbFileSpace::PdbAtom* pdb_atom = new PdbAtom(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, gap->GetResidueChainId(),
+                                                                      gap->GetResidueAfterGap(), ' ', lib_file_atom->GetCoordinate(), dNotSet, dNotSet, " ", "");
+                        atom_map[serial_number] = pdb_atom;
+                        serial_number++;
+                    }
+                    pdb_atom_card->SetAtoms(atom_map);
+                    pdb_file->InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
+                }
+            }
+        }
+    }
 }
 
 LibraryFileSpace::LibraryFileResidue* PdbPreprocessor::GetLibraryResidueByNameFromMultipleLibraryFiles(string residue_name, vector<string> lib_files)
@@ -1936,7 +2382,7 @@ LibraryFileSpace::LibraryFileResidue* PdbPreprocessor::GetLibraryResidueByNameFr
     }
     return library_residue;
 }
-void PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
+bool PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
 {
     try
     {
@@ -1999,11 +2445,12 @@ void PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
                 }
             }
         }
+        return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractAlternateResidue(PdbFile* pdb_file)
+bool PdbPreprocessor::ExtractAlternateResidue(PdbFile* pdb_file)
 {
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
@@ -2063,6 +2510,7 @@ void PdbPreprocessor::ExtractAlternateResidue(PdbFile* pdb_file)
             }
         }
     }
+    return true;
 }
 void PdbPreprocessor::RemoveUnselectedAlternateResidues(PdbFile *pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map)
 {
@@ -2082,7 +2530,25 @@ void PdbPreprocessor::RemoveUnselectedAlternateResidues(PdbFile *pdb_file, PdbPr
             }
         }
     }
-
+}
+void PdbPreprocessor::RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(PdbFile *pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map, int model_number)
+{
+    for(PdbPreprocessorAlternateResidueMap::iterator it = alternate_residue_map.begin(); it != alternate_residue_map.end(); it++)
+    {
+        PdbPreprocessorAlternateResidue* alternate_residue = (*it).second;
+        vector<bool> selected_alternate_locations = alternate_residue->GetSelectedAlternateLocation();
+        for(vector<bool>::iterator it1 = selected_alternate_locations.begin(); it1 != selected_alternate_locations.end(); it1++)
+        {
+            bool selected_alternate_location = (*it1);
+            char alternate_location = alternate_residue->GetResidueAlternateLocation().at(distance(selected_alternate_locations.begin(), it1));
+            if(!selected_alternate_location)
+            {
+                PdbResidue* pdb_residue = new PdbResidue(alternate_residue->GetResidueName() ,alternate_residue->GetResidueChainId(), alternate_residue->GetResidueSequenceNumber(),
+                                                         alternate_residue->GetResidueInsertionCode(), alternate_location);
+                pdb_file->DeleteResidueWithTheGivenModelNumber(pdb_residue, model_number);
+            }
+        }
+    }
 }
 
 void PdbPreprocessor::DeleteAllToBeDeletedEntities(PdbFile *pdb_file)
@@ -2091,15 +2557,25 @@ void PdbPreprocessor::DeleteAllToBeDeletedEntities(PdbFile *pdb_file)
     {
         PdbAtom* atom = (*it);
         pdb_file->DeleteAtom(atom);
-
     }
     for(PdbPreprocessorToBeDeletedResidueVector::iterator it = to_be_deleted_residues_.begin(); it != to_be_deleted_residues_.end(); it++)
     {
         PdbResidue* residue = (*it);
         pdb_file->DeleteResidue(residue);
-
     }
-
+}
+void PdbPreprocessor::DeleteAllToBeDeletedEntitiesWithTheGivenModelNumber(PdbFile *pdb_file, int model_number)
+{
+    for(PdbPreprocessorToBeDeletedAtomVector::iterator it = to_be_deleted_atoms_.begin(); it != to_be_deleted_atoms_.end(); it++)
+    {
+        PdbAtom* atom = (*it);
+        pdb_file->DeleteAtomWithTheGivenModelNumber(atom, model_number);
+    }
+    for(PdbPreprocessorToBeDeletedResidueVector::iterator it = to_be_deleted_residues_.begin(); it != to_be_deleted_residues_.end(); it++)
+    {
+        PdbResidue* residue = (*it);
+        pdb_file->DeleteResidueWithTheGivenModelNumber(residue, model_number);
+    }
 }
 
 void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> lib_files_path, vector<string> prep_files_path)
@@ -2165,6 +2641,38 @@ void PdbPreprocessor::ApplyPreprocessing(PdbFile *pdb_file, vector<string> lib_f
     t = time(0);
     cout << std::asctime(std::localtime(&t)) << "Amino acid chains update: done" << endl;
     UpdateGapsInAminoAcidChains(pdb_file, lib_files_path, this->GetMissingResidues());
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains update: done" << endl;
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Applying changes done" << endl;
+}
+
+void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(PdbFile *pdb_file, vector<string> lib_files_path, int model_number)
+{
+    time_t t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Start to apply changes ..." << endl;
+    UpdateHISMappingWithTheGivenNumber(pdb_file,this->GetHistidineMappings(), model_number);
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "HIS residues update: done" << endl;
+    UpdateCYSResiduesWithTheGivenModelNumber(pdb_file, this->GetDisulfideBonds());
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "CYS residues update: done" << endl;
+    RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(pdb_file,this->GetAlternateResidueMap(), model_number);
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Unselected alternate residues removed: done" << endl;
+    RemoveUnrecognizedResiduesWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedResidues(), model_number);
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Remove unrecognized residues: done" << endl;
+    RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedHeavyAtoms(), model_number);
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms removed: done" << endl;
+    RemoveRemovedHydrogensWithTheGivenModelNumber(pdb_file, this->GetReplacedHydrogens(), model_number);
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Removed hydrogens removed: done" << endl;
+    UpdateAminoAcidChainsWithTheGivenModelNumber(pdb_file,lib_files_path, this->GetChainTerminations(), model_number);
+    t = time(0);
+    cout << std::asctime(std::localtime(&t)) << "Amino acid chains update: done" << endl;
+    UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, lib_files_path, this->GetMissingResidues(), model_number);
     t = time(0);
     cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains update: done" << endl;
     t = time(0);

@@ -59,6 +59,10 @@ void TopologyResidue::SetResidueName(const string residue_name)
 {
     residue_name_ = residue_name;
 }
+void TopologyResidue::AddAtom(TopologyAtom *atom)
+{
+    atoms_[atom->GetAtomName()] = atom;
+}
 void TopologyResidue::SetIndex(int index)
 {
     index_ = index;
