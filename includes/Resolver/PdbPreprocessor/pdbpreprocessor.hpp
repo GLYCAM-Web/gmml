@@ -80,6 +80,10 @@ namespace PdbPreprocessorSpace
               * List of residues to be deleted
               */
             typedef std::vector<PdbFileSpace::PdbResidue*> PdbPreprocessorToBeDeletedResidueVector;
+            /*! \typedef
+              * A mapping between residue chain id and the residues involving in the chain
+              */
+            typedef std::map<std::string, PdbFileSpace::PdbFile::PdbResidueVector > PdbPreprocessorChainIdResidueMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -579,6 +583,11 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               */
             void ExtractAminoAcidChains(std::string pdb_file_path);
+
+            //**************************************************
+            bool ExtractAminoAcidChains(std::string pdb_file_path, std::vector<std::string> amino_lib_files);
+
+            //**************************************************
             /*! \fn
               * A function in order to extract the amino acid chains of a pdb file
               * @param pdb_file The object of pdb file
