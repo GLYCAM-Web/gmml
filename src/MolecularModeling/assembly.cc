@@ -738,6 +738,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
             topology_atom->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());
             topology_atom->SetType(assembly_atom->GetAtomType());
             topology_atom->SetResidueName(assembly_residue->GetName());
+            topology_atom->SetIndex(atom_counter);
             topology_residue->AddAtom(topology_atom);
         }
         topology_assembly->AddResidue(topology_residue);
@@ -746,7 +747,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
 
 
     topology_file->SetAssembly(topology_assembly);
-//    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
+    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
     topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
     topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes());
     topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());

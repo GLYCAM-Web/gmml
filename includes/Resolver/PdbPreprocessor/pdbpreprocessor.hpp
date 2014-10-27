@@ -21,6 +21,7 @@ namespace PdbPreprocessorSpace
     class PdbPreprocessorUnrecognizedHeavyAtom;
     class PdbPreprocessorReplacedHydrogen;
     class PdbPreprocessorAlternateResidue;
+    class PdbPreprocessorResidueInfo;
     class PdbPreprocessor
     {
         public:
@@ -46,7 +47,6 @@ namespace PdbPreprocessorSpace
             /*! \typedef
               * List of unrecognized residues
               */
-
             typedef std::vector<PdbPreprocessorUnrecognizedResidue*> PdbPreprocessorUnrecognizedResidueVector;
             /*! \typedef
               * List of Recognized residues
@@ -80,6 +80,10 @@ namespace PdbPreprocessorSpace
               * List of residues to be deleted
               */
             typedef std::vector<PdbFileSpace::PdbResidue*> PdbPreprocessorToBeDeletedResidueVector;
+            /*! \typedef
+              * A mapping between residue key and its corresponding residue info object
+              */
+            typedef std::map<std::string, PdbPreprocessorResidueInfo*> PdbPreprocessorResidueInfoMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -147,6 +151,11 @@ namespace PdbPreprocessorSpace
               * @return to_be_deleted_residues_ attribute of the current object of this class
               */
             PdbPreprocessorToBeDeletedResidueVector GetToBeDeletedResidues();
+            /*! \fn
+              * An accessor function in order to access to the residue info map
+              * @return reisude_info_map_ attribute of the current object of this class
+              */
+            PdbPreprocessorResidueInfoMap GetResidueInfoMap();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -326,6 +335,13 @@ namespace PdbPreprocessorSpace
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
             //**************************************************
+
+            /*! \fn
+              * A function in order to access to the list of all residue from lib files
+              * @param lib_files The list of paths to library files
+              * @return all_residues_
+              */
+            LibraryFileSpace::LibraryFile::ResidueMap GetAllResiduesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
             /*! \fn
               * A function in order to access to the list of all residue names from prep files
@@ -742,9 +758,34 @@ namespace PdbPreprocessorSpace
               * A function to delete all to be deleted atoms and residues in a pdb file
               * @param pdb_file A pdb file object that has to modified to reflect the updates
               * @param model_number Selected model number from the multiple models that are in a pdb file
-              * @param model_number Selected model number from the multiple models that are in a pdb file
               */
             void DeleteAllToBeDeletedEntitiesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, int model_number = 1);
+            /*! \fn
+              * A function in order to extract the residues info of a pdb file
+              * @param pdb_file_path The path to the pdb file
+              * @return bool value
+              */
+            bool ExtractResidueInfo(std::string pdb_file_path, std::vector<std::string> lib_files);
+            /*! \fn
+              * A function in order to extract the residues info of a pdb file
+              * @param pdb_file The object of a pdb file
+              * @return bool value
+              */
+            bool ExtractResidueInfo(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files);
+            /*! \fn
+              * A function to calculate the overall charge of the model
+              * @param pdb_file_path The path to the pdb file
+              * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
+              * @return model_charge Overal charge of the model
+              */
+            double CalculateModelCharge(std::string pdb_file_path, std::vector<std::string> lib_files);
+            /*! \fn
+              * A function to calculate the overall charge of the model
+              * @param pdb_file The object of a pdb file
+              * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
+              * @return model_charge Overal charge of the model
+              */
+            double CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -770,7 +811,8 @@ namespace PdbPreprocessorSpace
             PdbPreprocessorReplacedHydrogenVector replaced_hydrogens_;              /*!< List of removed/replaced hydrogen atoms detected in a pdb file >*/
             PdbPreprocessorAlternateResidueMap alternate_residue_map_;              /*!< Map of alternate residues detected in a pdb file >*/
             PdbPreprocessorToBeDeletedAtomVector to_be_deleted_atoms_;              /*!< List of atoms to be deleted in a pdb file >*/
-            PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues_;              /*!< List of residues to be deleted in a pdb file >*/
+            PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues_;        /*!< List of residues to be deleted in a pdb file >*/
+            PdbPreprocessorResidueInfoMap residue_info_map_;                        /*!< Map of residues in a pdb file >*/
 
     };
 }

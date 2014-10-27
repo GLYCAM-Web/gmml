@@ -9,6 +9,7 @@
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp"
+#include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
@@ -66,6 +67,9 @@ PdbPreprocessor::PdbPreprocessorToBeDeletedAtomVector PdbPreprocessor::GetToBeDe
 }
 PdbPreprocessor::PdbPreprocessorToBeDeletedResidueVector PdbPreprocessor::GetToBeDeletedResidues(){
     return to_be_deleted_residues_;
+}
+PdbPreprocessor::PdbPreprocessorResidueInfoMap PdbPreprocessor::GetResidueInfoMap(){
+    return residue_info_map_;
 }
 
 //////////////////////////////////////////////////////////
@@ -391,6 +395,22 @@ ResidueNameMap PdbPreprocessor::GetAllResidueNamesFromMultipleLibFilesMap(vector
         }
     }
     return all_residue_names;
+}
+
+LibraryFileSpace::LibraryFile::ResidueMap PdbPreprocessor::GetAllResiduesFromMultipleLibFilesMap(vector<string> lib_files)
+{
+    LibraryFileSpace::LibraryFile::ResidueMap all_residues;
+    for(vector<string>::iterator it = lib_files.begin(); it != lib_files.end(); it++)
+    {
+        LibraryFileSpace::LibraryFile* lib_file = new LibraryFileSpace::LibraryFile(*it);
+        LibraryFileSpace::LibraryFile::ResidueMap residues = lib_file->GetResidues();
+        for(LibraryFileSpace::LibraryFile::ResidueMap::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+        {
+            string lib_residue_name = (*it1).first;
+            all_residues[lib_residue_name] = (*it1).second;
+        }
+    }
+    return all_residues;
 }
 
 vector<string> PdbPreprocessor::GetAllResidueNamesFromMultiplePrepFiles(vector<string> prep_files)
@@ -2577,6 +2597,140 @@ void PdbPreprocessor::DeleteAllToBeDeletedEntitiesWithTheGivenModelNumber(PdbFil
         pdb_file->DeleteResidueWithTheGivenModelNumber(residue, model_number);
     }
 }
+bool PdbPreprocessor::ExtractResidueInfo(string pdb_file_path, vector<string> lib_files)
+{
+    try
+    {
+        PdbFile* pdb_file = new PdbFile(pdb_file_path);
+        LibraryFileSpace::LibraryFile::ResidueMap lib_residues = GetAllResiduesFromMultipleLibFilesMap(lib_files);
+
+
+        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+        {
+            double residue_charge = 0.0;
+            PdbResidue* residue = *it;
+            if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
+            {
+                LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
+                PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
+
+                for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+                {
+                    PdbAtom* atom = (*it1);
+                    LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
+                    if(lib_atom != NULL)
+                    {
+                        if(lib_atom->GetCharge() != dNotSet)
+                            residue_charge += lib_atom->GetCharge();
+                    }
+                }
+            }
+            stringstream ss;
+            ss << residue->GetResidueName() << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsertionCode()
+               << "_" << residue->GetResidueAlternateLocation();
+            PdbPreprocessorResidueInfo* residue_info = new PdbPreprocessorResidueInfo(residue->GetResidueName(), residue->GetResidueChainId(), residue->GetResidueSequenceNumber(),
+                                                                                      residue->GetResidueInsertionCode(), residue->GetResidueAlternateLocation(), residue_charge);
+            residue_info_map_[ss.str()] = residue_info;
+        }
+        return true;
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
+}
+bool PdbPreprocessor::ExtractResidueInfo(PdbFile *pdb_file, vector<string> lib_files)
+{
+    LibraryFileSpace::LibraryFile::ResidueMap lib_residues = GetAllResiduesFromMultipleLibFilesMap(lib_files);
+    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        double residue_charge = 0.0;
+        PdbResidue* residue = *it;
+        if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
+        {
+            LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
+            PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
+
+            for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+            {
+                PdbAtom* atom = (*it1);
+                LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
+                if(lib_atom != NULL)
+                {
+                    if(lib_atom->GetCharge() != dNotSet)
+                        residue_charge += lib_atom->GetCharge();
+                }
+            }
+        }
+        stringstream ss;
+        ss << residue->GetResidueName() << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsertionCode()
+           << "_" << residue->GetResidueAlternateLocation();
+        PdbPreprocessorResidueInfo* residue_info = new PdbPreprocessorResidueInfo(residue->GetResidueName(), residue->GetResidueChainId(), residue->GetResidueSequenceNumber(),
+                                                                                  residue->GetResidueInsertionCode(), residue->GetResidueAlternateLocation(), residue_charge);
+        residue_info_map_[ss.str()] = residue_info;
+    }
+    return true;
+}
+double PdbPreprocessor::CalculateModelCharge(string pdb_file_path, vector<string> lib_files)
+{
+    try
+    {
+        PdbFile* pdb_file = new PdbFile(pdb_file_path);
+        double model_charge = 0.0;
+        LibraryFileSpace::LibraryFile::ResidueMap lib_residues = GetAllResiduesFromMultipleLibFilesMap(lib_files);
+        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+        {
+            PdbResidue* residue = *it;
+            if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
+            {
+                LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
+                PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
+
+                for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+                {
+                    PdbAtom* atom = (*it1);
+                    LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
+                    if(lib_atom != NULL)
+                    {
+                        if(lib_atom->GetCharge() != dNotSet)
+                            model_charge += lib_atom->GetCharge();
+                    }
+                }
+            }
+        }
+        return model_charge;
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
+}
+double PdbPreprocessor::CalculateModelCharge(PdbFile* pdb_file, vector<string> lib_files)
+{
+    double model_charge = 0.0;
+    LibraryFileSpace::LibraryFile::ResidueMap lib_residues = GetAllResiduesFromMultipleLibFilesMap(lib_files);
+    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
+    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        PdbResidue* residue = *it;
+        if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
+        {
+            LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
+            PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
+
+            for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+            {
+                PdbAtom* atom = (*it1);
+                LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
+                if(lib_atom != NULL)
+                {
+                    if(lib_atom->GetCharge() != dNotSet)
+                        model_charge += lib_atom->GetCharge();
+                }
+            }
+        }
+    }
+    return model_charge;
+}
 
 void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> lib_files_path, vector<string> prep_files_path)
 {
@@ -2608,6 +2762,12 @@ void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> lib_files_pat
         ExtractGapsInAminoAcidChains(pdb_file);
         t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains extraction: done" << endl;
+        ExtractResidueInfo(pdb_file, lib_files_path);
+        t = time(0);
+        cout << std::asctime(std::localtime(&t)) << "Residue info extraction: done" << endl;
+        t = time(0);
+        cout << "Model charge is " << CalculateModelCharge(pdb_file, lib_files_path) << endl;
+        cout << std::asctime(std::localtime(&t)) << "Model charge calculation: done" << endl;
         t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Preprocessing done" << endl;
     }
@@ -2732,6 +2892,12 @@ void PdbPreprocessor::Print(ostream &out)
     {
         PdbPreprocessorAlternateResidue* alternate_residue = (*it).second;
         alternate_residue->Print(out);
+    }
+    out << "================================ Residues Info ====================================" << endl;
+    for(PdbPreprocessorResidueInfoMap::iterator it = residue_info_map_.begin(); it != residue_info_map_.end(); it++)
+    {
+        PdbPreprocessorResidueInfo* residue_info = (*it).second;
+        residue_info->Print(out);
     }
 }
 
