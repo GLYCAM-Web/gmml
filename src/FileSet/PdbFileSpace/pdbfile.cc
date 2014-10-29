@@ -6,6 +6,7 @@
 #include <math.h>
 #include <algorithm>
 #include <exception>
+#include <cctype>
 
 #include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/FileSet/PdbFileSpace/pdbheadercard.hpp"
@@ -723,6 +724,42 @@ vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue)
         atom_names.push_back(atom->GetAtomName());
     }
     return atom_names;
+}
+PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions()
+{
+    vector<pair<char, int> > ter_card_positions = vector<pair<char, int> >();
+    // After residues that has no tails or has more than or equal two tails
+    PdbFile::PdbResidueVector residues = this->GetAllResiduesFromAtomCard();
+    for(PdbFile::PdbResidueVector::iterator it = residues.begin(); it != residues.end() - 1; it++)
+    {
+        PdbResidue* residue = (*it);
+        string residue_name = residue->GetResidueName();
+        // No tail || has more than or equal two tails
+        if(residue_name[0] == '0' || isalpha(residue_name[0]))
+        {
+            ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), residue->GetResidueSequenceNumber() + 1));
+        }
+    }
+    return ter_card_positions;
+    // Gap
+/*
+    PdbFile::PdbResidueVector residues = this->GetAllResiduesFromAtomCard();
+    for(PdbFile::PdbResidueVector::iterator it = residues.begin(); it != residues.end() - 1; it++)
+    {
+	PdbResidue* residue = (*it);
+	PdbResidue* next_residue = *(it + 1);
+	PdbFile::PdbResidueAtomsMap residue_atom_map = this->GetAllAtomsOfResidues();
+	PdbAtom* c_atom_of_residue = this->GetAtomOfResidueByName(residue, "C", residue_atom_map);
+	PdbAtom* n_atom_of_next_residue = this->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
+	Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+	Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+	double dist = c_atom_coordinate.Distance(n_atom_coordinate);
+	if(dist > dCutOff + 1.0)
+	{
+	    ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), next_residue_->GetResidueSequenceNumber());
+	}
+    }
+*/
 }
 
 //////////////////////////////////////////////////////////

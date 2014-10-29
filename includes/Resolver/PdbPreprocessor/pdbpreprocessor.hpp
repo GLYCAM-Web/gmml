@@ -649,6 +649,11 @@ namespace PdbPreprocessorSpace
               * @return bool value
               */
             bool ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
+
+            //**************************************************
+            bool ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files);
+
+            //**************************************************
             /*! \fn
               * A function in order to update the amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file
@@ -670,12 +675,22 @@ namespace PdbPreprocessorSpace
               * @return bool value
               */
             bool ExtractGapsInAminoAcidChains(std::string pdb_file_path);
+
+            //***************************************************
+             bool ExtractGapsInAminoAcidChains(std::string pdb_file_path, std::vector<std::string> amino_lib_files);
+
+            //************************************************
             /*! \fn
               * A function in order to extract the gaps in amino acid chains of a pdb file
               * @param pdb_file The object of pdb file
               * @return bool value
               */
             bool ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
+
+            //***************************************************
+             bool ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files);
+
+            //************************************************
             /*! \fn
               * A function in order to update the gaps in amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file

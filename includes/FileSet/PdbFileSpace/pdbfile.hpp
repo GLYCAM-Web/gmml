@@ -58,6 +58,8 @@ namespace PdbFileSpace
               */
             typedef std::map<int, int> PdbSerialNumberMapping;
 
+            typedef std::vector<std::pair<char, int> > PdbPairVectorTerCardPositions;
+
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -264,7 +266,12 @@ namespace PdbFileSpace
               * @param residue The given residue to return all of its atom names
               * @return atom_names The atom names of the given resdidue of the current object of this class
               */
-            std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue);
+            std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue);            
+            /*! \fn
+              * A finction that returns chain id and sequence number of a residue that has been placed after a residue that has no tail or has at least 2 tails
+              * @return A 2-D vector of chain id and sequence number of residues that have been placed after residues that have no tail or have at least 2 tails
+              */
+            PdbPairVectorTerCardPositions GetAllTerCardPositions();
 
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //

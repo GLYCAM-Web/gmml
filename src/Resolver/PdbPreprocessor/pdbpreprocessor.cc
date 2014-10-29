@@ -1809,7 +1809,7 @@ bool PdbPreprocessor::ExtractAminoAcidChains(string pdb_file_path, vector<string
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
-void PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file)
+bool PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file)
 {
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
 
@@ -1843,8 +1843,109 @@ void PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file)
     }
     return true;
 }
+bool PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file, vector<string> amino_lib_files)
+{
+    try
+    {
+        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
+
+        PdbPreprocessorChainIdResidueMap all_chain_map_residue;
+        PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
+        PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
+
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+        {
+            PdbFileSpace::PdbResidue* residue = *it;
+            char chain_id = residue->GetResidueChainId();
+
+            stringstream ss;
+            ss << chain_id;
+            all_chain_map_residue[ss.str()].push_back(residue);
+        }
+
+        // Slower version
+//        vector<string> amino_lib_residue_names = GetAllResidueNamesFromMultipleLibFiles(lib_files);
+        // Advanced version
+        ResidueNameMap amino_lib_residue_names_map = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
+
+        for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_residue.begin(); it != all_chain_map_residue.end(); it++)
+        {
+            int internal_amino_acid_chain_counter = 0;
+            PdbPreprocessorChainIdResidueMap chain_map_residue = PdbPreprocessorChainIdResidueMap();
+            string chain_id = (*it).first;
+            PdbFileSpace::PdbFile::PdbResidueVector residues = (*it).second;
+
+            for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+            {
+                PdbResidue* residue = (*it1);
+                if(amino_lib_residue_names_map.find(residue->GetResidueName()) != amino_lib_residue_names_map.end())
+                {
+                    stringstream ss;
+                    ss << "A_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                    chain_map_residue[ss.str()].push_back(residue);
+                    stringstream sss(chain_id);
+                    char c_id;
+                    sss >> c_id;
+                    chain_map_sequence_number[c_id].push_back(residue->GetResidueSequenceNumber());
+                    chain_map_insertion_code[c_id].push_back(residue->GetResidueInsertionCode());
+                }
+                else
+                {
+                    stringstream ss;
+                    ss << "NA_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                    chain_map_residue[ss.str()].push_back(residue);
+                    internal_amino_acid_chain_counter++;
+                }
+            }
+            if(chain_map_residue.size() > 2)
+            {
+                cout << "There is an undefined protein in the middle of the chain" << endl;
+                cout << "Pdb file is not processible at this time" << endl;
+
+                return false;
+            }
+        }
+        for(PdbPreprocessorChainIdSequenceNumbersMap::iterator it = chain_map_sequence_number.begin(); it != chain_map_sequence_number.end(); it++)
+        {
+            char chain_id = (*it).first;
+            vector<int> sequence_numbers = (*it).second;
+            vector<char> insertion_codes = chain_map_insertion_code[chain_id];
+
+            vector<int>::iterator starting_sequence_number_iterator = min_element(sequence_numbers.begin(), sequence_numbers.end());
+            vector<int>::iterator ending_sequence_number_iterator = max_element(sequence_numbers.begin(), sequence_numbers.end());
+            int starting_index = distance(sequence_numbers.begin(), starting_sequence_number_iterator);
+            int ending_index = distance(sequence_numbers.begin(), ending_sequence_number_iterator);
+
+            PdbPreprocessorChainTermination* chain = new PdbPreprocessorChainTermination(chain_id, *starting_sequence_number_iterator, *ending_sequence_number_iterator,
+                                                                                         insertion_codes.at(starting_index), insertion_codes.at(ending_index) );
+
+            chain_terminations_.push_back(chain);
+        }
+        return true;
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
+}
 void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations)
 {
+    // Before non-amino-acid residue
+    for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
+    {
+        PdbPreprocessorChainTermination* chain = (*it1);
+        pdb_file->SplitAtomCardOfModelCard(chain->GetResidueChainId(), chain->GetEndingResidueSequenceNumber() + 1);
+    }
+
+    // Get all TER card positions and split
+    vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions();
+    for(vector<pair<char, int> >::iterator it1 = ter_card_positions.begin(); it1 != ter_card_positions.end(); it1++)
+    {
+        pair<char, int> ter_position = *it1;
+        char chain_id = ter_position.first;
+        int sequence_number = ter_position.second;
+        pdb_file->SplitAtomCardOfModelCard(chain_id, sequence_number);
+    }
+
+    // Add Terminals
     for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
     {
         PdbPreprocessorChainTermination* chain = (*it1);
@@ -1964,6 +2065,24 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> li
 
 void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_file, vector<string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations, int model_number)
 {
+    // Before non-amino-acid residue
+    for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
+    {
+        PdbPreprocessorChainTermination* chain = (*it1);
+        pdb_file->SplitAtomCardOfModelCard(chain->GetResidueChainId(), chain->GetEndingResidueSequenceNumber() + 1);
+    }
+
+    // Get all TER card positions and split
+    vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions();
+    for(vector<pair<char, int> >::iterator it1 = ter_card_positions.begin(); it1 != ter_card_positions.end(); it1++)
+    {
+        pair<char, int> ter_position = *it1;
+        char chain_id = ter_position.first;
+        int sequence_number = ter_position.second;
+        pdb_file->SplitAtomCardOfModelCard(chain_id, sequence_number);
+    }
+
+    // Add Terminals
     for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
     {
         PdbPreprocessorChainTermination* chain = (*it1);
@@ -2130,6 +2249,113 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path)
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
+
+bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<string> amino_lib_files)
+{
+    try
+    {
+        PdbFile* pdb_file = new PdbFile(pdb_file_path);
+        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
+
+        PdbPreprocessorChainIdResidueMap all_chain_map_residue;
+        PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
+        PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
+
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+        {
+            PdbFileSpace::PdbResidue* residue = *it;
+            char chain_id = residue->GetResidueChainId();
+
+            stringstream ss;
+            ss << chain_id;
+            all_chain_map_residue[ss.str()].push_back(residue);
+        }
+
+        // Slower version
+//        vector<string> amino_lib_residue_names = GetAllResidueNamesFromMultipleLibFiles(lib_files);
+        // Advanced version
+        ResidueNameMap amino_lib_residue_names_map = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
+        PdbPreprocessorChainIdResidueMap all_chain_map_amino_acid_residue = PdbPreprocessorChainIdResidueMap();
+
+        for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_residue.begin(); it != all_chain_map_residue.end(); it++)
+        {
+            int internal_amino_acid_chain_counter = 0;
+            PdbPreprocessorChainIdResidueMap chain_map_residue = PdbPreprocessorChainIdResidueMap();
+            string chain_id = (*it).first;
+            PdbFileSpace::PdbFile::PdbResidueVector residues = (*it).second;
+
+            for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+            {
+                PdbResidue* residue = (*it1);
+                if(amino_lib_residue_names_map.find(residue->GetResidueName()) != amino_lib_residue_names_map.end())
+                {
+                    stringstream ss;
+                    ss << "A_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                    chain_map_residue[ss.str()].push_back(residue);
+                    all_chain_map_amino_acid_residue[chain_id].push_back(residue);
+                    stringstream sss(chain_id);
+                    char c_id;
+                    sss >> c_id;
+                    chain_map_sequence_number[c_id].push_back(residue->GetResidueSequenceNumber());
+                    chain_map_insertion_code[c_id].push_back(residue->GetResidueInsertionCode());
+                }
+                else
+                {
+                    stringstream ss;
+                    ss << "NA_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                    chain_map_residue[ss.str()].push_back(residue);
+                    internal_amino_acid_chain_counter++;
+                }
+            }
+            if(chain_map_residue.size() > 2)
+            {
+                cout << "There is an undefined protein in the middle of the chain" << endl;
+                cout << "Pdb file is not processible at this time" << endl;
+
+                return false;
+            }
+        }
+
+        for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_amino_acid_residue.begin(); it != all_chain_map_amino_acid_residue.end(); it++)
+        {
+            string chain_id = (*it).first;
+            PdbFileSpace::PdbFile::PdbResidueVector residues = (*it).second;
+            char c_id;
+            stringstream ss(chain_id);
+            ss >> c_id;
+            vector<int> sequence_numbers = chain_map_sequence_number[c_id];
+            vector<char> insertion_codes = chain_map_insertion_code[c_id];
+            vector<int>::iterator starting_sequence_number_iterator = min_element(sequence_numbers.begin(), sequence_numbers.end());
+            vector<int>::iterator ending_sequence_number_iterator = max_element(sequence_numbers.begin(), sequence_numbers.end());
+
+            for(PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end() - 1; it1++)
+            {
+                PdbResidue* residue = (*it1);
+                PdbResidue* next_residue = *(it1 + 1);
+                int i = distance(residues.begin(), it1);
+                int j = distance(residues.begin(), it1 + 1);
+                PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
+                PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
+                PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
+                Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+                Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+                double dist = c_atom_coordinate.Distance(n_atom_coordinate);
+                if(dist > dCutOff + 1.0)
+                {
+                    PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
+                                                                                                        *ending_sequence_number_iterator, sequence_numbers.at(i),
+                                                                                                        sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
+                    missing_residues_.push_back(missing_residues);
+                }
+            }
+        }
+
+        return true;
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
+}
+
 bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile* pdb_file)
 {
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
@@ -2173,6 +2399,107 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile* pdb_file)
     }
     return true;
 }
+
+bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<string> amino_lib_files)
+{
+    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResiduesFromAtomCard();
+
+    PdbPreprocessorChainIdResidueMap all_chain_map_residue;
+    PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
+    PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
+
+    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    {
+        PdbFileSpace::PdbResidue* residue = *it;
+        char chain_id = residue->GetResidueChainId();
+
+        stringstream ss;
+        ss << chain_id;
+        all_chain_map_residue[ss.str()].push_back(residue);
+    }
+
+    // Slower version
+//        vector<string> amino_lib_residue_names = GetAllResidueNamesFromMultipleLibFiles(lib_files);
+    // Advanced version
+    ResidueNameMap amino_lib_residue_names_map = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
+    PdbPreprocessorChainIdResidueMap all_chain_map_amino_acid_residue = PdbPreprocessorChainIdResidueMap();
+
+    for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_residue.begin(); it != all_chain_map_residue.end(); it++)
+    {
+        int internal_amino_acid_chain_counter = 0;
+        PdbPreprocessorChainIdResidueMap chain_map_residue = PdbPreprocessorChainIdResidueMap();
+        string chain_id = (*it).first;
+        PdbFileSpace::PdbFile::PdbResidueVector residues = (*it).second;
+
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+        {
+            PdbResidue* residue = (*it1);
+            if(amino_lib_residue_names_map.find(residue->GetResidueName()) != amino_lib_residue_names_map.end())
+            {
+                stringstream ss;
+                ss << "A_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                chain_map_residue[ss.str()].push_back(residue);
+                all_chain_map_amino_acid_residue[chain_id].push_back(residue);
+                stringstream sss(chain_id);
+                char c_id;
+                sss >> c_id;
+                chain_map_sequence_number[c_id].push_back(residue->GetResidueSequenceNumber());
+                chain_map_insertion_code[c_id].push_back(residue->GetResidueInsertionCode());
+            }
+            else
+            {
+                stringstream ss;
+                ss << "NA_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                chain_map_residue[ss.str()].push_back(residue);
+                internal_amino_acid_chain_counter++;
+            }
+        }
+        if(chain_map_residue.size() > 2)
+        {
+            cout << "There is an undefined protein in the middle of the chain" << endl;
+            cout << "Pdb file is not processible at this time" << endl;
+
+            return false;
+        }
+    }
+
+    for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_amino_acid_residue.begin(); it != all_chain_map_amino_acid_residue.end(); it++)
+    {
+        string chain_id = (*it).first;
+        PdbFileSpace::PdbFile::PdbResidueVector residues = (*it).second;
+        char c_id;
+        stringstream ss(chain_id);
+        ss >> c_id;
+        vector<int> sequence_numbers = chain_map_sequence_number[c_id];
+        vector<char> insertion_codes = chain_map_insertion_code[c_id];
+        vector<int>::iterator starting_sequence_number_iterator = min_element(sequence_numbers.begin(), sequence_numbers.end());
+        vector<int>::iterator ending_sequence_number_iterator = max_element(sequence_numbers.begin(), sequence_numbers.end());
+
+        for(PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end() - 1; it1++)
+        {
+            PdbResidue* residue = (*it1);
+            PdbResidue* next_residue = *(it1 + 1);
+            int i = distance(residues.begin(), it1);
+            int j = distance(residues.begin(), it1 + 1);
+            PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
+            PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
+            PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
+            Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+            Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+            double dist = c_atom_coordinate.Distance(n_atom_coordinate);
+            if(dist > dCutOff + 1.0)
+            {
+                PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
+                                                                                                    *ending_sequence_number_iterator, sequence_numbers.at(i),
+                                                                                                    sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
+                missing_residues_.push_back(missing_residues);
+            }
+        }
+    }
+
+    return true;
+}
+
 void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<string> lib_files, PdbPreprocessorMissingResidueVector gaps)
 {
     for(PdbPreprocessor::PdbPreprocessorMissingResidueVector::iterator it1 = gaps.begin(); it1 != gaps.end(); it1++)
@@ -2686,7 +3013,7 @@ void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> lib_files_pat
         ExtractRemovedHydrogens(pdb_file, lib_files_path, prep_files_path);
         t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Removed hydrogens extraction: done" << endl;
-        ExtractAminoAcidChains(pdb_file);
+        ExtractAminoAcidChains(pdb_file, lib_files_path);
         t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Amino acid chains extraction: done" << endl;
         ExtractGapsInAminoAcidChains(pdb_file);

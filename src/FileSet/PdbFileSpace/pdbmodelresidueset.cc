@@ -38,7 +38,6 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
                 temp = line;
             }
         }
-        cout << line << endl;
         /// End of an ATOM section in the given residue set block
         if(line.find("TER") != string::npos || Trim(temp).empty())
         {
