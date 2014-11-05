@@ -735,7 +735,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
             topology_atom->SetAtomCharge(assembly_atom->GetCharge());
             topology_atom->SetAtomMass(assembly_atom->GetMass());
             topology_atom->SetRadii(assembly_atom->GetRadius());
-            topology_atom->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());
+//            topology_atom->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());
             topology_atom->SetType(assembly_atom->GetAtomType());
             topology_atom->SetResidueName(assembly_residue->GetName());
             topology_atom->SetIndex(atom_counter);
@@ -744,7 +744,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
         topology_assembly->AddResidue(topology_residue);
     }
     topology_assembly->SetAssemblyName(ss.str());
-
 
     topology_file->SetAssembly(topology_assembly);
     topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
@@ -764,6 +763,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
     topology_file->SetTotalNumberOfBonds(this->CountNumberOfBonds());
     topology_file->SetTotalNumberOfAngles(this->CountNumberOfAngles());
 //    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedrals());
+    topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
     return topology_file;
 }
 
