@@ -9,7 +9,11 @@ using namespace TopologyFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-TopologyAssembly::TopologyAssembly() {}
+TopologyAssembly::TopologyAssembly()
+{
+    assembly_name_ = "";
+    residues_ = TopologyResidueMap();
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
