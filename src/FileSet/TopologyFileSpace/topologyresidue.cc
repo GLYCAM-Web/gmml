@@ -1,14 +1,22 @@
 
 #include "../../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
+using namespace gmml;
 using namespace TopologyFileSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-TopologyResidue::TopologyResidue() {}
+TopologyResidue::TopologyResidue()
+{
+    residue_name_ = "";
+    atoms_ = TopologyAtomMap();
+    index_ = iNotSet;
+    starting_atom_index_ = iNotSet;
+}
 
 TopologyResidue::TopologyResidue(string residue_name, TopologyAtomMap atoms, int index, int starting_atom_index) :
     residue_name_(residue_name), index_(index), starting_atom_index_(starting_atom_index)
@@ -38,6 +46,7 @@ TopologyAtom* TopologyResidue::GetAtomByIndex(int index)
     for(TopologyAtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         TopologyAtom* atom = (*it).second;
+        cout << atom->GetIndex() << ":" << index << endl;
         if(atom->GetIndex() == index)
             return atom;
     }
