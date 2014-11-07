@@ -5548,6 +5548,7 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 int residue_sequence_number = 0;
                 char insertion_code = ' ';
                 PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+                int atoms_size = atoms.size();
                 for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
                 {
                     PdbAtom* atom = (*it2).second;
@@ -5597,22 +5598,25 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                     chain_id = atom->GetAtomChainId();
                     residue_sequence_number = atom->GetAtomResidueSequenceNumber();
                 }
-                stream << left << setw(6) << "TER";
-                if(serial_number != iNotSet)
-                    stream << right << setw(5) << (serial_number+1);
-                else
-                    stream << right << setw(5) << " ";
-                stream << left << setw(6) << " "
-                       << right << setw(3) << residue_name
-                       << left << setw(1) << " "
-                       << left << setw(1) << chain_id;
-                if(residue_sequence_number != iNotSet)
-                    stream << right << setw(4) << residue_sequence_number;
-                else
-                    stream << right << setw(4) << " ";
-                stream << left << setw(1) << insertion_code
-                       << left << setw(53) << " "
-                       << endl;
+                if(atoms_size != 0)
+                {
+                    stream << left << setw(6) << "TER";
+                    if(serial_number != iNotSet)
+                        stream << right << setw(5) << (serial_number+1);
+                    else
+                        stream << right << setw(5) << " ";
+                    stream << left << setw(6) << " "
+                           << right << setw(3) << residue_name
+                           << left << setw(1) << " "
+                           << left << setw(1) << chain_id;
+                    if(residue_sequence_number != iNotSet)
+                        stream << right << setw(4) << residue_sequence_number;
+                    else
+                        stream << right << setw(4) << " ";
+                    stream << left << setw(1) << insertion_code
+                           << left << setw(53) << " "
+                           << endl;
+                }
             }
             PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
             for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
@@ -5691,6 +5695,7 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 int residue_sequence_number = 0;
                 char insertion_code = ' ';
                 PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+                int atoms_size = atoms.size();
                 for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
                 {
                     PdbAtom* atom = (*it2).second;
@@ -5736,22 +5741,25 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                     chain_id = atom->GetAtomChainId();
                     residue_sequence_number = atom->GetAtomResidueSequenceNumber();
                 }
-                stream << left << setw(6) << "TER";
-                if(serial_number != iNotSet)
-                    stream << right << setw(5) << (serial_number+1);
-                else
-                    stream << right << setw(5) << " ";
-                stream << left << setw(6) << " "
-                       << right << setw(3) << residue_name
-                       << left << setw(1) << " "
-                       << left << setw(1) << chain_id;
-                if(residue_sequence_number != iNotSet)
-                    stream << right << setw(4) << residue_sequence_number;
-                else
-                    stream << right << setw(4) << " ";
-                stream << left << setw(1) << insertion_code
-                       << left << setw(53) << " "
-                       << endl;
+                if(atoms_size != 0)
+                {
+                    stream << left << setw(6) << "TER";
+                    if(serial_number != iNotSet)
+                        stream << right << setw(5) << (serial_number+1);
+                    else
+                        stream << right << setw(5) << " ";
+                    stream << left << setw(6) << " "
+                           << right << setw(3) << residue_name
+                           << left << setw(1) << " "
+                           << left << setw(1) << chain_id;
+                    if(residue_sequence_number != iNotSet)
+                        stream << right << setw(4) << residue_sequence_number;
+                    else
+                        stream << right << setw(4) << " ";
+                    stream << left << setw(1) << insertion_code
+                           << left << setw(53) << " "
+                           << endl;
+                }
             }
             PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
             for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
@@ -5824,6 +5832,7 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
             int residue_sequence_number = 0;
             char insertion_code = ' ';
             PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            int atoms_size = atoms.size();
             for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
                 PdbAtom* atom = (*it2).second;
@@ -5873,22 +5882,25 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
                 chain_id = atom->GetAtomChainId();
                 residue_sequence_number = atom->GetAtomResidueSequenceNumber();
             }
-            stream << left << setw(6) << "TER";
-            if(serial_number != iNotSet)
-                stream << right << setw(5) << (serial_number+1);
-            else
-                stream << right << setw(5) << " ";
-            stream << left << setw(6) << " "
-                   << right << setw(3) << residue_name
-                   << left << setw(1) << " "
-                   << left << setw(1) << chain_id;
-            if(residue_sequence_number != iNotSet)
-                stream << right << setw(4) << residue_sequence_number;
-            else
-                stream << right << setw(4) << " ";
-            stream << left << setw(1) << insertion_code
-                   << left << setw(53) << " "
-                   << endl;
+            if(atoms_size != 0)
+            {
+                stream << left << setw(6) << "TER";
+                if(serial_number != iNotSet)
+                    stream << right << setw(5) << (serial_number+1);
+                else
+                    stream << right << setw(5) << " ";
+                stream << left << setw(6) << " "
+                       << right << setw(3) << residue_name
+                       << left << setw(1) << " "
+                       << left << setw(1) << chain_id;
+                if(residue_sequence_number != iNotSet)
+                    stream << right << setw(4) << residue_sequence_number;
+                else
+                    stream << right << setw(4) << " ";
+                stream << left << setw(1) << insertion_code
+                       << left << setw(53) << " "
+                       << endl;
+            }
         }
         PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
