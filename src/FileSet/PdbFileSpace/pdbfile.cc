@@ -135,7 +135,8 @@ PdbFile::PdbFile(const std::string &pdb_file)
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
-    string line;
+    string line = "";
+    string temp = "";
     stringstream ss;
     while(!in_file.eof())
     {
@@ -143,20 +144,27 @@ PdbFile::PdbFile(const std::string &pdb_file)
             break;
         else
         {
-            string temp = line.substr(0,6);
+            temp = line.substr(0,6);
             temp = Trim(temp);
-            if(temp.compare("END") == 0)
+            if(temp.find("END") != string::npos || temp.compare("END") == 0)
                 break;
             else if(!line.empty())
                 ss << line << endl;
         }
     }
     in_file.close();
-    if(line.compare("END") != 0)
+    if(temp.find("END") == string::npos || temp.compare("END") != 0)
     {
         std::ofstream out_file;
         out_file.open(pdb_file.c_str());
         out_file << ss.str() << "END";
+        out_file.close();
+    }
+    else
+    {
+        std::ofstream out_file;
+        out_file.open(pdb_file.c_str());
+        out_file << ss.str() << temp;
         out_file.close();
     }
     in_file.open(pdb_file.c_str());
@@ -725,7 +733,7 @@ vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue)
     }
     return atom_names;
 }
-PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions()
+PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(vector<string> glycam_residue_names)
 {
     vector<pair<char, int> > ter_card_positions = vector<pair<char, int> >();
     // After residues that has no tails or has more than or equal two tails
@@ -734,32 +742,16 @@ PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions()
     {
         PdbResidue* residue = (*it);
         string residue_name = residue->GetResidueName();
-        // No tail || has more than or equal two tails
-        if(residue_name[0] == '0' || isalpha(residue_name[0]))
+        if(find(glycam_residue_names.begin(), glycam_residue_names.end(), residue_name) != glycam_residue_names.end())
         {
-            ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), residue->GetResidueSequenceNumber() + 1));
+            // No tail || has more than or equal two tails
+            if(residue_name[0] == '0' || isalpha(residue_name[0]))
+            {
+                ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), residue->GetResidueSequenceNumber() + 1));
+            }
         }
     }
     return ter_card_positions;
-    // Gap
-/*
-    PdbFile::PdbResidueVector residues = this->GetAllResiduesFromAtomCard();
-    for(PdbFile::PdbResidueVector::iterator it = residues.begin(); it != residues.end() - 1; it++)
-    {
-	PdbResidue* residue = (*it);
-	PdbResidue* next_residue = *(it + 1);
-	PdbFile::PdbResidueAtomsMap residue_atom_map = this->GetAllAtomsOfResidues();
-	PdbAtom* c_atom_of_residue = this->GetAtomOfResidueByName(residue, "C", residue_atom_map);
-	PdbAtom* n_atom_of_next_residue = this->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-	Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
-	Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
-	double dist = c_atom_coordinate.Distance(n_atom_coordinate);
-	if(dist > dCutOff + 1.0)
-	{
-	    ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), next_residue_->GetResidueSequenceNumber());
-	}
-    }
-*/
 }
 
 //////////////////////////////////////////////////////////
@@ -2514,7 +2506,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    if(record_name.compare("END") == 0)
+    if(record_name.find("END") != string::npos || record_name.compare("END") == 0)
     {
         if(!ParseEndCard(in_stream, line))
             return false;
@@ -3705,7 +3697,8 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     record_name = Trim(record_name);
 
     while(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("ANISOU") == 0
-          || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0 )
+          || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0
+          || record_name.find("TER") != string::npos || record_name.find("ENDMDL") != string::npos)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -3804,11 +3797,11 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, string& line)
         cout << "End of file" << endl;
         return true;
     }
+
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
-    
-    while(record_name.compare("END") == 0)
+    while(record_name.find("END") != string::npos || record_name.compare("END") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
