@@ -271,7 +271,7 @@ namespace PdbFileSpace
               * A finction that returns chain id and sequence number of a residue that has been placed after a residue that has no tail or has at least 2 tails
               * @return A 2-D vector of chain id and sequence number of residues that have been placed after residues that have no tail or have at least 2 tails
               */
-            PdbPairVectorTerCardPositions GetAllTerCardPositions();
+            PdbPairVectorTerCardPositions GetAllTerCardPositions(std::vector<std::string> glycam_residue_names);
 
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
