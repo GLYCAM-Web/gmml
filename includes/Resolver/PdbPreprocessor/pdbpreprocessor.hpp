@@ -676,7 +676,8 @@ namespace PdbPreprocessorSpace
               * @param lib_files The list of paths to the library files
               * @param gaps The list of chain terminations
               */
-            void UpdateAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations);
+            void UpdateAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
+                                       std::vector<std::string> prep_files, PdbPreprocessorChainTerminationVector chain_terminations);
             /*! \fn
               * A function in order to update the amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file
@@ -684,7 +685,9 @@ namespace PdbPreprocessorSpace
               * @param gaps The list of chain terminations
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorChainTerminationVector chain_terminations, int model_number = 1);
+            void UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files,
+                                                              std::vector<std::string> glycam_lib_files, std::vector<std::string> prep_files,
+                                                              PdbPreprocessorChainTerminationVector chain_terminations, int model_number = 1);
             /*! \fn
               * A function in order to extract the gaps in amino acid chains of a pdb file
               * @param pdb_file_path The path to the pdb file
@@ -713,7 +716,7 @@ namespace PdbPreprocessorSpace
               * @param lib_files The list of paths to the library files
               * @param gaps The list of missing residues
               */
-            void UpdateGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps);
+            void UpdateGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, PdbPreprocessorMissingResidueVector gaps);
             /*! \fn
               * A function in order to update the gaps in amino acid chains of a pdb file
               * @param pdb_file The object of a pdb file
@@ -721,7 +724,8 @@ namespace PdbPreprocessorSpace
               * @param gaps The list of missing residues
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, PdbPreprocessorMissingResidueVector gaps, int model_number = 1);
+            void UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files,
+                                                                    PdbPreprocessorMissingResidueVector gaps, int model_number = 1);
             /*! \fn
               * A function in order to access to the library residue by name from multiple library files
               * @param residue_name The name of a residue
@@ -766,13 +770,15 @@ namespace PdbPreprocessorSpace
               * @param pdb_file A pdb file object that has to modified to reflect the updates
               * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
               */
-            void ApplyPreprocessing(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path);
+            void ApplyPreprocessing(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files_path,
+                                    std::vector<std::string> glycam_lib_files_path, std::vector<std::string> prep_files_path);
             /*! \fn
               * A function to apply all the updates on a pdb file
               * @param pdb_file A pdb file object that has to modified to reflect the updates
               * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
               */
-            void ApplyPreprocessingWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path, int model_number = 1);
+            void ApplyPreprocessingWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files_path,
+                                                           std::vector<std::string> glycam_lib_files_path, std::vector<std::string> prep_files_path, int model_number = 1);
             /*! \fn
               * A function to delete all to be deleted atoms and residues in a pdb file
               * @param pdb_file A pdb file object that has to modified to reflect the updates
