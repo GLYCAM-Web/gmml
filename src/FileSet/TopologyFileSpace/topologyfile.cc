@@ -25,7 +25,52 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-TopologyFile::TopologyFile() {}
+TopologyFile::TopologyFile()
+{
+    title_ = "";
+    path_ = "";
+    number_of_atoms_ = iNotSet;
+    number_of_types_ = iNotSet;
+    number_of_bonds_including_hydrogen_ = iNotSet;
+    number_of_angles_including_hydrogen_ = iNotSet;
+    number_of_dihedrals_including_hydrogen_ = iNotSet;
+    number_of_bonds_excluding_hydrogen_ = iNotSet;
+    number_of_angles_excluding_hydrogen_ = iNotSet;
+    number_of_dihedrals_excluding_hydrogen_ = iNotSet;
+    number_of_hydrogen_parameters_ = iNotSet;
+    number_of_parameters_ = iNotSet;
+    number_of_excluded_atoms_ = iNotSet;
+    number_of_residues_ = iNotSet;
+    total_number_of_bonds_ = iNotSet;
+    total_number_of_angles_ = iNotSet;
+    total_number_of_dihedrals_ = iNotSet;
+    number_of_bond_types_ = iNotSet;
+    number_of_angle_types_ = iNotSet;
+    number_of_dihedral_types_ = iNotSet;
+    number_of_atom_types_in_parameter_file_ = iNotSet;
+    number_of_distinct_hydrogen_bonds_ = iNotSet;
+    perturbation_option_ = iNotSet;
+    number_of_bonds_perturbed_ = iNotSet;
+    number_of_angles_perturbed_ = iNotSet;
+    number_of_dihedrals_perturbed_ = iNotSet;
+    number_of_bonds_group_perturbed_ = iNotSet;
+    number_of_angles_group_perturbed_ = iNotSet;
+    number_of_dihedrals_group_perturbed_ = iNotSet;
+    standard_periodic_box_option_ = iNotSet;
+    number_of_atoms_in_largest_residue_ = iNotSet;
+    cap_option_ = iNotSet;
+    number_of_extra_points_ = iNotSet;
+    number_of_beads_ = iNotSet;
+    pairs_ = TopologyAtomPairMap();
+    bond_types_ = TopologyBondTypeMap();
+    angle_types_ = TopologyAngleTypeMap();
+    dihedral_types_ = TopologyDihedralTypeMap();
+    assembly_ = new TopologyAssembly();
+    radius_set_ = RadiusSet();
+    bonds_ = TopologyBondMap();
+    angles_ = TopologyAngleMap();
+    dihedrals_ = TopologyDihedralMap();
+}
 
 TopologyFile::TopologyFile(const string &top_file)
 {
@@ -1599,8 +1644,10 @@ void TopologyFile::Write(const string &top_file)
 
 void TopologyFile::ResolveSections(ofstream &out_stream)
 {
-    this->ResolveTitleSection(out_stream);
+    if(!title_.empty())
+        this->ResolveTitleSection(out_stream);
     this->ResolvePointersSection(out_stream);
+
     this->ResolveAtomNameSection(out_stream);
     this->ResolveChargeSection(out_stream);
     this->ResolveAtomicNumberSection(out_stream);
@@ -1653,43 +1700,139 @@ void TopologyFile::ResolveTitleSection(ofstream &out)
 void TopologyFile::ResolvePointersSection(ofstream &out)
 {
     out << "%FLAG POINTERS" << endl
-        << "%FORMAT(10I8)" << endl
-        << setw(8) << right << number_of_atoms_
-        << setw(8) << right << number_of_types_
-        << setw(8) << right << number_of_bonds_including_hydrogen_
-        << setw(8) << right << number_of_bonds_excluding_hydrogen_
-        << setw(8) << right << number_of_angles_including_hydrogen_
-        << setw(8) << right << number_of_angles_excluding_hydrogen_
-        << setw(8) << right << number_of_dihedrals_including_hydrogen_
-        << setw(8) << right << number_of_dihedrals_excluding_hydrogen_
-        << setw(8) << right << number_of_hydrogen_parameters_
-        << setw(8) << right << number_of_parameters_
-        << endl
-        << setw(8) << right << number_of_excluded_atoms_
-        << setw(8) << right << number_of_residues_
-        << setw(8) << right << total_number_of_bonds_
-        << setw(8) << right << total_number_of_angles_
-        << setw(8) << right << total_number_of_dihedrals_
-        << setw(8) << right << number_of_bond_types_
-        << setw(8) << right << number_of_angle_types_
-        << setw(8) << right << number_of_dihedral_types_
-        << setw(8) << right << number_of_atom_types_in_parameter_file_
-        << setw(8) << right << number_of_distinct_hydrogen_bonds_
-        << endl
-        << setw(8) << right << perturbation_option_
-        << setw(8) << right << number_of_bonds_perturbed_
-        << setw(8) << right << number_of_angles_perturbed_
-        << setw(8) << right << number_of_dihedrals_perturbed_
-        << setw(8) << right << number_of_bonds_group_perturbed_
-        << setw(8) << right << number_of_angles_group_perturbed_
-        << setw(8) << right << number_of_dihedrals_group_perturbed_
-        << setw(8) << right << standard_periodic_box_option_
-        << setw(8) << right << number_of_atoms_in_largest_residue_
-        << setw(8) << right << cap_option_
-        << endl
-        << setw(8) << number_of_extra_points_
-        << setw(8) << number_of_beads_ << endl
-        << endl;
+        << "%FORMAT(10I8)" << endl;
+    if(number_of_atoms_ != iNotSet)
+        out << setw(8) << right << number_of_atoms_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_types_ != iNotSet)
+        out << setw(8) << right << number_of_types_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_bonds_including_hydrogen_ != iNotSet)
+        out << setw(8) << right << number_of_bonds_including_hydrogen_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_bonds_excluding_hydrogen_ != iNotSet)
+        out << setw(8) << right << number_of_bonds_excluding_hydrogen_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_angles_including_hydrogen_ != iNotSet)
+        out << setw(8) << right << number_of_angles_including_hydrogen_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_angles_excluding_hydrogen_ != iNotSet)
+        out << setw(8) << right << number_of_angles_excluding_hydrogen_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_dihedrals_including_hydrogen_ != iNotSet)
+        out << setw(8) << right << number_of_dihedrals_including_hydrogen_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_dihedrals_excluding_hydrogen_ != iNotSet)
+        out << setw(8) << right << number_of_dihedrals_excluding_hydrogen_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_hydrogen_parameters_ != iNotSet)
+        out << setw(8) << right << number_of_hydrogen_parameters_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_parameters_ != iNotSet)
+        out << setw(8) << right << number_of_parameters_;
+    else
+        out << setw(8) << right << 0;
+    out << endl;
+    if(number_of_excluded_atoms_ != iNotSet)
+        out << setw(8) << right << number_of_excluded_atoms_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_residues_ != iNotSet)
+        out << setw(8) << right << number_of_residues_;
+    else
+        out << setw(8) << right << 0;
+    if(total_number_of_bonds_ != iNotSet)
+        out << setw(8) << right << total_number_of_bonds_;
+    else
+        out << setw(8) << right << 0;
+    if(total_number_of_angles_ != iNotSet)
+        out << setw(8) << right << total_number_of_angles_;
+    else
+        out << setw(8) << right << 0;
+    if(total_number_of_dihedrals_ != iNotSet)
+        out << setw(8) << right << total_number_of_dihedrals_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_bond_types_ != iNotSet)
+        out << setw(8) << right << number_of_bond_types_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_angle_types_ != iNotSet)
+        out << setw(8) << right << number_of_angle_types_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_dihedral_types_ != iNotSet)
+        out << setw(8) << right << number_of_dihedral_types_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_atom_types_in_parameter_file_ != iNotSet)
+        out << setw(8) << right << number_of_atom_types_in_parameter_file_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_distinct_hydrogen_bonds_ != iNotSet)
+        out << setw(8) << right << number_of_distinct_hydrogen_bonds_;
+    else
+        out << setw(8) << right << 0;
+    out << endl;
+    if(perturbation_option_ != iNotSet)
+        out << setw(8) << right << perturbation_option_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_bonds_perturbed_ != iNotSet)
+        out << setw(8) << right << number_of_bonds_perturbed_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_angles_perturbed_ != iNotSet)
+        out << setw(8) << right << number_of_angles_perturbed_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_dihedrals_perturbed_ != iNotSet)
+        out << setw(8) << right << number_of_dihedrals_perturbed_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_bonds_group_perturbed_ != iNotSet)
+        out << setw(8) << right << number_of_bonds_group_perturbed_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_angles_group_perturbed_ != iNotSet)
+        out << setw(8) << right << number_of_angles_group_perturbed_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_dihedrals_group_perturbed_ != iNotSet)
+        out << setw(8) << right << number_of_dihedrals_group_perturbed_;
+    else
+        out << setw(8) << right << 0;
+    if(standard_periodic_box_option_ != iNotSet)
+        out << setw(8) << right << standard_periodic_box_option_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_atoms_in_largest_residue_ != iNotSet)
+        out << setw(8) << right << number_of_atoms_in_largest_residue_;
+    else
+        out << setw(8) << right << 0;
+    if(cap_option_ != iNotSet)
+        out << setw(8) << right << cap_option_;
+    else
+        out << setw(8) << right << 0;
+    out << endl;
+    if(number_of_extra_points_ != iNotSet)
+        out << setw(8) << number_of_extra_points_;
+    else
+        out << setw(8) << right << 0;
+    if(number_of_beads_ != iNotSet)
+        out << setw(8) << number_of_beads_ << endl;
+    else
+        out << setw(8) << right << 0;
+    out << endl;
 }
 
 void TopologyFile::ResolveAtomNameSection(ofstream& out)
@@ -1706,6 +1849,7 @@ void TopologyFile::ResolveAtomNameSection(ofstream& out)
         for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            cout << atom->GetAtomName() << endl;
             index++;
             out << setw(ITEM_LENGTH) << left << atom->GetAtomName();
             count++;
@@ -1736,6 +1880,7 @@ void TopologyFile::ResolveChargeSection(ofstream& out)
         for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            cout << atom->GetAtomName() << endl;
             index++;
             out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetAtomCharge();
             count++;

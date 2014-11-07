@@ -1,14 +1,30 @@
 #include <iomanip>
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
 #include "../../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
+using namespace gmml;
 using namespace TopologyFileSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-TopologyAtom::TopologyAtom() {}
+TopologyAtom::TopologyAtom()
+{
+    index_ = iNotSet;
+    atom_name_ = "";
+    type_ = "";
+    atom_charge_ = dNotSet;
+    atomic_number_ = iNotSet;
+    atom_mass_ = dNotSet;
+    excluded_atoms_ = ExcludedAtomNames();
+    number_of_excluded_atoms_ = iNotSet;
+    radii_ = dNotSet;
+    screen_ = dNotSet;
+    tree_chain_classification_ = "";
+    residue_name_ = "";
+}
 
 TopologyAtom::TopologyAtom(int atom_index, string atom_name, string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
                            int number_of_excluded_atoms, double radii, double screen, string tree_chain_classification, string residue_name) :

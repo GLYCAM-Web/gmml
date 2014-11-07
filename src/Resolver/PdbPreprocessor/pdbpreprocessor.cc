@@ -2092,8 +2092,10 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
         pdb_file->SplitAtomCardOfModelCard(chain->GetResidueChainId(), chain->GetEndingResidueSequenceNumber() + 1);
     }
 
+    cout << "Before non-amino-acid residues: Done" << endl; 
     // Get all TER card positions and split
     vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions();
+    cout << ter_card_positions.size() << endl;
     for(vector<pair<char, int> >::iterator it1 = ter_card_positions.begin(); it1 != ter_card_positions.end(); it1++)
     {
         pair<char, int> ter_position = *it1;
@@ -2101,7 +2103,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
         int sequence_number = ter_position.second;
         pdb_file->SplitAtomCardOfModelCard(chain_id, sequence_number);
     }
-
+    cout << "After residues with no tail or with at least 2 tails: Done" << endl;
     // Add Terminals
     for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
     {
@@ -2218,6 +2220,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
             }
         }
     }
+    cout << "Add terminals: Done" << endl;
 }
 
 bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path)
@@ -3038,7 +3041,7 @@ bool PdbPreprocessor::ExtractResidueInfo(string pdb_file_path, vector<string> li
                 }
             }
             stringstream ss;
-            ss << residue->GetResidueName() << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsertionCode()
+            ss << residue->GetResidueName() << "_" << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsertionCode()
                << "_" << residue->GetResidueAlternateLocation();
             PdbPreprocessorResidueInfo* residue_info = new PdbPreprocessorResidueInfo(residue->GetResidueName(), residue->GetResidueChainId(), residue->GetResidueSequenceNumber(),
                                                                                       residue->GetResidueInsertionCode(), residue->GetResidueAlternateLocation(), residue_charge);
@@ -3074,7 +3077,7 @@ bool PdbPreprocessor::ExtractResidueInfo(PdbFile *pdb_file, vector<string> lib_f
             }
         }
         stringstream ss;
-        ss << residue->GetResidueName() << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsertionCode()
+        ss << residue->GetResidueName() << "_" << residue->GetResidueChainId() << "_" << residue->GetResidueSequenceNumber() << "_" << residue->GetResidueInsertionCode()
            << "_" << residue->GetResidueAlternateLocation();
         PdbPreprocessorResidueInfo* residue_info = new PdbPreprocessorResidueInfo(residue->GetResidueName(), residue->GetResidueChainId(), residue->GetResidueSequenceNumber(),
                                                                                   residue->GetResidueInsertionCode(), residue->GetResidueAlternateLocation(), residue_charge);
