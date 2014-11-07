@@ -379,7 +379,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the unrecognized residues of a pdb file
               * @param pdb_file The object of a pdb file
@@ -387,7 +387,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to remove the unrecognized residues of a pdb file
               * @param pdb_file The object of a pdb file
@@ -408,7 +408,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the recognized residues of a pdb file
               * @param pdb_file The object of pdb file
@@ -416,7 +416,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractRecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to access to the list of CYS residues
               * @param pdb_residues The list of pdb residues
@@ -559,7 +559,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
@@ -567,7 +567,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to remove the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
@@ -626,7 +626,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the removed hydrogens of a pdb file
               * @param pdb_file The object of a pdb file
@@ -634,7 +634,7 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
-            bool ExtractRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
+            bool ExtractRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to remove the removed hydrogens of a pdb file
               * @param pdb_file The object of a pdb file
@@ -764,7 +764,7 @@ namespace PdbPreprocessorSpace
               * @param lib_files_path Paths of library files as database in order for preprocessing of the given pdb file
               * @param prep_files_path Paths of prep files as database in order for preprocessing of the given pdb file
               */
-            void Preprocess(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files_path, std::vector<std::string> prep_files_path);
+            void Preprocess(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files_path, std::vector<std::string> glycam_lib_files_path, std::vector<std::string> other_lib_files_path, std::vector<std::string> prep_files_path);
             /*! \fn
               * A function to apply all the updates on a pdb file
               * @param pdb_file A pdb file object that has to modified to reflect the updates
@@ -795,27 +795,27 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               * @return bool value
               */
-            bool ExtractResidueInfo(std::string pdb_file_path, std::vector<std::string> lib_files);
+            bool ExtractResidueInfo(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_filess);
             /*! \fn
               * A function in order to extract the residues info of a pdb file
               * @param pdb_file The object of a pdb file
               * @return bool value
               */
-            bool ExtractResidueInfo(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files);
+            bool ExtractResidueInfo(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files);
             /*! \fn
               * A function to calculate the overall charge of the model
               * @param pdb_file_path The path to the pdb file
               * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
               * @return model_charge Overal charge of the model
               */
-            double CalculateModelCharge(std::string pdb_file_path, std::vector<std::string> lib_files);
+            double CalculateModelCharge(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files);
             /*! \fn
               * A function to calculate the overall charge of the model
               * @param pdb_file The object of a pdb file
               * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
               * @return model_charge Overal charge of the model
               */
-            double CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> lib_files);
+            double CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

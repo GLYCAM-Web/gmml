@@ -746,6 +746,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
     topology_assembly->SetAssemblyName(ss.str());
 
     topology_file->SetAssembly(topology_assembly);
+    topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
     topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
     topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
     topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes());
@@ -763,7 +764,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
     topology_file->SetTotalNumberOfBonds(this->CountNumberOfBonds());
     topology_file->SetTotalNumberOfAngles(this->CountNumberOfAngles());
 //    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedrals());
-    topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
     return topology_file;
 }
 
