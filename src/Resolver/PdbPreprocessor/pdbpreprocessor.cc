@@ -489,11 +489,11 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
@@ -553,11 +553,11 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<stri
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
@@ -636,11 +636,11 @@ bool PdbPreprocessor::ExtractRecognizedResidues(string pdb_file_path, vector<str
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
@@ -678,11 +678,11 @@ bool PdbPreprocessor::ExtractRecognizedResidues(PdbFile* pdb_file, vector<string
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
@@ -1351,11 +1351,11 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
@@ -1427,11 +1427,11 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string>
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
@@ -1660,11 +1660,11 @@ bool PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<strin
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
@@ -1727,11 +1727,11 @@ bool PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> 
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
@@ -2059,7 +2059,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
         PdbPreprocessorChainTermination* chain = (*it1);
         pdb_file->SplitAtomCardOfModelCard(chain->GetResidueChainId(), chain->GetEndingResidueSequenceNumber() + 1);
     }
-
+    cout << "Putting TER card after non-amino acid residues: Done" << endl;
     vector<string> glycam_residue_names = this->GetAllResidueNamesFromDatasetFiles(glycam_lib_files, prep_files);
     // Get all TER card positions and split
     vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions(glycam_residue_names);
@@ -2070,6 +2070,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
         int sequence_number = ter_position.second;
         pdb_file->SplitAtomCardOfModelCard(chain_id, sequence_number);
     }
+    cout << "Putting TER card after residues with no tail or with at least 2 tails: Done" << endl;
 
     // Add Terminals
     for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
@@ -2187,6 +2188,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
             }
         }
     }
+    cout << "Add terminals: Done" << endl;
 }
 
 void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_file, vector<string> amino_lib_files,
@@ -2200,10 +2202,10 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
         pdb_file->SplitAtomCardOfModelCard(chain->GetResidueChainId(), chain->GetEndingResidueSequenceNumber() + 1);
     }
 
+    cout << "Putting TER card after non-amino acid residues: Done" << endl;
     vector<string> glycam_residue_names = this->GetAllResidueNamesFromDatasetFiles(glycam_lib_files, prep_files);
     // Get all TER card positions and split
     vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions(glycam_residue_names);
-    cout << ter_card_positions.size() << endl;
     for(vector<pair<char, int> >::iterator it1 = ter_card_positions.begin(); it1 != ter_card_positions.end(); it1++)
     {
         pair<char, int> ter_position = *it1;
@@ -2211,7 +2213,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
         int sequence_number = ter_position.second;
         pdb_file->SplitAtomCardOfModelCard(chain_id, sequence_number);
     }
-    cout << "After residues with no tail or with at least 2 tails: Done" << endl;
+    cout << "Putting TER card after residues with no tail or with at least 2 tails: Done" << endl;
     // Add Terminals
     for(PdbPreprocessor::PdbPreprocessorChainTerminationVector::iterator it1 = chain_terminations.begin(); it1 != chain_terminations.end(); it1++)
     {
@@ -3128,11 +3130,11 @@ bool PdbPreprocessor::ExtractResidueInfo(string pdb_file_path, vector<string> am
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
@@ -3180,11 +3182,11 @@ bool PdbPreprocessor::ExtractResidueInfo(PdbFile *pdb_file, vector<string> amino
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
@@ -3228,11 +3230,11 @@ double PdbPreprocessor::CalculateModelCharge(string pdb_file_path, vector<string
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
-        for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+        for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
         {
             lib_files.push_back(*it);
         }
@@ -3272,11 +3274,11 @@ double PdbPreprocessor::CalculateModelCharge(PdbFile* pdb_file, vector<string> a
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = glycam_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
-    for(vector<string>::iterator it = other_lib_files.begin(); it != amino_lib_files.end(); it++)
+    for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
     {
         lib_files.push_back(*it);
     }
