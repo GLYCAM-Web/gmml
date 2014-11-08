@@ -3199,17 +3199,23 @@ bool PdbPreprocessor::ExtractResidueInfo(PdbFile *pdb_file, vector<string> amino
         if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
         {
             LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
-            PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
+//            PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
 
-            for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+//            for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+//            {
+//                PdbAtom* atom = (*it1);
+//                LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
+//                if(lib_atom != NULL)
+//                {
+//                    if(lib_atom->GetCharge() != dNotSet)
+//                        residue_charge += lib_atom->GetCharge();
+//                }
+//            }
+            LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_residue->GetAtoms();
+            for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it1 = lib_atoms.begin(); it1 != lib_atoms.end(); it1++)
             {
-                PdbAtom* atom = (*it1);
-                LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
-                if(lib_atom != NULL)
-                {
-                    if(lib_atom->GetCharge() != dNotSet)
-                        residue_charge += lib_atom->GetCharge();
-                }
+                LibraryFileSpace::LibraryFileAtom* lib_atom = (*it1).second;
+                residue_charge += lib_atom->GetCharge();
             }
         }
         stringstream ss;
@@ -3248,17 +3254,24 @@ double PdbPreprocessor::CalculateModelCharge(string pdb_file_path, vector<string
             if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
             {
                 LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
-                PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
+//                PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
 
-                for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+//                for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+//                {
+//                    PdbAtom* atom = (*it1);
+//                    LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
+//                    if(lib_atom != NULL)
+//                    {
+//                        if(lib_atom->GetCharge() != dNotSet)
+//                            model_charge += lib_atom->GetCharge();
+//                    }
+//                }
+
+                LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_residue->GetAtoms();
+                for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it1 = lib_atoms.begin(); it1 != lib_atoms.end(); it1++)
                 {
-                    PdbAtom* atom = (*it1);
-                    LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
-                    if(lib_atom != NULL)
-                    {
-                        if(lib_atom->GetCharge() != dNotSet)
-                            model_charge += lib_atom->GetCharge();
-                    }
+                    LibraryFileSpace::LibraryFileAtom* lib_atom = (*it1).second;
+                    model_charge += lib_atom->GetCharge();
                 }
             }
         }
@@ -3291,17 +3304,24 @@ double PdbPreprocessor::CalculateModelCharge(PdbFile* pdb_file, vector<string> a
         if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
         {
             LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
-            PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
+//            PdbFile::PdbAtomVector atoms = pdb_file->GetAllAtomsOfResidue(residue);
 
-            for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+//            for(PdbFile::PdbAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+//            {
+//                PdbAtom* atom = (*it1);
+//                LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
+//                if(lib_atom != NULL)
+//                {
+//                    if(lib_atom->GetCharge() != dNotSet)
+//                        model_charge += lib_atom->GetCharge();
+//                }
+//            }
+
+            LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_residue->GetAtoms();
+            for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it1 = lib_atoms.begin(); it1 != lib_atoms.end(); it1++)
             {
-                PdbAtom* atom = (*it1);
-                LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
-                if(lib_atom != NULL)
-                {
-                    if(lib_atom->GetCharge() != dNotSet)
-                        model_charge += lib_atom->GetCharge();
-                }
+                LibraryFileSpace::LibraryFileAtom* lib_atom = (*it1).second;
+                model_charge += lib_atom->GetCharge();
             }
         }
     }
