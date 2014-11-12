@@ -412,6 +412,7 @@ namespace MolecularModeling
               */
             int CountMaxNumberOfAtomsInLargestResidue();
 
+            void ClearAssembly();
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
