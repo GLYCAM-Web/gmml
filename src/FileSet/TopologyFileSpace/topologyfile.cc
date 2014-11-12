@@ -1644,16 +1644,14 @@ void TopologyFile::Write(const string &top_file)
 
 void TopologyFile::ResolveSections(ofstream &out_stream)
 {
-    if(!title_.empty())
-        this->ResolveTitleSection(out_stream);
+    this->ResolveTitleSection(out_stream);
     this->ResolvePointersSection(out_stream);
-
     this->ResolveAtomNameSection(out_stream);
     this->ResolveChargeSection(out_stream);
     this->ResolveAtomicNumberSection(out_stream);
     this->ResolveMassSection(out_stream);
     this->ResolveAtomTypeIndexSection(out_stream);
-    this->ResolveNumberExcludedAtomsSection(out_stream);
+    this->ResolveNumberExcludedAtomsSection(out_stream);    
     this->ResolveNonbondedParmIndexSection(out_stream);
     this->ResolveResidueLabelSection(out_stream);
     this->ResolveResiduePointersSection(out_stream);
@@ -1831,7 +1829,7 @@ void TopologyFile::ResolvePointersSection(ofstream &out)
     if(number_of_beads_ != iNotSet)
         out << setw(8) << number_of_beads_ << endl;
     else
-        out << setw(8) << right << 0;
+        out << setw(8) << right << 0 << endl;
     out << endl;
 }
 
@@ -1849,7 +1847,6 @@ void TopologyFile::ResolveAtomNameSection(ofstream& out)
         for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
-            cout << atom->GetAtomName() << endl;
             index++;
             out << setw(ITEM_LENGTH) << left << atom->GetAtomName();
             count++;
@@ -1863,7 +1860,6 @@ void TopologyFile::ResolveAtomNameSection(ofstream& out)
     if(count < MAX_IN_LINE)
         out << endl;
     out << endl;
-
 }
 
 void TopologyFile::ResolveChargeSection(ofstream& out)
@@ -1880,7 +1876,6 @@ void TopologyFile::ResolveChargeSection(ofstream& out)
         for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
-            cout << atom->GetAtomName() << endl;
             index++;
             out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetAtomCharge();
             count++;
@@ -1911,7 +1906,10 @@ void TopologyFile::ResolveAtomicNumberSection(ofstream& out)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
             index++;
-            out << setw(ITEM_LENGTH) << right << atom->GetAtomicNumber();
+            if(atom->GetAtomicNumber() != iNotSet)
+                out << setw(ITEM_LENGTH) << right << atom->GetAtomicNumber();
+            else
+                out << setw(ITEM_LENGTH) << right << 0;
             count++;
             if(count == MAX_IN_LINE)
             {
@@ -2059,7 +2057,8 @@ void TopologyFile::ResolveNonbondedParmIndexSection(ofstream& out)
             }
         }
     }
-    for(unsigned int i = 0; i < nonbond_index_map.size(); i++)
+    int size = nonbond_index_map.size();
+    for(unsigned int i = 0; i < size; i++)
     {
         out << setw(ITEM_LENGTH) << right << nonbond_index_map[i+1];
         count++;
@@ -2132,12 +2131,15 @@ void TopologyFile::ResolveBondForceConstantSection(ofstream& out)
     for(int i = 0; i < number_of_bond_types_; i++)
     {
         TopologyBondType* bond_type = this->GetBondTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << bond_type->GetForceConstant();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(bond_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << bond_type->GetForceConstant();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2155,12 +2157,15 @@ void TopologyFile::ResolveBondEquilValueSection(ofstream& out)
     for(int i = 0; i < number_of_bond_types_; i++)
     {
         TopologyBondType* bond_type = this->GetBondTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << bond_type->GetEquilibriumValue();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(bond_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << bond_type->GetEquilibriumValue();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2178,12 +2183,15 @@ void TopologyFile::ResolveAngleForceConstantSection(ofstream& out)
     for(int i = 0; i < number_of_angle_types_; i++)
     {
         TopologyAngleType* angle_type = this->GetAngleTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << angle_type->GetForceConstant();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(angle_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << angle_type->GetForceConstant();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2201,12 +2209,15 @@ void TopologyFile::ResolveAngleEquilValueSection(ofstream& out)
     for(int i = 0; i < number_of_angle_types_; i++)
     {
         TopologyAngleType* angle_type = this->GetAngleTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << angle_type->GetEquilibriumValue();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(angle_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << angle_type->GetEquilibriumValue();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2224,12 +2235,15 @@ void TopologyFile::ResolveDihedralForceConstantSection(ofstream& out)
     for(int i = 0; i < number_of_dihedral_types_; i++)
     {
         TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetForceConstant();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(dihedral_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetForceConstant();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2247,12 +2261,15 @@ void TopologyFile::ResolveDihedralPeriodicitySection(ofstream& out)
     for(int i = 0; i < number_of_dihedral_types_; i++)
     {
         TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetPeriodicity();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(dihedral_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetPeriodicity();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2270,12 +2287,15 @@ void TopologyFile::ResolveDihedralPhaseSection(ofstream& out)
     for(int i = 0; i < number_of_dihedral_types_; i++)
     {
         TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetPhase();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(dihedral_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetPhase();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2293,12 +2313,15 @@ void TopologyFile::ResolveSceeScaleFactorSection(ofstream& out)
     for(int i = 0; i < number_of_dihedral_types_; i++)
     {
         TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetScee();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(dihedral_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetScee();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2316,12 +2339,15 @@ void TopologyFile::ResolveScnbScaleFactorSection(ofstream& out)
     for(int i = 0; i < number_of_dihedral_types_; i++)
     {
         TopologyDihedralType* dihedral_type = this->GetDihedralTypeByIndex(i);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetScnb();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(dihedral_type != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << dihedral_type->GetScnb();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
     if(count < MAX_IN_LINE)
@@ -2347,12 +2373,15 @@ void TopologyFile::ResolveLennardJonesACoefSection(ofstream& out)
     for(unsigned int i = 0; i < pairs_.size(); i++)
     {
         TopologyAtomPair* atom_pair = this->GetAtomPairByIndex(i+1);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom_pair->GetCoefficientA();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(atom_pair != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom_pair->GetCoefficientA();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
 
@@ -2371,12 +2400,15 @@ void TopologyFile::ResolveLennardJonesBCoefSection(ofstream& out)
     for(unsigned int i = 0; i < pairs_.size(); i++)
     {
         TopologyAtomPair* atom_pair = this->GetAtomPairByIndex(i+1);
-        out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom_pair->GetCoefficientB();
-        count++;
-        if(count == MAX_IN_LINE)
+        if(atom_pair != NULL)
         {
-            count = 0;
-            out << endl;
+            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom_pair->GetCoefficientB();
+            count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
         }
     }
 

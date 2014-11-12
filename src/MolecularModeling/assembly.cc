@@ -349,6 +349,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
 {
     try
     {
+        this->ClearAssembly();
         PdbFile* pdb_file = new PdbFile(pdb_file_path);
         PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsOfResidues();
         for(PdbFile::PdbResidueAtomsMap::iterator it = residue_atoms_map.begin(); it != residue_atoms_map.end(); it++)
@@ -449,6 +450,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
 
 void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
 {
+    this->ClearAssembly();
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
@@ -484,13 +486,14 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
 
             assembly_residue->AddAtom(assembly_atom);
         }
-        residues_.push_back(assembly_residue);
+        this->AddResidue(assembly_residue);
 
     }
 }
 
 void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
 {
+    this->ClearAssembly();
     LibraryFile* library_file = new LibraryFile(library_file_path);
     sequence_number_ = 1;
     LibraryFile::ResidueMap library_residues = library_file->GetResidues();
@@ -545,6 +548,7 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
 
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path, string coordinate_file_path)
 {
+    this->ClearAssembly();
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
@@ -593,6 +597,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
 
 void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
 {
+    this->ClearAssembly();
     PrepFile* prep_file = new PrepFile(prep_file_path);
     sequence_number_ = 1;
     PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
@@ -712,7 +717,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
     int residue_counter = 0;
     int atom_counter = 1;
-    stringstream ss;
+    stringstream ss;    
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
@@ -730,7 +735,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
         {
             Atom* assembly_atom = (*it1);
             TopologyAtom* topology_atom = new TopologyAtom();
-            atom_counter++;
             topology_atom->SetAtomName(assembly_atom->GetName());
             topology_atom->SetAtomCharge(assembly_atom->GetCharge());
             topology_atom->SetAtomMass(assembly_atom->GetMass());
@@ -740,12 +744,14 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
             topology_atom->SetResidueName(assembly_residue->GetName());
             topology_atom->SetIndex(atom_counter);
             topology_residue->AddAtom(topology_atom);
+            atom_counter++;
         }
         topology_assembly->AddResidue(topology_residue);
     }
     topology_assembly->SetAssemblyName(ss.str());
 
     topology_file->SetAssembly(topology_assembly);
+    topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
     topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
     topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
     topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
@@ -1987,6 +1993,21 @@ int Assembly::CountMaxNumberOfAtomsInLargestResidue()
             max = atoms.size();
     }
     return max;
+}
+
+void Assembly::ClearAssembly()
+{
+    this->residues_.clear();
+    this->assemblies_.clear();
+//    this->source_file_ = "";
+//    this->source_file_type_ = UNKNOWN;
+//    this->chemical_type_ = "";
+//    this->description_ = "";
+//    this->sequence_number_ = 1;
+//    this->total_mass_ = dNotSet;
+//    this->center_of_geometry_ = Coordinate();
+//    this->center_of_mass_ = Coordinate();
+//    this->model_index_ = 0;
 }
 
 //////////////////////////////////////////////////////////

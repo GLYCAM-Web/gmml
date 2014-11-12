@@ -46,7 +46,6 @@ TopologyAtom* TopologyResidue::GetAtomByIndex(int index)
     for(TopologyAtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         TopologyAtom* atom = (*it).second;
-        cout << atom->GetIndex() << ":" << index << endl;
         if(atom->GetIndex() == index)
             return atom;
     }
