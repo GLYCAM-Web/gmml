@@ -427,7 +427,16 @@ SectionType PrepFileResidue::GetSectionTypeFromString(string section_type)
     else
         return kSectionOther;
 }
-
+PrepFileAtom* PrepFileResidue::GetPrepAtomByAtomName(string atom_name)
+{
+    for(PrepFileResidue::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        PrepFileAtom* atom = (*it);
+        if(atom->GetName().compare(atom_name) == 0)
+            return atom;
+    }
+    return NULL;
+}
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////

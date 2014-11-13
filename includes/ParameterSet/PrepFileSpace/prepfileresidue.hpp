@@ -331,6 +331,7 @@ namespace PrepFileSpace
               * @return A map which indicates each atom index in a residue is bonded to which atom (atom index)
               */
             BondedAtomIndexMap GetBondingsOfResidue();
+            PrepFileAtom* GetPrepAtomByAtomName(std::string atom_name);
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
