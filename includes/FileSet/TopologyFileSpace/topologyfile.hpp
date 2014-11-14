@@ -774,7 +774,7 @@ namespace TopologyFileSpace
               * A function to write back residue set section of the topology file into an output stream
               * @param out Intermediate output stream in order to write residue set section
               */
-            void ResolveResidueSetSection(std::ofstream& out);
+            void ResolveRadiusSetSection(std::ofstream& out);
             /*! \fn
               * A function to write back radii section of the topology file into an output stream
               * @param out Intermediate output stream in order to write radii section
