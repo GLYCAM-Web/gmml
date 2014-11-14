@@ -59,7 +59,7 @@ namespace PdbFileSpace
             typedef std::map<int, int> PdbSerialNumberMapping;
 
             typedef std::vector<std::pair<char, int> > PdbPairVectorTerCardPositions;
-
+            typedef std::vector<std::pair<std::string, std::string> > PdbPairVectorAtomNamePositionFlag;
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -200,12 +200,12 @@ namespace PdbFileSpace
               * An accessor function in order to access to all residue names of the current object
               * @return residue_names All residue names of the current object of this class
               */
-            std::vector<std::string> GetAllResidueNames();
+            PdbPairVectorAtomNamePositionFlag GetAllResidueNames();
             /*! \fn
               * An accessor function in order to access to all residue names from atom card of the current object
               * @return residue_names All residue names from atom card of the current object of this class
               */
-            std::vector<std::string> GetAllResidueNamesFromAtomCard();
+            PdbPairVectorAtomNamePositionFlag GetAllResidueNamesFromAtomCard();
             /*! \fn
               * An accessor function in order to access to all residues of the current object
               * @return all_residues_ All residues of the current object of this class

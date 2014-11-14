@@ -9,6 +9,7 @@
 #include "../../FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../../FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../../ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../common.hpp"
 
 namespace PdbPreprocessorSpace
@@ -282,10 +283,10 @@ namespace PdbPreprocessorSpace
               * @param data_set_residue_names The list of residue names from library and prep files
               * @return unrecognized_residue_names
               */
-            std::vector<std::string> GetUnrecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            std::vector<std::string> GetUnrecognizedResidueNames(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, std::vector<std::string> dataset_residue_names);
 
             //**************************************************
-            gmml::ResidueNameMap GetUnrecognizedResidueNamesMap(std::vector<std::string> pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
+            gmml::ResidueNameMap GetUnrecognizedResidueNamesMap(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
 
             //**************************************************
 
@@ -295,10 +296,10 @@ namespace PdbPreprocessorSpace
               * @param data_set_residue_names The list of residue names from library and prep files
               * @return recognized_residue_names
               */
-            std::vector<std::string> GetRecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            std::vector<std::string> GetRecognizedResidueNames(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, std::vector<std::string> dataset_residue_names);
 
             //**************************************************
-            gmml::ResidueNameMap GetRecognizedResidueNamesMap(std::vector<std::string> pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
+            gmml::ResidueNameMap GetRecognizedResidueNamesMap(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
 
             //**************************************************
 
@@ -346,6 +347,12 @@ namespace PdbPreprocessorSpace
               * @return all_residues_
               */
             LibraryFileSpace::LibraryFile::ResidueMap GetAllResiduesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
+            /*! \fn
+              * A function in order to access to the list of all residue from prep files
+              * @param prep_files The list of paths to prep files
+              * @return all_residues_
+              */
+            PrepFileSpace::PrepFile::ResidueMap GetAllResiduesFromMultiplePrepFilesMap(std::vector<std::string> prep_files);
 
             /*! \fn
               * A function in order to access to the list of all residue names from prep files
@@ -795,27 +802,27 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               * @return bool value
               */
-            bool ExtractResidueInfo(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_filess);
+            bool ExtractResidueInfo(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_filess, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the residues info of a pdb file
               * @param pdb_file The object of a pdb file
               * @return bool value
               */
-            bool ExtractResidueInfo(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files);
+            bool ExtractResidueInfo(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function to calculate the overall charge of the model
               * @param pdb_file_path The path to the pdb file
               * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
               * @return model_charge Overal charge of the model
               */
-            double CalculateModelCharge(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files);
+            double CalculateModelCharge(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function to calculate the overall charge of the model
               * @param pdb_file The object of a pdb file
               * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
               * @return model_charge Overal charge of the model
               */
-            double CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files);
+            double CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

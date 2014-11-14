@@ -25,7 +25,8 @@ PdbModel::PdbModel(stringstream &model_block)
             model_serial_number_ = ConvertString<int>(line.substr(10,4));
         getline(model_block,line);
         string temp = line;
-        while(line.find("ENDMDL") == string::npos)
+        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
+              || line.find("TER") != string::npos || line.find("HETATM") != string::npos)
         {
             residue_set_block << line << endl;
             getline(model_block, line);
@@ -37,7 +38,8 @@ PdbModel::PdbModel(stringstream &model_block)
     {
         model_serial_number_ = 1;
         string temp = line;
-        while(!Trim(temp).empty())
+        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
+              || line.find("TER") != string::npos || line.find("HETATM") != string::npos)
         {
             residue_set_block << line << endl;
             getline(model_block, line);
