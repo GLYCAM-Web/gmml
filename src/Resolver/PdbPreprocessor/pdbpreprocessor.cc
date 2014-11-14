@@ -188,7 +188,6 @@ void PdbPreprocessor::SetToBeDeletedResidues(PdbPreprocessorToBeDeletedResidueVe
 vector<string> PdbPreprocessor::GetUnrecognizedResidueNames(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, vector<string> dataset_residue_names)
 {
     vector<string> unrecognized_residue_names;
-    int counter = 0;
     for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
         pair<string, string> residue_name_flag = *it;
@@ -223,17 +222,14 @@ vector<string> PdbPreprocessor::GetUnrecognizedResidueNames(PdbFile::PdbPairVect
                 }
             }
         }
-        else
-            counter++;
     }
-    cout << counter << " HIS residue(s) found" << endl;
+    cout << "HIS residue(s) found" << endl;
     return unrecognized_residue_names;
 }
 
 ResidueNameMap PdbPreprocessor::GetUnrecognizedResidueNamesMap(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, ResidueNameMap dataset_residue_names)
 {
     ResidueNameMap unrecognized_residue_names = ResidueNameMap();
-    int counter = 0;
     for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
         pair<string, string> residue_name_flag = *it;
@@ -268,17 +264,14 @@ ResidueNameMap PdbPreprocessor::GetUnrecognizedResidueNamesMap(PdbFile::PdbPairV
                 }
             }
         }
-        else
-            counter++;
     }
-    cout << counter << " HIS residue(s) found" << endl;
+    cout << "HIS residue(s) found" << endl;
     return unrecognized_residue_names;
 }
 
 vector<string> PdbPreprocessor::GetRecognizedResidueNames(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, vector<string> dataset_residue_names)
 {
     vector<string> recognized_residue_names;
-    int counter = 0;
     for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
         pair<string, string> residue_name_flag = *it;
@@ -313,17 +306,15 @@ vector<string> PdbPreprocessor::GetRecognizedResidueNames(PdbFile::PdbPairVector
         else
         {
             recognized_residue_names.push_back(pdb_residue_name);
-            counter++;
         }
     }
-    cout << counter << " HIS residue(s) found" << endl;
+    cout << "HIS residue(s) found" << endl;
     return recognized_residue_names;
 }
 
 ResidueNameMap PdbPreprocessor::GetRecognizedResidueNamesMap(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, ResidueNameMap dataset_residue_names)
 {
     ResidueNameMap recognized_residue_names = ResidueNameMap();
-    int counter = 0;
     for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
         pair<string, string> residue_name_flag = *it;
@@ -358,34 +349,23 @@ ResidueNameMap PdbPreprocessor::GetRecognizedResidueNamesMap(PdbFile::PdbPairVec
         else
         {
             recognized_residue_names[pdb_residue_name] = pdb_residue_name;
-            counter++;
         }
     }
-    cout << counter << " HIS residue(s) found" << endl;
+    cout << "HIS residue(s) found" << endl;
     return recognized_residue_names;
 }
 
 PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetUnrecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, vector<string> unrecognized_residue_names)
 {
     PdbFileSpace::PdbFile::PdbResidueVector unrecognized_residues;
-    bool is_unrecognized = false;
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
     {
         PdbResidue* pdb_residue = *it;
         string pdb_residue_name = pdb_residue->GetResidueName();
-        for(vector<string>::iterator it1 = unrecognized_residue_names.begin(); it1 != unrecognized_residue_names.end(); it1++)
+        if(find(unrecognized_residue_names.begin(), unrecognized_residue_names.end(), pdb_residue_name) == unrecognized_residue_names.end())
         {
-            string unrecognized_residue_name = *it1;
-            if((pdb_residue_name).compare(unrecognized_residue_name) == 0)
-            {
-                is_unrecognized = true;
-                break;
-            }
-            else
-                is_unrecognized = false;
-        }
-        if(is_unrecognized)
             unrecognized_residues.push_back(pdb_residue);
+        }
     }
     return unrecognized_residues;
 }
@@ -406,26 +386,12 @@ PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetUnrecognizedResidues
 PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, vector<string> recognized_residue_names)
 {
     PdbFileSpace::PdbFile::PdbResidueVector recognized_residues;
-    bool is_recognized = false;
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
     {
         PdbResidue* pdb_residue = *it;
         string pdb_residue_name = pdb_residue->GetResidueName();
-        for(vector<string>::iterator it1 = recognized_residue_names.begin(); it1 != recognized_residue_names.end(); it1++)
-        {
-            string recognized_residue_name = *it1;
-            if((pdb_residue_name).compare(recognized_residue_name) == 0)
-            {
-                is_recognized = true;
-                break;
-            }
-            else
-                is_recognized = false;
-        }
-        if(is_recognized)
-        {
+        if(find(recognized_residue_names.begin(), recognized_residue_names.end(), pdb_residue_name) != recognized_residue_names.end())
             recognized_residues.push_back(pdb_residue);
-        }
     }
     return recognized_residues;
 }
@@ -635,8 +601,7 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
         return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
-    {}
-
+    {}    
 }
 bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<string> amino_lib_files, vector<string> glycam_lib_files, vector<string> other_lib_files, vector<string> prep_files)
 {

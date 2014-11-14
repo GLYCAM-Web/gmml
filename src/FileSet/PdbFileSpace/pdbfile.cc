@@ -316,19 +316,19 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
             if(atom_it == atoms.begin())
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, "S");
-                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) != residue_names.end())
+                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                         residue_names.push_back(make_pair(atom->GetAtomResidueName(), "S"));
             }
             else if(atom_it == atoms.end())
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, "E");
-                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) != residue_names.end())
+                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(make_pair(atom->GetAtomResidueName(), "E"));
             }
             else
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, " ");
-                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) != residue_names.end())
+                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(make_pair(atom->GetAtomResidueName(), " "));
             }
         }
@@ -343,7 +343,7 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
             PdbAtom* atom = (*it2).second;
             string atom_residue_name = atom->GetAtomResidueName();
             pair<string, string> pair_residue_position = make_pair(atom_residue_name, " ");
-            if(find(residue_names.begin(), residue_names.end(), pair_residue_position) != residue_names.end())
+            if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
             {
                 residue_names.push_back(make_pair(atom->GetAtomResidueName(), " "));
             }
@@ -371,19 +371,19 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNamesFromAtomCa
             if(atom_it == atoms.begin())
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, "S");
-                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) != residue_names.end())
+                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                         residue_names.push_back(make_pair(atom->GetAtomResidueName(), "S"));
             }
             else if(atom_it == atoms.end())
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, "E");
-                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) != residue_names.end())
+                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(make_pair(atom->GetAtomResidueName(), "E"));
             }
             else
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, " ");
-                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) != residue_names.end())
+                if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(make_pair(atom->GetAtomResidueName(), " "));
             }
         }
