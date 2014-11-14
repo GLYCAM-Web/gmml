@@ -1681,7 +1681,7 @@ void TopologyFile::ResolveSections(ofstream &out_stream)
     this->ResolveTreeChainClassificationSection(out_stream);
     this->ResolveJoinArraySection(out_stream);
     this->ResolveIRotatSection(out_stream);
-    this->ResolveResidueSetSection(out_stream);
+    this->ResolveRadiusSetSection(out_stream);
     this->ResolveRadiiSection(out_stream);
     this->ResolveScreenSection(out_stream);
 
@@ -1691,8 +1691,7 @@ void TopologyFile::ResolveTitleSection(ofstream &out)
 {
     out << "%FLAG TITLE" << endl
         << "%FORMAT(20a4)" << endl
-        << title_ << endl
-        << endl;
+        << title_ << endl;
 }
 
 void TopologyFile::ResolvePointersSection(ofstream &out)
@@ -1830,7 +1829,6 @@ void TopologyFile::ResolvePointersSection(ofstream &out)
         out << setw(8) << number_of_beads_ << endl;
     else
         out << setw(8) << right << 0 << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveAtomNameSection(ofstream& out)
@@ -1859,7 +1857,6 @@ void TopologyFile::ResolveAtomNameSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveChargeSection(ofstream& out)
@@ -1888,7 +1885,6 @@ void TopologyFile::ResolveChargeSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveAtomicNumberSection(ofstream& out)
@@ -1920,7 +1916,6 @@ void TopologyFile::ResolveAtomicNumberSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveMassSection(ofstream& out)
@@ -1949,7 +1944,6 @@ void TopologyFile::ResolveMassSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveAtomTypeIndexSection(ofstream& out)
@@ -1979,7 +1973,6 @@ void TopologyFile::ResolveAtomTypeIndexSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveNumberExcludedAtomsSection(ofstream& out)
@@ -2008,7 +2001,6 @@ void TopologyFile::ResolveNumberExcludedAtomsSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveNonbondedParmIndexSection(ofstream& out)
@@ -2070,7 +2062,6 @@ void TopologyFile::ResolveNonbondedParmIndexSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveResidueLabelSection(ofstream& out)
@@ -2094,7 +2085,6 @@ void TopologyFile::ResolveResidueLabelSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveResiduePointersSection(ofstream& out)
@@ -2118,7 +2108,6 @@ void TopologyFile::ResolveResiduePointersSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveBondForceConstantSection(ofstream& out)
@@ -2144,7 +2133,6 @@ void TopologyFile::ResolveBondForceConstantSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveBondEquilValueSection(ofstream& out)
@@ -2170,7 +2158,6 @@ void TopologyFile::ResolveBondEquilValueSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveAngleForceConstantSection(ofstream& out)
@@ -2196,7 +2183,6 @@ void TopologyFile::ResolveAngleForceConstantSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveAngleEquilValueSection(ofstream& out)
@@ -2222,7 +2208,6 @@ void TopologyFile::ResolveAngleEquilValueSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveDihedralForceConstantSection(ofstream& out)
@@ -2248,7 +2233,6 @@ void TopologyFile::ResolveDihedralForceConstantSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveDihedralPeriodicitySection(ofstream& out)
@@ -2274,7 +2258,6 @@ void TopologyFile::ResolveDihedralPeriodicitySection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveDihedralPhaseSection(ofstream& out)
@@ -2300,7 +2283,6 @@ void TopologyFile::ResolveDihedralPhaseSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveSceeScaleFactorSection(ofstream& out)
@@ -2326,7 +2308,6 @@ void TopologyFile::ResolveSceeScaleFactorSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveScnbScaleFactorSection(ofstream& out)
@@ -2352,7 +2333,6 @@ void TopologyFile::ResolveScnbScaleFactorSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveSoltySection(ofstream& out)
@@ -2360,7 +2340,6 @@ void TopologyFile::ResolveSoltySection(ofstream& out)
     out << "%FLAG SOLTY" << endl
         << "%FORMAT(5E16.8)" << endl;
     //
-    out << endl;
 }
 
 void TopologyFile::ResolveLennardJonesACoefSection(ofstream& out)
@@ -2387,7 +2366,6 @@ void TopologyFile::ResolveLennardJonesACoefSection(ofstream& out)
 
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveLennardJonesBCoefSection(ofstream& out)
@@ -2414,7 +2392,6 @@ void TopologyFile::ResolveLennardJonesBCoefSection(ofstream& out)
 
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveBondsIncHydrogenSection(ofstream& out)
@@ -2458,7 +2435,6 @@ void TopologyFile::ResolveBondsIncHydrogenSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveBondsWithoutHydrogenSection(ofstream& out)
@@ -2502,7 +2478,6 @@ void TopologyFile::ResolveBondsWithoutHydrogenSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveAnglesIncHydrogenSection(ofstream& out)
@@ -2554,7 +2529,6 @@ void TopologyFile::ResolveAnglesIncHydrogenSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveAnglesWithoutHydrogenSection(ofstream& out)
@@ -2606,7 +2580,6 @@ void TopologyFile::ResolveAnglesWithoutHydrogenSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveDihedralsIncHydrogenSection(ofstream& out)
@@ -2672,7 +2645,6 @@ void TopologyFile::ResolveDihedralsIncHydrogenSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveDihedralsWithoutHydrogenSection(ofstream& out)
@@ -2738,7 +2710,6 @@ void TopologyFile::ResolveDihedralsWithoutHydrogenSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
@@ -2773,7 +2744,6 @@ void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveHydrogenBondACoefSection(ofstream& out)
@@ -2781,7 +2751,6 @@ void TopologyFile::ResolveHydrogenBondACoefSection(ofstream& out)
     out << "%FLAG HBOND_ACOEF" << endl
         << "%FORMAT(5E16.8)" << endl;
     //
-    out << endl;
 }
 
 void TopologyFile::ResolveHydrogenBondBCoefSection(ofstream& out)
@@ -2789,7 +2758,6 @@ void TopologyFile::ResolveHydrogenBondBCoefSection(ofstream& out)
     out << "%FLAG HBOND_BCOEF" << endl
         << "%FORMAT(5E16.8)" << endl;
     //
-    out << endl;
 }
 
 void TopologyFile::ResolveHBCutSection(ofstream& out)
@@ -2797,7 +2765,6 @@ void TopologyFile::ResolveHBCutSection(ofstream& out)
     out << "%FLAG HBCUT" << endl
         << "%FORMAT(5E16.8)" << endl;
     //
-    out << endl;
 }
 
 void TopologyFile::ResolveAmberAtomTypeSection(ofstream& out)
@@ -2826,7 +2793,6 @@ void TopologyFile::ResolveAmberAtomTypeSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveTreeChainClassificationSection(ofstream& out)
@@ -2844,7 +2810,10 @@ void TopologyFile::ResolveTreeChainClassificationSection(ofstream& out)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
             index++;
-            out << setw(ITEM_LENGTH) << left << atom->GetTreeChainClassification();
+            if(!atom->GetTreeChainClassification().empty())
+                out << setw(ITEM_LENGTH) << left << atom->GetTreeChainClassification();
+            else
+                out << setw(ITEM_LENGTH) << left << "0";
             count++;
             if(count == MAX_IN_LINE)
             {
@@ -2855,7 +2824,6 @@ void TopologyFile::ResolveTreeChainClassificationSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveJoinArraySection(ofstream& out)
@@ -2871,17 +2839,24 @@ void TopologyFile::ResolveIRotatSection(ofstream& out)
     out << "%FLAG IROTAT" << endl
         << "%FORMAT(10I8)" << endl;
     //
-    out << endl;
 }
 
-void TopologyFile::ResolveResidueSetSection(ofstream& out)
+void TopologyFile::ResolveRadiusSetSection(ofstream& out)
 {
-    string radius_set = radius_set_.at(0);
-    std::replace(radius_set.begin(), radius_set.end(), '#', ' ');
-    out << "%FLAG RADIUS_SET" << endl
-        << "%FORMAT(1a80)" << endl
-        << radius_set << endl;
-    out << endl;
+    if(radius_set_.size() != 0)
+    {
+        string radius_set = radius_set_.at(0);
+        std::replace(radius_set.begin(), radius_set.end(), '#', ' ');
+        out << "%FLAG RADIUS_SET" << endl
+            << "%FORMAT(1a80)" << endl
+            << radius_set << endl;
+    }
+    else
+    {
+        out << "%FLAG RADIUS_SET" << endl
+            << "%FORMAT(1a80)" << endl;
+    }
+
 }
 
 void TopologyFile::ResolveRadiiSection(ofstream& out)
@@ -2899,7 +2874,10 @@ void TopologyFile::ResolveRadiiSection(ofstream& out)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
             index++;
-            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetRadii();
+            if(atom->GetRadii() != dNotSet)
+                out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetRadii();
+            else
+                out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << 0.0;
             count++;
             if(count == MAX_IN_LINE)
             {
@@ -2910,7 +2888,6 @@ void TopologyFile::ResolveRadiiSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 void TopologyFile::ResolveScreenSection(ofstream& out)
@@ -2928,7 +2905,10 @@ void TopologyFile::ResolveScreenSection(ofstream& out)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
             index++;
-            out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetScreen();
+            if(atom->GetScreen() != dNotSet)
+                out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetScreen();
+            else
+                out << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << 0.0;
             count++;
             if(count == MAX_IN_LINE)
             {
@@ -2939,7 +2919,6 @@ void TopologyFile::ResolveScreenSection(ofstream& out)
     }
     if(count < MAX_IN_LINE)
         out << endl;
-    out << endl;
 }
 
 //////////////////////////////////////////////////////////

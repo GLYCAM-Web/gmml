@@ -183,29 +183,43 @@ void PdbPreprocessor::SetToBeDeletedResidues(PdbPreprocessorToBeDeletedResidueVe
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
-vector<string> PdbPreprocessor::GetUnrecognizedResidueNames(vector<string> pdb_residue_names, vector<string> dataset_residue_names)
+vector<string> PdbPreprocessor::GetUnrecognizedResidueNames(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, vector<string> dataset_residue_names)
 {
     vector<string> unrecognized_residue_names;
-    bool is_recognized = false;
     int counter = 0;
-    for(vector<string>::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
+    for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
-        string pdb_residue_name = *it;
+        pair<string, string> residue_name_flag = *it;
+        string pdb_residue_name = residue_name_flag.first;
+        string pdb_residue_position_flag = residue_name_flag.second;
         if(pdb_residue_name.compare("HIS") != 0 )
         {
-            for(vector<string>::iterator it1 = dataset_residue_names.begin(); it1 != dataset_residue_names.end(); it1++)
+            if(find(dataset_residue_names.begin(), dataset_residue_names.end(), pdb_residue_name) != dataset_residue_names.end())
             {
-                string dataset_residue_name = *it1;
-                if((pdb_residue_name).compare(dataset_residue_name) == 0)
+            }
+            else
+            {
+                if(pdb_residue_position_flag.compare("S") == 0)
                 {
-                    is_recognized = true;
-                    break;
+                    stringstream ss;
+                    ss << "N" << pdb_residue_name;
+                    string n_terminal_pdb_residue_name = ss.str();
+                    if(find(dataset_residue_names.begin(), dataset_residue_names.end(), n_terminal_pdb_residue_name) == dataset_residue_names.end())
+                        unrecognized_residue_names.push_back(pdb_residue_name);
+                }
+                else if(pdb_residue_position_flag.compare("E") == 0)
+                {
+                    stringstream ss;
+                    ss << "C" << pdb_residue_name;
+                    string c_terminal_pdb_residue_name = ss.str();
+                    if(find(dataset_residue_names.begin(), dataset_residue_names.end(), c_terminal_pdb_residue_name) == dataset_residue_names.end())
+                        unrecognized_residue_names.push_back(pdb_residue_name);
                 }
                 else
-                    is_recognized = false;
+                {
+                    unrecognized_residue_names.push_back(pdb_residue_name);
+                }
             }
-            if(!is_recognized)
-                unrecognized_residue_names.push_back(pdb_residue_name);
         }
         else
             counter++;
@@ -214,18 +228,42 @@ vector<string> PdbPreprocessor::GetUnrecognizedResidueNames(vector<string> pdb_r
     return unrecognized_residue_names;
 }
 
-ResidueNameMap PdbPreprocessor::GetUnrecognizedResidueNamesMap(vector<string> pdb_residue_names, ResidueNameMap dataset_residue_names)
+ResidueNameMap PdbPreprocessor::GetUnrecognizedResidueNamesMap(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, ResidueNameMap dataset_residue_names)
 {
     ResidueNameMap unrecognized_residue_names = ResidueNameMap();
     int counter = 0;
-    for(vector<string>::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
+    for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
-        string pdb_residue_name = *it;
+        pair<string, string> residue_name_flag = *it;
+        string pdb_residue_name = residue_name_flag.first;
+        string pdb_residue_position_flag = residue_name_flag.second;
         if(pdb_residue_name.compare("HIS") != 0 )
         {
-            if(dataset_residue_names.find(pdb_residue_name) == dataset_residue_names.end())
+            if(dataset_residue_names.find(pdb_residue_name) != dataset_residue_names.end())
             {
-                unrecognized_residue_names[pdb_residue_name] = pdb_residue_name;
+            }
+            else
+            {
+                if(pdb_residue_position_flag.compare("S") == 0)
+                {
+                    stringstream ss;
+                    ss << "N" << pdb_residue_name;
+                    string n_terminal_pdb_residue_name = ss.str();
+                    if(dataset_residue_names.find(n_terminal_pdb_residue_name) == dataset_residue_names.end())
+                        unrecognized_residue_names[pdb_residue_name] = pdb_residue_name;
+                }
+                else if(pdb_residue_position_flag.compare("E") == 0)
+                {
+                    stringstream ss;
+                    ss << "C" << pdb_residue_name;
+                    string c_terminal_pdb_residue_name = ss.str();
+                    if(dataset_residue_names.find(c_terminal_pdb_residue_name) == dataset_residue_names.end())
+                        unrecognized_residue_names[pdb_residue_name] = pdb_residue_name;
+                }
+                else
+                {
+                    unrecognized_residue_names[pdb_residue_name] = pdb_residue_name;
+                }
             }
         }
         else
@@ -235,22 +273,38 @@ ResidueNameMap PdbPreprocessor::GetUnrecognizedResidueNamesMap(vector<string> pd
     return unrecognized_residue_names;
 }
 
-vector<string> PdbPreprocessor::GetRecognizedResidueNames(vector<string> pdb_residue_names, vector<string> dataset_residue_names)
+vector<string> PdbPreprocessor::GetRecognizedResidueNames(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, vector<string> dataset_residue_names)
 {
     vector<string> recognized_residue_names;
     int counter = 0;
-    for(vector<string>::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
+    for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
-        string pdb_residue_name = *it;
+        pair<string, string> residue_name_flag = *it;
+        string pdb_residue_name = residue_name_flag.first;
+        string pdb_residue_position_flag = residue_name_flag.second;
         if(pdb_residue_name.compare("HIS") != 0)
         {
-            for(vector<string>::iterator it1 = dataset_residue_names.begin(); it1 != dataset_residue_names.end(); it1++)
+            if(find(dataset_residue_names.begin(), dataset_residue_names.end(), pdb_residue_name) != dataset_residue_names.end())
             {
-                string dataset_residue_name = *it1;
-                if((pdb_residue_name).compare(dataset_residue_name) == 0)
+                recognized_residue_names.push_back(pdb_residue_name);
+            }
+            else
+            {
+                if(pdb_residue_position_flag.compare("S") == 0)
                 {
-                    recognized_residue_names.push_back(pdb_residue_name);
-                    break;
+                    stringstream ss;
+                    ss << "N" << pdb_residue_name;
+                    string n_terminal_pdb_residue_name = ss.str();
+                    if(find(dataset_residue_names.begin(), dataset_residue_names.end(), n_terminal_pdb_residue_name) != dataset_residue_names.end())
+                        recognized_residue_names.push_back(pdb_residue_name);
+                }
+                else if(pdb_residue_position_flag.compare("E") == 0)
+                {
+                    stringstream ss;
+                    ss << "C" << pdb_residue_name;
+                    string c_terminal_pdb_residue_name = ss.str();
+                    if(find(dataset_residue_names.begin(), dataset_residue_names.end(), c_terminal_pdb_residue_name) != dataset_residue_names.end())
+                        recognized_residue_names.push_back(pdb_residue_name);
                 }
             }
         }
@@ -264,18 +318,39 @@ vector<string> PdbPreprocessor::GetRecognizedResidueNames(vector<string> pdb_res
     return recognized_residue_names;
 }
 
-ResidueNameMap PdbPreprocessor::GetRecognizedResidueNamesMap(vector<string> pdb_residue_names, ResidueNameMap dataset_residue_names)
+ResidueNameMap PdbPreprocessor::GetRecognizedResidueNamesMap(PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, ResidueNameMap dataset_residue_names)
 {
     ResidueNameMap recognized_residue_names = ResidueNameMap();
     int counter = 0;
-    for(vector<string>::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
+    for(PdbFile::PdbPairVectorAtomNamePositionFlag::iterator it = pdb_residue_names.begin(); it != pdb_residue_names.end(); it++)
     {
-        string pdb_residue_name = *it;
+        pair<string, string> residue_name_flag = *it;
+        string pdb_residue_name = residue_name_flag.first;
+        string pdb_residue_position_flag = residue_name_flag.second;
         if(pdb_residue_name.compare("HIS") != 0)
         {
             if(dataset_residue_names.find(pdb_residue_name) != dataset_residue_names.end())
             {
                 recognized_residue_names[pdb_residue_name] = pdb_residue_name;
+            }
+            else
+            {
+                if(pdb_residue_position_flag.compare("S") == 0)
+                {
+                    stringstream ss;
+                    ss << "N" << pdb_residue_name;
+                    string n_terminal_pdb_residue_name = ss.str();
+                    if(dataset_residue_names.find(n_terminal_pdb_residue_name) != dataset_residue_names.end())
+                        recognized_residue_names[pdb_residue_name] = pdb_residue_name;
+                }
+                else if(pdb_residue_position_flag.compare("E") == 0)
+                {
+                    stringstream ss;
+                    ss << "C" << pdb_residue_name;
+                    string c_terminal_pdb_residue_name = ss.str();
+                    if(dataset_residue_names.find(c_terminal_pdb_residue_name) != dataset_residue_names.end())
+                        recognized_residue_names[pdb_residue_name] = pdb_residue_name;
+                }
             }
         }
         else
@@ -502,7 +577,7 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
         // Advanced version
         ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
         PdbFile* pdb_file = new PdbFile(pdb_file_path);
-        vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+        PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
         // Slow version
 //        vector<string> unrecognized_residue_names = GetUnrecognizedResidueNames(pdb_residue_names, dataset_residue_names);
         // Advanced version
@@ -565,7 +640,7 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<stri
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
     // Advanced version
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-    vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+    PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
     // Slow version
 //    vector<string> unrecognized_residue_names = GetUnrecognizedResidueNames(pdb_residue_names, dataset_residue_names);
     // Advanced version
@@ -649,7 +724,7 @@ bool PdbPreprocessor::ExtractRecognizedResidues(string pdb_file_path, vector<str
         // Advanced version
         ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
         PdbFile* pdb_file = new PdbFile(pdb_file_path);
-        vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+        PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
         // Slow version
 //        vector<string> unrecognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
         // Advanced version
@@ -690,7 +765,7 @@ bool PdbPreprocessor::ExtractRecognizedResidues(PdbFile* pdb_file, vector<string
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
     // Advanced version
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-    vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+    PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
     // Slow version
 //    vector<string> unrecognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
     // Advanced version
@@ -1364,7 +1439,7 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
 //         vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
         // Advanced version
         ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-        vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+        PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
         // Slow version
 //         vector<string> recognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
         // Advanced version
@@ -1439,7 +1514,7 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string>
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
     // Advanced version
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-    vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+    PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
     // Slow version
 //    vector<string> recognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
     // Advanced version
@@ -1673,7 +1748,7 @@ bool PdbPreprocessor::ExtractRemovedHydrogens(string pdb_file_path, vector<strin
 //        vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
         // Advanced version
         ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-        vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+        PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
         // Slow version
 //        vector<string> recognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
         // Advanced version
@@ -1739,7 +1814,7 @@ bool PdbPreprocessor::ExtractRemovedHydrogens(PdbFile* pdb_file, vector<string> 
 //    vector<string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
     // Advanced version
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-    vector<string> pdb_residue_names = pdb_file->GetAllResidueNames();
+    PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
     // Slow version
 //    vector<string> recognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
     // Advanced version
