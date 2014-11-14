@@ -926,6 +926,13 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                     updated_atoms[serial_number] = atom;
                     serial_number++;
                 }
+                else
+                {
+                    if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                    {
+                        serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                    }
+                }
             }
             atom_card->SetAtoms(updated_atoms);
             updated_atom_cards.push_back(atom_card);
@@ -956,6 +963,13 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
                     serial_number++;
+                }
+                else
+                {
+                    if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                    {
+                        serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                    }
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
@@ -1013,6 +1027,13 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
                     updated_atoms[serial_number] = atom;
                     serial_number++;
                 }
+                else
+                {
+                    if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                    {
+                        serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                    }
+                }
             }
             atom_card->SetAtoms(updated_atoms);
             updated_atom_cards.push_back(atom_card);
@@ -1043,6 +1064,13 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
                     serial_number++;
+                }
+                else
+                {
+                    if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                    {
+                        serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                    }
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
@@ -1112,6 +1140,13 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                         updated_atoms[serial_number] = atom;
                         serial_number++;
                     }
+                    else
+                    {
+                        if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                        {
+                            serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                        }
+                    }
                 }
             }
             atom_card->SetAtoms(updated_atoms);
@@ -1153,6 +1188,13 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                         atom->SetAtomSerialNumber(serial_number);
                         updated_heterogen_atoms[serial_number] = atom;
                         serial_number++;
+                    }
+                    else
+                    {
+                        if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                        {
+                            serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                        }
                     }
                 }
             }
@@ -1222,6 +1264,13 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                         updated_atoms[serial_number] = atom;
                         serial_number++;
                     }
+                    else
+                    {
+                        if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                        {
+                            serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                        }
+                    }
                 }
             }
             atom_card->SetAtoms(updated_atoms);
@@ -1263,6 +1312,13 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                         atom->SetAtomSerialNumber(serial_number);
                         updated_heterogen_atoms[serial_number] = atom;
                         serial_number++;
+                    }
+                    else
+                    {
+                        if(serial_number_mapping_.find(atom->GetAtomSerialNumber()) != serial_number_mapping_.end())
+                        {
+                            serial_number_mapping_.erase(atom->GetAtomSerialNumber());
+                        }
                     }
                 }
             }
