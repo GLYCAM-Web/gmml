@@ -283,10 +283,10 @@ namespace PdbPreprocessorSpace
               * @param data_set_residue_names The list of residue names from library and prep files
               * @return unrecognized_residue_names
               */
-            std::vector<std::string> GetUnrecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            std::vector<std::string> GetUnrecognizedResidueNames(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, std::vector<std::string> dataset_residue_names);
 
             //**************************************************
-            gmml::ResidueNameMap GetUnrecognizedResidueNamesMap(std::vector<std::string> pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
+            gmml::ResidueNameMap GetUnrecognizedResidueNamesMap(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
 
             //**************************************************
 
@@ -296,10 +296,10 @@ namespace PdbPreprocessorSpace
               * @param data_set_residue_names The list of residue names from library and prep files
               * @return recognized_residue_names
               */
-            std::vector<std::string> GetRecognizedResidueNames(std::vector<std::string> pdb_residue_names, std::vector<std::string> dataset_residue_names);
+            std::vector<std::string> GetRecognizedResidueNames(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, std::vector<std::string> dataset_residue_names);
 
             //**************************************************
-            gmml::ResidueNameMap GetRecognizedResidueNamesMap(std::vector<std::string> pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
+            gmml::ResidueNameMap GetRecognizedResidueNamesMap(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
 
             //**************************************************
 

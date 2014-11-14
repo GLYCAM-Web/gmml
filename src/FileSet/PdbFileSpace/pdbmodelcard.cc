@@ -28,17 +28,15 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
                 is_record_name_set=true;
             }
             stringstream model_block;
-            while(line.find("ENDMDL") == string::npos)
+            while(line.find("MODEL") != string::npos || line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
+                    || line.find("TER") != string::npos || line.find("HETATM") != string::npos || line.find("ENDMDL") != string::npos)
             {
                 model_block << line << endl;
                 getline(stream_block,line);
                 temp = line;
             }
-            model_block << line << endl;
             PdbModel* pdb_model = new PdbModel(model_block);
             models_[pdb_model->GetModelSerialNumber()] = pdb_model;
-            getline(stream_block, line);
-            temp = line;
         }
         else
         {
@@ -48,7 +46,8 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
                 is_record_name_set = true;
             }
             stringstream model_block;
-            while(!Trim(temp).empty() && line.find("ENDMDL") == string::npos)
+            while(line.find("MODEL") != string::npos || line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
+                    || line.find("TER") != string::npos || line.find("HETATM") != string::npos || line.find("ENDMDL") != string::npos)
             {
                 model_block << line << endl;
                 getline(stream_block,line);
@@ -56,8 +55,6 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
             }
             PdbModel* pdb_model = new PdbModel(model_block);
             models_[pdb_model->GetModelSerialNumber()] = pdb_model;
-            getline(stream_block, line);
-            temp = line;
         }
     }
 }

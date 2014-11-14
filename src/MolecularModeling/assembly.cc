@@ -713,6 +713,40 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
 {
     TopologyFile* topology_file = new TopologyFile();
+
+    topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
+    topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
+    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
+    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
+    topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
+    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
+//    topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen());
+//    topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen());
+//    topology_file->SetNumberOfHydrogenParameters();
+//    topology_file->SetNumberOfParameters();
+    topology_file->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());   // Does not match
+    topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
+    topology_file->SetTotalNumberOfBonds(this->CountNumberOfBondsExcludingHydrogen());
+    topology_file->SetTotalNumberOfAngles(this->CountNumberOfAnglesExcludingHydrogen());
+//    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedralsExcludingHydrogen());
+    topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes());
+    topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes());
+//    topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes());
+//    topology_file->SetNumberOfAtomTypesInParameterFile();
+//    topology_file->SetNumberOfDistinctHydrogenBonds();
+//    topology_file->SetPerturbationOption();
+//    topology_file->SetNumberOfBondsPerturbed();
+//    topology_file->SetNumberOfAnglesPerturbed();
+//    topology_file->SetNumberOfDihedralsPerturbed();
+//    topology_file->SetNumberOfBondsGroupPerturbed();
+//    topology_file->SetNumberOfAnglesGroupPerturbed();
+//    topology_file->SetNumberOfDihedralsGroupPerturbed();
+//    topology_file->SetStandardPeriodicBoxOption();
+    topology_file->SetNumberOfAtomsInLargestResidue(this->CountMaxNumberOfAtomsInLargestResidue());
+//    topology_file->SetCapOption();
+//    topology_file->SetNumberOfExtraPoints();
+//    topology_file->SetNumberOfBeads();
+
     TopologyAssembly* topology_assembly = new TopologyAssembly();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
     int residue_counter = 0;
@@ -737,12 +771,17 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
             TopologyAtom* topology_atom = new TopologyAtom();
             topology_atom->SetAtomName(assembly_atom->GetName());
             topology_atom->SetAtomCharge(assembly_atom->GetCharge());
+//            topology_atom->SetAtomicNumber();
             topology_atom->SetAtomMass(assembly_atom->GetMass());
-            topology_atom->SetRadii(assembly_atom->GetRadius());
-//            topology_atom->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());
-            topology_atom->SetType(assembly_atom->GetAtomType());
+//            topology_atom->SetNumberOfExcludedAtomsForEachAtom();
             topology_atom->SetResidueName(assembly_residue->GetName());
+            topology_atom->SetType(assembly_atom->GetAtomType());
+//            topology_atom->SetTreeChainClasification();
+            topology_atom->SetRadii(assembly_atom->GetRadius());
+//            topology_atom->SetScreen();
+
             topology_atom->SetIndex(atom_counter);
+
             topology_residue->AddAtom(topology_atom);
             atom_counter++;
         }
@@ -751,25 +790,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly()
     topology_assembly->SetAssemblyName(ss.str());
 
     topology_file->SetAssembly(topology_assembly);
-    topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
-    topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
-    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
-    topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
-    topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes());
-    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
-    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
-    topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes());
-    topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
-    topology_file->SetNumberOfAtomsInLargestResidue(this->CountMaxNumberOfAtomsInLargestResidue());
-    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
-    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
-    topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes());
-//    topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen());
-//    topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen());
-//    topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes());
-    topology_file->SetTotalNumberOfBonds(this->CountNumberOfBonds());
-    topology_file->SetTotalNumberOfAngles(this->CountNumberOfAngles());
-//    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedrals());
+
     return topology_file;
 }
 
@@ -1972,7 +1993,6 @@ int Assembly::CountNumberOfExcludedAtoms()
                 }
             }
         }
-        cout << atom->GetId() << ": " << c << endl;
     }
     return counter/2;
 }
