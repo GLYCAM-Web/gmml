@@ -724,16 +724,20 @@ PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(vector<st
     vector<pair<char, int> > ter_card_positions = vector<pair<char, int> >();
     // After residues that has no tails or has more than or equal two tails
     PdbFile::PdbResidueVector residues = this->GetAllResiduesFromAtomCard();
-    for(PdbFile::PdbResidueVector::iterator it = residues.begin(); it != residues.end() - 1; it++)
+    for(PdbFile::PdbResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
     {
-        PdbResidue* residue = (*it);
-        string residue_name = residue->GetResidueName();
-        if(find(glycam_residue_names.begin(), glycam_residue_names.end(), residue_name) != glycam_residue_names.end())
+        int dist = distance(residues.begin(), it);
+        if(dist != residues.size() - 1)
         {
-            // No tail || has more than or equal two tails
-            if(residue_name[0] == '0' || isalpha(residue_name[0]))
+            PdbResidue* residue = (*it);
+            string residue_name = residue->GetResidueName();
+            if(find(glycam_residue_names.begin(), glycam_residue_names.end(), residue_name) != glycam_residue_names.end())
             {
-                ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), residue->GetResidueSequenceNumber() + 1));
+                // No tail || has more than or equal two tails
+                if(residue_name[0] == '0' || isalpha(residue_name[0]))
+                {
+                    ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), residue->GetResidueSequenceNumber() + 1));
+                }
             }
         }
     }
