@@ -569,11 +569,12 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
         PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
         PdbFileSpace::PdbFile::PdbResidueVector unrecognized_residues = GetUnrecognizedResidues(pdb_residues, unrecognized_residue_names);
 
+        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues_atom_card = pdb_file->GetAllResiduesFromAtomCard();
         PdbPreprocessorChainIdResidueMap all_chain_map_residue;
         PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
         PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
 
-        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues_atom_card.begin(); it != pdb_residues_atom_card.end(); it++)
         {
             PdbFileSpace::PdbResidue* residue = *it;
             char chain_id = residue->GetResidueChainId();
@@ -640,6 +641,8 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
                                 unrecognized_residue->SetMiddleOfChain(true);
                             }
                         }
+                        else
+                            unrecognized_residue->SetMiddleOfChain(false);
                     }
                 }
                 unrecognized_residues_.push_back(unrecognized_residue);
@@ -678,11 +681,12 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<stri
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
     PdbFileSpace::PdbFile::PdbResidueVector unrecognized_residues = GetUnrecognizedResidues(pdb_residues, unrecognized_residue_names);
 
+    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues_atom_card = pdb_file->GetAllResiduesFromAtomCard();
     PdbPreprocessorChainIdResidueMap all_chain_map_residue;
     PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
     PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
 
-    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
+    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues_atom_card.begin(); it != pdb_residues_atom_card.end(); it++)
     {
         PdbFileSpace::PdbResidue* residue = *it;
         char chain_id = residue->GetResidueChainId();
@@ -749,6 +753,8 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<stri
                             unrecognized_residue->SetMiddleOfChain(true);
                         }
                     }
+                    else
+                        unrecognized_residue->SetMiddleOfChain(false);
                 }
             }
             unrecognized_residues_.push_back(unrecognized_residue);
@@ -2359,6 +2365,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
     vector<string> glycam_residue_names = this->GetAllResidueNamesFromDatasetFiles(glycam_lib_files, prep_files);
     // Get all TER card positions and split
     vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions(glycam_residue_names);
+
     for(vector<pair<char, int> >::iterator it1 = ter_card_positions.begin(); it1 != ter_card_positions.end(); it1++)
     {
         pair<char, int> ter_position = *it1;
@@ -2614,24 +2621,28 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<
             vector<int>::iterator starting_sequence_number_iterator = min_element(sequence_numbers.begin(), sequence_numbers.end());
             vector<int>::iterator ending_sequence_number_iterator = max_element(sequence_numbers.begin(), sequence_numbers.end());
 
-            for(PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end() - 1; it1++)
+            for(PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
             {
-                PdbResidue* residue = (*it1);
-                PdbResidue* next_residue = *(it1 + 1);
-                int i = distance(residues.begin(), it1);
-                int j = distance(residues.begin(), it1 + 1);
-                PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
-                PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
-                PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-                Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
-                Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
-                double dist = c_atom_coordinate.Distance(n_atom_coordinate);
-                if(dist > dCutOff + 1.0)
+                int dist = distance(residues.begin(), it1);
+                if(dist != residues.size() - 1)
                 {
-                    PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
-                                                                                                        *ending_sequence_number_iterator, sequence_numbers.at(i),
-                                                                                                        sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
-                    missing_residues_.push_back(missing_residues);
+                    PdbResidue* residue = (*it1);
+                    PdbResidue* next_residue = *(it1 + 1);
+                    int i = distance(residues.begin(), it1);
+                    int j = distance(residues.begin(), it1 + 1);
+                    PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
+                    PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
+                    PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
+                    Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+                    Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+                    double dist = c_atom_coordinate.Distance(n_atom_coordinate);
+                    if(dist > dCutOff + 1.0)
+                    {
+                        PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
+                                                                                                            *ending_sequence_number_iterator, sequence_numbers.at(i),
+                                                                                                            sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
+                        missing_residues_.push_back(missing_residues);
+                    }
                 }
             }
         }
@@ -2761,24 +2772,28 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
         vector<int>::iterator starting_sequence_number_iterator = min_element(sequence_numbers.begin(), sequence_numbers.end());
         vector<int>::iterator ending_sequence_number_iterator = max_element(sequence_numbers.begin(), sequence_numbers.end());
 
-        for(PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end() - 1; it1++)
+        for(PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
-            PdbResidue* residue = (*it1);
-            PdbResidue* next_residue = *(it1 + 1);
-            int i = distance(residues.begin(), it1);
-            int j = distance(residues.begin(), it1 + 1);
-            PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
-            PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
-            PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-            Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
-            Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
-            double dist = c_atom_coordinate.Distance(n_atom_coordinate);
-            if(dist > dCutOff + 1.0)
+            int dist = distance(residues.begin(), it1);
+            if(dist != residues.size() - 1)
             {
-                PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
-                                                                                                    *ending_sequence_number_iterator, sequence_numbers.at(i),
-                                                                                                    sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
-                missing_residues_.push_back(missing_residues);
+                PdbResidue* residue = (*it1);
+                PdbResidue* next_residue = *(it1 + 1);
+                int i = distance(residues.begin(), it1);
+                int j = distance(residues.begin(), it1 + 1);
+                PdbFile::PdbResidueAtomsMap residue_atom_map = pdb_file->GetAllAtomsOfResidues();
+                PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
+                PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
+                Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+                Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+                double dist = c_atom_coordinate.Distance(n_atom_coordinate);
+                if(dist > dCutOff + 1.0)
+                {
+                    PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
+                                                                                                        *ending_sequence_number_iterator, sequence_numbers.at(i),
+                                                                                                        sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
+                    missing_residues_.push_back(missing_residues);
+                }
             }
         }
     }
