@@ -568,40 +568,87 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(string pdb_file_path, vector<s
 
         PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
         PdbFileSpace::PdbFile::PdbResidueVector unrecognized_residues = GetUnrecognizedResidues(pdb_residues, unrecognized_residue_names);
+
+        PdbPreprocessorChainIdResidueMap all_chain_map_residue;
         PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
+        PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
+
         for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
         {
             PdbFileSpace::PdbResidue* residue = *it;
             char chain_id = residue->GetResidueChainId();
-            int sequence_number = residue->GetResidueSequenceNumber();
-            chain_map_sequence_number[chain_id].push_back(sequence_number);
+
+            stringstream ss;
+            ss << chain_id;
+            all_chain_map_residue[ss.str()].push_back(residue);
         }
-        PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_start_end_sequence_number;
-        for(PdbPreprocessorChainIdSequenceNumbersMap::iterator it = chain_map_sequence_number.begin(); it != chain_map_sequence_number.end(); it++)
+
+        // Slower version
+    //        vector<string> amino_lib_residue_names = GetAllResidueNamesFromMultipleLibFiles(lib_files);
+        // Advanced version
+        ResidueNameMap amino_lib_residue_names_map = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
+
+        for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_residue.begin(); it != all_chain_map_residue.end(); it++)
         {
-            char chain_id = (*it).first;
-            vector<int> sequence_numbers = (*it).second;
-            chain_map_start_end_sequence_number[chain_id] = vector<int>();
-            int starting_sequence_number = *min_element(sequence_numbers.begin(), sequence_numbers.end());
-            int ending_sequence_number = *max_element(sequence_numbers.begin(), sequence_numbers.end());
-            chain_map_start_end_sequence_number[chain_id].push_back(starting_sequence_number);
-            chain_map_start_end_sequence_number[chain_id].push_back(ending_sequence_number);
-        }
-        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = unrecognized_residues.begin(); it != unrecognized_residues.end(); it++)
-        {
-            PdbResidue* pdb_residue = (*it);
-            vector<int> residue_start_end_squence_number = chain_map_start_end_sequence_number[pdb_residue->GetResidueChainId()];
-            PdbPreprocessorUnrecognizedResidue* unrecognized_residue =
-                    new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber(),
-                                                           pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
-            if(pdb_residue->GetResidueSequenceNumber() > residue_start_end_squence_number[0] && pdb_residue->GetResidueSequenceNumber() < residue_start_end_squence_number[1])
-                unrecognized_residue->SetMiddleOfChain(true);
-            unrecognized_residues_.push_back(unrecognized_residue);
+            int internal_amino_acid_chain_counter = 0;
+            PdbPreprocessorChainIdResidueMap chain_map_residue = PdbPreprocessorChainIdResidueMap();
+            string chain_id = (*it).first;
+            PdbFileSpace::PdbFile::PdbResidueVector residues = (*it).second;
+
+            for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+            {
+                PdbResidue* residue = (*it1);
+                if(amino_lib_residue_names_map.find(residue->GetResidueName()) != amino_lib_residue_names_map.end())
+                {
+                    stringstream ss;
+                    ss << "A_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                    chain_map_residue[ss.str()].push_back(residue);
+                    stringstream sss(chain_id);
+                    char c_id;
+                    sss >> c_id;
+                    chain_map_sequence_number[c_id].push_back(residue->GetResidueSequenceNumber());
+                    chain_map_insertion_code[c_id].push_back(residue->GetResidueInsertionCode());
+                }
+                else
+                {
+                    stringstream ss;
+                    ss << "NA_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                    chain_map_residue[ss.str()].push_back(residue);
+                    internal_amino_acid_chain_counter++;
+                }
+            }
+
+            for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = unrecognized_residues.begin(); it1 != unrecognized_residues.end(); it1++)
+            {
+                PdbResidue* pdb_residue = (*it1);
+                PdbPreprocessorUnrecognizedResidue* unrecognized_residue =
+                        new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber(),
+                                                               pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
+                if(chain_map_residue.size() <= 2)
+                    unrecognized_residue->SetMiddleOfChain(false);
+                else
+                {
+                    for(PdbPreprocessorChainIdResidueMap::iterator it2 = chain_map_residue.begin(); it2 != chain_map_residue.end(); it2++)
+                    {
+                        string key = (*it2).first;
+                        PdbFile::PdbResidueVector pdb_residues_in_chain = (*it2).second;
+                        int dist = distance(chain_map_residue.begin(), it2);
+                        if(key.substr(0, 2).compare("NA") == 0 && dist != 0 && dist != chain_map_residue.size() - 1)
+                        {
+                            if(find(pdb_residues_in_chain.begin(), pdb_residues_in_chain.end(), pdb_residue) != pdb_residues_in_chain.end())
+                            {
+                                unrecognized_residue->SetMiddleOfChain(true);
+                            }
+                        }
+                    }
+                }
+                unrecognized_residues_.push_back(unrecognized_residue);
+            }
         }
         return true;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
-    {}    
+    {}
 }
 bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<string> amino_lib_files, vector<string> glycam_lib_files, vector<string> other_lib_files, vector<string> prep_files)
 {
@@ -630,35 +677,82 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFile* pdb_file, vector<stri
 
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
     PdbFileSpace::PdbFile::PdbResidueVector unrecognized_residues = GetUnrecognizedResidues(pdb_residues, unrecognized_residue_names);
+
+    PdbPreprocessorChainIdResidueMap all_chain_map_residue;
     PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
+    PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
+
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
     {
         PdbFileSpace::PdbResidue* residue = *it;
         char chain_id = residue->GetResidueChainId();
-        int sequence_number = residue->GetResidueSequenceNumber();
-        chain_map_sequence_number[chain_id].push_back(sequence_number);
+
+        stringstream ss;
+        ss << chain_id;
+        all_chain_map_residue[ss.str()].push_back(residue);
     }
-    PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_start_end_sequence_number;
-    for(PdbPreprocessorChainIdSequenceNumbersMap::iterator it = chain_map_sequence_number.begin(); it != chain_map_sequence_number.end(); it++)
+
+    // Slower version
+//        vector<string> amino_lib_residue_names = GetAllResidueNamesFromMultipleLibFiles(lib_files);
+    // Advanced version
+    ResidueNameMap amino_lib_residue_names_map = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
+
+    for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_residue.begin(); it != all_chain_map_residue.end(); it++)
     {
-        char chain_id = (*it).first;
-        vector<int> sequence_numbers = (*it).second;
-        chain_map_start_end_sequence_number[chain_id] = vector<int>();
-        int starting_sequence_number = *min_element(sequence_numbers.begin(), sequence_numbers.end());
-        int ending_sequence_number = *max_element(sequence_numbers.begin(), sequence_numbers.end());
-        chain_map_start_end_sequence_number[chain_id].push_back(starting_sequence_number);
-        chain_map_start_end_sequence_number[chain_id].push_back(ending_sequence_number);
-    }
-    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = unrecognized_residues.begin(); it != unrecognized_residues.end(); it++)
-    {
-        PdbResidue* pdb_residue = (*it);
-        vector<int> residue_start_end_squence_number = chain_map_start_end_sequence_number[pdb_residue->GetResidueChainId()];
-        PdbPreprocessorUnrecognizedResidue* unrecognized_residue =
-                new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber(),
-                                                       pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
-        if(pdb_residue->GetResidueSequenceNumber() > residue_start_end_squence_number[0] && pdb_residue->GetResidueSequenceNumber() < residue_start_end_squence_number[1])
-            unrecognized_residue->SetMiddleOfChain(true);
-        unrecognized_residues_.push_back(unrecognized_residue);
+        int internal_amino_acid_chain_counter = 0;
+        PdbPreprocessorChainIdResidueMap chain_map_residue = PdbPreprocessorChainIdResidueMap();
+        string chain_id = (*it).first;
+        PdbFileSpace::PdbFile::PdbResidueVector residues = (*it).second;
+
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+        {
+            PdbResidue* residue = (*it1);
+            if(amino_lib_residue_names_map.find(residue->GetResidueName()) != amino_lib_residue_names_map.end())
+            {
+                stringstream ss;
+                ss << "A_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                chain_map_residue[ss.str()].push_back(residue);
+                stringstream sss(chain_id);
+                char c_id;
+                sss >> c_id;
+                chain_map_sequence_number[c_id].push_back(residue->GetResidueSequenceNumber());
+                chain_map_insertion_code[c_id].push_back(residue->GetResidueInsertionCode());
+            }
+            else
+            {
+                stringstream ss;
+                ss << "NA_" << chain_id << "_" << internal_amino_acid_chain_counter;
+                chain_map_residue[ss.str()].push_back(residue);
+                internal_amino_acid_chain_counter++;
+            }
+        }
+
+        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = unrecognized_residues.begin(); it1 != unrecognized_residues.end(); it1++)
+        {
+            PdbResidue* pdb_residue = (*it1);
+            PdbPreprocessorUnrecognizedResidue* unrecognized_residue =
+                    new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber(),
+                                                           pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
+            if(chain_map_residue.size() <= 2)
+                unrecognized_residue->SetMiddleOfChain(false);
+            else
+            {
+                for(PdbPreprocessorChainIdResidueMap::iterator it2 = chain_map_residue.begin(); it2 != chain_map_residue.end(); it2++)
+                {
+                    string key = (*it2).first;
+                    PdbFile::PdbResidueVector pdb_residues_in_chain = (*it2).second;
+                    int dist = distance(chain_map_residue.begin(), it2);
+                    if(key.substr(0, 2).compare("NA") == 0 && dist != 0 && dist != chain_map_residue.size() - 1)
+                    {
+                        if(find(pdb_residues_in_chain.begin(), pdb_residues_in_chain.end(), pdb_residue) != pdb_residues_in_chain.end())
+                        {
+                            unrecognized_residue->SetMiddleOfChain(true);
+                        }
+                    }
+                }
+            }
+            unrecognized_residues_.push_back(unrecognized_residue);
+        }
     }
     return true;
 }
@@ -1186,25 +1280,10 @@ vector<string> PdbPreprocessor::GetUnknownHeavyAtomNamesOfResidue(vector<string>
     for(vector<string>::iterator it = pdb_atom_names_of_residue.begin(); it != pdb_atom_names_of_residue.end(); it++)
     {
         string pdb_atom_name = (*it);
-        bool found = false;
         if(!(pdb_atom_name.substr(0,1).compare("H") == 0 ||
              (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
-            {
-                string dataset_atom_name = (*it1);
-                {
-                    if( pdb_atom_name.compare(dataset_atom_name) != 0)
-                        continue;
-                    else
-                    {
-                        found = true;
-                        break;
-                    }
-
-                }
-            }
-            if(!found)
+            if(find(dataset_atom_names_of_residue.begin(), dataset_atom_names_of_residue.end(), pdb_atom_name) == dataset_atom_names_of_residue.end())
                 unknown_heavy_atom_names_of_residue.push_back(pdb_atom_name);
         }
     }
@@ -1237,15 +1316,11 @@ vector<string> PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles(str
         {
             LibraryFileSpace::LibraryFile* lib_file = new LibraryFileSpace::LibraryFile(*it);
             vector<string> residue_names = lib_file->GetAllResidueNames();
-            for(vector<string>::iterator it1 = residue_names.begin(); it1 != residue_names.end(); it1++)
+            if(find(residue_names.begin(), residue_names.end(), residue_name) != residue_names.end())
             {
-                string residue_name_from_lib = (*it1);
-                if((residue_name).compare(residue_name_from_lib) == 0)
-                {
-                    all_atom_names_of_residue = lib_file->GetAllAtomNamesOfResidue(residue_name);
-                    found = true;
-                    break;
-                }
+
+                all_atom_names_of_residue = lib_file->GetAllAtomNamesOfResidue(residue_name);
+                found = true;
             }
         }
         else
@@ -1286,15 +1361,10 @@ vector<string> PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles(st
         {
             PrepFileSpace::PrepFile* prep_file = new PrepFileSpace::PrepFile(*it);
             vector<string> residue_names = prep_file->GetAllResidueNames();
-            for(vector<string>::iterator it1 = residue_names.begin(); it1 != residue_names.end(); it1++)
+            if(find(residue_names.begin(), residue_names.end(), residue_name) != residue_names.end())
             {
-                string residue_name_from_prep = (*it1);
-                if((residue_name).compare(residue_name_from_prep) == 0)
-                {
-                    all_atom_names_of_residue = prep_file->GetAllAtomNamesOfResidue(residue_name);
-                    found = true;
-                    break;
-                }
+                all_atom_names_of_residue = prep_file->GetAllAtomNamesOfResidue(residue_name);
+                found = true;
             }
         }
         else
@@ -1670,25 +1740,13 @@ vector<string> PdbPreprocessor::GetRemovedHydrogenNamesOfResidue(vector<string> 
     for(vector<string>::iterator it = pdb_atom_names_of_residue.begin(); it != pdb_atom_names_of_residue.end(); it++)
     {
         string pdb_atom_name = (*it);
-        bool found = false;
         if((pdb_atom_name.substr(0,1).compare("H") == 0 ||
             (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
+            if(find(dataset_atom_names_of_residue.begin(), dataset_atom_names_of_residue.end(), pdb_atom_name) == dataset_atom_names_of_residue.end())
             {
-                string dataset_atom_name = (*it1);
-
-                if( pdb_atom_name.compare(dataset_atom_name) != 0)
-                    continue;
-                else
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if(!found)
                 removed_hydrogen_names_of_residue.push_back(pdb_atom_name);
+            }
         }
     }
     return removed_hydrogen_names_of_residue;
@@ -1719,23 +1777,10 @@ PdbFileSpace::PdbFile::PdbAtomVector PdbPreprocessor::GetRemovedHydrogensOfResid
     {
         PdbAtom* pdb_atom = *it;
         string pdb_atom_name = pdb_atom->GetAtomName();
-        bool found = false;
         if((pdb_atom_name.substr(0,1).compare("H") == 0 ||
             (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
-            for(vector<string>::iterator it1 = dataset_atom_names_of_residue.begin(); it1 != dataset_atom_names_of_residue.end(); it1++)
-            {
-                string dataset_atom_name = (*it1);
-
-                if( pdb_atom_name.compare(dataset_atom_name) != 0)
-                    continue;
-                else
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if(!found)
+            if(find(dataset_atom_names_of_residue.begin(), dataset_atom_names_of_residue.end(), pdb_atom_name) == dataset_atom_names_of_residue.end())
                 removed_hydrogens_of_residue.push_back(pdb_atom);
         }
     }
