@@ -346,13 +346,6 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
             }
         }
     }
-    for(PdbPairVectorAtomNamePositionFlag::iterator it = residue_names.begin(); it != residue_names.end(); it++)
-    {
-        pair<string, string> pair_residue_flag = (*it);
-        string residue_name = pair_residue_flag.first;
-        string flag = pair_residue_flag.second;
-        cout << residue_name << " " << flag << endl;
-    }
     return residue_names;
 }
 
