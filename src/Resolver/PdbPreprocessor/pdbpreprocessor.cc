@@ -1457,8 +1457,32 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(string pdb_file_path, vector<stri
 //                vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
                 // Advanced version
                 AtomNameMap dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(residue_name, lib_files, prep_files);
-
-
+                pair<string, string> residue_sflag_pair = make_pair(residue_name, "S");
+                pair<string, string> residue_eflag_pair = make_pair(residue_name, "E");
+                if(find(pdb_residue_names.begin(), pdb_residue_names.end(), residue_sflag_pair) != pdb_residue_names.end())
+                {
+                    stringstream ss1;
+                    ss1 << "N" << residue_name;
+                    AtomNameMap dataset_atom_names_of_head_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(ss1.str(), lib_files, prep_files);
+                    for(AtomNameMap::iterator it1 = dataset_atom_names_of_head_residue.begin(); it1 != dataset_atom_names_of_head_residue.end(); it1++)
+                    {
+                        string head_residue = (*it1).first;
+                        string sflag = (*it1).second;
+                        dataset_atom_names_of_residue[head_residue] = sflag;
+                    }
+                }
+                else if(find(pdb_residue_names.begin(), pdb_residue_names.end(), residue_eflag_pair) != pdb_residue_names.end())
+                {
+                    stringstream ss1;
+                    ss1 << "C" << residue_name;
+                    AtomNameMap dataset_atom_names_of_tail_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(ss1.str(), lib_files, prep_files);
+                    for(AtomNameMap::iterator it2 = dataset_atom_names_of_tail_residue.begin(); it2 != dataset_atom_names_of_tail_residue.end(); it2++)
+                    {
+                        string head_residue = (*it2).first;
+                        string eflag = (*it2).second;
+                        dataset_atom_names_of_residue[head_residue] = eflag;
+                    }
+                }
                 PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
 
                 for(PdbFileSpace::PdbFile::PdbAtomVector::iterator it1 = unknown_heavy_atoms.begin(); it1 != unknown_heavy_atoms.end(); it1++)
@@ -1532,6 +1556,33 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFile* pdb_file, vector<string>
 //            vector<string> dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFiles(residue_name, lib_files, prep_files);
             // Advanced version
             AtomNameMap dataset_atom_names_of_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(residue_name, lib_files, prep_files);
+
+            pair<string, string> residue_sflag_pair = make_pair(residue_name, "S");
+            pair<string, string> residue_eflag_pair = make_pair(residue_name, "E");
+            if(find(pdb_residue_names.begin(), pdb_residue_names.end(), residue_sflag_pair) != pdb_residue_names.end())
+            {
+                stringstream ss1;
+                ss1 << "N" << residue_name;
+                AtomNameMap dataset_atom_names_of_head_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(ss1.str(), lib_files, prep_files);
+                for(AtomNameMap::iterator it1 = dataset_atom_names_of_head_residue.begin(); it1 != dataset_atom_names_of_head_residue.end(); it1++)
+                {
+                    string head_residue = (*it1).first;
+                    string sflag = (*it1).second;
+                    dataset_atom_names_of_residue[head_residue] = sflag;
+                }
+            }
+            else if(find(pdb_residue_names.begin(), pdb_residue_names.end(), residue_eflag_pair) != pdb_residue_names.end())
+            {
+                stringstream ss1;
+                ss1 << "C" << residue_name;
+                AtomNameMap dataset_atom_names_of_tail_residue = GetAllAtomNamesOfResidueFromDatasetFilesMap(ss1.str(), lib_files, prep_files);
+                for(AtomNameMap::iterator it2 = dataset_atom_names_of_tail_residue.begin(); it2 != dataset_atom_names_of_tail_residue.end(); it2++)
+                {
+                    string head_residue = (*it2).first;
+                    string eflag = (*it2).second;
+                    dataset_atom_names_of_residue[head_residue] = eflag;
+                }
+            }
 
             PdbFile::PdbAtomVector unknown_heavy_atoms = GetUnknownHeavyAtomsOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
 
