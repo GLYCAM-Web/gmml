@@ -3572,7 +3572,7 @@ void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> amino_lib_fil
         ExtractAminoAcidChains(pdb_file, amino_lib_files_path);
         t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Amino acid chains extraction: done" << endl;
-        ExtractGapsInAminoAcidChains(pdb_file);
+        ExtractGapsInAminoAcidChains(pdb_file, amino_lib_files_path);
         t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains extraction: done" << endl;
         ExtractResidueInfo(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
