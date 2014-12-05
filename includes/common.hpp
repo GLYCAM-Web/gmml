@@ -11,7 +11,7 @@ namespace gmml
 
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
-    typedef ResidueNameMap AtomNameMap;
+    typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
 
     //*******************************************
 

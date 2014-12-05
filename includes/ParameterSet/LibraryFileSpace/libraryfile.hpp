@@ -35,6 +35,8 @@ namespace LibraryFileSpace
               */
             LibraryFile(const std::string& lib_file);
 
+            ~LibraryFile();
+
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -65,11 +67,6 @@ namespace LibraryFileSpace
               * @return atom_names_of_residue The atom names of the current object of this class
               */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
-
-            //*****************************************************
-            gmml::AtomNameMap GetAllAtomNamesOfResidueMap(std::string residue_name);
-
-            //*****************************************************
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //

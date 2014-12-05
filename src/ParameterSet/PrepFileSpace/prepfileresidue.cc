@@ -17,6 +17,16 @@ using namespace PrepFileSpace;
 //////////////////////////////////////////////////////////
 PrepFileResidue::PrepFileResidue() {}
 
+PrepFileResidue::~PrepFileResidue()
+{
+    atoms_.clear();
+    atoms_ = PrepFileAtomVector();
+    improper_dihedrals_.clear();
+    improper_dihedrals_ = DihedralVector();
+    loops_.clear();
+    loops_ = Loop();
+}
+
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
