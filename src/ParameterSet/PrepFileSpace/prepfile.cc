@@ -30,6 +30,11 @@ PrepFile::PrepFile(const std::string& prep_file)
     in_file.close();            /// Close the parameter files
 }
 
+PrepFile::~PrepFile()
+{
+    residues_.clear();
+    residues_ = ResidueMap();
+}
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -68,20 +73,6 @@ vector<string> PrepFile::GetAllAtomNamesOfResidue(string residue_name)
     {
         PrepFileAtom* atom = (*it);
         atom_names_of_residue.push_back(atom->GetName());
-    }
-    return atom_names_of_residue;
-}
-
-AtomNameMap PrepFile::GetAllAtomNamesOfResidueMap(string residue_name)
-{
-    AtomNameMap atom_names_of_residue = AtomNameMap();
-    ResidueMap residue_map = GetResidues();
-    PrepFileResidue* prep_file_residue = residue_map[residue_name];
-    vector<PrepFileAtom*> atoms = prep_file_residue->GetAtoms();
-    for(vector<PrepFileAtom*>::iterator it = atoms.begin(); it != atoms.end(); it++)
-    {
-        PrepFileAtom* atom = (*it);
-        atom_names_of_residue[atom->GetName()] = atom->GetName();
     }
     return atom_names_of_residue;
 }

@@ -52,6 +52,7 @@ namespace PrepFileSpace
               */
             PrepFileAtom(std::string& line);
 
+            ~PrepFileAtom();
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
