@@ -30,6 +30,7 @@ namespace PrepFileSpace
               */
             PrepFile(const std::string& prep_file);
 
+            ~PrepFile();
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -55,11 +56,6 @@ namespace PrepFileSpace
               * @return atom_names_of_residue The atom names of the current object of this class
               */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
-
-            //***************************************
-            gmml::AtomNameMap GetAllAtomNamesOfResidueMap(std::string residue_name);
-
-            //***************************************
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //

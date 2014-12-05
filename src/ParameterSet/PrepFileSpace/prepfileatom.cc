@@ -38,6 +38,11 @@ PrepFileAtom::PrepFileAtom(std::string& line)
        >> charge_;
 }
 
+PrepFileAtom::~PrepFileAtom()
+{
+
+}
+
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
