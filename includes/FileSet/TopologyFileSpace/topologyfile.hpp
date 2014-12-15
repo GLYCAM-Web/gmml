@@ -517,11 +517,47 @@ namespace TopologyFileSpace
               */
             void SetBonds(TopologyBondMap bonds);
             /*! \fn
+              * A function in order to add the bond to the current object
+              * Set the bonds_ attribute of the current topology file
+              * @param bond The bond that will be added to the current object
+              */
+            void AddBond(TopologyBond* bond);
+            /*! \fn
+              * A mutator function in order to set the bond types of the current object
+              * Set the bond_types_ attribute of the current topology file
+              * @param bond_types The bond_types attribute of the current object
+              */
+            void SetBondTypes(TopologyBondTypeMap bond_types);
+            /*! \fn
+              * A function in order to add the bond type to the current object
+              * Set the bond_Types_ attribute of the current topology file
+              * @param bond_type The bond_type that will be added to the current object
+              */
+            void AddBondType(TopologyBondType* bond_type);
+            /*! \fn
               * A mutator function in order to set the angles of the current object
               * Set the angles_ attribute of the current topology file
               * @param angles The angles attribute of the current object
               */
             void SetAngles(TopologyAngleMap angles);
+            /*! \fn
+              * A function in order to add the angle to the current object
+              * Set the angles_ attribute of the current topology file
+              * @param angle The angle that will be added to the current object
+              */
+            void AddAngle(TopologyAngle* angle);
+            /*! \fn
+              * A mutator function in order to set the bond types of the current object
+              * Set the angle_types_ attribute of the current topology file
+              * @param angle_types The angle_types attribute of the current object
+              */
+            void SetAngleTypes(TopologyAngleTypeMap angle_types);
+            /*! \fn
+              * A function in order to add the angle type to the current object
+              * Set the angle_Types_ attribute of the current topology file
+              * @param angle_type The angle_type that will be added to the current object
+              */
+            void AddAngleType(TopologyAngleType* angle_type);
             /*! \fn
               * A mutator function in order to set the dihedrals of the current object
               * Set the dihedrals_ attribute of the current topology file

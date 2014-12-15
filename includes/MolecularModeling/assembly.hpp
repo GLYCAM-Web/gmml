@@ -257,7 +257,7 @@ namespace MolecularModeling
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure
               */
-            TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly();
+            TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly(std::string parameter_file_path);
             /*! \fn
               * A function to build a coordinate file structure from the current assembly object
               * Exports data from assembly data structure into coordinate file structure
@@ -390,6 +390,7 @@ namespace MolecularModeling
               * @return counter Number of dihedrals in all assemblies and residues in the current object of assembly
               */
             int CountNumberOfDihedrals(std::string parameter_file_path);
+            std::vector<std::vector<std::string> > CreateImproperDihedrals(Atom* neighbor1, Atom* neighbor2, Atom* neighbor3, Atom* atom);
             /*! \fn
               * A function that counts the number of dihedral types in all assemblies and residues of the assembly
               * @param parameter_file_path The path of the parameter file

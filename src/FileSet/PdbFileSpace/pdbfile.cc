@@ -95,6 +95,7 @@ PdbFile::PdbFile()
     models_ = NULL;
     connectivities_ = NULL;
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
+    sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
 }
 
 PdbFile::PdbFile(const std::string &pdb_file)
@@ -123,6 +124,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     models_ = NULL;
     connectivities_ = NULL;
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
+    sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
     
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
@@ -295,6 +297,10 @@ PdbConnectCard* PdbFile::GetConnectivities()
 PdbFile::PdbSerialNumberMapping PdbFile::GetSerialNumberMapping()
 {
     return serial_number_mapping_;
+}
+PdbFile::PdbSerialNumberMapping PdbFile::GetSequenceNumberMapping()
+{
+    return sequence_number_mapping_;
 }
 
 PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
@@ -870,6 +876,16 @@ void PdbFile::SetSerialNumberMapping(PdbSerialNumberMapping serial_number_mappin
         int source_serial = (*it).first;
         int mapped_serial = (*it).second;
         serial_number_mapping_[source_serial] = mapped_serial;
+    }
+}
+void PdbFile::SetSequenceNumberMapping(PdbSequenceNumberMapping sequence_number_mapping)
+{
+    sequence_number_mapping_.clear();
+    for(PdbSequenceNumberMapping::iterator it = sequence_number_mapping.begin(); it != sequence_number_mapping.end(); it++)
+    {
+        int mapped_sequence = (*it).first;
+        int source_sequence = (*it).second;
+        sequence_number_mapping_[mapped_sequence] = source_sequence;
     }
 }
 
@@ -1564,6 +1580,7 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                             updated_atoms[serial_number] = new_atom;
                             serial_number++;
                         }
+                        sequence_number_mapping_[sequence_number] = iNotSet;
                         sequence_number++;
                         located = false;
                     }
@@ -1574,6 +1591,7 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
                         serial_number++;
+                        sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     }
                 }
                 else
@@ -1599,6 +1617,7 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
                     serial_number++;
+                    sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                 }
             }
             updated_atom_card->SetAtoms(updated_atoms);
@@ -1699,6 +1718,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                             updated_atoms[serial_number] = new_atom;
                             serial_number++;
                         }
+                        sequence_number_mapping_[sequence_number] = iNotSet;
                         sequence_number++;
                         located = false;
                     }
@@ -1709,6 +1729,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
                         serial_number++;
+                        sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     }
                 }
                 else
@@ -1734,6 +1755,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
                     serial_number++;
+                    sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                 }
             }
             updated_atom_card->SetAtoms(updated_atoms);
@@ -1829,6 +1851,7 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
                     serial_number++;
+                    sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     located = true;
                 }
                 else
@@ -1847,6 +1870,7 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                             updated_atoms[serial_number] = new_atom;
                             serial_number++;
                         }
+                        sequence_number_mapping_[sequence_number] = iNotSet;
                         located = false;
                     }
                     if(!located)
@@ -1873,6 +1897,7 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
                         serial_number++;
+                        sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     }
                 }
                 if(it2 == --atoms.end() && located)
@@ -1889,6 +1914,7 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                         updated_atoms[serial_number] = new_atom;
                         serial_number++;
                     }
+                    sequence_number_mapping_[sequence_number] = iNotSet;
                     located = false;
                     sequence_number++;
                 }
@@ -1985,6 +2011,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
                     serial_number++;
+                    sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     located = true;
                 }
                 else
@@ -2029,6 +2056,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
                         serial_number++;
+                        sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     }
                 }
                 if(it2 == --atoms.end() && located)
@@ -2045,6 +2073,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                         updated_atoms[serial_number] = new_atom;
                         serial_number++;
                     }
+                    sequence_number_mapping_[sequence_number] = iNotSet;
                     located = false;
                     sequence_number++;
                 }
