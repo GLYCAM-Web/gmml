@@ -488,6 +488,30 @@ void TopologyFile::SetBonds(TopologyBondMap bonds)
         bonds_[atom_bond] = bond;
     }
 }
+void TopologyFile::AddBond(TopologyBond *bond)
+{
+    vector<string> bonds = bond->GetBonds();
+    vector<string> residue_names = bond->GetResidueNames();
+    TopologyBondType* bond_type = bond->GetBondType();
+    stringstream ss;
+    ss << residue_names.at(0) << ":" << bonds.at(0) << "-" << residue_names.at(1) << ":" << bonds.at(1) << "_" << bond_type;
+    bonds_[ss.str()] = bond;
+}
+void TopologyFile::SetBondTypes(TopologyBondTypeMap bond_types)
+{
+    bond_types_.clear();
+    for(TopologyBondTypeMap::iterator it = bond_types.begin(); it != bond_types.end(); it++)
+    {
+        int index = (*it).first;
+        TopologyBondType* bond_type = (*it).second;
+        bond_types_[index] = bond_type;
+    }
+}
+void TopologyFile::AddBondType(TopologyBondType *bond_type)
+{
+    int index = bond_type->GetIndex();
+    bond_types_[index] = bond_type;
+}
 void TopologyFile::SetAngles(TopologyAngleMap angles)
 {
     angles_.clear();
@@ -497,6 +521,30 @@ void TopologyFile::SetAngles(TopologyAngleMap angles)
         TopologyAngle* angle = (*it).second;
         angles_[atom_angle] = angle;
     }
+}
+void TopologyFile::AddAngle(TopologyAngle *angle)
+{
+    vector<string> angles = angle->GetAngles();
+    vector<string> residue_names = angle->GetResidueNames();
+    TopologyAngleType* angle_type = angle->GetAngleType();
+    stringstream ss;
+    ss << residue_names.at(0) << ":" << angles.at(0) << "-" << residue_names.at(1) << ":" << angles.at(1) << "_" << residue_names.at(2) << ":" << angles.at(2) << "_" << angle_type;
+    angles_[ss.str()] = angle;
+}
+void TopologyFile::SetAngleTypes(TopologyAngleTypeMap angle_types)
+{
+    angle_types_.clear();
+    for(TopologyAngleTypeMap::iterator it = angle_types.begin(); it != angle_types.end(); it++)
+    {
+        int index = (*it).first;
+        TopologyAngleType* angle_type = (*it).second;
+        angle_types_[index] = angle_type;
+    }
+}
+void TopologyFile::AddAngleType(TopologyAngleType *angle_type)
+{
+    int index = angle_type->GetIndex();
+    angle_types_[index] = angle_type;
 }
 void TopologyFile::SetDihedrals(TopologyDihedralMap dihedrals)
 {

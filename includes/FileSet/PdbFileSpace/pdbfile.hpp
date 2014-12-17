@@ -57,6 +57,10 @@ namespace PdbFileSpace
               * Mapping between old serial number and new one that has been changed during a process
               */
             typedef std::map<int, int> PdbSerialNumberMapping;
+            /*! \typedef
+              * Mapping between old sequence number and new one that has been changed during a process
+              */
+            typedef std::map<int, int> PdbSequenceNumberMapping;
 
             typedef std::vector<std::pair<char, int> > PdbPairVectorTerCardPositions;
             typedef std::vector<std::pair<std::string, std::string> > PdbPairVectorAtomNamePositionFlag;
@@ -196,6 +200,11 @@ namespace PdbFileSpace
               * @return serial_number_mapping attribute of the current object of this class
               */
             PdbSerialNumberMapping GetSerialNumberMapping();
+            /*! \fn
+              * An accessor function in order to access to the sequence number mapping attribute of the current object
+              * @return sequence_number_mapping attribute of the current object of this class
+              */
+            PdbSequenceNumberMapping GetSequenceNumberMapping();
             /*! \fn
               * An accessor function in order to access to all residue names of the current object
               * @return residue_names All residue names of the current object of this class
@@ -419,6 +428,12 @@ namespace PdbFileSpace
               * @param serial_number_mapping The serial number mapping attribute of the current object
               */
             void SetSerialNumberMapping(PdbSerialNumberMapping serial_number_mapping);
+            /*! \fn
+              * A mutator function in order to set the sequence number mapping of the current object
+              * Set the sequence_number_mapping_ attribute of the current pdb file
+              * @param sequence_number_mapping The sequence number mapping attribute of the current object
+              */
+            void SetSequenceNumberMapping(PdbSequenceNumberMapping sequence_number_mapping);
             /*! \fn
               * A function in order to delete a residue from the current object
               * @param residue A residue of the current object of this class
@@ -1036,6 +1051,7 @@ namespace PdbFileSpace
             PdbModelCard* models_;                                  /*!< Model card >*/
             PdbConnectCard* connectivities_;                        /*!< Connectivity card >*/
             PdbSerialNumberMapping serial_number_mapping_;          /*!< A map that keeps track of serial numbers that have been changed during a process >*/
+            PdbSequenceNumberMapping sequence_number_mapping_;      /*!< A map that keeps track of sequence numbers that have been changed during a process >*/
     };
 }
 
