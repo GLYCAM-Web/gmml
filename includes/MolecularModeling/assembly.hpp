@@ -12,6 +12,7 @@
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
 
 namespace MolecularModeling
 {
@@ -253,6 +254,25 @@ namespace MolecularModeling
               * Exports data from assembly data structure into pdb file structure
               */
             PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly();
+            /*! \fn
+              * A function to extract bonds from the current assembly object
+              * @param inserted_bond_types Bond types that have been already detected in the assembly structure
+              * @param assembly_atom A source atom in a bond in the assembly structure
+              * @param neighbor Second atom in a bond which is a neighbor of assembly_atom
+              * @param bonds All known bonds from parameter file
+              * @param bond_type_counter A counter that indicates the number of bond types that have been already detected and also determines the index associated with it
+              * @param topology_file Output topology file structure that the detected bond types belong to
+              */
+            void ExtractTopologyBondTypesFromAssembly(std::vector<std::vector<std::string> > inserted_bond_types, Atom* assembly_atom, Atom* neighbor, ParameterFileSpace::ParameterFile::BondMap bonds, int bond_type_counter, TopologyFileSpace::TopologyFile* topology_file);
+            /*! \fn
+              * A function to extract bond types from the current assembly object
+              * @param inserted_bonds Bonds that have been already detected in the assembly structure
+              * @param inserted_bond_types Bond types that have been already detected in the assembly structure
+              * @param assembly_atom A source atom in a bond in the assembly structure
+              * @param neighbor Second atom in a bond which is a neighbor of assembly_atom
+              * @param topology_file Output topology file structure that the detected bond types belong to
+              */
+            void ExtractTopologyBondsFromAssembly(std::vector<std::vector<std::string> > inserted_bonds, std::vector<std::vector<std::string> > inserted_bond_tyoes, Atom* assembly_atom, Atom* neighbor, TopologyFileSpace::TopologyFile* topology_file);
             /*! \fn
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure
