@@ -440,22 +440,44 @@ namespace PdbFileSpace
               */
             void DeleteResidue(PdbResidue* residue);
             /*! \fn
+              * A function in order to delete a list of residue from the current object
+              * @param residues List of residues of the current object of this class
+              */
+            void DeleteResidues(PdbResidueVector residues);
+            /*! \fn
               * A function in order to delete a residue from the current object
               * @param residue A residue of the current object of this class
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
             void DeleteResidueWithTheGivenModelNumber(PdbResidue* residue, int model_number = 1);
             /*! \fn
+              * A function in order to delete a list of residues from the current object
+              * @param residues List of residues of the current object of this class
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void DeleteResiduesWithTheGivenModelNumber(PdbResidueVector residues, int model_number = 1);
+            /*! \fn
               * A function in order to delete an atom from the current object
               * @param atom An atom of the current object of this class
               */
             void DeleteAtom(PdbAtom* atom);
+            /*! \fn
+              * A function in order to delete a list of atoms from the current object
+              * @param atoms List of atoms of the current object of this class
+              */
+            void DeleteAtoms(PdbAtomVector atoms);
             /*! \fn
               * A function in order to delete an atom from the current object
               * @param atom An atom of the current object of this class
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
             void DeleteAtomWithTheGivenModelNumber(PdbAtom* atom, int model_number = 1);
+            /*! \fn
+              * A function in order to delete a list atoms from the current object
+              * @param atoms List of atoms of the current object of this class
+              * @param model_number Selected model number from the multiple models that are in a pdb file
+              */
+            void DeleteAtomsWithTheGivenModelNumber(PdbAtomVector atoms, int model_number = 1);
             /*! \fn
               * A function in order to update the residue name of a residue of the current object
               * @param residue A residue of the current object of this class

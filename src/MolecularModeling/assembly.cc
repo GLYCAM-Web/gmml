@@ -715,6 +715,107 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
     return pdb_file;
 }
 
+void Assembly::ExtractTopologyBondTypesFromAssembly(vector<vector<string> > inserted_bond_types, Atom* assembly_atom, Atom* neighbor, ParameterFileSpace::ParameterFile::BondMap bonds, int bond_type_counter, TopologyFile* topology_file)
+{
+    vector<string> atom_pair_type = vector<string>();
+    vector<string> reverse_atom_pair_type = vector<string>();
+    stringstream key2;
+    key2 << neighbor->GetId();
+    atom_pair_type.push_back(assembly_atom->GetAtomType());
+    atom_pair_type.push_back(neighbor->GetAtomType());
+    reverse_atom_pair_type.push_back(neighbor->GetAtomType());
+    reverse_atom_pair_type.push_back(assembly_atom->GetAtomType());
+
+    if(find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type) == inserted_bond_types.end() &&
+            find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type) == inserted_bond_types.end())
+    {
+        ParameterFileBond* parameter_file_bond;
+        if(bonds.find(atom_pair_type) != bonds.end())
+        {
+            parameter_file_bond = bonds[atom_pair_type];
+            inserted_bond_types.push_back(atom_pair_type);
+        }
+        else if(bonds.find(reverse_atom_pair_type) != bonds.end())
+        {
+            parameter_file_bond = bonds[reverse_atom_pair_type];
+            inserted_bond_types.push_back(reverse_atom_pair_type);
+        }
+        TopologyBondType* topology_bond_type = new TopologyBondType();
+        topology_bond_type->SetForceConstant(parameter_file_bond->GetForceConstant());
+        //                    topology_bond_type->SetEquilibriumValue(parameter_file->);
+        topology_bond_type->SetIndex(bond_type_counter);
+        bond_type_counter++;
+        topology_file->AddBondType(topology_bond_type);
+    }
+}
+
+void Assembly::ExtractTopologyBondsFromAssembly(vector<vector<string> > inserted_bonds, vector<vector<string> > inserted_bond_types, Atom *assembly_atom, Atom *neighbor, TopologyFileSpace::TopologyFile* topology_file)
+{
+    vector<string> atom_pair_type = vector<string>();
+    vector<string> reverse_atom_pair_type = vector<string>();
+    stringstream key2;
+    key2 << neighbor->GetId();
+    atom_pair_type.push_back(assembly_atom->GetAtomType());
+    atom_pair_type.push_back(neighbor->GetAtomType());
+    reverse_atom_pair_type.push_back(neighbor->GetAtomType());
+    reverse_atom_pair_type.push_back(assembly_atom->GetAtomType());
+
+    vector<string> atom_pair_name = vector<string>();;
+    vector<string> reverse_atom_pair_name = vector<string>();;
+    atom_pair_name.push_back(assembly_atom->GetName());
+    atom_pair_name.push_back(neighbor->GetName());
+    reverse_atom_pair_name.push_back(neighbor->GetName());
+    reverse_atom_pair_name.push_back(assembly_atom->GetName());
+    vector<string> residue_names = vector<string>();;
+    vector<string> reverse_residue_names = vector<string>();;
+    residue_names.push_back(assembly_atom->GetResidue()->GetName());
+    residue_names.push_back(neighbor->GetResidue()->GetName());
+    reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
+    reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
+    vector<string> bond = vector<string>();;
+    vector<string> reverse_bond = vector<string>();;
+    stringstream ss;
+    ss << residue_names.at(0) << ":" << atom_pair_name.at(0);
+    stringstream ss1;
+    ss1 << residue_names.at(1) << ":" << atom_pair_name.at(1);
+    bond.push_back(ss.str());
+    bond.push_back(ss1.str());
+    reverse_bond.push_back(ss1.str());
+    reverse_bond.push_back(ss.str());
+
+    if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end() &&
+            find(inserted_bonds.begin(), inserted_bonds.end(), reverse_bond) == inserted_bonds.end())
+    {
+        TopologyBond* topology_bond;
+        if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end())
+        {
+            topology_bond = new TopologyBond(atom_pair_name, residue_names);
+            inserted_bonds.push_back(bond);
+        }
+        else if (find(inserted_bonds.begin(), inserted_bonds.end(), reverse_bond) == inserted_bonds.end())
+        {
+            topology_bond = new TopologyBond(reverse_atom_pair_name, reverse_residue_names);
+            inserted_bonds.push_back(reverse_bond);
+        }
+
+        if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
+            (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
+                || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
+                    (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1))))))
+            topology_bond->SetIncludingHydrogen(true);
+        else
+            topology_bond->SetIncludingHydrogen(false);
+
+        int index = 0;
+        if(find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type) != inserted_bond_types.end())
+            index = distance(inserted_bond_types.begin(), find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type));
+        else if(find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type) != inserted_bond_types.end())
+            index = distance(inserted_bond_types.begin(), find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type));
+        topology_bond->SetBondType(topology_file->GetBondTypeByIndex(index));
+        topology_file->AddBond(topology_bond);
+    }
+}
+
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path)
 {
     TopologyFile* topology_file = new TopologyFile();
@@ -806,95 +907,15 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             AtomVector neighbors = atom_node->GetNodeNeighbors();
             for(AtomVector::iterator it2 = neighbors.begin(); it2 != neighbors.end(); it2++)
             {
-                vector<string> atom_pair_type = vector<string>();
-                vector<string> reverse_atom_pair_type = vector<string>();
                 Atom* neighbor = (*it2);
-                stringstream key2;
-                key2 << neighbor->GetId();
-                atom_pair_type.push_back(assembly_atom->GetAtomType());
-                atom_pair_type.push_back(neighbor->GetAtomType());
-                reverse_atom_pair_type.push_back(neighbor->GetAtomType());
-                reverse_atom_pair_type.push_back(assembly_atom->GetAtomType());
+                ExtractTopologyBondTypesFromAssembly(inserted_bond_types, assembly_atom, neighbor, bonds, bond_type_counter, topology_file);
+                ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
 
-                if(find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type) == inserted_bond_types.end() &&
-                        find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type) == inserted_bond_types.end())
-                {
-                    ParameterFileBond* parameter_file_bond;
-                    if(bonds.find(atom_pair_type) != bonds.end())
-                    {
-                        parameter_file_bond = bonds[atom_pair_type];
-                        inserted_bond_types.push_back(atom_pair_type);
-                    }
-                    else if(bonds.find(reverse_atom_pair_type) != bonds.end())
-                    {
-                        parameter_file_bond = bonds[reverse_atom_pair_type];
-                        inserted_bond_types.push_back(reverse_atom_pair_type);
-                    }
-                    TopologyBondType* topology_bond_type = new TopologyBondType();
-                    topology_bond_type->SetForceConstant(parameter_file_bond->GetForceConstant());
-                    //                    topology_bond_type->SetEquilibriumValue(parameter_file->);
-                    topology_bond_type->SetIndex(bond_type_counter);
-                    bond_type_counter++;
-                    topology_file->AddBondType(topology_bond_type);
-                }
 
-                vector<string> atom_pair_name = vector<string>();;
-                vector<string> reverse_atom_pair_name = vector<string>();;
-                atom_pair_name.push_back(assembly_atom->GetName());
-                atom_pair_name.push_back(neighbor->GetName());
-                reverse_atom_pair_name.push_back(neighbor->GetName());
-                reverse_atom_pair_name.push_back(assembly_atom->GetName());
-                vector<string> residue_names = vector<string>();;
-                vector<string> reverse_residue_names = vector<string>();;
-                residue_names.push_back(assembly_atom->GetResidue()->GetName());
-                residue_names.push_back(neighbor->GetResidue()->GetName());
-                reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
-                reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
-                vector<string> bond = vector<string>();;
-                vector<string> reverse_bond = vector<string>();;
-                stringstream ss;
-                ss << residue_names.at(0) << ":" << atom_pair_name.at(0);
-                stringstream ss1;
-                ss1 << residue_names.at(1) << ":" << atom_pair_name.at(1);
-                bond.push_back(ss.str());
-                bond.push_back(ss1.str());
-                reverse_bond.push_back(ss1.str());
-                reverse_bond.push_back(ss.str());
-
-                if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end() &&
-                        find(inserted_bonds.begin(), inserted_bonds.end(), reverse_bond) == inserted_bonds.end())
-                {
-                    TopologyBond* topology_bond;
-                    if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end())
-                    {
-                        topology_bond = new TopologyBond(atom_pair_name, residue_names);
-                        inserted_bonds.push_back(bond);
-                    }
-                    else if (find(inserted_bonds.begin(), inserted_bonds.end(), reverse_bond) == inserted_bonds.end())
-                    {
-                        topology_bond = new TopologyBond(reverse_atom_pair_name, reverse_residue_names);
-                        inserted_bonds.push_back(reverse_bond);
-                    }
-
-                    if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
-                        (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
-                            || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
-                                (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1))))))
-                        topology_bond->SetIncludingHydrogen(true);
-                    else
-                        topology_bond->SetIncludingHydrogen(false);
-
-                    int index = 0;
-                    if(find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type) != inserted_bond_types.end())
-                        index = distance(inserted_bond_types.begin(), find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type));
-                    else if(find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type) != inserted_bond_types.end())
-                        index = distance(inserted_bond_types.begin(), find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type));
-                    topology_bond->SetBondType(topology_file->GetBondTypeByIndex(index));
-                    topology_file->AddBond(topology_bond);
-                }
                 ///Angle Types, Angle
                 AtomNode* neighbor_node = neighbor->GetNode();
                 AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+
                 for(AtomVector::iterator it3 = neighbors_of_neighbor.begin(); it3 != neighbors_of_neighbor.end(); it3++)
                 {
                     cout << "HHHHHIIIIIIIIIII" << endl;
@@ -903,105 +924,12 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                     key3 << neighbor_of_neighbor->GetId();
                     if(key1.str().compare(key3.str()) != 0)
                     {
-                        vector<string> angle_type = vector<string>();
-                        vector<string> reverse_angle_type = vector<string>();
-                        angle_type.push_back(assembly_atom->GetAtomType());
-                        angle_type.push_back(neighbor->GetAtomType());
-                        angle_type.push_back(neighbor_of_neighbor->GetAtomType());
-                        reverse_angle_type.push_back(neighbor_of_neighbor->GetAtomType());
-                        reverse_angle_type.push_back(neighbor->GetAtomType());
-                        reverse_angle_type.push_back(assembly_atom->GetAtomType());
-
-//                        if(find(inserted_angle_types.begin(), inserted_angle_types.end(), angle_type) == inserted_angle_types.end() &&
-//                                find(inserted_angle_types.begin(), inserted_angle_types.end(), reverse_angle_type) == inserted_angle_types.end())
-                        {
-                            ParameterFileAngle* parameter_file_angle;
-                            if(angles.find(angle_type) != angles.end())
-                            {
-                                parameter_file_angle = angles[angle_type];
-                                inserted_angle_types.push_back(angle_type);
-                            }
-                            else if(angles.find(reverse_angle_type) != angles.end())
-                            {
-                                parameter_file_angle = angles[reverse_angle_type];
-                                inserted_angle_types.push_back(reverse_angle_type);
-                            }
-                            TopologyAngleType* topology_angle_type = new TopologyAngleType();
-                            topology_angle_type->SetForceConstant(parameter_file_angle->GetForceConstant());
-                            //                    topology_bond_type->SetEquilibriumValue(parameter_file->);
-                            topology_angle_type->SetIndex(angle_type_counter);
-                            angle_type_counter++;
-                            topology_file->AddAngleType(topology_angle_type);
-                        }
-                        vector<string> angle_atom_names = vector<string>();
-                        vector<string> reverse_angle_atom_names = vector<string>();
-                        angle_atom_names.push_back(assembly_atom->GetName());
-                        angle_atom_names.push_back(neighbor->GetName());
-                        angle_atom_names.push_back(neighbor_of_neighbor->GetName());
-                        reverse_angle_atom_names.push_back(neighbor_of_neighbor->GetName());
-                        reverse_angle_atom_names.push_back(neighbor->GetName());
-                        reverse_angle_atom_names.push_back(assembly_atom->GetName());
-
-                        vector<string> residue_names = vector<string>();
-                        vector<string> reverse_residue_names = vector<string>();
-                        residue_names.push_back(assembly_atom->GetResidue()->GetName());
-                        residue_names.push_back(neighbor->GetResidue()->GetName());
-                        residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-                        reverse_residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-                        reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
-                        reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
-                        vector<string> angle = vector<string>();
-                        vector<string> reverse_angle = vector<string>();
-                        stringstream ss;
-                        ss << residue_names.at(0) << ":" << angle_atom_names.at(0);
-                        stringstream ss1;
-                        ss1 << residue_names.at(1) << ":" << angle_atom_names.at(1);
-                        stringstream ss2;
-                        ss2 << residue_names.at(2) << ":" << angle_atom_names.at(2);
-                        angle.push_back(ss.str());
-                        angle.push_back(ss1.str());
-                        angle.push_back(ss2.str());
-                        reverse_angle.push_back(ss2.str());
-                        reverse_angle.push_back(ss1.str());
-                        reverse_angle.push_back(ss.str());
-
-                        if(find(inserted_angles.begin(), inserted_angles.end(), angle) == inserted_angles.end() &&
-                                find(inserted_angles.begin(), inserted_angles.end(), reverse_angle) == inserted_angles.end())
-                        {
-                            TopologyAngle* topology_angle;
-                            if(find(inserted_angles.begin(), inserted_angles.end(), angle) == inserted_angles.end())
-                            {
-                                topology_angle = new TopologyAngle(angle_atom_names, residue_names);
-                                inserted_angles.push_back(angle);
-                            }
-                            else if (find(inserted_angles.begin(), inserted_angles.end(), reverse_angle) == inserted_angles.end())
-                            {
-                                topology_angle = new TopologyAngle(reverse_angle_atom_names, reverse_residue_names);
-                                inserted_angles.push_back(reverse_angle);
-                            }
-                            if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
-                                (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
-                                    || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
-                                        (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1)))))
-                                    ||(neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
-                                       (neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor->GetName().substr(0,1))))))
-                                topology_angle->SetIncludingHydrogen(true);
-                            else
-                                topology_angle->SetIncludingHydrogen(false);
-
-                            int index = 0;
-                            if(find(inserted_angle_types.begin(), inserted_angle_types.end(), angle_type) != inserted_angle_types.end())
-                                index = distance(inserted_angle_types.begin(), find(inserted_angle_types.begin(), inserted_angle_types.end(), angle_type));
-                            else if(find(inserted_angle_types.begin(), inserted_angle_types.end(), reverse_angle_type) != inserted_angle_types.end())
-                                index = distance(inserted_angle_types.begin(), find(inserted_angle_types.begin(), inserted_angle_types.end(), reverse_angle_type));
-                            topology_angle->SetAnlgeType(topology_file->GetAngleTypeByIndex(index));
-                            topology_file->AddAngle(topology_angle);
-                        }
+                        ExtractTopologyAngleTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angle_types, angle_type_counter,
+                                                              topology_file, angles);
+                        ExtractTopologyAnglesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angles, inserted_angle_types, topology_file);
                     }
-
                 }
             }
-
         }
         topology_assembly->AddResidue(topology_residue);
     }
@@ -1009,6 +937,119 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     topology_file->SetAssembly(topology_assembly);
 
     return topology_file;
+}
+
+void Assembly::ExtractTopologyAngleTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, vector<vector<string> > inserted_angle_types,
+                                                     int angle_type_counter, TopologyFile* topology_file, ParameterFileSpace::ParameterFile::AngleMap angles)
+{
+    vector<string> angle_type = vector<string>();
+    vector<string> reverse_angle_type = vector<string>();
+    angle_type.push_back(assembly_atom->GetAtomType());
+    angle_type.push_back(neighbor->GetAtomType());
+    angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+    reverse_angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+    reverse_angle_type.push_back(neighbor->GetAtomType());
+    reverse_angle_type.push_back(assembly_atom->GetAtomType());
+
+    if(find(inserted_angle_types.begin(), inserted_angle_types.end(), angle_type) == inserted_angle_types.end() &&
+            find(inserted_angle_types.begin(), inserted_angle_types.end(), reverse_angle_type) == inserted_angle_types.end())
+    {
+        ParameterFileAngle* parameter_file_angle;
+        if(angles.find(angle_type) != angles.end())
+        {
+            parameter_file_angle = angles[angle_type];
+            inserted_angle_types.push_back(angle_type);
+        }
+        else if(angles.find(reverse_angle_type) != angles.end())
+        {
+            parameter_file_angle = angles[reverse_angle_type];
+            inserted_angle_types.push_back(reverse_angle_type);
+        }
+        TopologyAngleType* topology_angle_type = new TopologyAngleType();
+        topology_angle_type->SetForceConstant(parameter_file_angle->GetForceConstant());
+        //                    topology_bond_type->SetEquilibriumValue(parameter_file->);
+        topology_angle_type->SetIndex(angle_type_counter);
+        angle_type_counter++;
+        topology_file->AddAngleType(topology_angle_type);
+    }
+}
+
+void Assembly::ExtractTopologyAnglesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, vector<vector<string> > inserted_angles,
+                                                 vector<vector<string> > inserted_angle_types, TopologyFile* topology_file)
+{
+    vector<string> angle_type = vector<string>();
+    vector<string> reverse_angle_type = vector<string>();
+    angle_type.push_back(assembly_atom->GetAtomType());
+    angle_type.push_back(neighbor->GetAtomType());
+    angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+    reverse_angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+    reverse_angle_type.push_back(neighbor->GetAtomType());
+    reverse_angle_type.push_back(assembly_atom->GetAtomType());
+
+    vector<string> angle_atom_names = vector<string>();
+    vector<string> reverse_angle_atom_names = vector<string>();
+    angle_atom_names.push_back(assembly_atom->GetName());
+    angle_atom_names.push_back(neighbor->GetName());
+    angle_atom_names.push_back(neighbor_of_neighbor->GetName());
+    reverse_angle_atom_names.push_back(neighbor_of_neighbor->GetName());
+    reverse_angle_atom_names.push_back(neighbor->GetName());
+    reverse_angle_atom_names.push_back(assembly_atom->GetName());
+
+    vector<string> residue_names = vector<string>();
+    vector<string> reverse_residue_names = vector<string>();
+    residue_names.push_back(assembly_atom->GetResidue()->GetName());
+    residue_names.push_back(neighbor->GetResidue()->GetName());
+    residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
+    reverse_residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
+    reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
+    reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
+    vector<string> angle = vector<string>();
+    vector<string> reverse_angle = vector<string>();
+    stringstream ss;
+    ss << residue_names.at(0) << ":" << angle_atom_names.at(0);
+    stringstream ss1;
+    ss1 << residue_names.at(1) << ":" << angle_atom_names.at(1);
+    stringstream ss2;
+    ss2 << residue_names.at(2) << ":" << angle_atom_names.at(2);
+    angle.push_back(ss.str());
+    angle.push_back(ss1.str());
+    angle.push_back(ss2.str());
+    reverse_angle.push_back(ss2.str());
+    reverse_angle.push_back(ss1.str());
+    reverse_angle.push_back(ss.str());
+
+    if(find(inserted_angles.begin(), inserted_angles.end(), angle) == inserted_angles.end() &&
+            find(inserted_angles.begin(), inserted_angles.end(), reverse_angle) == inserted_angles.end())
+    {
+        TopologyAngle* topology_angle;
+        if(find(inserted_angles.begin(), inserted_angles.end(), angle) == inserted_angles.end())
+        {
+            topology_angle = new TopologyAngle(angle_atom_names, residue_names);
+            inserted_angles.push_back(angle);
+        }
+        else if (find(inserted_angles.begin(), inserted_angles.end(), reverse_angle) == inserted_angles.end())
+        {
+            topology_angle = new TopologyAngle(reverse_angle_atom_names, reverse_residue_names);
+            inserted_angles.push_back(reverse_angle);
+        }
+        if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
+            (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
+                || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
+                    (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1)))))
+                ||(neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
+                   (neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor->GetName().substr(0,1))))))
+            topology_angle->SetIncludingHydrogen(true);
+        else
+            topology_angle->SetIncludingHydrogen(false);
+
+        int index = 0;
+        if(find(inserted_angle_types.begin(), inserted_angle_types.end(), angle_type) != inserted_angle_types.end())
+            index = distance(inserted_angle_types.begin(), find(inserted_angle_types.begin(), inserted_angle_types.end(), angle_type));
+        else if(find(inserted_angle_types.begin(), inserted_angle_types.end(), reverse_angle_type) != inserted_angle_types.end())
+            index = distance(inserted_angle_types.begin(), find(inserted_angle_types.begin(), inserted_angle_types.end(), reverse_angle_type));
+        topology_angle->SetAnlgeType(topology_file->GetAngleTypeByIndex(index));
+        topology_file->AddAngle(topology_angle);
+    }
 }
 
 CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
