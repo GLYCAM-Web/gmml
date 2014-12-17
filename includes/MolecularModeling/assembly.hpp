@@ -12,6 +12,7 @@
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
 
 namespace MolecularModeling
 {
@@ -258,6 +259,35 @@ namespace MolecularModeling
               * Exports data from assembly data structure into topology file structure
               */
             TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly(std::string parameter_file_path);
+            /*! \fn
+              * A function to build agnle types of topology file structure from the current assembly object
+              * Exports data from assembly data structure to generate topology atom types
+              * @param assembly_atom A source atom in an angle in the assembly structure
+              * @param neighbor Second atom in an angle which is a neighbor of assembly_atom
+              * @param neighbor_of_neighbor Third atom in an angle which is a neighbor of neighbor atom and it is not identical to assmebly_atom
+              * @param inserted_angle_types Angle types that have been already detected in an assembly structure
+              * @param angle_type_counter A counter that indicates the number of angle types that have been already detected and also determines the index associated with it
+              * @param topology_file Output topology file structure that the detected angle types belong to
+              * @param angles All known angles from parameter file
+              */
+            void ExtractTopologyAngleTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
+                                                       std::vector<std::vector<std::string> > inserted_angle_types,
+                                                       int angle_type_counter, TopologyFileSpace::TopologyFile* topology_file,
+                                                       ParameterFileSpace::ParameterFile::AngleMap angles);
+            /*! \fn
+              * A function to build agnle types of topology file structure from the current assembly object
+              * Exports data from assembly data structure to generate topology atom types
+              * @param assembly_atom A source atom in an angle in the assembly structure
+              * @param neighbor Second atom in an angle which is a neighbor of assembly_atom
+              * @param neighbor_of_neighbor Third atom in an angle which is a neighbor of neighbor atom and it is not identical to assmebly_atom
+              * @param inserted_angles Angles that have been already detected in an assembly structure
+              * @param inserted_angle_types Angle types that have been already detected in an assembly structure
+              * @param angle_type_counter A counter that indicates the number of angle types that have been already detected and also determines the index associated with it
+              * @param topology_file Output topology file structure that the detected angle types belong to
+              */
+            void ExtractTopologyAnglesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
+                                                             std::vector<std::vector<std::string> > inserted_angles,
+                                                             std::vector<std::vector<std::string> > inserted_angle_types, TopologyFileSpace::TopologyFile* topology_file);
             /*! \fn
               * A function to build a coordinate file structure from the current assembly object
               * Exports data from assembly data structure into coordinate file structure
