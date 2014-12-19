@@ -410,7 +410,8 @@ namespace MolecularModeling
               * @return counter Number of dihedrals in all assemblies and residues in the current object of assembly
               */
             int CountNumberOfDihedrals(std::string parameter_file_path);
-            std::vector<std::vector<std::string> > CreateImproperDihedrals(Atom* neighbor1, Atom* neighbor2, Atom* neighbor3, Atom* atom);
+            std::vector<std::vector<std::string> > CreateAllAtomTypePermutationsforDihedralType(std::string atom_type1, std::string atom_type2, std::string atom_type3, std::string atom_type4);
+            std::vector<std::vector<std::string> > CreateAllAtomTypePermutationsforImproperDihedralType(std::string atom_type1, std::string atom_type2, std::string atom_type3, std::string atom_type4);
             /*! \fn
               * A function that counts the number of dihedral types in all assemblies and residues of the assembly
               * @param parameter_file_path The path of the parameter file
