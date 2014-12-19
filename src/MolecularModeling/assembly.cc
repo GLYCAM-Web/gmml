@@ -826,8 +826,8 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
     topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
     topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
-    topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen());
-    topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen());
+    //    topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen());
+    //    topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen());
     //    topology_file->SetNumberOfHydrogenParameters();
     //    topology_file->SetNumberOfParameters();
     topology_file->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());   // Does not match
@@ -837,7 +837,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     //    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedralsExcludingHydrogen());
     topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes());
     topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes());
-    topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes());
+    //    topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes());
     //    topology_file->SetNumberOfAtomTypesInParameterFile();
     //    topology_file->SetNumberOfDistinctHydrogenBonds();
     //    topology_file->SetPerturbationOption();
