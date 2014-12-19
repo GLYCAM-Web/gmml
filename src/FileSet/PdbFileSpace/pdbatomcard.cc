@@ -11,7 +11,7 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbAtomCard::PdbAtomCard() {}
+PdbAtomCard::PdbAtomCard() : record_name_("ATOM") {}
 
 PdbAtomCard::PdbAtomCard(stringstream &stream_block, string index)
 {
