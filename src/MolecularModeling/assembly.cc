@@ -925,7 +925,8 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     return topology_file;
 }
 
-void Assembly::ExtractTopologyBondTypesFromAssembly(vector<vector<string> > &inserted_bond_types, Atom* assembly_atom, Atom* neighbor, ParameterFileSpace::ParameterFile::BondMap &bonds, int &bond_type_counter, TopologyFile* topology_file)
+void Assembly::ExtractTopologyBondTypesFromAssembly(vector<vector<string> > &inserted_bond_types, Atom* assembly_atom, Atom* neighbor, ParameterFileSpace::ParameterFile::BondMap &bonds,
+                                                    int &bond_type_counter, TopologyFile* topology_file)
 {
     vector<string> atom_pair_type = vector<string>();
     vector<string> reverse_atom_pair_type = vector<string>();
@@ -2374,6 +2375,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
+    int improper_counter = 0;
 //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
@@ -2460,7 +2462,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
                     {
                         ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
                         int terms_count = parameter_file_dihedrals->GetTerms().size();
-                        counter += terms_count;
+                        improper_counter += terms_count;
                         break;
                     }
                 }
@@ -2468,7 +2470,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
         }
     }
 //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
-    return counter/2;
+    return counter/2 + improper_counter;
 }
 
 int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path)
@@ -2476,6 +2478,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
+    int improper_counter = 0;
 //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
@@ -2566,7 +2569,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
                     {
                         ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
                         int terms_count = parameter_file_dihedrals->GetTerms().size();
-                        counter += terms_count;
+                        improper_counter += terms_count;
                         break;
                     }
                 }
@@ -2574,7 +2577,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
         }
     }
 //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
-    return counter/2;
+    return counter/2 + improper_counter;
 }
 
 int Assembly::CountNumberOfDihedrals(string parameter_file_path)
@@ -2582,6 +2585,7 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
+    int improper_counter = 0;
 //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
@@ -2652,14 +2656,14 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
                 {
                     ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
                     int terms_count = parameter_file_dihedrals->GetTerms().size();
-                    counter += terms_count;
+                    improper_counter += terms_count;
                     break;
                 }
             }
         }
     }
 //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
-    return counter/2;
+    return counter/2 + improper_counter;
 }
 
 int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
