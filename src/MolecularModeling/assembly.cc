@@ -824,118 +824,6 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
     residue_set->AddHeterogenAtom(het_atom_card);
 }
 
-void Assembly::ExtractTopologyBondTypesFromAssembly(vector<vector<string> > inserted_bond_types, Atom* assembly_atom, Atom* neighbor, ParameterFileSpace::ParameterFile::BondMap bonds, int bond_type_counter, TopologyFile* topology_file)
-{
-    cout << "HERE" << endl;
-    vector<string> atom_pair_type = vector<string>();
-    vector<string> reverse_atom_pair_type = vector<string>();
-    stringstream key2;
-    key2 << neighbor->GetId();
-    atom_pair_type.push_back(assembly_atom->GetAtomType());
-    atom_pair_type.push_back(neighbor->GetAtomType());
-    reverse_atom_pair_type.push_back(neighbor->GetAtomType());
-    reverse_atom_pair_type.push_back(assembly_atom->GetAtomType());
-
-    if(find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type) == inserted_bond_types.end() &&
-            find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type) == inserted_bond_types.end())
-    {
-        ParameterFileBond* parameter_file_bond;
-        if(bonds.find(atom_pair_type) != bonds.end())
-        {
-            parameter_file_bond = bonds[atom_pair_type];
-            inserted_bond_types.push_back(atom_pair_type);
-        }
-        else if(bonds.find(reverse_atom_pair_type) != bonds.end())
-        {
-            parameter_file_bond = bonds[reverse_atom_pair_type];
-            inserted_bond_types.push_back(reverse_atom_pair_type);
-        }
-        else
-        {
-            cout << atom_pair_type.at(0) << "-" << atom_pair_type.at(1) << " bond type does not exist in the parameter files" << endl;
-            return;
-        }
-        TopologyBondType* topology_bond_type = new TopologyBondType();
-        topology_bond_type->SetForceConstant(parameter_file_bond->GetForceConstant());
-        //                    topology_bond_type->SetEquilibriumValue(parameter_file->);
-        topology_bond_type->SetIndex(bond_type_counter);
-        bond_type_counter++;
-        topology_file->AddBondType(topology_bond_type);
-    }
-}
-
-void Assembly::ExtractTopologyBondsFromAssembly(vector<vector<string> > inserted_bonds, vector<vector<string> > inserted_bond_types, Atom *assembly_atom, Atom *neighbor, TopologyFileSpace::TopologyFile* topology_file)
-{
-    vector<string> atom_pair_type = vector<string>();
-    vector<string> reverse_atom_pair_type = vector<string>();
-    stringstream key2;
-    key2 << neighbor->GetId();
-    atom_pair_type.push_back(assembly_atom->GetAtomType());
-    atom_pair_type.push_back(neighbor->GetAtomType());
-    reverse_atom_pair_type.push_back(neighbor->GetAtomType());
-    reverse_atom_pair_type.push_back(assembly_atom->GetAtomType());
-
-    vector<string> atom_pair_name = vector<string>();;
-    vector<string> reverse_atom_pair_name = vector<string>();;
-    atom_pair_name.push_back(assembly_atom->GetName());
-    atom_pair_name.push_back(neighbor->GetName());
-    reverse_atom_pair_name.push_back(neighbor->GetName());
-    reverse_atom_pair_name.push_back(assembly_atom->GetName());
-    vector<string> residue_names = vector<string>();;
-    vector<string> reverse_residue_names = vector<string>();;
-    residue_names.push_back(assembly_atom->GetResidue()->GetName());
-    residue_names.push_back(neighbor->GetResidue()->GetName());
-    reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
-    reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
-    vector<string> bond = vector<string>();;
-    vector<string> reverse_bond = vector<string>();;
-    stringstream ss;
-    ss << residue_names.at(0) << ":" << atom_pair_name.at(0);
-    stringstream ss1;
-    ss1 << residue_names.at(1) << ":" << atom_pair_name.at(1);
-    bond.push_back(ss.str());
-    bond.push_back(ss1.str());
-    reverse_bond.push_back(ss1.str());
-    reverse_bond.push_back(ss.str());
-
-    if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end() &&
-            find(inserted_bonds.begin(), inserted_bonds.end(), reverse_bond) == inserted_bonds.end())
-    {
-        TopologyBond* topology_bond;
-        if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end())
-        {
-            topology_bond = new TopologyBond(atom_pair_name, residue_names);
-            inserted_bonds.push_back(bond);
-        }
-        else if (find(inserted_bonds.begin(), inserted_bonds.end(), reverse_bond) == inserted_bonds.end())
-        {
-            topology_bond = new TopologyBond(reverse_atom_pair_name, reverse_residue_names);
-            inserted_bonds.push_back(reverse_bond);
-        }
-
-        if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
-            (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
-                || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
-                    (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1))))))
-            topology_bond->SetIncludingHydrogen(true);
-        else
-            topology_bond->SetIncludingHydrogen(false);
-
-        int index = 0;
-        if(find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type) != inserted_bond_types.end())
-            index = distance(inserted_bond_types.begin(), find(inserted_bond_types.begin(), inserted_bond_types.end(), atom_pair_type));
-        else if(find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type) != inserted_bond_types.end())
-            index = distance(inserted_bond_types.begin(), find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type));
-        else
-        {
-            cout << atom_pair_type.at(0) << "-" << atom_pair_type.at(1) << " bond type does not exist in the parameter files" << endl;
-            return;
-        }
-        topology_bond->SetBondType(topology_file->GetBondTypeByIndex(index));
-        topology_file->AddBond(topology_bond);
-    }
-}
-
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path)
 {
     TopologyFile* topology_file = new TopologyFile();
@@ -1452,7 +1340,7 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                 vector<ParameterFileDihedralTerm> dihedral_terms = parameter_file_dihedral->GetTerms();
                 for(vector<ParameterFileDihedralTerm>::iterator it1 = dihedral_terms.begin(); it1 != dihedral_terms.end(); it1++)
                 {
-                    cout << sss.str() << endl;
+//                    cout << sss.str() << endl;
                     TopologyDihedral* topology_dihedral = new TopologyDihedral();
                     topology_dihedral->SetIsImproper(false);
                     topology_dihedral->SetIgnoredGroupInteraction(false);///not sure
@@ -1501,6 +1389,7 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
             }
         }
     }
+    /**/
     ///Improper Dihedrals
     AtomNode* atom_node = assembly_atom->GetNode();
     AtomVector neighbors = atom_node->GetNodeNeighbors();
@@ -1624,12 +1513,13 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                 reverse_dihedral3.push_back(ss3.str());
                 reverse_dihedral3.push_back(ss1.str());
 
-                if(find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral1) == inserted_dihedrals.end() &&
-                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral2) == inserted_dihedrals.end() &&
-                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral3) == inserted_dihedrals.end() &&
-                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral1) == inserted_dihedrals.end() &&
-                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral2) == inserted_dihedrals.end() &&
-                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral3) == inserted_dihedrals.end())
+                if(find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral1) == inserted_dihedrals.end())// &&
+//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral2) == inserted_dihedrals.end())
+//                        &&
+//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral3) == inserted_dihedrals.end() &&
+//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral1) == inserted_dihedrals.end() &&
+//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral2) == inserted_dihedrals.end() &&
+//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral3) == inserted_dihedrals.end())
                 {
                     int permutation_index = distance(all_improper_dihedrals_atom_type_permutations.begin(), it);
                     ParameterFileDihedral* parameter_file_dihedral = dihedrals[improper_dihedral_permutation];
@@ -1694,32 +1584,39 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                     if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
                     {
                         inserted_dihedrals.push_back(dihedral1);
+                        cout << "dihedral 1" << endl;
                     }
                     if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
                     {
                         inserted_dihedrals.push_back(dihedral2);
+                        cout << "dihedral 2" << endl;
                     }
                     if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
                     {
                         inserted_dihedrals.push_back(dihedral3);
+                        cout << "dihedral 3" << endl;
                     }
                     if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
                     {
                         inserted_dihedrals.push_back(reverse_dihedral1);
+                        cout << "reverse dihedral 1" << endl;
                     }
                     if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
                     {
                         inserted_dihedrals.push_back(reverse_dihedral2);
+                        cout << "reverse dihedral 2" << endl;
                     }
                     if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
                     {
                         inserted_dihedrals.push_back(reverse_dihedral3);
+                        cout << "reverse dihedral 3" << endl;
                     }
                     break;
                 }
             }
         }
     }
+    /**/
 }
 
 CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
