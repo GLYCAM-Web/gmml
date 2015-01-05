@@ -258,7 +258,7 @@ namespace MolecularModeling
               */
             PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly();
 
-            void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number = 0);
+            void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
             /*! \fn
               * A function to extract bonds from the current assembly object
               * @param inserted_bond_types Bond types that have been already detected in the assembly structure
@@ -268,7 +268,8 @@ namespace MolecularModeling
               * @param bond_type_counter A counter that indicates the number of bond types that have been already detected and also determines the index associated with it
               * @param topology_file Output topology file structure that the detected bond types belong to
               */
-            void ExtractTopologyBondTypesFromAssembly(std::vector<std::vector<std::string> > inserted_bond_types, Atom* assembly_atom, Atom* neighbor, ParameterFileSpace::ParameterFile::BondMap bonds, int bond_type_counter, TopologyFileSpace::TopologyFile* topology_file);
+            void ExtractTopologyBondTypesFromAssembly(std::vector<std::vector<std::string> > &inserted_bond_types, Atom* assembly_atom, Atom* neighbor,
+                                                      ParameterFileSpace::ParameterFile::BondMap &bonds, int &bond_type_counter, TopologyFileSpace::TopologyFile* topology_file);
             /*! \fn
               * A function to extract bond types from the current assembly object
               * @param inserted_bonds Bonds that have been already detected in the assembly structure
@@ -277,7 +278,8 @@ namespace MolecularModeling
               * @param neighbor Second atom in a bond which is a neighbor of assembly_atom
               * @param topology_file Output topology file structure that the detected bond types belong to
               */
-            void ExtractTopologyBondsFromAssembly(std::vector<std::vector<std::string> > inserted_bonds, std::vector<std::vector<std::string> > inserted_bond_tyoes, Atom* assembly_atom, Atom* neighbor, TopologyFileSpace::TopologyFile* topology_file);
+            void ExtractTopologyBondsFromAssembly(std::vector<std::vector<std::string> > &inserted_bonds, std::vector<std::vector<std::string> > &inserted_bond_tyoes,
+                                                  Atom* assembly_atom, Atom* neighbor, TopologyFileSpace::TopologyFile* topology_file);
             /*! \fn
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure
@@ -295,9 +297,9 @@ namespace MolecularModeling
               * @param angles All known angles from parameter file
               */
             void ExtractTopologyAngleTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
-                                                       std::vector<std::vector<std::string> > inserted_angle_types,
-                                                       int angle_type_counter, TopologyFileSpace::TopologyFile* topology_file,
-                                                       ParameterFileSpace::ParameterFile::AngleMap angles);
+                                                       std::vector<std::vector<std::string> > &inserted_angle_types,
+                                                       int &angle_type_counter, TopologyFileSpace::TopologyFile* topology_file,
+                                                       ParameterFileSpace::ParameterFile::AngleMap &angles);
             /*! \fn
               * A function to build agnle types of topology file structure from the current assembly object
               * Exports data from assembly data structure to generate topology atom types
@@ -310,8 +312,41 @@ namespace MolecularModeling
               * @param topology_file Output topology file structure that the detected angle types belong to
               */
             void ExtractTopologyAnglesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
-                                                             std::vector<std::vector<std::string> > inserted_angles,
-                                                             std::vector<std::vector<std::string> > inserted_angle_types, TopologyFileSpace::TopologyFile* topology_file);
+                                                             std::vector<std::vector<std::string> > &inserted_angles,
+                                                             std::vector<std::vector<std::string> > &inserted_angle_types, TopologyFileSpace::TopologyFile* topology_file);
+            /*! \fn
+              * A function to build agnle types of topology file structure from the current assembly object
+              * Exports data from assembly data structure to generate topology atom types
+              * @param assembly_atom A source atom in a dihedral in the assembly structure
+              * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom
+              * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not identical to assmebly_atom
+              * @param neighbor_of_neighbor_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom
+              * @param inserted_dihedrals_types Dihedral types that have been already detected in an assembly structure
+              * @param dihedral_type_counter A counter that indicates the number of dihedral types that have been already detected and also determines the index associated with it
+              * @param topology_file Output topology file structure that the detected angle types belong to
+              * @param dihedrals All known dihedrals from parameter file
+              */
+            void ExtractTopologyDihedralTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, Atom* neighbor_of_neighbor_neighbor,
+                                                       std::vector<std::string> &inserted_dihedral_types,
+                                                       int &dihedral_type_counter, TopologyFileSpace::TopologyFile* topology_file,
+                                                       ParameterFileSpace::ParameterFile::DihedralMap &dihedrals);
+            /*! \fn
+              * A function to build agnle types of topology file structure from the current assembly object
+              * Exports data from assembly data structure to generate topology atom types
+              * @param assembly_atom A source atom in a dihedral in the assembly structure
+              * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom
+              * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not identical to assmebly_atom
+              * @param neighbor_of_neighbor_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom
+              * @param inserted_dihedrals Dihedrals that have been already detected in an assembly structure
+              * @param inserted_dihedral_types Dihedral types that have been already detected in an assembly structure
+              * @param dihedrals All known dihedrals from parameter file
+              * @param topology_file Output topology file structure that the detected angle types belong to
+              */
+            void ExtractTopologyDihedralsFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, Atom* neighbor_of_neighbor_neighbor,
+                                                             std::vector<std::vector<std::string> > &inserted_dihedrals, std::vector<std::string> &inserted_dihedral_types,
+                                                             ParameterFileSpace::ParameterFile::DihedralMap &dihedrals,
+                                                             TopologyFileSpace::TopologyFile* topology_file);
+
             /*! \fn
               * A function to build a coordinate file structure from the current assembly object
               * Exports data from assembly data structure into coordinate file structure

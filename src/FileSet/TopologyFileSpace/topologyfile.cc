@@ -528,7 +528,7 @@ void TopologyFile::AddAngle(TopologyAngle *angle)
     vector<string> residue_names = angle->GetResidueNames();
     TopologyAngleType* angle_type = angle->GetAngleType();
     stringstream ss;
-    ss << residue_names.at(0) << ":" << angles.at(0) << "-" << residue_names.at(1) << ":" << angles.at(1) << "_" << residue_names.at(2) << ":" << angles.at(2) << "_" << angle_type;
+    ss << residue_names.at(0) << ":" << angles.at(0) << "-" << residue_names.at(1) << ":" << angles.at(1) << "-" << residue_names.at(2) << ":" << angles.at(2) << "_" << angle_type;
     angles_[ss.str()] = angle;
 }
 void TopologyFile::SetAngleTypes(TopologyAngleTypeMap angle_types)
@@ -555,6 +555,31 @@ void TopologyFile::SetDihedrals(TopologyDihedralMap dihedrals)
         TopologyDihedral* dihedral = (*it).second;
         dihedrals_[atom_dihedral] = dihedral;
     }
+}
+void TopologyFile::AddDihedral(TopologyDihedral *dihedral)
+{
+    vector<string> dihedrals = dihedral->GetDihedrals();
+    vector<string> residue_names = dihedral->GetResidueNames();
+    TopologyDihedralType* dihedral_type = dihedral->GetDihedralType();
+    stringstream ss;
+    ss << residue_names.at(0) << ":" << dihedrals.at(0) << "-" << residue_names.at(1) << ":" << dihedrals.at(1) << "-"
+       << residue_names.at(2) << ":" << dihedrals.at(2) << "-" << residue_names.at(3) << ":" << dihedrals.at(3) << "_" << dihedral_type;
+    dihedrals_[ss.str()] = dihedral;
+}
+void TopologyFile::SetDihedralTypes(TopologyDihedralTypeMap dihedral_types)
+{
+    dihedral_types_.clear();
+    for(TopologyDihedralTypeMap::iterator it = dihedral_types.begin(); it != dihedral_types.end(); it++)
+    {
+        int index = (*it).first;
+        TopologyDihedralType* dihedral_type = (*it).second;
+        dihedral_types_[index] = dihedral_type;
+    }
+}
+void TopologyFile::AddDihedralType(TopologyDihedralType *dihedral_type)
+{
+    int index = dihedral_type->GetIndex();
+    dihedral_types_[index] = dihedral_type;
 }
 
 //////////////////////////////////////////////////////////

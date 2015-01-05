@@ -10,7 +10,7 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogenAtomCard::PdbHeterogenAtomCard() {}
+PdbHeterogenAtomCard::PdbHeterogenAtomCard() : record_name_("HETATM") {}
 
 PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block, string index)
 {

@@ -238,9 +238,9 @@ namespace PdbFileSpace
             PdbResidueAtomsMap GetAllAtomsOfResidues();
             /*! \fn
               * An accessor function in order to access to all atoms of all residues of the current object
-              * @return residue_atom_map The map between all residues and their atoms of the current object of this class in the order that they appear in the pdb file
+              * @return atoms The vector of all atoms in a pdb file in the order that they appear in the file
               */
-            PdbResidueAtomsMap GetAllAtomsOfResiduesInOrder();
+            PdbResidueAtomsMap GetAllAtomsInOrder(std::vector<std::string>& key_order);
             /*! \fn
               * An accessor function in order to access to atom of a residue of the current object using the atom name
               * @param residue The given residue to return one of its atoms
