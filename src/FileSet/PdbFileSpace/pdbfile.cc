@@ -608,7 +608,7 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
     return residue_atom_map;
 }
 
-PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResiduesInOrder()
+PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(vector<string>& key_order)
 {
     PdbFile::PdbResidueAtomsMap residue_atom_map;
     map<string, bool> inserted_residues;
@@ -629,13 +629,13 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResiduesInOrder()
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
             stringstream ss;
-            ss << sequence_number << "_" << residue_name << "_" << chain_id << "_" << insertion_code << "_" << alternate_location;
+            ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
             string key = ss.str();
-
             if(!inserted_residues[key])
             {
                 residue_atom_map[key] = new vector<PdbAtom*>();
                 inserted_residues[key] = true;
+                key_order.push_back(key);
             }
             residue_atom_map[key]->push_back(atom);
 
@@ -655,12 +655,13 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResiduesInOrder()
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
             stringstream ss;
-            ss << sequence_number << "_" << residue_name << "_" << chain_id << "_" << insertion_code << "_" << alternate_location;
+            ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
             string key = ss.str();
             if(!inserted_residues[key])
             {
                 residue_atom_map[key] = new vector<PdbAtom*>();
                 inserted_residues[key] = true;
+                key_order.push_back(key);
             }
             residue_atom_map[key]->push_back(atom);
         }
@@ -4319,8 +4320,8 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     record_name = Trim(record_name);
 
     while(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("ANISOU") == 0
-          || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0
-          || record_name.find("TER") != string::npos || record_name.find("ENDMDL") != string::npos)
+          || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0)
+//          || record_name.find("TER") != string::npos || record_name.find("ENDMDL") != string::npos)
     {
         stream_block << line << endl;
         if(getline(stream, line))
