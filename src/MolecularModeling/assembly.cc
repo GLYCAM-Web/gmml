@@ -356,10 +356,12 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
     {
         this->ClearAssembly();
         PdbFile* pdb_file = new PdbFile(pdb_file_path);
-        PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsOfResiduesInOrder();
-        for(PdbFile::PdbResidueAtomsMap::iterator it = residue_atoms_map.begin(); it != residue_atoms_map.end(); it++)
+        vector<string> key_order = vector<string>();
+        PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
+        for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)
         {
-            PdbFile::PdbAtomVector* atoms = (*it).second;
+            string residue_key = *it;
+            PdbFile::PdbAtomVector* atoms = residue_atoms_map[residue_key];
             Residue* residue = new Residue();
             residue->SetAssembly(this);
 
@@ -390,6 +392,15 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
                 if(model_maps.size() == 1)
                 {
                     new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
+                    if(card_index.at(0).compare("ATOM") == 0)
+                    {
+                        new_atom->SetDescription("Atom;");
+                    }
+                    else if(card_index.at(0).compare("HETATOM") == 0)
+                    {
+                        new_atom->SetDescription("Het;");
+                    }
                 }
                 else
                 {
@@ -418,6 +429,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
                             {
                                 Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
+                                new_atom->SetDescription("Atom;");
                             }
                         }
                         else if(card_index.at(0).compare("HETATOM") == 0)
@@ -440,6 +452,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
                             {
                                 Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
+                                new_atom->SetDescription("Het;");
                             }
                         }
                     }
@@ -713,7 +726,7 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
     int serial_number = 1;
     int sequence_number = 1;
 
-    ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number);
+    ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number, model_index_);
 
     model->SetModelResidueSet(residue_set);
     models[1] = model;
@@ -725,16 +738,19 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
 
 void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number)
 {
+    cout << "Creating PDB file" << endl;
     for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
     {
         Assembly* assembly = (*it);
         AssemblyVector assemblies = assembly->GetAssemblies();
         for(AssemblyVector::iterator it1 = assemblies.begin(); it1 != assemblies.end(); it1++)
         {
-            ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number);
+            ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number, model_number);
         }
         PdbAtomCard* atom_card = new PdbAtomCard();
+        PdbHeterogenAtomCard* het_atom_card = new PdbHeterogenAtomCard();
         PdbAtomCard::PdbAtomMap atom_map = PdbAtomCard::PdbAtomMap();
+        PdbHeterogenAtomCard::PdbHeterogenAtomMap het_atom_map = PdbHeterogenAtomCard::PdbHeterogenAtomMap();
         ResidueVector residues = assembly->GetResidues();
         for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
@@ -743,20 +759,34 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
             for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
                 Atom* atom = (*it2);
+                vector<string> dscr = Split(atom->GetDescription(), ";");
                 stringstream ss;
                 ss << fixed << setprecision(1) << atom->GetCharge();
                 PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
                                                 *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), ss.str());
-                atom_map[serial_number] = pdb_atom;
-                serial_number++;
+                if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
+                {
+
+                    atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
+                else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
+                {
+                    het_atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
             }
             sequence_number++;
         }
         atom_card->SetAtoms(atom_map);
+        het_atom_card->SetHeterogenAtoms(het_atom_map);
         residue_set->AddAtom(atom_card);
+        residue_set->AddHeterogenAtom(het_atom_card);
     }
     PdbAtomCard* atom_card = new PdbAtomCard();
+    PdbHeterogenAtomCard* het_atom_card = new PdbHeterogenAtomCard();
     PdbAtomCard::PdbAtomMap atom_map = PdbAtomCard::PdbAtomMap();
+    PdbHeterogenAtomCard::PdbHeterogenAtomMap het_atom_map = PdbHeterogenAtomCard::PdbHeterogenAtomMap();
     for(ResidueVector::iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
@@ -764,22 +794,35 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
         for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
             Atom* atom = (*it2);
+            vector<string> dscr = Split(atom->GetDescription(), ";");
             stringstream ss;
             ss << fixed << setprecision(1) << atom->GetCharge();
             PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
                                             *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), ss.str());
 
-            atom_map[serial_number] = pdb_atom;
-            serial_number++;
+            if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
+            {
+
+                atom_map[serial_number] = pdb_atom;
+                serial_number++;
+            }
+            else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
+            {
+                het_atom_map[serial_number] = pdb_atom;
+                serial_number++;
+            }
         }
         sequence_number++;
     }
     atom_card->SetAtoms(atom_map);
+    het_atom_card->SetHeterogenAtoms(het_atom_map);
     residue_set->AddAtom(atom_card);
+    residue_set->AddHeterogenAtom(het_atom_card);
 }
 
 void Assembly::ExtractTopologyBondTypesFromAssembly(vector<vector<string> > inserted_bond_types, Atom* assembly_atom, Atom* neighbor, ParameterFileSpace::ParameterFile::BondMap bonds, int bond_type_counter, TopologyFile* topology_file)
 {
+    cout << "HERE" << endl;
     vector<string> atom_pair_type = vector<string>();
     vector<string> reverse_atom_pair_type = vector<string>();
     stringstream key2;
@@ -982,7 +1025,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             {
                 Atom* neighbor = (*it2);
                 ExtractTopologyBondTypesFromAssembly(inserted_bond_types, assembly_atom, neighbor, bonds, bond_type_counter, topology_file);
-                ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
+//                ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
 
                 ///Angle Types, Angle
                 AtomNode* neighbor_node = neighbor->GetNode();
@@ -995,8 +1038,8 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                     key3 << neighbor_of_neighbor->GetId();
                     if(key1.str().compare(key3.str()) != 0)
                     {
-                        ExtractTopologyAngleTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angle_types, angle_type_counter,
-                                                              topology_file, angles);
+//                        ExtractTopologyAngleTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angle_types, angle_type_counter,
+//                                                              topology_file, angles);
 //                        ExtractTopologyAnglesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angles, inserted_angle_types, topology_file);
                     }
                 }
@@ -1279,6 +1322,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
 
 void Assembly::BuildStructureByDistance(double cutoff, int model_index)
 {
+    cout << "Building structure by distance ..." << endl;
     model_index_ = model_index;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
