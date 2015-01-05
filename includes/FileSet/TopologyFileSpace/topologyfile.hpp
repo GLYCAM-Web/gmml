@@ -547,7 +547,7 @@ namespace TopologyFileSpace
               */
             void AddAngle(TopologyAngle* angle);
             /*! \fn
-              * A mutator function in order to set the bond types of the current object
+              * A mutator function in order to set the angle types of the current object
               * Set the angle_types_ attribute of the current topology file
               * @param angle_types The angle_types attribute of the current object
               */
@@ -564,6 +564,24 @@ namespace TopologyFileSpace
               * @param dihedrals The dihedrals attribute of the current object
               */
             void SetDihedrals(TopologyDihedralMap dihedrals);
+            /*! \fn
+              * A function in order to add the dihedral to the current object
+              * Set the dihedrals_ attribute of the current topology file
+              * @param dihedral The dihedral that will be added to the current object
+              */
+            void AddDihedral(TopologyDihedral* dihedral);
+            /*! \fn
+              * A mutator function in order to set the dihedral types of the current object
+              * Set the dihedral_types_ attribute of the current topology file
+              * @param dihedral_types The dihedral_types attribute of the current object
+              */
+            void SetDihedralTypes(TopologyDihedralTypeMap dihedral_types);
+            /*! \fn
+              * A function in order to add the dihedral type to the current object
+              * Set the dihedral_Types_ attribute of the current topology file
+              * @param dihedral_type The dihedral_type that will be added to the current object
+              */
+            void AddDihedralType(TopologyDihedralType* dihedral_type);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
