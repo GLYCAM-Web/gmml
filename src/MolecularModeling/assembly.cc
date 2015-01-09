@@ -1408,68 +1408,68 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
             if(find(inserted_dihedral_types.begin(), inserted_dihedral_types.end(), sss.str()) != inserted_dihedral_types.end())
             {
                 vector<string> dihedral_atom_names1 = vector<string>();
-                dihedral_atom_names1.push_back(neighbor->GetName());
-                dihedral_atom_names1.push_back(neighbor_of_neighbor->GetName());
+                dihedral_atom_names1.push_back(neighbor1->GetName());
+                dihedral_atom_names1.push_back(neighbor2->GetName());
                 dihedral_atom_names1.push_back(assembly_atom->GetName());
-                dihedral_atom_names1.push_back(neighbor_of_neighbor_of_neighbor->GetName());
+                dihedral_atom_names1.push_back(neighbor3->GetName());
                 vector<string> dihedral_atom_names2 = vector<string>();
-                dihedral_atom_names2.push_back(neighbor->GetName());
+                dihedral_atom_names2.push_back(neighbor1->GetName());
                 dihedral_atom_names2.push_back(assembly_atom->GetName());
-                dihedral_atom_names2.push_back(neighbor_of_neighbor_of_neighbor->GetName());
-                dihedral_atom_names2.push_back(neighbor_of_neighbor->GetName());
+                dihedral_atom_names2.push_back(neighbor3->GetName());
+                dihedral_atom_names2.push_back(neighbor2->GetName());
                 vector<string> dihedral_atom_names3 = vector<string>();
-                dihedral_atom_names3.push_back(neighbor->GetName());
-                dihedral_atom_names3.push_back(neighbor_of_neighbor_of_neighbor->GetName());
+                dihedral_atom_names3.push_back(neighbor1->GetName());
+                dihedral_atom_names3.push_back(neighbor3->GetName());
                 dihedral_atom_names3.push_back(assembly_atom->GetName());
-                dihedral_atom_names3.push_back(neighbor_of_neighbor->GetName());
+                dihedral_atom_names3.push_back(neighbor2->GetName());
 
                 vector<string> reverse_dihedral_atom_names1 = vector<string>();
-                reverse_dihedral_atom_names1.push_back(neighbor_of_neighbor_of_neighbor->GetName());
+                reverse_dihedral_atom_names1.push_back(neighbor3->GetName());
                 reverse_dihedral_atom_names1.push_back(assembly_atom->GetName());
-                reverse_dihedral_atom_names1.push_back(neighbor_of_neighbor->GetName());
-                reverse_dihedral_atom_names1.push_back(neighbor->GetName());
+                reverse_dihedral_atom_names1.push_back(neighbor2->GetName());
+                reverse_dihedral_atom_names1.push_back(neighbor1->GetName());
                 vector<string> reverse_dihedral_atom_names2 = vector<string>();
-                reverse_dihedral_atom_names2.push_back(neighbor_of_neighbor->GetName());
-                reverse_dihedral_atom_names2.push_back(neighbor_of_neighbor_of_neighbor->GetName());
+                reverse_dihedral_atom_names2.push_back(neighbor2->GetName());
+                reverse_dihedral_atom_names2.push_back(neighbor3->GetName());
                 reverse_dihedral_atom_names2.push_back(assembly_atom->GetName());
-                reverse_dihedral_atom_names2.push_back(neighbor->GetName());
+                reverse_dihedral_atom_names2.push_back(neighbor1->GetName());
                 vector<string> reverse_dihedral_atom_names3 = vector<string>();
-                reverse_dihedral_atom_names3.push_back(neighbor_of_neighbor->GetName());
+                reverse_dihedral_atom_names3.push_back(neighbor2->GetName());
                 reverse_dihedral_atom_names3.push_back(assembly_atom->GetName());
-                reverse_dihedral_atom_names3.push_back(neighbor_of_neighbor_of_neighbor->GetName());
-                reverse_dihedral_atom_names3.push_back(neighbor->GetName());
+                reverse_dihedral_atom_names3.push_back(neighbor3->GetName());
+                reverse_dihedral_atom_names3.push_back(neighbor1->GetName());
 
                 vector<string> residue_names1 = vector<string>();
-                residue_names1.push_back(neighbor->GetResidue()->GetName());
-                residue_names1.push_back(neighbor_of_neighbor->GetResidue()->GetName());
+                residue_names1.push_back(neighbor1->GetResidue()->GetName());
+                residue_names1.push_back(neighbor2->GetResidue()->GetName());
                 residue_names1.push_back(assembly_atom->GetResidue()->GetName());
-                residue_names1.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
+                residue_names1.push_back(neighbor3->GetResidue()->GetName());
                 vector<string> residue_names2 = vector<string>();
-                residue_names2.push_back(neighbor->GetName());
+                residue_names2.push_back(neighbor1->GetName());
                 residue_names2.push_back(assembly_atom->GetResidue()->GetName());
-                residue_names2.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
-                residue_names2.push_back(neighbor_of_neighbor->GetResidue()->GetName());
+                residue_names2.push_back(neighbor3->GetResidue()->GetName());
+                residue_names2.push_back(neighbor2->GetResidue()->GetName());
                 vector<string> residue_names3 = vector<string>();
-                residue_names3.push_back(neighbor->GetResidue()->GetName());
-                residue_names3.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
+                residue_names3.push_back(neighbor1->GetResidue()->GetName());
+                residue_names3.push_back(neighbor3->GetResidue()->GetName());
                 residue_names3.push_back(assembly_atom->GetResidue()->GetName());
-                residue_names3.push_back(neighbor_of_neighbor->GetResidue()->GetName());
+                residue_names3.push_back(neighbor2->GetResidue()->GetName());
 
                 vector<string> reverse_residue_names1 = vector<string>();
-                reverse_residue_names1.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
+                reverse_residue_names1.push_back(neighbor3->GetResidue()->GetName());
                 reverse_residue_names1.push_back(assembly_atom->GetResidue()->GetName());
-                reverse_residue_names1.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-                reverse_residue_names1.push_back(neighbor->GetResidue()->GetName());
+                reverse_residue_names1.push_back(neighbor2->GetResidue()->GetName());
+                reverse_residue_names1.push_back(neighbor1->GetResidue()->GetName());
                 vector<string> reverse_residue_names2 = vector<string>();
-                reverse_residue_names2.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-                reverse_residue_names2.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
+                reverse_residue_names2.push_back(neighbor2->GetResidue()->GetName());
+                reverse_residue_names2.push_back(neighbor3->GetResidue()->GetName());
                 reverse_residue_names2.push_back(assembly_atom->GetResidue()->GetName());
-                reverse_residue_names2.push_back(neighbor->GetName());
+                reverse_residue_names2.push_back(neighbor1->GetName());
                 vector<string> reverse_residue_names3 = vector<string>();
-                reverse_residue_names3.push_back(neighbor_of_neighbor->GetResidue()->GetName());
+                reverse_residue_names3.push_back(neighbor2->GetResidue()->GetName());
                 reverse_residue_names3.push_back(assembly_atom->GetResidue()->GetName());
-                reverse_residue_names3.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
-                reverse_residue_names3.push_back(neighbor->GetResidue()->GetName());
+                reverse_residue_names3.push_back(neighbor3->GetResidue()->GetName());
+                reverse_residue_names3.push_back(neighbor1->GetResidue()->GetName());
 
                 vector<string> dihedral1 = vector<string>();
                 vector<string> dihedral2 = vector<string>();
@@ -1513,20 +1513,18 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                 reverse_dihedral3.push_back(ss3.str());
                 reverse_dihedral3.push_back(ss1.str());
 
-                if(find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral1) == inserted_dihedrals.end())// &&
-//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral2) == inserted_dihedrals.end())
-//                        &&
-//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral3) == inserted_dihedrals.end() &&
-//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral1) == inserted_dihedrals.end() &&
-//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral2) == inserted_dihedrals.end() &&
-//                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral3) == inserted_dihedrals.end())
+                if(find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral1) == inserted_dihedrals.end() &&
+                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral2) == inserted_dihedrals.end() &&
+                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), dihedral3) == inserted_dihedrals.end() &&
+                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral1) == inserted_dihedrals.end() &&
+                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral2) == inserted_dihedrals.end() &&
+                        find(inserted_dihedrals.begin(), inserted_dihedrals.end(), reverse_dihedral3) == inserted_dihedrals.end())
                 {
                     int permutation_index = distance(all_improper_dihedrals_atom_type_permutations.begin(), it);
                     ParameterFileDihedral* parameter_file_dihedral = dihedrals[improper_dihedral_permutation];
                     vector<ParameterFileDihedralTerm> dihedral_terms = parameter_file_dihedral->GetTerms();
                     for(vector<ParameterFileDihedralTerm>::iterator it1 = dihedral_terms.begin(); it1 != dihedral_terms.end(); it1++)
                     {
-                        cout << sss.str() << endl;
                         TopologyDihedral* topology_dihedral = new TopologyDihedral();
                         topology_dihedral->SetIsImproper(true);
                         topology_dihedral->SetIgnoredGroupInteraction(false);///not sure
@@ -1584,32 +1582,26 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                     if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
                     {
                         inserted_dihedrals.push_back(dihedral1);
-                        cout << "dihedral 1" << endl;
                     }
                     if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
                     {
                         inserted_dihedrals.push_back(dihedral2);
-                        cout << "dihedral 2" << endl;
                     }
                     if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
                     {
                         inserted_dihedrals.push_back(dihedral3);
-                        cout << "dihedral 3" << endl;
                     }
                     if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
                     {
                         inserted_dihedrals.push_back(reverse_dihedral1);
-                        cout << "reverse dihedral 1" << endl;
                     }
                     if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
                     {
                         inserted_dihedrals.push_back(reverse_dihedral2);
-                        cout << "reverse dihedral 2" << endl;
                     }
                     if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
                     {
                         inserted_dihedrals.push_back(reverse_dihedral3);
-                        cout << "reverse dihedral 3" << endl;
                     }
                     break;
                 }
