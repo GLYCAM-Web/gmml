@@ -582,6 +582,18 @@ namespace TopologyFileSpace
               * @param dihedral_type The dihedral_type that will be added to the current object
               */
             void AddDihedralType(TopologyDihedralType* dihedral_type);
+            /*! \fn
+              * A function in order to set the atom pairs of the current object
+              * Set the pairs_ attribute of the current topology file
+              * @param pairs The pairs attribute of the current object
+              */
+            void SetAtomPairs(TopologyAtomPairMap pairs);
+            /*! \fn
+              * A function in order to add the atom pairs to the current object
+              * Set the pairs_ attribute of the current topology file
+              * @param pair The atom pair that will be added to the current object
+              */
+            void AddAtomPair(TopologyAtomPair* pair);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
