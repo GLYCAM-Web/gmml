@@ -581,6 +581,21 @@ void TopologyFile::AddDihedralType(TopologyDihedralType *dihedral_type)
     int index = dihedral_type->GetIndex();
     dihedral_types_[index] = dihedral_type;
 }
+void TopologyFile::SetAtomPairs(TopologyAtomPairMap pairs)
+{
+    pairs_.clear();
+    for(TopologyAtomPairMap::iterator it = pairs.begin(); it != pairs.end(); it++)
+    {
+        string atom_pair_types = (*it).first;
+        TopologyAtomPair* pair = (*it).second;
+        pairs_[atom_pair_types] = pair;
+    }
+}
+void TopologyFile::AddAtomPair(TopologyAtomPair *pair)
+{
+    string atom_pair_types = pair->GetPairType();
+    pairs_[atom_pair_types] = pair;
+}
 
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //

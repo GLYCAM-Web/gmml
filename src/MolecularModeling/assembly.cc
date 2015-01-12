@@ -15,6 +15,7 @@
 #include "../../includes/FileSet/TopologyFileSpace/topologyangletype.hpp"
 #include "../../includes/FileSet/TopologyFileSpace/topologydihedral.hpp"
 #include "../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
 #include "../../includes/FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
@@ -37,6 +38,7 @@
 #include "../../includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
 #include "../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
 #include "../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
+#include "../../includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
 #include "../../includes/utils.hpp"
 
 using namespace std;
@@ -500,7 +502,7 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
             TopologyAtom* topology_atom = (*it1).second;
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
             assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
-            assembly_atom->MolecularDynamicAtom::SetRadius(topology_atom->GetRadii());
+            assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet); ///////////////////
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
 
             assembly_atom->SetResidue(assembly_residue);
@@ -599,7 +601,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
 
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
-            assembly_atom->MolecularDynamicAtom::SetRadius(topology_atom->GetRadii());
+            assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet); ////////////////////////
             assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
 
             int topology_atom_index = topology_atom->GetIndex();
@@ -874,6 +876,9 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     int dihedral_type_counter = 0;
     vector<string>  inserted_dihedral_types = vector<string>();
     vector<vector<string> > inserted_dihedrals = vector<vector<string> >();
+    TopologyFile::TopologyAtomPairMap pairs = TopologyFile::TopologyAtomPairMap();
+    int pair_count = 1;
+    vector<string> inserted_pairs = vector<string>();
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
@@ -891,6 +896,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
         ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
         ParameterFileSpace::ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+        ParameterFileSpace::ParameterFile::AtomTypeMap atom_types_map = parameter_file->GetAtomTypes();
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
             Atom* assembly_atom = (*it1);
@@ -899,19 +905,55 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             TopologyAtom* topology_atom = new TopologyAtom();
             topology_atom->SetAtomName(assembly_atom->GetName());
             topology_atom->SetAtomCharge(assembly_atom->GetCharge());
-            //            topology_atom->SetAtomicNumber();
+            topology_atom->SetAtomicNumber(iNotSet);
             topology_atom->SetAtomMass(assembly_atom->GetMass());
             //            topology_atom->SetNumberOfExcludedAtomsForEachAtom();
             topology_atom->SetResidueName(assembly_residue->GetName());
             topology_atom->SetType(assembly_atom->GetAtomType());
-            //            topology_atom->SetTreeChainClasification();
-            topology_atom->SetRadii(assembly_atom->GetRadius());
-            //            topology_atom->SetScreen();
+            topology_atom->SetTreeChainClasification("0");
+            topology_atom->SetRadii(dNotSet);
+            topology_atom->SetScreen(dNotSet);
 
             topology_atom->SetIndex(atom_counter);
 
             topology_residue->AddAtom(topology_atom);
             atom_counter++;
+
+            ///Pairs
+            for(AtomVector::iterator it2 = assembly_atoms.begin(); it2 != assembly_atoms.end(); it2++)
+            {
+                Atom* pair_assembly_atom = (*it2);
+                string atom_type1 = assembly_atom->GetAtomType();
+                string atom_type2 = pair_assembly_atom->GetAtomType();
+                vector<string> pair_vector = vector<string>();
+                pair_vector.push_back(atom_type1);
+                pair_vector.push_back(atom_type2);
+                stringstream sss;
+                sss << atom_type1 << "-" << atom_type2;
+                stringstream reverse_sss;
+                reverse_sss << atom_type2 << "-" << atom_type1;
+                if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
+                   find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end()  )
+                {
+                    TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
+                    ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
+                    ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
+                    cout << parameter_atom1->GetType() << "-" << parameter_atom2->GetType() << endl;
+                    cout << parameter_atom1->GetRadius() << "-" << parameter_atom2->GetRadius() << endl;
+                    cout << parameter_atom1->GetWellDepth() << "-" << parameter_atom2->GetWellDepth() << endl;
+                    double epsilon = sqrt(parameter_atom1->GetRadius() * parameter_atom2->GetRadius());
+                    double sigma = 0.5 * (parameter_atom1->GetWellDepth() + parameter_atom2->GetWellDepth());
+                    double coefficient_a = 4 * epsilon * pow(sigma, 12);
+                    double coefficient_b = 4 * epsilon * pow(sigma, 6);
+                    topology_atom_pair->SetCoefficientA(coefficient_a);
+                    topology_atom_pair->SetCoefficientB(coefficient_b);
+                    topology_atom_pair->SetPairType(sss.str());
+                    topology_atom_pair->SetIndex(pair_count);
+                    pair_count++;
+                    inserted_pairs.push_back(sss.str());
+                    pairs[sss.str()] = topology_atom_pair;
+                }
+            }
 
             ///Bond Types, Bonds
             AtomNode* atom_node = assembly_atom->GetNode();
@@ -961,7 +1003,22 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         }
         topology_assembly->AddResidue(topology_residue);
     }
+
+
+
+//    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+//    {
+//        Residue* assembly_residue = *it;
+//        AtomVector assembly_atoms = assembly_residue->GetAtoms();
+//        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
+//        {
+//            Atom* assembly_atom = (*it1);
+
+
+//        }
+//    }
     topology_assembly->SetAssemblyName(ss.str());
+    topology_file->SetAtomPairs(pairs);
     topology_file->SetAssembly(topology_assembly);
 
     return topology_file;
@@ -1000,7 +1057,7 @@ void Assembly::ExtractTopologyBondTypesFromAssembly(vector<vector<string> > &ins
         }
         TopologyBondType* topology_bond_type = new TopologyBondType();
         topology_bond_type->SetForceConstant(parameter_file_bond->GetForceConstant());
-        //                    topology_bond_type->SetEquilibriumValue(parameter_file->);
+        topology_bond_type->SetEquilibriumValue(parameter_file_bond->GetLength());
         topology_bond_type->SetIndex(bond_type_counter);
         bond_type_counter++;
         topology_file->AddBondType(topology_bond_type);
@@ -1113,7 +1170,7 @@ void Assembly::ExtractTopologyAngleTypesFromAssembly(Atom* assembly_atom, Atom* 
         }
         TopologyAngleType* topology_angle_type = new TopologyAngleType();
         topology_angle_type->SetForceConstant(parameter_file_angle->GetForceConstant());
-        //                    topology_bond_type->SetEquilibriumValue(parameter_file->);
+        topology_angle_type->SetEquilibriumValue(parameter_file_angle->GetAngle());
         topology_angle_type->SetIndex(angle_type_counter);
         angle_type_counter++;
         topology_file->AddAngleType(topology_angle_type);
@@ -1340,7 +1397,6 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                 vector<ParameterFileDihedralTerm> dihedral_terms = parameter_file_dihedral->GetTerms();
                 for(vector<ParameterFileDihedralTerm>::iterator it1 = dihedral_terms.begin(); it1 != dihedral_terms.end(); it1++)
                 {
-//                    cout << sss.str() << endl;
                     TopologyDihedral* topology_dihedral = new TopologyDihedral();
                     topology_dihedral->SetIsImproper(false);
                     topology_dihedral->SetIgnoredGroupInteraction(false);///not sure
