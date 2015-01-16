@@ -3326,7 +3326,6 @@ int Assembly::CountNumberOfExcludedAtoms()
             }
         }
     }
-    cout << counter << endl;
     return counter/2;
 }
 
