@@ -280,6 +280,12 @@ namespace MolecularModeling
               */
             void ExtractTopologyBondsFromAssembly(std::vector<std::vector<std::string> > &inserted_bonds, std::vector<std::vector<std::string> > &inserted_bond_tyoes,
                                                   Atom* assembly_atom, Atom* neighbor, TopologyFileSpace::TopologyFile* topology_file);
+
+            /*! \fn
+              * A function to build a prep file structure from the current assembly object
+              * Exports data from assembly data structure into prep file structure
+              */
+            PrepFileSpace::PrepFile* BuildPrepFileStructureFromAssembly();
             /*! \fn
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure

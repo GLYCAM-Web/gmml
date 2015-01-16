@@ -29,7 +29,10 @@ namespace PrepFileSpace
               * @param prep_file An existing prep file path to be read
               */
             PrepFile(const std::string& prep_file);
-
+            /*! \fn
+              * Default constructor
+              */
+            PrepFile();
             ~PrepFile();
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -56,6 +59,22 @@ namespace PrepFileSpace
               * @return atom_names_of_residue The atom names of the current object of this class
               */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
+
+            //////////////////////////////////////////////////////////
+            //                           MUTATOR                    //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A mutator function in order to set the path of the current prep file
+              * Set the path_ attribute of the current library file
+              * @param path The path attribute of the current object
+              */
+            void SetPath(std::string path);
+            /*! \fn
+              * A mutator function in order to set the residues of the current prep file
+              * Set the residues_ attribute of the current prep file
+              * @param residues The residue map attribute of the current object
+              */
+            void SetResidues(ResidueMap residues);
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //

@@ -366,13 +366,13 @@ namespace PrepFileSpace
               * Set the geometry_type_ attribute of the current object
               * @param geometry_type The geometry_type of the current object
               */
-            void SetBondIndex(GeometryType geometry_type);
+            void SetGeometryType(GeometryType geometry_type);
             /*! \fn
               * A mutator function in order to set the dummy atom omission of the current object
               * Set the dummy_atom_omission_ attribute of the current object
               * @param dummy_atom_omission The dummy_atom_omission of the current object
               */
-            void GetDummyAtomOmission(DummyAtomOmission dummy_atom_omission);
+            void SetDummyAtomOmission(DummyAtomOmission dummy_atom_omission);
             /*! \fn
               * A mutator function in order to set the dummy atom type of the current object
               * Set the dummy_atom_type_ attribute of the current atom
@@ -421,6 +421,15 @@ namespace PrepFileSpace
               * @param loops The loops of the current object
               */
             void SetLoops(Loop loops);
+
+            //////////////////////////////////////////////////////////
+            //                     FUNCTIONS                        //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+              * A function to calculate the overall charge of the prep file residue
+              * @return residue_charge Overal charge of the prep file residue
+              */
+            double CalculatePrepResidueCharge();
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

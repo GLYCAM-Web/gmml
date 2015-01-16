@@ -39,6 +39,9 @@
 #include "../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
 #include "../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
 #include "../../includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/utils.hpp"
 
 using namespace std;
@@ -824,6 +827,78 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
     het_atom_card->SetHeterogenAtoms(het_atom_map);
     residue_set->AddAtom(atom_card);
     residue_set->AddHeterogenAtom(het_atom_card);
+}
+
+PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
+{
+    PrepFile* prep_file = new PrepFile();
+    ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
+    PrepFile::ResidueMap prep_residues = PrepFile::ResidueMap();
+    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+    {
+        Residue* assembly_residue = *it;
+        PrepFileResidue* prep_residue = new PrepFileResidue();
+        PrepFileResidue::PrepFileAtomVector prep_atoms = PrepFileResidue::PrepFileAtomVector();
+        prep_residue->SetTitle(assembly_residue->GetName());
+        prep_residue->SetName(assembly_residue->GetName());
+        prep_residue->SetGeometryType(PrepFileSpace::kGeometryCorrect);
+        prep_residue->SetCoordinateType(PrepFileSpace::kINT);
+        prep_residue->SetDummyAtomOmission(PrepFileSpace::kOmit);
+        prep_residue->SetDummyAtomType("DU");
+        prep_residue->SetDummyAtomPosition(PrepFileSpace::kPositionBeg);
+//        prep_residue->SetImproperDihedrals();
+//        prep_residue->SetLoops();
+        prep_residue->SetOutputFormat(PrepFileSpace::kFormatted);
+
+        AtomVector assembly_atoms = assembly_residue->GetAtoms();
+        int atom_index = 1;
+        for(int i = 0; i < 3; i ++)
+        {
+            PrepFileAtom* dummy_atom = new PrepFileAtom();
+            dummy_atom->SetIndex(atom_index);
+            dummy_atom->SetName("DUMM");
+            dummy_atom->SetType("DU");
+            dummy_atom->SetTopologicalType(PrepFileSpace::kTopTypeM);
+            dummy_atom->SetBondIndex(i);
+            dummy_atom->SetAngleIndex(i-1);
+            dummy_atom->SetDihedral(i-2);
+            if(i <= 0)
+                dummy_atom->SetBondLength(0.0);
+            else
+                dummy_atom->SetBondLength(1.0);
+            if(i <= 1)
+                dummy_atom->SetAngle(0.0);
+            else
+                dummy_atom->SetAngle(1.0);
+            dummy_atom->SetDihedral(0.0);
+            dummy_atom->SetCharge(0.0);
+            atom_index++;
+            prep_atoms.push_back(dummy_atom);
+        }
+        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = (*it1);
+            PrepFileAtom* prep_atom = new PrepFileAtom();
+            prep_atom->SetIndex(atom_index);
+//            prep_atom->SetAngle();
+//            prep_atom->SetAngleIndex();
+//            prep_atom->SetBondIndex();
+//            prep_atom->SetBondLength();
+            prep_atom->SetCharge(assembly_atom->GetCharge());
+//            prep_atom->SetDihedral();
+//            prep_atom->SetDihedralIndex();
+            prep_atom->SetName(assembly_atom->GetName());
+//            prep_atom->SetTopologicalType();
+            prep_atom->SetType(assembly_atom->GetAtomType());
+            atom_index++;
+            prep_atoms.push_back(prep_atom);
+        }
+        prep_residue->SetAtoms(prep_atoms);
+        prep_residue->SetCharge(prep_residue->CalculatePrepResidueCharge());
+        prep_residues[assembly_residue->GetName()] = prep_residue;
+    }
+//    prep_file->SetPath();
+    prep_file->SetResidues(prep_residues);
 }
 
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path)
@@ -3251,6 +3326,7 @@ int Assembly::CountNumberOfExcludedAtoms()
             }
         }
     }
+    cout << counter << endl;
     return counter/2;
 }
 

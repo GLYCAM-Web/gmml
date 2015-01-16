@@ -30,6 +30,12 @@ PrepFile::PrepFile(const std::string& prep_file)
     in_file.close();            /// Close the parameter files
 }
 
+PrepFile::PrepFile()
+{
+    path_ = "";
+    residues_ = ResidueMap();
+}
+
 PrepFile::~PrepFile()
 {
     residues_.clear();
@@ -75,6 +81,25 @@ vector<string> PrepFile::GetAllAtomNamesOfResidue(string residue_name)
         atom_names_of_residue.push_back(atom->GetName());
     }
     return atom_names_of_residue;
+}
+
+//////////////////////////////////////////////////////////
+//                         MUTATORS                     //
+//////////////////////////////////////////////////////////
+void PrepFile::SetPath(string path)
+{
+    path_ = path;
+}
+
+void PrepFile::SetResidues(ResidueMap residues)
+{
+    residues_.clear();
+    for(ResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        PrepFileResidue* residue = (*it).second;
+        string residue_name = (*it).first;
+        residues_[residue_name] = residue;
+    }
 }
 
 //////////////////////////////////////////////////////////
