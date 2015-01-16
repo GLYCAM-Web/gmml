@@ -117,6 +117,7 @@ namespace Geometry
               */
             void operator-(Coordinate coordinate);
             void operator/(double divisor);
+            void operator*(double multiplier);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

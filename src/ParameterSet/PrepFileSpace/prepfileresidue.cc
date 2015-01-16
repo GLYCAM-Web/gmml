@@ -15,7 +15,13 @@ using namespace PrepFileSpace;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-PrepFileResidue::PrepFileResidue() {}
+PrepFileResidue::PrepFileResidue() : title_(""), name_(""), coordinate_type_(kINT), output_format_(kFormatted), geometry_type_(kGeometryCorrect),
+    dummy_atom_omission_(kOmit), dummy_atom_type_("DU"), dummy_atom_position_(kPositionBeg), charge_(0.0)
+{
+    atoms_ = PrepFileAtomVector();
+    improper_dihedrals_ = DihedralVector();
+    loops_ = Loop();
+}
 
 PrepFileResidue::~PrepFileResidue()
 {
@@ -467,11 +473,11 @@ void PrepFileResidue::SetOutputFormat(OutputFormat output_format){
     output_format_ = output_format;
 }
 
-void PrepFileResidue::SetBondIndex(GeometryType geometry_type){
+void PrepFileResidue::SetGeometryType(GeometryType geometry_type){
     geometry_type_ = geometry_type;
 }
 
-void PrepFileResidue::GetDummyAtomOmission(DummyAtomOmission dummy_atom_omission){
+void PrepFileResidue::SetDummyAtomOmission(DummyAtomOmission dummy_atom_omission){
     dummy_atom_omission_ = dummy_atom_omission;
 }
 
@@ -749,6 +755,21 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
     }
     return dihedrals;
 }
+
+//////////////////////////////////////////////////////////
+//                     FUNCTIONS                        //
+//////////////////////////////////////////////////////////
+ double PrepFileResidue::CalculatePrepResidueCharge()
+ {
+    PrepFileAtomVector atoms = GetAtoms();
+    double residue_charge = 0.0;
+    for(PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        PrepFileAtom* atom = (*it);
+        residue_charge += atom->GetCharge();
+    }
+    return residue_charge;
+ }
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //

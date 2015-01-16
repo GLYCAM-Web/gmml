@@ -117,6 +117,12 @@ void Coordinate::operator/(double divisor)
     y_ /= divisor;
     z_ /= divisor;
 }
+void Coordinate::operator *(double multiplier)
+{
+    x_ *= multiplier;
+    y_ *= multiplier;
+    z_ *= multiplier;
+}
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
