@@ -938,11 +938,8 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                     TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
                     ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
                     ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
-                    cout << parameter_atom1->GetType() << "-" << parameter_atom2->GetType() << endl;
-                    cout << parameter_atom1->GetRadius() << "-" << parameter_atom2->GetRadius() << endl;
-                    cout << parameter_atom1->GetWellDepth() << "-" << parameter_atom2->GetWellDepth() << endl;
-                    double epsilon = sqrt(parameter_atom1->GetRadius() * parameter_atom2->GetRadius());
-                    double sigma = 0.5 * (parameter_atom1->GetWellDepth() + parameter_atom2->GetWellDepth());
+                    double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
+                    double sigma = 0.5 * (parameter_atom1->GetRadius() * pow(2, -(1.0)/(6.0))) + parameter_atom2->GetRadius() * pow(2, -(1.0)/(6.0));
                     double coefficient_a = 4 * epsilon * pow(sigma, 12);
                     double coefficient_b = 4 * epsilon * pow(sigma, 6);
                     topology_atom_pair->SetCoefficientA(coefficient_a);
@@ -964,7 +961,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 stringstream key2;
                 key2 << neighbor->GetId();
                 ExtractTopologyBondTypesFromAssembly(inserted_bond_types, assembly_atom, neighbor, bonds, bond_type_counter, topology_file);
-//                ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
+                ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
 
                 ///Angle Types, Angle
                 AtomNode* neighbor_node = neighbor->GetNode();

@@ -196,6 +196,16 @@ namespace gmml
     }
 
     /*! \fn
+      * Convert radian to degree
+      * @param radian Magnitude of an angle in radian
+      * @return Magnitude of the given angle in degree
+      */
+    inline double ConvertRadian2Degree(double radian)
+    {
+        return radian*PI_DEGREE/PI_RADIAN;
+    }
+
+    /*! \fn
       * Convert internal coordinate to the corresponding cartesian coordinate
       * @param coordinate_list List of at most three internal coordinates in order to calculate the cartesian coordinate of the given internal coordinate (distance, angle, torsion)
       * @param distance X value of the internal coordinate
@@ -259,6 +269,71 @@ namespace gmml
         }
     }
 
+    inline Geometry::Coordinate* ConvertCartesianCoordinate2InternalCoordinate(Geometry::Coordinate* coordinate, std::vector<Geometry::Coordinate*> coordinate_list)
+    {
+
+
+
+        if(coordinate_list.size() == 0)
+            return new Geometry::Coordinate();
+        if(coordinate_list.size() == 1)
+        {
+            Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(0));
+            double distance = coordinate->Distance(parent_vector);
+            return new Geometry::Coordinate(distance, 0.0, 0.0);
+        }
+        if(coordinate_list.size() == 2)
+        {
+            Geometry::Coordinate grandparent_vector = Geometry::Coordinate(*coordinate_list.at(0));
+            Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(1));
+            double distance = coordinate->Distance(parent_vector);
+
+            Geometry::Coordinate dist_current_parent_vector = Geometry::Coordinate(*coordinate);
+            Geometry::Coordinate dist_parent_grandparent_vector = Geometry::Coordinate(parent_vector);
+            dist_current_parent_vector.operator -(parent_vector);
+            dist_parent_grandparent_vector.operator -(grandparent_vector);
+            double dist_current_parent = dist_current_parent_vector.length();
+            double dist_parent_grandparent = dist_parent_grandparent_vector.length();
+            double dist_current_parent_dot_parent_grandparent = dist_current_parent_vector.DotProduct(dist_parent_grandparent_vector);
+            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_parent_grandparent/(dist_current_parent * dist_parent_grandparent)));
+
+            return new Geometry::Coordinate(distance, angle, 0.0);
+        }
+        else
+        {
+            Geometry::Coordinate grandgrandparent_vector = Geometry::Coordinate(*coordinate_list.at(0));
+            Geometry::Coordinate grandparent_vector = Geometry::Coordinate(*coordinate_list.at(1));
+            Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(2));
+            double distance = coordinate->Distance(parent_vector);
+
+            Geometry::Coordinate dist_current_parent_vector = Geometry::Coordinate(*coordinate);
+            Geometry::Coordinate dist_parent_grandparent_vector = Geometry::Coordinate(parent_vector);
+            dist_current_parent_vector.operator -(parent_vector);
+            dist_parent_grandparent_vector.operator -(grandparent_vector);
+            double dist_current_parent = dist_current_parent_vector.length();
+            double dist_parent_grandparent = dist_parent_grandparent_vector.length();
+            double dist_current_parent_dot_parent_grandparent = dist_current_parent_vector.DotProduct(dist_parent_grandparent_vector);
+            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_parent_grandparent/(dist_current_parent * dist_parent_grandparent)));
+
+            Geometry::Coordinate dist_parent_current_vector = Geometry::Coordinate(parent_vector);
+            Geometry::Coordinate dist_grandparent_parent_vector = Geometry::Coordinate(grandparent_vector);
+            Geometry::Coordinate dist_grandgrandparent_grandparent_vector = Geometry::Coordinate(grandgrandparent_vector);
+            Geometry::Coordinate dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector =
+                    Geometry::Coordinate(dist_grandparent_parent_vector);
+            Geometry::Coordinate dist_parent_current_cross_dist_grandparent_parent_vector = Geometry::Coordinate(dist_parent_current_vector);
+            Geometry::Coordinate dist_parent_current_multiply_dist_grandparent_parent_vector = Geometry::Coordinate(dist_parent_current_vector);
+            dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector.CrossProduct(dist_grandgrandparent_grandparent_vector);
+            dist_parent_current_cross_dist_grandparent_parent_vector.CrossProduct(dist_grandparent_parent_vector);
+            dist_parent_current_multiply_dist_grandparent_parent_vector.operator *(dist_grandparent_parent_vector.length());
+            double torsion = ConvertRadian2Degree(
+                        atan2(dist_parent_current_multiply_dist_grandparent_parent_vector.DotProduct(
+                                  dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector),
+                              dist_parent_current_cross_dist_grandparent_parent_vector.DotProduct(
+                                  dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector)));
+
+            return new Geometry::Coordinate(distance, angle, torsion);
+        }
+    }
 }
 
 #endif // UTILS_HPP
