@@ -24,6 +24,7 @@ namespace gmml
     const double EPSILON = 0.001;
     const double dCutOff = 1.6;
     const int PdbResidueThreshold = 500;
+    const int DEFUALT_DUMMY_ATOMS = 3;
 
     /*! \enum
       * Enumerator to possible n chain termination

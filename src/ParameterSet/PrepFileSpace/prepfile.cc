@@ -151,20 +151,33 @@ void PrepFile::BuildPrepFile(ofstream &stream)
            << endl;
     for(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        PrepFileResidue* residue = (*it).second;
+        PrepFileResidue* residue = (*it).second;       
         stream << residue->GetTitle() << endl << endl
-               << left << setw(4) << residue->GetName() << " " << right << setw(3) << residue->GetStringFormatOfCoordinateType() << " " << setw(1) << residue->GetOutputFormat() << endl
-               << residue->GetStringFormatOfGeometryType() << " " << residue->GetStringFormatOfDummyAtomOmission() << " " << residue->GetDummyAtomType() << " " << residue->GetStringFormatOfDummyAtomPosition() << endl
+               << left << setw(4) << residue->GetName() << " " << right << setw(3) << residue->GetStringFormatOfCoordinateType() << " "
+               << setw(1) << residue->GetStringFormatOfOutputFormat() << endl
+               << residue->GetStringFormatOfGeometryType() << " " << residue->GetStringFormatOfDummyAtomOmission() << " "
+               << residue->GetDummyAtomType() << " " << residue->GetStringFormatOfDummyAtomPosition() << endl
                << right << setw(8) << fixed << setprecision(3) << residue->GetCharge() << endl;
-        PrepFileResidue::PrepFileAtomVector atoms = residue->GetAtoms();
+        PrepFileResidue::PrepFileAtomVector atoms = residue->GetAtoms();        
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
         {
             PrepFileAtom* atom = (*it1);
             stream << right << setw(2) << atom->GetIndex() << " " << left << setw(4) << atom->GetName() << " " << left << setw(3) << atom->GetType() << " "
                    << setw(1) << atom->GetStringFormatOfTopologicalType() << " " << right << setw(2) << atom->GetBondIndex() << " " << right << setw(2) << atom->GetAngleIndex() << " "
-                   << right << setw(2) << atom->GetDihedralIndex() << " " << right << setw(8) << fixed << setprecision(3) << atom->GetBondLength() << " "
-                   << right << setw(8) << fixed << setprecision(3) << atom->GetAngle() << " " << right << setw(8) << fixed << setprecision(3) << atom->GetDihedral()
-                   << "    " << right << setw(8) << fixed << setprecision(4) << atom->GetCharge() << endl;
+                   << right << setw(2) << atom->GetDihedralIndex() << " ";
+            if(atom->GetBondLength() != dNotSet)
+                stream << right << setw(8) << fixed << setprecision(3) << atom->GetBondLength() << " ";
+            else
+                stream << right << setw(8) << fixed << setprecision(3) << 0.0 << " ";
+            if(atom->GetAngle() != dNotSet)
+                   stream << right << setw(8) << fixed << setprecision(3) << atom->GetAngle() << " ";
+            else
+                stream << right << setw(8) << fixed << setprecision(3) << 0.0 << " ";
+            if(atom->GetDihedral() != dNotSet)
+                stream << right << setw(8) << fixed << setprecision(3) << atom->GetDihedral();
+            else
+                stream << right << setw(8) << fixed << setprecision(3) << 0.0;
+            stream << "    " << right << setw(8) << fixed << setprecision(4) << atom->GetCharge() << endl;
         }
         stream << endl;
         PrepFileResidue::DihedralVector dihedrals = residue->GetImproperDihedrals();

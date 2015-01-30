@@ -271,9 +271,6 @@ namespace gmml
 
     inline Geometry::Coordinate* ConvertCartesianCoordinate2InternalCoordinate(Geometry::Coordinate* coordinate, std::vector<Geometry::Coordinate*> coordinate_list)
     {
-
-
-
         if(coordinate_list.size() == 0)
             return new Geometry::Coordinate();
         if(coordinate_list.size() == 1)

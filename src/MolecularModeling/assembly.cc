@@ -649,7 +649,6 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         else
             ss << prep_residue_name << "-";
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-        vector<Coordinate*> coordinates = vector<Coordinate*>();
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
             Atom* assembly_atom = new Atom();
@@ -675,22 +674,34 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
                 }
                 if(index == 1)
                 {
-                    coordinate_list.push_back(coordinates.at(index-1));
+                    PrepFileAtom* parent_atom = prep_atoms.at(prep_atom->GetBondIndex() - 1);
+                    Coordinate* parent_coordinate = new Coordinate(parent_atom->GetBondLength(), parent_atom->GetAngle(), parent_atom->GetDihedral());
+                    coordinate_list.push_back(parent_coordinate);
                 }
                 if(index == 2)
                 {
-                    coordinate_list.push_back(coordinates.at(index-2));
-                    coordinate_list.push_back(coordinates.at(index-1));
+                    PrepFileAtom* grandparent_atom = prep_atoms.at(prep_atom->GetAngleIndex() - 1);
+                    PrepFileAtom* parent_atom = prep_atoms.at(prep_atom->GetBondIndex() - 1);
+                    Coordinate* grandparent_coordinate = new Coordinate(grandparent_atom->GetBondLength(), grandparent_atom->GetAngle(), grandparent_atom->GetDihedral());
+                    Coordinate* parent_coordinate = new Coordinate(parent_atom->GetBondLength(), parent_atom->GetAngle(), parent_atom->GetDihedral());
+                    coordinate_list.push_back(grandparent_coordinate);
+                    coordinate_list.push_back(parent_coordinate);
                 }
                 if(index > 2)
                 {
-                    coordinate_list.push_back(coordinates.at(index-3));
-                    coordinate_list.push_back(coordinates.at(index-2));
-                    coordinate_list.push_back(coordinates.at(index-1));
+                    PrepFileAtom* great_grandparent_atom = prep_atoms.at(prep_atom->GetDihedralIndex() - 1);
+                    PrepFileAtom* grandparent_atom = prep_atoms.at(prep_atom->GetAngleIndex() - 1);
+                    PrepFileAtom* parent_atom = prep_atoms.at(prep_atom->GetBondIndex() - 1);
+                    Coordinate* great_grandparent_coordinate = new Coordinate(great_grandparent_atom->GetBondLength(), great_grandparent_atom->GetAngle(),
+                                                                              great_grandparent_atom->GetDihedral());
+                    Coordinate* grandparent_coordinate = new Coordinate(grandparent_atom->GetBondLength(), grandparent_atom->GetAngle(), grandparent_atom->GetDihedral());
+                    Coordinate* parent_coordinate = new Coordinate(parent_atom->GetBondLength(), parent_atom->GetAngle(), parent_atom->GetDihedral());
+                    coordinate_list.push_back(great_grandparent_coordinate);
+                    coordinate_list.push_back(grandparent_coordinate);
+                    coordinate_list.push_back(parent_coordinate);
                 }
                 Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
                                                                                              prep_atom->GetAngle(), prep_atom->GetDihedral());
-                coordinates.push_back(coordinate);
                 assembly_atom->AddCoordinate(coordinate);
             }
             else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
@@ -710,7 +721,8 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
                     tail_atom = assembly_atom;
                 }
             }
-            assembly_residue->AddAtom(assembly_atom);
+            if(assembly_atom->GetAtomType().compare("DU") != 0)
+                assembly_residue->AddAtom(assembly_atom);
         }
         assembly_residue->AddHeadAtom(head_atom);
         assembly_residue->AddTailAtom(tail_atom);
@@ -837,6 +849,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
+        vector<TopologicalType> stack = vector<TopologicalType>();
         PrepFileResidue* prep_residue = new PrepFileResidue();
         PrepFileResidue::PrepFileAtomVector prep_atoms = PrepFileResidue::PrepFileAtomVector();
         prep_residue->SetTitle(assembly_residue->GetName());
@@ -851,8 +864,9 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
         prep_residue->SetOutputFormat(PrepFileSpace::kFormatted);
 
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
+        CoordinateVector coordinate_list = CoordinateVector();
         int atom_index = 1;
-        for(int i = 0; i < 3; i ++)
+        for(int i = 0; i < DEFUALT_DUMMY_ATOMS; i ++)
         {
             PrepFileAtom* dummy_atom = new PrepFileAtom();
             dummy_atom->SetIndex(atom_index);
@@ -869,10 +883,13 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
             if(i <= 1)
                 dummy_atom->SetAngle(0.0);
             else
-                dummy_atom->SetAngle(1.0);
+                dummy_atom->SetAngle(90.0);
             dummy_atom->SetDihedral(0.0);
             dummy_atom->SetCharge(0.0);
+            dummy_atom->SetTopologicalType(kTopTypeM);
+            stack.push_back(dummy_atom->GetTopologicalType());
             atom_index++;
+            coordinate_list.push_back(new Coordinate(dummy_atom->GetBondLength(), dummy_atom->GetAngle(), dummy_atom->GetDihedral()));
             prep_atoms.push_back(dummy_atom);
         }
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
@@ -880,6 +897,40 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
             Atom* assembly_atom = (*it1);
             PrepFileAtom* prep_atom = new PrepFileAtom();
             prep_atom->SetIndex(atom_index);
+
+
+            // Set topological type
+            // Set bond index, angle index, dihedral index
+            // Call function to set parent, grandparent and great_grandparent of the current atom
+            // Call coordinate conversion function
+
+            if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                prep_atom->SetTopologicalType(kTopTypeE);
+            else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+            {
+//                TopologicalType type = stack.pop_back();
+                prep_atom->SetTopologicalType(kTopTypeB);
+            }
+            else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                prep_atom->SetTopologicalType(kTopTypeS);
+            else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                prep_atom->SetTopologicalType(kTopTypeM);
+            stack.push_back(prep_atom->GetTopologicalType());
+
+//            if(atom_index == 4)
+//            {
+//                prep_atom->SetTopologicalType(kTopTypeM);
+//                coordinate_list.push_back(assembly_atom->GetCoordinates().at(0));
+//            }
+//            else if(atom_index > 4)
+//            {
+//                coordinate_list.at(0) = coordinate_list.at(1);
+//                coordinate_list.at(1) = coordinate_list.at(2);
+//                coordinate_list.at(2) = coordinate_list.at(3);
+//                coordinate_list.at(3) = assembly_atom->GetCoordinates().at(0);
+//            }
+//            Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(0),
+//                                                                                                  coordinate_list);
 //            prep_atom->SetAngle();
 //            prep_atom->SetAngleIndex();
 //            prep_atom->SetBondIndex();
@@ -899,6 +950,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
     }
 //    prep_file->SetPath();
     prep_file->SetResidues(prep_residues);
+    return prep_file;
 }
 
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path)
