@@ -1006,6 +1006,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     TopologyFile::TopologyAtomPairMap pairs = TopologyFile::TopologyAtomPairMap();
     int pair_count = 1;
     vector<string> inserted_pairs = vector<string>();
+    vector<string> excluded_atom_list = vector<string>();
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
@@ -1040,7 +1041,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             topology_atom->SetTreeChainClasification("0");
             topology_atom->SetRadii(dNotSet);
             topology_atom->SetScreen(dNotSet);
-
             topology_atom->SetIndex(atom_counter);
 
             topology_residue->AddAtom(topology_atom);
@@ -1090,6 +1090,18 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 ExtractTopologyBondTypesFromAssembly(inserted_bond_types, assembly_atom, neighbor, bonds, bond_type_counter, topology_file);
                 ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
 
+                ///Excluded Atoms
+                stringstream first_order_interaction;
+                stringstream reverse_first_order_interaction;
+                first_order_interaction << key1.str() << "-" << key2.str();
+                reverse_first_order_interaction << key2.str() << "-" << key1.str();
+                if(find(excluded_atom_list.begin(), excluded_atom_list.end(), first_order_interaction.str()) == excluded_atom_list.end() &&
+                        find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_first_order_interaction.str()) == excluded_atom_list.end())
+                {
+                    excluded_atom_list.push_back(first_order_interaction.str());
+                    topology_atom->AddExcludedAtom(key2.str());
+                }
+
                 ///Angle Types, Angle
                 AtomNode* neighbor_node = neighbor->GetNode();
                 AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
@@ -1105,6 +1117,18 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                                                               topology_file, angles);
                         ExtractTopologyAnglesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angles, inserted_angle_types, topology_file);
 
+                        ///Excluded Atoms
+                        stringstream second_order_interaction;
+                        stringstream reverse_second_order_interaction;
+                        second_order_interaction << key1.str() << "-" << key3.str();
+                        reverse_second_order_interaction << key3.str() << "-" << key1.str();
+                        if(find(excluded_atom_list.begin(), excluded_atom_list.end(), second_order_interaction.str()) == excluded_atom_list.end() &&
+                                find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_second_order_interaction.str()) == excluded_atom_list.end())
+                        {
+                            excluded_atom_list.push_back(second_order_interaction.str());
+                            topology_atom->AddExcludedAtom(key3.str());
+                        }
+
                         //Dihedral Types, Dihedrals
                         AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
                         AtomVector neighbors_of_neighbor_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
@@ -1119,6 +1143,18 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                                                                  inserted_dihedral_types, dihedral_type_counter, topology_file, dihedrals);
                                 ExtractTopologyDihedralsFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
                                                                      inserted_dihedrals, inserted_dihedral_types, dihedrals, topology_file);
+
+                                ///Excluded Atoms
+                                stringstream third_order_interaction;
+                                stringstream reverse_third_order_interaction;
+                                third_order_interaction << key1.str() << "-" << key4.str();
+                                reverse_third_order_interaction << key4.str() << "-" << key1.str();
+                                if(find(excluded_atom_list.begin(), excluded_atom_list.end(), third_order_interaction.str()) == excluded_atom_list.end() &&
+                                        find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_third_order_interaction.str()) == excluded_atom_list.end())
+                                {
+                                    excluded_atom_list.push_back(third_order_interaction.str());
+                                    topology_atom->AddExcludedAtom(key4.str());
+                                }
                             }
                         }
                     }
@@ -3334,8 +3370,8 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors()
 
 int Assembly::CountNumberOfExcludedAtoms()
 {
-    int counter = 0;
     AtomVector atoms = GetAllAtomsOfAssembly();
+    vector<string> excluded_atom_list = vector<string>();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -3343,22 +3379,34 @@ int Assembly::CountNumberOfExcludedAtoms()
         ss << atom->GetId();
         AtomNode* node = atom->GetNode();
         AtomVector neighbors = node->GetNodeNeighbors();
-        counter += neighbors.size();
         for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
         {
             Atom* neighbor = (*it1);
             stringstream ss1;
             ss1 << neighbor->GetId();
+            stringstream first_order_interaction;
+            stringstream reverse_first_order_interaction;
+            first_order_interaction << ss.str() << "-" << ss1.str();
+            reverse_first_order_interaction << ss1.str() << "-" << ss.str();
+            if(find(excluded_atom_list.begin(), excluded_atom_list.end(), first_order_interaction.str()) == excluded_atom_list.end() &&
+                    find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_first_order_interaction.str()) == excluded_atom_list.end())
+                excluded_atom_list.push_back(first_order_interaction.str());
             AtomNode* neighbor_node = neighbor->GetNode();
             AtomVector neighbor_of_neighbors = neighbor_node->GetNodeNeighbors();
             for(AtomVector::iterator it2 = neighbor_of_neighbors.begin(); it2 != neighbor_of_neighbors.end(); it2++)
             {
                 Atom* neighbor_of_neighbor = (*it2);
                 stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();
+                ss2 << neighbor_of_neighbor->GetId();                
                 if(ss.str().compare(ss2.str()) != 0)
-                {
-                    counter++;
+                {                    
+                    stringstream second_order_interaction;
+                    stringstream reverse_second_order_interaction;
+                    second_order_interaction << ss.str() << "-" << ss2.str();
+                    reverse_second_order_interaction << ss2.str() << "-" << ss.str();
+                    if(find(excluded_atom_list.begin(), excluded_atom_list.end(), second_order_interaction.str()) == excluded_atom_list.end() &&
+                            find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_second_order_interaction.str()) == excluded_atom_list.end())
+                        excluded_atom_list.push_back(second_order_interaction.str());
                     AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
                     AtomVector neighbor_of_neighbor_of_neighbors = neighbor_of_neighbor_node->GetNodeNeighbors();
                     for(AtomVector::iterator it3 = neighbor_of_neighbor_of_neighbors.begin(); it3 != neighbor_of_neighbor_of_neighbors.end(); it3++)
@@ -3368,14 +3416,20 @@ int Assembly::CountNumberOfExcludedAtoms()
                         ss3 << neighbor_of_neighbor_of_neighbor->GetId();
                         if(ss1.str().compare(ss3.str()) != 0)
                         {
-                            counter++;
+                            stringstream third_order_interaction;
+                            stringstream reverse_third_order_interaction;
+                            third_order_interaction << ss.str() << "-" << ss3.str();
+                            reverse_third_order_interaction << ss3.str() << "-" << ss.str();
+                            if(find(excluded_atom_list.begin(), excluded_atom_list.end(), third_order_interaction.str()) == excluded_atom_list.end() &&
+                                    find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_third_order_interaction.str()) == excluded_atom_list.end())
+                                excluded_atom_list.push_back(third_order_interaction.str());
                         }
                     }
                 }
             }
         }
     }
-    return counter/2;
+    return excluded_atom_list.size();
 }
 
 int Assembly::CountMaxNumberOfAtomsInLargestResidue()
