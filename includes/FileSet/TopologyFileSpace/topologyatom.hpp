@@ -142,6 +142,12 @@ namespace TopologyFileSpace
               */
             void SetExcludedAtoms(std::vector<std::string> excluded_atoms);
             /*! \fn
+              * A function in order to add the excluded atom to the current object
+              * Set the excluded_atoms_ attribute of the current topology atom
+              * @param excluded_atom The excluded atom to be added to the current object
+              */
+            void AddExcludedAtom(std::string excluded_atom);
+            /*! \fn
               * A mutator function in order to set the radii of the current object
               * Set the radii_ attribute of the current topology atom
               * @param radii The radii attribute of the current object
