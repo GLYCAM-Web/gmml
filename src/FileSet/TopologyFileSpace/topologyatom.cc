@@ -117,6 +117,10 @@ void TopologyAtom::SetExcludedAtoms(vector<string> excluded_atoms)
         excluded_atoms_.push_back(*it);
     }
 }
+void TopologyAtom::AddExcludedAtom(string excluded_atom)
+{
+        excluded_atoms_.push_back(excluded_atom);
+}
 void TopologyAtom::SetRadii(double radii)
 {
     radii_ = radii;
