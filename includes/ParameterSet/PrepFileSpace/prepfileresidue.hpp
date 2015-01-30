@@ -243,12 +243,12 @@ namespace PrepFileSpace
               * @param output_format A value of OutputFormat has to be converted to string
               * @return String format of the given value of OutputFormat enumerator
               */
-            std::string GetStringFromatOfOutputFormat(OutputFormat output_format);
+            std::string GetStringFormatOfOutputFormat(OutputFormat output_format);
             /*! \fn
               * Convert the value of OutputFormat attribute of the current object (output_format_) to the string version of it
               * @return String format of the value of output_format_ attribute of the current object
               */
-            std::string GetStringFromatOfOutputFormat();
+            std::string GetStringFormatOfOutputFormat();
             /*! \fn
               * Convert a value of GeometryType enumerator to the string version of it
               * @param geometry_type A value of GeometryType has to be converted to string

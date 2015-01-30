@@ -273,7 +273,7 @@ string PrepFileResidue::GetStringFormatOfCoordinateType()
             return "";
     }
 }
-string PrepFileResidue::GetStringFromatOfOutputFormat(OutputFormat output_format)
+string PrepFileResidue::GetStringFormatOfOutputFormat(OutputFormat output_format)
 {
     switch(output_format)
     {
@@ -285,7 +285,7 @@ string PrepFileResidue::GetStringFromatOfOutputFormat(OutputFormat output_format
             return "";
     }
 }
-string PrepFileResidue::GetStringFromatOfOutputFormat()
+string PrepFileResidue::GetStringFormatOfOutputFormat()
 {
     switch(output_format_)
     {
