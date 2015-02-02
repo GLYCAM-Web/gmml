@@ -24,7 +24,7 @@ namespace gmml
     const double EPSILON = 0.001;
     const double dCutOff = 1.6;
     const int PdbResidueThreshold = 500;
-    const int DEFUALT_DUMMY_ATOMS = 3;
+    const int DEFAULT_DUMMY_ATOMS = 3;
 
     /*! \enum
       * Enumerator to possible n chain termination
@@ -86,6 +86,24 @@ namespace gmml
     {
         MAIN = 0,           /*!< Main parameter file >*/
         MODIFIED = 1        /*!< Force modified parameter file >*/
+    };
+
+    /*! \enum
+      * Enumerator to topological type stack
+      */
+    enum TopologicalTypeStackElement
+    {
+        EMPTY = 0,
+        M1 = 1,
+        M2 = 2,
+        M3 = 3,
+        M4 = 4,
+        S1 = 5,
+        B1 = 6,
+        B2 = 7,
+        T1 = 8,
+        T2 = 9,
+        T3 = 10
     };
 
 }

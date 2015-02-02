@@ -11,6 +11,7 @@
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
@@ -131,6 +132,12 @@ namespace MolecularModeling
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
             CoordinateVector GetAllCoordinates();
+            /*! \fn
+              * A function to extract topological types of atoms of a residue in assembly object
+              * @param assembly_atoms Atoms of a residue in the assembly structure
+              * @return List of all topological types of atoms in a residue of an assembly
+              */
+            std::vector<PrepFileSpace::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms);
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
