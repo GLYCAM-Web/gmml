@@ -43,6 +43,7 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/utils.hpp"
+#include "../../includes/common.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -849,7 +850,6 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
-        vector<TopologicalType> stack = vector<TopologicalType>();
         PrepFileResidue* prep_residue = new PrepFileResidue();
         PrepFileResidue::PrepFileAtomVector prep_atoms = PrepFileResidue::PrepFileAtomVector();
         prep_residue->SetTitle(assembly_residue->GetName());
@@ -866,7 +866,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
         CoordinateVector coordinate_list = CoordinateVector();
         int atom_index = 1;
-        for(int i = 0; i < DEFUALT_DUMMY_ATOMS; i ++)
+        for(int i = 0; i < DEFAULT_DUMMY_ATOMS; i ++)
         {
             PrepFileAtom* dummy_atom = new PrepFileAtom();
             dummy_atom->SetIndex(atom_index);
@@ -886,36 +886,24 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
                 dummy_atom->SetAngle(90.0);
             dummy_atom->SetDihedral(0.0);
             dummy_atom->SetCharge(0.0);
-            dummy_atom->SetTopologicalType(kTopTypeM);
-            stack.push_back(dummy_atom->GetTopologicalType());
+            dummy_atom->SetTopologicalType(kTopTypeM);            
             atom_index++;
             coordinate_list.push_back(new Coordinate(dummy_atom->GetBondLength(), dummy_atom->GetAngle(), dummy_atom->GetDihedral()));
             prep_atoms.push_back(dummy_atom);
         }
+        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms);
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
             Atom* assembly_atom = (*it1);
             PrepFileAtom* prep_atom = new PrepFileAtom();
             prep_atom->SetIndex(atom_index);
-
+            cout << assembly_atom->GetResidue()->GetName() << ":" << assembly_atom->GetName() << endl;
 
             // Set topological type
             // Set bond index, angle index, dihedral index
             // Call function to set parent, grandparent and great_grandparent of the current atom
             // Call coordinate conversion function
 
-            if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
-                prep_atom->SetTopologicalType(kTopTypeE);
-            else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
-            {
-//                TopologicalType type = stack.pop_back();
-                prep_atom->SetTopologicalType(kTopTypeB);
-            }
-            else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
-                prep_atom->SetTopologicalType(kTopTypeS);
-            else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
-                prep_atom->SetTopologicalType(kTopTypeM);
-            stack.push_back(prep_atom->GetTopologicalType());
 
 //            if(atom_index == 4)
 //            {
@@ -939,7 +927,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
 //            prep_atom->SetDihedral();
 //            prep_atom->SetDihedralIndex();
             prep_atom->SetName(assembly_atom->GetName());
-//            prep_atom->SetTopologicalType();
+            prep_atom->SetTopologicalType(residue_topological_types.at(atom_index - DEFAULT_DUMMY_ATOMS - 1));
             prep_atom->SetType(assembly_atom->GetAtomType());
             atom_index++;
             prep_atoms.push_back(prep_atom);
@@ -951,6 +939,358 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
 //    prep_file->SetPath();
     prep_file->SetResidues(prep_residues);
     return prep_file;
+}
+
+vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms)
+{
+    vector<TopologicalTypeStackElement> stack = vector<TopologicalTypeStackElement>();
+    vector<TopologicalType> topological_types = vector<TopologicalType>();
+    TopologicalTypeStackElement top_stack = EMPTY;
+    for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
+    {
+        Atom* assembly_atom = (*it1);
+        if(stack.empty())
+            top_stack = EMPTY;
+        else
+            top_stack = stack.at(stack.size() - 1);
+
+        switch ( top_stack ) {
+            case EMPTY:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    stack.push_back(M1);
+                    topological_types.push_back(kTopTypeM);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    stack.push_back(M2);
+                    topological_types.push_back(kTopTypeM);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    stack.push_back(M3);
+                    topological_types.push_back(kTopTypeM);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    stack.push_back(M4);
+                    topological_types.push_back(kTopTypeM);
+                }
+                break;
+            case M1:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    topological_types.push_back(kTopTypeM);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M2);
+                    topological_types.push_back(kTopTypeM);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M3);
+                    topological_types.push_back(kTopTypeM);
+                }
+                break;
+            case M2:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M1);
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M1);
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M1);
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M1);
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case M3:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M2);
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M2);
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M2);
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M2);
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case M4:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M3);
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M3);
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M3);
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(M3);
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case S1:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case B1:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case B2:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(B1);
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(B1);
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(B1);
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(B1);
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case T1:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case T2:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T1);
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T1);
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T1);
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T1);
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+            case T3:
+                if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T2);
+                    topological_types.push_back(kTopTypeE);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T2);
+                    stack.push_back(S1);
+                    topological_types.push_back(kTopTypeS);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T2);
+                    stack.push_back(B2);
+                    topological_types.push_back(kTopTypeB);
+                }
+                else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
+                {
+                    top_stack = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(T2);
+                    stack.push_back(T3);
+                    topological_types.push_back(kTopType3);
+                }
+                break;
+        }
+    }
+    return topological_types;
+
 }
 
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path)
