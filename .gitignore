@@ -1,0 +1,8 @@
+*.o
+*.so
+Makefile
+gmml.pro
+libgmml.so.1
+libgmml.so.1.0
+libgmml.so.1.0.0
+
