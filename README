@@ -1,38 +1,14 @@
-Prerequisites:
-Use root user in order to install the packages
-	1. Install openssl
-		apt-get install openssl
-	2. Install git
-		apt-get install git
-	3. Install Python
-		apt-get install python2.7
-	4. Install swig
-		apt-get install swig
-	5. Install essential packages
-		apt-get install build-essential
-	6. Install qmake
-		apt-get install qt4-qmake
-	7. Install qt4-dev-tools
-		apt-get install qt4-dev-tools
-	8. Install boost library
-		apt-get install libboost-all-dev
-		
-How to access to libraries and how to put them together:
-Switch to your user and change directory to an arbitrary one
-	1. Get GEMS from git repo
-		git clone https://github.com/alirezakh/gems.git
-	2. Change directory to gems
-		cd gems
-	3. Get GMML from git repo
-		git clone https://github.com/alirezakh/gmml.git
-		
-How to Install packages:
-	1. Change directory to gems
-		cd ..
-	2. Run make.sh file in order to compile gmml and create gems interface
-		./make.sh
-		
-How to use the software:
-	1. Use one of the samples in gems directory to write your own python script
-		(In order to run the sample files use the line following the #SAMPLE COMMAND section, if there is no such section simply write the name of the file after the python command)
-	2. Run the written python script
+GMML is typically used as a library accesed by GEMS.
+
+* Casual users should follow the instructions in the 
+	README file for GEMS.
+
+* Advanced users should probably start with that as well,
+	then use gmml as a library as desired.
+
+GEMS information:
+
+	Website:  http://glycam.org/gems
+
+	Git hub:  https://github.com/GLYCAM-Web/gems
+
