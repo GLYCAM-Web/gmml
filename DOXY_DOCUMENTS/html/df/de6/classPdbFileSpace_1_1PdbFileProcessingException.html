@@ -189,7 +189,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../da/d8b/pdbfileprocessingexception_8cc_source.html#l00041">41</a> of file <a class="el" href="../../da/d8b/pdbfileprocessingexception_8cc_source.html">pdbfileprocessingexception.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../da/d8b/pdbfileprocessingexception_8cc_source.html#l00044">44</a> of file <a class="el" href="../../da/d8b/pdbfileprocessingexception_8cc_source.html">pdbfileprocessingexception.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{}
 </pre></div>
 </div>
@@ -213,9 +213,9 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../da/d8b/pdbfileprocessingexception_8cc_source.html#l00025">25</a> of file <a class="el" href="../../da/d8b/pdbfileprocessingexception_8cc_source.html">pdbfileprocessingexception.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, <a class="el" href="../../da/de6/pdbfileprocessingexception_8hpp_source.html#l00044">line_number_</a>, <a class="el" href="../../da/de6/pdbfileprocessingexception_8hpp_source.html#l00045">message_</a>, and <a class="el" href="../../da/de6/pdbfileprocessingexception_8hpp_source.html#l00046">what_</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, <a class="el" href="../../da/de6/pdbfileprocessingexception_8hpp_source.html#l00044">line_number_</a>, <a class="el" href="../../da/de6/pdbfileprocessingexception_8hpp_source.html#l00045">message_</a>, and <a class="el" href="../../da/de6/pdbfileprocessingexception_8hpp_source.html#l00046">what_</a>.</p>
 <div class="fragment"><pre class="fragment">{
-    <a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#afd78e53415eceb0149721ed789a5a4bd">what_</a> = <span class="stringliteral">&quot;ParameterFile: &quot;</span> + <a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#ace5f5f45bd46782147618197b50954f5">message_</a>;
+    <a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#afd78e53415eceb0149721ed789a5a4bd">what_</a> = <span class="stringliteral">&quot;PdbFile: &quot;</span> + <a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#ace5f5f45bd46782147618197b50954f5">message_</a>;
     <span class="keywordflow">if</span> (<a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#af85bcf3224c9717d1ee1e5d842ce2139">line_number_</a> != <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)
     {
         std::stringstream ss;
@@ -224,9 +224,12 @@ Public Attributes</h2></td></tr>
             <a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#afd78e53415eceb0149721ed789a5a4bd">what_</a> += <span class="stringliteral">&quot; (line &quot;</span> + ss.str() + <span class="stringliteral">&quot;)&quot;</span>;
             <span class="keywordflow">return</span> <a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#afd78e53415eceb0149721ed789a5a4bd">what_</a>.c_str();
         }
-        <span class="keywordflow">throw</span> std::invalid_argument(__LINE__ + <span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
-<span class="comment"></span>    }
-    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
+        <span class="keywordflow">else</span>
+        {
+            <span class="keywordflow">throw</span> std::invalid_argument(__LINE__ + <span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
+<span class="comment"></span>        }
+    }
+    <span class="keywordflow">return</span> <a class="code" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html#afd78e53415eceb0149721ed789a5a4bd">what_</a>.c_str();
 }
 </pre></div>
 </div>
@@ -297,7 +300,7 @@ Public Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -311,7 +314,7 @@ Public Attributes</h2></td></tr>
       <li class="navelem"><a class="el" href="../../d3/d0c/namespacePdbFileSpace.html">PdbFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../df/de6/classPdbFileSpace_1_1PdbFileProcessingException.html">PdbFileProcessingException</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:25 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

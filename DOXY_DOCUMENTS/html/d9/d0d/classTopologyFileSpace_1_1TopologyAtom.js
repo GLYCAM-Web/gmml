@@ -3,6 +3,7 @@ var classTopologyFileSpace_1_1TopologyAtom =
     [ "ExcludedAtomNames", "d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a7f0d07ffb706d950588f4e46dd032162", null ],
     [ "TopologyAtom", "d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#ad53b25aee6db4c4b056c8cbe96c96abd", null ],
     [ "TopologyAtom", "d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a74490f560867e711e27858afe1bbc3bd", null ],
+    [ "AddExcludedAtom", "d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a03c9b5b847ee5a3cdaa5378ac025ce75", null ],
     [ "GetAtomCharge", "d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#af5f7ddf567bb578b30b45dd58bc3b34c", null ],
     [ "GetAtomicNumber", "d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a0851e7fe5575124845fd2920ea430202", null ],
     [ "GetAtomMass", "d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a33999a017a253316cb1044ed4a2fa796", null ],

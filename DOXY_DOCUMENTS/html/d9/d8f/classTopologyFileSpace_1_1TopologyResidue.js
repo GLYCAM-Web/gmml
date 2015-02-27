@@ -3,6 +3,7 @@ var classTopologyFileSpace_1_1TopologyResidue =
     [ "TopologyAtomMap", "d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#aef8aef455648b18f559c1833861d8e95", null ],
     [ "TopologyResidue", "d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a5ae15ef5de722dcf5d4160beaf70b9bc", null ],
     [ "TopologyResidue", "d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a556b2d455ec02adf316e909c40013004", null ],
+    [ "AddAtom", "d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a8b3309f29db0cba40b6dc6e61b75b026", null ],
     [ "GetAtomByIndex", "d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a0bdab41c208480780b9ff6c26deb9a8a", null ],
     [ "GetAtoms", "d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#abbb6719b22d6537dc36b8d4d84131a13", null ],
     [ "GetIndex", "d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#ae743efef727ad6a966875284b2739fdc", null ],

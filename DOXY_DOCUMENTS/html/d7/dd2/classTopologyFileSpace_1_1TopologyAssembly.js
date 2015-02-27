@@ -2,6 +2,7 @@ var classTopologyFileSpace_1_1TopologyAssembly =
 [
     [ "TopologyResidueMap", "d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f", null ],
     [ "TopologyAssembly", "d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aa709ce4deed95bd80069ded4c7644152", null ],
+    [ "AddResidue", "d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a22de439c4f5ece127bd47ba24f2abadc", null ],
     [ "GetAssemblyName", "d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a8cc2639fce2e64ae5f133450f5e1e09f", null ],
     [ "GetAtomIndexByName", "d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a01f4342f73d848a9ce9391ce2a8e8be0", null ],
     [ "GetResidueByIndex", "d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a5e3a04285cf8cb43554e823f1e512ae2", null ],

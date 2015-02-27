@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -127,7 +126,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00025"></a>00025 <span class="comment">              * @param residue_insertion_code Insertion code of the unrecognized residue</span>
 <a name="l00026"></a>00026 <span class="comment">              * @param residue_alternate_location Alternated location of the unrecognized residue</span>
 <a name="l00027"></a>00027 <span class="comment">              */</span>
-<a name="l00028"></a>00028             <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a113d1b84abdc5de8cdd1d3fcc580ac5e">PdbPreprocessorUnrecognizedResidue</a>(std::string residue_name, <span class="keywordtype">char</span> chain_id, <span class="keywordtype">int</span> sequence_number, <span class="keywordtype">char</span> residue_insertion_code,  <span class="keywordtype">char</span> residue_alternate_location);
+<a name="l00028"></a>00028             <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a113d1b84abdc5de8cdd1d3fcc580ac5e">PdbPreprocessorUnrecognizedResidue</a>(std::string residue_name, <span class="keywordtype">char</span> chain_id, <span class="keywordtype">int</span> sequence_number, <span class="keywordtype">char</span> residue_insertion_code, <span class="keywordtype">char</span> residue_alternate_location, <span class="keywordtype">bool</span> middle_of_chain);
 <a name="l00029"></a>00029 <span class="comment"></span>
 <a name="l00030"></a>00030 <span class="comment">            //////////////////////////////////////////////////////////</span>
 <a name="l00031"></a>00031 <span class="comment"></span>            <span class="comment">//                       ACCESSOR                       //</span><span class="comment"></span>
@@ -156,66 +155,77 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00054"></a>00054 <span class="comment">              * An accessor function in order to access to the residue alternate location</span>
 <a name="l00055"></a>00055 <span class="comment">              * @return residue_alternate_location_ attribute of the current object of this class</span>
 <a name="l00056"></a>00056 <span class="comment">              */</span>
-<a name="l00057"></a>00057             <span class="keywordtype">char</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#ac91727a38f11287c500d9dcfcab7cb44">GetResidueAlternateLocation</a>();
-<a name="l00058"></a>00058 <span class="comment"></span>
-<a name="l00059"></a>00059 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00060"></a>00060 <span class="comment"></span>            <span class="comment">//                       MUTATOR                        //</span><span class="comment"></span>
-<a name="l00061"></a>00061 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00062"></a>00062 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00063"></a>00063 <span class="comment">              * A mutator function in order to set the residue chain id of the current object</span>
-<a name="l00064"></a>00064 <span class="comment">              * Set the residue_chain_id_ attribute of the current pdb preprocessor unrecognized residue</span>
-<a name="l00065"></a>00065 <span class="comment">              * @param residue_chain_id The residue chain id attribute of the current object</span>
-<a name="l00066"></a>00066 <span class="comment">              */</span>
-<a name="l00067"></a>00067             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#ae07be013239d7945e098bafcd28d558c">SetResidueChainId</a>(<span class="keywordtype">char</span> residue_chain_id);<span class="comment"></span>
-<a name="l00068"></a>00068 <span class="comment">            /*! \fn</span>
-<a name="l00069"></a>00069 <span class="comment">              * A mutator function in order to set the residue sequence number of the current object</span>
-<a name="l00070"></a>00070 <span class="comment">              * Set the residue_sequence_number_ attribute of the current pdb preprocessor unrecognized residue</span>
-<a name="l00071"></a>00071 <span class="comment">              * @param residue_sequence_number The residue sequence number attribute of the current object</span>
-<a name="l00072"></a>00072 <span class="comment">              */</span>
-<a name="l00073"></a>00073             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a6682fc2a48e0452c44dd490e601b786b">SetResidueSequenceNumber</a>(<span class="keywordtype">int</span> residue_sequence_number);<span class="comment"></span>
-<a name="l00074"></a>00074 <span class="comment">            /*! \fn</span>
-<a name="l00075"></a>00075 <span class="comment">              * A mutator function in order to set the residue name of the current object</span>
-<a name="l00076"></a>00076 <span class="comment">              * Set the residue_name_ attribute of the current pdb preprocessor unrecognized residue</span>
-<a name="l00077"></a>00077 <span class="comment">              * @param residue_name The residue name attribute of the current object</span>
-<a name="l00078"></a>00078 <span class="comment">              */</span>
-<a name="l00079"></a>00079             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#ac6eef57eaaf0076c2d2aebd99b8be650">SetResidueName</a>(std::string residue_name);<span class="comment"></span>
-<a name="l00080"></a>00080 <span class="comment">            /*! \fn</span>
-<a name="l00081"></a>00081 <span class="comment">              * A mutator function in order to set the residue insertion code of the current object</span>
-<a name="l00082"></a>00082 <span class="comment">              * Set the residue_insertion_code_ attribute of the current pdb preprocessor unrecognized residue</span>
-<a name="l00083"></a>00083 <span class="comment">              * @param residue_insertion_code The residue insertion code attribute of the current object</span>
-<a name="l00084"></a>00084 <span class="comment">              */</span>
-<a name="l00085"></a>00085             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a04ebfd79a8a01573cabb4a0ff14af3ef">SetResidueInsertionCode</a>(<span class="keywordtype">char</span> residue_insertion_code);<span class="comment"></span>
-<a name="l00086"></a>00086 <span class="comment">            /*! \fn</span>
-<a name="l00087"></a>00087 <span class="comment">              * A mutator function in order to set the residue alternate location of the current object</span>
-<a name="l00088"></a>00088 <span class="comment">              * Set the residue_alternate_location_ attribute of the current pdb preprocessor unrecognized residue</span>
-<a name="l00089"></a>00089 <span class="comment">              * @param residue_alternate_location The residue alternate location attribute of the current object</span>
-<a name="l00090"></a>00090 <span class="comment">              */</span>
-<a name="l00091"></a>00091             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a0dc40e68bfaa6154a7daaf8de5f9bba2">SetResidueAlternateLocation</a>(<span class="keywordtype">char</span> residue_alternate_location);
-<a name="l00092"></a>00092 <span class="comment"></span>
-<a name="l00093"></a>00093 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00094"></a>00094 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
-<a name="l00095"></a>00095 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00096"></a>00096 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00097"></a>00097 <span class="comment">              * A function to print out the pdb preprocessor unrecognized residue contents in a structural format</span>
-<a name="l00098"></a>00098 <span class="comment">              * Print out the information in a defined structure</span>
-<a name="l00099"></a>00099 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
-<a name="l00100"></a>00100 <span class="comment">              */</span>
-<a name="l00101"></a>00101             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a33f20a0490e368142943d921a5b2cac0">Print</a>(std::ostream&amp; out = std::cout);
-<a name="l00102"></a>00102 
-<a name="l00103"></a>00103         <span class="keyword">private</span>:<span class="comment"></span>
+<a name="l00057"></a>00057             <span class="keywordtype">char</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#ac91727a38f11287c500d9dcfcab7cb44">GetResidueAlternateLocation</a>();<span class="comment"></span>
+<a name="l00058"></a>00058 <span class="comment">            /*! \fn</span>
+<a name="l00059"></a>00059 <span class="comment">              * An accessor function in order to access to the middle of chain attribute of the current object</span>
+<a name="l00060"></a>00060 <span class="comment">              * @return middle_of_chain_ attribute of the current object of this class</span>
+<a name="l00061"></a>00061 <span class="comment">              */</span>
+<a name="l00062"></a>00062             <span class="keywordtype">bool</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a5e04a8bfe34f8c6e331ea15eb2b40519">GetMiddleOfChain</a>();
+<a name="l00063"></a>00063 <span class="comment"></span>
+<a name="l00064"></a>00064 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00065"></a>00065 <span class="comment"></span>            <span class="comment">//                       MUTATOR                        //</span><span class="comment"></span>
+<a name="l00066"></a>00066 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00067"></a>00067 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00068"></a>00068 <span class="comment">              * A mutator function in order to set the residue chain id of the current object</span>
+<a name="l00069"></a>00069 <span class="comment">              * Set the residue_chain_id_ attribute of the current pdb preprocessor unrecognized residue</span>
+<a name="l00070"></a>00070 <span class="comment">              * @param residue_chain_id The residue chain id attribute of the current object</span>
+<a name="l00071"></a>00071 <span class="comment">              */</span>
+<a name="l00072"></a>00072             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#ae07be013239d7945e098bafcd28d558c">SetResidueChainId</a>(<span class="keywordtype">char</span> residue_chain_id);<span class="comment"></span>
+<a name="l00073"></a>00073 <span class="comment">            /*! \fn</span>
+<a name="l00074"></a>00074 <span class="comment">              * A mutator function in order to set the residue sequence number of the current object</span>
+<a name="l00075"></a>00075 <span class="comment">              * Set the residue_sequence_number_ attribute of the current pdb preprocessor unrecognized residue</span>
+<a name="l00076"></a>00076 <span class="comment">              * @param residue_sequence_number The residue sequence number attribute of the current object</span>
+<a name="l00077"></a>00077 <span class="comment">              */</span>
+<a name="l00078"></a>00078             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a6682fc2a48e0452c44dd490e601b786b">SetResidueSequenceNumber</a>(<span class="keywordtype">int</span> residue_sequence_number);<span class="comment"></span>
+<a name="l00079"></a>00079 <span class="comment">            /*! \fn</span>
+<a name="l00080"></a>00080 <span class="comment">              * A mutator function in order to set the residue name of the current object</span>
+<a name="l00081"></a>00081 <span class="comment">              * Set the residue_name_ attribute of the current pdb preprocessor unrecognized residue</span>
+<a name="l00082"></a>00082 <span class="comment">              * @param residue_name The residue name attribute of the current object</span>
+<a name="l00083"></a>00083 <span class="comment">              */</span>
+<a name="l00084"></a>00084             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#ac6eef57eaaf0076c2d2aebd99b8be650">SetResidueName</a>(std::string residue_name);<span class="comment"></span>
+<a name="l00085"></a>00085 <span class="comment">            /*! \fn</span>
+<a name="l00086"></a>00086 <span class="comment">              * A mutator function in order to set the residue insertion code of the current object</span>
+<a name="l00087"></a>00087 <span class="comment">              * Set the residue_insertion_code_ attribute of the current pdb preprocessor unrecognized residue</span>
+<a name="l00088"></a>00088 <span class="comment">              * @param residue_insertion_code The residue insertion code attribute of the current object</span>
+<a name="l00089"></a>00089 <span class="comment">              */</span>
+<a name="l00090"></a>00090             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a04ebfd79a8a01573cabb4a0ff14af3ef">SetResidueInsertionCode</a>(<span class="keywordtype">char</span> residue_insertion_code);<span class="comment"></span>
+<a name="l00091"></a>00091 <span class="comment">            /*! \fn</span>
+<a name="l00092"></a>00092 <span class="comment">              * A mutator function in order to set the residue alternate location of the current object</span>
+<a name="l00093"></a>00093 <span class="comment">              * Set the residue_alternate_location_ attribute of the current pdb preprocessor unrecognized residue</span>
+<a name="l00094"></a>00094 <span class="comment">              * @param residue_alternate_location The residue alternate location attribute of the current object</span>
+<a name="l00095"></a>00095 <span class="comment">              */</span>
+<a name="l00096"></a>00096             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a0dc40e68bfaa6154a7daaf8de5f9bba2">SetResidueAlternateLocation</a>(<span class="keywordtype">char</span> residue_alternate_location);<span class="comment"></span>
+<a name="l00097"></a>00097 <span class="comment">            /*! \fn</span>
+<a name="l00098"></a>00098 <span class="comment">              * A mutator function in order to set if this residue is in the middle of a chain in the current object</span>
+<a name="l00099"></a>00099 <span class="comment">              * Set the middle_of_chain_ attribute of the current pdb preprocessor unrecognized residue</span>
+<a name="l00100"></a>00100 <span class="comment">              * @param middle_of_chain The boolean value of middle of chain attribute of the current object</span>
+<a name="l00101"></a>00101 <span class="comment">              */</span>
+<a name="l00102"></a>00102             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a1599f994dda940f40bfa07c270bfa39a">SetMiddleOfChain</a>(<span class="keywordtype">bool</span> middle_of_chain);
+<a name="l00103"></a>00103 <span class="comment"></span>
 <a name="l00104"></a>00104 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00105"></a>00105 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
+<a name="l00105"></a>00105 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
 <a name="l00106"></a>00106 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00107"></a>00107 <span class="comment"></span>            <span class="keywordtype">char</span> residue_chain_id_;                     <span class="comment">/*!&lt; Chain id of the unrecognized residue in a pdb file &gt;*/</span>
-<a name="l00108"></a>00108             <span class="keywordtype">int</span> residue_sequence_number_;               <span class="comment">/*!&lt; Sequence number of the unrecognized residue in an specific chain id &gt;*/</span>
-<a name="l00109"></a>00109             std::string residue_name_;                  <span class="comment">/*!&lt; Name of the unrecognized residue &gt;*/</span>
-<a name="l00110"></a>00110             <span class="keywordtype">char</span> residue_insertion_code_;               <span class="comment">/*!&lt; Insertion code of the unrecognized residue &gt;*/</span>
-<a name="l00111"></a>00111             <span class="keywordtype">char</span> residue_alternate_location_;           <span class="comment">/*!&lt; Alternate location of the unrecognized residue &gt;*/</span>
-<a name="l00112"></a>00112 
-<a name="l00113"></a>00113     };
-<a name="l00114"></a>00114 }
-<a name="l00115"></a>00115 
-<a name="l00116"></a>00116 <span class="preprocessor">#endif // PDBPREPROCESSORUNRECOGNIZEDRESIDUE_HPP</span>
+<a name="l00107"></a>00107 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00108"></a>00108 <span class="comment">              * A function to print out the pdb preprocessor unrecognized residue contents in a structural format</span>
+<a name="l00109"></a>00109 <span class="comment">              * Print out the information in a defined structure</span>
+<a name="l00110"></a>00110 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
+<a name="l00111"></a>00111 <span class="comment">              */</span>
+<a name="l00112"></a>00112             <span class="keywordtype">void</span> <a class="code" href="../../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a33f20a0490e368142943d921a5b2cac0">Print</a>(std::ostream&amp; out = std::cout);
+<a name="l00113"></a>00113 
+<a name="l00114"></a>00114         <span class="keyword">private</span>:<span class="comment"></span>
+<a name="l00115"></a>00115 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00116"></a>00116 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
+<a name="l00117"></a>00117 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00118"></a>00118 <span class="comment"></span>            <span class="keywordtype">char</span> residue_chain_id_;                     <span class="comment">/*!&lt; Chain id of the unrecognized residue in a pdb file &gt;*/</span>
+<a name="l00119"></a>00119             <span class="keywordtype">int</span> residue_sequence_number_;               <span class="comment">/*!&lt; Sequence number of the unrecognized residue in an specific chain id &gt;*/</span>
+<a name="l00120"></a>00120             std::string residue_name_;                  <span class="comment">/*!&lt; Name of the unrecognized residue &gt;*/</span>
+<a name="l00121"></a>00121             <span class="keywordtype">char</span> residue_insertion_code_;               <span class="comment">/*!&lt; Insertion code of the unrecognized residue &gt;*/</span>
+<a name="l00122"></a>00122             <span class="keywordtype">char</span> residue_alternate_location_;           <span class="comment">/*!&lt; Alternate location of the unrecognized residue &gt;*/</span>
+<a name="l00123"></a>00123             <span class="keywordtype">bool</span> middle_of_chain_;
+<a name="l00124"></a>00124     };
+<a name="l00125"></a>00125 }
+<a name="l00126"></a>00126 
+<a name="l00127"></a>00127 <span class="preprocessor">#endif // PDBPREPROCESSORUNRECOGNIZEDRESIDUE_HPP</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -223,7 +233,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -236,7 +246,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d6/d1f/pdbpreprocessorunrecognizedresidue_8hpp.html">pdbpreprocessorunrecognizedresidue.hpp</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

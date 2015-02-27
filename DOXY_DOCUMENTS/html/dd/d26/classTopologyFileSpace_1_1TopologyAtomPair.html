@@ -222,7 +222,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00022">22</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l02161">TopologyFileSpace::TopologyFile::ResolveLennardJonesACoefSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l02433">TopologyFileSpace::TopologyFile::ResolveLennardJonesACoefSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> coefficient_a_;
 }
@@ -254,7 +254,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00026">26</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l02185">TopologyFileSpace::TopologyFile::ResolveLennardJonesBCoefSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l02459">TopologyFileSpace::TopologyFile::ResolveLennardJonesBCoefSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> coefficient_b_;
 }
@@ -286,7 +286,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00030">30</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l00275">TopologyFileSpace::TopologyFile::GetAtomPairByIndex()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l00318">TopologyFileSpace::TopologyFile::GetAtomPairByIndex()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> index_;
 }
@@ -317,10 +317,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00018">18</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l00594">TopologyFileSpace::TopologyFile::AddAtomPair()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> pair_type_;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_adefcb1bba22f0281b3844f4f78ec941f_icgraph.png" border="0" usemap="#dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_adefcb1bba22f0281b3844f4f78ec941f_icgraph" alt=""/></div>
+<map name="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_adefcb1bba22f0281b3844f4f78ec941f_icgraph" id="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_adefcb1bba22f0281b3844f4f78ec941f_icgraph">
+<area shape="rect" id="node3" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#abd5901ec8580bca2a93a340079d88fa4" title="TopologyFileSpace::TopologyFile::AddAtomPair" alt="" coords="385,5,684,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="aadbacd4f381b35a33c2253bcc924c9f0"></a><!-- doxytag: member="TopologyFileSpace::TopologyAtomPair::Print" ref="aadbacd4f381b35a33c2253bcc924c9f0" args="(std::ostream &amp;out=std::cout)" -->
@@ -340,7 +351,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00062">62</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l02737">TopologyFileSpace::TopologyFile::Print()</a>.</p>
+<p>Referenced by <a class="el" href="../../d9/dbe/topologyfile_8cc_source.html#l03015">TopologyFileSpace::TopologyFile::Print()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; pair_type_ &lt;&lt; <span class="stringliteral">&quot;: a = &quot;</span> &lt;&lt; coefficient_a_ &lt;&lt; <span class="stringliteral">&quot;; b = &quot;</span> &lt;&lt; coefficient_b_ &lt;&lt; endl;
 }
@@ -372,10 +383,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00042">42</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     coefficient_a_ = coefficient_a;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_ad143800c06b439a8c51390932687bb66_icgraph.png" border="0" usemap="#dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_ad143800c06b439a8c51390932687bb66_icgraph" alt=""/></div>
+<map name="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_ad143800c06b439a8c51390932687bb66_icgraph" id="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_ad143800c06b439a8c51390932687bb66_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="403,5,851,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afaab23f6c75f9692c8d92feb9468b689"></a><!-- doxytag: member="TopologyFileSpace::TopologyAtomPair::SetCoefficientB" ref="afaab23f6c75f9692c8d92feb9468b689" args="(double coefficient_b)" -->
@@ -394,10 +416,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00046">46</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     coefficient_b_ = coefficient_b;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_afaab23f6c75f9692c8d92feb9468b689_icgraph.png" border="0" usemap="#dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_afaab23f6c75f9692c8d92feb9468b689_icgraph" alt=""/></div>
+<map name="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_afaab23f6c75f9692c8d92feb9468b689_icgraph" id="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_afaab23f6c75f9692c8d92feb9468b689_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="403,5,851,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a9ee63a8a61fb0d213dedd88f2e9071ee"></a><!-- doxytag: member="TopologyFileSpace::TopologyAtomPair::SetIndex" ref="a9ee63a8a61fb0d213dedd88f2e9071ee" args="(int index)" -->
@@ -416,10 +449,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00050">50</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     index_ = index;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a9ee63a8a61fb0d213dedd88f2e9071ee_icgraph.png" border="0" usemap="#dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a9ee63a8a61fb0d213dedd88f2e9071ee_icgraph" alt=""/></div>
+<map name="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a9ee63a8a61fb0d213dedd88f2e9071ee_icgraph" id="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a9ee63a8a61fb0d213dedd88f2e9071ee_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="363,5,811,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a537d8e64b049085d5b648211b3e463f3"></a><!-- doxytag: member="TopologyFileSpace::TopologyAtomPair::SetPairType" ref="a537d8e64b049085d5b648211b3e463f3" args="(std::string pair_type)" -->
@@ -438,10 +482,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html#l00038">38</a> of file <a class="el" href="../../d1/d55/topologyatompair_8cc_source.html">topologyatompair.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     pair_type_ = pair_type;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a537d8e64b049085d5b648211b3e463f3_icgraph.png" border="0" usemap="#dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a537d8e64b049085d5b648211b3e463f3_icgraph" alt=""/></div>
+<map name="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a537d8e64b049085d5b648211b3e463f3_icgraph" id="dd/d26/classTopologyFileSpace_1_1TopologyAtomPair_a537d8e64b049085d5b648211b3e463f3_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="381,5,829,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -455,7 +510,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -469,7 +524,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../da/d1c/namespaceTopologyFileSpace.html">TopologyFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../dd/d26/classTopologyFileSpace_1_1TopologyAtomPair.html">TopologyAtomPair</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:26 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

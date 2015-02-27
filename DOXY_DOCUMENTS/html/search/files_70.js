@@ -100,6 +100,8 @@ var searchData=
   ['pdbpreprocessormissingresidue_2ehpp',['pdbpreprocessormissingresidue.hpp',['../d4/d71/pdbpreprocessormissingresidue_8hpp.html',1,'']]],
   ['pdbpreprocessorreplacedhydrogen_2ecc',['pdbpreprocessorreplacedhydrogen.cc',['../d2/d05/pdbpreprocessorreplacedhydrogen_8cc.html',1,'']]],
   ['pdbpreprocessorreplacedhydrogen_2ehpp',['pdbpreprocessorreplacedhydrogen.hpp',['../d2/d7c/pdbpreprocessorreplacedhydrogen_8hpp.html',1,'']]],
+  ['pdbpreprocessorresidueinfo_2ecc',['pdbpreprocessorresidueinfo.cc',['../dc/db4/pdbpreprocessorresidueinfo_8cc.html',1,'']]],
+  ['pdbpreprocessorresidueinfo_2ehpp',['pdbpreprocessorresidueinfo.hpp',['../d5/def/pdbpreprocessorresidueinfo_8hpp.html',1,'']]],
   ['pdbpreprocessorunrecognizedheavyatom_2ecc',['pdbpreprocessorunrecognizedheavyatom.cc',['../d6/d18/pdbpreprocessorunrecognizedheavyatom_8cc.html',1,'']]],
   ['pdbpreprocessorunrecognizedheavyatom_2ehpp',['pdbpreprocessorunrecognizedheavyatom.hpp',['../d4/db4/pdbpreprocessorunrecognizedheavyatom_8hpp.html',1,'']]],
   ['pdbpreprocessorunrecognizedresidue_2ecc',['pdbpreprocessorunrecognizedresidue.cc',['../d2/dac/pdbpreprocessorunrecognizedresidue_8cc.html',1,'']]],

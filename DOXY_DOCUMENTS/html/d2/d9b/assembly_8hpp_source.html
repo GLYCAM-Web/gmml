@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -109,299 +108,539 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00007"></a>00007 
 <a name="l00008"></a>00008 <span class="preprocessor">#include &quot;../Geometry/coordinate.hpp&quot;</span>
 <a name="l00009"></a>00009 <span class="preprocessor">#include &quot;../common.hpp&quot;</span>
-<a name="l00010"></a>00010 
-<a name="l00011"></a><a class="code" href="../../d3/da5/namespaceMolecularModeling.html">00011</a> <span class="keyword">namespace </span>MolecularModeling
-<a name="l00012"></a>00012 {
-<a name="l00013"></a>00013     <span class="keyword">class </span><a class="code" href="../../da/d64/classMolecularModeling_1_1Residue.html">Residue</a>;
-<a name="l00014"></a>00014     <span class="keyword">class </span><a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>;
-<a name="l00015"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html">00015</a>     <span class="keyword">class </span><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html">Assembly</a>
-<a name="l00016"></a>00016     {
-<a name="l00017"></a>00017         <span class="keyword">public</span>:<span class="comment"></span>
-<a name="l00018"></a>00018 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00019"></a>00019 <span class="comment"></span>            <span class="comment">//                    TYPE DEFINITION                   //</span><span class="comment"></span>
-<a name="l00020"></a>00020 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00021"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">00021</a> <span class="comment"></span>            <span class="keyword">typedef</span> std::vector&lt;Assembly*&gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a>;
-<a name="l00022"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">00022</a>             <span class="keyword">typedef</span> std::vector&lt;Residue*&gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a>;
-<a name="l00023"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af68de2343681808602a4120beeb61f8c">00023</a>             <span class="keyword">typedef</span> std::vector&lt;Atom*&gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af68de2343681808602a4120beeb61f8c">AtomVector</a>;
-<a name="l00024"></a>00024 <span class="comment"></span>
-<a name="l00025"></a>00025 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00026"></a>00026 <span class="comment"></span>            <span class="comment">//                       CONSTRUCTOR                    //</span><span class="comment"></span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &quot;../FileSet/PdbFileSpace/pdbfile.hpp&quot;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;../FileSet/TopologyFileSpace/topologyfile.hpp&quot;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;../FileSet/CoordinateFileSpace/coordinatefile.hpp&quot;</span>
+<a name="l00013"></a>00013 <span class="preprocessor">#include &quot;../ParameterSet/PrepFileSpace/prepfile.hpp&quot;</span>
+<a name="l00014"></a>00014 <span class="preprocessor">#include &quot;../ParameterSet/LibraryFileSpace/libraryfile.hpp&quot;</span>
+<a name="l00015"></a>00015 <span class="preprocessor">#include &quot;../ParameterSet/ParameterFileSpace/parameterfile.hpp&quot;</span>
+<a name="l00016"></a>00016 <span class="preprocessor">#include &quot;../FileSet/PdbFileSpace/pdbmodelresidueset.hpp&quot;</span>
+<a name="l00017"></a>00017 <span class="preprocessor">#include &quot;../FileSet/PdbFileSpace/pdbmodelcard.hpp&quot;</span>
+<a name="l00018"></a>00018 <span class="preprocessor">#include &quot;../FileSet/PdbFileSpace/pdbmodel.hpp&quot;</span>
+<a name="l00019"></a>00019 
+<a name="l00020"></a><a class="code" href="../../d3/da5/namespaceMolecularModeling.html">00020</a> <span class="keyword">namespace </span>MolecularModeling
+<a name="l00021"></a>00021 {
+<a name="l00022"></a>00022     <span class="keyword">class </span><a class="code" href="../../da/d64/classMolecularModeling_1_1Residue.html">Residue</a>;
+<a name="l00023"></a>00023     <span class="keyword">class </span><a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>;
+<a name="l00024"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html">00024</a>     <span class="keyword">class </span><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html">Assembly</a>
+<a name="l00025"></a>00025     {
+<a name="l00026"></a>00026         <span class="keyword">public</span>:<span class="comment"></span>
 <a name="l00027"></a>00027 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00028"></a>00028 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00029"></a>00029 <span class="comment">              * Default constructor</span>
-<a name="l00030"></a>00030 <span class="comment">              */</span>
-<a name="l00031"></a>00031             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a37ee87b76e4a2ff9db1635d86e375ec1">Assembly</a>();
-<a name="l00032"></a>00032 <span class="comment"></span>
-<a name="l00033"></a>00033 <span class="comment">            /*! \fn</span>
-<a name="l00034"></a>00034 <span class="comment">              * Constructor to build a structure from the given set of input files</span>
-<a name="l00035"></a>00035 <span class="comment">              * @param file_paths Set of file paths that are required to build a structure</span>
-<a name="l00036"></a>00036 <span class="comment">              *         Most of the time it has just one element (topology, prep, lib, pdb) but at some point it needs more than one file (topology+coordinate)</span>
-<a name="l00037"></a>00037 <span class="comment">              * @param type Type of the input which is selected from InputFileType enumerator</span>
-<a name="l00038"></a>00038 <span class="comment">              */</span>
-<a name="l00039"></a>00039             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a37ee87b76e4a2ff9db1635d86e375ec1">Assembly</a>(std::vector&lt;std::string&gt; file_paths, <a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> type);
-<a name="l00040"></a>00040 <span class="comment"></span>
-<a name="l00041"></a>00041 <span class="comment">            /*! \fn</span>
-<a name="l00042"></a>00042 <span class="comment">              * Constructor to build a structure from multiple file types, a general version of the previous one</span>
-<a name="l00043"></a>00043 <span class="comment">              * @param file_paths Set of set of file paths that are required to build a structure</span>
-<a name="l00044"></a>00044 <span class="comment">              * @param types Set of inoput file types of the inputs which are selected from InputFileType enumerator</span>
-<a name="l00045"></a>00045 <span class="comment">              */</span>
-<a name="l00046"></a>00046             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a37ee87b76e4a2ff9db1635d86e375ec1">Assembly</a>(std::vector&lt;std::vector&lt;std::string&gt; &gt; file_paths, std::vector&lt;gmml::InputFileType&gt; types);
-<a name="l00047"></a>00047 <span class="comment"></span>
-<a name="l00048"></a>00048 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00049"></a>00049 <span class="comment"></span>            <span class="comment">//                       ACCESSOR                       //</span><span class="comment"></span>
-<a name="l00050"></a>00050 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00051"></a>00051 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00052"></a>00052 <span class="comment">              * An accessor function in order to access to the name</span>
-<a name="l00053"></a>00053 <span class="comment">              * @return name_ attribute of the current object of this class</span>
-<a name="l00054"></a>00054 <span class="comment">              */</span>
-<a name="l00055"></a>00055             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a78e3dfd5e60fc5e6595783b6d83887b1">GetName</a>();<span class="comment"></span>
-<a name="l00056"></a>00056 <span class="comment">            /*! \fn</span>
-<a name="l00057"></a>00057 <span class="comment">              * An accessor function in order to access to the assemblies</span>
-<a name="l00058"></a>00058 <span class="comment">              * @return assemblies_ attribute of the current object of this class</span>
-<a name="l00059"></a>00059 <span class="comment">              */</span>
-<a name="l00060"></a>00060             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a9ebe372931e72238e838c2100f82e1e3">GetAssemblies</a>();<span class="comment"></span>
-<a name="l00061"></a>00061 <span class="comment">            /*! \fn</span>
-<a name="l00062"></a>00062 <span class="comment">              * An accessor function in order to access to the residues</span>
-<a name="l00063"></a>00063 <span class="comment">              * @return residues_ attribute of the current object of this class</span>
-<a name="l00064"></a>00064 <span class="comment">              */</span>
-<a name="l00065"></a>00065             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3ef6deaca837f204d3ac1306d8c84623">GetResidues</a>();<span class="comment"></span>
-<a name="l00066"></a>00066 <span class="comment">            /*! \fn</span>
-<a name="l00067"></a>00067 <span class="comment">              * An accessor function in order to access to the chemical type</span>
-<a name="l00068"></a>00068 <span class="comment">              * @return chemical_type_ attribute of the current object of this class</span>
-<a name="l00069"></a>00069 <span class="comment">              */</span>
-<a name="l00070"></a>00070             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2d9fd69b15a1187ae5a21dbe36f641c6">GetChemicalType</a>();<span class="comment"></span>
-<a name="l00071"></a>00071 <span class="comment">            /*! \fn</span>
-<a name="l00072"></a>00072 <span class="comment">              * An accessor function in order to access to the sequence number</span>
-<a name="l00073"></a>00073 <span class="comment">              * @return sequence_number_ attribute of the current object of this class</span>
-<a name="l00074"></a>00074 <span class="comment">              */</span>
-<a name="l00075"></a>00075             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3b3c60c95e2c6da6d7dee14860675e1f">GetSequenceNumber</a>();<span class="comment"></span>
-<a name="l00076"></a>00076 <span class="comment">            /*! \fn</span>
-<a name="l00077"></a>00077 <span class="comment">              * An accessor function in order to access to the total mass</span>
-<a name="l00078"></a>00078 <span class="comment">              * @return total_mass_ attribute of the current object of this class</span>
-<a name="l00079"></a>00079 <span class="comment">              */</span>
-<a name="l00080"></a>00080             <span class="keywordtype">double</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a4b58bd377c3fe796c20c561141cbef9a">GetTotalMass</a>();<span class="comment"></span>
-<a name="l00081"></a>00081 <span class="comment">            /*! \fn</span>
-<a name="l00082"></a>00082 <span class="comment">              * An accessor function in order to access to the center of mass</span>
-<a name="l00083"></a>00083 <span class="comment">              * @return center_of_mass_ attribute of the current object of this class</span>
-<a name="l00084"></a>00084 <span class="comment">              */</span>
-<a name="l00085"></a>00085             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2aa8971614ebc6e82ef709538463c749">GetCenterOfMass</a>();<span class="comment"></span>
-<a name="l00086"></a>00086 <span class="comment">            /*! \fn</span>
-<a name="l00087"></a>00087 <span class="comment">              * An accessor function in order to access to the center of geometry</span>
-<a name="l00088"></a>00088 <span class="comment">              * @return center_of_geometry_ attribute of the current object of this class</span>
-<a name="l00089"></a>00089 <span class="comment">              */</span>
-<a name="l00090"></a>00090             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad46f5e6e6786b022b432f04a4ae0d9ff">GetCenterOfGeometry</a>();<span class="comment"></span>
-<a name="l00091"></a>00091 <span class="comment">            /*! \fn</span>
-<a name="l00092"></a>00092 <span class="comment">              * An accessor function in order to access to the center of description</span>
-<a name="l00093"></a>00093 <span class="comment">              * @return description_ attribute of the current object of this class</span>
-<a name="l00094"></a>00094 <span class="comment">              */</span>
-<a name="l00095"></a>00095             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a4d1377213cd711ef89dff6e6ce5e95b4">GetDescription</a>();<span class="comment"></span>
-<a name="l00096"></a>00096 <span class="comment">            /*! \fn</span>
-<a name="l00097"></a>00097 <span class="comment">              * An accessor function in order to access to the source file</span>
-<a name="l00098"></a>00098 <span class="comment">              * @return source_file_ attribute of the current object of this class</span>
-<a name="l00099"></a>00099 <span class="comment">              */</span>
-<a name="l00100"></a>00100             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad243f426f418d1a44c58b72201edb5fc">GetSourceFile</a>();<span class="comment"></span>
-<a name="l00101"></a>00101 <span class="comment">            /*! \fn</span>
-<a name="l00102"></a>00102 <span class="comment">              * An accessor function in order to access to the source file type</span>
-<a name="l00103"></a>00103 <span class="comment">              * @return source_file_type_ attribute of the current object of this class</span>
-<a name="l00104"></a>00104 <span class="comment">              */</span>
-<a name="l00105"></a>00105             <a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a9b1e556afa17a31fc312bd2cad2c410a">GetSourceFileType</a>();<span class="comment"></span>
-<a name="l00106"></a>00106 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00107"></a>00107 <span class="comment"></span>            <span class="comment">//                       MUTATOR                        //</span><span class="comment"></span>
-<a name="l00108"></a>00108 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00109"></a>00109 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00110"></a>00110 <span class="comment">              * A mutator function in order to set the name of the current object</span>
-<a name="l00111"></a>00111 <span class="comment">              * Set the name_ attribute of the current assembly</span>
-<a name="l00112"></a>00112 <span class="comment">              * @param name The name attribute of the current object</span>
-<a name="l00113"></a>00113 <span class="comment">              */</span>
-<a name="l00114"></a>00114             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a5182e29e360f9d01944bb8478e494829">SetName</a>(std::string name);<span class="comment"></span>
-<a name="l00115"></a>00115 <span class="comment">            /*! \fn</span>
-<a name="l00116"></a>00116 <span class="comment">              * A mutator function in order to set the assemblies of the current object</span>
-<a name="l00117"></a>00117 <span class="comment">              * Set the assemblies_ attribute of the current assembly</span>
-<a name="l00118"></a>00118 <span class="comment">              * @param assemblies The assemblies attribute of the current object</span>
-<a name="l00119"></a>00119 <span class="comment">              */</span>
-<a name="l00120"></a>00120             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a6de697c9824dbb100c0f87c4a0342a37">SetAssemblies</a>(<a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a> assemblies);<span class="comment"></span>
-<a name="l00121"></a>00121 <span class="comment">            /*! \fn</span>
-<a name="l00122"></a>00122 <span class="comment">              * A function in order to add the assembly to the current object</span>
-<a name="l00123"></a>00123 <span class="comment">              * Set the assemblies_ attribute of the current assembly</span>
-<a name="l00124"></a>00124 <span class="comment">              * @param assembly The assembly of the current object</span>
-<a name="l00125"></a>00125 <span class="comment">              */</span>
-<a name="l00126"></a>00126             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a8e37cde2d7735cd8b3026326aea960ee">AddAssembly</a>(<a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html">Assembly</a>* assembly);<span class="comment"></span>
-<a name="l00127"></a>00127 <span class="comment">            /*! \fn</span>
-<a name="l00128"></a>00128 <span class="comment">              * A mutator function in order to set the residues of the current object</span>
-<a name="l00129"></a>00129 <span class="comment">              * Set the residues_ attribute of the current assembly</span>
-<a name="l00130"></a>00130 <span class="comment">              * @param residues The residues attribute of the current object</span>
-<a name="l00131"></a>00131 <span class="comment">              */</span>
-<a name="l00132"></a>00132             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac41cc7bc29afbd82639c2b4bd243d45d">SetResidues</a>(<a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a> residues);<span class="comment"></span>
-<a name="l00133"></a>00133 <span class="comment">            /*! \fn</span>
-<a name="l00134"></a>00134 <span class="comment">              * A function in order to add the residue to the current object</span>
-<a name="l00135"></a>00135 <span class="comment">              * Set the residues_ attribute of the current assembly</span>
-<a name="l00136"></a>00136 <span class="comment">              * @param residue The residue of the current object</span>
-<a name="l00137"></a>00137 <span class="comment">              */</span>
-<a name="l00138"></a>00138             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a347f338d61f26d407266bbbd89b30c1b">AddResidue</a>(<a class="code" href="../../da/d64/classMolecularModeling_1_1Residue.html">Residue</a>* residue);<span class="comment"></span>
-<a name="l00139"></a>00139 <span class="comment">            /*! \fn</span>
-<a name="l00140"></a>00140 <span class="comment">              * A mutator function in order to set the chemical type of the current object</span>
-<a name="l00141"></a>00141 <span class="comment">              * Set the chemical_type_ attribute of the current assembly</span>
-<a name="l00142"></a>00142 <span class="comment">              * @param chemical_type The chemical_type attribute of the current object</span>
-<a name="l00143"></a>00143 <span class="comment">              */</span>
-<a name="l00144"></a>00144             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a1e49e3bb4b218d9ec253fdde2cc9a463">SetChemicalType</a>(std::string chemical_type);<span class="comment"></span>
-<a name="l00145"></a>00145 <span class="comment">            /*! \fn</span>
-<a name="l00146"></a>00146 <span class="comment">              * A mutator function in order to set the sequence number of the current object</span>
-<a name="l00147"></a>00147 <span class="comment">              * Set the sequence_number_ attribute of the current assembly</span>
-<a name="l00148"></a>00148 <span class="comment">              * @param sequence_number The sequence number attribute of the current object</span>
-<a name="l00149"></a>00149 <span class="comment">              */</span>
-<a name="l00150"></a>00150             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae30fbf2474320c75ca9b1058c4d76c8b">SetSequenceNumber</a>(<span class="keywordtype">int</span> sequence_number);<span class="comment"></span>
-<a name="l00151"></a>00151 <span class="comment">            /*! \fn</span>
-<a name="l00152"></a>00152 <span class="comment">              * A mutator function in order to set the total mass of the current object</span>
-<a name="l00153"></a>00153 <span class="comment">              * Set the total_mass_ attribute of the current assembly</span>
-<a name="l00154"></a>00154 <span class="comment">              * @param total_mass The total mass attribute of the current object</span>
-<a name="l00155"></a>00155 <span class="comment">              */</span>
-<a name="l00156"></a>00156             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a11417414df277307cfe846f350a19697">SetTtoalMass</a>(<span class="keywordtype">double</span> total_mass);<span class="comment"></span>
-<a name="l00157"></a>00157 <span class="comment">            /*! \fn</span>
-<a name="l00158"></a>00158 <span class="comment">              * A mutator function in order to set the center of mass of the current object</span>
-<a name="l00159"></a>00159 <span class="comment">              * Set the center_of_mass_ attribute of the current assembly</span>
-<a name="l00160"></a>00160 <span class="comment">              * @param center_of_mass The center of mass attribute of the current object</span>
-<a name="l00161"></a>00161 <span class="comment">              */</span>
-<a name="l00162"></a>00162             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2570512d97af86b34ee55c78e79c2fe6">SetCenterOfMass</a>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_mass);<span class="comment"></span>
-<a name="l00163"></a>00163 <span class="comment">            /*! \fn</span>
-<a name="l00164"></a>00164 <span class="comment">              * A mutator function in order to set the center of geometry of the current object</span>
-<a name="l00165"></a>00165 <span class="comment">              * Set the residues_ attribute of the current assembly</span>
-<a name="l00166"></a>00166 <span class="comment">              * @param center_of_geometry The center of geometry attribute of the current object</span>
-<a name="l00167"></a>00167 <span class="comment">              */</span>
-<a name="l00168"></a>00168             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0728f17218bdd3b93bf1b1c7922d47b8">SetCenterOfGeometry</a>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_geometry);<span class="comment"></span>
-<a name="l00169"></a>00169 <span class="comment">            /*! \fn</span>
-<a name="l00170"></a>00170 <span class="comment">              * A mutator function in order to set the description of the current object</span>
-<a name="l00171"></a>00171 <span class="comment">              * Set the description_ attribute of the current assembly</span>
-<a name="l00172"></a>00172 <span class="comment">              * @param description The description attribute of the current object</span>
-<a name="l00173"></a>00173 <span class="comment">              */</span>
-<a name="l00174"></a>00174             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a1ba644f4faa0a21da9c5fa867d0dd6ad">SetDescription</a>(std::string description);<span class="comment"></span>
-<a name="l00175"></a>00175 <span class="comment">            /*! \fn</span>
-<a name="l00176"></a>00176 <span class="comment">              * A mutator function in order to set the source file of the current object</span>
-<a name="l00177"></a>00177 <span class="comment">              * Set the source_file_ attribute of the current assembly</span>
-<a name="l00178"></a>00178 <span class="comment">              * @param source_file The source file attribute of the current object</span>
-<a name="l00179"></a>00179 <span class="comment">              */</span>
-<a name="l00180"></a>00180             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a64c183e063d193c86c37e5eb02c8f992">SetSourceFile</a>(std::string source_file);<span class="comment"></span>
-<a name="l00181"></a>00181 <span class="comment">            /*! \fn</span>
-<a name="l00182"></a>00182 <span class="comment">              * A mutator function in order to set the source file type of the current object</span>
-<a name="l00183"></a>00183 <span class="comment">              * Set the source_file_type_ attribute of the current assembly</span>
-<a name="l00184"></a>00184 <span class="comment">              * @param source_file_type The residues attribute of the current object</span>
-<a name="l00185"></a>00185 <span class="comment">              */</span>
-<a name="l00186"></a>00186             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aea57d942c6b885580849ab23ca836377">SetSourceFileType</a>(<a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> source_file_type);           
-<a name="l00187"></a>00187 <span class="comment"></span>
-<a name="l00188"></a>00188 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00189"></a>00189 <span class="comment"></span>            <span class="comment">//                       FUNCTIONS                      //</span><span class="comment"></span>
-<a name="l00190"></a>00190 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00191"></a>00191 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00192"></a>00192 <span class="comment">              * A function to build a structure from a single pdb file</span>
-<a name="l00193"></a>00193 <span class="comment">              * Imports data from pdb file data structure into central data structure</span>
-<a name="l00194"></a>00194 <span class="comment">              * @param pdb_file_path Path to a pdb file</span>
+<a name="l00028"></a>00028 <span class="comment"></span>            <span class="comment">//                    TYPE DEFINITION                   //</span><span class="comment"></span>
+<a name="l00029"></a>00029 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00030"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">00030</a> <span class="comment"></span>            <span class="keyword">typedef</span> std::vector&lt;Assembly*&gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a>;
+<a name="l00031"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">00031</a>             <span class="keyword">typedef</span> std::vector&lt;Residue*&gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a>;
+<a name="l00032"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af68de2343681808602a4120beeb61f8c">00032</a>             <span class="keyword">typedef</span> std::vector&lt;Atom*&gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af68de2343681808602a4120beeb61f8c">AtomVector</a>;
+<a name="l00033"></a><a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a543c742176eb902ecb8ac758c6b470d2">00033</a>             <span class="keyword">typedef</span> std::vector&lt;Geometry::Coordinate*&gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a543c742176eb902ecb8ac758c6b470d2">CoordinateVector</a>;
+<a name="l00034"></a>00034 <span class="comment"></span>
+<a name="l00035"></a>00035 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00036"></a>00036 <span class="comment"></span>            <span class="comment">//                       CONSTRUCTOR                    //</span><span class="comment"></span>
+<a name="l00037"></a>00037 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00038"></a>00038 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00039"></a>00039 <span class="comment">              * Default constructor</span>
+<a name="l00040"></a>00040 <span class="comment">              */</span>
+<a name="l00041"></a>00041             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a37ee87b76e4a2ff9db1635d86e375ec1">Assembly</a>();<span class="comment"></span>
+<a name="l00042"></a>00042 <span class="comment">            /*! \fn</span>
+<a name="l00043"></a>00043 <span class="comment">              * Constructor to build a structure from the given set of input files</span>
+<a name="l00044"></a>00044 <span class="comment">              * @param file_paths Set of file paths that are required to build a structure</span>
+<a name="l00045"></a>00045 <span class="comment">              *         Most of the time it has just one element (topology, prep, lib, pdb) but at some point it needs more than one file (topology+coordinate)</span>
+<a name="l00046"></a>00046 <span class="comment">              * @param type Type of the input which is selected from InputFileType enumerator</span>
+<a name="l00047"></a>00047 <span class="comment">              */</span>
+<a name="l00048"></a>00048             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a37ee87b76e4a2ff9db1635d86e375ec1">Assembly</a>(std::vector&lt;std::string&gt; file_paths, <a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> type);<span class="comment"></span>
+<a name="l00049"></a>00049 <span class="comment">            /*! \fn</span>
+<a name="l00050"></a>00050 <span class="comment">              * Constructor to build a structure from multiple file types, a general version of the previous one</span>
+<a name="l00051"></a>00051 <span class="comment">              * @param file_paths Set of set of file paths that are required to build a structure</span>
+<a name="l00052"></a>00052 <span class="comment">              * @param types Set of inoput file types of the inputs which are selected from InputFileType enumerator</span>
+<a name="l00053"></a>00053 <span class="comment">              */</span>
+<a name="l00054"></a>00054             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a37ee87b76e4a2ff9db1635d86e375ec1">Assembly</a>(std::vector&lt;std::vector&lt;std::string&gt; &gt; file_paths, std::vector&lt;gmml::InputFileType&gt; types);
+<a name="l00055"></a>00055 <span class="comment"></span>
+<a name="l00056"></a>00056 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00057"></a>00057 <span class="comment"></span>            <span class="comment">//                       ACCESSOR                       //</span><span class="comment"></span>
+<a name="l00058"></a>00058 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00059"></a>00059 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00060"></a>00060 <span class="comment">              * An accessor function in order to access to the name</span>
+<a name="l00061"></a>00061 <span class="comment">              * @return name_ attribute of the current object of this class</span>
+<a name="l00062"></a>00062 <span class="comment">              */</span>
+<a name="l00063"></a>00063             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a78e3dfd5e60fc5e6595783b6d83887b1">GetName</a>();<span class="comment"></span>
+<a name="l00064"></a>00064 <span class="comment">            /*! \fn</span>
+<a name="l00065"></a>00065 <span class="comment">              * An accessor function in order to access to the assemblies</span>
+<a name="l00066"></a>00066 <span class="comment">              * @return assemblies_ attribute of the current object of this class</span>
+<a name="l00067"></a>00067 <span class="comment">              */</span>
+<a name="l00068"></a>00068             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a9ebe372931e72238e838c2100f82e1e3">GetAssemblies</a>();<span class="comment"></span>
+<a name="l00069"></a>00069 <span class="comment">            /*! \fn</span>
+<a name="l00070"></a>00070 <span class="comment">              * An accessor function in order to access to the residues</span>
+<a name="l00071"></a>00071 <span class="comment">              * @return residues_ attribute of the current object of this class</span>
+<a name="l00072"></a>00072 <span class="comment">              */</span>
+<a name="l00073"></a>00073             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3ef6deaca837f204d3ac1306d8c84623">GetResidues</a>();<span class="comment"></span>
+<a name="l00074"></a>00074 <span class="comment">            /*! \fn</span>
+<a name="l00075"></a>00075 <span class="comment">              * An accessor function in order to access to the chemical type</span>
+<a name="l00076"></a>00076 <span class="comment">              * @return chemical_type_ attribute of the current object of this class</span>
+<a name="l00077"></a>00077 <span class="comment">              */</span>
+<a name="l00078"></a>00078             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2d9fd69b15a1187ae5a21dbe36f641c6">GetChemicalType</a>();<span class="comment"></span>
+<a name="l00079"></a>00079 <span class="comment">            /*! \fn</span>
+<a name="l00080"></a>00080 <span class="comment">              * An accessor function in order to access to the sequence number</span>
+<a name="l00081"></a>00081 <span class="comment">              * @return sequence_number_ attribute of the current object of this class</span>
+<a name="l00082"></a>00082 <span class="comment">              */</span>
+<a name="l00083"></a>00083             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3b3c60c95e2c6da6d7dee14860675e1f">GetSequenceNumber</a>();<span class="comment"></span>
+<a name="l00084"></a>00084 <span class="comment">            /*! \fn</span>
+<a name="l00085"></a>00085 <span class="comment">              * An accessor function in order to access to the total mass</span>
+<a name="l00086"></a>00086 <span class="comment">              * @return total_mass_ attribute of the current object of this class</span>
+<a name="l00087"></a>00087 <span class="comment">              */</span>
+<a name="l00088"></a>00088             <span class="keywordtype">double</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a4b58bd377c3fe796c20c561141cbef9a">GetTotalMass</a>();<span class="comment"></span>
+<a name="l00089"></a>00089 <span class="comment">            /*! \fn</span>
+<a name="l00090"></a>00090 <span class="comment">              * An accessor function in order to access to the center of mass</span>
+<a name="l00091"></a>00091 <span class="comment">              * @return center_of_mass_ attribute of the current object of this class</span>
+<a name="l00092"></a>00092 <span class="comment">              */</span>
+<a name="l00093"></a>00093             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2aa8971614ebc6e82ef709538463c749">GetCenterOfMass</a>();<span class="comment"></span>
+<a name="l00094"></a>00094 <span class="comment">            /*! \fn</span>
+<a name="l00095"></a>00095 <span class="comment">              * An accessor function in order to access to the center of geometry</span>
+<a name="l00096"></a>00096 <span class="comment">              * @return center_of_geometry_ attribute of the current object of this class</span>
+<a name="l00097"></a>00097 <span class="comment">              */</span>
+<a name="l00098"></a>00098             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad46f5e6e6786b022b432f04a4ae0d9ff">GetCenterOfGeometry</a>();<span class="comment"></span>
+<a name="l00099"></a>00099 <span class="comment">            /*! \fn</span>
+<a name="l00100"></a>00100 <span class="comment">              * An accessor function in order to access to the center of description</span>
+<a name="l00101"></a>00101 <span class="comment">              * @return description_ attribute of the current object of this class</span>
+<a name="l00102"></a>00102 <span class="comment">              */</span>
+<a name="l00103"></a>00103             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a4d1377213cd711ef89dff6e6ce5e95b4">GetDescription</a>();<span class="comment"></span>
+<a name="l00104"></a>00104 <span class="comment">            /*! \fn</span>
+<a name="l00105"></a>00105 <span class="comment">              * An accessor function in order to access to the source file</span>
+<a name="l00106"></a>00106 <span class="comment">              * @return source_file_ attribute of the current object of this class</span>
+<a name="l00107"></a>00107 <span class="comment">              */</span>
+<a name="l00108"></a>00108             std::string <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad243f426f418d1a44c58b72201edb5fc">GetSourceFile</a>();<span class="comment"></span>
+<a name="l00109"></a>00109 <span class="comment">            /*! \fn</span>
+<a name="l00110"></a>00110 <span class="comment">              * An accessor function in order to access to the source file type</span>
+<a name="l00111"></a>00111 <span class="comment">              * @return source_file_type_ attribute of the current object of this class</span>
+<a name="l00112"></a>00112 <span class="comment">              */</span>
+<a name="l00113"></a>00113             <a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a9b1e556afa17a31fc312bd2cad2c410a">GetSourceFileType</a>();<span class="comment"></span>
+<a name="l00114"></a>00114 <span class="comment">            /*! \fn</span>
+<a name="l00115"></a>00115 <span class="comment">              * An accessor function in order to access to the model index</span>
+<a name="l00116"></a>00116 <span class="comment">              * @return model_index_ attribute of the current object of this class</span>
+<a name="l00117"></a>00117 <span class="comment">              */</span>
+<a name="l00118"></a>00118             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a5a815a1ce8051e49fc7a894e5bfeab16">GetModelIndex</a>();<span class="comment"></span>
+<a name="l00119"></a>00119 <span class="comment">            /*! \fn</span>
+<a name="l00120"></a>00120 <span class="comment">              * A functions that extracts all atoms of an assembly</span>
+<a name="l00121"></a>00121 <span class="comment">              * @return Vector of all atoms in the current object of assembly</span>
+<a name="l00122"></a>00122 <span class="comment">              */</span>
+<a name="l00123"></a>00123             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af68de2343681808602a4120beeb61f8c">AtomVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a958d19487a0d2b664520ada15ba899b0">GetAllAtomsOfAssembly</a>();<span class="comment"></span>
+<a name="l00124"></a>00124 <span class="comment">            /*! \fn</span>
+<a name="l00125"></a>00125 <span class="comment">              * A functions that extracts all residues of an assembly</span>
+<a name="l00126"></a>00126 <span class="comment">              * @return Vector of all residues in the current object of assembly</span>
+<a name="l00127"></a>00127 <span class="comment">              */</span>
+<a name="l00128"></a>00128             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a1da4544480e46925a2688e6f90147fe2">GetAllResiduesOfAssembly</a>();<span class="comment"></span>
+<a name="l00129"></a>00129 <span class="comment">            /*! \fn</span>
+<a name="l00130"></a>00130 <span class="comment">              * A function to return all coordinates of all atoms in all residues and assemblies of an assembly</span>
+<a name="l00131"></a>00131 <span class="comment">              * @return List of all coordinates of all atoms in all residues and assemblies of an assembly</span>
+<a name="l00132"></a>00132 <span class="comment">              */</span>
+<a name="l00133"></a>00133             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a543c742176eb902ecb8ac758c6b470d2">CoordinateVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a8ff5dd4e22f8894ba5b210e10891f01c">GetAllCoordinates</a>();<span class="comment"></span>
+<a name="l00134"></a>00134 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00135"></a>00135 <span class="comment"></span>            <span class="comment">//                       MUTATOR                        //</span><span class="comment"></span>
+<a name="l00136"></a>00136 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00137"></a>00137 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00138"></a>00138 <span class="comment">              * A mutator function in order to set the name of the current object</span>
+<a name="l00139"></a>00139 <span class="comment">              * Set the name_ attribute of the current assembly</span>
+<a name="l00140"></a>00140 <span class="comment">              * @param name The name attribute of the current object</span>
+<a name="l00141"></a>00141 <span class="comment">              */</span>
+<a name="l00142"></a>00142             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a5182e29e360f9d01944bb8478e494829">SetName</a>(std::string name);<span class="comment"></span>
+<a name="l00143"></a>00143 <span class="comment">            /*! \fn</span>
+<a name="l00144"></a>00144 <span class="comment">              * A mutator function in order to set the assemblies of the current object</span>
+<a name="l00145"></a>00145 <span class="comment">              * Set the assemblies_ attribute of the current assembly</span>
+<a name="l00146"></a>00146 <span class="comment">              * @param assemblies The assemblies attribute of the current object</span>
+<a name="l00147"></a>00147 <span class="comment">              */</span>
+<a name="l00148"></a>00148             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a6de697c9824dbb100c0f87c4a0342a37">SetAssemblies</a>(<a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a> assemblies);<span class="comment"></span>
+<a name="l00149"></a>00149 <span class="comment">            /*! \fn</span>
+<a name="l00150"></a>00150 <span class="comment">              * A function in order to add the assembly to the current object</span>
+<a name="l00151"></a>00151 <span class="comment">              * Set the assemblies_ attribute of the current assembly</span>
+<a name="l00152"></a>00152 <span class="comment">              * @param assembly The assembly of the current object</span>
+<a name="l00153"></a>00153 <span class="comment">              */</span>
+<a name="l00154"></a>00154             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a8e37cde2d7735cd8b3026326aea960ee">AddAssembly</a>(<a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html">Assembly</a>* assembly);<span class="comment"></span>
+<a name="l00155"></a>00155 <span class="comment">            /*! \fn</span>
+<a name="l00156"></a>00156 <span class="comment">              * A mutator function in order to set the residues of the current object</span>
+<a name="l00157"></a>00157 <span class="comment">              * Set the residues_ attribute of the current assembly</span>
+<a name="l00158"></a>00158 <span class="comment">              * @param residues The residues attribute of the current object</span>
+<a name="l00159"></a>00159 <span class="comment">              */</span>
+<a name="l00160"></a>00160             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac41cc7bc29afbd82639c2b4bd243d45d">SetResidues</a>(<a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a> residues);<span class="comment"></span>
+<a name="l00161"></a>00161 <span class="comment">            /*! \fn</span>
+<a name="l00162"></a>00162 <span class="comment">              * A function in order to add the residue to the current object</span>
+<a name="l00163"></a>00163 <span class="comment">              * Set the residues_ attribute of the current assembly</span>
+<a name="l00164"></a>00164 <span class="comment">              * @param residue The residue of the current object</span>
+<a name="l00165"></a>00165 <span class="comment">              */</span>
+<a name="l00166"></a>00166             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a347f338d61f26d407266bbbd89b30c1b">AddResidue</a>(<a class="code" href="../../da/d64/classMolecularModeling_1_1Residue.html">Residue</a>* residue);<span class="comment"></span>
+<a name="l00167"></a>00167 <span class="comment">            /*! \fn</span>
+<a name="l00168"></a>00168 <span class="comment">              * A mutator function in order to set the chemical type of the current object</span>
+<a name="l00169"></a>00169 <span class="comment">              * Set the chemical_type_ attribute of the current assembly</span>
+<a name="l00170"></a>00170 <span class="comment">              * @param chemical_type The chemical_type attribute of the current object</span>
+<a name="l00171"></a>00171 <span class="comment">              */</span>
+<a name="l00172"></a>00172             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a1e49e3bb4b218d9ec253fdde2cc9a463">SetChemicalType</a>(std::string chemical_type);<span class="comment"></span>
+<a name="l00173"></a>00173 <span class="comment">            /*! \fn</span>
+<a name="l00174"></a>00174 <span class="comment">              * A mutator function in order to set the sequence number of the current object</span>
+<a name="l00175"></a>00175 <span class="comment">              * Set the sequence_number_ attribute of the current assembly</span>
+<a name="l00176"></a>00176 <span class="comment">              * @param sequence_number The sequence number attribute of the current object</span>
+<a name="l00177"></a>00177 <span class="comment">              */</span>
+<a name="l00178"></a>00178             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae30fbf2474320c75ca9b1058c4d76c8b">SetSequenceNumber</a>(<span class="keywordtype">int</span> sequence_number);<span class="comment"></span>
+<a name="l00179"></a>00179 <span class="comment">            /*! \fn</span>
+<a name="l00180"></a>00180 <span class="comment">              * A mutator function in order to set the total mass of the current object</span>
+<a name="l00181"></a>00181 <span class="comment">              * Set the total_mass_ attribute of the current assembly</span>
+<a name="l00182"></a>00182 <span class="comment">              * @param total_mass The total mass attribute of the current object</span>
+<a name="l00183"></a>00183 <span class="comment">              */</span>
+<a name="l00184"></a>00184             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a11417414df277307cfe846f350a19697">SetTtoalMass</a>(<span class="keywordtype">double</span> total_mass);<span class="comment"></span>
+<a name="l00185"></a>00185 <span class="comment">            /*! \fn</span>
+<a name="l00186"></a>00186 <span class="comment">              * A mutator function in order to set the center of mass of the current object</span>
+<a name="l00187"></a>00187 <span class="comment">              * Set the center_of_mass_ attribute of the current assembly</span>
+<a name="l00188"></a>00188 <span class="comment">              * @param center_of_mass The center of mass attribute of the current object</span>
+<a name="l00189"></a>00189 <span class="comment">              */</span>
+<a name="l00190"></a>00190             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2570512d97af86b34ee55c78e79c2fe6">SetCenterOfMass</a>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_mass);<span class="comment"></span>
+<a name="l00191"></a>00191 <span class="comment">            /*! \fn</span>
+<a name="l00192"></a>00192 <span class="comment">              * A mutator function in order to set the center of geometry of the current object</span>
+<a name="l00193"></a>00193 <span class="comment">              * Set the residues_ attribute of the current assembly</span>
+<a name="l00194"></a>00194 <span class="comment">              * @param center_of_geometry The center of geometry attribute of the current object</span>
 <a name="l00195"></a>00195 <span class="comment">              */</span>
-<a name="l00196"></a>00196             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae0b0cf80fd7d5de243191e8890a2f1d2">BuildAssemblyFromPdbFile</a>(std::string pdb_file_path);<span class="comment"></span>
+<a name="l00196"></a>00196             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0728f17218bdd3b93bf1b1c7922d47b8">SetCenterOfGeometry</a>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_geometry);<span class="comment"></span>
 <a name="l00197"></a>00197 <span class="comment">            /*! \fn</span>
-<a name="l00198"></a>00198 <span class="comment">              * A function to build a structure from a single topology file</span>
-<a name="l00199"></a>00199 <span class="comment">              * Imports data from topology file data structure into central data structure</span>
-<a name="l00200"></a>00200 <span class="comment">              * @param topology_file_path Path to a topology file</span>
+<a name="l00198"></a>00198 <span class="comment">              * A mutator function in order to set the description of the current object</span>
+<a name="l00199"></a>00199 <span class="comment">              * Set the description_ attribute of the current assembly</span>
+<a name="l00200"></a>00200 <span class="comment">              * @param description The description attribute of the current object</span>
 <a name="l00201"></a>00201 <span class="comment">              */</span>
-<a name="l00202"></a>00202             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0aef6464ea486b4b9dae5308e9957214">BuildAssemblyFromTopologyFile</a>(std::string topology_file_path);<span class="comment"></span>
+<a name="l00202"></a>00202             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a1ba644f4faa0a21da9c5fa867d0dd6ad">SetDescription</a>(std::string description);<span class="comment"></span>
 <a name="l00203"></a>00203 <span class="comment">            /*! \fn</span>
-<a name="l00204"></a>00204 <span class="comment">              * A function to build a structure from a single library file</span>
-<a name="l00205"></a>00205 <span class="comment">              * Imports data from library file data structure into central data structure</span>
-<a name="l00206"></a>00206 <span class="comment">              * @param library_file_path Path to a library file</span>
+<a name="l00204"></a>00204 <span class="comment">              * A mutator function in order to set the source file of the current object</span>
+<a name="l00205"></a>00205 <span class="comment">              * Set the source_file_ attribute of the current assembly</span>
+<a name="l00206"></a>00206 <span class="comment">              * @param source_file The source file attribute of the current object</span>
 <a name="l00207"></a>00207 <span class="comment">              */</span>
-<a name="l00208"></a>00208             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f">BuildAssemblyFromLibraryFile</a>(std::string library_file_path);<span class="comment"></span>
+<a name="l00208"></a>00208             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a64c183e063d193c86c37e5eb02c8f992">SetSourceFile</a>(std::string source_file);<span class="comment"></span>
 <a name="l00209"></a>00209 <span class="comment">            /*! \fn</span>
-<a name="l00210"></a>00210 <span class="comment">              * A function to build a structure from a combination of a topology file and its corresponding coordinate file</span>
-<a name="l00211"></a>00211 <span class="comment">              * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file</span>
-<a name="l00212"></a>00212 <span class="comment">              * @param topology_file_path Path to a topology file</span>
-<a name="l00213"></a>00213 <span class="comment">              * @param coordinate_file_path Path to a coordinate file corresponds to the given topology file</span>
-<a name="l00214"></a>00214 <span class="comment">              */</span>
-<a name="l00215"></a>00215             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afe191d56bb8c2e3d45034f203e7b0482">BuildAssemblyFromTopologyCoordinateFile</a>(std::string topology_file_path, std::string coordinate_file_path);<span class="comment"></span>
-<a name="l00216"></a>00216 <span class="comment">            /*! \fn</span>
-<a name="l00217"></a>00217 <span class="comment">              * A function to build a structure from a single prep file</span>
-<a name="l00218"></a>00218 <span class="comment">              * Imports data from prep file data structure into central data structure</span>
-<a name="l00219"></a>00219 <span class="comment">              * @param prep_file_path Path to a prep file</span>
-<a name="l00220"></a>00220 <span class="comment">              */</span>
-<a name="l00221"></a>00221             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f">BuildAssemblyFromPrepFile</a>(std::string prep_file_path);
-<a name="l00222"></a>00222 <span class="comment"></span>
-<a name="l00223"></a>00223 <span class="comment">            /*! \fn</span>
-<a name="l00224"></a>00224 <span class="comment">              * A function to build a graph structure (bonding information) for the current object of central data structure</span>
-<a name="l00225"></a>00225 <span class="comment">              * @param building_option A building option that can be selected from BuildingStructureOption enumerator</span>
-<a name="l00226"></a>00226 <span class="comment">              * @param options List of additional options that can be defined by user</span>
-<a name="l00227"></a>00227 <span class="comment">              * @param file_paths In the case that building structure based on the information of database files is selected this argument is a list of database file names</span>
+<a name="l00210"></a>00210 <span class="comment">              * A mutator function in order to set the source file type of the current object</span>
+<a name="l00211"></a>00211 <span class="comment">              * Set the source_file_type_ attribute of the current assembly</span>
+<a name="l00212"></a>00212 <span class="comment">              * @param source_file_type The source file type attribute of the current object</span>
+<a name="l00213"></a>00213 <span class="comment">              */</span>
+<a name="l00214"></a>00214             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aea57d942c6b885580849ab23ca836377">SetSourceFileType</a>(<a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> source_file_type);<span class="comment"></span>
+<a name="l00215"></a>00215 <span class="comment">            /*! \fn</span>
+<a name="l00216"></a>00216 <span class="comment">              * A mutator function in order to set the selected model index of the current object</span>
+<a name="l00217"></a>00217 <span class="comment">              * Set the model_index_ attribute of the current assembly</span>
+<a name="l00218"></a>00218 <span class="comment">              * @param model_index The target model index attribute of the current object</span>
+<a name="l00219"></a>00219 <span class="comment">              */</span>
+<a name="l00220"></a>00220             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a18287746b1d216467978e70936371b1d">SetModelIndex</a>(<span class="keywordtype">int</span> model_index);<span class="comment"></span>
+<a name="l00221"></a>00221 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00222"></a>00222 <span class="comment"></span>            <span class="comment">//                       FUNCTIONS                      //</span><span class="comment"></span>
+<a name="l00223"></a>00223 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00224"></a>00224 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00225"></a>00225 <span class="comment">              * A function to build a structure from a single pdb file</span>
+<a name="l00226"></a>00226 <span class="comment">              * Imports data from pdb file data structure into central data structure</span>
+<a name="l00227"></a>00227 <span class="comment">              * @param pdb_file_path Path to a pdb file</span>
 <a name="l00228"></a>00228 <span class="comment">              */</span>
-<a name="l00229"></a>00229             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a">BuildStructure</a>(<a class="code" href="../../d0/ddd/namespacegmml.html#ac121f8749ea6c92c0730b2eb29d385ba">gmml::BuildingStructureOption</a> building_option, std::vector&lt;std::string&gt; options, std::vector&lt;std::string&gt; file_paths);<span class="comment"></span>
+<a name="l00229"></a>00229             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae0b0cf80fd7d5de243191e8890a2f1d2">BuildAssemblyFromPdbFile</a>(std::string pdb_file_path);<span class="comment"></span>
 <a name="l00230"></a>00230 <span class="comment">            /*! \fn</span>
-<a name="l00231"></a>00231 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the distance between the atoms of the structure</span>
-<a name="l00232"></a>00232 <span class="comment">              * @param cutoff Threshold of closeness of the atoms to be considered as bonded</span>
-<a name="l00233"></a>00233 <span class="comment">              * @param model_index In the case that the structure has multiple model (multiple coordinates for atoms, such as pdb) this arguments indicates the desired model index</span>
+<a name="l00231"></a>00231 <span class="comment">              * A function to build a structure from a single topology file</span>
+<a name="l00232"></a>00232 <span class="comment">              * Imports data from topology file data structure into central data structure</span>
+<a name="l00233"></a>00233 <span class="comment">              * @param topology_file_path Path to a topology file</span>
 <a name="l00234"></a>00234 <span class="comment">              */</span>
-<a name="l00235"></a>00235             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abde3650780c2dfc634759831608acfee">BuildStructureByDistance</a>(<span class="keywordtype">double</span> cutoff = <a class="code" href="../../d0/ddd/namespacegmml.html#ab59fda1280ba2ebcac3f2788f0fc3a2e">gmml::dCutOff</a>, <span class="keywordtype">int</span> model_index = 0);<span class="comment"></span>
+<a name="l00235"></a>00235             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0aef6464ea486b4b9dae5308e9957214">BuildAssemblyFromTopologyFile</a>(std::string topology_file_path);<span class="comment"></span>
 <a name="l00236"></a>00236 <span class="comment">            /*! \fn</span>
-<a name="l00237"></a>00237 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in the original file</span>
-<a name="l00238"></a>00238 <span class="comment">              */</span>
-<a name="l00239"></a>00239             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775">BuildStructureByOriginalFileBondingInformation</a>();<span class="comment"></span>
-<a name="l00240"></a>00240 <span class="comment">            /*! \fn</span>
-<a name="l00241"></a>00241 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
-<a name="l00242"></a>00242 <span class="comment">              * the original file in the case that the original file is a pdb file</span>
-<a name="l00243"></a>00243 <span class="comment">              */</span>
-<a name="l00244"></a>00244             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a85910fffc9a818c16b19cb00d80cce84">BuildStructureByPDBFileInformation</a>();<span class="comment"></span>
-<a name="l00245"></a>00245 <span class="comment">            /*! \fn</span>
-<a name="l00246"></a>00246 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
-<a name="l00247"></a>00247 <span class="comment">              * the original file in the case that the original file is a topology file</span>
-<a name="l00248"></a>00248 <span class="comment">              */</span>
-<a name="l00249"></a>00249             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aee785d978f23420bd1d26f735f1a849b">BuildStructureByTOPFileInformation</a>();<span class="comment"></span>
-<a name="l00250"></a>00250 <span class="comment">            /*! \fn</span>
-<a name="l00251"></a>00251 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
-<a name="l00252"></a>00252 <span class="comment">              * the original file in the case that the original file is a lib file</span>
+<a name="l00237"></a>00237 <span class="comment">              * A function to build a structure from a single library file</span>
+<a name="l00238"></a>00238 <span class="comment">              * Imports data from library file data structure into central data structure</span>
+<a name="l00239"></a>00239 <span class="comment">              * @param library_file_path Path to a library file</span>
+<a name="l00240"></a>00240 <span class="comment">              */</span>
+<a name="l00241"></a>00241             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f">BuildAssemblyFromLibraryFile</a>(std::string library_file_path);<span class="comment"></span>
+<a name="l00242"></a>00242 <span class="comment">            /*! \fn</span>
+<a name="l00243"></a>00243 <span class="comment">              * A function to build a structure from a combination of a topology file and its corresponding coordinate file</span>
+<a name="l00244"></a>00244 <span class="comment">              * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file</span>
+<a name="l00245"></a>00245 <span class="comment">              * @param topology_file_path Path to a topology file</span>
+<a name="l00246"></a>00246 <span class="comment">              * @param coordinate_file_path Path to a coordinate file corresponds to the given topology file</span>
+<a name="l00247"></a>00247 <span class="comment">              */</span>
+<a name="l00248"></a>00248             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afe191d56bb8c2e3d45034f203e7b0482">BuildAssemblyFromTopologyCoordinateFile</a>(std::string topology_file_path, std::string coordinate_file_path);<span class="comment"></span>
+<a name="l00249"></a>00249 <span class="comment">            /*! \fn</span>
+<a name="l00250"></a>00250 <span class="comment">              * A function to build a structure from a single prep file</span>
+<a name="l00251"></a>00251 <span class="comment">              * Imports data from prep file data structure into central data structure</span>
+<a name="l00252"></a>00252 <span class="comment">              * @param prep_file_path Path to a prep file</span>
 <a name="l00253"></a>00253 <span class="comment">              */</span>
-<a name="l00254"></a>00254             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31">BuildStructureByLIBFileInformation</a>();<span class="comment"></span>
+<a name="l00254"></a>00254             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f">BuildAssemblyFromPrepFile</a>(std::string prep_file_path);<span class="comment"></span>
 <a name="l00255"></a>00255 <span class="comment">            /*! \fn</span>
-<a name="l00256"></a>00256 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
-<a name="l00257"></a>00257 <span class="comment">              * the original file in the case that the original file is a prep file</span>
+<a name="l00256"></a>00256 <span class="comment">              * A function to build a pdb file structure from the current assembly object</span>
+<a name="l00257"></a>00257 <span class="comment">              * Exports data from assembly data structure into pdb file structure</span>
 <a name="l00258"></a>00258 <span class="comment">              */</span>
-<a name="l00259"></a>00259             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c">BuildStructureByPrepFileInformation</a>();<span class="comment"></span>
-<a name="l00260"></a>00260 <span class="comment">            /*! \fn</span>
-<a name="l00261"></a>00261 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
-<a name="l00262"></a>00262 <span class="comment">              * the given database files</span>
-<a name="l00263"></a>00263 <span class="comment">              * @param types List of types of the database files</span>
-<a name="l00264"></a>00264 <span class="comment">              * @param file_paths List of the database file paths</span>
-<a name="l00265"></a>00265 <span class="comment">              */</span>
-<a name="l00266"></a>00266             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa">BuildStructureByDatabaseFilesBondingInformation</a>(std::vector&lt;gmml::InputFileType&gt; types, std::vector&lt;std::string&gt; file_paths);<span class="comment"></span>
-<a name="l00267"></a>00267 <span class="comment">            /*! \fn</span>
-<a name="l00268"></a>00268 <span class="comment">              * A functions that extracts all atoms of an assembly</span>
-<a name="l00269"></a>00269 <span class="comment">              * @return Vector of atoms all in the current object of assembly</span>
+<a name="l00259"></a>00259             <a class="code" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html">PdbFileSpace::PdbFile</a>* <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a38f79a994ba7aab4bb75b4b0a3efdcbc">BuildPdbFileStructureFromAssembly</a>();
+<a name="l00260"></a>00260 
+<a name="l00261"></a>00261             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a4d3bf06325540ce1b691065c79ac50a4">ExtractPdbModelCardFromAssembly</a>(<a class="code" href="../../d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html">PdbFileSpace::PdbModelResidueSet</a>* residue_set, <span class="keywordtype">int</span> &amp;serial_number, <span class="keywordtype">int</span> &amp;sequence_number, <span class="keywordtype">int</span> model_number);<span class="comment"></span>
+<a name="l00262"></a>00262 <span class="comment">            /*! \fn</span>
+<a name="l00263"></a>00263 <span class="comment">              * A function to extract bonds from the current assembly object</span>
+<a name="l00264"></a>00264 <span class="comment">              * @param inserted_bond_types Bond types that have been already detected in the assembly structure</span>
+<a name="l00265"></a>00265 <span class="comment">              * @param assembly_atom A source atom in a bond in the assembly structure</span>
+<a name="l00266"></a>00266 <span class="comment">              * @param neighbor Second atom in a bond which is a neighbor of assembly_atom</span>
+<a name="l00267"></a>00267 <span class="comment">              * @param bonds All known bonds from parameter file</span>
+<a name="l00268"></a>00268 <span class="comment">              * @param bond_type_counter A counter that indicates the number of bond types that have been already detected and also determines the index associated with it</span>
+<a name="l00269"></a>00269 <span class="comment">              * @param topology_file Output topology file structure that the detected bond types belong to</span>
 <a name="l00270"></a>00270 <span class="comment">              */</span>
-<a name="l00271"></a>00271             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af68de2343681808602a4120beeb61f8c">AtomVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a958d19487a0d2b664520ada15ba899b0">GetAllAtomsOfAssembly</a>();
-<a name="l00272"></a>00272 <span class="comment"></span>
-<a name="l00273"></a>00273 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00274"></a>00274 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
-<a name="l00275"></a>00275 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00276"></a>00276 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00277"></a>00277 <span class="comment">              * A function to print out the assembly contents in a structural format</span>
-<a name="l00278"></a>00278 <span class="comment">              * Print out the information in a defined structure</span>
-<a name="l00279"></a>00279 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
+<a name="l00271"></a>00271             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7dcf04f803ccebe049ddf393f7de5bee">ExtractTopologyBondTypesFromAssembly</a>(std::vector&lt;std::vector&lt;std::string&gt; &gt; &amp;inserted_bond_types, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* assembly_atom, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor,
+<a name="l00272"></a>00272                                                       <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ace5d51f097fab520937349bd684e7b59">ParameterFileSpace::ParameterFile::BondMap</a> &amp;bonds, <span class="keywordtype">int</span> &amp;bond_type_counter, <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html">TopologyFileSpace::TopologyFile</a>* topology_file);<span class="comment"></span>
+<a name="l00273"></a>00273 <span class="comment">            /*! \fn</span>
+<a name="l00274"></a>00274 <span class="comment">              * A function to extract bond types from the current assembly object</span>
+<a name="l00275"></a>00275 <span class="comment">              * @param inserted_bonds Bonds that have been already detected in the assembly structure</span>
+<a name="l00276"></a>00276 <span class="comment">              * @param inserted_bond_types Bond types that have been already detected in the assembly structure</span>
+<a name="l00277"></a>00277 <span class="comment">              * @param assembly_atom A source atom in a bond in the assembly structure</span>
+<a name="l00278"></a>00278 <span class="comment">              * @param neighbor Second atom in a bond which is a neighbor of assembly_atom</span>
+<a name="l00279"></a>00279 <span class="comment">              * @param topology_file Output topology file structure that the detected bond types belong to</span>
 <a name="l00280"></a>00280 <span class="comment">              */</span>
-<a name="l00281"></a>00281             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92">Print</a>(std::ostream&amp; out = std::cout);
-<a name="l00282"></a>00282 
-<a name="l00283"></a>00283         <span class="keyword">private</span>:<span class="comment"></span>
-<a name="l00284"></a>00284 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00285"></a>00285 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
-<a name="l00286"></a>00286 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00287"></a>00287 <span class="comment"></span>            std::string name_;                              <span class="comment">/*!&lt; Assembly name &gt;*/</span>
-<a name="l00288"></a>00288             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a> assemblies_;                     <span class="comment">/*!&lt; List of assemblies that may involved in a big structure as a new assembly &gt;*/</span>
-<a name="l00289"></a>00289             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a> residues_;                        <span class="comment">/*!&lt; List of residues involved in the current object of assembly &gt;*/</span>
-<a name="l00290"></a>00290             std::string chemical_type_;                     <span class="comment">/*!&lt; A descriptor for the chemical type of the current object of assembly &gt;*/</span>
-<a name="l00291"></a>00291             <span class="keywordtype">int</span> sequence_number_;                           <span class="comment">/*!&lt; An integer number to indicates sequence of importing the current assembly &gt;*/</span>
-<a name="l00292"></a>00292             <span class="keywordtype">double</span> total_mass_;                             <span class="comment">/*!&lt; Total mass of the assembly &gt;*/</span>
-<a name="l00293"></a>00293             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_mass_;           <span class="comment">/*!&lt; Center of mass of the assembly &gt;*/</span>
-<a name="l00294"></a>00294             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_geometry_;       <span class="comment">/*!&lt; Center of geometry of the assembly &gt;*/</span>
-<a name="l00295"></a>00295             std::string description_;                       <span class="comment">/*!&lt; Short description for the current assembly &gt;*/</span>
-<a name="l00296"></a>00296             std::string source_file_;                       <span class="comment">/*!&lt; File name that the current assembly has been built upon &gt;*/</span>
-<a name="l00297"></a>00297             <a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> source_file_type_;          <span class="comment">/*!&lt; Type of the file that the current assembly has been built upon &gt;*/</span>
-<a name="l00298"></a>00298 
-<a name="l00299"></a>00299     };
-<a name="l00300"></a>00300 }
-<a name="l00301"></a>00301 
-<a name="l00302"></a>00302 <span class="preprocessor">#endif // ASSEMBLY_HPP</span>
+<a name="l00281"></a>00281             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac28387d6cce3f5fba8b086b574934073">ExtractTopologyBondsFromAssembly</a>(std::vector&lt;std::vector&lt;std::string&gt; &gt; &amp;inserted_bonds, std::vector&lt;std::vector&lt;std::string&gt; &gt; &amp;inserted_bond_tyoes,
+<a name="l00282"></a>00282                                                   <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* assembly_atom, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor, <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html">TopologyFileSpace::TopologyFile</a>* topology_file);
+<a name="l00283"></a>00283 <span class="comment"></span>
+<a name="l00284"></a>00284 <span class="comment">            /*! \fn</span>
+<a name="l00285"></a>00285 <span class="comment">              * A function to build a prep file structure from the current assembly object</span>
+<a name="l00286"></a>00286 <span class="comment">              * Exports data from assembly data structure into prep file structure</span>
+<a name="l00287"></a>00287 <span class="comment">              */</span>
+<a name="l00288"></a>00288             <a class="code" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html">PrepFileSpace::PrepFile</a>* <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7">BuildPrepFileStructureFromAssembly</a>();<span class="comment"></span>
+<a name="l00289"></a>00289 <span class="comment">            /*! \fn</span>
+<a name="l00290"></a>00290 <span class="comment">              * A function to build a topology file structure from the current assembly object</span>
+<a name="l00291"></a>00291 <span class="comment">              * Exports data from assembly data structure into topology file structure</span>
+<a name="l00292"></a>00292 <span class="comment">              */</span>
+<a name="l00293"></a>00293             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html">TopologyFileSpace::TopologyFile</a>* <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754">BuildTopologyFileStructureFromAssembly</a>(std::string parameter_file_path);<span class="comment"></span>
+<a name="l00294"></a>00294 <span class="comment">            /*! \fn</span>
+<a name="l00295"></a>00295 <span class="comment">              * A function to build agnle types of topology file structure from the current assembly object</span>
+<a name="l00296"></a>00296 <span class="comment">              * Exports data from assembly data structure to generate topology atom types</span>
+<a name="l00297"></a>00297 <span class="comment">              * @param assembly_atom A source atom in an angle in the assembly structure</span>
+<a name="l00298"></a>00298 <span class="comment">              * @param neighbor Second atom in an angle which is a neighbor of assembly_atom</span>
+<a name="l00299"></a>00299 <span class="comment">              * @param neighbor_of_neighbor Third atom in an angle which is a neighbor of neighbor atom and it is not identical to assmebly_atom</span>
+<a name="l00300"></a>00300 <span class="comment">              * @param inserted_angle_types Angle types that have been already detected in an assembly structure</span>
+<a name="l00301"></a>00301 <span class="comment">              * @param angle_type_counter A counter that indicates the number of angle types that have been already detected and also determines the index associated with it</span>
+<a name="l00302"></a>00302 <span class="comment">              * @param topology_file Output topology file structure that the detected angle types belong to</span>
+<a name="l00303"></a>00303 <span class="comment">              * @param angles All known angles from parameter file</span>
+<a name="l00304"></a>00304 <span class="comment">              */</span>
+<a name="l00305"></a>00305             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a093a7e625df78829c8d37d53186fadb9">ExtractTopologyAngleTypesFromAssembly</a>(<a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* assembly_atom, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor_of_neighbor,
+<a name="l00306"></a>00306                                                        std::vector&lt;std::vector&lt;std::string&gt; &gt; &amp;inserted_angle_types,
+<a name="l00307"></a>00307                                                        <span class="keywordtype">int</span> &amp;angle_type_counter, <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html">TopologyFileSpace::TopologyFile</a>* topology_file,
+<a name="l00308"></a>00308                                                        <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a0ad2b68f8f475f9fcb92f34d24dbd37b">ParameterFileSpace::ParameterFile::AngleMap</a> &amp;angles);<span class="comment"></span>
+<a name="l00309"></a>00309 <span class="comment">            /*! \fn</span>
+<a name="l00310"></a>00310 <span class="comment">              * A function to build agnle types of topology file structure from the current assembly object</span>
+<a name="l00311"></a>00311 <span class="comment">              * Exports data from assembly data structure to generate topology atom types</span>
+<a name="l00312"></a>00312 <span class="comment">              * @param assembly_atom A source atom in an angle in the assembly structure</span>
+<a name="l00313"></a>00313 <span class="comment">              * @param neighbor Second atom in an angle which is a neighbor of assembly_atom</span>
+<a name="l00314"></a>00314 <span class="comment">              * @param neighbor_of_neighbor Third atom in an angle which is a neighbor of neighbor atom and it is not identical to assmebly_atom</span>
+<a name="l00315"></a>00315 <span class="comment">              * @param inserted_angles Angles that have been already detected in an assembly structure</span>
+<a name="l00316"></a>00316 <span class="comment">              * @param inserted_angle_types Angle types that have been already detected in an assembly structure</span>
+<a name="l00317"></a>00317 <span class="comment">              * @param angle_type_counter A counter that indicates the number of angle types that have been already detected and also determines the index associated with it</span>
+<a name="l00318"></a>00318 <span class="comment">              * @param topology_file Output topology file structure that the detected angle types belong to</span>
+<a name="l00319"></a>00319 <span class="comment">              */</span>
+<a name="l00320"></a>00320             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af4530efa082a596c31e1e437f779a4bc">ExtractTopologyAnglesFromAssembly</a>(<a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* assembly_atom, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor_of_neighbor,
+<a name="l00321"></a>00321                                                              std::vector&lt;std::vector&lt;std::string&gt; &gt; &amp;inserted_angles,
+<a name="l00322"></a>00322                                                              std::vector&lt;std::vector&lt;std::string&gt; &gt; &amp;inserted_angle_types, <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html">TopologyFileSpace::TopologyFile</a>* topology_file);<span class="comment"></span>
+<a name="l00323"></a>00323 <span class="comment">            /*! \fn</span>
+<a name="l00324"></a>00324 <span class="comment">              * A function to build agnle types of topology file structure from the current assembly object</span>
+<a name="l00325"></a>00325 <span class="comment">              * Exports data from assembly data structure to generate topology atom types</span>
+<a name="l00326"></a>00326 <span class="comment">              * @param assembly_atom A source atom in a dihedral in the assembly structure</span>
+<a name="l00327"></a>00327 <span class="comment">              * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom</span>
+<a name="l00328"></a>00328 <span class="comment">              * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not identical to assmebly_atom</span>
+<a name="l00329"></a>00329 <span class="comment">              * @param neighbor_of_neighbor_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom</span>
+<a name="l00330"></a>00330 <span class="comment">              * @param inserted_dihedrals_types Dihedral types that have been already detected in an assembly structure</span>
+<a name="l00331"></a>00331 <span class="comment">              * @param dihedral_type_counter A counter that indicates the number of dihedral types that have been already detected and also determines the index associated with it</span>
+<a name="l00332"></a>00332 <span class="comment">              * @param topology_file Output topology file structure that the detected angle types belong to</span>
+<a name="l00333"></a>00333 <span class="comment">              * @param dihedrals All known dihedrals from parameter file</span>
+<a name="l00334"></a>00334 <span class="comment">              */</span>
+<a name="l00335"></a>00335             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a573bad6fc7392fdd59059e25c5ad18b8">ExtractTopologyDihedralTypesFromAssembly</a>(<a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* assembly_atom, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor_of_neighbor, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor_of_neighbor_neighbor,
+<a name="l00336"></a>00336                                                        std::vector&lt;std::string&gt; &amp;inserted_dihedral_types,
+<a name="l00337"></a>00337                                                        <span class="keywordtype">int</span> &amp;dihedral_type_counter, <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html">TopologyFileSpace::TopologyFile</a>* topology_file,
+<a name="l00338"></a>00338                                                        <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">ParameterFileSpace::ParameterFile::DihedralMap</a> &amp;dihedrals);<span class="comment"></span>
+<a name="l00339"></a>00339 <span class="comment">            /*! \fn</span>
+<a name="l00340"></a>00340 <span class="comment">              * A function to build agnle types of topology file structure from the current assembly object</span>
+<a name="l00341"></a>00341 <span class="comment">              * Exports data from assembly data structure to generate topology atom types</span>
+<a name="l00342"></a>00342 <span class="comment">              * @param assembly_atom A source atom in a dihedral in the assembly structure</span>
+<a name="l00343"></a>00343 <span class="comment">              * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom</span>
+<a name="l00344"></a>00344 <span class="comment">              * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not identical to assmebly_atom</span>
+<a name="l00345"></a>00345 <span class="comment">              * @param neighbor_of_neighbor_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom</span>
+<a name="l00346"></a>00346 <span class="comment">              * @param inserted_dihedrals Dihedrals that have been already detected in an assembly structure</span>
+<a name="l00347"></a>00347 <span class="comment">              * @param inserted_dihedral_types Dihedral types that have been already detected in an assembly structure</span>
+<a name="l00348"></a>00348 <span class="comment">              * @param dihedrals All known dihedrals from parameter file</span>
+<a name="l00349"></a>00349 <span class="comment">              * @param topology_file Output topology file structure that the detected angle types belong to</span>
+<a name="l00350"></a>00350 <span class="comment">              */</span>
+<a name="l00351"></a>00351             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ab2f5da33467d193cd5e000bef5a3bab8">ExtractTopologyDihedralsFromAssembly</a>(<a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* assembly_atom, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor_of_neighbor, <a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html">Atom</a>* neighbor_of_neighbor_neighbor,
+<a name="l00352"></a>00352                                                              std::vector&lt;std::vector&lt;std::string&gt; &gt; &amp;inserted_dihedrals, std::vector&lt;std::string&gt; &amp;inserted_dihedral_types,
+<a name="l00353"></a>00353                                                              <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">ParameterFileSpace::ParameterFile::DihedralMap</a> &amp;dihedrals,
+<a name="l00354"></a>00354                                                              <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html">TopologyFileSpace::TopologyFile</a>* topology_file);
+<a name="l00355"></a>00355 <span class="comment"></span>
+<a name="l00356"></a>00356 <span class="comment">            /*! \fn</span>
+<a name="l00357"></a>00357 <span class="comment">              * A function to build a coordinate file structure from the current assembly object</span>
+<a name="l00358"></a>00358 <span class="comment">              * Exports data from assembly data structure into coordinate file structure</span>
+<a name="l00359"></a>00359 <span class="comment">              */</span>
+<a name="l00360"></a>00360             <a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html">CoordinateFileSpace::CoordinateFile</a>* <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0a7b64df545c5628a1590f279e1e0a3a">BuildCoordinateFileStructureFromAssembly</a>();<span class="comment"></span>
+<a name="l00361"></a>00361 <span class="comment">            /*! \fn</span>
+<a name="l00362"></a>00362 <span class="comment">              * A function to build a library file structure from the current assembly object</span>
+<a name="l00363"></a>00363 <span class="comment">              * Exports data from assembly data structure into library file structure</span>
+<a name="l00364"></a>00364 <span class="comment">              */</span>
+<a name="l00365"></a>00365             <a class="code" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html">LibraryFileSpace::LibraryFile</a>* <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8">BuildLibraryFileStructureFromAssembly</a>();
+<a name="l00366"></a>00366 <span class="comment"></span>
+<a name="l00367"></a>00367 <span class="comment">            /*! \fn</span>
+<a name="l00368"></a>00368 <span class="comment">              * A function to build a graph structure (bonding information) for the current object of central data structure</span>
+<a name="l00369"></a>00369 <span class="comment">              * @param building_option A building option that can be selected from BuildingStructureOption enumerator</span>
+<a name="l00370"></a>00370 <span class="comment">              * @param options List of additional options that can be defined by user</span>
+<a name="l00371"></a>00371 <span class="comment">              * @param file_paths In the case that building structure based on the information of database files is selected this argument is a list of database file names</span>
+<a name="l00372"></a>00372 <span class="comment">              */</span>
+<a name="l00373"></a>00373             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a">BuildStructure</a>(<a class="code" href="../../d0/ddd/namespacegmml.html#ac121f8749ea6c92c0730b2eb29d385ba">gmml::BuildingStructureOption</a> building_option, std::vector&lt;std::string&gt; options, std::vector&lt;std::string&gt; file_paths);<span class="comment"></span>
+<a name="l00374"></a>00374 <span class="comment">            /*! \fn</span>
+<a name="l00375"></a>00375 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the distance between the atoms of the structure</span>
+<a name="l00376"></a>00376 <span class="comment">              * @param cutoff Threshold of closeness of the atoms to be considered as bonded</span>
+<a name="l00377"></a>00377 <span class="comment">              * @param model_index In the case that the structure has multiple model (multiple coordinates for atoms, such as pdb) this arguments indicates the desired model index</span>
+<a name="l00378"></a>00378 <span class="comment">              */</span>
+<a name="l00379"></a>00379             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abde3650780c2dfc634759831608acfee">BuildStructureByDistance</a>(<span class="keywordtype">double</span> cutoff = <a class="code" href="../../d0/ddd/namespacegmml.html#ab59fda1280ba2ebcac3f2788f0fc3a2e">gmml::dCutOff</a>, <span class="keywordtype">int</span> model_index = 0);<span class="comment"></span>
+<a name="l00380"></a>00380 <span class="comment">            /*! \fn</span>
+<a name="l00381"></a>00381 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in the original file</span>
+<a name="l00382"></a>00382 <span class="comment">              */</span>
+<a name="l00383"></a>00383             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775">BuildStructureByOriginalFileBondingInformation</a>();<span class="comment"></span>
+<a name="l00384"></a>00384 <span class="comment">            /*! \fn</span>
+<a name="l00385"></a>00385 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
+<a name="l00386"></a>00386 <span class="comment">              * the original file in the case that the original file is a pdb file</span>
+<a name="l00387"></a>00387 <span class="comment">              */</span>
+<a name="l00388"></a>00388             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a85910fffc9a818c16b19cb00d80cce84">BuildStructureByPDBFileInformation</a>();<span class="comment"></span>
+<a name="l00389"></a>00389 <span class="comment">            /*! \fn</span>
+<a name="l00390"></a>00390 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
+<a name="l00391"></a>00391 <span class="comment">              * the original file in the case that the original file is a topology file</span>
+<a name="l00392"></a>00392 <span class="comment">              */</span>
+<a name="l00393"></a>00393             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aee785d978f23420bd1d26f735f1a849b">BuildStructureByTOPFileInformation</a>();<span class="comment"></span>
+<a name="l00394"></a>00394 <span class="comment">            /*! \fn</span>
+<a name="l00395"></a>00395 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
+<a name="l00396"></a>00396 <span class="comment">              * the original file in the case that the original file is a lib file</span>
+<a name="l00397"></a>00397 <span class="comment">              */</span>
+<a name="l00398"></a>00398             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31">BuildStructureByLIBFileInformation</a>();<span class="comment"></span>
+<a name="l00399"></a>00399 <span class="comment">            /*! \fn</span>
+<a name="l00400"></a>00400 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
+<a name="l00401"></a>00401 <span class="comment">              * the original file in the case that the original file is a prep file</span>
+<a name="l00402"></a>00402 <span class="comment">              */</span>
+<a name="l00403"></a>00403             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c">BuildStructureByPrepFileInformation</a>();<span class="comment"></span>
+<a name="l00404"></a>00404 <span class="comment">            /*! \fn</span>
+<a name="l00405"></a>00405 <span class="comment">              * A function to build a graph structure for the current object of central data structure based on the bonding information provided in</span>
+<a name="l00406"></a>00406 <span class="comment">              * the given database files</span>
+<a name="l00407"></a>00407 <span class="comment">              * @param types List of types of the database files</span>
+<a name="l00408"></a>00408 <span class="comment">              * @param file_paths List of the database file paths</span>
+<a name="l00409"></a>00409 <span class="comment">              */</span>
+<a name="l00410"></a>00410             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa">BuildStructureByDatabaseFilesBondingInformation</a>(std::vector&lt;gmml::InputFileType&gt; types, std::vector&lt;std::string&gt; file_paths);            <span class="comment"></span>
+<a name="l00411"></a>00411 <span class="comment">            /*! \fn</span>
+<a name="l00412"></a>00412 <span class="comment">              * A function to calculate the center of geometry of the assembly</span>
+<a name="l00413"></a>00413 <span class="comment">              */</span>
+<a name="l00414"></a>00414             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af25f634270ea6905de1ff32a87a604d1">CalculateCenterOfGeometry</a>();<span class="comment"></span>
+<a name="l00415"></a>00415 <span class="comment">            /*! \fn</span>
+<a name="l00416"></a>00416 <span class="comment">              * A function that counts the number of atoms in all assemblies and residues of the assembly</span>
+<a name="l00417"></a>00417 <span class="comment">              * @return counter Number of atoms in all assemblies and residues in the current object of assembly</span>
+<a name="l00418"></a>00418 <span class="comment">              */</span>
+<a name="l00419"></a>00419             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac6c444a735d9228ed323d4de68156f56">CountNumberOfAtoms</a>();            <span class="comment"></span>
+<a name="l00420"></a>00420 <span class="comment">            /*! \fn</span>
+<a name="l00421"></a>00421 <span class="comment">              * A function that counts the number of atoms types in all assemblies and residues of the assembly</span>
+<a name="l00422"></a>00422 <span class="comment">              * @return counter Number of atoms in all assemblies and residues in the current object of assembly</span>
+<a name="l00423"></a>00423 <span class="comment">              */</span>
+<a name="l00424"></a>00424             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2fc9be7c429bb03493b62657f198f01b">CountNumberOfAtomTypes</a>();<span class="comment"></span>
+<a name="l00425"></a>00425 <span class="comment">            /*! \fn</span>
+<a name="l00426"></a>00426 <span class="comment">              * A function that counts the number of residues in all assemblies and residues of the assembly</span>
+<a name="l00427"></a>00427 <span class="comment">              * @return type_list Number of residues in all assemblies and residues in the current object of assembly</span>
+<a name="l00428"></a>00428 <span class="comment">              */</span>
+<a name="l00429"></a>00429             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ab3d581760d9cf7c8bd28f4ec7900511f">CountNumberOfResidues</a>();<span class="comment"></span>
+<a name="l00430"></a>00430 <span class="comment">            /*! \fn</span>
+<a name="l00431"></a>00431 <span class="comment">              * A function that counts the number of bonds including hydrogen in all assemblies and residues of the assembly</span>
+<a name="l00432"></a>00432 <span class="comment">              * @return counter Number of bonds including hydrogen in all assemblies and residues in the current object of assembly</span>
+<a name="l00433"></a>00433 <span class="comment">              */</span>
+<a name="l00434"></a>00434             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a4c22c9936b55c89de521f7e91adb3ab5">CountNumberOfBondsIncludingHydrogen</a>();<span class="comment"></span>
+<a name="l00435"></a>00435 <span class="comment">            /*! \fn</span>
+<a name="l00436"></a>00436 <span class="comment">              * A function that counts the number of bonds excluding hydrogen in all assemblies and residues of the assembly</span>
+<a name="l00437"></a>00437 <span class="comment">              * @return counter Number of bonds excluding hydrogen in all assemblies and residues in the current object of assembly</span>
+<a name="l00438"></a>00438 <span class="comment">              */</span>
+<a name="l00439"></a>00439             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3ad0d3000338d24748fa8f8f71922729">CountNumberOfBondsExcludingHydrogen</a>();<span class="comment"></span>
+<a name="l00440"></a>00440 <span class="comment">            /*! \fn</span>
+<a name="l00441"></a>00441 <span class="comment">              * A function that counts the number of bonds in all assemblies and residues of the assembly</span>
+<a name="l00442"></a>00442 <span class="comment">              * @return counter Number of bonds in all assemblies and residues in the current object of assembly</span>
+<a name="l00443"></a>00443 <span class="comment">              */</span>
+<a name="l00444"></a>00444             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a76974543820fd9e20148b9bf01f91214">CountNumberOfBonds</a>();<span class="comment"></span>
+<a name="l00445"></a>00445 <span class="comment">            /*! \fn</span>
+<a name="l00446"></a>00446 <span class="comment">              * A function that counts the number of bond types in all assemblies and residues of the assembly</span>
+<a name="l00447"></a>00447 <span class="comment">              * @return type_list Number of bond types in all assemblies and residues in the current object of assembly</span>
+<a name="l00448"></a>00448 <span class="comment">              */</span>
+<a name="l00449"></a>00449             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af882448268347c4fcafebf93123ad42e">CountNumberOfBondTypes</a>();<span class="comment"></span>
+<a name="l00450"></a>00450 <span class="comment">            /*! \fn</span>
+<a name="l00451"></a>00451 <span class="comment">              * A function that counts the number of angles including hydrogen in all assemblies and residues of the assembly</span>
+<a name="l00452"></a>00452 <span class="comment">              * @return counter Number of angles including hydrogen in all assemblies and residues in the current object of assembly</span>
+<a name="l00453"></a>00453 <span class="comment">              */</span>
+<a name="l00454"></a>00454             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3bebd452b4ac587b95f1010aacaf3c7a">CountNumberOfAnglesIncludingHydrogen</a>();<span class="comment"></span>
+<a name="l00455"></a>00455 <span class="comment">            /*! \fn</span>
+<a name="l00456"></a>00456 <span class="comment">              * A function that counts the number of angles excluding hydrogen in all assemblies and residues of the assembly</span>
+<a name="l00457"></a>00457 <span class="comment">              * @return counter Number of angles excluding hydrogen in all assemblies and residues in the current object of assembly</span>
+<a name="l00458"></a>00458 <span class="comment">              */</span>
+<a name="l00459"></a>00459             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a6b9fda43cffa86a1e1569638addd5c37">CountNumberOfAnglesExcludingHydrogen</a>();<span class="comment"></span>
+<a name="l00460"></a>00460 <span class="comment">            /*! \fn</span>
+<a name="l00461"></a>00461 <span class="comment">              * A function that counts the number of angles in all assemblies and residues of the assembly</span>
+<a name="l00462"></a>00462 <span class="comment">              * @return counter Number of angles in all assemblies and residues in the current object of assembly</span>
+<a name="l00463"></a>00463 <span class="comment">              */</span>
+<a name="l00464"></a>00464             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a760e5156a65315f5c606d10c308580f2">CountNumberOfAngles</a>();<span class="comment"></span>
+<a name="l00465"></a>00465 <span class="comment">            /*! \fn</span>
+<a name="l00466"></a>00466 <span class="comment">              * A function that counts the number of angle types in all assemblies and residues of the assembly</span>
+<a name="l00467"></a>00467 <span class="comment">              * @return type_list Number of angle types in all assemblies and residues in the current object of assembly</span>
+<a name="l00468"></a>00468 <span class="comment">              */</span>
+<a name="l00469"></a>00469             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae7b20fa3b8c9b40172cef97ba0c0b057">CountNumberOfAngleTypes</a>();<span class="comment"></span>
+<a name="l00470"></a>00470 <span class="comment">            /*! \fn</span>
+<a name="l00471"></a>00471 <span class="comment">              * A function that counts the number of dihedrals includig hydrogen in all assemblies and residues of the assembly</span>
+<a name="l00472"></a>00472 <span class="comment">              * @param parameter_file_path The path of the parameter file</span>
+<a name="l00473"></a>00473 <span class="comment">              * @return type_list Number of dihedrals including hydrogen in all assemblies and residues in the current object of assembly</span>
+<a name="l00474"></a>00474 <span class="comment">              */</span>
+<a name="l00475"></a>00475             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a850a0704296238817377a77974d18cf6">CountNumberOfDihedralsIncludingHydrogen</a>(std::string parameter_file_path);<span class="comment"></span>
+<a name="l00476"></a>00476 <span class="comment">            /*! \fn</span>
+<a name="l00477"></a>00477 <span class="comment">              * A function that counts the number of dihedrals excluding hydrogen in all assemblies and residues of the assembly</span>
+<a name="l00478"></a>00478 <span class="comment">              * @param parameter_file_path The path of the parameter file</span>
+<a name="l00479"></a>00479 <span class="comment">              * @return counter Number of dihedrals excluding hydrogen in all assemblies and residues in the current object of assembly</span>
+<a name="l00480"></a>00480 <span class="comment">              */</span>
+<a name="l00481"></a>00481             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#adf407da90839b50927db90993b7f0fa5">CountNumberOfDihedralsExcludingHydrogen</a>(std::string parameter_file_path);<span class="comment"></span>
+<a name="l00482"></a>00482 <span class="comment">            /*! \fn</span>
+<a name="l00483"></a>00483 <span class="comment">              * A function that counts the number of dihedrals in all assemblies and residues of the assembly</span>
+<a name="l00484"></a>00484 <span class="comment">              * @param parameter_file_path The path of the parameter file</span>
+<a name="l00485"></a>00485 <span class="comment">              * @return counter Number of dihedrals in all assemblies and residues in the current object of assembly</span>
+<a name="l00486"></a>00486 <span class="comment">              */</span>
+<a name="l00487"></a>00487             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae1487a90371162f6b80b4bfc842c7b08">CountNumberOfDihedrals</a>(std::string parameter_file_path);
+<a name="l00488"></a>00488             std::vector&lt;std::vector&lt;std::string&gt; &gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#acb7710885e181efa1148b26cb407b4c3">CreateAllAtomTypePermutationsforDihedralType</a>(std::string atom_type1, std::string atom_type2, std::string atom_type3, std::string atom_type4);
+<a name="l00489"></a>00489             std::vector&lt;std::vector&lt;std::string&gt; &gt; <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a2edc8569f41f22e3b545c98dc4686969">CreateAllAtomTypePermutationsforImproperDihedralType</a>(std::string atom_type1, std::string atom_type2, std::string atom_type3, std::string atom_type4);<span class="comment"></span>
+<a name="l00490"></a>00490 <span class="comment">            /*! \fn</span>
+<a name="l00491"></a>00491 <span class="comment">              * A function that counts the number of dihedral types in all assemblies and residues of the assembly</span>
+<a name="l00492"></a>00492 <span class="comment">              * @param parameter_file_path The path of the parameter file</span>
+<a name="l00493"></a>00493 <span class="comment">              * @return type_list Number of dihedral types in all assemblies and residues in the current object of assembly</span>
+<a name="l00494"></a>00494 <span class="comment">              */</span>
+<a name="l00495"></a>00495             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a125e29a902105db2139ec4b0addc26a5">CountNumberOfDihedralTypes</a>(std::string parameter_file_path);<span class="comment"></span>
+<a name="l00496"></a>00496 <span class="comment">            /*! \fn</span>
+<a name="l00497"></a>00497 <span class="comment">              * A function that returns all atoms with at least three neighbors in all assemblies and residues of the assembly</span>
+<a name="l00498"></a>00498 <span class="comment">              * @return atoms_with_at_least_three_neighbors A list of atoms with at least three neighbors in all assemblies and residues in the current object of assembly</span>
+<a name="l00499"></a>00499 <span class="comment">              */</span>
+<a name="l00500"></a>00500             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#af68de2343681808602a4120beeb61f8c">AtomVector</a> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a4dc4d7b41858a3e016514949f9bc49c8">GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors</a>();<span class="comment"></span>
+<a name="l00501"></a>00501 <span class="comment">            /*! \fn</span>
+<a name="l00502"></a>00502 <span class="comment">              * A function that counts the number of excluded atoms in all assemblies and residues of the assembly</span>
+<a name="l00503"></a>00503 <span class="comment">              * @return counter Number of excluded atoms in all assemblies and residues in the current object of assembly</span>
+<a name="l00504"></a>00504 <span class="comment">              */</span>
+<a name="l00505"></a>00505             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad3212ed55bac0ef647410ef93dccc122">CountNumberOfExcludedAtoms</a>();<span class="comment"></span>
+<a name="l00506"></a>00506 <span class="comment">            /*! \fn</span>
+<a name="l00507"></a>00507 <span class="comment">              * A function that counts the number of atoms in largest residue in all assemblies and residues of the assembly</span>
+<a name="l00508"></a>00508 <span class="comment">              * @return max Number of atoms in largest residue in all assemblies and residues in the current object of assembly</span>
+<a name="l00509"></a>00509 <span class="comment">              */</span>
+<a name="l00510"></a>00510             <span class="keywordtype">int</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a70c9b7e4a3d1f5c1e359536a764cfc4e">CountMaxNumberOfAtomsInLargestResidue</a>();
+<a name="l00511"></a>00511 
+<a name="l00512"></a>00512             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a77fdb37bd726d9a674095ce8d1895470">ClearAssembly</a>();<span class="comment"></span>
+<a name="l00513"></a>00513 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00514"></a>00514 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
+<a name="l00515"></a>00515 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00516"></a>00516 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00517"></a>00517 <span class="comment">              * A function to print out the assembly contents in a structural format</span>
+<a name="l00518"></a>00518 <span class="comment">              * Print out the information in a defined structure</span>
+<a name="l00519"></a>00519 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
+<a name="l00520"></a>00520 <span class="comment">              */</span>
+<a name="l00521"></a>00521             <span class="keywordtype">void</span> <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92">Print</a>(std::ostream&amp; out = std::cout);
+<a name="l00522"></a>00522 
+<a name="l00523"></a>00523         <span class="keyword">private</span>:<span class="comment"></span>
+<a name="l00524"></a>00524 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00525"></a>00525 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
+<a name="l00526"></a>00526 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00527"></a>00527 <span class="comment"></span>            std::string name_;                              <span class="comment">/*!&lt; Assembly name &gt;*/</span>
+<a name="l00528"></a>00528             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a25aee2403b443342962deaf53cd1d0b6">AssemblyVector</a> assemblies_;                     <span class="comment">/*!&lt; List of assemblies that may involved in a big structure as a new assembly &gt;*/</span>
+<a name="l00529"></a>00529             <a class="code" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ac2ba4639c27d3261a1cf310f1dd7f2ea">ResidueVector</a> residues_;                        <span class="comment">/*!&lt; List of residues involved in the current object of assembly &gt;*/</span>
+<a name="l00530"></a>00530             std::string chemical_type_;                     <span class="comment">/*!&lt; A descriptor for the chemical type of the current object of assembly &gt;*/</span>
+<a name="l00531"></a>00531             <span class="keywordtype">int</span> sequence_number_;                           <span class="comment">/*!&lt; An integer number to indicates sequence of importing the current assembly &gt;*/</span>
+<a name="l00532"></a>00532             <span class="keywordtype">double</span> total_mass_;                             <span class="comment">/*!&lt; Total mass of the assembly &gt;*/</span>
+<a name="l00533"></a>00533             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_mass_;           <span class="comment">/*!&lt; Center of mass of the assembly &gt;*/</span>
+<a name="l00534"></a>00534             <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a> center_of_geometry_;       <span class="comment">/*!&lt; Center of geometry of the assembly &gt;*/</span>
+<a name="l00535"></a>00535             std::string description_;                       <span class="comment">/*!&lt; Short description for the current assembly &gt;*/</span>
+<a name="l00536"></a>00536             std::string source_file_;                       <span class="comment">/*!&lt; File name that the current assembly has been built upon &gt;*/</span>
+<a name="l00537"></a>00537             <a class="code" href="../../d0/ddd/namespacegmml.html#aadef32827acef31652dd81dcebc0db1e">gmml::InputFileType</a> source_file_type_;          <span class="comment">/*!&lt; Type of the file that the current assembly has been built upon &gt;*/</span>
+<a name="l00538"></a>00538             <span class="keywordtype">int</span> model_index_;                               <span class="comment">/*!&lt; In case that there are more than one models for an assembly, this attribute indicated which model is the target model &gt;*/</span>
+<a name="l00539"></a>00539     };
+<a name="l00540"></a>00540 }
+<a name="l00541"></a>00541 
+<a name="l00542"></a>00542 <span class="preprocessor">#endif // ASSEMBLY_HPP</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -409,7 +648,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -422,7 +661,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d2/d9b/assembly_8hpp.html">assembly.hpp</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

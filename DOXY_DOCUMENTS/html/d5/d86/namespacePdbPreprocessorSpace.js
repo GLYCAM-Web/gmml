@@ -7,6 +7,7 @@ var namespacePdbPreprocessorSpace =
     [ "PdbPreprocessorHistidineMapping", "d9/d59/classPdbPreprocessorSpace_1_1PdbPreprocessorHistidineMapping.html", null ],
     [ "PdbPreprocessorMissingResidue", "df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html", null ],
     [ "PdbPreprocessorReplacedHydrogen", "d8/d53/classPdbPreprocessorSpace_1_1PdbPreprocessorReplacedHydrogen.html", null ],
+    [ "PdbPreprocessorResidueInfo", "db/d0c/classPdbPreprocessorSpace_1_1PdbPreprocessorResidueInfo.html", null ],
     [ "PdbPreprocessorUnrecognizedHeavyAtom", "d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html", null ],
     [ "PdbPreprocessorUnrecognizedResidue", "d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html", null ]
 ];

@@ -115,12 +115,17 @@ Public Types</h2></td></tr>
 <a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html">LibraryFileResidue</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a39cf56386432556d99b238eb26eb0629">ResidueMap</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a40ef2743edcb43209575df87f6fb8810">LibraryFile</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac391c4d9968da0802a007994f4a50789">LibraryFile</a> (const std::string &amp;lib_file)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a225870f6345a088dfeb63293359dc341">~LibraryFile</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a059051465b24d77e10341f80acdc09a5">GetFilePath</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a39cf56386432556d99b238eb26eb0629">ResidueMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818">GetResidues</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a map of residues including in the file mapped to the names of the residues.  <a href="#aa148eecab4be3b08b4426cf9b80f2818"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#abf3ebb1ef0bb81d9a1299d6f10cba153">GetAllResidueNames</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">gmml::ResidueNameMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a354d4e63b6fe6972e777c9a960323fc7">GetAllResidueNamesMap</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6056f8116b2dc97a12b7bb40c2c4de21">GetAllAtomNamesOfResidue</a> (std::string residue_name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a80b367a13da6133d7a7154952890aa20">SetPath</a> (std::string path)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af05c312687e8b9c644b452644c330da3">SetResidues</a> (<a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a39cf56386432556d99b238eb26eb0629">ResidueMap</a> residues)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a7c69b960e9bb5e16bdb3fd8cc71a08b6">Read</a> (std::ifstream &amp;in_file)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html">LibraryFileAtom</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a4a4f0093153eca92d1d89ba108b48ee5">ProcessAtom</a> (std::string &amp;line)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Process a line from the atom section of the file and return a new atom object.  <a href="#a4a4f0093153eca92d1d89ba108b48ee5"></a><br/></td></tr>
@@ -145,7 +150,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html#l00013">13</a> of file <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html">libraryfile.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html#l00014">14</a> of file <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html">libraryfile.hpp</a>.</p>
 </div><hr/><h2>Member Typedef Documentation</h2>
 <a class="anchor" id="a39cf56386432556d99b238eb26eb0629"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::ResidueMap" ref="a39cf56386432556d99b238eb26eb0629" args="" -->
 <div class="memitem">
@@ -158,17 +163,36 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html#l00022">22</a> of file <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html">libraryfile.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html#l00023">23</a> of file <a class="el" href="../../d6/d97/libraryfile_8hpp_source.html">libraryfile.hpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a40ef2743edcb43209575df87f6fb8810"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::LibraryFile" ref="a40ef2743edcb43209575df87f6fb8810" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a40ef2743edcb43209575df87f6fb8810">LibraryFile::LibraryFile</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00020">20</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">: path_(<span class="stringliteral">&quot;GMML-Generated&quot;</span>){}
+</pre></div>
+</div>
+</div>
 <a class="anchor" id="ac391c4d9968da0802a007994f4a50789"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::LibraryFile" ref="ac391c4d9968da0802a007994f4a50789" args="(const std::string &amp;lib_file)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac391c4d9968da0802a007994f4a50789">LibraryFile::LibraryFile</a> </td>
+          <td class="memname"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a40ef2743edcb43209575df87f6fb8810">LibraryFile::LibraryFile</a> </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>lib_file</em></td><td>)</td>
@@ -179,21 +203,49 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 <p>Close the parameter files </p>
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00020">20</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00022">22</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+
+<p>References <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00110">Read()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     path_ = lib_file;
     std::ifstream in_file;
-    <span class="keywordflow">try</span>
-    {
+    <span class="keywordflow">if</span>(std::ifstream(lib_file.c_str()))
         in_file.open(lib_file.c_str());
-    }
-    <span class="keywordflow">catch</span>(...)
+    <span class="keywordflow">else</span>
     {
-        <span class="keywordflow">throw</span> <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html">LibraryFileProcessingException</a>(__LINE__,<span class="stringliteral">&quot;File not found&quot;</span>);
+        <span class="keywordflow">throw</span> <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html">LibraryFileProcessingException</a>(__LINE__, <span class="stringliteral">&quot;Library file not found&quot;</span>);
     }
     <a class="code" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a7c69b960e9bb5e16bdb3fd8cc71a08b6">Read</a>(in_file);
     in_file.close();            <span class="comment">/// Close the parameter files</span>
 <span class="comment"></span>}
+</pre></div>
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac391c4d9968da0802a007994f4a50789_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac391c4d9968da0802a007994f4a50789_cgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac391c4d9968da0802a007994f4a50789_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac391c4d9968da0802a007994f4a50789_cgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a7c69b960e9bb5e16bdb3fd8cc71a08b6" title="LibraryFileSpace::LibraryFile::Read" alt="" coords="309,89,536,118"/><area shape="rect" id="node5" href="../../d0/ddd/namespacegmml.html#aa9f9a6ff7682c649cd9bc83fef689be0" title="gmml::RemoveQuotes" alt="" coords="943,37,1095,66"/><area shape="rect" id="node7" href="../../d0/ddd/namespacegmml.html#aea05f3085debf5ae3f7b4ead4cf73af9" title="gmml::RemoveSpaces" alt="" coords="661,36,816,65"/><area shape="rect" id="node9" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a4a4f0093153eca92d1d89ba108b48ee5" title="Process a line from the atom section of the file and return a new atom object." alt="" coords="601,89,876,118"/><area shape="rect" id="node12" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a45a6b253c156329f79b5bbb0113cc63b" title="Set the order of insertion of the current atom into its residue." alt="" coords="584,142,893,172"/><area shape="rect" id="node14" href="../../d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="695,196,783,225"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a225870f6345a088dfeb63293359dc341"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::~LibraryFile" ref="a225870f6345a088dfeb63293359dc341" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a225870f6345a088dfeb63293359dc341">LibraryFile::~LibraryFile</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00036">36</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{}
 </pre></div>
 </div>
 </div>
@@ -213,9 +265,11 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00536">536</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">567</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+<p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00606">ResolveAtomPertInfoSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00594">ResolveAtomSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00612">ResolveBoundBoxSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00633">ResolveChildSequenceSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00646">ResolveConnectivitySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00638">ResolveConnectSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00664">ResolveHierarchySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00669">ResolveNameSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">ResolvePositionSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00685">ResolveResidueConnectSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00695">ResolveResiduePdbSequenceNumberSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00690">ResolveResiduesSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00700">ResolveSolventCapSection()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00705">ResolveVelocitiesSection()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00547">Write()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out_stream &lt;&lt; <span class="stringliteral">&quot;!!index array str&quot;</span> &lt;&lt; endl;
     <span class="keywordflow">for</span>(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
@@ -248,7 +302,16 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_cgraph">
-<area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="339,5,637,35"/></map>
+<area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="887,456,1185,485"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa8ec7beb93a8eef0a346e74eb14ccade" title="LibraryFileSpace::LibraryFile::ResolveAtomPertInfoSection" alt="" coords="389,483,752,512"/><area shape="rect" id="node8" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="412,112,729,141"/><area shape="rect" id="node27" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="397,909,744,939"/><area shape="rect" id="node38" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a5937a056fd10323e51ea1b42ae6b2cfe" title="LibraryFileSpace::LibraryFile::ResolveChildSequenceSection" alt="" coords="384,536,757,565"/><area shape="rect" id="node41" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="391,696,751,725"/><area shape="rect" id="node49" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="403,1016,739,1045"/><area shape="rect" id="node56" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ab1bf388d464db7c8eeec94045a6ca0ba" title="LibraryFileSpace::LibraryFile::ResolveHierarchySection" alt="" coords="400,589,741,619"/><area shape="rect" id="node59" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a8065b902c600c86148457f2532363dfd" title="LibraryFileSpace::LibraryFile::ResolveNameSection" alt="" coords="409,643,732,672"/><area shape="rect" id="node62" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="404,749,737,779"/><area shape="rect" id="node75" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1392b1b06e5a2438a2f3f72b461cda79" title="LibraryFileSpace::LibraryFile::ResolveResidueConnectSection" alt="" coords="379,165,763,195"/><area shape="rect" id="node78" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a05f58eb185d979030274ab8f062a66b4" title="LibraryFileSpace::LibraryFile::ResolveResiduePdbSequenceNumberSection" alt="" coords="340,219,801,248"/><area shape="rect" id="node81" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a888c9e2d9f2c89e7541f2e91c60f01b2" title="LibraryFileSpace::LibraryFile::ResolveResiduesSection" alt="" coords="400,272,741,301"/><area shape="rect" id="node84" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aef3ea7be40137c9523c0c35978b2df7e" title="LibraryFileSpace::LibraryFile::ResolveSolventCapSection" alt="" coords="393,325,748,355"/><area shape="rect" id="node87" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac119e6a2f0409103ec1a732cdcf240b0" title="LibraryFileSpace::LibraryFile::ResolveVelocitiesSection" alt="" coords="399,379,743,408"/><area shape="rect" id="node10" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="885,509,1187,539"/><area shape="rect" id="node13" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53" title="Return an atom belonging to the residue by a given order number." alt="" coords="865,563,1207,592"/><area shape="rect" id="node15" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="895,5,1177,35"/><area shape="rect" id="node17" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#ad2280483bd91c6614c6d96299642da4d" title="LibraryFileSpace::LibraryFileAtom::GetType" alt="" coords="899,59,1173,88"/><area shape="rect" id="node19" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0df4a3bde4e5e4cd3ffa50b252036315" title="Return the residue index in the list of residues in the library file that the current atom belongs to..." alt="" coords="873,112,1199,141"/><area shape="rect" id="node21" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408" title="return atom index in the belonging residue" alt="" coords="881,324,1191,353"/><area shape="rect" id="node23" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a54b393d00ca248fd266da78ede8b3c77" title="Return atomic number of the atom." alt="" coords="869,165,1203,195"/><area shape="rect" id="node25" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a57443850821ca40f79064d25beb7d235" title="Return charge of the atom." alt="" coords="892,219,1180,248"/><area shape="rect" id="node30" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a6117e6eaf44af00149f743439c39f8f2" title="Return the box angle of the residue." alt="" coords="876,883,1196,912"/><area shape="rect" id="node32" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ab101a9f528beee33403889e40451a887" title="Return the box length of the residue." alt="" coords="873,936,1199,965"/><area shape="rect" id="node34" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#add51d869b0522850b2e79cd3e81ce128" title="Return the box width of the residue." alt="" coords="876,989,1196,1019"/><area shape="rect" id="node36" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a39250c7aae5809fb88667a6d1dc554ad" title="Return the box hight of the residue." alt="" coords="873,1043,1199,1072"/><area shape="rect" id="node46" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acc845febfadcb32eb170c61851e7d7ad" title="Return all bonded atom indices of the atom." alt="" coords="851,616,1221,645"/><area shape="rect" id="node52" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2435f62b867e1f653f7af667f477f8ca" title="Return the head atom index of the residue." alt="" coords="857,1096,1215,1125"/><area shape="rect" id="node54" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aeba0bdd7c4de0f60469d4ebb53ac814d" title="Return the tail atom index of the residue." alt="" coords="863,1149,1209,1179"/><area shape="rect" id="node67" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7e9c6c60e6ad1f823adb560254ea8889" title="Return position of the atom." alt="" coords="881,669,1191,699"/><area shape="rect" id="node69" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a55e182a5e7770b43f714ae369a162305" title="Geometry::Coordinate::GetX" alt="" coords="943,723,1129,752"/><area shape="rect" id="node71" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ac05b81bef24e96883627abcf1935b12a" title="Geometry::Coordinate::GetY" alt="" coords="943,776,1129,805"/><area shape="rect" id="node73" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a34c71a037166bb286c489780b31895be" title="Geometry::Coordinate::GetZ" alt="" coords="943,829,1129,859"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6154a7ec2b24d8eeb696e8b40b85d03c_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="339,5,565,35"/></map>
 </div>
 </p>
 
@@ -269,11 +332,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00061">61</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00073">73</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00042">LibraryFileSpace::LibraryFileResidue::GetAtoms()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00041">LibraryFileSpace::LibraryFileAtom::GetName()</a>.</p>
+<p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00042">LibraryFileSpace::LibraryFileResidue::GetAtoms()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00041">LibraryFileSpace::LibraryFileAtom::GetName()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00047">GetResidues()</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00541">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01354">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     vector&lt;string&gt; atom_names_of_residue;
     <a class="code" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a39cf56386432556d99b238eb26eb0629">ResidueMap</a> residue_map = <a class="code" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818" title="Return a map of residues including in the file mapped to the names of the residues.">GetResidues</a>();
@@ -292,7 +355,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6056f8116b2dc97a12b7bb40c2c4de21_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6056f8116b2dc97a12b7bb40c2c4de21_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6056f8116b2dc97a12b7bb40c2c4de21_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a6056f8116b2dc97a12b7bb40c2c4de21_cgraph">
-<area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="423,5,724,35"/><area shape="rect" id="node5" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="432,59,715,88"/></map>
+<area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="423,5,724,35"/><area shape="rect" id="node5" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="432,59,715,88"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818" title="Return a map of residues including in the file mapped to the names of the residues." alt="" coords="439,112,708,141"/></map>
 </div>
 </p>
 
@@ -321,9 +384,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00050">50</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00051">51</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00541">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00251">PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultipleLibFiles()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01354">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00424">PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultipleLibFiles()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00439">PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultipleLibFilesMap()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     vector&lt;string&gt; residue_names;
     <span class="keywordflow">for</span>(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
@@ -339,10 +402,37 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_abf3ebb1ef0bb81d9a1299d6f10cba153_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_abf3ebb1ef0bb81d9a1299d6f10cba153_icgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_abf3ebb1ef0bb81d9a1299d6f10cba153_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_abf3ebb1ef0bb81d9a1299d6f10cba153_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a9720410d9689628dfb5f0a94768734ab" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles" alt="" coords="377,5,943,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aee3bcb299325fcada09c191fdf3fe8ba" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultipleLibFiles" alt="" coords="400,59,920,88"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a9720410d9689628dfb5f0a94768734ab" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles" alt="" coords="377,5,943,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aee3bcb299325fcada09c191fdf3fe8ba" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultipleLibFiles" alt="" coords="400,59,920,88"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a767203cb3c133ab937894ef32b94f338" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultipleLibFilesMap" alt="" coords="387,112,933,141"/></map>
 </div>
 </p>
 
+</div>
+</div>
+<a class="anchor" id="a354d4e63b6fe6972e777c9a960323fc7"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::GetAllResidueNamesMap" ref="a354d4e63b6fe6972e777c9a960323fc7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">ResidueNameMap</a> <a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a354d4e63b6fe6972e777c9a960323fc7">LibraryFile::GetAllResidueNamesMap</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00062">62</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">ResidueNameMap</a> residue_names = <a class="code" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">ResidueNameMap</a>();
+    <span class="keywordflow">for</span>(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        <span class="keywordtype">string</span> residue_name = (*it).first;
+        residue_names[residue_name] = residue_name;
+    }
+    <span class="keywordflow">return</span> residue_names;
+}
+</pre></div>
 </div>
 </div>
 <a class="anchor" id="a059051465b24d77e10341f80acdc09a5"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::GetFilePath" ref="a059051465b24d77e10341f80acdc09a5" args="() const " -->
@@ -360,7 +450,7 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Return the library file path </p>
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00040">40</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00041">41</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> path_;
 }
@@ -382,9 +472,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00504">504</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00535">535</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00855">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00763">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01170">PdbPreprocessorSpace::PdbPreprocessor::GetLibraryResidueByNameFromMultipleLibraryFiles()</a>.</p>
+<p>References <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00047">GetResidues()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02216">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02128">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l03089">PdbPreprocessorSpace::PdbPreprocessor::GetLibraryResidueByNameFromMultipleLibraryFiles()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <a class="code" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a39cf56386432556d99b238eb26eb0629">ResidueMap</a> residue_map = this-&gt;<a class="code" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818" title="Return a map of residues including in the file mapped to the names of the residues.">GetResidues</a>();
     <span class="keywordflow">for</span>(ResidueMap::iterator it = residue_map.begin(); it != residue_map.end(); it++)
@@ -397,6 +489,15 @@ Here is the caller graph for this function:</div>
     <span class="keywordflow">return</span> NULL;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab9d197eb30b39bda7181f2e1c14c1162_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab9d197eb30b39bda7181f2e1c14c1162_cgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab9d197eb30b39bda7181f2e1c14c1162_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab9d197eb30b39bda7181f2e1c14c1162_cgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818" title="Return a map of residues including in the file mapped to the names of the residues." alt="" coords="457,5,727,35"/></map>
+</div>
+</p>
+
 <p><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -424,9 +525,9 @@ Here is the caller graph for this function:</div>
 
 <p>Return a map of residues including in the file mapped to the names of the residues. </p>
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00046">46</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00047">47</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00354">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00521">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00073">GetAllAtomNamesOfResidue()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01372">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultipleLibFiles()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00456">PdbPreprocessorSpace::PdbPreprocessor::GetAllResiduesFromMultipleLibFilesMap()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00535">GetLibraryResidueByResidueName()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> residues_;
 }
@@ -436,7 +537,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa148eecab4be3b08b4426cf9b80f2818_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa148eecab4be3b08b4426cf9b80f2818_icgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa148eecab4be3b08b4426cf9b80f2818_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa148eecab4be3b08b4426cf9b80f2818_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="325,5,707,35"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="439,5,820,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6056f8116b2dc97a12b7bb40c2c4de21" title="LibraryFileSpace::LibraryFile::GetAllAtomNamesOfResidue" alt="" coords="447,59,812,88"/><area shape="rect" id="node9" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af96ab60cbac0f8b97ae7d0fef322852e" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultipleLibFiles" alt="" coords="325,112,933,141"/><area shape="rect" id="node11" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a4311ac61059789c2ad599af034cae487" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResiduesFromMultipleLibFilesMap" alt="" coords="375,165,884,195"/><area shape="rect" id="node13" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ab9d197eb30b39bda7181f2e1c14c1162" title="LibraryFileSpace::LibraryFile::GetLibraryResidueByResidueName" alt="" coords="428,219,831,248"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a9720410d9689628dfb5f0a94768734ab" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles" alt="" coords="987,59,1552,88"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="1605,167,2104,196"/><area shape="rect" id="node19" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31" title="MolecularModeling::Assembly::BuildStructureByLIBFileInformation" alt="" coords="1065,219,1473,248"/><area shape="rect" id="node24" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af5ef412a1d0761ea273465b78add00bd" title="PdbPreprocessorSpace::PdbPreprocessor::GetLibraryResidueByNameFromMultipleLibraryFiles" alt="" coords="981,272,1557,301"/><area shape="rect" id="node17" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="2153,193,2439,223"/><area shape="rect" id="node21" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1616,220,2093,249"/></map>
 </div>
 </p>
 
@@ -457,7 +558,7 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00683">683</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00714">714</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">for</span>(LibraryFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
@@ -493,9 +594,11 @@ Here is the caller graph for this function:</div>
 <p>Create a stream from the given line</p>
 <p>Split the line by space to extract attributes of the atom </p>
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00484">484</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00515">515</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00035">gmml::RemoveQuotes()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00110">Read()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">string</span> name;
     <span class="keywordtype">string</span> type;
@@ -521,6 +624,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_cgraph">
 <area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#aa9f9a6ff7682c649cd9bc83fef689be0" title="gmml::RemoveQuotes" alt="" coords="329,5,481,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a4a4f0093153eca92d1d89ba108b48ee5_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a7c69b960e9bb5e16bdb3fd8cc71a08b6" title="LibraryFileSpace::LibraryFile::Read" alt="" coords="328,5,555,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac391c4d9968da0802a007994f4a50789" title="LibraryFileSpace::LibraryFile::LibraryFile" alt="" coords="604,5,857,35"/></map>
 </div>
 </p>
 
@@ -618,9 +730,11 @@ Here is the call graph for this function:</div>
 <p>Process velocities section -&gt; This section doesn't have any useful information -&gt; Ignore the section by reading the file until the next section</p>
 <p>Read the next line </p>
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00079">79</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00110">110</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, <a class="el" href="../../df/d93/utils_8hpp_source.html#l00035">gmml::RemoveQuotes()</a>, <a class="el" href="../../df/d93/utils_8hpp_source.html#l00045">gmml::RemoveSpaces()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00146">LibraryFileSpace::LibraryFileAtom::SetAtomOrder()</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00515">ProcessAtom()</a>, <a class="el" href="../../df/d93/utils_8hpp_source.html#l00035">gmml::RemoveQuotes()</a>, <a class="el" href="../../df/d93/utils_8hpp_source.html#l00045">gmml::RemoveSpaces()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00146">LibraryFileSpace::LibraryFileAtom::SetAtomOrder()</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00022">LibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">string</span> line;
 <span class="comment"></span>
@@ -1029,7 +1143,16 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_cgraph">
-<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#aa9f9a6ff7682c649cd9bc83fef689be0" title="gmml::RemoveQuotes" alt="" coords="359,5,511,35"/><area shape="rect" id="node5" href="../../d0/ddd/namespacegmml.html#aea05f3085debf5ae3f7b4ead4cf73af9" title="gmml::RemoveSpaces" alt="" coords="357,59,512,88"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a45a6b253c156329f79b5bbb0113cc63b" title="Set the order of insertion of the current atom into its residue." alt="" coords="280,112,589,141"/><area shape="rect" id="node9" href="../../d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="391,165,479,195"/></map>
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a4a4f0093153eca92d1d89ba108b48ee5" title="Process a line from the atom section of the file and return a new atom object." alt="" coords="297,5,572,35"/><area shape="rect" id="node5" href="../../d0/ddd/namespacegmml.html#aa9f9a6ff7682c649cd9bc83fef689be0" title="gmml::RemoveQuotes" alt="" coords="639,32,791,61"/><area shape="rect" id="node8" href="../../d0/ddd/namespacegmml.html#aea05f3085debf5ae3f7b4ead4cf73af9" title="gmml::RemoveSpaces" alt="" coords="357,109,512,139"/><area shape="rect" id="node10" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a45a6b253c156329f79b5bbb0113cc63b" title="Set the order of insertion of the current atom into its residue." alt="" coords="280,163,589,192"/><area shape="rect" id="node12" href="../../d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="391,216,479,245"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a7c69b960e9bb5e16bdb3fd8cc71a08b6_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac391c4d9968da0802a007994f4a50789" title="LibraryFileSpace::LibraryFile::LibraryFile" alt="" coords="281,5,535,35"/></map>
 </div>
 </p>
 
@@ -1060,9 +1183,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00575">575</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00606">606</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1075,6 +1200,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="419,5,717,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa8ec7beb93a8eef0a346e74eb14ccade_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="420,5,703,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="752,5,979,35"/></map>
 </div>
 </p>
 
@@ -1105,9 +1239,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00563">563</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00594">594</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00054">LibraryFileSpace::LibraryFileResidue::GetAtomByOrder()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00059">LibraryFileSpace::LibraryFileAtom::GetAtomicNumber()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00053">LibraryFileSpace::LibraryFileAtom::GetAtomIndex()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00042">LibraryFileSpace::LibraryFileResidue::GetAtoms()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00065">LibraryFileSpace::LibraryFileAtom::GetCharge()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00041">LibraryFileSpace::LibraryFileAtom::GetName()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00047">LibraryFileSpace::LibraryFileAtom::GetResidueIndex()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00035">LibraryFileSpace::LibraryFileAtom::GetType()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a7bbef867996806ce65caa170131c75cc">LibraryFileResidue::AtomMap</a> atoms = residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu...">GetAtoms</a>();
     <span class="keyword">const</span> <span class="keywordtype">string</span> FLAG = <span class="stringliteral">&quot;131072&quot;</span>;
@@ -1126,6 +1262,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53" title="Return an atom belonging to the residue by a given order number." alt="" coords="375,5,716,35"/><area shape="rect" id="node5" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a54b393d00ca248fd266da78ede8b3c77" title="Return atomic number of the atom." alt="" coords="379,59,712,88"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408" title="return atom index in the belonging residue" alt="" coords="391,112,700,141"/><area shape="rect" id="node9" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="395,165,696,195"/><area shape="rect" id="node11" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a57443850821ca40f79064d25beb7d235" title="Return charge of the atom." alt="" coords="401,219,689,248"/><area shape="rect" id="node13" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="396,272,695,301"/><area shape="rect" id="node15" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="404,325,687,355"/><area shape="rect" id="node17" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0df4a3bde4e5e4cd3ffa50b252036315" title="Return the residue index in the list of residues in the library file that the current atom belongs to..." alt="" coords="383,379,708,408"/><area shape="rect" id="node19" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#ad2280483bd91c6614c6d96299642da4d" title="LibraryFileSpace::LibraryFileAtom::GetType" alt="" coords="408,432,683,461"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af7f90ed79bbe51e419523a00ec3fbfb2_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="375,5,657,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="707,5,933,35"/></map>
 </div>
 </p>
 
@@ -1156,9 +1301,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00581">581</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00612">612</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00065">LibraryFileSpace::LibraryFileResidue::GetBoxAngle()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00083">LibraryFileSpace::LibraryFileResidue::GetBoxHeight()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00071">LibraryFileSpace::LibraryFileResidue::GetBoxLength()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00077">LibraryFileSpace::LibraryFileResidue::GetBoxWidth()</a>, and <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00065">LibraryFileSpace::LibraryFileResidue::GetBoxAngle()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00083">LibraryFileSpace::LibraryFileResidue::GetBoxHeight()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00071">LibraryFileSpace::LibraryFileResidue::GetBoxLength()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00077">LibraryFileSpace::LibraryFileResidue::GetBoxWidth()</a>, and <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.boundbox array dbl&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; <span class="stringliteral">&quot;-1.000000&quot;</span> &lt;&lt; endl;
@@ -1189,6 +1336,15 @@ Here is the call graph for this function:</div>
 </div>
 </p>
 
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_af1f5c266e816b76701a102b309540441_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_af1f5c266e816b76701a102b309540441_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af1f5c266e816b76701a102b309540441_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af1f5c266e816b76701a102b309540441_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="401,5,684,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="733,5,960,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a5937a056fd10323e51ea1b42ae6b2cfe"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::ResolveChildSequenceSection" ref="a5937a056fd10323e51ea1b42ae6b2cfe" args="(std::ofstream &amp;stream, LibraryFileResidue *residue)" -->
@@ -1216,9 +1372,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00602">602</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00633">633</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.childsequence single int&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1230,6 +1388,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="429,5,728,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a5937a056fd10323e51ea1b42ae6b2cfe_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="431,5,713,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="763,5,989,35"/></map>
 </div>
 </p>
 
@@ -1260,9 +1427,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00615">615</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00646">646</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00054">LibraryFileSpace::LibraryFileResidue::GetAtomByOrder()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00053">LibraryFileSpace::LibraryFileAtom::GetAtomIndex()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00042">LibraryFileSpace::LibraryFileResidue::GetAtoms()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00077">LibraryFileSpace::LibraryFileAtom::GetBondedAtomsIndices()</a>, and <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.connectivity table  int atom1x  int atom2x  int flags&quot;</span> &lt;&lt; endl;
     <a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a7bbef867996806ce65caa170131c75cc">LibraryFileResidue::AtomMap</a> atoms = residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu...">GetAtoms</a>();
@@ -1287,6 +1456,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53" title="Return an atom belonging to the residue by a given order number." alt="" coords="428,5,769,35"/><area shape="rect" id="node5" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408" title="return atom index in the belonging residue" alt="" coords="444,59,753,88"/><area shape="rect" id="node7" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="448,112,749,141"/><area shape="rect" id="node9" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acc845febfadcb32eb170c61851e7d7ad" title="Return all bonded atom indices of the atom." alt="" coords="413,165,784,195"/><area shape="rect" id="node11" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="449,219,748,248"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1af16091bb1d1eb5bcda58083a3750ad_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="415,5,697,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="747,5,973,35"/></map>
 </div>
 </p>
 
@@ -1317,9 +1495,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00607">607</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00638">638</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00089">LibraryFileSpace::LibraryFileResidue::GetHeadAtomIndex()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00095">LibraryFileSpace::LibraryFileResidue::GetTailAtomIndex()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00011">gmml::iNotSet</a>.</p>
+<p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00089">LibraryFileSpace::LibraryFileResidue::GetHeadAtomIndex()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00095">LibraryFileSpace::LibraryFileResidue::GetTailAtomIndex()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00019">gmml::iNotSet</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.connect array int&quot;</span> &lt;&lt; endl;
     <span class="keywordflow">if</span>(residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2435f62b867e1f653f7af667f477f8ca" title="Return the head atom index of the residue.">GetHeadAtomIndex</a>() != <a class="code" href="../../d0/ddd/namespacegmml.html#a74aaf0a7ae724de6dc4518b89ef8e9f3">iNotSet</a>)
@@ -1334,6 +1514,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2435f62b867e1f653f7af667f477f8ca" title="Return the head atom index of the residue." alt="" coords="391,5,748,35"/><area shape="rect" id="node5" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="420,59,719,88"/><area shape="rect" id="node7" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aeba0bdd7c4de0f60469d4ebb53ac814d" title="Return the tail atom index of the residue." alt="" coords="396,112,743,141"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa3b90eb3f3b7888c86919a88a0870449_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="391,5,673,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="723,5,949,35"/></map>
 </div>
 </p>
 
@@ -1364,9 +1553,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00633">633</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00664">664</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1378,6 +1569,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="397,5,696,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ab1bf388d464db7c8eeec94045a6ca0ba_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="399,5,681,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="731,5,957,35"/></map>
 </div>
 </p>
 
@@ -1408,9 +1608,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00638">638</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00669">669</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.name single str&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> &lt;&lt; endl;
@@ -1422,6 +1624,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="376,5,675,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a8065b902c600c86148457f2532363dfd_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="377,5,660,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="709,5,936,35"/></map>
 </div>
 </p>
 
@@ -1452,9 +1663,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00643">643</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">674</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00054">LibraryFileSpace::LibraryFileResidue::GetAtomByOrder()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00042">LibraryFileSpace::LibraryFileResidue::GetAtoms()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00071">LibraryFileSpace::LibraryFileAtom::GetCoordinate()</a>, <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>, <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00021">Geometry::Coordinate::GetX()</a>, <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00026">Geometry::Coordinate::GetY()</a>, and <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00031">Geometry::Coordinate::GetZ()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.positions table  dbl x  dbl y  dbl z&quot;</span> &lt;&lt; endl;
     <a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a7bbef867996806ce65caa170131c75cc">LibraryFileResidue::AtomMap</a> atoms = residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu...">GetAtoms</a>();
@@ -1472,6 +1685,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53" title="Return an atom belonging to the residue by a given order number." alt="" coords="391,5,732,35"/><area shape="rect" id="node5" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="411,59,712,88"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7e9c6c60e6ad1f823adb560254ea8889" title="Return position of the atom." alt="" coords="407,112,716,141"/><area shape="rect" id="node9" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="412,165,711,195"/><area shape="rect" id="node11" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a55e182a5e7770b43f714ae369a162305" title="Geometry::Coordinate::GetX" alt="" coords="468,219,655,248"/><area shape="rect" id="node13" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ac05b81bef24e96883627abcf1935b12a" title="Geometry::Coordinate::GetY" alt="" coords="468,272,655,301"/><area shape="rect" id="node15" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a34c71a037166bb286c489780b31895be" title="Geometry::Coordinate::GetZ" alt="" coords="468,325,655,355"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aa94c6679b4bfd7596e14f9fd3d6b5b35_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="391,5,673,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="723,5,949,35"/></map>
 </div>
 </p>
 
@@ -1502,9 +1724,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00654">654</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00685">685</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1516,6 +1740,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="437,5,736,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a1392b1b06e5a2438a2f3f72b461cda79_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="439,5,721,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="771,5,997,35"/></map>
 </div>
 </p>
 
@@ -1546,9 +1779,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00664">664</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00695">695</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt;  <span class="stringliteral">&quot;.unit.residuesPdbSequenceNumber array int&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1560,6 +1795,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="517,5,816,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a05f58eb185d979030274ab8f062a66b4_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="519,5,801,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="851,5,1077,35"/></map>
 </div>
 </p>
 
@@ -1590,9 +1834,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00659">659</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00690">690</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1604,6 +1850,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="397,5,696,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a888c9e2d9f2c89e7541f2e91c60f01b2_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="399,5,681,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="731,5,957,35"/></map>
 </div>
 </p>
 
@@ -1634,9 +1889,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00669">669</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00700">700</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.solventcap array dbl&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1648,6 +1905,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="408,5,707,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_aef3ea7be40137c9523c0c35978b2df7e_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="409,5,692,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="741,5,968,35"/></map>
 </div>
 </p>
 
@@ -1678,9 +1944,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">674</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00705">705</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">LibraryFileSpace::LibraryFileResidue::GetName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; <span class="stringliteral">&quot;!entry.&quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;.unit.velocities table  dbl x  dbl y  dbl z&quot;</span> &lt;&lt; endl;
     stream &lt;&lt; endl;
@@ -1692,6 +1960,76 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_cgraph" alt=""/></div>
 <map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_cgraph">
 <area shape="rect" id="node3" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="397,5,696,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_ac119e6a2f0409103ec1a732cdcf240b0_icgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="399,5,681,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="731,5,957,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="a80b367a13da6133d7a7154952890aa20"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::SetPath" ref="a80b367a13da6133d7a7154952890aa20" args="(std::string path)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a80b367a13da6133d7a7154952890aa20">LibraryFile::SetPath</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00090">90</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    path_ = path;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="af05c312687e8b9c644b452644c330da3"></a><!-- doxytag: member="LibraryFileSpace::LibraryFile::SetResidues" ref="af05c312687e8b9c644b452644c330da3" args="(ResidueMap residues)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af05c312687e8b9c644b452644c330da3">LibraryFile::SetResidues</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a39cf56386432556d99b238eb26eb0629">ResidueMap</a>&#160;</td>
+          <td class="paramname"><em>residues</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00095">95</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01841">MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly()</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    residues_.clear();
+    <span class="keywordflow">for</span>(ResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        <a class="code" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html">LibraryFileResidue</a>* residue = (*it).second;
+        <span class="keywordtype">string</span> residue_name = (*it).first;
+        residues_[residue_name] = residue;
+    }
+}
+</pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_af05c312687e8b9c644b452644c330da3_icgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_af05c312687e8b9c644b452644c330da3_icgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af05c312687e8b9c644b452644c330da3_icgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_af05c312687e8b9c644b452644c330da3_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8" title="MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly" alt="" coords="325,5,760,35"/></map>
 </div>
 </p>
 
@@ -1712,7 +2050,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00516">516</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00547">547</a> of file <a class="el" href="../../d5/d68/libraryfile_8cc_source.html">libraryfile.cc</a>.</p>
+
+<p>References <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">BuildLibraryFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     std::ofstream out_file;
     <span class="keywordflow">try</span>
@@ -1733,6 +2073,15 @@ Here is the call graph for this function:</div>
     }
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile_a0e31e1c64ce69e8e35b4344699a94112_cgraph.png" border="0" usemap="#d4/d6c/classLibraryFileSpace_1_1LibraryFile_a0e31e1c64ce69e8e35b4344699a94112_cgraph" alt=""/></div>
+<map name="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a0e31e1c64ce69e8e35b4344699a94112_cgraph" id="d4/d6c/classLibraryFileSpace_1_1LibraryFile_a0e31e1c64ce69e8e35b4344699a94112_cgraph">
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="281,483,564,512"/><area shape="rect" id="node5" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="1161,429,1460,459"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa8ec7beb93a8eef0a346e74eb14ccade" title="LibraryFileSpace::LibraryFile::ResolveAtomPertInfoSection" alt="" coords="664,483,1027,512"/><area shape="rect" id="node10" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="687,112,1004,141"/><area shape="rect" id="node29" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="672,749,1019,779"/><area shape="rect" id="node40" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a5937a056fd10323e51ea1b42ae6b2cfe" title="LibraryFileSpace::LibraryFile::ResolveChildSequenceSection" alt="" coords="659,536,1032,565"/><area shape="rect" id="node43" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="665,696,1025,725"/><area shape="rect" id="node51" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="677,963,1013,992"/><area shape="rect" id="node58" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ab1bf388d464db7c8eeec94045a6ca0ba" title="LibraryFileSpace::LibraryFile::ResolveHierarchySection" alt="" coords="675,589,1016,619"/><area shape="rect" id="node61" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a8065b902c600c86148457f2532363dfd" title="LibraryFileSpace::LibraryFile::ResolveNameSection" alt="" coords="684,643,1007,672"/><area shape="rect" id="node64" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="679,829,1012,859"/><area shape="rect" id="node77" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1392b1b06e5a2438a2f3f72b461cda79" title="LibraryFileSpace::LibraryFile::ResolveResidueConnectSection" alt="" coords="653,165,1037,195"/><area shape="rect" id="node80" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a05f58eb185d979030274ab8f062a66b4" title="LibraryFileSpace::LibraryFile::ResolveResiduePdbSequenceNumberSection" alt="" coords="615,219,1076,248"/><area shape="rect" id="node83" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a888c9e2d9f2c89e7541f2e91c60f01b2" title="LibraryFileSpace::LibraryFile::ResolveResiduesSection" alt="" coords="675,272,1016,301"/><area shape="rect" id="node86" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aef3ea7be40137c9523c0c35978b2df7e" title="LibraryFileSpace::LibraryFile::ResolveSolventCapSection" alt="" coords="668,325,1023,355"/><area shape="rect" id="node89" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac119e6a2f0409103ec1a732cdcf240b0" title="LibraryFileSpace::LibraryFile::ResolveVelocitiesSection" alt="" coords="673,379,1017,408"/><area shape="rect" id="node12" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53" title="Return an atom belonging to the residue by a given order number." alt="" coords="1140,483,1481,512"/><area shape="rect" id="node14" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a54b393d00ca248fd266da78ede8b3c77" title="Return atomic number of the atom." alt="" coords="1144,5,1477,35"/><area shape="rect" id="node16" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408" title="return atom index in the belonging residue" alt="" coords="1156,324,1465,353"/><area shape="rect" id="node18" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="1160,536,1461,565"/><area shape="rect" id="node20" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a57443850821ca40f79064d25beb7d235" title="Return charge of the atom." alt="" coords="1167,59,1455,88"/><area shape="rect" id="node23" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="1169,112,1452,141"/><area shape="rect" id="node25" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0df4a3bde4e5e4cd3ffa50b252036315" title="Return the residue index in the list of residues in the library file that the current atom belongs to..." alt="" coords="1148,165,1473,195"/><area shape="rect" id="node27" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#ad2280483bd91c6614c6d96299642da4d" title="LibraryFileSpace::LibraryFileAtom::GetType" alt="" coords="1173,219,1448,248"/><area shape="rect" id="node31" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a6117e6eaf44af00149f743439c39f8f2" title="Return the box angle of the residue." alt="" coords="1151,643,1471,672"/><area shape="rect" id="node33" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a39250c7aae5809fb88667a6d1dc554ad" title="Return the box hight of the residue." alt="" coords="1148,696,1473,725"/><area shape="rect" id="node35" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ab101a9f528beee33403889e40451a887" title="Return the box length of the residue." alt="" coords="1148,749,1473,779"/><area shape="rect" id="node37" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#add51d869b0522850b2e79cd3e81ce128" title="Return the box width of the residue." alt="" coords="1151,803,1471,832"/><area shape="rect" id="node48" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acc845febfadcb32eb170c61851e7d7ad" title="Return all bonded atom indices of the atom." alt="" coords="1125,589,1496,619"/><area shape="rect" id="node53" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2435f62b867e1f653f7af667f477f8ca" title="Return the head atom index of the residue." alt="" coords="1132,1069,1489,1099"/><area shape="rect" id="node56" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aeba0bdd7c4de0f60469d4ebb53ac814d" title="Return the tail atom index of the residue." alt="" coords="1137,1123,1484,1152"/><area shape="rect" id="node68" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7e9c6c60e6ad1f823adb560254ea8889" title="Return position of the atom." alt="" coords="1156,856,1465,885"/><area shape="rect" id="node71" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a55e182a5e7770b43f714ae369a162305" title="Geometry::Coordinate::GetX" alt="" coords="1217,909,1404,939"/><area shape="rect" id="node73" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ac05b81bef24e96883627abcf1935b12a" title="Geometry::Coordinate::GetY" alt="" coords="1217,963,1404,992"/><area shape="rect" id="node75" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a34c71a037166bb286c489780b31895be" title="Geometry::Coordinate::GetZ" alt="" coords="1217,1016,1404,1045"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -1746,7 +2095,7 @@ Here is the call graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -1760,7 +2109,7 @@ Here is the call graph for this function:</div>
       <li class="navelem"><a class="el" href="../../d6/dc2/namespaceLibraryFileSpace.html">LibraryFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html">LibraryFile</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:23 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

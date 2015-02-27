@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -111,85 +110,92 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00009"></a>00009 <span class="comment">//////////////////////////////////////////////////////////</span>
 <a name="l00010"></a>00010 <span class="comment"></span><span class="comment">//                       CONSTRUCTOR                    //</span><span class="comment"></span>
 <a name="l00011"></a>00011 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00012"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aa709ce4deed95bd80069ded4c7644152">00012</a> <span class="comment"></span>TopologyAssembly::TopologyAssembly() {}
-<a name="l00013"></a>00013 <span class="comment"></span>
-<a name="l00014"></a>00014 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00015"></a>00015 <span class="comment"></span><span class="comment">//                         ACCESSOR                     //</span><span class="comment"></span>
-<a name="l00016"></a>00016 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00017"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a8cc2639fce2e64ae5f133450f5e1e09f">00017</a> <span class="comment"></span><span class="keywordtype">string</span> TopologyAssembly::GetAssemblyName()
-<a name="l00018"></a>00018 {
-<a name="l00019"></a>00019     <span class="keywordflow">return</span> assembly_name_;
-<a name="l00020"></a>00020 }
-<a name="l00021"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a469185811341f8a7b7ef7fd3fe264e5c">00021</a> <a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f">TopologyAssembly::TopologyResidueMap</a> TopologyAssembly::GetResidues()
+<a name="l00012"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aa709ce4deed95bd80069ded4c7644152">00012</a> <span class="comment"></span>TopologyAssembly::TopologyAssembly()
+<a name="l00013"></a>00013 {
+<a name="l00014"></a>00014     assembly_name_ = <span class="stringliteral">&quot;&quot;</span>;
+<a name="l00015"></a>00015     residues_ = <a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f">TopologyResidueMap</a>();
+<a name="l00016"></a>00016 }
+<a name="l00017"></a>00017 <span class="comment"></span>
+<a name="l00018"></a>00018 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00019"></a>00019 <span class="comment"></span><span class="comment">//                         ACCESSOR                     //</span><span class="comment"></span>
+<a name="l00020"></a>00020 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00021"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a8cc2639fce2e64ae5f133450f5e1e09f">00021</a> <span class="comment"></span><span class="keywordtype">string</span> TopologyAssembly::GetAssemblyName()
 <a name="l00022"></a>00022 {
-<a name="l00023"></a>00023     <span class="keywordflow">return</span> residues_;
+<a name="l00023"></a>00023     <span class="keywordflow">return</span> assembly_name_;
 <a name="l00024"></a>00024 }
-<a name="l00025"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a5e3a04285cf8cb43554e823f1e512ae2">00025</a> <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* TopologyAssembly::GetResidueByIndex(<span class="keywordtype">int</span> index)
+<a name="l00025"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a469185811341f8a7b7ef7fd3fe264e5c">00025</a> <a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f">TopologyAssembly::TopologyResidueMap</a> TopologyAssembly::GetResidues()
 <a name="l00026"></a>00026 {
-<a name="l00027"></a>00027     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
-<a name="l00028"></a>00028     {
-<a name="l00029"></a>00029         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
-<a name="l00030"></a>00030         <span class="keywordflow">if</span>(residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#ae743efef727ad6a966875284b2739fdc">GetIndex</a>() == index)
-<a name="l00031"></a>00031             <span class="keywordflow">return</span> residue;
-<a name="l00032"></a>00032     }
-<a name="l00033"></a>00033     <span class="keywordflow">return</span> NULL;
-<a name="l00034"></a>00034 }
-<a name="l00035"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a01f4342f73d848a9ce9391ce2a8e8be0">00035</a> <span class="keywordtype">int</span> TopologyAssembly::GetAtomIndexByName(<span class="keywordtype">string</span> atom_name)
-<a name="l00036"></a>00036 {
-<a name="l00037"></a>00037     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
-<a name="l00038"></a>00038     {
-<a name="l00039"></a>00039         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
-<a name="l00040"></a>00040         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#aef8aef455648b18f559c1833861d8e95">TopologyResidue::TopologyAtomMap</a> atom_map = residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#abbb6719b22d6537dc36b8d4d84131a13">GetAtoms</a>();
-<a name="l00041"></a>00041         <span class="keywordflow">for</span>(TopologyResidue::TopologyAtomMap::iterator it1 = atom_map.begin(); it1 != atom_map.end(); it1++)
-<a name="l00042"></a>00042         {
-<a name="l00043"></a>00043             <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html">TopologyAtom</a>* atom = (*it1).second;
-<a name="l00044"></a>00044             <span class="keywordtype">string</span> name = atom-&gt;<a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a6a8e901c7c645c9aa73231c64309195f">GetAtomName</a>();
-<a name="l00045"></a>00045             <span class="keywordflow">if</span>(name.compare(atom_name) == 0)
-<a name="l00046"></a>00046             {
-<a name="l00047"></a>00047                 <span class="keywordflow">return</span> atom-&gt;<a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a64bd3c53f42187ebed8c734585e5b906">GetIndex</a>();
-<a name="l00048"></a>00048             }
-<a name="l00049"></a>00049         }
-<a name="l00050"></a>00050     }
-<a name="l00051"></a>00051     <span class="keywordflow">return</span> -1;
-<a name="l00052"></a>00052 }
-<a name="l00053"></a>00053 <span class="comment"></span>
-<a name="l00054"></a>00054 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00055"></a>00055 <span class="comment"></span><span class="comment">//                          MUTATOR                     //</span><span class="comment"></span>
-<a name="l00056"></a>00056 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00057"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a6bf60013de2ac27e355e6a5535cc5473">00057</a> <span class="comment"></span><span class="keywordtype">void</span> TopologyAssembly::SetAssemblyName(<span class="keyword">const</span> <span class="keywordtype">string</span> assembly_name)
-<a name="l00058"></a>00058 {
-<a name="l00059"></a>00059     assembly_name_ = assembly_name;
-<a name="l00060"></a>00060 }
-<a name="l00061"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a48e5a7eba6c11e56eba37cc515da9961">00061</a> <span class="keywordtype">void</span> TopologyAssembly::SetResidues(<a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f">TopologyResidueMap</a> residues)
+<a name="l00027"></a>00027     <span class="keywordflow">return</span> residues_;
+<a name="l00028"></a>00028 }
+<a name="l00029"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a5e3a04285cf8cb43554e823f1e512ae2">00029</a> <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* TopologyAssembly::GetResidueByIndex(<span class="keywordtype">int</span> index)
+<a name="l00030"></a>00030 {
+<a name="l00031"></a>00031     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+<a name="l00032"></a>00032     {
+<a name="l00033"></a>00033         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
+<a name="l00034"></a>00034         <span class="keywordflow">if</span>(residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#ae743efef727ad6a966875284b2739fdc">GetIndex</a>() == index)
+<a name="l00035"></a>00035             <span class="keywordflow">return</span> residue;
+<a name="l00036"></a>00036     }
+<a name="l00037"></a>00037     <span class="keywordflow">return</span> NULL;
+<a name="l00038"></a>00038 }
+<a name="l00039"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a01f4342f73d848a9ce9391ce2a8e8be0">00039</a> <span class="keywordtype">int</span> TopologyAssembly::GetAtomIndexByName(<span class="keywordtype">string</span> atom_name)
+<a name="l00040"></a>00040 {
+<a name="l00041"></a>00041     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+<a name="l00042"></a>00042     {
+<a name="l00043"></a>00043         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
+<a name="l00044"></a>00044         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#aef8aef455648b18f559c1833861d8e95">TopologyResidue::TopologyAtomMap</a> atom_map = residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#abbb6719b22d6537dc36b8d4d84131a13">GetAtoms</a>();
+<a name="l00045"></a>00045         <span class="keywordflow">for</span>(TopologyResidue::TopologyAtomMap::iterator it1 = atom_map.begin(); it1 != atom_map.end(); it1++)
+<a name="l00046"></a>00046         {
+<a name="l00047"></a>00047             <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html">TopologyAtom</a>* atom = (*it1).second;
+<a name="l00048"></a>00048             <span class="keywordtype">string</span> name = atom-&gt;<a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a6a8e901c7c645c9aa73231c64309195f">GetAtomName</a>();
+<a name="l00049"></a>00049             <span class="keywordflow">if</span>(name.compare(atom_name) == 0)
+<a name="l00050"></a>00050             {
+<a name="l00051"></a>00051                 <span class="keywordflow">return</span> atom-&gt;<a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a64bd3c53f42187ebed8c734585e5b906">GetIndex</a>();
+<a name="l00052"></a>00052             }
+<a name="l00053"></a>00053         }
+<a name="l00054"></a>00054     }
+<a name="l00055"></a>00055     <span class="keywordflow">return</span> -1;
+<a name="l00056"></a>00056 }
+<a name="l00057"></a>00057 <span class="comment"></span>
+<a name="l00058"></a>00058 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00059"></a>00059 <span class="comment"></span><span class="comment">//                          MUTATOR                     //</span><span class="comment"></span>
+<a name="l00060"></a>00060 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00061"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a6bf60013de2ac27e355e6a5535cc5473">00061</a> <span class="comment"></span><span class="keywordtype">void</span> TopologyAssembly::SetAssemblyName(<span class="keyword">const</span> <span class="keywordtype">string</span> assembly_name)
 <a name="l00062"></a>00062 {
-<a name="l00063"></a>00063     residues_.clear();
-<a name="l00064"></a>00064     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
-<a name="l00065"></a>00065     {
-<a name="l00066"></a>00066         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
-<a name="l00067"></a>00067         residues_[residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a1cd5965e3e19a363083dac6ccf37318f">GetResidueName</a>()] = residue;
-<a name="l00068"></a>00068     }
-<a name="l00069"></a>00069 }
-<a name="l00070"></a>00070 
-<a name="l00071"></a>00071 <span class="comment"></span>
-<a name="l00072"></a>00072 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00073"></a>00073 <span class="comment"></span><span class="comment">//                        FUNCTIONS                     //</span><span class="comment"></span>
-<a name="l00074"></a>00074 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00075"></a>00075 <span class="comment"></span><span class="comment"></span>
-<a name="l00076"></a>00076 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00077"></a>00077 <span class="comment"></span><span class="comment">//                      DISPLAY FUNCTION                //</span><span class="comment"></span>
-<a name="l00078"></a>00078 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00079"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a6d05ece7c9dc7bff99db8c3f56a62883">00079</a> <span class="comment"></span><span class="keywordtype">void</span> TopologyAssembly::Print(ostream &amp;out)
-<a name="l00080"></a>00080 {
-<a name="l00081"></a>00081     out &lt;&lt; <span class="stringliteral">&quot;Assembly Name: &quot;</span> &lt;&lt; assembly_name_ &lt;&lt; endl;
-<a name="l00082"></a>00082     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
-<a name="l00083"></a>00083     {
-<a name="l00084"></a>00084         <span class="keywordtype">string</span> residue_name = (*it).first;
-<a name="l00085"></a>00085         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
-<a name="l00086"></a>00086         out &lt;&lt; <span class="stringliteral">&quot;-------------------------- &quot;</span> &lt;&lt; residue_name &lt;&lt; <span class="stringliteral">&quot; -------------------------&quot;</span> &lt;&lt; endl;
-<a name="l00087"></a>00087         residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a7d02f6fbee4dc1209a5b53d3b9dac56c">Print</a>(out);
-<a name="l00088"></a>00088     }
-<a name="l00089"></a>00089 }
-<a name="l00090"></a>00090 
+<a name="l00063"></a>00063     assembly_name_ = assembly_name;
+<a name="l00064"></a>00064 }
+<a name="l00065"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a48e5a7eba6c11e56eba37cc515da9961">00065</a> <span class="keywordtype">void</span> TopologyAssembly::SetResidues(<a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f">TopologyResidueMap</a> residues)
+<a name="l00066"></a>00066 {
+<a name="l00067"></a>00067     residues_.clear();
+<a name="l00068"></a>00068     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
+<a name="l00069"></a>00069     {
+<a name="l00070"></a>00070         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
+<a name="l00071"></a>00071         residues_[residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a1cd5965e3e19a363083dac6ccf37318f">GetResidueName</a>()] = residue;
+<a name="l00072"></a>00072     }
+<a name="l00073"></a>00073 }
+<a name="l00074"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a22de439c4f5ece127bd47ba24f2abadc">00074</a> <span class="keywordtype">void</span> TopologyAssembly::AddResidue(<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a> *residue)
+<a name="l00075"></a>00075 {
+<a name="l00076"></a>00076     residues_[residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a1cd5965e3e19a363083dac6ccf37318f">GetResidueName</a>()] = residue;
+<a name="l00077"></a>00077 }
+<a name="l00078"></a>00078 <span class="comment"></span>
+<a name="l00079"></a>00079 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00080"></a>00080 <span class="comment"></span><span class="comment">//                        FUNCTIONS                     //</span><span class="comment"></span>
+<a name="l00081"></a>00081 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00082"></a>00082 <span class="comment"></span><span class="comment"></span>
+<a name="l00083"></a>00083 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00084"></a>00084 <span class="comment"></span><span class="comment">//                      DISPLAY FUNCTION                //</span><span class="comment"></span>
+<a name="l00085"></a>00085 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00086"></a><a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a6d05ece7c9dc7bff99db8c3f56a62883">00086</a> <span class="comment"></span><span class="keywordtype">void</span> TopologyAssembly::Print(ostream &amp;out)
+<a name="l00087"></a>00087 {
+<a name="l00088"></a>00088     out &lt;&lt; <span class="stringliteral">&quot;Assembly Name: &quot;</span> &lt;&lt; assembly_name_ &lt;&lt; endl;
+<a name="l00089"></a>00089     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
+<a name="l00090"></a>00090     {
+<a name="l00091"></a>00091         <span class="keywordtype">string</span> residue_name = (*it).first;
+<a name="l00092"></a>00092         <a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a>* residue = (*it).second;
+<a name="l00093"></a>00093         out &lt;&lt; <span class="stringliteral">&quot;-------------------------- &quot;</span> &lt;&lt; residue_name &lt;&lt; <span class="stringliteral">&quot; -------------------------&quot;</span> &lt;&lt; endl;
+<a name="l00094"></a>00094         residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a7d02f6fbee4dc1209a5b53d3b9dac56c">Print</a>(out);
+<a name="l00095"></a>00095     }
+<a name="l00096"></a>00096 }
+<a name="l00097"></a>00097 
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -197,7 +203,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -210,7 +216,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d2/d91/topologyassembly_8cc.html">topologyassembly.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:21 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -138,7 +138,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aeba0bdd7c4de0f60469d4ebb53ac814d">GetTailAtomIndex</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the tail atom index of the residue.  <a href="#aeba0bdd7c4de0f60469d4ebb53ac814d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html">LibraryFileAtom</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a4bc50d1502aa4e5454b68169c3860241">GetLibraryAtomByAtomName</a> (std::string atom_name)</td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a9d3a047a226484a0d6657058569c347a">SetName</a> (std::string &amp;name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a124aea709723c22f9dac4e32ea8355b1">SetName</a> (std::string name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aab5ceee046db926b470c85c5d106fb89">SetAtoms</a> (<a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a7bbef867996806ce65caa170131c75cc">AtomMap</a> &amp;atoms)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the atom map belonging to the residue mapped to their insertion order.  <a href="#aab5ceee046db926b470c85c5d106fb89"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a17e8ba1b892d839d8b3aabc32798fe69">AddAtom</a> (<a class="el" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html">LibraryFileAtom</a> *atom)</td></tr>
@@ -298,6 +298,8 @@ Public Member Functions</h2></td></tr>
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00130">130</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
 <p>References <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00083">LibraryFileSpace::LibraryFileAtom::GetAtomOrder()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01841">MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     atoms_[atom-&gt;<a class="code" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a8ab01f498179cceb7d9d19230a48c59f" title="Return inserting order of the atom in a residue.">GetAtomOrder</a>()] = atom;
 }
@@ -308,6 +310,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_cgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_cgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_cgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_cgraph">
 <area shape="rect" id="node3" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a8ab01f498179cceb7d9d19230a48c59f" title="Return inserting order of the atom in a residue." alt="" coords="353,5,663,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_icgraph" alt=""/></div>
+<map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a17e8ba1b892d839d8b3aabc32798fe69_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8" title="MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly" alt="" coords="352,5,787,35"/></map>
 </div>
 </p>
 
@@ -332,7 +343,7 @@ Here is the call graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00048">48</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00855">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00763">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02216">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02128">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> atoms_[index];
 }
@@ -367,7 +378,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00054">54</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00563">LibraryFileSpace::LibraryFile::ResolveAtomSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00615">LibraryFileSpace::LibraryFile::ResolveConnectivitySection()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00643">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00594">LibraryFileSpace::LibraryFile::ResolveAtomSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00646">LibraryFileSpace::LibraryFile::ResolveConnectivitySection()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">for</span>(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -382,7 +393,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aacd443c81971209b0f6b951f1661ad53_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aacd443c81971209b0f6b951f1661ad53_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aacd443c81971209b0f6b951f1661ad53_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aacd443c81971209b0f6b951f1661ad53_icgraph">
-<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="419,5,736,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="397,59,757,88"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="411,112,744,141"/></map>
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="419,5,736,35"/><area shape="rect" id="node9" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="397,59,757,88"/><area shape="rect" id="node12" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="411,112,744,141"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="807,59,1089,88"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1139,59,1365,88"/></map>
 </div>
 </p>
 
@@ -406,7 +417,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00042">42</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00354">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00061">LibraryFileSpace::LibraryFile::GetAllAtomNamesOfResidue()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00563">LibraryFileSpace::LibraryFile::ResolveAtomSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00615">LibraryFileSpace::LibraryFile::ResolveConnectivitySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00643">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00864">PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00521">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00073">LibraryFileSpace::LibraryFile::GetAllAtomNamesOfResidue()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01372">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultipleLibFiles()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00594">LibraryFileSpace::LibraryFile::ResolveAtomSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00646">LibraryFileSpace::LibraryFile::ResolveConnectivitySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02206">PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChains()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02348">PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> atoms_;
 }
@@ -416,7 +427,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ae6554661c088810e4f20c6204064711d_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ae6554661c088810e4f20c6204064711d_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ae6554661c088810e4f20c6204064711d_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ae6554661c088810e4f20c6204064711d_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="399,5,780,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6056f8116b2dc97a12b7bb40c2c4de21" title="LibraryFileSpace::LibraryFile::GetAllAtomNamesOfResidue" alt="" coords="407,59,772,88"/><area shape="rect" id="node9" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="431,112,748,141"/><area shape="rect" id="node11" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="409,165,769,195"/><area shape="rect" id="node13" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="423,219,756,248"/><area shape="rect" id="node15" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a3b523e3ce93e1af0cbf2e6853f8b0f83" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChains" alt="" coords="379,272,800,301"/><area shape="rect" id="node17" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="359,325,820,355"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a9720410d9689628dfb5f0a94768734ab" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles" alt="" coords="871,59,1436,88"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="480,5,861,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6056f8116b2dc97a12b7bb40c2c4de21" title="LibraryFileSpace::LibraryFile::GetAllAtomNamesOfResidue" alt="" coords="488,59,853,88"/><area shape="rect" id="node9" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af96ab60cbac0f8b97ae7d0fef322852e" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultipleLibFiles" alt="" coords="367,112,975,141"/><area shape="rect" id="node11" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="512,165,829,195"/><area shape="rect" id="node17" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="491,219,851,248"/><area shape="rect" id="node20" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="504,272,837,301"/><area shape="rect" id="node23" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ae54117729bbf9c16e40d88fac794ea1f" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChains" alt="" coords="460,325,881,355"/><area shape="rect" id="node25" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af9125ae797a1e95465c586fef3f27e53" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber" alt="" coords="379,379,963,408"/><area shape="rect" id="node27" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="440,432,901,461"/><area shape="rect" id="node29" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="357,485,984,515"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a9720410d9689628dfb5f0a94768734ab" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultipleLibFiles" alt="" coords="1033,59,1599,88"/><area shape="rect" id="node13" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="1175,219,1457,248"/><area shape="rect" id="node15" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1648,219,1875,248"/></map>
 </div>
 </p>
 
@@ -440,7 +451,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00065">65</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00581">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00612">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> box_angle_;
 }
@@ -450,7 +461,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a6117e6eaf44af00149f743439c39f8f2_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a6117e6eaf44af00149f743439c39f8f2_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a6117e6eaf44af00149f743439c39f8f2_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a6117e6eaf44af00149f743439c39f8f2_icgraph">
-<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="373,5,720,35"/></map>
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="373,5,720,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="769,5,1052,35"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1101,5,1328,35"/></map>
 </div>
 </p>
 
@@ -474,7 +485,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00083">83</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00581">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00612">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> box_height_;
 }
@@ -484,7 +495,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a39250c7aae5809fb88667a6d1dc554ad_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a39250c7aae5809fb88667a6d1dc554ad_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a39250c7aae5809fb88667a6d1dc554ad_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a39250c7aae5809fb88667a6d1dc554ad_icgraph">
-<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="379,5,725,35"/></map>
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="379,5,725,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="775,5,1057,35"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1107,5,1333,35"/></map>
 </div>
 </p>
 
@@ -508,7 +519,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00071">71</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00581">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00612">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> box_length_;
 }
@@ -518,7 +529,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ab101a9f528beee33403889e40451a887_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ab101a9f528beee33403889e40451a887_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ab101a9f528beee33403889e40451a887_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_ab101a9f528beee33403889e40451a887_icgraph">
-<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="381,5,728,35"/></map>
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="381,5,728,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="777,5,1060,35"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1109,5,1336,35"/></map>
 </div>
 </p>
 
@@ -542,7 +553,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00077">77</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00581">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00612">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> box_width_;
 }
@@ -552,7 +563,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_add51d869b0522850b2e79cd3e81ce128_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_add51d869b0522850b2e79cd3e81ce128_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_add51d869b0522850b2e79cd3e81ce128_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_add51d869b0522850b2e79cd3e81ce128_icgraph">
-<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="376,5,723,35"/></map>
+<area shape="rect" id="node3" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="376,5,723,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="772,5,1055,35"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1104,5,1331,35"/></map>
 </div>
 </p>
 
@@ -576,7 +587,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00089">89</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00354">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00607">LibraryFileSpace::LibraryFile::ResolveConnectSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00521">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00638">LibraryFileSpace::LibraryFile::ResolveConnectSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> head_atom_index_;
 }
@@ -586,7 +597,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a2435f62b867e1f653f7af667f477f8ca_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a2435f62b867e1f653f7af667f477f8ca_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a2435f62b867e1f653f7af667f477f8ca_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a2435f62b867e1f653f7af667f477f8ca_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="413,5,795,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="436,59,772,88"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="413,5,795,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="436,59,772,88"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="844,59,1127,88"/><area shape="rect" id="node9" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1176,59,1403,88"/></map>
 </div>
 </p>
 
@@ -611,7 +622,7 @@ Here is the caller graph for this function:</div>
 
 <p>References <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00041">LibraryFileSpace::LibraryFileAtom::GetName()</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00855">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00763">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02216">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02128">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">for</span>(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -659,7 +670,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00036">36</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00354">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00536">LibraryFileSpace::LibraryFile::BuildLibraryFile()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00855">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00763">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00575">LibraryFileSpace::LibraryFile::ResolveAtomPertInfoSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00563">LibraryFileSpace::LibraryFile::ResolveAtomSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00581">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00602">LibraryFileSpace::LibraryFile::ResolveChildSequenceSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00615">LibraryFileSpace::LibraryFile::ResolveConnectivitySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00607">LibraryFileSpace::LibraryFile::ResolveConnectSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00633">LibraryFileSpace::LibraryFile::ResolveHierarchySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00638">LibraryFileSpace::LibraryFile::ResolveNameSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00643">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00654">LibraryFileSpace::LibraryFile::ResolveResidueConnectSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00664">LibraryFileSpace::LibraryFile::ResolveResiduePdbSequenceNumberSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00659">LibraryFileSpace::LibraryFile::ResolveResiduesSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00669">LibraryFileSpace::LibraryFile::ResolveSolventCapSection()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">LibraryFileSpace::LibraryFile::ResolveVelocitiesSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00521">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00567">LibraryFileSpace::LibraryFile::BuildLibraryFile()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01841">MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02216">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02128">MolecularModeling::Assembly::BuildStructureByLIBFileInformation()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00606">LibraryFileSpace::LibraryFile::ResolveAtomPertInfoSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00594">LibraryFileSpace::LibraryFile::ResolveAtomSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00612">LibraryFileSpace::LibraryFile::ResolveBoundBoxSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00633">LibraryFileSpace::LibraryFile::ResolveChildSequenceSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00646">LibraryFileSpace::LibraryFile::ResolveConnectivitySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00638">LibraryFileSpace::LibraryFile::ResolveConnectSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00664">LibraryFileSpace::LibraryFile::ResolveHierarchySection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00669">LibraryFileSpace::LibraryFile::ResolveNameSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00685">LibraryFileSpace::LibraryFile::ResolveResidueConnectSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00695">LibraryFileSpace::LibraryFile::ResolveResiduePdbSequenceNumberSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00690">LibraryFileSpace::LibraryFile::ResolveResiduesSection()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00700">LibraryFileSpace::LibraryFile::ResolveSolventCapSection()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00705">LibraryFileSpace::LibraryFile::ResolveVelocitiesSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> name_;
 }
@@ -669,7 +680,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a492e4d6a094e78d1b1ef9e22e0ce4902_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a492e4d6a094e78d1b1ef9e22e0ce4902_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a492e4d6a094e78d1b1ef9e22e0ce4902_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a492e4d6a094e78d1b1ef9e22e0ce4902_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="393,5,775,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="443,59,725,88"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="864,111,1363,140"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31" title="MolecularModeling::Assembly::BuildStructureByLIBFileInformation" alt="" coords="380,163,788,192"/><area shape="rect" id="node16" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa8ec7beb93a8eef0a346e74eb14ccade" title="LibraryFileSpace::LibraryFile::ResolveAtomPertInfoSection" alt="" coords="403,216,765,245"/><area shape="rect" id="node18" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="425,269,743,299"/><area shape="rect" id="node20" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="411,323,757,352"/><area shape="rect" id="node22" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a5937a056fd10323e51ea1b42ae6b2cfe" title="LibraryFileSpace::LibraryFile::ResolveChildSequenceSection" alt="" coords="397,376,771,405"/><area shape="rect" id="node24" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="404,429,764,459"/><area shape="rect" id="node26" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="416,483,752,512"/><area shape="rect" id="node28" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ab1bf388d464db7c8eeec94045a6ca0ba" title="LibraryFileSpace::LibraryFile::ResolveHierarchySection" alt="" coords="413,536,755,565"/><area shape="rect" id="node30" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a8065b902c600c86148457f2532363dfd" title="LibraryFileSpace::LibraryFile::ResolveNameSection" alt="" coords="423,589,745,619"/><area shape="rect" id="node32" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="417,643,751,672"/><area shape="rect" id="node34" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1392b1b06e5a2438a2f3f72b461cda79" title="LibraryFileSpace::LibraryFile::ResolveResidueConnectSection" alt="" coords="392,696,776,725"/><area shape="rect" id="node36" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a05f58eb185d979030274ab8f062a66b4" title="LibraryFileSpace::LibraryFile::ResolveResiduePdbSequenceNumberSection" alt="" coords="353,749,815,779"/><area shape="rect" id="node38" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a888c9e2d9f2c89e7541f2e91c60f01b2" title="LibraryFileSpace::LibraryFile::ResolveResiduesSection" alt="" coords="413,803,755,832"/><area shape="rect" id="node40" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aef3ea7be40137c9523c0c35978b2df7e" title="LibraryFileSpace::LibraryFile::ResolveSolventCapSection" alt="" coords="407,856,761,885"/><area shape="rect" id="node42" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac119e6a2f0409103ec1a732cdcf240b0" title="LibraryFileSpace::LibraryFile::ResolveVelocitiesSection" alt="" coords="412,909,756,939"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1412,137,1697,167"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="875,164,1352,193"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="393,5,775,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="972,587,1255,616"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8" title="MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly" alt="" coords="367,112,801,141"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="864,151,1363,180"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31" title="MolecularModeling::Assembly::BuildStructureByLIBFileInformation" alt="" coords="380,59,788,88"/><area shape="rect" id="node20" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa8ec7beb93a8eef0a346e74eb14ccade" title="LibraryFileSpace::LibraryFile::ResolveAtomPertInfoSection" alt="" coords="403,480,765,509"/><area shape="rect" id="node23" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="425,533,743,563"/><area shape="rect" id="node26" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af1f5c266e816b76701a102b309540441" title="LibraryFileSpace::LibraryFile::ResolveBoundBoxSection" alt="" coords="411,587,757,616"/><area shape="rect" id="node29" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a5937a056fd10323e51ea1b42ae6b2cfe" title="LibraryFileSpace::LibraryFile::ResolveChildSequenceSection" alt="" coords="397,640,771,669"/><area shape="rect" id="node32" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="404,693,764,723"/><area shape="rect" id="node35" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="416,747,752,776"/><area shape="rect" id="node38" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ab1bf388d464db7c8eeec94045a6ca0ba" title="LibraryFileSpace::LibraryFile::ResolveHierarchySection" alt="" coords="413,800,755,829"/><area shape="rect" id="node41" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a8065b902c600c86148457f2532363dfd" title="LibraryFileSpace::LibraryFile::ResolveNameSection" alt="" coords="423,853,745,883"/><area shape="rect" id="node44" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="417,907,751,936"/><area shape="rect" id="node47" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1392b1b06e5a2438a2f3f72b461cda79" title="LibraryFileSpace::LibraryFile::ResolveResidueConnectSection" alt="" coords="392,960,776,989"/><area shape="rect" id="node50" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a05f58eb185d979030274ab8f062a66b4" title="LibraryFileSpace::LibraryFile::ResolveResiduePdbSequenceNumberSection" alt="" coords="353,216,815,245"/><area shape="rect" id="node53" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a888c9e2d9f2c89e7541f2e91c60f01b2" title="LibraryFileSpace::LibraryFile::ResolveResiduesSection" alt="" coords="413,269,755,299"/><area shape="rect" id="node56" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aef3ea7be40137c9523c0c35978b2df7e" title="LibraryFileSpace::LibraryFile::ResolveSolventCapSection" alt="" coords="407,373,761,403"/><area shape="rect" id="node59" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac119e6a2f0409103ec1a732cdcf240b0" title="LibraryFileSpace::LibraryFile::ResolveVelocitiesSection" alt="" coords="412,427,756,456"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1441,587,1668,616"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1412,112,1697,141"/><area shape="rect" id="node17" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="875,72,1352,101"/></map>
 </div>
 </p>
 
@@ -693,7 +704,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00095">95</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00354">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00607">LibraryFileSpace::LibraryFile::ResolveConnectSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00521">MolecularModeling::Assembly::BuildAssemblyFromLibraryFile()</a>, and <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00638">LibraryFileSpace::LibraryFile::ResolveConnectSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> tail_atom_index_;
 }
@@ -703,7 +714,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aeba0bdd7c4de0f60469d4ebb53ac814d_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aeba0bdd7c4de0f60469d4ebb53ac814d_icgraph" alt=""/></div>
 <map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aeba0bdd7c4de0f60469d4ebb53ac814d_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_aeba0bdd7c4de0f60469d4ebb53ac814d_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="403,5,784,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="425,59,761,88"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a3fb33913163e5dffbc0667c26f47f48f" title="MolecularModeling::Assembly::BuildAssemblyFromLibraryFile" alt="" coords="403,5,784,35"/><area shape="rect" id="node5" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa3b90eb3f3b7888c86919a88a0870449" title="LibraryFileSpace::LibraryFile::ResolveConnectSection" alt="" coords="425,59,761,88"/><area shape="rect" id="node7" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="833,59,1116,88"/><area shape="rect" id="node9" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1165,59,1392,88"/></map>
 </div>
 </p>
 
@@ -726,7 +737,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00174">174</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; setw(80) &lt;&lt; <span class="stringliteral">&quot;***************************** &quot;</span> + name_ + <span class="stringliteral">&quot; *****************************&quot;</span> &lt;&lt; endl;
     out &lt;&lt; setw(60) &lt;&lt; <span class="stringliteral">&quot;======================== ATOMS ========================&quot;</span> &lt;&lt; endl;
@@ -922,20 +933,31 @@ Here is the caller graph for this function:</div>
 <p>Set the head atom index of the residue. </p>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00160">160</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01841">MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     head_atom_index_ = head_atom_index;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a869c2179d0d7fede1f2b48aa8800bee6_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a869c2179d0d7fede1f2b48aa8800bee6_icgraph" alt=""/></div>
+<map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a869c2179d0d7fede1f2b48aa8800bee6_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a869c2179d0d7fede1f2b48aa8800bee6_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8" title="MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly" alt="" coords="411,5,845,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
-<a class="anchor" id="a9d3a047a226484a0d6657058569c347a"></a><!-- doxytag: member="LibraryFileSpace::LibraryFileResidue::SetName" ref="a9d3a047a226484a0d6657058569c347a" args="(std::string &amp;name)" -->
+<a class="anchor" id="a124aea709723c22f9dac4e32ea8355b1"></a><!-- doxytag: member="LibraryFileSpace::LibraryFileResidue::SetName" ref="a124aea709723c22f9dac4e32ea8355b1" args="(std::string name)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a9d3a047a226484a0d6657058569c347a">LibraryFileResidue::SetName</a> </td>
+          <td class="memname">void <a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a124aea709723c22f9dac4e32ea8355b1">LibraryFileResidue::SetName</a> </td>
           <td>(</td>
-          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -945,10 +967,21 @@ Here is the caller graph for this function:</div>
 <p>Set the residue name </p>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00114">114</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01841">MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     name_ = name;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a124aea709723c22f9dac4e32ea8355b1_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a124aea709723c22f9dac4e32ea8355b1_icgraph" alt=""/></div>
+<map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a124aea709723c22f9dac4e32ea8355b1_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a124aea709723c22f9dac4e32ea8355b1_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8" title="MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly" alt="" coords="352,5,787,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a1e615e03f941e34baca58567bc51971b"></a><!-- doxytag: member="LibraryFileSpace::LibraryFileResidue::SetTailAtomIndex" ref="a1e615e03f941e34baca58567bc51971b" args="(int tail_atom_index)" -->
@@ -969,10 +1002,21 @@ Here is the caller graph for this function:</div>
 <p>Set the tail atom index of the residue. </p>
 
 <p>Definition at line <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html#l00166">166</a> of file <a class="el" href="../../d1/d39/libraryfileresidue_8cc_source.html">libraryfileresidue.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01841">MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     tail_atom_index_ = tail_atom_index;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a1e615e03f941e34baca58567bc51971b_icgraph.png" border="0" usemap="#dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a1e615e03f941e34baca58567bc51971b_icgraph" alt=""/></div>
+<map name="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a1e615e03f941e34baca58567bc51971b_icgraph" id="dc/d80/classLibraryFileSpace_1_1LibraryFileResidue_a1e615e03f941e34baca58567bc51971b_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8" title="MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly" alt="" coords="400,5,835,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -986,7 +1030,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -1000,7 +1044,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../d6/dc2/namespaceLibraryFileSpace.html">LibraryFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html">LibraryFileResidue</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:23 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

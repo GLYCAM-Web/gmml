@@ -23,6 +23,6 @@ var classLibraryFileSpace_1_1LibraryFileResidue =
     [ "SetBoxLength", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ab83775b57a32c83bb37a99497c6d83b4", null ],
     [ "SetBoxWidth", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a0a1b71f59058f0a8e17b658184dc42f9", null ],
     [ "SetHeadAtomIndex", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a869c2179d0d7fede1f2b48aa8800bee6", null ],
-    [ "SetName", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a9d3a047a226484a0d6657058569c347a", null ],
+    [ "SetName", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a124aea709723c22f9dac4e32ea8355b1", null ],
     [ "SetTailAtomIndex", "dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a1e615e03f941e34baca58567bc51971b", null ]
 ];

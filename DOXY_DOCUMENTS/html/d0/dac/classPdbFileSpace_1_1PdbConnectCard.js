@@ -6,5 +6,6 @@ var classPdbFileSpace_1_1PdbConnectCard =
     [ "GetBondedAtomsSerialNumbers", "d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a4a3434345542e49523e85962984404e5", null ],
     [ "GetRecordName", "d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a3e39045b2d0b9f8095c0897132f09a08", null ],
     [ "Print", "d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a2c2ae6cd6f24c997984194db2f6d98a2", null ],
+    [ "SetBondedAtomsSerialNumbers", "d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a13cc9a4cfb0a32e1e11346075e6737d8", null ],
     [ "SetRecordName", "d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#ab0bee4d6a994219f282943cf52c76130", null ]
 ];

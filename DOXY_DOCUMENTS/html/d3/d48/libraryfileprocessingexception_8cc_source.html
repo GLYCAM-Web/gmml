@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -124,7 +123,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00022"></a>00022 <span class="comment">/// Exception handler for parameter file exceptions</span>
 <a name="l00023"></a><a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a5d8c857aac13e080c6b80d63eafa1293">00023</a> <span class="comment"></span><span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a5d8c857aac13e080c6b80d63eafa1293">LibraryFileProcessingException::what</a>() <span class="keyword">const</span> throw()
 <a name="l00024"></a>00024 {
-<a name="l00025"></a>00025     <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#afce2bc3dcfdf22d13f028f3e85a5f7f9">what_</a> = <span class="stringliteral">&quot;ParameterFile: &quot;</span> + <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a1bf6426bfc3644cf42041fe6dc5d7701">message_</a>;
+<a name="l00025"></a>00025     <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#afce2bc3dcfdf22d13f028f3e85a5f7f9">what_</a> = <span class="stringliteral">&quot;LibraryFile: &quot;</span> + <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a1bf6426bfc3644cf42041fe6dc5d7701">message_</a>;
 <a name="l00026"></a>00026     <span class="keywordflow">if</span> (<a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#ae9f6c950aa03cee4cda3f4b19d6be5a3">line_number_</a> != <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)
 <a name="l00027"></a>00027     {
 <a name="l00028"></a>00028         std::stringstream ss;
@@ -133,13 +132,14 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00031"></a>00031             <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#afce2bc3dcfdf22d13f028f3e85a5f7f9">what_</a> += <span class="stringliteral">&quot; (line &quot;</span> + ss.str() + <span class="stringliteral">&quot;)&quot;</span>;
 <a name="l00032"></a>00032             <span class="keywordflow">return</span> <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#afce2bc3dcfdf22d13f028f3e85a5f7f9">what_</a>.c_str();
 <a name="l00033"></a>00033         }
-<a name="l00034"></a>00034         <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
-<a name="l00035"></a>00035 <span class="comment"></span>    }
-<a name="l00036"></a>00036     <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
-<a name="l00037"></a>00037 }
-<a name="l00038"></a>00038 
-<a name="l00039"></a><a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a989ce23881b27d0cfe7632abbac8a977">00039</a> <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a989ce23881b27d0cfe7632abbac8a977">LibraryFileProcessingException::~LibraryFileProcessingException</a>() throw() {}
-<a name="l00040"></a>00040 
+<a name="l00034"></a>00034         <span class="keywordflow">else</span>
+<a name="l00035"></a>00035             <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
+<a name="l00036"></a>00036 <span class="comment"></span>    }
+<a name="l00037"></a>00037     <span class="keywordflow">return</span> <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#afce2bc3dcfdf22d13f028f3e85a5f7f9">what_</a>.c_str();
+<a name="l00038"></a>00038 }
+<a name="l00039"></a>00039 
+<a name="l00040"></a><a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a989ce23881b27d0cfe7632abbac8a977">00040</a> <a class="code" href="../../d8/dfd/classLibraryFileSpace_1_1LibraryFileProcessingException.html#a989ce23881b27d0cfe7632abbac8a977">LibraryFileProcessingException::~LibraryFileProcessingException</a>() throw() {}
+<a name="l00041"></a>00041 
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -147,7 +147,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -160,7 +160,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d3/d48/libraryfileprocessingexception_8cc.html">libraryfileprocessingexception.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:21 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

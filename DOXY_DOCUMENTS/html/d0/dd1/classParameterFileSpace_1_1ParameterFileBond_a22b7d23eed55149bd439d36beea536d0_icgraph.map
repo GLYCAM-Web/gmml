@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#ae3f91a906430ebdf2c199f129c5d41d8" title="ParameterFileSpace::ParameterFile::ResolveBondSection" alt="" coords="383,5,740,35"/>
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a7dcf04f803ccebe049ddf393f7de5bee" title="MolecularModeling::Assembly::ExtractTopologyBondTypesFromAssembly" alt="" coords="381,5,835,35"/>
+<area shape="rect" id="node7" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#ae3f91a906430ebdf2c199f129c5d41d8" title="ParameterFileSpace::ParameterFile::ResolveBondSection" alt="" coords="429,59,787,88"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="883,5,1331,35"/>
 </map>

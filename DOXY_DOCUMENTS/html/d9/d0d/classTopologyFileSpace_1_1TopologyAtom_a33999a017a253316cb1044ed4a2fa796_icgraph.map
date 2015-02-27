@@ -1,3 +1,5 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a6518583cd08af0614c05b9b1569d0d12" title="TopologyFileSpace::TopologyFile::ResolveMassSection" alt="" coords="371,5,717,35"/>
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#afe191d56bb8c2e3d45034f203e7b0482" title="MolecularModeling::Assembly::BuildAssemblyFromTopologyCoordinateFile" alt="" coords="371,5,829,35"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a0aef6464ea486b4b9dae5308e9957214" title="MolecularModeling::Assembly::BuildAssemblyFromTopologyFile" alt="" coords="403,59,797,88"/>
+<area shape="rect" id="node7" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a6518583cd08af0614c05b9b1569d0d12" title="TopologyFileSpace::TopologyFile::ResolveMassSection" alt="" coords="427,112,773,141"/>
 </map>

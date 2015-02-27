@@ -1,10 +1,13 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#af9a66d2c878be51e2f5b5e0129ccc2ef" title="PdbFileSpace::PdbFile::DeleteAtom" alt="" coords="367,85,599,115"/>
-<area shape="rect" id="node11" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a03ba935a0d8daa71b83c3e7741f93851" title="PdbFileSpace::PdbFile::DeleteResidue" alt="" coords="359,192,607,221"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ae0c31c017ed48d071083ea84d663016a" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateCYSResidues" alt="" coords="719,5,1119,35"/>
-<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a1c953897639f47c5bfe411840263a322" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnknownHeavyAtoms" alt="" coords="692,59,1145,88"/>
-<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a1b8f894d28a5ae3595c379aec5526f7a" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveRemovedHydrogens" alt="" coords="697,112,1140,141"/>
-<area shape="rect" id="node13" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ac61dc5efca716bef752888be33fdcff4" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnrecognizedResidues" alt="" coords="689,165,1148,195"/>
-<area shape="rect" id="node15" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a5082f802c91723e36fe8c3eef44ddf99" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveResiduesOfUnknownHeavyAtoms" alt="" coords="657,219,1180,248"/>
-<area shape="rect" id="node17" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a15ca936f4431410651a764162d5e3e54" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnselectedAlternateResidues" alt="" coords="671,272,1167,301"/>
+<area shape="rect" id="node3" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#af9a66d2c878be51e2f5b5e0129ccc2ef" title="PdbFileSpace::PdbFile::DeleteAtom" alt="" coords="452,5,684,35"/>
+<area shape="rect" id="node7" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a38ea619d1d392eecceeca0e2c05d7059" title="PdbFileSpace::PdbFile::DeleteAtoms" alt="" coords="449,59,687,88"/>
+<area shape="rect" id="node11" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a55ba1e860cc45d53986dcb02ebf8b921" title="PdbFileSpace::PdbFile::DeleteAtomsWithTheGivenModelNumber" alt="" coords="367,325,769,355"/>
+<area shape="rect" id="node15" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a5b7733be7be31fed3a2cbf08ed894c46" title="PdbFileSpace::PdbFile::DeleteAtomWithTheGivenModelNumber" alt="" coords="371,165,765,195"/>
+<area shape="rect" id="node17" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a03ba935a0d8daa71b83c3e7741f93851" title="PdbFileSpace::PdbFile::DeleteResidue" alt="" coords="444,219,692,248"/>
+<area shape="rect" id="node19" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a31d93111d20e8e916896b1d90e8fe9c0" title="PdbFileSpace::PdbFile::DeleteResidues" alt="" coords="440,112,696,141"/>
+<area shape="rect" id="node22" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#af985b060eaaefd0250da4c605d618361" title="PdbFileSpace::PdbFile::DeleteResiduesWithTheGivenModelNumber" alt="" coords="359,272,777,301"/>
+<area shape="rect" id="node25" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#af3bfd573649b03cf683c0ab71c26e8a5" title="PdbFileSpace::PdbFile::DeleteResidueWithTheGivenModelNumber" alt="" coords="361,379,775,408"/>
+<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a8b385178294cd18fe900913c06c7ce21" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMapping" alt="" coords="939,5,1328,35"/>
+<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ac6c477044226ae89e88a8fad3da72765" title="PdbPreprocessorSpace::PdbPreprocessor::DeleteAllToBeDeletedEntities" alt="" coords="909,85,1357,115"/>
+<area shape="rect" id="node13" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a54d833e67d1ca6b373955d42e6324d00" title="PdbPreprocessorSpace::PdbPreprocessor::DeleteAllToBeDeletedEntitiesWithTheGivenModelNumber" alt="" coords="828,299,1439,328"/>
 </map>

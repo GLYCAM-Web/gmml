@@ -3,18 +3,21 @@
 <area shape="rect" id="node5" href="$de/da2/classMolecularModeling_1_1Atom.html#a3ff174dd7c20bbdefd6328a8b2efbfa1" title="MolecularModeling::Atom::AddCoordinate" alt="" coords="484,59,745,88"/>
 <area shape="rect" id="node7" href="$da/d64/classMolecularModeling_1_1Residue.html#a67f7d5be07421ef8d486eac819b1c101" title="MolecularModeling::Residue::AddHeadAtom" alt="" coords="476,112,753,141"/>
 <area shape="rect" id="node9" href="$da/d64/classMolecularModeling_1_1Residue.html#ac23718ef9d35d7fbe00395e63e7a953c" title="MolecularModeling::Residue::AddTailAtom" alt="" coords="480,165,749,195"/>
-<area shape="rect" id="node11" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408" title="return atom index in the belonging residue" alt="" coords="460,219,769,248"/>
-<area shape="rect" id="node13" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="464,272,765,301"/>
-<area shape="rect" id="node15" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7e9c6c60e6ad1f823adb560254ea8889" title="Return position of the atom." alt="" coords="460,325,769,355"/>
-<area shape="rect" id="node17" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2435f62b867e1f653f7af667f477f8ca" title="Return the head atom index of the residue." alt="" coords="436,379,793,408"/>
-<area shape="rect" id="node19" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="465,432,764,461"/>
-<area shape="rect" id="node21" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="473,485,756,515"/>
-<area shape="rect" id="node23" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818" title="Return a map of residues including in the file mapped to the names of the residues." alt="" coords="480,539,749,568"/>
-<area shape="rect" id="node25" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aeba0bdd7c4de0f60469d4ebb53ac814d" title="Return the tail atom index of the residue." alt="" coords="441,592,788,621"/>
-<area shape="rect" id="node27" href="$da/d64/classMolecularModeling_1_1Residue.html#a03b1653be3c925efeed920933f5c282a" title="MolecularModeling::Residue::SetAssembly" alt="" coords="479,645,751,675"/>
-<area shape="rect" id="node29" href="$de/da2/classMolecularModeling_1_1Atom.html#ae0ed6b079962f58203b1bc81c549e19d" title="MolecularModeling::Atom::SetId" alt="" coords="511,699,719,728"/>
-<area shape="rect" id="node31" href="$da/d64/classMolecularModeling_1_1Residue.html#ad1620c4c10d3d747ddf2b2c13ed98c6f" title="MolecularModeling::Residue::SetId" alt="" coords="503,752,727,781"/>
-<area shape="rect" id="node33" href="$da/d64/classMolecularModeling_1_1Residue.html#a1d43dbe9fd025966fd11456a049acfa4" title="MolecularModeling::Residue::SetName" alt="" coords="491,805,739,835"/>
-<area shape="rect" id="node35" href="$de/da2/classMolecularModeling_1_1Atom.html#a7ba5d0e4ce356708707492e256f21b96" title="MolecularModeling::Atom::SetName" alt="" coords="499,859,731,888"/>
-<area shape="rect" id="node37" href="$de/da2/classMolecularModeling_1_1Atom.html#a93666f413cb1726de659ed9488573b9a" title="MolecularModeling::Atom::SetResidue" alt="" coords="492,912,737,941"/>
+<area shape="rect" id="node11" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a77fdb37bd726d9a674095ce8d1895470" title="MolecularModeling::Assembly::ClearAssembly" alt="" coords="468,219,761,248"/>
+<area shape="rect" id="node13" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408" title="return atom index in the belonging residue" alt="" coords="460,272,769,301"/>
+<area shape="rect" id="node15" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="464,325,765,355"/>
+<area shape="rect" id="node17" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a57443850821ca40f79064d25beb7d235" title="Return charge of the atom." alt="" coords="471,379,759,408"/>
+<area shape="rect" id="node19" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7e9c6c60e6ad1f823adb560254ea8889" title="Return position of the atom." alt="" coords="460,432,769,461"/>
+<area shape="rect" id="node21" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a2435f62b867e1f653f7af667f477f8ca" title="Return the head atom index of the residue." alt="" coords="436,485,793,515"/>
+<area shape="rect" id="node23" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="465,539,764,568"/>
+<area shape="rect" id="node25" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="473,592,756,621"/>
+<area shape="rect" id="node27" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818" title="Return a map of residues including in the file mapped to the names of the residues." alt="" coords="480,645,749,675"/>
+<area shape="rect" id="node29" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aeba0bdd7c4de0f60469d4ebb53ac814d" title="Return the tail atom index of the residue." alt="" coords="441,699,788,728"/>
+<area shape="rect" id="node31" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#ad2280483bd91c6614c6d96299642da4d" title="LibraryFileSpace::LibraryFileAtom::GetType" alt="" coords="477,752,752,781"/>
+<area shape="rect" id="node33" href="$da/d64/classMolecularModeling_1_1Residue.html#a03b1653be3c925efeed920933f5c282a" title="MolecularModeling::Residue::SetAssembly" alt="" coords="479,805,751,835"/>
+<area shape="rect" id="node35" href="$de/da2/classMolecularModeling_1_1Atom.html#ae0ed6b079962f58203b1bc81c549e19d" title="MolecularModeling::Atom::SetId" alt="" coords="511,859,719,888"/>
+<area shape="rect" id="node37" href="$da/d64/classMolecularModeling_1_1Residue.html#ad1620c4c10d3d747ddf2b2c13ed98c6f" title="MolecularModeling::Residue::SetId" alt="" coords="503,912,727,941"/>
+<area shape="rect" id="node39" href="$da/d64/classMolecularModeling_1_1Residue.html#a1d43dbe9fd025966fd11456a049acfa4" title="MolecularModeling::Residue::SetName" alt="" coords="491,965,739,995"/>
+<area shape="rect" id="node41" href="$de/da2/classMolecularModeling_1_1Atom.html#a7ba5d0e4ce356708707492e256f21b96" title="MolecularModeling::Atom::SetName" alt="" coords="499,1019,731,1048"/>
+<area shape="rect" id="node43" href="$de/da2/classMolecularModeling_1_1Atom.html#a93666f413cb1726de659ed9488573b9a" title="MolecularModeling::Atom::SetResidue" alt="" coords="492,1072,737,1101"/>
 </map>

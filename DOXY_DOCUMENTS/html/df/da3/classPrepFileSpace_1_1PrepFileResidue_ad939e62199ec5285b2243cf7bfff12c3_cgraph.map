@@ -1,5 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a27503102d8cd8f0cfe1182d2a0a6c300" title="PrepFileSpace::PrepFileAtom::GetIndex" alt="" coords="444,5,697,35"/>
-<area shape="rect" id="node5" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa8499f251c3600afb8428bf9e1fc46ea" title="PrepFileSpace::PrepFileAtom::GetTopologicalType" alt="" coords="412,59,729,88"/>
-<area shape="rect" id="node7" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad3255525291ee215d41e51604d438e6a" title="PrepFileSpace::PrepFileAtom::GetType" alt="" coords="445,112,696,141"/>
+<area shape="rect" id="node3" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a05538515826eeec5feaaeb36c68fc714" title="PrepFileSpace::PrepFileResidue::GetDummyAtomType" alt="" coords="411,5,757,35"/>
+<area shape="rect" id="node5" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a27503102d8cd8f0cfe1182d2a0a6c300" title="PrepFileSpace::PrepFileAtom::GetIndex" alt="" coords="457,59,711,88"/>
+<area shape="rect" id="node7" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa8499f251c3600afb8428bf9e1fc46ea" title="PrepFileSpace::PrepFileAtom::GetTopologicalType" alt="" coords="425,112,743,141"/>
+<area shape="rect" id="node9" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad3255525291ee215d41e51604d438e6a" title="PrepFileSpace::PrepFileAtom::GetType" alt="" coords="459,165,709,195"/>
 </map>

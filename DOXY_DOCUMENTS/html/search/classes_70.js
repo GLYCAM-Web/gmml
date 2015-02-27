@@ -50,6 +50,7 @@ var searchData=
   ['pdbpreprocessorhistidinemapping',['PdbPreprocessorHistidineMapping',['../d9/d59/classPdbPreprocessorSpace_1_1PdbPreprocessorHistidineMapping.html',1,'PdbPreprocessorSpace']]],
   ['pdbpreprocessormissingresidue',['PdbPreprocessorMissingResidue',['../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html',1,'PdbPreprocessorSpace']]],
   ['pdbpreprocessorreplacedhydrogen',['PdbPreprocessorReplacedHydrogen',['../d8/d53/classPdbPreprocessorSpace_1_1PdbPreprocessorReplacedHydrogen.html',1,'PdbPreprocessorSpace']]],
+  ['pdbpreprocessorresidueinfo',['PdbPreprocessorResidueInfo',['../db/d0c/classPdbPreprocessorSpace_1_1PdbPreprocessorResidueInfo.html',1,'PdbPreprocessorSpace']]],
   ['pdbpreprocessorunrecognizedheavyatom',['PdbPreprocessorUnrecognizedHeavyAtom',['../d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html',1,'PdbPreprocessorSpace']]],
   ['pdbpreprocessorunrecognizedresidue',['PdbPreprocessorUnrecognizedResidue',['../d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html',1,'PdbPreprocessorSpace']]],
   ['pdbresidue',['PdbResidue',['../da/db0/classPdbFileSpace_1_1PdbResidue.html',1,'PdbFileSpace']]],

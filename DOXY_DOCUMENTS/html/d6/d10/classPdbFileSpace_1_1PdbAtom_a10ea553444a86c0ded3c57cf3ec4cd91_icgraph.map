@@ -1,8 +1,14 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a0cec6b0ab1d666736d1d39251d2684a5" title="PdbFileSpace::PdbFile::InsertResidueAfter" alt="" coords="408,5,680,35"/>
-<area shape="rect" id="node9" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a4882ee3a14e22f984ee09a83ebc859ff" title="PdbFileSpace::PdbFile::InsertResidueBefore" alt="" coords="403,59,685,88"/>
-<area shape="rect" id="node13" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="407,165,681,195"/>
-<area shape="rect" id="node15" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a14221547f194a3197cdda0226185ee5d" title="PdbFileSpace::PdbFile::SplitAtomCardOfModelCard" alt="" coords="381,112,707,141"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a3b523e3ce93e1af0cbf2e6853f8b0f83" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChains" alt="" coords="776,5,1197,35"/>
-<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="756,59,1217,88"/>
+<area shape="rect" id="node3" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a0cec6b0ab1d666736d1d39251d2684a5" title="PdbFileSpace::PdbFile::InsertResidueAfter" alt="" coords="491,5,763,35"/>
+<area shape="rect" id="node9" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#ae98845c0245cbbfe4a298b9bd79e2ac9" title="PdbFileSpace::PdbFile::InsertResidueAfterWithTheGivenModelNumber" alt="" coords="409,165,844,195"/>
+<area shape="rect" id="node15" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a4882ee3a14e22f984ee09a83ebc859ff" title="PdbFileSpace::PdbFile::InsertResidueBefore" alt="" coords="485,59,768,88"/>
+<area shape="rect" id="node19" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#abb10aec169ed5d65d4b813233854f581" title="PdbFileSpace::PdbFile::InsertResidueBeforeWithTheGivenModelNumber" alt="" coords="404,219,849,248"/>
+<area shape="rect" id="node23" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="489,325,764,355"/>
+<area shape="rect" id="node25" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#adf7f3fc7ab9ec4c2d55d34e70898233e" title="PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber" alt="" coords="408,379,845,408"/>
+<area shape="rect" id="node27" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a14221547f194a3197cdda0226185ee5d" title="PdbFileSpace::PdbFile::SplitAtomCardOfModelCard" alt="" coords="464,112,789,141"/>
+<area shape="rect" id="node32" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#a9aee65578e776f701e7484629b393a9b" title="PdbFileSpace::PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber" alt="" coords="383,272,871,301"/>
+<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ae54117729bbf9c16e40d88fac794ea1f" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChains" alt="" coords="1023,32,1444,61"/>
+<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="1003,85,1464,115"/>
+<area shape="rect" id="node11" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af9125ae797a1e95465c586fef3f27e53" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber" alt="" coords="941,165,1525,195"/>
+<area shape="rect" id="node13" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="920,219,1547,248"/>
 </map>

@@ -6,10 +6,14 @@ var searchData=
   ['buildassemblyfromtopologycoordinatefile',['BuildAssemblyFromTopologyCoordinateFile',['../d7/de1/classMolecularModeling_1_1Assembly.html#afe191d56bb8c2e3d45034f203e7b0482',1,'MolecularModeling::Assembly']]],
   ['buildassemblyfromtopologyfile',['BuildAssemblyFromTopologyFile',['../d7/de1/classMolecularModeling_1_1Assembly.html#a0aef6464ea486b4b9dae5308e9957214',1,'MolecularModeling::Assembly']]],
   ['buildcoordinatefile',['BuildCoordinateFile',['../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a5302d69f2a7ad03ff473c55b298e6cdb',1,'CoordinateFileSpace::CoordinateFile']]],
+  ['buildcoordinatefilestructurefromassembly',['BuildCoordinateFileStructureFromAssembly',['../d7/de1/classMolecularModeling_1_1Assembly.html#a0a7b64df545c5628a1590f279e1e0a3a',1,'MolecularModeling::Assembly']]],
   ['buildlibraryfile',['BuildLibraryFile',['../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c',1,'LibraryFileSpace::LibraryFile']]],
+  ['buildlibraryfilestructurefromassembly',['BuildLibraryFileStructureFromAssembly',['../d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8',1,'MolecularModeling::Assembly']]],
   ['buildmainparameterfile',['BuildMainParameterFile',['../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ab18890c97b490d22fdb260a273083393',1,'ParameterFileSpace::ParameterFile']]],
   ['buildmodifiedparameterfile',['BuildModifiedParameterFile',['../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a7169a52662cf1d972295f347acb68ff3',1,'ParameterFileSpace::ParameterFile']]],
+  ['buildpdbfilestructurefromassembly',['BuildPdbFileStructureFromAssembly',['../d7/de1/classMolecularModeling_1_1Assembly.html#a38f79a994ba7aab4bb75b4b0a3efdcbc',1,'MolecularModeling::Assembly']]],
   ['buildprepfile',['BuildPrepFile',['../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4',1,'PrepFileSpace::PrepFile']]],
+  ['buildprepfilestructurefromassembly',['BuildPrepFileStructureFromAssembly',['../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7',1,'MolecularModeling::Assembly']]],
   ['buildstructure',['BuildStructure',['../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a',1,'MolecularModeling::Assembly']]],
   ['buildstructurebydatabasefilesbondinginformation',['BuildStructureByDatabaseFilesBondingInformation',['../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa',1,'MolecularModeling::Assembly']]],
   ['buildstructurebydistance',['BuildStructureByDistance',['../d7/de1/classMolecularModeling_1_1Assembly.html#abde3650780c2dfc634759831608acfee',1,'MolecularModeling::Assembly']]],
@@ -17,5 +21,6 @@ var searchData=
   ['buildstructurebyoriginalfilebondinginformation',['BuildStructureByOriginalFileBondingInformation',['../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775',1,'MolecularModeling::Assembly']]],
   ['buildstructurebypdbfileinformation',['BuildStructureByPDBFileInformation',['../d7/de1/classMolecularModeling_1_1Assembly.html#a85910fffc9a818c16b19cb00d80cce84',1,'MolecularModeling::Assembly']]],
   ['buildstructurebyprepfileinformation',['BuildStructureByPrepFileInformation',['../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c',1,'MolecularModeling::Assembly']]],
-  ['buildstructurebytopfileinformation',['BuildStructureByTOPFileInformation',['../d7/de1/classMolecularModeling_1_1Assembly.html#aee785d978f23420bd1d26f735f1a849b',1,'MolecularModeling::Assembly']]]
+  ['buildstructurebytopfileinformation',['BuildStructureByTOPFileInformation',['../d7/de1/classMolecularModeling_1_1Assembly.html#aee785d978f23420bd1d26f735f1a849b',1,'MolecularModeling::Assembly']]],
+  ['buildtopologyfilestructurefromassembly',['BuildTopologyFileStructureFromAssembly',['../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754',1,'MolecularModeling::Assembly']]]
 ];

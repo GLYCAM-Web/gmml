@@ -3,6 +3,7 @@ var classPrepFileSpace_1_1PrepFileAtom =
     [ "PrepFileAtom", "de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a1fe67fc11dd516f3031a4c3e91c97e65", null ],
     [ "PrepFileAtom", "de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#abc8b529994d51399e18c32bc7bf1fdd2", null ],
     [ "PrepFileAtom", "de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a368d387cf101ac23fbf5d6e290b5bb02", null ],
+    [ "~PrepFileAtom", "de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a164216ed39617c44186e1d2939535ec7", null ],
     [ "ExtractAtomTopologicalType", "de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aeeacae3e72dec8e25d44c24e66918ab9", null ],
     [ "GetAngle", "de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a2347d8763e83d6a6bd50747089af8337", null ],
     [ "GetAngleIndex", "de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a94a936aef8aaa872489692dbdf419fc8", null ],

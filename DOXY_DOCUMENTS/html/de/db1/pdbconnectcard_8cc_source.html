@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -176,29 +175,40 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00074"></a>00074 {
 <a name="l00075"></a>00075     record_name_ = record_name;
 <a name="l00076"></a>00076 }
-<a name="l00077"></a>00077 <span class="comment"></span>
-<a name="l00078"></a>00078 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00079"></a>00079 <span class="comment"></span><span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
-<a name="l00080"></a>00080 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00081"></a><a class="code" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a2c2ae6cd6f24c997984194db2f6d98a2">00081</a> <span class="comment"></span><span class="keywordtype">void</span> PdbConnectCard::Print(ostream &amp;out)
-<a name="l00082"></a>00082 {
-<a name="l00083"></a>00083     out &lt;&lt; <span class="stringliteral">&quot;Record Name: &quot;</span> &lt;&lt; record_name_ &lt;&lt; endl &lt;&lt;
-<a name="l00084"></a>00084            <span class="stringliteral">&quot;================= Bonded Atoms Serial Numbers ================&quot;</span> &lt;&lt; endl;
-<a name="l00085"></a>00085     <span class="keywordflow">for</span>(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers_.begin(); it != bonded_atom_serial_numbers_.end(); it++)
-<a name="l00086"></a>00086     {
-<a name="l00087"></a>00087         out &lt;&lt; <span class="stringliteral">&quot;Atom Serial Number: &quot;</span>;
-<a name="l00088"></a>00088         <span class="keywordflow">if</span>((it)-&gt;first != <a class="code" href="../../d0/ddd/namespacegmml.html#a74aaf0a7ae724de6dc4518b89ef8e9f3">iNotSet</a>)
-<a name="l00089"></a>00089             out &lt;&lt; (it)-&gt;first &lt;&lt; endl;
-<a name="l00090"></a>00090         <span class="keywordflow">else</span>
-<a name="l00091"></a>00091             out &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; endl;
-<a name="l00092"></a>00092         <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; (it)-&gt;second.size(); i++)
-<a name="l00093"></a>00093         {
-<a name="l00094"></a>00094             out &lt;&lt; (it)-&gt;second.at(i) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;
-<a name="l00095"></a>00095         }
-<a name="l00096"></a>00096         out &lt;&lt; endl;
-<a name="l00097"></a>00097     }
-<a name="l00098"></a>00098     out &lt;&lt; endl;
-<a name="l00099"></a>00099 }
+<a name="l00077"></a>00077 
+<a name="l00078"></a><a class="code" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a13cc9a4cfb0a32e1e11346075e6737d8">00078</a> <span class="keywordtype">void</span> PdbConnectCard::SetBondedAtomsSerialNumbers(<a class="code" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a8b56e67c3ff3cdc7723af9a3e2f18dcd">BondedAtomsSerialNumbersMap</a> bonded_atom_serial_numbers)
+<a name="l00079"></a>00079 {
+<a name="l00080"></a>00080     bonded_atom_serial_numbers_.clear();
+<a name="l00081"></a>00081     <span class="keywordflow">for</span>(BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers.begin(); it != bonded_atom_serial_numbers.end(); it++)
+<a name="l00082"></a>00082     {
+<a name="l00083"></a>00083         <span class="keywordtype">int</span> source_serial_number = (*it).first;
+<a name="l00084"></a>00084         vector&lt;int&gt; bonded_serial_numbers = (*it).second;
+<a name="l00085"></a>00085         bonded_atom_serial_numbers_[source_serial_number] = bonded_serial_numbers;
+<a name="l00086"></a>00086     }
+<a name="l00087"></a>00087 }
+<a name="l00088"></a>00088 <span class="comment"></span>
+<a name="l00089"></a>00089 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00090"></a>00090 <span class="comment"></span><span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
+<a name="l00091"></a>00091 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00092"></a><a class="code" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a2c2ae6cd6f24c997984194db2f6d98a2">00092</a> <span class="comment"></span><span class="keywordtype">void</span> PdbConnectCard::Print(ostream &amp;out)
+<a name="l00093"></a>00093 {
+<a name="l00094"></a>00094     out &lt;&lt; <span class="stringliteral">&quot;Record Name: &quot;</span> &lt;&lt; record_name_ &lt;&lt; endl &lt;&lt;
+<a name="l00095"></a>00095            <span class="stringliteral">&quot;================= Bonded Atoms Serial Numbers ================&quot;</span> &lt;&lt; endl;
+<a name="l00096"></a>00096     <span class="keywordflow">for</span>(PdbConnectCard::BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers_.begin(); it != bonded_atom_serial_numbers_.end(); it++)
+<a name="l00097"></a>00097     {
+<a name="l00098"></a>00098         out &lt;&lt; <span class="stringliteral">&quot;Atom Serial Number: &quot;</span>;
+<a name="l00099"></a>00099         <span class="keywordflow">if</span>((it)-&gt;first != <a class="code" href="../../d0/ddd/namespacegmml.html#a74aaf0a7ae724de6dc4518b89ef8e9f3">iNotSet</a>)
+<a name="l00100"></a>00100             out &lt;&lt; (it)-&gt;first &lt;&lt; endl;
+<a name="l00101"></a>00101         <span class="keywordflow">else</span>
+<a name="l00102"></a>00102             out &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; endl;
+<a name="l00103"></a>00103         <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; (it)-&gt;second.size(); i++)
+<a name="l00104"></a>00104         {
+<a name="l00105"></a>00105             out &lt;&lt; (it)-&gt;second.at(i) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span>;
+<a name="l00106"></a>00106         }
+<a name="l00107"></a>00107         out &lt;&lt; endl;
+<a name="l00108"></a>00108     }
+<a name="l00109"></a>00109     out &lt;&lt; endl;
+<a name="l00110"></a>00110 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -206,7 +216,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -219,7 +229,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../de/db1/pdbconnectcard_8cc.html">pdbconnectcard.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

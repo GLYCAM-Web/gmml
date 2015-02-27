@@ -1,3 +1,4 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a15ca936f4431410651a764162d5e3e54" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnselectedAlternateResidues" alt="" coords="604,5,1100,35"/>
+<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a15ca936f4431410651a764162d5e3e54" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnselectedAlternateResidues" alt="" coords="685,5,1181,35"/>
+<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a2913b7563e8b430b3dd3596d6854172c" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnselectedAlternateResiduesWithTheGivenModelNumber" alt="" coords="603,59,1264,88"/>
 </map>

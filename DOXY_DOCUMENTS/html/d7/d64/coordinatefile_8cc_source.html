@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -117,184 +116,187 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00015"></a>00015 <span class="comment">//////////////////////////////////////////////////////////</span>
 <a name="l00016"></a>00016 <span class="comment"></span><span class="comment">//                       Constructor                    //</span><span class="comment"></span>
 <a name="l00017"></a>00017 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00018"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ab693071e5fd38199e971c2eb6bdc20e6">00018</a> <span class="comment"></span>CoordinateFile::CoordinateFile(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;crd_file)
+<a name="l00018"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a22e3b5cf465ddcc6d1121e7756029d49">00018</a> <span class="comment"></span>CoordinateFile::CoordinateFile()
 <a name="l00019"></a>00019 {
-<a name="l00020"></a>00020     path_ = crd_file;
-<a name="l00021"></a>00021     std::ifstream in_file;
-<a name="l00022"></a>00022     <span class="keywordflow">try</span>
-<a name="l00023"></a>00023     {
-<a name="l00024"></a>00024         in_file.open(crd_file.c_str());
-<a name="l00025"></a>00025     }
-<a name="l00026"></a>00026     <span class="keywordflow">catch</span>(...)
-<a name="l00027"></a>00027     {
-<a name="l00028"></a>00028         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(__LINE__,<span class="stringliteral">&quot;File not found&quot;</span>);
-<a name="l00029"></a>00029     }
-<a name="l00030"></a>00030     Read(in_file);
-<a name="l00031"></a>00031     in_file.close();            <span class="comment">/// Close the parameter files</span>
-<a name="l00032"></a>00032 <span class="comment"></span>}
-<a name="l00033"></a>00033 <span class="comment"></span>
-<a name="l00034"></a>00034 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00035"></a>00035 <span class="comment"></span><span class="comment">//                           ACCESSOR                   //</span><span class="comment"></span>
-<a name="l00036"></a>00036 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00037"></a>00037 <span class="comment">/// Return path of the coordinate file</span>
-<a name="l00038"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ae4e420ac64d414283667388a48dc40ff">00038</a> <span class="comment"></span><span class="keyword">const</span> std::string&amp; CoordinateFile::GetFilePath()<span class="keyword"> const</span>
-<a name="l00039"></a>00039 <span class="keyword"></span>{
-<a name="l00040"></a>00040     <span class="keywordflow">return</span> path_;
-<a name="l00041"></a>00041 }
-<a name="l00042"></a>00042 <span class="comment"></span>
-<a name="l00043"></a>00043 <span class="comment">/// Return title of the coordinate file</span>
-<a name="l00044"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a449e0fc5b780798e53a2a9259a48e146">00044</a> <span class="comment"></span><span class="keyword">const</span> std::string&amp; CoordinateFile::GetTitle()<span class="keyword"> const</span>
-<a name="l00045"></a>00045 <span class="keyword"></span>{
-<a name="l00046"></a>00046     <span class="keywordflow">return</span> title_;
-<a name="l00047"></a>00047 }
-<a name="l00048"></a>00048 <span class="comment"></span>
-<a name="l00049"></a>00049 <span class="comment">/// Return the number of coordinates contained in the coordinate file</span>
-<a name="l00050"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ad7de9fca3b83f281c51750bf1f472cf8">00050</a> <span class="comment"></span><span class="keywordtype">int</span> CoordinateFile::GetNumberOfCoodinates()
-<a name="l00051"></a>00051 {
-<a name="l00052"></a>00052     <span class="keywordflow">return</span> number_of_coordinates_;
-<a name="l00053"></a>00053 }
-<a name="l00054"></a>00054 <span class="comment"></span>
-<a name="l00055"></a>00055 <span class="comment">/// Return list of coordinates contained in the coordinate file</span>
-<a name="l00056"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ab5c340135714841722148b8a8357d759">00056</a> <span class="comment"></span><span class="keyword">const</span> std::vector&lt;Geometry::Coordinate*&gt; CoordinateFile::GetCoordinates()<span class="keyword"> const</span>
-<a name="l00057"></a>00057 <span class="keyword"></span>{
-<a name="l00058"></a>00058     <span class="keywordflow">return</span> coordinates_;
-<a name="l00059"></a>00059 }
-<a name="l00060"></a>00060 <span class="comment"></span>
-<a name="l00061"></a>00061 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00062"></a>00062 <span class="comment"></span><span class="comment">//                           MUTATOR                    //</span><span class="comment"></span>
-<a name="l00063"></a>00063 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00064"></a>00064 <span class="comment">/// Set the path of the coordinate file</span>
-<a name="l00065"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#adf43adbac28cb31c56d5ccdb78bfc7a2">00065</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetPath(std::string&amp; path)
-<a name="l00066"></a>00066 {
-<a name="l00067"></a>00067     path_ = path;
-<a name="l00068"></a>00068 }
-<a name="l00069"></a>00069 <span class="comment"></span>
-<a name="l00070"></a>00070 <span class="comment">/// Set the title of the coordinate file</span>
-<a name="l00071"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a42e1197c3a68f6a453c3a55e066ccd3f">00071</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetTitle(std::string&amp; title)
-<a name="l00072"></a>00072 {
-<a name="l00073"></a>00073     title_ = title;
-<a name="l00074"></a>00074 }
-<a name="l00075"></a>00075 <span class="comment"></span>
-<a name="l00076"></a>00076 <span class="comment">/// Set the number of coordinates contained in the coordinate file</span>
-<a name="l00077"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a2e909e05fd46d4cddd1eeb68b68a8ee9">00077</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetNumberOfCoordinates(<span class="keywordtype">int</span> number_of_coordinates)
-<a name="l00078"></a>00078 {
-<a name="l00079"></a>00079     number_of_coordinates_ = number_of_coordinates;
-<a name="l00080"></a>00080 }
-<a name="l00081"></a>00081 <span class="comment"></span>
-<a name="l00082"></a>00082 <span class="comment">/// Clear and set the list of coordinates in the coordinate file</span>
-<a name="l00083"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ad06e56be46a45a931f24a17c645d104e">00083</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetCoordinates(std::vector&lt;Coordinate*&gt; coordinates)
-<a name="l00084"></a>00084 {
-<a name="l00085"></a>00085     coordinates_.clear();
-<a name="l00086"></a>00086     <span class="keywordflow">for</span>(vector&lt;Coordinate*&gt;::iterator it = coordinates.begin(); it != coordinates.end(); it++)
-<a name="l00087"></a>00087     {
-<a name="l00088"></a>00088         coordinates_.push_back(*it);
-<a name="l00089"></a>00089     }
-<a name="l00090"></a>00090 }
-<a name="l00091"></a>00091 <span class="comment"></span>
-<a name="l00092"></a>00092 <span class="comment">/// Add a new coordinate to the list of the coordinates</span>
-<a name="l00093"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a8ac42c2b8b8f5ee305e2bdda5fb80016">00093</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::AddCoordinate(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a>* coordinate)
-<a name="l00094"></a>00094 {
-<a name="l00095"></a>00095     coordinates_.push_back(coordinate);
-<a name="l00096"></a>00096 }
-<a name="l00097"></a>00097 <span class="comment"></span>
-<a name="l00098"></a>00098 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00099"></a>00099 <span class="comment"></span><span class="comment">//                         FUNCTIONS                    //</span><span class="comment"></span>
-<a name="l00100"></a>00100 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00101"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ada50d1c98c4058bd85b0a821ea4fe6c1">00101</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::Read(std::ifstream&amp; in_file)
-<a name="l00102"></a>00102 {
-<a name="l00103"></a>00103     <span class="keywordtype">string</span> line;
-<a name="l00104"></a>00104 
-<a name="l00105"></a>00105     <span class="comment">// Unable to read file</span>
-<a name="l00106"></a>00106     <span class="keywordflow">if</span> (!getline(in_file, line))
-<a name="l00107"></a>00107     {
-<a name="l00108"></a>00108         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(<span class="stringliteral">&quot;Error reading file&quot;</span>);
-<a name="l00109"></a>00109     }
-<a name="l00110"></a>00110 <span class="comment"></span>
-<a name="l00111"></a>00111 <span class="comment">    /// Set the tile by the first read line</span>
-<a name="l00112"></a>00112 <span class="comment"></span>    title_ = line;
+<a name="l00020"></a>00020     path_ = <span class="stringliteral">&quot;GMML-Generated&quot;</span>;
+<a name="l00021"></a>00021 }
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023 CoordinateFile::CoordinateFile(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;crd_file)
+<a name="l00024"></a>00024 {
+<a name="l00025"></a>00025     path_ = crd_file;
+<a name="l00026"></a>00026     std::ifstream in_file;        
+<a name="l00027"></a>00027     <span class="keywordflow">if</span>(std::ifstream(crd_file.c_str()))
+<a name="l00028"></a>00028         in_file.open(crd_file.c_str());
+<a name="l00029"></a>00029     <span class="keywordflow">else</span>
+<a name="l00030"></a>00030     {
+<a name="l00031"></a>00031         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(__LINE__, <span class="stringliteral">&quot;Coordinate file not found&quot;</span>);
+<a name="l00032"></a>00032     }
+<a name="l00033"></a>00033     Read(in_file);
+<a name="l00034"></a>00034     in_file.close();            <span class="comment">/// Close the parameter files</span>
+<a name="l00035"></a>00035 <span class="comment"></span>}
+<a name="l00036"></a>00036 <span class="comment"></span>
+<a name="l00037"></a>00037 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00038"></a>00038 <span class="comment"></span><span class="comment">//                           ACCESSOR                   //</span><span class="comment"></span>
+<a name="l00039"></a>00039 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00040"></a>00040 <span class="comment">/// Return path of the coordinate file</span>
+<a name="l00041"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ae4e420ac64d414283667388a48dc40ff">00041</a> <span class="comment"></span><span class="keyword">const</span> std::string&amp; CoordinateFile::GetFilePath()<span class="keyword"> const</span>
+<a name="l00042"></a>00042 <span class="keyword"></span>{
+<a name="l00043"></a>00043     <span class="keywordflow">return</span> path_;
+<a name="l00044"></a>00044 }
+<a name="l00045"></a>00045 <span class="comment"></span>
+<a name="l00046"></a>00046 <span class="comment">/// Return title of the coordinate file</span>
+<a name="l00047"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a449e0fc5b780798e53a2a9259a48e146">00047</a> <span class="comment"></span><span class="keyword">const</span> std::string&amp; CoordinateFile::GetTitle()<span class="keyword"> const</span>
+<a name="l00048"></a>00048 <span class="keyword"></span>{
+<a name="l00049"></a>00049     <span class="keywordflow">return</span> title_;
+<a name="l00050"></a>00050 }
+<a name="l00051"></a>00051 <span class="comment"></span>
+<a name="l00052"></a>00052 <span class="comment">/// Return the number of coordinates contained in the coordinate file</span>
+<a name="l00053"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ad7de9fca3b83f281c51750bf1f472cf8">00053</a> <span class="comment"></span><span class="keywordtype">int</span> CoordinateFile::GetNumberOfCoodinates()
+<a name="l00054"></a>00054 {
+<a name="l00055"></a>00055     <span class="keywordflow">return</span> number_of_coordinates_;
+<a name="l00056"></a>00056 }
+<a name="l00057"></a>00057 <span class="comment"></span>
+<a name="l00058"></a>00058 <span class="comment">/// Return list of coordinates contained in the coordinate file</span>
+<a name="l00059"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ab5c340135714841722148b8a8357d759">00059</a> <span class="comment"></span><span class="keyword">const</span> std::vector&lt;Geometry::Coordinate*&gt; CoordinateFile::GetCoordinates()<span class="keyword"> const</span>
+<a name="l00060"></a>00060 <span class="keyword"></span>{
+<a name="l00061"></a>00061     <span class="keywordflow">return</span> coordinates_;
+<a name="l00062"></a>00062 }
+<a name="l00063"></a>00063 <span class="comment"></span>
+<a name="l00064"></a>00064 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00065"></a>00065 <span class="comment"></span><span class="comment">//                           MUTATOR                    //</span><span class="comment"></span>
+<a name="l00066"></a>00066 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00067"></a>00067 <span class="comment">/// Set the path of the coordinate file</span>
+<a name="l00068"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#adf43adbac28cb31c56d5ccdb78bfc7a2">00068</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetPath(std::string&amp; path)
+<a name="l00069"></a>00069 {
+<a name="l00070"></a>00070     path_ = path;
+<a name="l00071"></a>00071 }
+<a name="l00072"></a>00072 <span class="comment"></span>
+<a name="l00073"></a>00073 <span class="comment">/// Set the title of the coordinate file</span>
+<a name="l00074"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a42e1197c3a68f6a453c3a55e066ccd3f">00074</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetTitle(std::string&amp; title)
+<a name="l00075"></a>00075 {
+<a name="l00076"></a>00076     title_ = title;
+<a name="l00077"></a>00077 }
+<a name="l00078"></a>00078 <span class="comment"></span>
+<a name="l00079"></a>00079 <span class="comment">/// Set the number of coordinates contained in the coordinate file</span>
+<a name="l00080"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a2e909e05fd46d4cddd1eeb68b68a8ee9">00080</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetNumberOfCoordinates(<span class="keywordtype">int</span> number_of_coordinates)
+<a name="l00081"></a>00081 {
+<a name="l00082"></a>00082     number_of_coordinates_ = number_of_coordinates;
+<a name="l00083"></a>00083 }
+<a name="l00084"></a>00084 <span class="comment"></span>
+<a name="l00085"></a>00085 <span class="comment">/// Clear and set the list of coordinates in the coordinate file</span>
+<a name="l00086"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ad06e56be46a45a931f24a17c645d104e">00086</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::SetCoordinates(std::vector&lt;Coordinate*&gt; coordinates)
+<a name="l00087"></a>00087 {
+<a name="l00088"></a>00088     coordinates_.clear();
+<a name="l00089"></a>00089     <span class="keywordflow">for</span>(vector&lt;Coordinate*&gt;::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+<a name="l00090"></a>00090     {
+<a name="l00091"></a>00091         coordinates_.push_back(*it);
+<a name="l00092"></a>00092     }
+<a name="l00093"></a>00093 }
+<a name="l00094"></a>00094 <span class="comment"></span>
+<a name="l00095"></a>00095 <span class="comment">/// Add a new coordinate to the list of the coordinates</span>
+<a name="l00096"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a8ac42c2b8b8f5ee305e2bdda5fb80016">00096</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::AddCoordinate(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Geometry::Coordinate</a>* coordinate)
+<a name="l00097"></a>00097 {
+<a name="l00098"></a>00098     coordinates_.push_back(coordinate);
+<a name="l00099"></a>00099 }
+<a name="l00100"></a>00100 <span class="comment"></span>
+<a name="l00101"></a>00101 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00102"></a>00102 <span class="comment"></span><span class="comment">//                         FUNCTIONS                    //</span><span class="comment"></span>
+<a name="l00103"></a>00103 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00104"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ada50d1c98c4058bd85b0a821ea4fe6c1">00104</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::Read(std::ifstream&amp; in_file)
+<a name="l00105"></a>00105 {
+<a name="l00106"></a>00106     <span class="keywordtype">string</span> line;
+<a name="l00107"></a>00107 
+<a name="l00108"></a>00108     <span class="comment">// Unable to read file</span>
+<a name="l00109"></a>00109     <span class="keywordflow">if</span> (!getline(in_file, line))
+<a name="l00110"></a>00110     {
+<a name="l00111"></a>00111         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(<span class="stringliteral">&quot;Error reading file&quot;</span>);
+<a name="l00112"></a>00112     }
 <a name="l00113"></a>00113 <span class="comment"></span>
-<a name="l00114"></a>00114 <span class="comment">    /// Extract the number of coordinates in the file</span>
-<a name="l00115"></a>00115 <span class="comment"></span>    getline(in_file, line);                         <span class="comment">/// Read the next line</span>
-<a name="l00116"></a>00116 <span class="comment"></span>    <span class="keywordtype">int</span> number_of_coordinates;
-<a name="l00117"></a>00117     stringstream ss(line);                          <span class="comment">/// Create a stream from the read line</span>
-<a name="l00118"></a>00118 <span class="comment"></span>    ss &gt;&gt; number_of_coordinates;
-<a name="l00119"></a>00119     number_of_coordinates_ = number_of_coordinates; <span class="comment">/// Set the number of coordinates attribute</span>
-<a name="l00120"></a>00120 <span class="comment"></span>
-<a name="l00121"></a>00121     getline(in_file, line);                         <span class="comment">/// Read the next line</span>
-<a name="l00122"></a>00122 <span class="comment"></span>    <span class="keywordflow">while</span>(!<a class="code" href="../../d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83">Trim</a>(line).empty())                      <span class="comment">/// Read until the end of the file</span>
-<a name="l00123"></a>00123 <span class="comment"></span>    {
-<a name="l00124"></a>00124         <span class="comment">// Tokenizing the read line</span>
-<a name="l00125"></a>00125         boost::char_separator&lt;char&gt; separator(<span class="stringliteral">&quot; &quot;</span>);
-<a name="l00126"></a>00126         boost::tokenizer&lt; boost::char_separator&lt;char&gt; &gt; tokens(line, separator);
-<a name="l00127"></a>00127         vector&lt;string&gt; vectorTokens = vector&lt;string&gt;();
-<a name="l00128"></a>00128         vectorTokens.assign(tokens.begin(), tokens.end());
-<a name="l00129"></a>00129         <span class="keywordflow">switch</span>(vectorTokens.size())
-<a name="l00130"></a>00130         {<span class="comment"></span>
-<a name="l00131"></a>00131 <span class="comment">            /// One coordinate in the read line</span>
-<a name="l00132"></a>00132 <span class="comment"></span>            <span class="keywordflow">case</span> 3:
-<a name="l00133"></a>00133                 coordinates_.push_back(<span class="keyword">new</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a>(ConvertString&lt;double&gt;(vectorTokens.at(0)), ConvertString&lt;double&gt;(vectorTokens.at(1)),
-<a name="l00134"></a>00134                                                       ConvertString&lt;double&gt;(vectorTokens.at(2))));
-<a name="l00135"></a>00135                 <span class="keywordflow">break</span>;<span class="comment"></span>
-<a name="l00136"></a>00136 <span class="comment">            /// Two coordinates in the read line</span>
-<a name="l00137"></a>00137 <span class="comment"></span>            <span class="keywordflow">case</span> 6:
-<a name="l00138"></a>00138                 coordinates_.push_back(<span class="keyword">new</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a>(ConvertString&lt;double&gt;(vectorTokens.at(0)), ConvertString&lt;double&gt;(vectorTokens.at(1)),
-<a name="l00139"></a>00139                                                       ConvertString&lt;double&gt;(vectorTokens.at(2))));
-<a name="l00140"></a>00140                 coordinates_.push_back(<span class="keyword">new</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a>(ConvertString&lt;double&gt;(vectorTokens.at(3)), ConvertString&lt;double&gt;(vectorTokens.at(4)),
-<a name="l00141"></a>00141                                                       ConvertString&lt;double&gt;(vectorTokens.at(5))));
-<a name="l00142"></a>00142                 <span class="keywordflow">break</span>;
-<a name="l00143"></a>00143         }
-<a name="l00144"></a>00144         getline(in_file, line);
-<a name="l00145"></a>00145     }
-<a name="l00146"></a>00146     <span class="keywordflow">if</span>((<span class="keywordtype">int</span>)coordinates_.size() != number_of_coordinates_)
-<a name="l00147"></a>00147     {
-<a name="l00148"></a>00148         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(__LINE__, <span class="stringliteral">&quot;Corrupted file&quot;</span>);
-<a name="l00149"></a>00149     }
-<a name="l00150"></a>00150 }
-<a name="l00151"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ae64b894b1ad5b4c6c98a076952be8c21">00151</a> <span class="keywordtype">void</span> CoordinateFile::Write(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;coordinate_file)
-<a name="l00152"></a>00152 {
-<a name="l00153"></a>00153     std::ofstream out_file;
-<a name="l00154"></a>00154     <span class="keywordflow">try</span>
-<a name="l00155"></a>00155     {
-<a name="l00156"></a>00156         out_file.open(coordinate_file.c_str());
-<a name="l00157"></a>00157     }
-<a name="l00158"></a>00158     <span class="keywordflow">catch</span>(...)
-<a name="l00159"></a>00159     {
-<a name="l00160"></a>00160         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(__LINE__,<span class="stringliteral">&quot;File could not be created&quot;</span>);
-<a name="l00161"></a>00161     }
-<a name="l00162"></a>00162     <span class="keywordflow">try</span>
-<a name="l00163"></a>00163     {
-<a name="l00164"></a>00164         this-&gt;BuildCoordinateFile(out_file);
-<a name="l00165"></a>00165     }
-<a name="l00166"></a>00166     <span class="keywordflow">catch</span>(...)
-<a name="l00167"></a>00167     {
-<a name="l00168"></a>00168         out_file.close();
-<a name="l00169"></a>00169     }
-<a name="l00170"></a>00170 }
-<a name="l00171"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a5302d69f2a7ad03ff473c55b298e6cdb">00171</a> <span class="keywordtype">void</span> CoordinateFile::BuildCoordinateFile(ofstream &amp;stream)
-<a name="l00172"></a>00172 {
-<a name="l00173"></a>00173     stream &lt;&lt; left &lt;&lt; setw(4) &lt;&lt; GetTitle() &lt;&lt; endl
-<a name="l00174"></a>00174            &lt;&lt; right &lt;&lt; setw(6) &lt;&lt; GetNumberOfCoodinates() &lt;&lt; endl;
-<a name="l00175"></a>00175     <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; coordinates_.size(); i++)
-<a name="l00176"></a>00176     {
-<a name="l00177"></a>00177         stream &lt;&lt; right &lt;&lt; setw(12) &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; coordinates_.at(i)-&gt;GetX()
-<a name="l00178"></a>00178                &lt;&lt; right &lt;&lt; setw(12) &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; coordinates_.at(i)-&gt;GetY()
-<a name="l00179"></a>00179                &lt;&lt; right &lt;&lt; setw(12) &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; coordinates_.at(i)-&gt;GetZ();
-<a name="l00180"></a>00180         <span class="keywordflow">if</span>(i%2 == 1)
-<a name="l00181"></a>00181             stream &lt;&lt; endl;
-<a name="l00182"></a>00182     }
-<a name="l00183"></a>00183 }
-<a name="l00184"></a>00184 <span class="comment"></span>
-<a name="l00185"></a>00185 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00186"></a>00186 <span class="comment"></span><span class="comment">//                     DISPLAY FUNCTIONS                //</span><span class="comment"></span>
-<a name="l00187"></a>00187 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00188"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a07fa03d137f6a8bc324035f8ff855e52">00188</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::Print(std::ostream&amp; out)
-<a name="l00189"></a>00189 {
-<a name="l00190"></a>00190     out &lt;&lt; <span class="stringliteral">&quot;*********** &quot;</span> &lt;&lt; title_ &lt;&lt; <span class="stringliteral">&quot;***********&quot;</span> &lt;&lt; endl;
-<a name="l00191"></a>00191     <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; coordinates_.size(); i++)
-<a name="l00192"></a>00192     {
-<a name="l00193"></a>00193         out &lt;&lt; (i+1) &lt;&lt; <span class="stringliteral">&quot;. &quot;</span> &lt;&lt; coordinates_.at(i)-&gt;GetX() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; coordinates_.at(i)-&gt;GetY() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; coordinates_.at(i)-&gt;GetZ() &lt;&lt; endl;
-<a name="l00194"></a>00194     }
-<a name="l00195"></a>00195 }
+<a name="l00114"></a>00114 <span class="comment">    /// Set the tile by the first read line</span>
+<a name="l00115"></a>00115 <span class="comment"></span>    title_ = line;
+<a name="l00116"></a>00116 <span class="comment"></span>
+<a name="l00117"></a>00117 <span class="comment">    /// Extract the number of coordinates in the file</span>
+<a name="l00118"></a>00118 <span class="comment"></span>    getline(in_file, line);                         <span class="comment">/// Read the next line</span>
+<a name="l00119"></a>00119 <span class="comment"></span>    <span class="keywordtype">int</span> number_of_coordinates;
+<a name="l00120"></a>00120     stringstream ss(line);                          <span class="comment">/// Create a stream from the read line</span>
+<a name="l00121"></a>00121 <span class="comment"></span>    ss &gt;&gt; number_of_coordinates;
+<a name="l00122"></a>00122     number_of_coordinates_ = number_of_coordinates; <span class="comment">/// Set the number of coordinates attribute</span>
+<a name="l00123"></a>00123 <span class="comment"></span>
+<a name="l00124"></a>00124     getline(in_file, line);                         <span class="comment">/// Read the next line</span>
+<a name="l00125"></a>00125 <span class="comment"></span>    <span class="keywordflow">while</span>(!<a class="code" href="../../d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83">Trim</a>(line).empty())                      <span class="comment">/// Read until the end of the file</span>
+<a name="l00126"></a>00126 <span class="comment"></span>    {
+<a name="l00127"></a>00127         <span class="comment">// Tokenizing the read line</span>
+<a name="l00128"></a>00128         boost::char_separator&lt;char&gt; separator(<span class="stringliteral">&quot; &quot;</span>);
+<a name="l00129"></a>00129         boost::tokenizer&lt; boost::char_separator&lt;char&gt; &gt; tokens(line, separator);
+<a name="l00130"></a>00130         vector&lt;string&gt; vectorTokens = vector&lt;string&gt;();
+<a name="l00131"></a>00131         vectorTokens.assign(tokens.begin(), tokens.end());
+<a name="l00132"></a>00132         <span class="keywordflow">switch</span>(vectorTokens.size())
+<a name="l00133"></a>00133         {<span class="comment"></span>
+<a name="l00134"></a>00134 <span class="comment">            /// One coordinate in the read line</span>
+<a name="l00135"></a>00135 <span class="comment"></span>            <span class="keywordflow">case</span> 3:
+<a name="l00136"></a>00136                 coordinates_.push_back(<span class="keyword">new</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a>(ConvertString&lt;double&gt;(vectorTokens.at(0)), ConvertString&lt;double&gt;(vectorTokens.at(1)),
+<a name="l00137"></a>00137                                                       ConvertString&lt;double&gt;(vectorTokens.at(2))));
+<a name="l00138"></a>00138                 <span class="keywordflow">break</span>;<span class="comment"></span>
+<a name="l00139"></a>00139 <span class="comment">            /// Two coordinates in the read line</span>
+<a name="l00140"></a>00140 <span class="comment"></span>            <span class="keywordflow">case</span> 6:
+<a name="l00141"></a>00141                 coordinates_.push_back(<span class="keyword">new</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a>(ConvertString&lt;double&gt;(vectorTokens.at(0)), ConvertString&lt;double&gt;(vectorTokens.at(1)),
+<a name="l00142"></a>00142                                                       ConvertString&lt;double&gt;(vectorTokens.at(2))));
+<a name="l00143"></a>00143                 coordinates_.push_back(<span class="keyword">new</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a>(ConvertString&lt;double&gt;(vectorTokens.at(3)), ConvertString&lt;double&gt;(vectorTokens.at(4)),
+<a name="l00144"></a>00144                                                       ConvertString&lt;double&gt;(vectorTokens.at(5))));
+<a name="l00145"></a>00145                 <span class="keywordflow">break</span>;
+<a name="l00146"></a>00146         }
+<a name="l00147"></a>00147         getline(in_file, line);
+<a name="l00148"></a>00148     }
+<a name="l00149"></a>00149     <span class="keywordflow">if</span>((<span class="keywordtype">int</span>)coordinates_.size() != number_of_coordinates_)
+<a name="l00150"></a>00150     {
+<a name="l00151"></a>00151         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(__LINE__, <span class="stringliteral">&quot;Corrupted file&quot;</span>);
+<a name="l00152"></a>00152     }
+<a name="l00153"></a>00153 }
+<a name="l00154"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ae64b894b1ad5b4c6c98a076952be8c21">00154</a> <span class="keywordtype">void</span> CoordinateFile::Write(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;coordinate_file)
+<a name="l00155"></a>00155 {
+<a name="l00156"></a>00156     std::ofstream out_file;
+<a name="l00157"></a>00157     <span class="keywordflow">try</span>
+<a name="l00158"></a>00158     {
+<a name="l00159"></a>00159         out_file.open(coordinate_file.c_str());
+<a name="l00160"></a>00160     }
+<a name="l00161"></a>00161     <span class="keywordflow">catch</span>(...)
+<a name="l00162"></a>00162     {
+<a name="l00163"></a>00163         <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(__LINE__,<span class="stringliteral">&quot;File could not be created&quot;</span>);
+<a name="l00164"></a>00164     }
+<a name="l00165"></a>00165     <span class="keywordflow">try</span>
+<a name="l00166"></a>00166     {
+<a name="l00167"></a>00167         this-&gt;BuildCoordinateFile(out_file);
+<a name="l00168"></a>00168     }
+<a name="l00169"></a>00169     <span class="keywordflow">catch</span>(...)
+<a name="l00170"></a>00170     {
+<a name="l00171"></a>00171         out_file.close();
+<a name="l00172"></a>00172     }
+<a name="l00173"></a>00173 }
+<a name="l00174"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a5302d69f2a7ad03ff473c55b298e6cdb">00174</a> <span class="keywordtype">void</span> CoordinateFile::BuildCoordinateFile(ofstream &amp;stream)
+<a name="l00175"></a>00175 {
+<a name="l00176"></a>00176     stream &lt;&lt; left &lt;&lt; setw(4) &lt;&lt; GetTitle() &lt;&lt; endl
+<a name="l00177"></a>00177            &lt;&lt; right &lt;&lt; setw(6) &lt;&lt; GetNumberOfCoodinates() &lt;&lt; endl;
+<a name="l00178"></a>00178     <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; coordinates_.size(); i++)
+<a name="l00179"></a>00179     {
+<a name="l00180"></a>00180         stream &lt;&lt; right &lt;&lt; setw(12) &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; coordinates_.at(i)-&gt;GetX()
+<a name="l00181"></a>00181                &lt;&lt; right &lt;&lt; setw(12) &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; coordinates_.at(i)-&gt;GetY()
+<a name="l00182"></a>00182                &lt;&lt; right &lt;&lt; setw(12) &lt;&lt; fixed &lt;&lt; setprecision(7) &lt;&lt; coordinates_.at(i)-&gt;GetZ();
+<a name="l00183"></a>00183         <span class="keywordflow">if</span>(i%2 == 1)
+<a name="l00184"></a>00184             stream &lt;&lt; endl;
+<a name="l00185"></a>00185     }
+<a name="l00186"></a>00186 }
+<a name="l00187"></a>00187 <span class="comment"></span>
+<a name="l00188"></a>00188 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00189"></a>00189 <span class="comment"></span><span class="comment">//                     DISPLAY FUNCTIONS                //</span><span class="comment"></span>
+<a name="l00190"></a>00190 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00191"></a><a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a07fa03d137f6a8bc324035f8ff855e52">00191</a> <span class="comment"></span><span class="keywordtype">void</span> CoordinateFile::Print(std::ostream&amp; out)
+<a name="l00192"></a>00192 {
+<a name="l00193"></a>00193     out &lt;&lt; <span class="stringliteral">&quot;*********** &quot;</span> &lt;&lt; title_ &lt;&lt; <span class="stringliteral">&quot;***********&quot;</span> &lt;&lt; endl;
+<a name="l00194"></a>00194     <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; coordinates_.size(); i++)
+<a name="l00195"></a>00195     {
+<a name="l00196"></a>00196         out &lt;&lt; (i+1) &lt;&lt; <span class="stringliteral">&quot;. &quot;</span> &lt;&lt; coordinates_.at(i)-&gt;GetX() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; coordinates_.at(i)-&gt;GetY() &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; coordinates_.at(i)-&gt;GetZ() &lt;&lt; endl;
+<a name="l00197"></a>00197     }
+<a name="l00198"></a>00198 }
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -302,7 +304,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -315,7 +317,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d7/d64/coordinatefile_8cc.html">coordinatefile.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

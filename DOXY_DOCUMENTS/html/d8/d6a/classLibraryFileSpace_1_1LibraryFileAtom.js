@@ -1,8 +1,8 @@
 var classLibraryFileSpace_1_1LibraryFileAtom =
 [
     [ "LibraryFileAtom", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a800a864ad5a90f0f46c5eff3d54107bd", null ],
-    [ "LibraryFileAtom", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a840e46c8e783bf4ec94a6a0cfad1eaf9", null ],
-    [ "LibraryFileAtom", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#ab999ccc5d87905a0c36cbab5465c96ab", null ],
+    [ "LibraryFileAtom", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4ada001b363e2af71d010c8847af80c8", null ],
+    [ "LibraryFileAtom", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a63997fceb6c202a553eb6651cb7152d5", null ],
     [ "AddBondedAtomIndex", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#ab95f6bfcc7d4703d5090942f6ec5bf59", null ],
     [ "GetAtomicNumber", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a54b393d00ca248fd266da78ede8b3c77", null ],
     [ "GetAtomIndex", "d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408", null ],

@@ -1,4 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a5082f802c91723e36fe8c3eef44ddf99" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveResiduesOfUnknownHeavyAtoms" alt="" coords="583,5,1105,35"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a1c953897639f47c5bfe411840263a322" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnknownHeavyAtoms" alt="" coords="617,59,1071,88"/>
+<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a5082f802c91723e36fe8c3eef44ddf99" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveResiduesOfUnknownHeavyAtoms" alt="" coords="664,5,1187,35"/>
+<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a6396154c3e3f53b598352dda51c74a69" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber" alt="" coords="581,59,1269,88"/>
+<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a1c953897639f47c5bfe411840263a322" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnknownHeavyAtoms" alt="" coords="699,112,1152,141"/>
+<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a2d566a99a4c9597098e37fa344bce7ea" title="PdbPreprocessorSpace::PdbPreprocessor::RemoveUnknownHeavyAtomsWithTheGivenModelNumber" alt="" coords="616,165,1235,195"/>
 </map>

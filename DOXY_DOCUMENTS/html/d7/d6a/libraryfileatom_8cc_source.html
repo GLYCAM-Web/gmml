@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -114,12 +113,12 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00012"></a><a class="code" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a800a864ad5a90f0f46c5eff3d54107bd">00012</a> <span class="comment"></span>LibraryFileAtom::LibraryFileAtom() : type_(<span class="stringliteral">&quot;&quot;</span>), name_(<span class="stringliteral">&quot;&quot;</span>), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
 <a name="l00013"></a>00013     atom_order_(0) {}
 <a name="l00014"></a>00014 
-<a name="l00015"></a>00015 <a class="code" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a800a864ad5a90f0f46c5eff3d54107bd">LibraryFileAtom::LibraryFileAtom</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;type, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name, <span class="keywordtype">int</span> residue_index, <span class="keywordtype">int</span> atom_index, <span class="keywordtype">int</span> atomic_number, <span class="keywordtype">double</span> charge) :
+<a name="l00015"></a>00015 <a class="code" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a800a864ad5a90f0f46c5eff3d54107bd">LibraryFileAtom::LibraryFileAtom</a>(<span class="keywordtype">string</span> type, <span class="keywordtype">string</span> name, <span class="keywordtype">int</span> residue_index, <span class="keywordtype">int</span> atom_index, <span class="keywordtype">int</span> atomic_number, <span class="keywordtype">double</span> charge) :
 <a name="l00016"></a>00016     type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge), coordinate_(),
 <a name="l00017"></a>00017     atom_order_(0) {}
 <a name="l00018"></a>00018 
-<a name="l00019"></a>00019 <a class="code" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a800a864ad5a90f0f46c5eff3d54107bd">LibraryFileAtom::LibraryFileAtom</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp;type, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name, <span class="keywordtype">int</span> residue_index, <span class="keywordtype">int</span> atom_index, <span class="keywordtype">int</span> atomic_number, <span class="keywordtype">double</span> charge,
-<a name="l00020"></a>00020                                  <span class="keyword">const</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a> &amp;coordinate, <span class="keyword">const</span> vector&lt;int&gt; bonded_atoms_indices, <span class="keywordtype">int</span> atom_order) :
+<a name="l00019"></a>00019 <a class="code" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a800a864ad5a90f0f46c5eff3d54107bd">LibraryFileAtom::LibraryFileAtom</a>(<span class="keywordtype">string</span> type, <span class="keywordtype">string</span> name, <span class="keywordtype">int</span> residue_index, <span class="keywordtype">int</span> atom_index, <span class="keywordtype">int</span> atomic_number, <span class="keywordtype">double</span> charge,
+<a name="l00020"></a>00020                                  <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a> coordinate, vector&lt;int&gt; bonded_atoms_indices, <span class="keywordtype">int</span> atom_order) :
 <a name="l00021"></a>00021     type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge),
 <a name="l00022"></a>00022     coordinate_(coordinate), atom_order_(atom_order)
 <a name="l00023"></a>00023 {
@@ -270,7 +269,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -283,7 +282,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d7/d6a/libraryfileatom_8cc.html">libraryfileatom.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:21 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

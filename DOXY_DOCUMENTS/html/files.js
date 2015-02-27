@@ -1,6 +1,5 @@
 var files =
 [
-    [ "main.cc", "d9/d0f/main_8cc.html", "d9/d0f/main_8cc" ],
     [ "includes/common.hpp", "dd/d3a/common_8hpp.html", "dd/d3a/common_8hpp" ],
     [ "includes/utils.hpp", "df/d93/utils_8hpp.html", "df/d93/utils_8hpp" ],
     [ "includes/FileSet/CoordinateFileSpace/coordinatefile.hpp", "d4/dc8/coordinatefile_8hpp.html", null ],
@@ -102,6 +101,7 @@ var files =
     [ "includes/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.hpp", "d8/d4d/pdbpreprocessorhistidinemapping_8hpp.html", null ],
     [ "includes/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.hpp", "d4/d71/pdbpreprocessormissingresidue_8hpp.html", null ],
     [ "includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp", "d2/d7c/pdbpreprocessorreplacedhydrogen_8hpp.html", null ],
+    [ "includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp", "d5/def/pdbpreprocessorresidueinfo_8hpp.html", null ],
     [ "includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp", "d4/db4/pdbpreprocessorunrecognizedheavyatom_8hpp.html", null ],
     [ "includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp", "d6/d1f/pdbpreprocessorunrecognizedresidue_8hpp.html", null ],
     [ "src/FileSet/CoordinateFileSpace/coordinatefile.cc", "d7/d64/coordinatefile_8cc.html", null ],
@@ -203,6 +203,7 @@ var files =
     [ "src/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.cc", "da/dd7/pdbpreprocessorhistidinemapping_8cc.html", null ],
     [ "src/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.cc", "d3/d17/pdbpreprocessormissingresidue_8cc.html", null ],
     [ "src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc", "d2/d05/pdbpreprocessorreplacedhydrogen_8cc.html", null ],
+    [ "src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc", "dc/db4/pdbpreprocessorresidueinfo_8cc.html", null ],
     [ "src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc", "d6/d18/pdbpreprocessorunrecognizedheavyatom_8cc.html", null ],
     [ "src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc", "d2/dac/pdbpreprocessorunrecognizedresidue_8cc.html", null ]
 ];
