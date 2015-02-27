@@ -1,7 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d1/dda/pdbsheetstrand_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbsheetstrand.hpp" alt="" coords="475,160,829,189"/>
+<area shape="rect" id="node3" href="$d1/dda/pdbsheetstrand_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbsheetstrand.hpp" alt="" coords="424,160,779,189"/>
 <area shape="rect" id="node11" href="$d5/de1/pdbsheetstrandresidue_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp" alt="" coords="5,160,400,189"/>
-<area shape="rect" id="node15" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="1129,83,1287,112"/>
-<area shape="rect" id="node33" href="$dd/d3a/common_8hpp.html" title="common.hpp" alt="" coords="853,160,949,189"/>
-<area shape="rect" id="node38" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="1677,160,1845,189"/>
+<area shape="rect" id="node15" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="1327,83,1484,112"/>
+<area shape="rect" id="node33" href="$dd/d3a/common_8hpp.html" title="common.hpp" alt="" coords="1749,160,1845,189"/>
+<area shape="rect" id="node40" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="1261,160,1429,189"/>
 </map>

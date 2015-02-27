@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -218,28 +217,30 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00116"></a>00116 <span class="comment">              * @param coordinate Second vector in the subtract operator</span>
 <a name="l00117"></a>00117 <span class="comment">              */</span>
 <a name="l00118"></a>00118             <span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ac028eab61d6781b8d5e6aff5693c7b43">operator-</a>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a> coordinate);
-<a name="l00119"></a>00119 <span class="comment"></span>
-<a name="l00120"></a>00120 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00121"></a>00121 <span class="comment"></span>            <span class="comment">//                     DISPLAY FUNCTIONS                //</span><span class="comment"></span>
+<a name="l00119"></a>00119             <span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a1ebe53709ffbf2b536921b6f57945034">operator/</a>(<span class="keywordtype">double</span> divisor);
+<a name="l00120"></a>00120             <span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad17558804c1f6a28c11856874827105c">operator*</a>(<span class="keywordtype">double</span> multiplier);
+<a name="l00121"></a>00121 <span class="comment"></span>
 <a name="l00122"></a>00122 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00123"></a>00123 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00124"></a>00124 <span class="comment">              * A function to print out a coordinate</span>
-<a name="l00125"></a>00125 <span class="comment">              * Print out the current coordinate in a defined structure</span>
-<a name="l00126"></a>00126 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
-<a name="l00127"></a>00127 <span class="comment">              */</span>
-<a name="l00128"></a>00128             <span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca">Print</a>(std::ostream&amp; out = std::cout);
-<a name="l00129"></a>00129 
-<a name="l00130"></a>00130         <span class="keyword">private</span>:<span class="comment"></span>
-<a name="l00131"></a>00131 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00132"></a>00132 <span class="comment"></span>            <span class="comment">//                         ATTRIBUTES                   //</span><span class="comment"></span>
+<a name="l00123"></a>00123 <span class="comment"></span>            <span class="comment">//                     DISPLAY FUNCTIONS                //</span><span class="comment"></span>
+<a name="l00124"></a>00124 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00125"></a>00125 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00126"></a>00126 <span class="comment">              * A function to print out a coordinate</span>
+<a name="l00127"></a>00127 <span class="comment">              * Print out the current coordinate in a defined structure</span>
+<a name="l00128"></a>00128 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
+<a name="l00129"></a>00129 <span class="comment">              */</span>
+<a name="l00130"></a>00130             <span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca">Print</a>(std::ostream&amp; out = std::cout);
+<a name="l00131"></a>00131 
+<a name="l00132"></a>00132         <span class="keyword">private</span>:<span class="comment"></span>
 <a name="l00133"></a>00133 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00134"></a>00134 <span class="comment"></span>            <span class="keywordtype">double</span> x_;          <span class="comment">/*!&lt; x */</span>
-<a name="l00135"></a>00135             <span class="keywordtype">double</span> y_;          <span class="comment">/*!&lt; y */</span>
-<a name="l00136"></a>00136             <span class="keywordtype">double</span> z_;          <span class="comment">/*!&lt; z */</span>
-<a name="l00137"></a>00137     };
-<a name="l00138"></a>00138 }
-<a name="l00139"></a>00139 
-<a name="l00140"></a>00140 <span class="preprocessor">#endif // COORDINATE_HPP</span>
+<a name="l00134"></a>00134 <span class="comment"></span>            <span class="comment">//                         ATTRIBUTES                   //</span><span class="comment"></span>
+<a name="l00135"></a>00135 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00136"></a>00136 <span class="comment"></span>            <span class="keywordtype">double</span> x_;          <span class="comment">/*!&lt; x */</span>
+<a name="l00137"></a>00137             <span class="keywordtype">double</span> y_;          <span class="comment">/*!&lt; y */</span>
+<a name="l00138"></a>00138             <span class="keywordtype">double</span> z_;          <span class="comment">/*!&lt; z */</span>
+<a name="l00139"></a>00139     };
+<a name="l00140"></a>00140 }
+<a name="l00141"></a>00141 
+<a name="l00142"></a>00142 <span class="preprocessor">#endif // COORDINATE_HPP</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -247,7 +248,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -260,7 +261,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d2/dca/coordinate_8hpp.html">coordinate.hpp</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

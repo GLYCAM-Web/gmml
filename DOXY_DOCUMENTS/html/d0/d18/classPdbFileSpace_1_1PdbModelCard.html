@@ -157,7 +157,7 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00013">13</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
-<div class="fragment"><pre class="fragment">{}
+<div class="fragment"><pre class="fragment">: record_name_(<span class="stringliteral">&quot;MODEL&quot;</span>) {}
 </pre></div>
 </div>
 </div>
@@ -193,9 +193,9 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00073">73</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00070">70</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00220">MolecularModeling::Assembly::BuildAssemblyFromPdbFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00362">MolecularModeling::Assembly::BuildAssemblyFromPdbFile()</a>.</p>
 <div class="fragment"><pre class="fragment">                                               {
     <span class="keywordflow">return</span> models_;
 }
@@ -225,7 +225,7 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00069">69</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00066">66</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
 <div class="fragment"><pre class="fragment">                                  {
     <span class="keywordflow">return</span> record_name_;
 }
@@ -247,9 +247,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00096">96</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00093">93</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00011">gmml::iNotSet</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00019">gmml::iNotSet</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; <span class="stringliteral">&quot;Record Name: &quot;</span> &lt;&lt; record_name_ &lt;&lt; endl &lt;&lt;
            <span class="stringliteral">&quot;================= Models =================&quot;</span> &lt;&lt; endl;
@@ -282,11 +282,22 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00085">85</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00082">82</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00734">MolecularModeling::Assembly::BuildPdbFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                              {
     models_ = models;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d0/d18/classPdbFileSpace_1_1PdbModelCard_ad5db8dfdefa3e4a8896e25ad7ce3640b_icgraph.png" border="0" usemap="#d0/d18/classPdbFileSpace_1_1PdbModelCard_ad5db8dfdefa3e4a8896e25ad7ce3640b_icgraph" alt=""/></div>
+<map name="d0/d18/classPdbFileSpace_1_1PdbModelCard_ad5db8dfdefa3e4a8896e25ad7ce3640b_icgraph" id="d0/d18/classPdbFileSpace_1_1PdbModelCard_ad5db8dfdefa3e4a8896e25ad7ce3640b_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a38f79a994ba7aab4bb75b4b0a3efdcbc" title="MolecularModeling::Assembly::BuildPdbFileStructureFromAssembly" alt="" coords="320,5,739,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a9a079cf03f5294932bc0bbfd17684897"></a><!-- doxytag: member="PdbFileSpace::PdbModelCard::SetRecordName" ref="a9a079cf03f5294932bc0bbfd17684897" args="(const std::string record_name)" -->
@@ -304,7 +315,7 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00081">81</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html#l00078">78</a> of file <a class="el" href="../../d5/deb/pdbmodelcard_8cc_source.html">pdbmodelcard.cc</a>.</p>
 <div class="fragment"><pre class="fragment">                                                        {
     record_name_ = record_name;
 }
@@ -322,7 +333,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -336,7 +347,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../d3/d0c/namespacePdbFileSpace.html">PdbFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../d0/d18/classPdbFileSpace_1_1PdbModelCard.html">PdbModelCard</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:25 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -110,7 +110,8 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ab693071e5fd38199e971c2eb6bdc20e6">CoordinateFile</a> (const std::string &amp;crd_file)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a22e3b5cf465ddcc6d1121e7756029d49">CoordinateFile</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a76a481010a01b2b5e35b80b5116af8d8">CoordinateFile</a> (const std::string &amp;crd_file)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ae4e420ac64d414283667388a48dc40ff">GetFilePath</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a449e0fc5b780798e53a2a9259a48e146">GetTitle</a> () const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Return title of the coordinate file.  <a href="#a449e0fc5b780798e53a2a9259a48e146"></a><br/></td></tr>
@@ -137,12 +138,34 @@ Public Member Functions</h2></td></tr>
 <div class="textblock">
 <p>Definition at line <a class="el" href="../../d4/dc8/coordinatefile_8hpp_source.html#l00014">14</a> of file <a class="el" href="../../d4/dc8/coordinatefile_8hpp_source.html">coordinatefile.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="ab693071e5fd38199e971c2eb6bdc20e6"></a><!-- doxytag: member="CoordinateFileSpace::CoordinateFile::CoordinateFile" ref="ab693071e5fd38199e971c2eb6bdc20e6" args="(const std::string &amp;crd_file)" -->
+<a class="anchor" id="a22e3b5cf465ddcc6d1121e7756029d49"></a><!-- doxytag: member="CoordinateFileSpace::CoordinateFile::CoordinateFile" ref="a22e3b5cf465ddcc6d1121e7756029d49" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ab693071e5fd38199e971c2eb6bdc20e6">CoordinateFile::CoordinateFile</a> </td>
+          <td class="memname"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a22e3b5cf465ddcc6d1121e7756029d49">CoordinateFile::CoordinateFile</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Default constructor </p>
+
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00018">18</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    path_ = <span class="stringliteral">&quot;GMML-Generated&quot;</span>;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a76a481010a01b2b5e35b80b5116af8d8"></a><!-- doxytag: member="CoordinateFileSpace::CoordinateFile::CoordinateFile" ref="a76a481010a01b2b5e35b80b5116af8d8" args="(const std::string &amp;crd_file)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a22e3b5cf465ddcc6d1121e7756029d49">CoordinateFileSpace::CoordinateFile::CoordinateFile</a> </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>crd_file</em></td><td>)</td>
@@ -158,24 +181,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p>Close the parameter files </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00018">18</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
-<div class="fragment"><pre class="fragment">{
-    path_ = crd_file;
-    std::ifstream in_file;
-    <span class="keywordflow">try</span>
-    {
-        in_file.open(crd_file.c_str());
-    }
-    <span class="keywordflow">catch</span>(...)
-    {
-        <span class="keywordflow">throw</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html">CoordinateFileProcessingException</a>(__LINE__,<span class="stringliteral">&quot;File not found&quot;</span>);
-    }
-    <a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ada50d1c98c4058bd85b0a821ea4fe6c1">Read</a>(in_file);
-    in_file.close();            <span class="comment">/// Close the parameter files</span>
-<span class="comment"></span>}
-</pre></div>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
@@ -196,7 +202,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Add a new coordinate to the list of the coordinates. </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00093">93</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00096">96</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     coordinates_.push_back(coordinate);
 }
@@ -218,7 +224,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00171">171</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00174">174</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; left &lt;&lt; setw(4) &lt;&lt; <a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a449e0fc5b780798e53a2a9259a48e146" title="Return title of the coordinate file.">GetTitle</a>() &lt;&lt; endl
            &lt;&lt; right &lt;&lt; setw(6) &lt;&lt; <a class="code" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ad7de9fca3b83f281c51750bf1f472cf8" title="Return the number of coordinates contained in the coordinate file.">GetNumberOfCoodinates</a>() &lt;&lt; endl;
@@ -250,9 +256,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Return list of coordinates contained in the coordinate file. </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00056">56</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00059">59</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00405">MolecularModeling::Assembly::BuildAssemblyFromTopologyCoordinateFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00576">MolecularModeling::Assembly::BuildAssemblyFromTopologyCoordinateFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> coordinates_;
 }
@@ -283,7 +289,7 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Return path of the coordinate file </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00038">38</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00041">41</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> path_;
 }
@@ -306,7 +312,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return the number of coordinates contained in the coordinate file. </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00050">50</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00053">53</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> number_of_coordinates_;
 }
@@ -329,7 +335,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return title of the coordinate file. </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00044">44</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00047">47</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> title_;
 }
@@ -351,7 +357,7 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00188">188</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00191">191</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; <span class="stringliteral">&quot;*********** &quot;</span> &lt;&lt; title_ &lt;&lt; <span class="stringliteral">&quot;***********&quot;</span> &lt;&lt; endl;
     <span class="keywordflow">for</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; coordinates_.size(); i++)
@@ -386,7 +392,7 @@ Here is the caller graph for this function:</div>
 <p>One coordinate in the read line</p>
 <p>Two coordinates in the read line </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00101">101</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00104">104</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -467,7 +473,9 @@ Here is the call graph for this function:</div>
 
 <p>Clear and set the list of coordinates in the coordinate file. </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00083">83</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00086">86</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01830">MolecularModeling::Assembly::BuildCoordinateFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     coordinates_.clear();
     <span class="keywordflow">for</span>(vector&lt;Coordinate*&gt;::iterator it = coordinates.begin(); it != coordinates.end(); it++)
@@ -476,6 +484,15 @@ Here is the call graph for this function:</div>
     }
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile_ad06e56be46a45a931f24a17c645d104e_icgraph.png" border="0" usemap="#df/d6b/classCoordinateFileSpace_1_1CoordinateFile_ad06e56be46a45a931f24a17c645d104e_icgraph" alt=""/></div>
+<map name="df/d6b/classCoordinateFileSpace_1_1CoordinateFile_ad06e56be46a45a931f24a17c645d104e_icgraph" id="df/d6b/classCoordinateFileSpace_1_1CoordinateFile_ad06e56be46a45a931f24a17c645d104e_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0a7b64df545c5628a1590f279e1e0a3a" title="MolecularModeling::Assembly::BuildCoordinateFileStructureFromAssembly" alt="" coords="387,5,845,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a2e909e05fd46d4cddd1eeb68b68a8ee9"></a><!-- doxytag: member="CoordinateFileSpace::CoordinateFile::SetNumberOfCoordinates" ref="a2e909e05fd46d4cddd1eeb68b68a8ee9" args="(int number_of_coordinates)" -->
@@ -495,11 +512,22 @@ Here is the call graph for this function:</div>
 
 <p>Set the number of coordinates contained in the coordinate file. </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00077">77</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00080">80</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01830">MolecularModeling::Assembly::BuildCoordinateFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     number_of_coordinates_ = number_of_coordinates;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a2e909e05fd46d4cddd1eeb68b68a8ee9_icgraph.png" border="0" usemap="#df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a2e909e05fd46d4cddd1eeb68b68a8ee9_icgraph" alt=""/></div>
+<map name="df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a2e909e05fd46d4cddd1eeb68b68a8ee9_icgraph" id="df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a2e909e05fd46d4cddd1eeb68b68a8ee9_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0a7b64df545c5628a1590f279e1e0a3a" title="MolecularModeling::Assembly::BuildCoordinateFileStructureFromAssembly" alt="" coords="448,5,907,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="adf43adbac28cb31c56d5ccdb78bfc7a2"></a><!-- doxytag: member="CoordinateFileSpace::CoordinateFile::SetPath" ref="adf43adbac28cb31c56d5ccdb78bfc7a2" args="(std::string &amp;path)" -->
@@ -518,7 +546,7 @@ Here is the call graph for this function:</div>
 <div class="memdoc">
 <p>Set the path of the coordinate file </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00065">65</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00068">68</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     path_ = path;
 }
@@ -542,11 +570,22 @@ Here is the call graph for this function:</div>
 
 <p>Set the title of the coordinate file. </p>
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00071">71</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00074">74</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01830">MolecularModeling::Assembly::BuildCoordinateFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     title_ = title;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a42e1197c3a68f6a453c3a55e066ccd3f_icgraph.png" border="0" usemap="#df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a42e1197c3a68f6a453c3a55e066ccd3f_icgraph" alt=""/></div>
+<map name="df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a42e1197c3a68f6a453c3a55e066ccd3f_icgraph" id="df/d6b/classCoordinateFileSpace_1_1CoordinateFile_a42e1197c3a68f6a453c3a55e066ccd3f_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a0a7b64df545c5628a1590f279e1e0a3a" title="MolecularModeling::Assembly::BuildCoordinateFileStructureFromAssembly" alt="" coords="341,5,800,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ae64b894b1ad5b4c6c98a076952be8c21"></a><!-- doxytag: member="CoordinateFileSpace::CoordinateFile::Write" ref="ae64b894b1ad5b4c6c98a076952be8c21" args="(const std::string &amp;coordinate_file)" -->
@@ -564,7 +603,7 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00151">151</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html#l00154">154</a> of file <a class="el" href="../../d7/d64/coordinatefile_8cc_source.html">coordinatefile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     std::ofstream out_file;
     <span class="keywordflow">try</span>
@@ -598,7 +637,7 @@ Here is the call graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -612,7 +651,7 @@ Here is the call graph for this function:</div>
       <li class="navelem"><a class="el" href="../../d4/d72/namespaceCoordinateFileSpace.html">CoordinateFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html">CoordinateFile</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:23 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

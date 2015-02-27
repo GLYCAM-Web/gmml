@@ -124,7 +124,7 @@ Public Types</h2></td></tr>
 , <a class="el" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html">ParameterFileDihedral</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a8b2e715aa5b7abafba910bfdc68d7d6b">ParameterFile</a> (const std::string &amp;param_file, int type)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a95fa2251123df3334305c4724f2a2294">ParameterFile</a> (std::string param_file, int type=<a class="el" href="../../d0/ddd/namespacegmml.html#a8c28e3866dae3f40c1dcd4cb85cee497afb767e27073d54ea24eaf72c29632755">gmml::MAIN</a>)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#adc56a4b9cc9620edd0c9bce9f1a33db8">GetFilePath</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a25d6edc2a8c650f6903999258d2a3ad3">GetTitle</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ac01947c5534d890c16c336389d9cef13">AtomTypeMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a5cab0b739ea9a1f0135c7e880fc8a892">GetAtomTypes</a> () const </td></tr>
@@ -132,6 +132,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a0ad2b68f8f475f9fcb92f34d24dbd37b">AngleMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#afaec07c366c1fb42bbbf81287e5792f0">GetAngles</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a9030b8f4333b5574aaa9b6c98c6648ba">GetDihedrals</a> () const </td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a0ca41bc16bf0868533d78f2d0672a866">GetParameterFileType</a> () const </td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#af35908bb4efa01d1477dbadc89b3a40e">GetAllImproperDihedrals</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ae5dbc9be9e0075b00f18a90e73750854">GetAllproperDihedrals</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ac811bc90502b5ea44d058208f9821644">SetParameterFileType</a> (int file_type)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a97b0cf8b774cc37edaa2bb75697361b0">ReadMainParameter</a> (std::ifstream &amp;in_file)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a6b22999f051d88141850949b07ea7a56">ReadModifiedParameter</a> (std::ifstream &amp;in_file)</td></tr>
@@ -235,21 +237,21 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a8b2e715aa5b7abafba910bfdc68d7d6b"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::ParameterFile" ref="a8b2e715aa5b7abafba910bfdc68d7d6b" args="(const std::string &amp;param_file, int type)" -->
+<a class="anchor" id="a95fa2251123df3334305c4724f2a2294"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::ParameterFile" ref="a95fa2251123df3334305c4724f2a2294" args="(std::string param_file, int type=gmml::MAIN)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a8b2e715aa5b7abafba910bfdc68d7d6b">ParameterFile::ParameterFile</a> </td>
+          <td class="memname"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a95fa2251123df3334305c4724f2a2294">ParameterFile::ParameterFile</a> </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>param_file</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
+          <td class="paramname"><em>type</em> = <code><a class="el" href="../../d0/ddd/namespacegmml.html#a8c28e3866dae3f40c1dcd4cb85cee497afb767e27073d54ea24eaf72c29632755">gmml::MAIN</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -263,18 +265,16 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00022">22</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     path_ = param_file;
     file_type_ = file_type;
     std::ifstream in_file;
-    <span class="keywordflow">try</span>
-    {
+    <span class="keywordflow">if</span>(std::ifstream(param_file.c_str()))
         in_file.open(param_file.c_str());
-    }
-    <span class="keywordflow">catch</span>(...)
+    <span class="keywordflow">else</span>
     {
-        <span class="keywordflow">throw</span> <a class="code" href="../../d5/dbb/classParameterFileSpace_1_1ParameterFileProcessingException.html">ParameterFileProcessingException</a>(__LINE__,<span class="stringliteral">&quot;File not found&quot;</span>);
+        <span class="keywordflow">throw</span> <a class="code" href="../../d5/dbb/classParameterFileSpace_1_1ParameterFileProcessingException.html">ParameterFileProcessingException</a>(__LINE__, <span class="stringliteral">&quot;Parameter file not found&quot;</span>);
     }
     <span class="keywordflow">switch</span>(file_type_)
     {
@@ -307,7 +307,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00840">840</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00855">855</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out_stream &lt;&lt; <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a25d6edc2a8c650f6903999258d2a3ad3">GetTitle</a>() &lt;&lt; endl;
     <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#acd4df5869f389bfebcce642b5f880dec">ResolveAtomTypeSection</a>(out_stream);
@@ -339,7 +339,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00855">855</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00870">870</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out_stream &lt;&lt; <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a25d6edc2a8c650f6903999258d2a3ad3">GetTitle</a>() &lt;&lt; endl;
     <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#acd4df5869f389bfebcce642b5f880dec">ResolveAtomTypeSection</a>(out_stream);
@@ -350,6 +350,86 @@ Public Member Functions</h2></td></tr>
     <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a5413c37ff9cafd59e09cf26047b5d2e3">ResolvePotentialParameterSection</a>(out_stream);
 }
 </pre></div>
+</div>
+</div>
+<a class="anchor" id="af35908bb4efa01d1477dbadc89b3a40e"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::GetAllImproperDihedrals" ref="af35908bb4efa01d1477dbadc89b3a40e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">ParameterFile::DihedralMap</a> <a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#af35908bb4efa01d1477dbadc89b3a40e">ParameterFile::GetAllImproperDihedrals</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>??? </p>
+
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00077">77</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+
+<p>References <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00053">ParameterFileSpace::ParameterFileDihedral::GetIsImproper()</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a> improper_dihedral_map = <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a>();
+    <span class="keywordflow">for</span>(DihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
+    {
+        <a class="code" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html">ParameterFileDihedral</a>* dihedral = (*it).second;
+        <span class="keywordflow">if</span>(dihedral-&gt;<a class="code" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#ae34649f5317ae10219f3074dd019ff78">GetIsImproper</a>())
+            improper_dihedral_map[(*it).first] = dihedral;<span class="comment">///???</span>
+<span class="comment"></span>    }
+    <span class="keywordflow">return</span> improper_dihedral_map;
+}
+</pre></div>
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_af35908bb4efa01d1477dbadc89b3a40e_cgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_af35908bb4efa01d1477dbadc89b3a40e_cgraph" alt=""/></div>
+<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_af35908bb4efa01d1477dbadc89b3a40e_cgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_af35908bb4efa01d1477dbadc89b3a40e_cgraph">
+<area shape="rect" id="node3" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#ae34649f5317ae10219f3074dd019ff78" title="ParameterFileSpace::ParameterFileDihedral::GetIsImproper" alt="" coords="432,5,800,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
+<a class="anchor" id="ae5dbc9be9e0075b00f18a90e73750854"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::GetAllproperDihedrals" ref="ae5dbc9be9e0075b00f18a90e73750854" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">ParameterFile::DihedralMap</a> <a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ae5dbc9be9e0075b00f18a90e73750854">ParameterFile::GetAllproperDihedrals</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>??? </p>
+
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00088">88</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+
+<p>References <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00053">ParameterFileSpace::ParameterFileDihedral::GetIsImproper()</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a> proper_dihedral_map = <a class="code" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a10f28772e18ab216f32f480e1614dd10">DihedralMap</a>();
+    <span class="keywordflow">for</span>(DihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it++)
+    {
+        <a class="code" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html">ParameterFileDihedral</a>* dihedral = (*it).second;
+        <span class="keywordflow">if</span>(!dihedral-&gt;<a class="code" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#ae34649f5317ae10219f3074dd019ff78">GetIsImproper</a>())
+            proper_dihedral_map[(*it).first] = dihedral;<span class="comment">///???</span>
+<span class="comment"></span>    }
+    <span class="keywordflow">return</span> proper_dihedral_map;
+}
+</pre></div>
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_ae5dbc9be9e0075b00f18a90e73750854_cgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_ae5dbc9be9e0075b00f18a90e73750854_cgraph" alt=""/></div>
+<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_ae5dbc9be9e0075b00f18a90e73750854_cgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_ae5dbc9be9e0075b00f18a90e73750854_cgraph">
+<area shape="rect" id="node3" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#ae34649f5317ae10219f3074dd019ff78" title="ParameterFileSpace::ParameterFileDihedral::GetIsImproper" alt="" coords="419,5,787,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afaec07c366c1fb42bbbf81287e5792f0"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::GetAngles" ref="afaec07c366c1fb42bbbf81287e5792f0" args="() const " -->
@@ -366,11 +446,22 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00071">71</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00065">65</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> angles_;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_afaec07c366c1fb42bbbf81287e5792f0_icgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_afaec07c366c1fb42bbbf81287e5792f0_icgraph" alt=""/></div>
+<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_afaec07c366c1fb42bbbf81287e5792f0_icgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_afaec07c366c1fb42bbbf81287e5792f0_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="352,5,800,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a5cab0b739ea9a1f0135c7e880fc8a892"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::GetAtomTypes" ref="a5cab0b739ea9a1f0135c7e880fc8a892" args="() const " -->
@@ -387,11 +478,22 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00061">61</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00057">57</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> atom_types_;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_a5cab0b739ea9a1f0135c7e880fc8a892_icgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_a5cab0b739ea9a1f0135c7e880fc8a892_icgraph" alt=""/></div>
+<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_a5cab0b739ea9a1f0135c7e880fc8a892_icgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_a5cab0b739ea9a1f0135c7e880fc8a892_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="379,5,827,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a37ba9907a32eb000af03e913dd2e490a"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::GetBonds" ref="a37ba9907a32eb000af03e913dd2e490a" args="() const " -->
@@ -408,11 +510,22 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00066">66</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00061">61</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> bonds_;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_a37ba9907a32eb000af03e913dd2e490a_icgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_a37ba9907a32eb000af03e913dd2e490a_icgraph" alt=""/></div>
+<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_a37ba9907a32eb000af03e913dd2e490a_icgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_a37ba9907a32eb000af03e913dd2e490a_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="349,5,797,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a9030b8f4333b5574aaa9b6c98c6648ba"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::GetDihedrals" ref="a9030b8f4333b5574aaa9b6c98c6648ba" args="() const " -->
@@ -429,11 +542,22 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00076">76</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00069">69</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02843">MolecularModeling::Assembly::CountNumberOfDihedrals()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02736">MolecularModeling::Assembly::CountNumberOfDihedralsExcludingHydrogen()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02633">MolecularModeling::Assembly::CountNumberOfDihedralsIncludingHydrogen()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> dihedrals_;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_a9030b8f4333b5574aaa9b6c98c6648ba_icgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_a9030b8f4333b5574aaa9b6c98c6648ba_icgraph" alt=""/></div>
+<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_a9030b8f4333b5574aaa9b6c98c6648ba_icgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_a9030b8f4333b5574aaa9b6c98c6648ba_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="883,92,1331,121"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae1487a90371162f6b80b4bfc842c7b08" title="MolecularModeling::Assembly::CountNumberOfDihedrals" alt="" coords="424,38,779,68"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#adf407da90839b50927db90993b7f0fa5" title="MolecularModeling::Assembly::CountNumberOfDihedralsExcludingHydrogen" alt="" coords="368,92,835,121"/><area shape="rect" id="node10" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a850a0704296238817377a77974d18cf6" title="MolecularModeling::Assembly::CountNumberOfDihedralsIncludingHydrogen" alt="" coords="371,145,832,174"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="adc56a4b9cc9620edd0c9bce9f1a33db8"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::GetFilePath" ref="adc56a4b9cc9620edd0c9bce9f1a33db8" args="() const " -->
@@ -450,7 +574,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00051">51</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00049">49</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> path_;
 }
@@ -471,7 +595,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00081">81</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00073">73</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> file_type_;
 }
@@ -492,7 +616,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00056">56</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00053">53</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> title_;
 }
@@ -514,9 +638,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01072">1072</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d9/d0f/main_8cc_source.html#l00011">main()</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01087">1087</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; <span class="stringliteral">&quot;Path: &quot;</span> &lt;&lt; path_
         &lt;&lt; endl;
@@ -578,15 +700,6 @@ Public Member Functions</h2></td></tr>
     }
 }
 </pre></div>
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_ad312099c735654dd26f87e183e30dd2a_icgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_ad312099c735654dd26f87e183e30dd2a_icgraph" alt=""/></div>
-<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_ad312099c735654dd26f87e183e30dd2a_icgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_ad312099c735654dd26f87e183e30dd2a_icgraph">
-<area shape="rect" id="node3" href="../../d9/d0f/main_8cc.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="317,5,368,35"/></map>
-</div>
-</p>
-
 </div>
 </div>
 <a class="anchor" id="aa13a1987c64cce1d3648030abc3e18c0"></a><!-- doxytag: member="ParameterFileSpace::ParameterFile::ProcessAngle" ref="aa13a1987c64cce1d3648030abc3e18c0" args="(const std::string &amp;line)" -->
@@ -612,7 +725,7 @@ Here is the caller graph for this function:</div>
 <p>Line has description</p>
 <p>Create a new angle and insert into the angle list </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00462">462</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00477">477</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -671,9 +784,9 @@ Here is the call graph for this function:</div>
 <p>Line has description</p>
 <p>atom_types_.insert(std::pair&lt;std::string, ParameterFileAtom*&gt;(type, new ParameterFileAtom(type, mass, polarizability, dscr))); </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00404">404</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00419">419</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">double</span> mass, polarizability;
     <span class="keywordtype">string</span> type, dscr;
@@ -726,7 +839,7 @@ Here is the call graph for this function:</div>
 <p>Line has description</p>
 <p>Create a new bond and insert into the bond list </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00438">438</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00453">453</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -813,7 +926,7 @@ Here is the call graph for this function:</div>
 <p>Set is_improper_ attribute to false; improper dihedral doesn't have factor</p>
 <p>Check for generic dihedral </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00487">487</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00502">502</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00078">ParameterFileSpace::ParameterFileDihedral::AddTerm()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">ParameterFileSpace::ParameterFileDihedral::GetTerms()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00028">ParameterFileSpace::ParameterFileDihedral::GetTypes()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00063">ParameterFileSpace::ParameterFileDihedralTerm::SetDscr()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00047">ParameterFileSpace::ParameterFileDihedralTerm::SetFactor()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00051">ParameterFileSpace::ParameterFileDihedralTerm::SetForceConstant()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00090">ParameterFileSpace::ParameterFileDihedral::SetIsGeneric()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00094">ParameterFileSpace::ParameterFileDihedral::SetIsImproper()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00059">ParameterFileSpace::ParameterFileDihedralTerm::SetPeriodicity()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00055">ParameterFileSpace::ParameterFileDihedralTerm::SetPhase()</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -953,9 +1066,9 @@ Here is the call graph for this function:</div>
 <p>Key is not found</p>
 <p>Extract the value of the key from the found position </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00799">799</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00814">814</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">double</span> val;
     <span class="keywordtype">size_t</span> pos = dscr.find(<span class="keywordtype">string</span>(key + <span class="stringliteral">&quot;=&quot;</span>));      <span class="comment">/// Find the starting position of the value of the given key in the given description</span>
@@ -997,7 +1110,7 @@ Here is the call graph for this function:</div>
 <p>Remove the base atom from the list</p>
 <p>Assign the equivalent list to the corresponding atom in the map </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00713">713</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00728">728</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{<span class="comment"></span>
@@ -1072,7 +1185,7 @@ Here is the call graph for this function:</div>
 <p>Check for existing inverse bond</p>
 <p>Update hydrogen-bond attribute of the bond </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00675">675</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00690">690</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -1143,7 +1256,7 @@ Here is the call graph for this function:</div>
 <p>Check for the existing atom type in the map</p>
 <p>Set is_hydrophilic_ attribute to true </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00424">424</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00439">439</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -1220,9 +1333,9 @@ Here is the call graph for this function:</div>
 <p>Set is_improper_ attribute to true; improper dihedral doesn't have factor</p>
 <p>Check for generic dihedral </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00585">585</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00600">600</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00078">ParameterFileSpace::ParameterFileDihedral::AddTerm()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">ParameterFileSpace::ParameterFileDihedral::GetTerms()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00028">ParameterFileSpace::ParameterFileDihedral::GetTypes()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00011">gmml::iNotSet</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00063">ParameterFileSpace::ParameterFileDihedralTerm::SetDscr()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00047">ParameterFileSpace::ParameterFileDihedralTerm::SetFactor()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00051">ParameterFileSpace::ParameterFileDihedralTerm::SetForceConstant()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00090">ParameterFileSpace::ParameterFileDihedral::SetIsGeneric()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00094">ParameterFileSpace::ParameterFileDihedral::SetIsImproper()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00059">ParameterFileSpace::ParameterFileDihedralTerm::SetPeriodicity()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00055">ParameterFileSpace::ParameterFileDihedralTerm::SetPhase()</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
+<p>References <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00078">ParameterFileSpace::ParameterFileDihedral::AddTerm()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">ParameterFileSpace::ParameterFileDihedral::GetTerms()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00028">ParameterFileSpace::ParameterFileDihedral::GetTypes()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00019">gmml::iNotSet</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00063">ParameterFileSpace::ParameterFileDihedralTerm::SetDscr()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00047">ParameterFileSpace::ParameterFileDihedralTerm::SetFactor()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00051">ParameterFileSpace::ParameterFileDihedralTerm::SetForceConstant()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00090">ParameterFileSpace::ParameterFileDihedral::SetIsGeneric()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00094">ParameterFileSpace::ParameterFileDihedral::SetIsImproper()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00059">ParameterFileSpace::ParameterFileDihedralTerm::SetPeriodicity()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00055">ParameterFileSpace::ParameterFileDihedralTerm::SetPhase()</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">char</span> c;
     vector&lt;string&gt; types(4);
@@ -1356,9 +1469,9 @@ Here is the call graph for this function:</div>
 <p>Update well depth attribute of the existing atom type in the map</p>
 <p>Update mod4 description attribute of the existing atom type in the map </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00750">750</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00765">765</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">string</span> type, dscr;
     <span class="keywordtype">double</span> radius, depth;
@@ -1499,7 +1612,7 @@ Here is the call graph for this function:</div>
 <p>Read the next line</p>
 <p>Increment line counter </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00099">99</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00114">114</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -1745,7 +1858,7 @@ Here is the call graph for this function:</div>
 <p>Read the next line</p>
 <p>Increment line counter </p>
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00261">261</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00276">276</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/d93/utils_8hpp_source.html#l00023">gmml::Trim()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -1915,9 +2028,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00928">928</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00943">943</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d0/d07/parameterfileangle_8cc_source.html#l00034">ParameterFileSpace::ParameterFileAngle::GetAngle()</a>, <a class="el" href="../../d0/d07/parameterfileangle_8cc_source.html#l00040">ParameterFileSpace::ParameterFileAngle::GetDscr()</a>, <a class="el" href="../../d0/d07/parameterfileangle_8cc_source.html#l00028">ParameterFileSpace::ParameterFileAngle::GetForceConstant()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
+<p>References <a class="el" href="../../d0/d07/parameterfileangle_8cc_source.html#l00034">ParameterFileSpace::ParameterFileAngle::GetAngle()</a>, <a class="el" href="../../d0/d07/parameterfileangle_8cc_source.html#l00040">ParameterFileSpace::ParameterFileAngle::GetDscr()</a>, <a class="el" href="../../d0/d07/parameterfileangle_8cc_source.html#l00028">ParameterFileSpace::ParameterFileAngle::GetForceConstant()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(file_type_)
     {
@@ -1964,9 +2077,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00865">865</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00880">880</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00051">ParameterFileSpace::ParameterFileAtom::GetDscr()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00038">ParameterFileSpace::ParameterFileAtom::GetMass()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00045">ParameterFileSpace::ParameterFileAtom::GetPolarizability()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00032">ParameterFileSpace::ParameterFileAtom::GetType()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00051">ParameterFileSpace::ParameterFileAtom::GetDscr()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00038">ParameterFileSpace::ParameterFileAtom::GetMass()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00045">ParameterFileSpace::ParameterFileAtom::GetPolarizability()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00032">ParameterFileSpace::ParameterFileAtom::GetType()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(file_type_)
     {
@@ -2015,9 +2128,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00909">909</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00924">924</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../df/da5/parameterfilebond_8cc_source.html#l00045">ParameterFileSpace::ParameterFileBond::GetDscr()</a>, <a class="el" href="../../df/da5/parameterfilebond_8cc_source.html#l00033">ParameterFileSpace::ParameterFileBond::GetForceConstant()</a>, <a class="el" href="../../df/da5/parameterfilebond_8cc_source.html#l00039">ParameterFileSpace::ParameterFileBond::GetLength()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
+<p>References <a class="el" href="../../df/da5/parameterfilebond_8cc_source.html#l00045">ParameterFileSpace::ParameterFileBond::GetDscr()</a>, <a class="el" href="../../df/da5/parameterfilebond_8cc_source.html#l00033">ParameterFileSpace::ParameterFileBond::GetForceConstant()</a>, <a class="el" href="../../df/da5/parameterfilebond_8cc_source.html#l00039">ParameterFileSpace::ParameterFileBond::GetLength()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(file_type_)
     {
@@ -2063,9 +2176,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00948">948</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00963">963</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00039">ParameterFileSpace::ParameterFileDihedralTerm::GetDscr()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00023">ParameterFileSpace::ParameterFileDihedralTerm::GetFactor()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00027">ParameterFileSpace::ParameterFileDihedralTerm::GetForceConstant()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00053">ParameterFileSpace::ParameterFileDihedral::GetIsImproper()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00035">ParameterFileSpace::ParameterFileDihedralTerm::GetPeriodicity()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00031">ParameterFileSpace::ParameterFileDihedralTerm::GetPhase()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">ParameterFileSpace::ParameterFileDihedral::GetTerms()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
+<p>References <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00039">ParameterFileSpace::ParameterFileDihedralTerm::GetDscr()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00023">ParameterFileSpace::ParameterFileDihedralTerm::GetFactor()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00027">ParameterFileSpace::ParameterFileDihedralTerm::GetForceConstant()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00053">ParameterFileSpace::ParameterFileDihedral::GetIsImproper()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00035">ParameterFileSpace::ParameterFileDihedralTerm::GetPeriodicity()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00031">ParameterFileSpace::ParameterFileDihedralTerm::GetPhase()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">ParameterFileSpace::ParameterFileDihedral::GetTerms()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(file_type_)
     {
@@ -2121,7 +2234,7 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01021">1021</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01036">1036</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00081">ParameterFileSpace::ParameterFileAtom::GetEquivalentList()</a>, and <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00032">ParameterFileSpace::ParameterFileAtom::GetType()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -2174,7 +2287,7 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01006">1006</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01021">1021</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../df/da5/parameterfilebond_8cc_source.html#l00051">ParameterFileSpace::ParameterFileBond::GetHbondCoefficients()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -2218,7 +2331,7 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00887">887</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00902">902</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
 <p>References <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00075">ParameterFileSpace::ParameterFileAtom::GetIsHydrophilic()</a>, and <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00032">ParameterFileSpace::ParameterFileAtom::GetType()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -2269,9 +2382,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00977">977</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00992">992</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00039">ParameterFileSpace::ParameterFileDihedralTerm::GetDscr()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00027">ParameterFileSpace::ParameterFileDihedralTerm::GetForceConstant()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00053">ParameterFileSpace::ParameterFileDihedral::GetIsImproper()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00035">ParameterFileSpace::ParameterFileDihedralTerm::GetPeriodicity()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00031">ParameterFileSpace::ParameterFileDihedralTerm::GetPhase()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">ParameterFileSpace::ParameterFileDihedral::GetTerms()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
+<p>References <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00039">ParameterFileSpace::ParameterFileDihedralTerm::GetDscr()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00027">ParameterFileSpace::ParameterFileDihedralTerm::GetForceConstant()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00053">ParameterFileSpace::ParameterFileDihedral::GetIsImproper()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00035">ParameterFileSpace::ParameterFileDihedralTerm::GetPeriodicity()</a>, <a class="el" href="../../d2/dfa/parameterfiledihedralterm_8cc_source.html#l00031">ParameterFileSpace::ParameterFileDihedralTerm::GetPhase()</a>, <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">ParameterFileSpace::ParameterFileDihedral::GetTerms()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(file_type_)
     {
@@ -2327,9 +2440,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01045">1045</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l01060">1060</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00069">ParameterFileSpace::ParameterFileAtom::GetMod4Dscr()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00057">ParameterFileSpace::ParameterFileAtom::GetRadius()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00032">ParameterFileSpace::ParameterFileAtom::GetType()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00063">ParameterFileSpace::ParameterFileAtom::GetWellDepth()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00069">ParameterFileSpace::ParameterFileAtom::GetMod4Dscr()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00057">ParameterFileSpace::ParameterFileAtom::GetRadius()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00032">ParameterFileSpace::ParameterFileAtom::GetType()</a>, <a class="el" href="../../d7/d12/parameterfileatom_8cc_source.html#l00063">ParameterFileSpace::ParameterFileAtom::GetWellDepth()</a>, <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(file_type_)
     {
@@ -2379,7 +2492,7 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00088">88</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00103">103</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     file_type_ = file_type;
 }
@@ -2401,11 +2514,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00811">811</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00826">826</a> of file <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html">parameterfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00077">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00078">gmml::MODIFIED</a>.</p>
-
-<p>Referenced by <a class="el" href="../../d9/d0f/main_8cc_source.html#l00011">main()</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00087">gmml::MAIN</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00088">gmml::MODIFIED</a>.</p>
 <div class="fragment"><pre class="fragment">{
     std::ofstream out_file;
     <span class="keywordflow">try</span>
@@ -2435,15 +2546,6 @@ Here is the call graph for this function:</div>
     }
 }
 </pre></div>
-<p><div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><img src="../../d5/d96/classParameterFileSpace_1_1ParameterFile_acf240030cd39852a41074a5ce6e0096a_icgraph.png" border="0" usemap="#d5/d96/classParameterFileSpace_1_1ParameterFile_acf240030cd39852a41074a5ce6e0096a_icgraph" alt=""/></div>
-<map name="d5/d96/classParameterFileSpace_1_1ParameterFile_acf240030cd39852a41074a5ce6e0096a_icgraph" id="d5/d96/classParameterFileSpace_1_1ParameterFile_acf240030cd39852a41074a5ce6e0096a_icgraph">
-<area shape="rect" id="node3" href="../../d9/d0f/main_8cc.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="323,5,373,35"/></map>
-</div>
-</p>
-
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
@@ -2457,7 +2559,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -2471,7 +2573,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../df/d5b/namespaceParameterFileSpace.html">ParameterFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html">ParameterFile</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:24 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -113,9 +112,9 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00011"></a>00011 <span class="comment">//////////////////////////////////////////////////////////</span>
 <a name="l00012"></a>00012 <span class="comment"></span><span class="comment">//                       CONSTRUCTOR                    //</span><span class="comment"></span>
 <a name="l00013"></a>00013 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00014"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a3e402d5ad9f2b3bacac5c8c6b30e5c47">00014</a> <span class="comment"></span>PdbAtomCard::PdbAtomCard() {}
+<a name="l00014"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a3e402d5ad9f2b3bacac5c8c6b30e5c47">00014</a> <span class="comment"></span>PdbAtomCard::PdbAtomCard() : record_name_(<span class="stringliteral">&quot;ATOM&quot;</span>) {}
 <a name="l00015"></a>00015 
-<a name="l00016"></a>00016 PdbAtomCard::PdbAtomCard(stringstream &amp;stream_block, <span class="keywordtype">string</span> index)
+<a name="l00016"></a>00016 <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a3e402d5ad9f2b3bacac5c8c6b30e5c47">PdbAtomCard::PdbAtomCard</a>(stringstream &amp;stream_block, <span class="keywordtype">string</span> index)
 <a name="l00017"></a>00017 {
 <a name="l00018"></a>00018     <span class="keywordtype">string</span> line;
 <a name="l00019"></a>00019     <span class="keywordtype">bool</span> is_record_name_set = <span class="keyword">false</span>;
@@ -141,12 +140,12 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00039"></a>00039 <span class="comment">//////////////////////////////////////////////////////////</span>
 <a name="l00040"></a>00040 <span class="comment"></span><span class="comment">//                         ACCESSOR                     //</span><span class="comment"></span>
 <a name="l00041"></a>00041 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00042"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#acedcbb0aee74caa249d98768f563d154">00042</a> <span class="comment"></span><span class="keywordtype">string</span> PdbAtomCard::GetRecordName()
+<a name="l00042"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#acedcbb0aee74caa249d98768f563d154">00042</a> <span class="comment"></span><span class="keywordtype">string</span> <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#acedcbb0aee74caa249d98768f563d154">PdbAtomCard::GetRecordName</a>()
 <a name="l00043"></a>00043 {
 <a name="l00044"></a>00044     <span class="keywordflow">return</span> record_name_;
 <a name="l00045"></a>00045 }
 <a name="l00046"></a>00046 
-<a name="l00047"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ab07c3d7c02fbeeff68d48c768f2807c5">00047</a> <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ac8fcfb9536c3e66be4e66dd1b684390a">PdbAtomCard::PdbAtomMap</a> PdbAtomCard::GetAtoms()
+<a name="l00047"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ab07c3d7c02fbeeff68d48c768f2807c5">00047</a> <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ac8fcfb9536c3e66be4e66dd1b684390a">PdbAtomCard::PdbAtomMap</a> <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ab07c3d7c02fbeeff68d48c768f2807c5">PdbAtomCard::GetAtoms</a>()
 <a name="l00048"></a>00048 {
 <a name="l00049"></a>00049     <span class="keywordflow">return</span> atoms_;
 <a name="l00050"></a>00050 }
@@ -156,12 +155,12 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00054"></a>00054 <span class="comment">//////////////////////////////////////////////////////////</span>
 <a name="l00055"></a>00055 <span class="comment"></span><span class="comment">//                          MUTATOR                     //</span><span class="comment"></span>
 <a name="l00056"></a>00056 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00057"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a3be7c1c47671c2da95213818e9aad7ca">00057</a> <span class="comment"></span><span class="keywordtype">void</span> PdbAtomCard::SetRecordName(<span class="keyword">const</span> <span class="keywordtype">string</span> record_name)
+<a name="l00057"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a3be7c1c47671c2da95213818e9aad7ca">00057</a> <span class="comment"></span><span class="keywordtype">void</span> <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a3be7c1c47671c2da95213818e9aad7ca">PdbAtomCard::SetRecordName</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> record_name)
 <a name="l00058"></a>00058 {
 <a name="l00059"></a>00059     record_name_ = record_name;
 <a name="l00060"></a>00060 }
 <a name="l00061"></a>00061 
-<a name="l00062"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a06d1d60cbdb79fe12448f735adfdd05a">00062</a> <span class="keywordtype">void</span> PdbAtomCard::SetAtoms(<a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ac8fcfb9536c3e66be4e66dd1b684390a">PdbAtomMap</a> atoms)
+<a name="l00062"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a06d1d60cbdb79fe12448f735adfdd05a">00062</a> <span class="keywordtype">void</span> <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a06d1d60cbdb79fe12448f735adfdd05a">PdbAtomCard::SetAtoms</a>(<a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ac8fcfb9536c3e66be4e66dd1b684390a">PdbAtomMap</a> atoms)
 <a name="l00063"></a>00063 {
 <a name="l00064"></a>00064     atoms_.clear();
 <a name="l00065"></a>00065     <span class="keywordflow">for</span>(PdbAtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
@@ -179,7 +178,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00077"></a>00077 <span class="comment">//////////////////////////////////////////////////////////</span>
 <a name="l00078"></a>00078 <span class="comment"></span><span class="comment">//                      DISPLAY FUNCTION                //</span><span class="comment"></span>
 <a name="l00079"></a>00079 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00080"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a401963df46a5234f8fc343444afcd932">00080</a> <span class="comment"></span><span class="keywordtype">void</span> PdbAtomCard::Print(ostream &amp;out)
+<a name="l00080"></a><a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a401963df46a5234f8fc343444afcd932">00080</a> <span class="comment"></span><span class="keywordtype">void</span> <a class="code" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a401963df46a5234f8fc343444afcd932">PdbAtomCard::Print</a>(ostream &amp;out)
 <a name="l00081"></a>00081 {
 <a name="l00082"></a>00082     out &lt;&lt; <span class="stringliteral">&quot;Record Name: &quot;</span> &lt;&lt; record_name_ &lt;&lt; endl &lt;&lt;
 <a name="l00083"></a>00083            <span class="stringliteral">&quot;_________________ Atoms _______________&quot;</span> &lt;&lt; endl;
@@ -190,7 +189,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00088"></a>00088             out &lt;&lt; (it)-&gt;first &lt;&lt; endl;
 <a name="l00089"></a>00089         <span class="keywordflow">else</span>
 <a name="l00090"></a>00090             out &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; endl;
-<a name="l00091"></a>00091         (it)-&gt;second-&gt;<a class="code" href="../../d6/d10/classPdbFileSpace_1_1PdbAtom.html#a4407709b1b413d3dfce0917165b4f046">Print</a>();
+<a name="l00091"></a>00091         (it)-&gt;second-&gt;Print();
 <a name="l00092"></a>00092         out &lt;&lt; endl;
 <a name="l00093"></a>00093     }
 <a name="l00094"></a>00094     out &lt;&lt; endl;
@@ -202,7 +201,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -215,7 +214,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../db/da1/pdbatomcard_8cc.html">pdbatomcard.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

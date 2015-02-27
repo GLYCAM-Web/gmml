@@ -116,9 +116,14 @@ Public Types</h2></td></tr>
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2e00849cd531a7c351a8ceb240484338">PrepFile</a> (const std::string &amp;prep_file)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#acdeedf2a6bb7015325096c9c99cb9a06">PrepFile</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a0539658d9554ea60875ca3aa2f6a7434">~PrepFile</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2d752168392f8da0b448e8bf675d10b3">ResidueMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a048a4befdd6c0d1bddcb20b7b3a91802">GetResidues</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a5d773b7fbab87ece1329526843d0548b">GetAllResidueNames</a> ()</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">gmml::ResidueNameMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#ad61a4b04795af691c0d9bf81e9cba2df">GetAllResidueNamesMap</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a892b24d94a5e85599b1b0c9fe731a9ab">GetAllAtomNamesOfResidue</a> (std::string residue_name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#ad2cc82be451e27335c3b5308dcc3565d">SetPath</a> (std::string path)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a10eabd20fa90cf4755e3fc6c5a8caef1">SetResidues</a> (<a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2d752168392f8da0b448e8bf675d10b3">ResidueMap</a> residues)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a0bc0d137a0ecc621d01ed49bdbf0e4db">Read</a> (std::ifstream &amp;in_file)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html">PrepFileResidue</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a822dad5c0147c3cb0a89bb6e3b76dfd6">ProcessResidueSection</a> (std::ifstream &amp;in_file)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a96498be1ee95eee019392dab1ea86f9b">Write</a> (const std::string &amp;prep_file)</td></tr>
@@ -127,7 +132,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock">
-<p>Definition at line <a class="el" href="../../de/db5/prepfile_8hpp_source.html#l00012">12</a> of file <a class="el" href="../../de/db5/prepfile_8hpp_source.html">prepfile.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../de/db5/prepfile_8hpp_source.html#l00013">13</a> of file <a class="el" href="../../de/db5/prepfile_8hpp_source.html">prepfile.hpp</a>.</p>
 </div><hr/><h2>Member Typedef Documentation</h2>
 <a class="anchor" id="a2d752168392f8da0b448e8bf675d10b3"></a><!-- doxytag: member="PrepFileSpace::PrepFile::ResidueMap" ref="a2d752168392f8da0b448e8bf675d10b3" args="" -->
 <div class="memitem">
@@ -140,7 +145,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/db5/prepfile_8hpp_source.html#l00021">21</a> of file <a class="el" href="../../de/db5/prepfile_8hpp_source.html">prepfile.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../de/db5/prepfile_8hpp_source.html#l00022">22</a> of file <a class="el" href="../../de/db5/prepfile_8hpp_source.html">prepfile.hpp</a>.</p>
 
 </div>
 </div>
@@ -165,17 +170,59 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><pre class="fragment">{
     path_ = prep_file;
     std::ifstream in_file;
-    <span class="keywordflow">try</span>
-    {
+    <span class="keywordflow">if</span>(std::ifstream(prep_file.c_str()))
         in_file.open(prep_file.c_str());
-    }
-    <span class="keywordflow">catch</span>(...)
+    <span class="keywordflow">else</span>
     {
-        <span class="keywordflow">throw</span> <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html">PrepFileProcessingException</a>(__LINE__,<span class="stringliteral">&quot;File not found&quot;</span>);
+        <span class="keywordflow">throw</span> <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html">PrepFileProcessingException</a>(__LINE__, <span class="stringliteral">&quot;Prep file not found&quot;</span>);
     }
     <a class="code" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a0bc0d137a0ecc621d01ed49bdbf0e4db">Read</a>(in_file);
     in_file.close();            <span class="comment">/// Close the parameter files</span>
 <span class="comment"></span>}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="acdeedf2a6bb7015325096c9c99cb9a06"></a><!-- doxytag: member="PrepFileSpace::PrepFile::PrepFile" ref="acdeedf2a6bb7015325096c9c99cb9a06" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2e00849cd531a7c351a8ceb240484338">PrepFile::PrepFile</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00033">33</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    path_ = <span class="stringliteral">&quot;&quot;</span>;
+    residues_ = <a class="code" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2d752168392f8da0b448e8bf675d10b3">ResidueMap</a>();
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a0539658d9554ea60875ca3aa2f6a7434"></a><!-- doxytag: member="PrepFileSpace::PrepFile::~PrepFile" ref="a0539658d9554ea60875ca3aa2f6a7434" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a0539658d9554ea60875ca3aa2f6a7434">PrepFile::~PrepFile</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00039">39</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    residues_.clear();
+    residues_ = <a class="code" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2d752168392f8da0b448e8bf675d10b3">ResidueMap</a>();
+}
 </pre></div>
 </div>
 </div>
@@ -195,28 +242,41 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">109</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">148</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00097">PrepFileSpace::PrepFileAtom::GetAngle()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00085">PrepFileSpace::PrepFileAtom::GetAngleIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00226">PrepFileSpace::PrepFileResidue::GetAtomNameByIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00068">PrepFileSpace::PrepFileResidue::GetAtoms()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00081">PrepFileSpace::PrepFileAtom::GetBondIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00093">PrepFileSpace::PrepFileAtom::GetBondLength()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00105">PrepFileSpace::PrepFileAtom::GetCharge()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00064">PrepFileSpace::PrepFileResidue::GetCharge()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00101">PrepFileSpace::PrepFileAtom::GetDihedral()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00089">PrepFileSpace::PrepFileAtom::GetDihedralIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00056">PrepFileSpace::PrepFileResidue::GetDummyAtomType()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00072">PrepFileSpace::PrepFileResidue::GetImproperDihedrals()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00065">PrepFileSpace::PrepFileAtom::GetIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00076">PrepFileSpace::PrepFileResidue::GetLoops()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00069">PrepFileSpace::PrepFileAtom::GetName()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00036">PrepFileSpace::PrepFileResidue::GetName()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00044">PrepFileSpace::PrepFileResidue::GetOutputFormat()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00236">PrepFileSpace::PrepFileResidue::GetStringFormatOfCoordinateType()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00332">PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomOmission()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00308">PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomPosition()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00284">PrepFileSpace::PrepFileResidue::GetStringFormatOfGeometryType()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00108">PrepFileSpace::PrepFileAtom::GetStringFormatOfTopologicalType()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00032">PrepFileSpace::PrepFileResidue::GetTitle()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00073">PrepFileSpace::PrepFileAtom::GetType()</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00102">PrepFileSpace::PrepFileAtom::GetAngle()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00090">PrepFileSpace::PrepFileAtom::GetAngleIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00242">PrepFileSpace::PrepFileResidue::GetAtomNameByIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00084">PrepFileSpace::PrepFileResidue::GetAtoms()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00086">PrepFileSpace::PrepFileAtom::GetBondIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00098">PrepFileSpace::PrepFileAtom::GetBondLength()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00110">PrepFileSpace::PrepFileAtom::GetCharge()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00080">PrepFileSpace::PrepFileResidue::GetCharge()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00106">PrepFileSpace::PrepFileAtom::GetDihedral()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00094">PrepFileSpace::PrepFileAtom::GetDihedralIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00072">PrepFileSpace::PrepFileResidue::GetDummyAtomType()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00088">PrepFileSpace::PrepFileResidue::GetImproperDihedrals()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00070">PrepFileSpace::PrepFileAtom::GetIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00092">PrepFileSpace::PrepFileResidue::GetLoops()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00074">PrepFileSpace::PrepFileAtom::GetName()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00052">PrepFileSpace::PrepFileResidue::GetName()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00252">PrepFileSpace::PrepFileResidue::GetStringFormatOfCoordinateType()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00348">PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomOmission()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00324">PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomPosition()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00300">PrepFileSpace::PrepFileResidue::GetStringFormatOfGeometryType()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00276">PrepFileSpace::PrepFileResidue::GetStringFormatOfOutputFormat()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00113">PrepFileSpace::PrepFileAtom::GetStringFormatOfTopologicalType()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00048">PrepFileSpace::PrepFileResidue::GetTitle()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00078">PrepFileSpace::PrepFileAtom::GetType()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     stream &lt;&lt; endl
            &lt;&lt; endl;
     <span class="keywordflow">for</span>(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html">PrepFileResidue</a>* residue = (*it).second;
+        <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html">PrepFileResidue</a>* residue = (*it).second;       
         stream &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a394b5594c2e7de363baab11dc9a28f3d">GetTitle</a>() &lt;&lt; endl &lt;&lt; endl
-               &lt;&lt; left &lt;&lt; setw(4) &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#af706273abf1bc63d658398afec3d900a">GetName</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a4d8f16141fe7ed6af11f4d5034d62f17">GetStringFormatOfCoordinateType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; setw(1) &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a4105044f16df9b5c83f07f3f63ef33a3">GetOutputFormat</a>() &lt;&lt; endl
-               &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ae359b7222dfb4ed02bcf8a0ffa5113db">GetStringFormatOfGeometryType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad4b54f6d6872f648ceb0faa9ba927c2c">GetStringFormatOfDummyAtomOmission</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a05538515826eeec5feaaeb36c68fc714">GetDummyAtomType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab0780d96b2a8a0f3f981afde58b81ca7">GetStringFormatOfDummyAtomPosition</a>() &lt;&lt; endl
+               &lt;&lt; left &lt;&lt; setw(4) &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#af706273abf1bc63d658398afec3d900a">GetName</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; right &lt;&lt; setw(3) &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a4d8f16141fe7ed6af11f4d5034d62f17">GetStringFormatOfCoordinateType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>
+               &lt;&lt; setw(1) &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a87f276a51d6fdd6b1bccff4d0c97d5e9">GetStringFormatOfOutputFormat</a>() &lt;&lt; endl
+               &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ae359b7222dfb4ed02bcf8a0ffa5113db">GetStringFormatOfGeometryType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad4b54f6d6872f648ceb0faa9ba927c2c">GetStringFormatOfDummyAtomOmission</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>
+               &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a05538515826eeec5feaaeb36c68fc714">GetDummyAtomType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab0780d96b2a8a0f3f981afde58b81ca7">GetStringFormatOfDummyAtomPosition</a>() &lt;&lt; endl
                &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#aa484b5dc1d571a614c21b8b52cffd4ad">GetCharge</a>() &lt;&lt; endl;
-        <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a0b16841003b2f0628f9bad0c4e6ac7e1">PrepFileResidue::PrepFileAtomVector</a> atoms = residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a1ea65ec1f2427dd0e733fd1aee8810ff">GetAtoms</a>();
+        <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a0b16841003b2f0628f9bad0c4e6ac7e1">PrepFileResidue::PrepFileAtomVector</a> atoms = residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a1ea65ec1f2427dd0e733fd1aee8810ff">GetAtoms</a>();        
         <span class="keywordflow">for</span>(PrepFileResidue::PrepFileAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
         {
             <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html">PrepFileAtom</a>* atom = (*it1);
             stream &lt;&lt; right &lt;&lt; setw(2) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a27503102d8cd8f0cfe1182d2a0a6c300">GetIndex</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; left &lt;&lt; setw(4) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad7d57f51cbd2be070367c1a7fd0d40c3">GetName</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; left &lt;&lt; setw(3) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad3255525291ee215d41e51604d438e6a">GetType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>
                    &lt;&lt; setw(1) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a06ae595dd53b8e3f7205e808dd771e05">GetStringFormatOfTopologicalType</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; right &lt;&lt; setw(2) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a83402ff84c9e1a7f20b60c0af59d7b60">GetBondIndex</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; right &lt;&lt; setw(2) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a94a936aef8aaa872489692dbdf419fc8">GetAngleIndex</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>
-                   &lt;&lt; right &lt;&lt; setw(2) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a541874affae1039b5d6bfb7babfa18ae">GetDihedralIndex</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a3e4a39908b38a79940b519bbb28e44d5">GetBondLength</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>
-                   &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a2347d8763e83d6a6bd50747089af8337">GetAngle</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa472088d6ed2ee88183bf44fe78ec267">GetDihedral</a>()
-                   &lt;&lt; <span class="stringliteral">&quot;    &quot;</span> &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(4) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ab12aafb1889f04e3422f7f772bc1fa2c">GetCharge</a>() &lt;&lt; endl;
+                   &lt;&lt; right &lt;&lt; setw(2) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a541874affae1039b5d6bfb7babfa18ae">GetDihedralIndex</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
+            <span class="keywordflow">if</span>(atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a3e4a39908b38a79940b519bbb28e44d5">GetBondLength</a>() != <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)
+                stream &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a3e4a39908b38a79940b519bbb28e44d5">GetBondLength</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
+            <span class="keywordflow">else</span>
+                stream &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; 0.0 &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
+            <span class="keywordflow">if</span>(atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a2347d8763e83d6a6bd50747089af8337">GetAngle</a>() != <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)
+                   stream &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a2347d8763e83d6a6bd50747089af8337">GetAngle</a>() &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
+            <span class="keywordflow">else</span>
+                stream &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; 0.0 &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
+            <span class="keywordflow">if</span>(atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa472088d6ed2ee88183bf44fe78ec267">GetDihedral</a>() != <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)
+                stream &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa472088d6ed2ee88183bf44fe78ec267">GetDihedral</a>();
+            <span class="keywordflow">else</span>
+                stream &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(3) &lt;&lt; 0.0;
+            stream &lt;&lt; <span class="stringliteral">&quot;    &quot;</span> &lt;&lt; right &lt;&lt; setw(8) &lt;&lt; fixed &lt;&lt; setprecision(4) &lt;&lt; atom-&gt;<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ab12aafb1889f04e3422f7f772bc1fa2c">GetCharge</a>() &lt;&lt; endl;
         }
         stream &lt;&lt; endl;
         <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a37c10b1c597fd0857e50b7163e190121">PrepFileResidue::DihedralVector</a> dihedrals = residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a207c5ff3a3f806f83579bf80084b146e">GetImproperDihedrals</a>();
@@ -253,7 +313,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dd/d09/classPrepFileSpace_1_1PrepFile_a7fb3963cc1fb91ebfbf38cd2a9b95eb4_cgraph.png" border="0" usemap="#dd/d09/classPrepFileSpace_1_1PrepFile_a7fb3963cc1fb91ebfbf38cd2a9b95eb4_cgraph" alt=""/></div>
 <map name="dd/d09/classPrepFileSpace_1_1PrepFile_a7fb3963cc1fb91ebfbf38cd2a9b95eb4_cgraph" id="dd/d09/classPrepFileSpace_1_1PrepFile_a7fb3963cc1fb91ebfbf38cd2a9b95eb4_cgraph">
-<area shape="rect" id="node3" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a2347d8763e83d6a6bd50747089af8337" title="PrepFileSpace::PrepFileAtom::GetAngle" alt="" coords="404,5,660,35"/><area shape="rect" id="node5" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a94a936aef8aaa872489692dbdf419fc8" title="PrepFileSpace::PrepFileAtom::GetAngleIndex" alt="" coords="388,59,676,88"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="355,163,709,192"/><area shape="rect" id="node9" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a27503102d8cd8f0cfe1182d2a0a6c300" title="PrepFileSpace::PrepFileAtom::GetIndex" alt="" coords="813,124,1067,153"/><area shape="rect" id="node11" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad7d57f51cbd2be070367c1a7fd0d40c3" title="PrepFileSpace::PrepFileAtom::GetName" alt="" coords="811,189,1069,219"/><area shape="rect" id="node13" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a1ea65ec1f2427dd0e733fd1aee8810ff" title="PrepFileSpace::PrepFileResidue::GetAtoms" alt="" coords="393,267,671,296"/><area shape="rect" id="node15" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a83402ff84c9e1a7f20b60c0af59d7b60" title="PrepFileSpace::PrepFileAtom::GetBondIndex" alt="" coords="389,320,675,349"/><area shape="rect" id="node17" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a3e4a39908b38a79940b519bbb28e44d5" title="PrepFileSpace::PrepFileAtom::GetBondLength" alt="" coords="387,373,677,403"/><area shape="rect" id="node19" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ab12aafb1889f04e3422f7f772bc1fa2c" title="PrepFileSpace::PrepFileAtom::GetCharge" alt="" coords="400,427,664,456"/><area shape="rect" id="node21" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#aa484b5dc1d571a614c21b8b52cffd4ad" title="PrepFileSpace::PrepFileResidue::GetCharge" alt="" coords="391,480,673,509"/><area shape="rect" id="node23" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa472088d6ed2ee88183bf44fe78ec267" title="PrepFileSpace::PrepFileAtom::GetDihedral" alt="" coords="397,533,667,563"/><area shape="rect" id="node25" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a541874affae1039b5d6bfb7babfa18ae" title="PrepFileSpace::PrepFileAtom::GetDihedralIndex" alt="" coords="381,587,683,616"/><area shape="rect" id="node27" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a05538515826eeec5feaaeb36c68fc714" title="PrepFileSpace::PrepFileResidue::GetDummyAtomType" alt="" coords="359,640,705,669"/><area shape="rect" id="node29" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a207c5ff3a3f806f83579bf80084b146e" title="PrepFileSpace::PrepFileResidue::GetImproperDihedrals" alt="" coords="359,693,705,723"/><area shape="rect" id="node32" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ae4318614af88f8837341345c62824314" title="PrepFileSpace::PrepFileResidue::GetLoops" alt="" coords="395,747,669,776"/><area shape="rect" id="node35" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#af706273abf1bc63d658398afec3d900a" title="PrepFileSpace::PrepFileResidue::GetName" alt="" coords="395,800,669,829"/><area shape="rect" id="node37" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a4105044f16df9b5c83f07f3f63ef33a3" title="PrepFileSpace::PrepFileResidue::GetOutputFormat" alt="" coords="372,853,692,883"/><area shape="rect" id="node39" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a4d8f16141fe7ed6af11f4d5034d62f17" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfCoordinateType" alt="" coords="321,907,743,936"/><area shape="rect" id="node41" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad4b54f6d6872f648ceb0faa9ba927c2c" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomOmission" alt="" coords="301,960,763,989"/><area shape="rect" id="node43" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab0780d96b2a8a0f3f981afde58b81ca7" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomPosition" alt="" coords="305,1013,759,1043"/><area shape="rect" id="node45" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ae359b7222dfb4ed02bcf8a0ffa5113db" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfGeometryType" alt="" coords="325,1067,739,1096"/><area shape="rect" id="node47" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a06ae595dd53b8e3f7205e808dd771e05" title="PrepFileSpace::PrepFileAtom::GetStringFormatOfTopologicalType" alt="" coords="329,1120,735,1149"/><area shape="rect" id="node49" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a394b5594c2e7de363baab11dc9a28f3d" title="PrepFileSpace::PrepFileResidue::GetTitle" alt="" coords="400,1173,664,1203"/><area shape="rect" id="node51" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad3255525291ee215d41e51604d438e6a" title="PrepFileSpace::PrepFileAtom::GetType" alt="" coords="407,1227,657,1256"/></map>
+<area shape="rect" id="node3" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a2347d8763e83d6a6bd50747089af8337" title="PrepFileSpace::PrepFileAtom::GetAngle" alt="" coords="404,5,660,35"/><area shape="rect" id="node5" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a94a936aef8aaa872489692dbdf419fc8" title="PrepFileSpace::PrepFileAtom::GetAngleIndex" alt="" coords="388,59,676,88"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="355,163,709,192"/><area shape="rect" id="node9" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a27503102d8cd8f0cfe1182d2a0a6c300" title="PrepFileSpace::PrepFileAtom::GetIndex" alt="" coords="813,124,1067,153"/><area shape="rect" id="node11" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad7d57f51cbd2be070367c1a7fd0d40c3" title="PrepFileSpace::PrepFileAtom::GetName" alt="" coords="811,189,1069,219"/><area shape="rect" id="node13" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a1ea65ec1f2427dd0e733fd1aee8810ff" title="PrepFileSpace::PrepFileResidue::GetAtoms" alt="" coords="393,267,671,296"/><area shape="rect" id="node15" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a83402ff84c9e1a7f20b60c0af59d7b60" title="PrepFileSpace::PrepFileAtom::GetBondIndex" alt="" coords="389,320,675,349"/><area shape="rect" id="node17" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a3e4a39908b38a79940b519bbb28e44d5" title="PrepFileSpace::PrepFileAtom::GetBondLength" alt="" coords="387,373,677,403"/><area shape="rect" id="node19" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ab12aafb1889f04e3422f7f772bc1fa2c" title="PrepFileSpace::PrepFileAtom::GetCharge" alt="" coords="400,427,664,456"/><area shape="rect" id="node21" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#aa484b5dc1d571a614c21b8b52cffd4ad" title="PrepFileSpace::PrepFileResidue::GetCharge" alt="" coords="391,480,673,509"/><area shape="rect" id="node23" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa472088d6ed2ee88183bf44fe78ec267" title="PrepFileSpace::PrepFileAtom::GetDihedral" alt="" coords="397,533,667,563"/><area shape="rect" id="node25" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a541874affae1039b5d6bfb7babfa18ae" title="PrepFileSpace::PrepFileAtom::GetDihedralIndex" alt="" coords="381,587,683,616"/><area shape="rect" id="node27" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a05538515826eeec5feaaeb36c68fc714" title="PrepFileSpace::PrepFileResidue::GetDummyAtomType" alt="" coords="359,640,705,669"/><area shape="rect" id="node29" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a207c5ff3a3f806f83579bf80084b146e" title="PrepFileSpace::PrepFileResidue::GetImproperDihedrals" alt="" coords="359,693,705,723"/><area shape="rect" id="node32" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ae4318614af88f8837341345c62824314" title="PrepFileSpace::PrepFileResidue::GetLoops" alt="" coords="395,747,669,776"/><area shape="rect" id="node35" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#af706273abf1bc63d658398afec3d900a" title="PrepFileSpace::PrepFileResidue::GetName" alt="" coords="395,800,669,829"/><area shape="rect" id="node37" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a4d8f16141fe7ed6af11f4d5034d62f17" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfCoordinateType" alt="" coords="321,853,743,883"/><area shape="rect" id="node39" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad4b54f6d6872f648ceb0faa9ba927c2c" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomOmission" alt="" coords="301,907,763,936"/><area shape="rect" id="node41" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab0780d96b2a8a0f3f981afde58b81ca7" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfDummyAtomPosition" alt="" coords="305,960,759,989"/><area shape="rect" id="node43" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ae359b7222dfb4ed02bcf8a0ffa5113db" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfGeometryType" alt="" coords="325,1013,739,1043"/><area shape="rect" id="node45" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a87f276a51d6fdd6b1bccff4d0c97d5e9" title="PrepFileSpace::PrepFileResidue::GetStringFormatOfOutputFormat" alt="" coords="328,1067,736,1096"/><area shape="rect" id="node47" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a06ae595dd53b8e3f7205e808dd771e05" title="PrepFileSpace::PrepFileAtom::GetStringFormatOfTopologicalType" alt="" coords="329,1120,735,1149"/><area shape="rect" id="node49" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a394b5594c2e7de363baab11dc9a28f3d" title="PrepFileSpace::PrepFileResidue::GetTitle" alt="" coords="400,1173,664,1203"/><area shape="rect" id="node51" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad3255525291ee215d41e51604d438e6a" title="PrepFileSpace::PrepFileAtom::GetType" alt="" coords="407,1227,657,1256"/></map>
 </div>
 </p>
 
@@ -274,11 +334,11 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00052">52</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00072">72</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00068">PrepFileSpace::PrepFileResidue::GetAtoms()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00069">PrepFileSpace::PrepFileAtom::GetName()</a>.</p>
+<p>References <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00084">PrepFileSpace::PrepFileResidue::GetAtoms()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00074">PrepFileSpace::PrepFileAtom::GetName()</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00568">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01396">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     vector&lt;string&gt; atom_names_of_residue;
     <a class="code" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2d752168392f8da0b448e8bf675d10b3">ResidueMap</a> residue_map = <a class="code" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a048a4befdd6c0d1bddcb20b7b3a91802">GetResidues</a>();
@@ -326,9 +386,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00042">42</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00052">52</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00568">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00266">PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultiplePrepFiles()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01396">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00489">PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultiplePrepFiles()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00505">PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultiplePrepFilesMap()</a>.</p>
 <div class="fragment"><pre class="fragment">{    
     vector&lt;string&gt; residue_names;
     <span class="keywordflow">for</span>(PrepFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++){
@@ -343,10 +403,36 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dd/d09/classPrepFileSpace_1_1PrepFile_a5d773b7fbab87ece1329526843d0548b_icgraph.png" border="0" usemap="#dd/d09/classPrepFileSpace_1_1PrepFile_a5d773b7fbab87ece1329526843d0548b_icgraph" alt=""/></div>
 <map name="dd/d09/classPrepFileSpace_1_1PrepFile_a5d773b7fbab87ece1329526843d0548b_icgraph" id="dd/d09/classPrepFileSpace_1_1PrepFile_a5d773b7fbab87ece1329526843d0548b_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a0c0b03a5162219928dea1fe3f81bd8d3" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles" alt="" coords="352,5,928,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a050592f91126ac878a774bd88ba2b599" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultiplePrepFiles" alt="" coords="375,59,905,88"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a0c0b03a5162219928dea1fe3f81bd8d3" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles" alt="" coords="352,5,928,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a050592f91126ac878a774bd88ba2b599" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultiplePrepFiles" alt="" coords="375,59,905,88"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a7b9c0703e86808bc2b3a15acb2b458f3" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResidueNamesFromMultiplePrepFilesMap" alt="" coords="363,112,917,141"/></map>
 </div>
 </p>
 
+</div>
+</div>
+<a class="anchor" id="ad61a4b04795af691c0d9bf81e9cba2df"></a><!-- doxytag: member="PrepFileSpace::PrepFile::GetAllResidueNamesMap" ref="ad61a4b04795af691c0d9bf81e9cba2df" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">ResidueNameMap</a> <a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#ad61a4b04795af691c0d9bf81e9cba2df">PrepFile::GetAllResidueNamesMap</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00062">62</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    <a class="code" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">ResidueNameMap</a> residue_names = <a class="code" href="../../d0/ddd/namespacegmml.html#afe7fc5e8a1420dfb2d816e47d1249c78">ResidueNameMap</a>();
+    <span class="keywordflow">for</span>(PrepFile::ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++){
+        <span class="keywordtype">string</span> residue_name = (*it).first;
+        residue_names[residue_name] = residue_name;
+    }
+    <span class="keywordflow">return</span> residue_names;
+}
+</pre></div>
 </div>
 </div>
 <a class="anchor" id="a048a4befdd6c0d1bddcb20b7b3a91802"></a><!-- doxytag: member="PrepFileSpace::PrepFile::GetResidues" ref="a048a4befdd6c0d1bddcb20b7b3a91802" args="()" -->
@@ -363,9 +449,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00038">38</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00047">47</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00855">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00808">MolecularModeling::Assembly::BuildStructureByPrepFileInformation()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02216">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02173">MolecularModeling::Assembly::BuildStructureByPrepFileInformation()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01413">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultiplePrepFiles()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00472">PdbPreprocessorSpace::PdbPreprocessor::GetAllResiduesFromMultiplePrepFilesMap()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> residues_;
 }
@@ -375,7 +461,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dd/d09/classPrepFileSpace_1_1PrepFile_a048a4befdd6c0d1bddcb20b7b3a91802_icgraph.png" border="0" usemap="#dd/d09/classPrepFileSpace_1_1PrepFile_a048a4befdd6c0d1bddcb20b7b3a91802_icgraph" alt=""/></div>
 <map name="dd/d09/classPrepFileSpace_1_1PrepFile_a048a4befdd6c0d1bddcb20b7b3a91802_icgraph" id="dd/d09/classPrepFileSpace_1_1PrepFile_a048a4befdd6c0d1bddcb20b7b3a91802_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="325,5,693,35"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="765,56,1264,85"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="303,109,716,139"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1313,83,1599,112"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="776,109,1253,139"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="427,5,795,35"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="968,57,1467,87"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="404,109,817,139"/><area shape="rect" id="node14" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af9019b620b9218eb756f3bce8ddd790c" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultiplePrepFiles" alt="" coords="301,163,920,192"/><area shape="rect" id="node16" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a6c73ccdfec5272d48511123bb3307e07" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllResiduesFromMultiplePrepFilesMap" alt="" coords="351,216,871,245"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1516,84,1801,113"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="979,111,1456,140"/></map>
 </div>
 </p>
 
@@ -396,7 +482,7 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00163">163</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00215">215</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">for</span>(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
@@ -422,9 +508,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00083">83</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00122">122</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00504">PrepFileSpace::PrepFileResidue::LoadFromStream()</a>.</p>
+<p>References <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00529">PrepFileSpace::PrepFileResidue::LoadFromStream()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html">PrepFileResidue</a>* residue = <span class="keyword">new</span> <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html">PrepFileResidue</a>();
     residue = residue-&gt;<a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a5d8dc4caca8ae6e93efe91e8015e2fa3">LoadFromStream</a>(in_file);
@@ -436,7 +522,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../dd/d09/classPrepFileSpace_1_1PrepFile_a822dad5c0147c3cb0a89bb6e3b76dfd6_cgraph.png" border="0" usemap="#dd/d09/classPrepFileSpace_1_1PrepFile_a822dad5c0147c3cb0a89bb6e3b76dfd6_cgraph" alt=""/></div>
 <map name="dd/d09/classPrepFileSpace_1_1PrepFile_a822dad5c0147c3cb0a89bb6e3b76dfd6_cgraph" id="dd/d09/classPrepFileSpace_1_1PrepFile_a822dad5c0147c3cb0a89bb6e3b76dfd6_cgraph">
-<area shape="rect" id="node3" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a5d8dc4caca8ae6e93efe91e8015e2fa3" title="PrepFileSpace::PrepFileResidue::LoadFromStream" alt="" coords="367,29,684,58"/><area shape="rect" id="node5" href="../../d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="1141,29,1229,58"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#aa848cdb87efa051514ab16db8598b024" title="Parse the loop section of each residue section and return a loop map." alt="" coords="765,29,1061,58"/><area shape="rect" id="node10" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a226e8c5e597cbe28c4c9783cfc579532" title="Parse the improper dihedral section of each residue section and return a vector of improper dihedrals..." alt="" coords="733,82,1093,112"/></map>
+<area shape="rect" id="node3" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a5d8dc4caca8ae6e93efe91e8015e2fa3" title="PrepFileSpace::PrepFileResidue::LoadFromStream" alt="" coords="367,269,684,299"/><area shape="rect" id="node5" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a30c66f08bc18a4387fd33f68b02f45ae" title="PrepFileSpace::PrepFileResidue::PrepFileResidue" alt="" coords="797,5,1112,35"/><area shape="rect" id="node7" href="../../d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="1357,483,1445,512"/><area shape="rect" id="node9" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ac52fe8c016747e0cb0798d0812ebe0a8" title="Return residue name from a stream line which is the first column of the 3rd line in each residue sect..." alt="" coords="783,109,1127,139"/><area shape="rect" id="node11" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a7a32ec3352189e51b2af3f27479bd0c7" title="Return coordinate type from a stream line which is the 2nd column of the 3rd line in each residue sec..." alt="" coords="755,163,1155,192"/><area shape="rect" id="node13" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a0bd58f3b792ce5ea12416d18038f4cd8" title="Return output format from a stream line which is the 3rd column of the 3rd line in each residue secti..." alt="" coords="760,216,1149,245"/><area shape="rect" id="node15" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a087155316ec7202937662792f85447ce" title="Return geometry type from a stream line which is the first column of the 4th line in each residue sec..." alt="" coords="757,269,1152,299"/><area shape="rect" id="node17" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad996789e3eeef433ec5327f41431a1b6" title="Return dummy atom omission from a stream line which is the 2nd column of the 4th line in each residue..." alt="" coords="735,323,1175,352"/><area shape="rect" id="node19" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a5e7b1b36748e69370d0b1cbd3e7efb44" title="Return dummy atom position from a stream line which is the 4th column of the 4th line in each residue..." alt="" coords="739,376,1171,405"/><area shape="rect" id="node21" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a7ac02f3aaa4f4b3f7c74e09883ce198a" title="Return a corresponding title from a stream line which may appear in each residue section." alt="" coords="788,429,1121,459"/><area shape="rect" id="node23" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#aa848cdb87efa051514ab16db8598b024" title="Parse the loop section of each residue section and return a loop map." alt="" coords="807,536,1103,565"/><area shape="rect" id="node28" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a226e8c5e597cbe28c4c9783cfc579532" title="Parse the improper dihedral section of each residue section and return a vector of improper dihedrals..." alt="" coords="775,483,1135,512"/><area shape="rect" id="node26" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a170099cdbd5bd48f54401d48c8de46ee" title="PrepFileSpace::PrepFileResidue::GetAtomIndexByName" alt="" coords="1224,536,1579,565"/></map>
 </div>
 </p>
 
@@ -457,9 +543,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00069">69</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00108">108</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 
-<p>References <a class="el" href="../../d0/df8/prepfileresidue_8hpp_source.html#l00437">PrepFileSpace::PrepFileResidue::name_</a>.</p>
+<p>References <a class="el" href="../../d0/df8/prepfileresidue_8hpp_source.html#l00448">PrepFileSpace::PrepFileResidue::name_</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">string</span> header1, header2;
     getline(in_file, header1);
@@ -473,6 +559,67 @@ Here is the call graph for this function:</div>
     }
 }
 </pre></div>
+</div>
+</div>
+<a class="anchor" id="ad2cc82be451e27335c3b5308dcc3565d"></a><!-- doxytag: member="PrepFileSpace::PrepFile::SetPath" ref="ad2cc82be451e27335c3b5308dcc3565d" args="(std::string path)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#ad2cc82be451e27335c3b5308dcc3565d">PrepFile::SetPath</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00089">89</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    path_ = path;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a10eabd20fa90cf4755e3fc6c5a8caef1"></a><!-- doxytag: member="PrepFileSpace::PrepFile::SetResidues" ref="a10eabd20fa90cf4755e3fc6c5a8caef1" args="(ResidueMap residues)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a10eabd20fa90cf4755e3fc6c5a8caef1">PrepFile::SetResidues</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a2d752168392f8da0b448e8bf675d10b3">ResidueMap</a>&#160;</td>
+          <td class="paramname"><em>residues</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00094">94</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    residues_.clear();
+    <span class="keywordflow">for</span>(ResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        <a class="code" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html">PrepFileResidue</a>* residue = (*it).second;
+        <span class="keywordtype">string</span> residue_name = (*it).first;
+        residues_[residue_name] = residue;
+    }
+}
+</pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../dd/d09/classPrepFileSpace_1_1PrepFile_a10eabd20fa90cf4755e3fc6c5a8caef1_icgraph.png" border="0" usemap="#dd/d09/classPrepFileSpace_1_1PrepFile_a10eabd20fa90cf4755e3fc6c5a8caef1_icgraph" alt=""/></div>
+<map name="dd/d09/classPrepFileSpace_1_1PrepFile_a10eabd20fa90cf4755e3fc6c5a8caef1_icgraph" id="dd/d09/classPrepFileSpace_1_1PrepFile_a10eabd20fa90cf4755e3fc6c5a8caef1_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="303,5,724,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a96498be1ee95eee019392dab1ea86f9b"></a><!-- doxytag: member="PrepFileSpace::PrepFile::Write" ref="a96498be1ee95eee019392dab1ea86f9b" args="(const std::string &amp;prep_file)" -->
@@ -490,7 +637,7 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00089">89</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00128">128</a> of file <a class="el" href="../../de/dca/prepfile_8cc_source.html">prepfile.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     std::ofstream out_file;
     <span class="keywordflow">try</span>
@@ -524,7 +671,7 @@ Here is the call graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -538,7 +685,7 @@ Here is the call graph for this function:</div>
       <li class="navelem"><a class="el" href="../../dc/d2b/namespacePrepFileSpace.html">PrepFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html">PrepFile</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:25 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

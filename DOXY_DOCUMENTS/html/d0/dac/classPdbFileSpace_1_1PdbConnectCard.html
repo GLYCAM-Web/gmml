@@ -120,6 +120,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a3e39045b2d0b9f8095c0897132f09a08">GetRecordName</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a8b56e67c3ff3cdc7723af9a3e2f18dcd">BondedAtomsSerialNumbersMap</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a4a3434345542e49523e85962984404e5">GetBondedAtomsSerialNumbers</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#ab0bee4d6a994219f282943cf52c76130">SetRecordName</a> (const std::string record_name)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a13cc9a4cfb0a32e1e11346075e6737d8">SetBondedAtomsSerialNumbers</a> (<a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a8b56e67c3ff3cdc7723af9a3e2f18dcd">BondedAtomsSerialNumbersMap</a> bonded_atom_serial_numbers)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a2c2ae6cd6f24c997984194db2f6d98a2">Print</a> (std::ostream &amp;out=std::cout)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
@@ -195,7 +196,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html#l00065">65</a> of file <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html">pdbconnectcard.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00674">MolecularModeling::Assembly::BuildStructureByPDBFileInformation()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02028">MolecularModeling::Assembly::BuildStructureByPDBFileInformation()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> bonded_atom_serial_numbers_;
 }
@@ -247,9 +248,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html#l00081">81</a> of file <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html">pdbconnectcard.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html#l00092">92</a> of file <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html">pdbconnectcard.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00011">gmml::iNotSet</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00019">gmml::iNotSet</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; <span class="stringliteral">&quot;Record Name: &quot;</span> &lt;&lt; record_name_ &lt;&lt; endl &lt;&lt;
            <span class="stringliteral">&quot;================= Bonded Atoms Serial Numbers ================&quot;</span> &lt;&lt; endl;
@@ -267,6 +268,34 @@ Here is the caller graph for this function:</div>
         out &lt;&lt; endl;
     }
     out &lt;&lt; endl;
+}
+</pre></div>
+</div>
+</div>
+<a class="anchor" id="a13cc9a4cfb0a32e1e11346075e6737d8"></a><!-- doxytag: member="PdbFileSpace::PdbConnectCard::SetBondedAtomsSerialNumbers" ref="a13cc9a4cfb0a32e1e11346075e6737d8" args="(BondedAtomsSerialNumbersMap bonded_atom_serial_numbers)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a13cc9a4cfb0a32e1e11346075e6737d8">PdbConnectCard::SetBondedAtomsSerialNumbers</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html#a8b56e67c3ff3cdc7723af9a3e2f18dcd">BondedAtomsSerialNumbersMap</a>&#160;</td>
+          <td class="paramname"><em>bonded_atom_serial_numbers</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html#l00078">78</a> of file <a class="el" href="../../de/db1/pdbconnectcard_8cc_source.html">pdbconnectcard.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    bonded_atom_serial_numbers_.clear();
+    <span class="keywordflow">for</span>(BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers.begin(); it != bonded_atom_serial_numbers.end(); it++)
+    {
+        <span class="keywordtype">int</span> source_serial_number = (*it).first;
+        vector&lt;int&gt; bonded_serial_numbers = (*it).second;
+        bonded_atom_serial_numbers_[source_serial_number] = bonded_serial_numbers;
+    }
 }
 </pre></div>
 </div>
@@ -304,7 +333,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -318,7 +347,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../d3/d0c/namespacePdbFileSpace.html">PdbFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../d0/dac/classPdbFileSpace_1_1PdbConnectCard.html">PdbConnectCard</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:24 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

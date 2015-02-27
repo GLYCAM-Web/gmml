@@ -1,6 +1,8 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ade105ecb4bee96faae3d3a4eb33fad88" title="TopologyFileSpace::TopologyFile::GetAtomTypeIndexMap" alt="" coords="379,5,739,35"/>
-<area shape="rect" id="node5" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9c4cf9bcf845ea630e4bec5686cc4bc0" title="TopologyFileSpace::TopologyFile::ResolveAmberAtomTypeSection" alt="" coords="352,59,765,88"/>
-<area shape="rect" id="node7" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4c99f0ed8276b3c28bb6401c39e0f6a9" title="TopologyFileSpace::TopologyFile::ResolveAtomTypeIndexSection" alt="" coords="356,112,761,141"/>
-<area shape="rect" id="node9" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ad5e3827793e91ec6259d4fba8beb73c8" title="TopologyFileSpace::TopologyFile::ResolveNonbondedParmIndexSection" alt="" coords="337,165,780,195"/>
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#afe191d56bb8c2e3d45034f203e7b0482" title="MolecularModeling::Assembly::BuildAssemblyFromTopologyCoordinateFile" alt="" coords="336,5,795,35"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a0aef6464ea486b4b9dae5308e9957214" title="MolecularModeling::Assembly::BuildAssemblyFromTopologyFile" alt="" coords="368,59,763,88"/>
+<area shape="rect" id="node7" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ade105ecb4bee96faae3d3a4eb33fad88" title="TopologyFileSpace::TopologyFile::GetAtomTypeIndexMap" alt="" coords="385,112,745,141"/>
+<area shape="rect" id="node9" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9c4cf9bcf845ea630e4bec5686cc4bc0" title="TopologyFileSpace::TopologyFile::ResolveAmberAtomTypeSection" alt="" coords="359,165,772,195"/>
+<area shape="rect" id="node11" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4c99f0ed8276b3c28bb6401c39e0f6a9" title="TopologyFileSpace::TopologyFile::ResolveAtomTypeIndexSection" alt="" coords="363,219,768,248"/>
+<area shape="rect" id="node13" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ad5e3827793e91ec6259d4fba8beb73c8" title="TopologyFileSpace::TopologyFile::ResolveNonbondedParmIndexSection" alt="" coords="344,272,787,301"/>
 </map>

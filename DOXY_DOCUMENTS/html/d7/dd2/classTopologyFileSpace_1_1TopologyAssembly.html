@@ -122,6 +122,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a01f4342f73d848a9ce9391ce2a8e8be0">GetAtomIndexByName</a> (std::string atom_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a6bf60013de2ac27e355e6a5535cc5473">SetAssemblyName</a> (std::string assembly_name)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a48e5a7eba6c11e56eba37cc515da9961">SetResidues</a> (<a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f">TopologyResidueMap</a> residues)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a22de439c4f5ece127bd47ba24f2abadc">AddResidue</a> (<a class="el" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a> *residue)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a6d05ece7c9dc7bff99db8c3f56a62883">Print</a> (std::ostream &amp;out=std::cout)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
@@ -159,11 +160,58 @@ Public Member Functions</h2></td></tr>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00012">12</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
-<div class="fragment"><pre class="fragment">{}
+<div class="fragment"><pre class="fragment">{
+    assembly_name_ = <span class="stringliteral">&quot;&quot;</span>;
+    residues_ = <a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#aafa2f248b7ee7f46f6dc6d629933c31f">TopologyResidueMap</a>();
+}
 </pre></div>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a22de439c4f5ece127bd47ba24f2abadc"></a><!-- doxytag: member="TopologyFileSpace::TopologyAssembly::AddResidue" ref="a22de439c4f5ece127bd47ba24f2abadc" args="(TopologyResidue *residue)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a22de439c4f5ece127bd47ba24f2abadc">TopologyAssembly::AddResidue</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html">TopologyResidue</a> *&#160;</td>
+          <td class="paramname"><em>residue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00074">74</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+
+<p>References <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00036">TopologyFileSpace::TopologyResidue::GetResidueName()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    residues_[residue-&gt;<a class="code" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a1cd5965e3e19a363083dac6ccf37318f">GetResidueName</a>()] = residue;
+}
+</pre></div>
+<p><div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_cgraph.png" border="0" usemap="#d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_cgraph" alt=""/></div>
+<map name="d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_cgraph" id="d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_cgraph">
+<area shape="rect" id="node3" href="../../d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a1cd5965e3e19a363083dac6ccf37318f" title="TopologyFileSpace::TopologyResidue::GetResidueName" alt="" coords="384,5,739,35"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_icgraph.png" border="0" usemap="#d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_icgraph" alt=""/></div>
+<map name="d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_icgraph" id="d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a22de439c4f5ece127bd47ba24f2abadc_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="384,5,832,35"/></map>
+</div>
+</p>
+
+</div>
+</div>
 <a class="anchor" id="a8cc2639fce2e64ae5f133450f5e1e09f"></a><!-- doxytag: member="TopologyFileSpace::TopologyAssembly::GetAssemblyName" ref="a8cc2639fce2e64ae5f133450f5e1e09f" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -178,7 +226,7 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00017">17</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00021">21</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> assembly_name_;
 }
@@ -200,9 +248,9 @@ Public Member Functions</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00035">35</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00039">39</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
 
-<p>References <a class="el" href="../../d6/d5a/topologyatom_8cc_source.html#l00028">TopologyFileSpace::TopologyAtom::GetAtomName()</a>, <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00032">TopologyFileSpace::TopologyResidue::GetAtoms()</a>, and <a class="el" href="../../d6/d5a/topologyatom_8cc_source.html#l00068">TopologyFileSpace::TopologyAtom::GetIndex()</a>.</p>
+<p>References <a class="el" href="../../d6/d5a/topologyatom_8cc_source.html#l00044">TopologyFileSpace::TopologyAtom::GetAtomName()</a>, <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00040">TopologyFileSpace::TopologyResidue::GetAtoms()</a>, and <a class="el" href="../../d6/d5a/topologyatom_8cc_source.html#l00084">TopologyFileSpace::TopologyAtom::GetIndex()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
@@ -247,9 +295,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00025">25</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00029">29</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
 
-<p>References <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00046">TopologyFileSpace::TopologyResidue::GetIndex()</a>.</p>
+<p>References <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00054">TopologyFileSpace::TopologyResidue::GetIndex()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
@@ -285,9 +333,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00021">21</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00025">25</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00405">MolecularModeling::Assembly::BuildAssemblyFromTopologyCoordinateFile()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00318">MolecularModeling::Assembly::BuildAssemblyFromTopologyFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00576">MolecularModeling::Assembly::BuildAssemblyFromTopologyCoordinateFile()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00478">MolecularModeling::Assembly::BuildAssemblyFromTopologyFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> residues_;
 }
@@ -318,9 +366,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00079">79</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00086">86</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
 
-<p>References <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00078">TopologyFileSpace::TopologyResidue::Print()</a>.</p>
+<p>References <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00090">TopologyFileSpace::TopologyResidue::Print()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; <span class="stringliteral">&quot;Assembly Name: &quot;</span> &lt;&lt; assembly_name_ &lt;&lt; endl;
     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
@@ -358,11 +406,22 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00057">57</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00061">61</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00956">MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     assembly_name_ = assembly_name;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a6bf60013de2ac27e355e6a5535cc5473_icgraph.png" border="0" usemap="#d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a6bf60013de2ac27e355e6a5535cc5473_icgraph" alt=""/></div>
+<map name="d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a6bf60013de2ac27e355e6a5535cc5473_icgraph" id="d7/dd2/classTopologyFileSpace_1_1TopologyAssembly_a6bf60013de2ac27e355e6a5535cc5473_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="427,5,875,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a48e5a7eba6c11e56eba37cc515da9961"></a><!-- doxytag: member="TopologyFileSpace::TopologyAssembly::SetResidues" ref="a48e5a7eba6c11e56eba37cc515da9961" args="(TopologyResidueMap residues)" -->
@@ -380,9 +439,9 @@ Here is the call graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00061">61</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html#l00065">65</a> of file <a class="el" href="../../d2/d91/topologyassembly_8cc_source.html">topologyassembly.cc</a>.</p>
 
-<p>References <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00028">TopologyFileSpace::TopologyResidue::GetResidueName()</a>.</p>
+<p>References <a class="el" href="../../d6/d52/topologyresidue_8cc_source.html#l00036">TopologyFileSpace::TopologyResidue::GetResidueName()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     residues_.clear();
     <span class="keywordflow">for</span>(TopologyResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
@@ -414,7 +473,7 @@ Here is the call graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -428,7 +487,7 @@ Here is the call graph for this function:</div>
       <li class="navelem"><a class="el" href="../../da/d1c/namespaceTopologyFileSpace.html">TopologyFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html">TopologyAssembly</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:26 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

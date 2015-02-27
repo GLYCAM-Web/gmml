@@ -1,6 +1,8 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="335,5,703,35"/>
-<area shape="rect" id="node5" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="395,59,643,88"/>
-<area shape="rect" id="node7" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a892b24d94a5e85599b1b0c9fe731a9ab" title="PrepFileSpace::PrepFile::GetAllAtomNamesOfResidue" alt="" coords="348,112,689,141"/>
-<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a0c0b03a5162219928dea1fe3f81bd8d3" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles" alt="" coords="752,112,1328,141"/>
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="459,5,827,35"/>
+<area shape="rect" id="node5" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="519,59,767,88"/>
+<area shape="rect" id="node7" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a054d0f9e32e278808248edd3af1ea3c0" title="PrepFileSpace::PrepFileResidue::CalculatePrepResidueCharge" alt="" coords="448,112,837,141"/>
+<area shape="rect" id="node9" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a892b24d94a5e85599b1b0c9fe731a9ab" title="PrepFileSpace::PrepFile::GetAllAtomNamesOfResidue" alt="" coords="472,165,813,195"/>
+<area shape="rect" id="node13" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af9019b620b9218eb756f3bce8ddd790c" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultiplePrepFiles" alt="" coords="333,219,952,248"/>
+<area shape="rect" id="node11" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a0c0b03a5162219928dea1fe3f81bd8d3" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles" alt="" coords="1000,165,1576,195"/>
 </map>

@@ -1,4 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="448,5,824,35"/>
-<area shape="rect" id="node5" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="423,59,849,88"/>
+<area shape="rect" id="node3" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#af35908bb4efa01d1477dbadc89b3a40e" title="ParameterFileSpace::ParameterFile::GetAllImproperDihedrals" alt="" coords="447,5,825,35"/>
+<area shape="rect" id="node5" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#ae5dbc9be9e0075b00f18a90e73750854" title="ParameterFileSpace::ParameterFile::GetAllproperDihedrals" alt="" coords="455,59,817,88"/>
+<area shape="rect" id="node7" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="448,112,824,141"/>
+<area shape="rect" id="node9" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="423,165,849,195"/>
 </map>

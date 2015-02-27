@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -213,19 +212,31 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00111"></a>00111     y_ -= coordinate.y_;
 <a name="l00112"></a>00112     z_ -= coordinate.z_;
 <a name="l00113"></a>00113 }
-<a name="l00114"></a>00114 <span class="comment"></span>
-<a name="l00115"></a>00115 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00116"></a>00116 <span class="comment"></span><span class="comment">//                     DISPLAY FUNCTIONS                //</span><span class="comment"></span>
-<a name="l00117"></a>00117 <span class="comment">//////////////////////////////////////////////////////////</span>
-<a name="l00118"></a><a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca">00118</a> <span class="comment"></span><span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca">Coordinate::Print</a>(std::ostream&amp; out)
-<a name="l00119"></a>00119 {
-<a name="l00120"></a>00120     <span class="keywordflow">if</span>(this-&gt;<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a6508724e0f0761370b55781c21b07bb5">CompareTo</a>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#aac6f323a685fc1e88fbea9c86f1e600d">Coordinate</a>(<a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>, <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>, <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)) == <span class="keyword">true</span>)
-<a name="l00121"></a>00121         out &lt;&lt; std::setw(10) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
-<a name="l00122"></a>00122     <span class="keywordflow">else</span>
-<a name="l00123"></a>00123         out &lt;&lt; std::setw(10) &lt;&lt; x_ &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; y_ &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; z_;
-<a name="l00124"></a>00124 }
-<a name="l00125"></a>00125 
-<a name="l00126"></a>00126 
+<a name="l00114"></a><a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a1ebe53709ffbf2b536921b6f57945034">00114</a> <span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a1ebe53709ffbf2b536921b6f57945034">Coordinate::operator/</a>(<span class="keywordtype">double</span> divisor)
+<a name="l00115"></a>00115 {
+<a name="l00116"></a>00116     x_ /= divisor;
+<a name="l00117"></a>00117     y_ /= divisor;
+<a name="l00118"></a>00118     z_ /= divisor;
+<a name="l00119"></a>00119 }
+<a name="l00120"></a><a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad17558804c1f6a28c11856874827105c">00120</a> <span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad17558804c1f6a28c11856874827105c">Coordinate::operator *</a>(<span class="keywordtype">double</span> multiplier)
+<a name="l00121"></a>00121 {
+<a name="l00122"></a>00122     x_ *= multiplier;
+<a name="l00123"></a>00123     y_ *= multiplier;
+<a name="l00124"></a>00124     z_ *= multiplier;
+<a name="l00125"></a>00125 }
+<a name="l00126"></a>00126 <span class="comment"></span>
+<a name="l00127"></a>00127 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00128"></a>00128 <span class="comment"></span><span class="comment">//                     DISPLAY FUNCTIONS                //</span><span class="comment"></span>
+<a name="l00129"></a>00129 <span class="comment">//////////////////////////////////////////////////////////</span>
+<a name="l00130"></a><a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca">00130</a> <span class="comment"></span><span class="keywordtype">void</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca">Coordinate::Print</a>(std::ostream&amp; out)
+<a name="l00131"></a>00131 {
+<a name="l00132"></a>00132     <span class="keywordflow">if</span>(this-&gt;<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a6508724e0f0761370b55781c21b07bb5">CompareTo</a>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#aac6f323a685fc1e88fbea9c86f1e600d">Coordinate</a>(<a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>, <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>, <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)) == <span class="keyword">true</span>)
+<a name="l00133"></a>00133         out &lt;&lt; std::setw(10) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;
+<a name="l00134"></a>00134     <span class="keywordflow">else</span>
+<a name="l00135"></a>00135         out &lt;&lt; std::setw(10) &lt;&lt; x_ &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; y_ &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; std::setw(10) &lt;&lt; z_;
+<a name="l00136"></a>00136 }
+<a name="l00137"></a>00137 
+<a name="l00138"></a>00138 
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -233,7 +244,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -246,7 +257,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d2/dcf/coordinate_8cc.html">coordinate.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:21 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

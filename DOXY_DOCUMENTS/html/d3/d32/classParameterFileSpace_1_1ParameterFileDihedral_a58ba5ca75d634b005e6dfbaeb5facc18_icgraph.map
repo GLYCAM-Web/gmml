@@ -1,6 +1,13 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a557bea44ea73435bb2b59ad1499ea238" title="Process the dihedral lines of the parameter file." alt="" coords="445,5,779,35"/>
-<area shape="rect" id="node5" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#ab5873f08b74b9f4c1f0f89fd316b3d95" title="Process the improper dihedral lines of the parameter file." alt="" coords="420,59,804,88"/>
-<area shape="rect" id="node7" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="424,112,800,141"/>
-<area shape="rect" id="node9" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="399,165,825,195"/>
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae1487a90371162f6b80b4bfc842c7b08" title="MolecularModeling::Assembly::CountNumberOfDihedrals" alt="" coords="456,5,811,35"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#adf407da90839b50927db90993b7f0fa5" title="MolecularModeling::Assembly::CountNumberOfDihedralsExcludingHydrogen" alt="" coords="400,59,867,88"/>
+<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a850a0704296238817377a77974d18cf6" title="MolecularModeling::Assembly::CountNumberOfDihedralsIncludingHydrogen" alt="" coords="403,112,864,141"/>
+<area shape="rect" id="node12" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a125e29a902105db2139ec4b0addc26a5" title="MolecularModeling::Assembly::CountNumberOfDihedralTypes" alt="" coords="443,165,824,195"/>
+<area shape="rect" id="node15" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ab2f5da33467d193cd5e000bef5a3bab8" title="MolecularModeling::Assembly::ExtractTopologyDihedralsFromAssembly" alt="" coords="412,219,855,248"/>
+<area shape="rect" id="node18" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a573bad6fc7392fdd59059e25c5ad18b8" title="MolecularModeling::Assembly::ExtractTopologyDihedralTypesFromAssembly" alt="" coords="399,272,868,301"/>
+<area shape="rect" id="node21" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a557bea44ea73435bb2b59ad1499ea238" title="Process the dihedral lines of the parameter file." alt="" coords="467,325,800,355"/>
+<area shape="rect" id="node23" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#ab5873f08b74b9f4c1f0f89fd316b3d95" title="Process the improper dihedral lines of the parameter file." alt="" coords="441,379,825,408"/>
+<area shape="rect" id="node25" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="445,432,821,461"/>
+<area shape="rect" id="node27" href="$d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="420,485,847,515"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="917,165,1365,195"/>
 </map>

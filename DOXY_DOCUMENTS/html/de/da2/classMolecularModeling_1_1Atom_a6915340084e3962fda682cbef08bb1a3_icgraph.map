@@ -1,4 +1,10 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abde3650780c2dfc634759831608acfee" title="MolecularModeling::Assembly::BuildStructureByDistance" alt="" coords="323,5,677,35"/>
-<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="727,5,1012,35"/>
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a7805b2f8d47cd1a160c64d7946b5b3f8" title="MolecularModeling::Assembly::BuildLibraryFileStructureFromAssembly" alt="" coords="323,5,757,35"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abde3650780c2dfc634759831608acfee" title="MolecularModeling::Assembly::BuildStructureByDistance" alt="" coords="363,59,717,88"/>
+<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#af25f634270ea6905de1ff32a87a604d1" title="MolecularModeling::Assembly::CalculateCenterOfGeometry" alt="" coords="356,136,724,165"/>
+<area shape="rect" id="node12" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a4d3bf06325540ce1b691065c79ac50a4" title="MolecularModeling::Assembly::ExtractPdbModelCardFromAssembly" alt="" coords="331,189,749,219"/>
+<area shape="rect" id="node16" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a8ff5dd4e22f8894ba5b210e10891f01c" title="MolecularModeling::Assembly::GetAllCoordinates" alt="" coords="385,267,695,296"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="892,59,1177,88"/>
+<area shape="rect" id="node14" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a38f79a994ba7aab4bb75b4b0a3efdcbc" title="MolecularModeling::Assembly::BuildPdbFileStructureFromAssembly" alt="" coords="825,189,1244,219"/>
+<area shape="rect" id="node18" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a0a7b64df545c5628a1590f279e1e0a3a" title="MolecularModeling::Assembly::BuildCoordinateFileStructureFromAssembly" alt="" coords="805,267,1264,296"/>
 </map>

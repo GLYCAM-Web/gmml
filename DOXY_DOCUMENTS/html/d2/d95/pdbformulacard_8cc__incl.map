@@ -1,7 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/deb/pdbformulacard_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbformulacard.hpp" alt="" coords="256,83,611,112"/>
-<area shape="rect" id="node13" href="$d6/d91/pdbformula_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbformula.hpp" alt="" coords="27,160,355,189"/>
-<area shape="rect" id="node17" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="859,83,1016,112"/>
-<area shape="rect" id="node35" href="$dd/d3a/common_8hpp.html" title="common.hpp" alt="" coords="1294,160,1390,189"/>
-<area shape="rect" id="node40" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="1102,160,1270,189"/>
+<area shape="rect" id="node3" href="$d7/deb/pdbformulacard_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbformulacard.hpp" alt="" coords="605,160,960,189"/>
+<area shape="rect" id="node13" href="$d6/d91/pdbformula_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbformula.hpp" alt="" coords="253,160,581,189"/>
+<area shape="rect" id="node17" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="1132,83,1289,112"/>
+<area shape="rect" id="node35" href="$dd/d3a/common_8hpp.html" title="common.hpp" alt="" coords="1285,160,1381,189"/>
+<area shape="rect" id="node41" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="61,160,229,189"/>
 </map>

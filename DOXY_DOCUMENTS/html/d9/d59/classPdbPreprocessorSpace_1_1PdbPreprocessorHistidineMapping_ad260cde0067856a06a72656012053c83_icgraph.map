@@ -1,4 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d9/d59/classPdbPreprocessorSpace_1_1PdbPreprocessorHistidineMapping.html#a3dae6f88bf3e850235df686cf6707eac" title="PdbPreprocessorSpace::PdbPreprocessorHistidineMapping::Print" alt="" coords="600,5,1003,35"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a8b385178294cd18fe900913c06c7ce21" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMapping" alt="" coords="607,59,996,88"/>
+<area shape="rect" id="node3" href="$d9/d59/classPdbPreprocessorSpace_1_1PdbPreprocessorHistidineMapping.html#a3dae6f88bf3e850235df686cf6707eac" title="PdbPreprocessorSpace::PdbPreprocessorHistidineMapping::Print" alt="" coords="659,5,1061,35"/>
+<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a8b385178294cd18fe900913c06c7ce21" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMapping" alt="" coords="665,59,1055,88"/>
+<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a4cf0777511d38ebcd92476888c9f585a" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMappingWithTheGivenNumber" alt="" coords="601,112,1119,141"/>
+<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb96e6037af19492c9ab268568a589fe" title="PdbPreprocessorSpace::PdbPreprocessor::Print" alt="" coords="1169,5,1471,35"/>
 </map>

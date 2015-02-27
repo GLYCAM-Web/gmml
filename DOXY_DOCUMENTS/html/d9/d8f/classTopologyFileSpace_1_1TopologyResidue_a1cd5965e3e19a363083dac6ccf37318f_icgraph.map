@@ -1,4 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46cc3a2c0a271f9fc8af8990e020ca26" title="TopologyFileSpace::TopologyFile::ResolveResidueLabelSection" alt="" coords="408,5,803,35"/>
-<area shape="rect" id="node5" href="$d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a48e5a7eba6c11e56eba37cc515da9961" title="TopologyFileSpace::TopologyAssembly::SetResidues" alt="" coords="439,59,772,88"/>
+<area shape="rect" id="node3" href="$d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a22de439c4f5ece127bd47ba24f2abadc" title="TopologyFileSpace::TopologyAssembly::AddResidue" alt="" coords="440,5,771,35"/>
+<area shape="rect" id="node7" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46cc3a2c0a271f9fc8af8990e020ca26" title="TopologyFileSpace::TopologyFile::ResolveResidueLabelSection" alt="" coords="408,59,803,88"/>
+<area shape="rect" id="node9" href="$d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html#a48e5a7eba6c11e56eba37cc515da9961" title="TopologyFileSpace::TopologyAssembly::SetResidues" alt="" coords="439,112,772,141"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="851,5,1299,35"/>
 </map>

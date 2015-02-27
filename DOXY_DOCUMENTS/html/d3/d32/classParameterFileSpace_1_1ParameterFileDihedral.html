@@ -226,7 +226,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00078">78</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00487">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00585">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
+<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00502">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00600">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
 <div class="fragment"><pre class="fragment">                                                                 {
     terms_.push_back(term);
 }
@@ -279,7 +279,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00053">53</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00948">ParameterFileSpace::ParameterFile::ResolveDihedralSection()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00977">ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00077">ParameterFileSpace::ParameterFile::GetAllImproperDihedrals()</a>, <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00088">ParameterFileSpace::ParameterFile::GetAllproperDihedrals()</a>, <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00963">ParameterFileSpace::ParameterFile::ResolveDihedralSection()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00992">ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> is_improper_;
 }
@@ -289,7 +289,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_ae34649f5317ae10219f3074dd019ff78_icgraph.png" border="0" usemap="#d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_ae34649f5317ae10219f3074dd019ff78_icgraph" alt=""/></div>
 <map name="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_ae34649f5317ae10219f3074dd019ff78_icgraph" id="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_ae34649f5317ae10219f3074dd019ff78_icgraph">
-<area shape="rect" id="node3" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="448,5,824,35"/><area shape="rect" id="node5" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="423,59,849,88"/></map>
+<area shape="rect" id="node3" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#af35908bb4efa01d1477dbadc89b3a40e" title="ParameterFileSpace::ParameterFile::GetAllImproperDihedrals" alt="" coords="447,5,825,35"/><area shape="rect" id="node5" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ae5dbc9be9e0075b00f18a90e73750854" title="ParameterFileSpace::ParameterFile::GetAllproperDihedrals" alt="" coords="455,59,817,88"/><area shape="rect" id="node7" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="448,112,824,141"/><area shape="rect" id="node9" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="423,165,849,195"/></map>
 </div>
 </p>
 
@@ -310,10 +310,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00038">38</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01423">MolecularModeling::Assembly::ExtractTopologyDihedralTypesFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> scee_;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a502eb256e80feaacbf910950894b4bd6_icgraph.png" border="0" usemap="#d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a502eb256e80feaacbf910950894b4bd6_icgraph" alt=""/></div>
+<map name="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a502eb256e80feaacbf910950894b4bd6_icgraph" id="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a502eb256e80feaacbf910950894b4bd6_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a573bad6fc7392fdd59059e25c5ad18b8" title="MolecularModeling::Assembly::ExtractTopologyDihedralTypesFromAssembly" alt="" coords="391,5,860,35"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="909,5,1357,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a6787b9892402b710f168918f44750b76"></a><!-- doxytag: member="ParameterFileSpace::ParameterFileDihedral::GetScnb" ref="a6787b9892402b710f168918f44750b76" args="()" -->
@@ -331,10 +342,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00043">43</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01423">MolecularModeling::Assembly::ExtractTopologyDihedralTypesFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> scnb_;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a6787b9892402b710f168918f44750b76_icgraph.png" border="0" usemap="#d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a6787b9892402b710f168918f44750b76_icgraph" alt=""/></div>
+<map name="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a6787b9892402b710f168918f44750b76_icgraph" id="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a6787b9892402b710f168918f44750b76_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a573bad6fc7392fdd59059e25c5ad18b8" title="MolecularModeling::Assembly::ExtractTopologyDihedralTypesFromAssembly" alt="" coords="391,5,860,35"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="909,5,1357,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a58ba5ca75d634b005e6dfbaeb5facc18"></a><!-- doxytag: member="ParameterFileSpace::ParameterFileDihedral::GetTerms" ref="a58ba5ca75d634b005e6dfbaeb5facc18" args="()" -->
@@ -353,7 +375,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00033">33</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00487">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00585">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>, <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00948">ParameterFileSpace::ParameterFile::ResolveDihedralSection()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00977">ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02843">MolecularModeling::Assembly::CountNumberOfDihedrals()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02736">MolecularModeling::Assembly::CountNumberOfDihedralsExcludingHydrogen()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02633">MolecularModeling::Assembly::CountNumberOfDihedralsIncludingHydrogen()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02929">MolecularModeling::Assembly::CountNumberOfDihedralTypes()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01499">MolecularModeling::Assembly::ExtractTopologyDihedralsFromAssembly()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l01423">MolecularModeling::Assembly::ExtractTopologyDihedralTypesFromAssembly()</a>, <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00502">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00600">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>, <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00963">ParameterFileSpace::ParameterFile::ResolveDihedralSection()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00992">ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> terms_;
 }
@@ -363,7 +385,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a58ba5ca75d634b005e6dfbaeb5facc18_icgraph.png" border="0" usemap="#d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a58ba5ca75d634b005e6dfbaeb5facc18_icgraph" alt=""/></div>
 <map name="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a58ba5ca75d634b005e6dfbaeb5facc18_icgraph" id="d3/d32/classParameterFileSpace_1_1ParameterFileDihedral_a58ba5ca75d634b005e6dfbaeb5facc18_icgraph">
-<area shape="rect" id="node3" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a557bea44ea73435bb2b59ad1499ea238" title="Process the dihedral lines of the parameter file." alt="" coords="445,5,779,35"/><area shape="rect" id="node5" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ab5873f08b74b9f4c1f0f89fd316b3d95" title="Process the improper dihedral lines of the parameter file." alt="" coords="420,59,804,88"/><area shape="rect" id="node7" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="424,112,800,141"/><area shape="rect" id="node9" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="399,165,825,195"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae1487a90371162f6b80b4bfc842c7b08" title="MolecularModeling::Assembly::CountNumberOfDihedrals" alt="" coords="456,5,811,35"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#adf407da90839b50927db90993b7f0fa5" title="MolecularModeling::Assembly::CountNumberOfDihedralsExcludingHydrogen" alt="" coords="400,59,867,88"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a850a0704296238817377a77974d18cf6" title="MolecularModeling::Assembly::CountNumberOfDihedralsIncludingHydrogen" alt="" coords="403,112,864,141"/><area shape="rect" id="node12" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a125e29a902105db2139ec4b0addc26a5" title="MolecularModeling::Assembly::CountNumberOfDihedralTypes" alt="" coords="443,165,824,195"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ab2f5da33467d193cd5e000bef5a3bab8" title="MolecularModeling::Assembly::ExtractTopologyDihedralsFromAssembly" alt="" coords="412,219,855,248"/><area shape="rect" id="node18" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a573bad6fc7392fdd59059e25c5ad18b8" title="MolecularModeling::Assembly::ExtractTopologyDihedralTypesFromAssembly" alt="" coords="399,272,868,301"/><area shape="rect" id="node21" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a557bea44ea73435bb2b59ad1499ea238" title="Process the dihedral lines of the parameter file." alt="" coords="467,325,800,355"/><area shape="rect" id="node23" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#ab5873f08b74b9f4c1f0f89fd316b3d95" title="Process the improper dihedral lines of the parameter file." alt="" coords="441,379,825,408"/><area shape="rect" id="node25" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#af62eb1faf80726047bab2c526eef109c" title="ParameterFileSpace::ParameterFile::ResolveDihedralSection" alt="" coords="445,432,821,461"/><area shape="rect" id="node27" href="../../d5/d96/classParameterFileSpace_1_1ParameterFile.html#a862db546e06197581e8723b85af8cdf4" title="ParameterFileSpace::ParameterFile::ResolveImproperDihedralSection" alt="" coords="420,485,847,515"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="917,165,1365,195"/></map>
 </div>
 </p>
 
@@ -385,7 +407,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00028">28</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00487">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00585">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
+<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00502">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00600">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> types_;
 }
@@ -418,7 +440,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00101">101</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">for</span>(std::vector&lt;std::string&gt;::iterator it = types_.begin(); it != types_.end(); it++)
     {
@@ -480,7 +502,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00090">90</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00487">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00585">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
+<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00502">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00600">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
 <div class="fragment"><pre class="fragment">                                                       {
     is_generic_ = is_generic;
 }
@@ -513,7 +535,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html#l00094">94</a> of file <a class="el" href="../../de/d0c/parameterfiledihedral_8cc_source.html">parameterfiledihedral.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00487">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00585">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
+<p>Referenced by <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00502">ParameterFileSpace::ParameterFile::ProcessDihedral()</a>, and <a class="el" href="../../d8/dbb/parameterfile_8cc_source.html#l00600">ParameterFileSpace::ParameterFile::ProcessImproperDihedral()</a>.</p>
 <div class="fragment"><pre class="fragment">                                                         {
     is_improper_ = is_improper;
 }
@@ -636,7 +658,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -650,7 +672,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../df/d5b/namespaceParameterFileSpace.html">ParameterFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html">ParameterFileDihedral</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:24 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

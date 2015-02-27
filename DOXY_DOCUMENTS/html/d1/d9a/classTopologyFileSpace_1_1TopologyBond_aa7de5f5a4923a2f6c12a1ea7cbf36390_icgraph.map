@@ -1,5 +1,8 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aae23c355d7d2dd4f0221474ff66de5b3" title="TopologyFileSpace::TopologyFile::ParseSections" alt="" coords="439,5,745,35"/>
-<area shape="rect" id="node5" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a1fac53937bbf09ec5387e2d81ac55b14" title="TopologyFileSpace::TopologyFile::ResolveBondsIncHydrogenSection" alt="" coords="379,59,805,88"/>
-<area shape="rect" id="node7" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4f1b06098a1187c79e36f5b26a58a19a" title="TopologyFileSpace::TopologyFile::ResolveBondsWithoutHydrogenSection" alt="" coords="365,112,819,141"/>
+<area shape="rect" id="node3" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a2a8689d9feaae3b87d09a05182863068" title="TopologyFileSpace::TopologyFile::AddBond" alt="" coords="455,5,729,35"/>
+<area shape="rect" id="node9" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aae23c355d7d2dd4f0221474ff66de5b3" title="TopologyFileSpace::TopologyFile::ParseSections" alt="" coords="439,59,745,88"/>
+<area shape="rect" id="node11" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a1fac53937bbf09ec5387e2d81ac55b14" title="TopologyFileSpace::TopologyFile::ResolveBondsIncHydrogenSection" alt="" coords="379,112,805,141"/>
+<area shape="rect" id="node13" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4f1b06098a1187c79e36f5b26a58a19a" title="TopologyFileSpace::TopologyFile::ResolveBondsWithoutHydrogenSection" alt="" coords="365,165,819,195"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ac28387d6cce3f5fba8b086b574934073" title="MolecularModeling::Assembly::ExtractTopologyBondsFromAssembly" alt="" coords="867,5,1291,35"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="1339,5,1787,35"/>
 </map>

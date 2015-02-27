@@ -88,6 +88,7 @@ var hierarchy =
     [ "PdbPreprocessorSpace::PdbPreprocessorHistidineMapping", "d9/d59/classPdbPreprocessorSpace_1_1PdbPreprocessorHistidineMapping.html", null ],
     [ "PdbPreprocessorSpace::PdbPreprocessorMissingResidue", "df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html", null ],
     [ "PdbPreprocessorSpace::PdbPreprocessorReplacedHydrogen", "d8/d53/classPdbPreprocessorSpace_1_1PdbPreprocessorReplacedHydrogen.html", null ],
+    [ "PdbPreprocessorSpace::PdbPreprocessorResidueInfo", "db/d0c/classPdbPreprocessorSpace_1_1PdbPreprocessorResidueInfo.html", null ],
     [ "PdbPreprocessorSpace::PdbPreprocessorUnrecognizedHeavyAtom", "d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html", null ],
     [ "PdbPreprocessorSpace::PdbPreprocessorUnrecognizedResidue", "d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html", null ],
     [ "PrepFileSpace::PrepFile", "dd/d09/classPrepFileSpace_1_1PrepFile.html", null ],

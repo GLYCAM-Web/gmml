@@ -128,6 +128,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ae3bb3b16ac1b6ef927e394b192359724">CrossProduct</a> (<a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a> coordinate)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a9139fe740b0a37141db138ec3df3d6b2">operator+</a> (<a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a> coordinate)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ac028eab61d6781b8d5e6aff5693c7b43">operator-</a> (<a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a> coordinate)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html#a1ebe53709ffbf2b536921b6f57945034">operator/</a> (double divisor)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad17558804c1f6a28c11856874827105c">operator*</a> (double multiplier)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca">Print</a> (std::ostream &amp;out=std::cout)</td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
@@ -150,7 +152,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00012">12</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00118">Print()</a>.</p>
+<p>Referenced by <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00130">Print()</a>.</p>
 <div class="fragment"><pre class="fragment">: x_(0.0), y_(0.0), z_(0.0) {}
 </pre></div>
 <p><div class="dynheader">
@@ -158,7 +160,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_aac6f323a685fc1e88fbea9c86f1e600d_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_aac6f323a685fc1e88fbea9c86f1e600d_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_aac6f323a685fc1e88fbea9c86f1e600d_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_aac6f323a685fc1e88fbea9c86f1e600d_icgraph">
-<area shape="rect" id="node3" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca" title="Geometry::Coordinate::Print" alt="" coords="276,139,460,168"/><area shape="rect" id="node5" href="../../d6/d10/classPdbFileSpace_1_1PdbAtom.html#a4407709b1b413d3dfce0917165b4f046" title="PdbFileSpace::PdbAtom::Print" alt="" coords="519,32,719,61"/><area shape="rect" id="node11" href="../../d2/d62/classPdbFileSpace_1_1PdbMatrixN.html#a79124794549d9704e2c84a32e23a3f8d" title="PdbFileSpace::PdbMatrixN::Print" alt="" coords="512,85,725,115"/><area shape="rect" id="node13" href="../../d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#aee5952601a9f0a1f66ed5bdd997147f4" title="PdbFileSpace::PdbOriginXn::Print" alt="" coords="509,139,728,168"/><area shape="rect" id="node15" href="../../d0/d8c/classPdbFileSpace_1_1PdbScaleN.html#a2405ae26f0e5042b3646dd9d01851dca" title="PdbFileSpace::PdbScaleN::Print" alt="" coords="513,192,724,221"/><area shape="rect" id="node17" href="../../de/da2/classMolecularModeling_1_1Atom.html#a73c69923b72dafa8aeda694677baf1a4" title="MolecularModeling::Atom::Print" alt="" coords="517,245,720,275"/><area shape="rect" id="node7" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a401963df46a5234f8fc343444afcd932" title="PdbFileSpace::PdbAtomCard::Print" alt="" coords="807,5,1033,35"/><area shape="rect" id="node9" href="../../d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#a704ef45f7af0ebd625d66803f8ad8b74" title="PdbFileSpace::PdbHeterogenAtomCard::Print" alt="" coords="776,59,1064,88"/><area shape="rect" id="node19" href="../../da/d64/classMolecularModeling_1_1Residue.html#aeba4f9fe8de7747e21f28653ca35b780" title="MolecularModeling::Residue::Print" alt="" coords="809,245,1031,275"/><area shape="rect" id="node21" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92" title="MolecularModeling::Assembly::Print" alt="" coords="1113,245,1343,275"/></map>
+<area shape="rect" id="node3" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca" title="Geometry::Coordinate::Print" alt="" coords="276,112,460,141"/><area shape="rect" id="node5" href="../../d6/d10/classPdbFileSpace_1_1PdbAtom.html#a4407709b1b413d3dfce0917165b4f046" title="PdbFileSpace::PdbAtom::Print" alt="" coords="519,5,719,35"/><area shape="rect" id="node7" href="../../d2/d62/classPdbFileSpace_1_1PdbMatrixN.html#a79124794549d9704e2c84a32e23a3f8d" title="PdbFileSpace::PdbMatrixN::Print" alt="" coords="512,59,725,88"/><area shape="rect" id="node9" href="../../d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#aee5952601a9f0a1f66ed5bdd997147f4" title="PdbFileSpace::PdbOriginXn::Print" alt="" coords="509,112,728,141"/><area shape="rect" id="node11" href="../../d0/d8c/classPdbFileSpace_1_1PdbScaleN.html#a2405ae26f0e5042b3646dd9d01851dca" title="PdbFileSpace::PdbScaleN::Print" alt="" coords="513,165,724,195"/><area shape="rect" id="node13" href="../../de/da2/classMolecularModeling_1_1Atom.html#a73c69923b72dafa8aeda694677baf1a4" title="MolecularModeling::Atom::Print" alt="" coords="517,219,720,248"/><area shape="rect" id="node15" href="../../da/d64/classMolecularModeling_1_1Residue.html#aeba4f9fe8de7747e21f28653ca35b780" title="MolecularModeling::Residue::Print" alt="" coords="776,219,997,248"/><area shape="rect" id="node17" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92" title="MolecularModeling::Assembly::Print" alt="" coords="1047,219,1276,248"/></map>
 </div>
 </p>
 
@@ -238,7 +240,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00064">64</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00118">Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03870">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03917">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03805">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, and <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03838">PdbFileSpace::PdbFile::ResolveScaleCard()</a>.</p>
+<p>Referenced by <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00130">Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06100">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06147">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06434">PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06035">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, and <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06068">PdbFileSpace::PdbFile::ResolveScaleCard()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">if</span>(x_ == coordinate.x_ &amp;&amp; y_ == coordinate.y_ &amp;&amp; z_ == coordinate.z_)
         <span class="keywordflow">return</span> <span class="keyword">true</span>;
@@ -251,7 +253,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_a6508724e0f0761370b55781c21b07bb5_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_a6508724e0f0761370b55781c21b07bb5_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_a6508724e0f0761370b55781c21b07bb5_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_a6508724e0f0761370b55781c21b07bb5_icgraph">
-<area shape="rect" id="node3" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca" title="Geometry::Coordinate::Print" alt="" coords="325,139,509,168"/><area shape="rect" id="node24" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="280,192,555,221"/><area shape="rect" id="node26" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="280,245,555,275"/><area shape="rect" id="node28" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="281,299,553,328"/><area shape="rect" id="node30" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="281,352,553,381"/><area shape="rect" id="node5" href="../../d6/d10/classPdbFileSpace_1_1PdbAtom.html#a4407709b1b413d3dfce0917165b4f046" title="PdbFileSpace::PdbAtom::Print" alt="" coords="612,32,812,61"/><area shape="rect" id="node11" href="../../d2/d62/classPdbFileSpace_1_1PdbMatrixN.html#a79124794549d9704e2c84a32e23a3f8d" title="PdbFileSpace::PdbMatrixN::Print" alt="" coords="605,85,819,115"/><area shape="rect" id="node13" href="../../d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#aee5952601a9f0a1f66ed5bdd997147f4" title="PdbFileSpace::PdbOriginXn::Print" alt="" coords="603,139,821,168"/><area shape="rect" id="node15" href="../../d0/d8c/classPdbFileSpace_1_1PdbScaleN.html#a2405ae26f0e5042b3646dd9d01851dca" title="PdbFileSpace::PdbScaleN::Print" alt="" coords="607,192,817,221"/><area shape="rect" id="node17" href="../../de/da2/classMolecularModeling_1_1Atom.html#a73c69923b72dafa8aeda694677baf1a4" title="MolecularModeling::Atom::Print" alt="" coords="611,245,813,275"/><area shape="rect" id="node7" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a401963df46a5234f8fc343444afcd932" title="PdbFileSpace::PdbAtomCard::Print" alt="" coords="900,5,1127,35"/><area shape="rect" id="node9" href="../../d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#a704ef45f7af0ebd625d66803f8ad8b74" title="PdbFileSpace::PdbHeterogenAtomCard::Print" alt="" coords="869,59,1157,88"/><area shape="rect" id="node19" href="../../da/d64/classMolecularModeling_1_1Residue.html#aeba4f9fe8de7747e21f28653ca35b780" title="MolecularModeling::Residue::Print" alt="" coords="903,245,1124,275"/><area shape="rect" id="node21" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92" title="MolecularModeling::Assembly::Print" alt="" coords="1207,245,1436,275"/></map>
+<area shape="rect" id="node3" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ad428e2c6185fa34fabc32f89f1af99ca" title="Geometry::Coordinate::Print" alt="" coords="408,112,592,141"/><area shape="rect" id="node20" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="363,165,637,195"/><area shape="rect" id="node22" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="363,219,637,248"/><area shape="rect" id="node24" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#adf7f3fc7ab9ec4c2d55d34e70898233e" title="PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber" alt="" coords="281,272,719,301"/><area shape="rect" id="node26" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="364,325,636,355"/><area shape="rect" id="node28" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="364,379,636,408"/><area shape="rect" id="node5" href="../../d6/d10/classPdbFileSpace_1_1PdbAtom.html#a4407709b1b413d3dfce0917165b4f046" title="PdbFileSpace::PdbAtom::Print" alt="" coords="777,5,977,35"/><area shape="rect" id="node7" href="../../d2/d62/classPdbFileSpace_1_1PdbMatrixN.html#a79124794549d9704e2c84a32e23a3f8d" title="PdbFileSpace::PdbMatrixN::Print" alt="" coords="771,59,984,88"/><area shape="rect" id="node9" href="../../d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#aee5952601a9f0a1f66ed5bdd997147f4" title="PdbFileSpace::PdbOriginXn::Print" alt="" coords="768,112,987,141"/><area shape="rect" id="node11" href="../../d0/d8c/classPdbFileSpace_1_1PdbScaleN.html#a2405ae26f0e5042b3646dd9d01851dca" title="PdbFileSpace::PdbScaleN::Print" alt="" coords="772,165,983,195"/><area shape="rect" id="node13" href="../../de/da2/classMolecularModeling_1_1Atom.html#a73c69923b72dafa8aeda694677baf1a4" title="MolecularModeling::Atom::Print" alt="" coords="776,219,979,248"/><area shape="rect" id="node15" href="../../da/d64/classMolecularModeling_1_1Residue.html#aeba4f9fe8de7747e21f28653ca35b780" title="MolecularModeling::Residue::Print" alt="" coords="1035,219,1256,248"/><area shape="rect" id="node17" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92" title="MolecularModeling::Assembly::Print" alt="" coords="1305,219,1535,248"/></map>
 </div>
 </p>
 
@@ -274,7 +276,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00096">96</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00206">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00272">gmml::ConvertCartesianCoordinate2InternalCoordinate()</a>, and <a class="el" href="../../df/d93/utils_8hpp_source.html#l00216">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     x_ = (y_ * coordinate.z_) - (coordinate.y_ * z_);
     y_ = (z_ * coordinate.x_) - (coordinate.z_ * x_);
@@ -286,7 +288,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_ae3bb3b16ac1b6ef927e394b192359724_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_ae3bb3b16ac1b6ef927e394b192359724_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_ae3bb3b16ac1b6ef927e394b192359724_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_ae3bb3b16ac1b6ef927e394b192359724_icgraph">
-<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="295,5,633,35"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="684,5,1052,35"/></map>
+<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#ab5da82ed3f2c4604e637561636788401" title="gmml::ConvertCartesianCoordinate2InternalCoordinate" alt="" coords="295,5,633,35"/><area shape="rect" id="node5" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="295,59,633,88"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="684,59,1052,88"/></map>
 </div>
 </p>
 
@@ -309,7 +311,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00072">72</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00362">PdbPreprocessorSpace::PdbPreprocessor::GetDistanceofCYS()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00272">gmml::ConvertCartesianCoordinate2InternalCoordinate()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l00912">PdbPreprocessorSpace::PdbPreprocessor::GetDistanceofCYS()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">double</span> dist = (x_ - coordinate.x_) * (x_ - coordinate.x_) + (y_ - coordinate.y_) * (y_ - coordinate.y_) + (z_ - coordinate.z_) * (z_ - coordinate.z_);
     <span class="keywordflow">return</span> sqrt(dist);
@@ -320,7 +322,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_a3c19db1c64f26d7072e6ec0bab484ab6_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_a3c19db1c64f26d7072e6ec0bab484ab6_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_a3c19db1c64f26d7072e6ec0bab484ab6_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_a3c19db1c64f26d7072e6ec0bab484ab6_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a6af28bfa2a4209af7eb0d3d8621a84ad" title="PdbPreprocessorSpace::PdbPreprocessor::GetDistanceofCYS" alt="" coords="264,5,651,35"/></map>
+<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#ab5da82ed3f2c4604e637561636788401" title="gmml::ConvertCartesianCoordinate2InternalCoordinate" alt="" coords="288,5,627,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a6af28bfa2a4209af7eb0d3d8621a84ad" title="PdbPreprocessorSpace::PdbPreprocessor::GetDistanceofCYS" alt="" coords="264,59,651,88"/></map>
 </div>
 </p>
 
@@ -342,10 +344,21 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00092">92</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
+
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00272">gmml::ConvertCartesianCoordinate2InternalCoordinate()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> ((x_ * coordinate.x_) + (y_ * coordinate.y_) + (z_ * coordinate.z_));
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_a56301b034e901acef7806cf15dfb6ce0_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_a56301b034e901acef7806cf15dfb6ce0_icgraph" alt=""/></div>
+<map name="d2/d2b/classGeometry_1_1Coordinate_a56301b034e901acef7806cf15dfb6ce0_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_a56301b034e901acef7806cf15dfb6ce0_icgraph">
+<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#ab5da82ed3f2c4604e637561636788401" title="gmml::ConvertCartesianCoordinate2InternalCoordinate" alt="" coords="279,5,617,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a55e182a5e7770b43f714ae369a162305"></a><!-- doxytag: member="Geometry::Coordinate::GetX" ref="a55e182a5e7770b43f714ae369a162305" args="()" -->
@@ -364,7 +377,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00021">21</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00206">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00154">LibraryFileSpace::LibraryFileAtom::Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03870">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03917">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03805">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00643">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03838">PdbFileSpace::PdbFile::ResolveScaleCard()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00122">LibraryFileSpace::LibraryFileAtom::SetCoordinate()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00216">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00154">LibraryFileSpace::LibraryFileAtom::Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06100">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06147">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06434">PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06035">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06068">PdbFileSpace::PdbFile::ResolveScaleCard()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00122">LibraryFileSpace::LibraryFileAtom::SetCoordinate()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> x_;
 }
@@ -374,7 +387,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_a55e182a5e7770b43f714ae369a162305_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_a55e182a5e7770b43f714ae369a162305_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_a55e182a5e7770b43f714ae369a162305_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_a55e182a5e7770b43f714ae369a162305_icgraph">
-<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="244,5,583,35"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0f16178b0e4140c2eb96d46fe85ac15c" title="LibraryFileSpace::LibraryFileAtom::Print" alt="" coords="287,59,540,88"/><area shape="rect" id="node9" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="276,112,551,141"/><area shape="rect" id="node11" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="276,165,551,195"/><area shape="rect" id="node13" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="277,219,549,248"/><area shape="rect" id="node15" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="247,272,580,301"/><area shape="rect" id="node17" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="277,325,549,355"/><area shape="rect" id="node19" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7ece97426d04db66d27cb9d0e3cfbc14" title="Set the postion of the atom." alt="" coords="259,379,568,408"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="633,5,1001,35"/></map>
+<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="293,5,632,35"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0f16178b0e4140c2eb96d46fe85ac15c" title="LibraryFileSpace::LibraryFileAtom::Print" alt="" coords="336,59,589,88"/><area shape="rect" id="node9" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="325,112,600,141"/><area shape="rect" id="node11" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="325,165,600,195"/><area shape="rect" id="node13" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#adf7f3fc7ab9ec4c2d55d34e70898233e" title="PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber" alt="" coords="244,219,681,248"/><area shape="rect" id="node15" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="327,272,599,301"/><area shape="rect" id="node17" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="296,325,629,355"/><area shape="rect" id="node23" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="327,379,599,408"/><area shape="rect" id="node25" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7ece97426d04db66d27cb9d0e3cfbc14" title="Set the postion of the atom." alt="" coords="308,432,617,461"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="732,5,1100,35"/><area shape="rect" id="node19" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="775,325,1057,355"/><area shape="rect" id="node21" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1149,325,1376,355"/></map>
 </div>
 </p>
 
@@ -396,7 +409,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00026">26</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00206">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00154">LibraryFileSpace::LibraryFileAtom::Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03870">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03917">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03805">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00643">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03838">PdbFileSpace::PdbFile::ResolveScaleCard()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00122">LibraryFileSpace::LibraryFileAtom::SetCoordinate()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00216">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00154">LibraryFileSpace::LibraryFileAtom::Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06100">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06147">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06434">PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06035">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06068">PdbFileSpace::PdbFile::ResolveScaleCard()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00122">LibraryFileSpace::LibraryFileAtom::SetCoordinate()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> y_;
 }
@@ -406,7 +419,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_ac05b81bef24e96883627abcf1935b12a_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_ac05b81bef24e96883627abcf1935b12a_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_ac05b81bef24e96883627abcf1935b12a_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_ac05b81bef24e96883627abcf1935b12a_icgraph">
-<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="244,5,583,35"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0f16178b0e4140c2eb96d46fe85ac15c" title="LibraryFileSpace::LibraryFileAtom::Print" alt="" coords="287,59,540,88"/><area shape="rect" id="node9" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="276,112,551,141"/><area shape="rect" id="node11" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="276,165,551,195"/><area shape="rect" id="node13" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="277,219,549,248"/><area shape="rect" id="node15" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="247,272,580,301"/><area shape="rect" id="node17" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="277,325,549,355"/><area shape="rect" id="node19" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7ece97426d04db66d27cb9d0e3cfbc14" title="Set the postion of the atom." alt="" coords="259,379,568,408"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="633,5,1001,35"/></map>
+<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="293,5,632,35"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0f16178b0e4140c2eb96d46fe85ac15c" title="LibraryFileSpace::LibraryFileAtom::Print" alt="" coords="336,59,589,88"/><area shape="rect" id="node9" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="325,112,600,141"/><area shape="rect" id="node11" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="325,165,600,195"/><area shape="rect" id="node13" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#adf7f3fc7ab9ec4c2d55d34e70898233e" title="PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber" alt="" coords="244,219,681,248"/><area shape="rect" id="node15" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="327,272,599,301"/><area shape="rect" id="node17" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="296,325,629,355"/><area shape="rect" id="node23" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="327,379,599,408"/><area shape="rect" id="node25" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7ece97426d04db66d27cb9d0e3cfbc14" title="Set the postion of the atom." alt="" coords="308,432,617,461"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="732,5,1100,35"/><area shape="rect" id="node19" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="775,325,1057,355"/><area shape="rect" id="node21" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1149,325,1376,355"/></map>
 </div>
 </p>
 
@@ -428,7 +441,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00031">31</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00206">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00154">LibraryFileSpace::LibraryFileAtom::Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03870">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03917">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03805">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00643">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l03838">PdbFileSpace::PdbFile::ResolveScaleCard()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00122">LibraryFileSpace::LibraryFileAtom::SetCoordinate()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00216">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>, <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00154">LibraryFileSpace::LibraryFileAtom::Print()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06100">PdbFileSpace::PdbFile::ResolveMatrixCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06147">PdbFileSpace::PdbFile::ResolveModelCard()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06434">PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06035">PdbFileSpace::PdbFile::ResolveOriginCard()</a>, <a class="el" href="../../d5/d68/libraryfile_8cc_source.html#l00674">LibraryFileSpace::LibraryFile::ResolvePositionSection()</a>, <a class="el" href="../../d8/dd5/pdbfile_8cc_source.html#l06068">PdbFileSpace::PdbFile::ResolveScaleCard()</a>, and <a class="el" href="../../d7/d6a/libraryfileatom_8cc_source.html#l00122">LibraryFileSpace::LibraryFileAtom::SetCoordinate()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> z_;
 }
@@ -438,7 +451,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_a34c71a037166bb286c489780b31895be_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_a34c71a037166bb286c489780b31895be_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_a34c71a037166bb286c489780b31895be_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_a34c71a037166bb286c489780b31895be_icgraph">
-<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="241,5,580,35"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0f16178b0e4140c2eb96d46fe85ac15c" title="LibraryFileSpace::LibraryFileAtom::Print" alt="" coords="284,59,537,88"/><area shape="rect" id="node9" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="273,112,548,141"/><area shape="rect" id="node11" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="273,165,548,195"/><area shape="rect" id="node13" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="275,219,547,248"/><area shape="rect" id="node15" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="244,272,577,301"/><area shape="rect" id="node17" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="275,325,547,355"/><area shape="rect" id="node19" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7ece97426d04db66d27cb9d0e3cfbc14" title="Set the postion of the atom." alt="" coords="256,379,565,408"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="631,5,999,35"/></map>
+<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="291,5,629,35"/><area shape="rect" id="node7" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a0f16178b0e4140c2eb96d46fe85ac15c" title="LibraryFileSpace::LibraryFileAtom::Print" alt="" coords="333,59,587,88"/><area shape="rect" id="node9" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#ac1bbfda1184af64c28e2df59ca23d5c4" title="PdbFileSpace::PdbFile::ResolveMatrixCard" alt="" coords="323,112,597,141"/><area shape="rect" id="node11" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a091ee9a11a947296204c138496381a8e" title="PdbFileSpace::PdbFile::ResolveModelCard" alt="" coords="323,165,597,195"/><area shape="rect" id="node13" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#adf7f3fc7ab9ec4c2d55d34e70898233e" title="PdbFileSpace::PdbFile::ResolveModelCardWithTheGivenModelNumber" alt="" coords="241,219,679,248"/><area shape="rect" id="node15" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a784a5146f284fde848237e6ab42aef0e" title="PdbFileSpace::PdbFile::ResolveOriginCard" alt="" coords="324,272,596,301"/><area shape="rect" id="node17" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="293,325,627,355"/><area shape="rect" id="node23" href="../../d4/db5/classPdbFileSpace_1_1PdbFile.html#a9116518673c7b51bba72e526a537358d" title="PdbFileSpace::PdbFile::ResolveScaleCard" alt="" coords="324,379,596,408"/><area shape="rect" id="node25" href="../../d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7ece97426d04db66d27cb9d0e3cfbc14" title="Set the postion of the atom." alt="" coords="305,432,615,461"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="729,5,1097,35"/><area shape="rect" id="node19" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="772,325,1055,355"/><area shape="rect" id="node21" href="../../d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1147,325,1373,355"/></map>
 </div>
 </p>
 
@@ -460,7 +473,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00078">78</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00083">Normalize()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00272">gmml::ConvertCartesianCoordinate2InternalCoordinate()</a>, and <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00083">Normalize()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordtype">double</span> <a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ae5a2532ad5f298fbced688f9b7447fa3">length</a> = (x_ * x_) + (y_ * y_) + (z_ * z_);
     <span class="keywordflow">return</span> sqrt(length);
@@ -471,7 +484,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_ae5a2532ad5f298fbced688f9b7447fa3_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_ae5a2532ad5f298fbced688f9b7447fa3_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_ae5a2532ad5f298fbced688f9b7447fa3_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_ae5a2532ad5f298fbced688f9b7447fa3_icgraph">
-<area shape="rect" id="node3" href="../../d2/d2b/classGeometry_1_1Coordinate.html#af68ce1403f5091ab554586b8998c474f" title="Geometry::Coordinate::Normalize" alt="" coords="249,5,465,35"/><area shape="rect" id="node5" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="516,5,855,35"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="905,5,1273,35"/></map>
+<area shape="rect" id="node3" href="../../d0/ddd/namespacegmml.html#ab5da82ed3f2c4604e637561636788401" title="gmml::ConvertCartesianCoordinate2InternalCoordinate" alt="" coords="249,5,588,35"/><area shape="rect" id="node5" href="../../d2/d2b/classGeometry_1_1Coordinate.html#af68ce1403f5091ab554586b8998c474f" title="Geometry::Coordinate::Normalize" alt="" coords="311,59,527,88"/><area shape="rect" id="node7" href="../../d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="639,59,977,88"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="1028,59,1396,88"/></map>
 </div>
 </p>
 
@@ -495,7 +508,7 @@ Here is the caller graph for this function:</div>
 
 <p>References <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00078">length()</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00206">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00216">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">if</span>(<a class="code" href="../../d2/d2b/classGeometry_1_1Coordinate.html#ae5a2532ad5f298fbced688f9b7447fa3">length</a>() != 0.0)
     {
@@ -523,6 +536,30 @@ Here is the caller graph for this function:</div>
 </div>
 </p>
 
+</div>
+</div>
+<a class="anchor" id="ad17558804c1f6a28c11856874827105c"></a><!-- doxytag: member="Geometry::Coordinate::operator*" ref="ad17558804c1f6a28c11856874827105c" args="(double multiplier)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Coordinate::operator* </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>multiplier</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00120">120</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    x_ *= multiplier;
+    y_ *= multiplier;
+    z_ *= multiplier;
+}
+</pre></div>
 </div>
 </div>
 <a class="anchor" id="a9139fe740b0a37141db138ec3df3d6b2"></a><!-- doxytag: member="Geometry::Coordinate::operator+" ref="a9139fe740b0a37141db138ec3df3d6b2" args="(Coordinate coordinate)" -->
@@ -573,6 +610,30 @@ Here is the caller graph for this function:</div>
 </pre></div>
 </div>
 </div>
+<a class="anchor" id="a1ebe53709ffbf2b536921b6f57945034"></a><!-- doxytag: member="Geometry::Coordinate::operator/" ref="a1ebe53709ffbf2b536921b6f57945034" args="(double divisor)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Coordinate::operator/ </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>divisor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00114">114</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+    x_ /= divisor;
+    y_ /= divisor;
+    z_ /= divisor;
+}
+</pre></div>
+</div>
+</div>
 <a class="anchor" id="ad428e2c6185fa34fabc32f89f1af99ca"></a><!-- doxytag: member="Geometry::Coordinate::Print" ref="ad428e2c6185fa34fabc32f89f1af99ca" args="(std::ostream &amp;out=std::cout)" -->
 <div class="memitem">
 <div class="memproto">
@@ -588,9 +649,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00118">118</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00130">130</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>References <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00064">CompareTo()</a>, <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00012">Coordinate()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>.</p>
+<p>References <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00064">CompareTo()</a>, <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00012">Coordinate()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>.</p>
 
 <p>Referenced by <a class="el" href="../../dd/da6/pdboriginxn_8cc_source.html#l00095">PdbFileSpace::PdbOriginXn::Print()</a>, <a class="el" href="../../df/d4b/pdbscalen_8cc_source.html#l00093">PdbFileSpace::PdbScaleN::Print()</a>, <a class="el" href="../../d9/d98/pdbmatrixn_8cc_source.html#l00107">PdbFileSpace::PdbMatrixN::Print()</a>, <a class="el" href="../../dc/d09/atom_8cc_source.html#l00102">MolecularModeling::Atom::Print()</a>, and <a class="el" href="../../d1/d6f/pdbatom_8cc_source.html#l00250">PdbFileSpace::PdbAtom::Print()</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -614,7 +675,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d2/d2b/classGeometry_1_1Coordinate_ad428e2c6185fa34fabc32f89f1af99ca_icgraph.png" border="0" usemap="#d2/d2b/classGeometry_1_1Coordinate_ad428e2c6185fa34fabc32f89f1af99ca_icgraph" alt=""/></div>
 <map name="d2/d2b/classGeometry_1_1Coordinate_ad428e2c6185fa34fabc32f89f1af99ca_icgraph" id="d2/d2b/classGeometry_1_1Coordinate_ad428e2c6185fa34fabc32f89f1af99ca_icgraph">
-<area shape="rect" id="node3" href="../../d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#aee5952601a9f0a1f66ed5bdd997147f4" title="PdbFileSpace::PdbOriginXn::Print" alt="" coords="240,5,459,35"/><area shape="rect" id="node5" href="../../d0/d8c/classPdbFileSpace_1_1PdbScaleN.html#a2405ae26f0e5042b3646dd9d01851dca" title="PdbFileSpace::PdbScaleN::Print" alt="" coords="244,59,455,88"/><area shape="rect" id="node7" href="../../d2/d62/classPdbFileSpace_1_1PdbMatrixN.html#a79124794549d9704e2c84a32e23a3f8d" title="PdbFileSpace::PdbMatrixN::Print" alt="" coords="243,112,456,141"/><area shape="rect" id="node9" href="../../de/da2/classMolecularModeling_1_1Atom.html#a73c69923b72dafa8aeda694677baf1a4" title="MolecularModeling::Atom::Print" alt="" coords="248,165,451,195"/><area shape="rect" id="node16" href="../../d6/d10/classPdbFileSpace_1_1PdbAtom.html#a4407709b1b413d3dfce0917165b4f046" title="PdbFileSpace::PdbAtom::Print" alt="" coords="249,219,449,248"/><area shape="rect" id="node11" href="../../da/d64/classMolecularModeling_1_1Residue.html#aeba4f9fe8de7747e21f28653ca35b780" title="MolecularModeling::Residue::Print" alt="" coords="540,165,761,195"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92" title="MolecularModeling::Assembly::Print" alt="" coords="844,165,1073,195"/><area shape="rect" id="node18" href="../../d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a401963df46a5234f8fc343444afcd932" title="PdbFileSpace::PdbAtomCard::Print" alt="" coords="537,219,764,248"/><area shape="rect" id="node20" href="../../d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#a704ef45f7af0ebd625d66803f8ad8b74" title="PdbFileSpace::PdbHeterogenAtomCard::Print" alt="" coords="507,272,795,301"/></map>
+<area shape="rect" id="node3" href="../../d7/d43/classPdbFileSpace_1_1PdbOriginXn.html#aee5952601a9f0a1f66ed5bdd997147f4" title="PdbFileSpace::PdbOriginXn::Print" alt="" coords="240,5,459,35"/><area shape="rect" id="node5" href="../../d0/d8c/classPdbFileSpace_1_1PdbScaleN.html#a2405ae26f0e5042b3646dd9d01851dca" title="PdbFileSpace::PdbScaleN::Print" alt="" coords="244,59,455,88"/><area shape="rect" id="node7" href="../../d2/d62/classPdbFileSpace_1_1PdbMatrixN.html#a79124794549d9704e2c84a32e23a3f8d" title="PdbFileSpace::PdbMatrixN::Print" alt="" coords="243,112,456,141"/><area shape="rect" id="node9" href="../../de/da2/classMolecularModeling_1_1Atom.html#a73c69923b72dafa8aeda694677baf1a4" title="MolecularModeling::Atom::Print" alt="" coords="248,165,451,195"/><area shape="rect" id="node16" href="../../d6/d10/classPdbFileSpace_1_1PdbAtom.html#a4407709b1b413d3dfce0917165b4f046" title="PdbFileSpace::PdbAtom::Print" alt="" coords="249,219,449,248"/><area shape="rect" id="node11" href="../../da/d64/classMolecularModeling_1_1Residue.html#aeba4f9fe8de7747e21f28653ca35b780" title="MolecularModeling::Residue::Print" alt="" coords="507,165,728,195"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#afc97e1dd67c6f7b6eae36a8fe734fd92" title="MolecularModeling::Assembly::Print" alt="" coords="777,165,1007,195"/></map>
 </div>
 </p>
 
@@ -752,7 +813,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d2/dcf/coordinate_8cc_source.html#l00057">57</a> of file <a class="el" href="../../d2/dcf/coordinate_8cc_source.html">coordinate.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00206">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>.</p>
+<p>Referenced by <a class="el" href="../../df/d93/utils_8hpp_source.html#l00216">gmml::ConvertInternalCoordinate2CartesianCoordinate()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     x_ += x;
     y_ += y;
@@ -781,7 +842,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -795,7 +856,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../d2/d1a/namespaceGeometry.html">Geometry</a>      </li>
       <li class="navelem"><a class="el" href="../../d2/d2b/classGeometry_1_1Coordinate.html">Coordinate</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:23 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

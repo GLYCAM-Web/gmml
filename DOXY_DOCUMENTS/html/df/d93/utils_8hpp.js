@@ -2,8 +2,10 @@ var utils_8hpp =
 [
     [ "ConvertAssemblyBuildingStructureOption2String", "d0/ddd/namespacegmml.html#af1af10b1dffc77e34df0b6a5fb6f684e", null ],
     [ "ConvertAssemblyInputFileType2String", "d0/ddd/namespacegmml.html#a56eaee465c483fa334454bdf5b1c638f", null ],
+    [ "ConvertCartesianCoordinate2InternalCoordinate", "d0/ddd/namespacegmml.html#ab5da82ed3f2c4604e637561636788401", null ],
     [ "ConvertDegree2Radian", "d0/ddd/namespacegmml.html#a309fd0ff1d7c768664dcb7ead1c66758", null ],
     [ "ConvertInternalCoordinate2CartesianCoordinate", "d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233", null ],
+    [ "ConvertRadian2Degree", "d0/ddd/namespacegmml.html#a19505f9eaa876692c37d00d69640f4de", null ],
     [ "ConvertString", "d0/ddd/namespacegmml.html#a098b9310cd105ba085ba7d8870089c9d", null ],
     [ "ConvertString2AssemblyBuildingStructureOption", "d0/ddd/namespacegmml.html#a1ca2c3f37b63c100075dae4942deab23", null ],
     [ "ConvertString2AssemblyInputFileType", "d0/ddd/namespacegmml.html#af0d8a3e70d6b6c6fe0ab7a901bb87dd8", null ],

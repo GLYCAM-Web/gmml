@@ -1,4 +1,5 @@
 <map id="G" name="G">
 <area shape="rect" id="node3" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="423,5,724,35"/>
 <area shape="rect" id="node5" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="432,59,715,88"/>
+<area shape="rect" id="node7" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818" title="Return a map of residues including in the file mapped to the names of the residues." alt="" coords="439,112,708,141"/>
 </map>

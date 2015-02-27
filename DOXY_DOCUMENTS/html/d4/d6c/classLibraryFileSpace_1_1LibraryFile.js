@@ -1,10 +1,13 @@
 var classLibraryFileSpace_1_1LibraryFile =
 [
     [ "ResidueMap", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a39cf56386432556d99b238eb26eb0629", null ],
+    [ "LibraryFile", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a40ef2743edcb43209575df87f6fb8810", null ],
     [ "LibraryFile", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac391c4d9968da0802a007994f4a50789", null ],
+    [ "~LibraryFile", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a225870f6345a088dfeb63293359dc341", null ],
     [ "BuildLibraryFile", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c", null ],
     [ "GetAllAtomNamesOfResidue", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6056f8116b2dc97a12b7bb40c2c4de21", null ],
     [ "GetAllResidueNames", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#abf3ebb1ef0bb81d9a1299d6f10cba153", null ],
+    [ "GetAllResidueNamesMap", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a354d4e63b6fe6972e777c9a960323fc7", null ],
     [ "GetFilePath", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a059051465b24d77e10341f80acdc09a5", null ],
     [ "GetLibraryResidueByResidueName", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ab9d197eb30b39bda7181f2e1c14c1162", null ],
     [ "GetResidues", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa148eecab4be3b08b4426cf9b80f2818", null ],
@@ -25,5 +28,7 @@ var classLibraryFileSpace_1_1LibraryFile =
     [ "ResolveResiduesSection", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a888c9e2d9f2c89e7541f2e91c60f01b2", null ],
     [ "ResolveSolventCapSection", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aef3ea7be40137c9523c0c35978b2df7e", null ],
     [ "ResolveVelocitiesSection", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac119e6a2f0409103ec1a732cdcf240b0", null ],
+    [ "SetPath", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a80b367a13da6133d7a7154952890aa20", null ],
+    [ "SetResidues", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af05c312687e8b9c644b452644c330da3", null ],
     [ "Write", "d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112", null ]
 ];

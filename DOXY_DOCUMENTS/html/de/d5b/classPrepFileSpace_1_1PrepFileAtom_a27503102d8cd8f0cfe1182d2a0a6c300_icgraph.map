@@ -2,9 +2,10 @@
 <area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="311,5,679,35"/>
 <area shape="rect" id="node5" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="853,56,1101,85"/>
 <area shape="rect" id="node7" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="317,109,672,139"/>
-<area shape="rect" id="node19" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="317,163,672,192"/>
-<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="771,163,1184,192"/>
-<area shape="rect" id="node15" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="728,109,1227,139"/>
-<area shape="rect" id="node11" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1276,163,1753,192"/>
+<area shape="rect" id="node21" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="317,163,672,192"/>
+<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="771,109,1184,139"/>
+<area shape="rect" id="node15" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="728,163,1227,192"/>
+<area shape="rect" id="node19" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#add083d4c1ba89f425aacc976075e5504" title="PrepFileSpace::PrepFileResidue::Print" alt="" coords="855,216,1100,245"/>
+<area shape="rect" id="node11" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1276,111,1753,140"/>
 <area shape="rect" id="node13" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1804,137,2089,167"/>
 </map>

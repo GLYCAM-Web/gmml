@@ -1,4 +1,6 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/d64/coordinatefile_8cc.html" title="src/FileSet/CoordinateFileSpace/coordinatefile.cc" alt="" coords="5,83,315,112"/>
-<area shape="rect" id="node5" href="$dd/df2/assembly_8cc.html" title="src/MolecularModeling/assembly.cc" alt="" coords="339,83,568,112"/>
+<area shape="rect" id="node3" href="$d2/d9b/assembly_8hpp.html" title="includes/MolecularModeling/assembly.hpp" alt="" coords="157,83,424,112"/>
+<area shape="rect" id="node5" href="$dd/df2/assembly_8cc.html" title="src/MolecularModeling/assembly.cc" alt="" coords="5,160,235,189"/>
+<area shape="rect" id="node9" href="$d7/d64/coordinatefile_8cc.html" title="src/FileSet/CoordinateFileSpace/coordinatefile.cc" alt="" coords="448,83,757,112"/>
+<area shape="rect" id="node7" href="$dc/d6e/residue_8cc.html" title="src/MolecularModeling/residue.cc" alt="" coords="259,160,475,189"/>
 </map>

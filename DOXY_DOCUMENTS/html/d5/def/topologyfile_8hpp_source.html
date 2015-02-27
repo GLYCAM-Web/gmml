@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -619,336 +618,402 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00517"></a>00517 <span class="comment">              */</span>
 <a name="l00518"></a>00518             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa6f180649e2abb6c7221c6b8430c4af1">SetBonds</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46dc5b7597461396e1d3ea17c4bb880b">TopologyBondMap</a> bonds);<span class="comment"></span>
 <a name="l00519"></a>00519 <span class="comment">            /*! \fn</span>
-<a name="l00520"></a>00520 <span class="comment">              * A mutator function in order to set the angles of the current object</span>
-<a name="l00521"></a>00521 <span class="comment">              * Set the angles_ attribute of the current topology file</span>
-<a name="l00522"></a>00522 <span class="comment">              * @param angles The angles attribute of the current object</span>
+<a name="l00520"></a>00520 <span class="comment">              * A function in order to add the bond to the current object</span>
+<a name="l00521"></a>00521 <span class="comment">              * Set the bonds_ attribute of the current topology file</span>
+<a name="l00522"></a>00522 <span class="comment">              * @param bond The bond that will be added to the current object</span>
 <a name="l00523"></a>00523 <span class="comment">              */</span>
-<a name="l00524"></a>00524             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a84dc15da088623d84cc0fd93cc0d54c3">SetAngles</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ac6f1338b5e86d1b266bcfc64fcc4cd03">TopologyAngleMap</a> angles);<span class="comment"></span>
+<a name="l00524"></a>00524             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a2a8689d9feaae3b87d09a05182863068">AddBond</a>(<a class="code" href="../../d1/d9a/classTopologyFileSpace_1_1TopologyBond.html">TopologyBond</a>* bond);<span class="comment"></span>
 <a name="l00525"></a>00525 <span class="comment">            /*! \fn</span>
-<a name="l00526"></a>00526 <span class="comment">              * A mutator function in order to set the dihedrals of the current object</span>
-<a name="l00527"></a>00527 <span class="comment">              * Set the dihedrals_ attribute of the current topology file</span>
-<a name="l00528"></a>00528 <span class="comment">              * @param dihedrals The dihedrals attribute of the current object</span>
+<a name="l00526"></a>00526 <span class="comment">              * A mutator function in order to set the bond types of the current object</span>
+<a name="l00527"></a>00527 <span class="comment">              * Set the bond_types_ attribute of the current topology file</span>
+<a name="l00528"></a>00528 <span class="comment">              * @param bond_types The bond_types attribute of the current object</span>
 <a name="l00529"></a>00529 <span class="comment">              */</span>
-<a name="l00530"></a>00530             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a599a897ac43581a230ed0ea359d19c55">SetDihedrals</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7543bdbf200e6b4458dfb05b03443fac">TopologyDihedralMap</a> dihedrals);
-<a name="l00531"></a>00531 <span class="comment"></span>
-<a name="l00532"></a>00532 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00533"></a>00533 <span class="comment"></span>            <span class="comment">//                        FUNCTIONS                     //</span><span class="comment"></span>
-<a name="l00534"></a>00534 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00535"></a>00535 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00536"></a>00536 <span class="comment">              * A function to parse the contents of a given stream of a file</span>
-<a name="l00537"></a>00537 <span class="comment">              * Parse the given stream and set the attributes of the current object accordingly</span>
-<a name="l00538"></a>00538 <span class="comment">              * @param in_file A stream contains whole contents of a topology file</span>
-<a name="l00539"></a>00539 <span class="comment">              */</span>
-<a name="l00540"></a>00540             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa38a1112cc918d9d09644102599946df">Read</a>(std::ifstream&amp; in_file);<span class="comment"></span>
-<a name="l00541"></a>00541 <span class="comment">            /*! \fn</span>
-<a name="l00542"></a>00542 <span class="comment">              * A function to parse the contents of a given stream of a file</span>
-<a name="l00543"></a>00543 <span class="comment">              * @param in_stream A stream contains whole contents of a topology file</span>
-<a name="l00544"></a>00544 <span class="comment">              */</span>
-<a name="l00545"></a>00545             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aae23c355d7d2dd4f0221474ff66de5b3">ParseSections</a>(std::ifstream&amp; in_stream);<span class="comment"></span>
-<a name="l00546"></a>00546 <span class="comment">            /*! \fn</span>
-<a name="l00547"></a>00547 <span class="comment">              * A function to partition a topology file to its sections</span>
-<a name="l00548"></a>00548 <span class="comment">              * @param stream Input stream built from topology input file</span>
-<a name="l00549"></a>00549 <span class="comment">              * @param line The line that the reader is currently at</span>
-<a name="l00550"></a>00550 <span class="comment">              * @param section Stream that the output section will be written on</span>
-<a name="l00551"></a>00551 <span class="comment">              */</span>
-<a name="l00552"></a>00552             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a64635598f2eeb27172a6f765e087c6ed">PartitionSection</a>(std::ifstream&amp; stream, std::string&amp; line, std::stringstream&amp; section);<span class="comment"></span>
-<a name="l00553"></a>00553 <span class="comment">            /*! \fn</span>
-<a name="l00554"></a>00554 <span class="comment">              * A function to parse title section of a pdb file</span>
-<a name="l00555"></a>00555 <span class="comment">              * @param stream Title section of a topology file as stream</span>
-<a name="l00556"></a>00556 <span class="comment">              */</span>
-<a name="l00557"></a>00557             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aaf7308680e84627e9970972c9de0b98d">ParseTitlePartition</a>(std::stringstream&amp; stream);<span class="comment"></span>
-<a name="l00558"></a>00558 <span class="comment">            /*! \fn</span>
-<a name="l00559"></a>00559 <span class="comment">              * A function to parse the pointer section of a topology file</span>
-<a name="l00560"></a>00560 <span class="comment">              * @param stream Pointer section of a topology file as stream</span>
-<a name="l00561"></a>00561 <span class="comment">              */</span>
-<a name="l00562"></a>00562             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a905a80cc5fccc10e2dc86cef948bdc43">ParsePointersPartition</a>(std::stringstream&amp; stream);<span class="comment"></span>
-<a name="l00563"></a>00563 <span class="comment">            /*! \fn</span>
-<a name="l00564"></a>00564 <span class="comment">              * A function to parse the other partitions of a topology file which have same template</span>
-<a name="l00565"></a>00565 <span class="comment">              * @param stream Stream of a section that has to be parsed</span>
-<a name="l00566"></a>00566 <span class="comment">              * @return Vector of types according to the section</span>
-<a name="l00567"></a>00567 <span class="comment">              */</span>
-<a name="l00568"></a>00568             <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00569"></a>00569             std::vector&lt;T&gt; <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a91f100fc7255fc017d17ebaa458e6f71">ParsePartition</a>(std::stringstream&amp; stream);<span class="comment"></span>
-<a name="l00570"></a>00570 <span class="comment">            /*! \fn</span>
-<a name="l00571"></a>00571 <span class="comment">              * A function to parse a line of a section to its values</span>
-<a name="l00572"></a>00572 <span class="comment">              * @param line Line of a section</span>
-<a name="l00573"></a>00573 <span class="comment">              * @param format Format of the line which indicates the number and type of the values</span>
-<a name="l00574"></a>00574 <span class="comment">              * @return A vector of values in the given line parsed based on the given format</span>
-<a name="l00575"></a>00575 <span class="comment">              */</span>
-<a name="l00576"></a>00576             <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00577"></a>00577             std::vector&lt;T&gt; <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9f9b2d8212dcd3c4cf74ad4dcf5c02ce">PartitionLine</a>(std::string line, std::string format);<span class="comment"></span>
-<a name="l00578"></a>00578 <span class="comment">            /*! \fn</span>
-<a name="l00579"></a>00579 <span class="comment">              * A function to create an output topology file with the given name</span>
-<a name="l00580"></a>00580 <span class="comment">              * @param top_file Output topology file name</span>
-<a name="l00581"></a>00581 <span class="comment">              */</span>
-<a name="l00582"></a>00582             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aef72e4b9e41a1b65fbbc88f58d1ddac9">Write</a>(<span class="keyword">const</span> std::string&amp; top_file);<span class="comment"></span>
-<a name="l00583"></a>00583 <span class="comment">            /*! \fn</span>
-<a name="l00584"></a>00584 <span class="comment">              * A function that resolve sections of a topology file in order to write into an output stream</span>
-<a name="l00585"></a>00585 <span class="comment">              * @param out_stream Stream the the result has to be written into</span>
-<a name="l00586"></a>00586 <span class="comment">              */</span>
-<a name="l00587"></a>00587             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a563db4d487753732141be53170242120">ResolveSections</a>(std::ofstream&amp; out_stream);<span class="comment"></span>
-<a name="l00588"></a>00588 <span class="comment">            /*! \fn</span>
-<a name="l00589"></a>00589 <span class="comment">              * A function to write back title section of the topology file into an output stream</span>
-<a name="l00590"></a>00590 <span class="comment">              * @param out Intermediate output stream in order to write title section</span>
-<a name="l00591"></a>00591 <span class="comment">              */</span>
-<a name="l00592"></a>00592             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a323b8d86f4da019521226c64d26bc209">ResolveTitleSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00593"></a>00593 <span class="comment">            /*! \fn</span>
-<a name="l00594"></a>00594 <span class="comment">              * A function to write back pointer section of the topology file into an output stream</span>
-<a name="l00595"></a>00595 <span class="comment">              * @param out Intermediate output stream in order to write pointer section</span>
-<a name="l00596"></a>00596 <span class="comment">              */</span>
-<a name="l00597"></a>00597             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a966213660737beeb99045d421c39115d">ResolvePointersSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00598"></a>00598 <span class="comment">            /*! \fn</span>
-<a name="l00599"></a>00599 <span class="comment">              * A function to write back atom name section of the topology file into an output stream</span>
-<a name="l00600"></a>00600 <span class="comment">              * @param out Intermediate output stream in order to write atom name section</span>
-<a name="l00601"></a>00601 <span class="comment">              */</span>
-<a name="l00602"></a>00602             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4270c0f3ec8cc853fe0c01291ecc9141">ResolveAtomNameSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00603"></a>00603 <span class="comment">            /*! \fn</span>
-<a name="l00604"></a>00604 <span class="comment">              * A function to write back charge section of the topology file into an output stream</span>
-<a name="l00605"></a>00605 <span class="comment">              * @param out Intermediate output stream in order to write charge section</span>
-<a name="l00606"></a>00606 <span class="comment">              */</span>
-<a name="l00607"></a>00607             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a20bb3ef50007cc2f0c9503de2c30ebcb">ResolveChargeSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00608"></a>00608 <span class="comment">            /*! \fn</span>
-<a name="l00609"></a>00609 <span class="comment">              * A function to write back atomic number section of the topology file into an output stream</span>
-<a name="l00610"></a>00610 <span class="comment">              * @param out Intermediate output stream in order to write atomic number section</span>
-<a name="l00611"></a>00611 <span class="comment">              */</span>
-<a name="l00612"></a>00612             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a5d2fa1ff87ebb1c5ec49dc671456a79c">ResolveAtomicNumberSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00613"></a>00613 <span class="comment">            /*! \fn</span>
-<a name="l00614"></a>00614 <span class="comment">              * A function to write back mass section of the topology file into an output stream</span>
-<a name="l00615"></a>00615 <span class="comment">              * @param out Intermediate output stream in order to write mass section</span>
-<a name="l00616"></a>00616 <span class="comment">              */</span>
-<a name="l00617"></a>00617             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a6518583cd08af0614c05b9b1569d0d12">ResolveMassSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00618"></a>00618 <span class="comment">            /*! \fn</span>
-<a name="l00619"></a>00619 <span class="comment">              * A function to write back atom type index section of the topology file into an output stream</span>
-<a name="l00620"></a>00620 <span class="comment">              * @param out Intermediate output stream in order to write atom type index section</span>
-<a name="l00621"></a>00621 <span class="comment">              */</span>
-<a name="l00622"></a>00622             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4c99f0ed8276b3c28bb6401c39e0f6a9">ResolveAtomTypeIndexSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00623"></a>00623 <span class="comment">            /*! \fn</span>
-<a name="l00624"></a>00624 <span class="comment">              * A function to write back number excluded atoms section of the topology file into an output stream</span>
-<a name="l00625"></a>00625 <span class="comment">              * @param out Intermediate output stream in order to write number excluded atoms section</span>
-<a name="l00626"></a>00626 <span class="comment">              */</span>
-<a name="l00627"></a>00627             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46287790eee1e08f8334c3b10bbb7187">ResolveNumberExcludedAtomsSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00628"></a>00628 <span class="comment">            /*! \fn</span>
-<a name="l00629"></a>00629 <span class="comment">              * A function to write back non bonded parm index section of the topology file into an output stream</span>
-<a name="l00630"></a>00630 <span class="comment">              * @param out Intermediate output stream in order to write non bonded parm index section</span>
-<a name="l00631"></a>00631 <span class="comment">              */</span>
-<a name="l00632"></a>00632             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ad5e3827793e91ec6259d4fba8beb73c8">ResolveNonbondedParmIndexSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00633"></a>00633 <span class="comment">            /*! \fn</span>
-<a name="l00634"></a>00634 <span class="comment">              * A function to write back residue lab section of the topology file into an output stream</span>
-<a name="l00635"></a>00635 <span class="comment">              * @param out Intermediate output stream in order to write residue lab section</span>
-<a name="l00636"></a>00636 <span class="comment">              */</span>
-<a name="l00637"></a>00637             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46cc3a2c0a271f9fc8af8990e020ca26">ResolveResidueLabelSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00638"></a>00638 <span class="comment">            /*! \fn</span>
-<a name="l00639"></a>00639 <span class="comment">              * A function to write back residue pointers section of the topology file into an output stream</span>
-<a name="l00640"></a>00640 <span class="comment">              * @param out Intermediate output stream in order to write residue pointers section</span>
+<a name="l00530"></a>00530             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aaaf0c43104444c4587f26eaf4b012b10">SetBondTypes</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a09dd9ce49f103359eb493b8630727297">TopologyBondTypeMap</a> bond_types);<span class="comment"></span>
+<a name="l00531"></a>00531 <span class="comment">            /*! \fn</span>
+<a name="l00532"></a>00532 <span class="comment">              * A function in order to add the bond type to the current object</span>
+<a name="l00533"></a>00533 <span class="comment">              * Set the bond_Types_ attribute of the current topology file</span>
+<a name="l00534"></a>00534 <span class="comment">              * @param bond_type The bond_type that will be added to the current object</span>
+<a name="l00535"></a>00535 <span class="comment">              */</span>
+<a name="l00536"></a>00536             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ae2b8b895ff996d761d897bd97cbb35ba">AddBondType</a>(<a class="code" href="../../db/d17/classTopologyFileSpace_1_1TopologyBondType.html">TopologyBondType</a>* bond_type);<span class="comment"></span>
+<a name="l00537"></a>00537 <span class="comment">            /*! \fn</span>
+<a name="l00538"></a>00538 <span class="comment">              * A mutator function in order to set the angles of the current object</span>
+<a name="l00539"></a>00539 <span class="comment">              * Set the angles_ attribute of the current topology file</span>
+<a name="l00540"></a>00540 <span class="comment">              * @param angles The angles attribute of the current object</span>
+<a name="l00541"></a>00541 <span class="comment">              */</span>
+<a name="l00542"></a>00542             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a84dc15da088623d84cc0fd93cc0d54c3">SetAngles</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ac6f1338b5e86d1b266bcfc64fcc4cd03">TopologyAngleMap</a> angles);<span class="comment"></span>
+<a name="l00543"></a>00543 <span class="comment">            /*! \fn</span>
+<a name="l00544"></a>00544 <span class="comment">              * A function in order to add the angle to the current object</span>
+<a name="l00545"></a>00545 <span class="comment">              * Set the angles_ attribute of the current topology file</span>
+<a name="l00546"></a>00546 <span class="comment">              * @param angle The angle that will be added to the current object</span>
+<a name="l00547"></a>00547 <span class="comment">              */</span>
+<a name="l00548"></a>00548             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a3e091e0e4f10a51c7b43eda850b2914c">AddAngle</a>(<a class="code" href="../../d1/dfa/classTopologyFileSpace_1_1TopologyAngle.html">TopologyAngle</a>* angle);<span class="comment"></span>
+<a name="l00549"></a>00549 <span class="comment">            /*! \fn</span>
+<a name="l00550"></a>00550 <span class="comment">              * A mutator function in order to set the angle types of the current object</span>
+<a name="l00551"></a>00551 <span class="comment">              * Set the angle_types_ attribute of the current topology file</span>
+<a name="l00552"></a>00552 <span class="comment">              * @param angle_types The angle_types attribute of the current object</span>
+<a name="l00553"></a>00553 <span class="comment">              */</span>
+<a name="l00554"></a>00554             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab6325826383c0ee4feeb966585a126f5">SetAngleTypes</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ae073e6f684b3c7d26082e131b7a0bc28">TopologyAngleTypeMap</a> angle_types);<span class="comment"></span>
+<a name="l00555"></a>00555 <span class="comment">            /*! \fn</span>
+<a name="l00556"></a>00556 <span class="comment">              * A function in order to add the angle type to the current object</span>
+<a name="l00557"></a>00557 <span class="comment">              * Set the angle_Types_ attribute of the current topology file</span>
+<a name="l00558"></a>00558 <span class="comment">              * @param angle_type The angle_type that will be added to the current object</span>
+<a name="l00559"></a>00559 <span class="comment">              */</span>
+<a name="l00560"></a>00560             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a2914fcf2ee632c3f4434c70a8dd4693c">AddAngleType</a>(<a class="code" href="../../d1/d46/classTopologyFileSpace_1_1TopologyAngleType.html">TopologyAngleType</a>* angle_type);<span class="comment"></span>
+<a name="l00561"></a>00561 <span class="comment">            /*! \fn</span>
+<a name="l00562"></a>00562 <span class="comment">              * A mutator function in order to set the dihedrals of the current object</span>
+<a name="l00563"></a>00563 <span class="comment">              * Set the dihedrals_ attribute of the current topology file</span>
+<a name="l00564"></a>00564 <span class="comment">              * @param dihedrals The dihedrals attribute of the current object</span>
+<a name="l00565"></a>00565 <span class="comment">              */</span>
+<a name="l00566"></a>00566             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a599a897ac43581a230ed0ea359d19c55">SetDihedrals</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7543bdbf200e6b4458dfb05b03443fac">TopologyDihedralMap</a> dihedrals);<span class="comment"></span>
+<a name="l00567"></a>00567 <span class="comment">            /*! \fn</span>
+<a name="l00568"></a>00568 <span class="comment">              * A function in order to add the dihedral to the current object</span>
+<a name="l00569"></a>00569 <span class="comment">              * Set the dihedrals_ attribute of the current topology file</span>
+<a name="l00570"></a>00570 <span class="comment">              * @param dihedral The dihedral that will be added to the current object</span>
+<a name="l00571"></a>00571 <span class="comment">              */</span>
+<a name="l00572"></a>00572             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a83e9704f48cea49a424c9c81db85ff39">AddDihedral</a>(<a class="code" href="../../d5/d9c/classTopologyFileSpace_1_1TopologyDihedral.html">TopologyDihedral</a>* dihedral);<span class="comment"></span>
+<a name="l00573"></a>00573 <span class="comment">            /*! \fn</span>
+<a name="l00574"></a>00574 <span class="comment">              * A mutator function in order to set the dihedral types of the current object</span>
+<a name="l00575"></a>00575 <span class="comment">              * Set the dihedral_types_ attribute of the current topology file</span>
+<a name="l00576"></a>00576 <span class="comment">              * @param dihedral_types The dihedral_types attribute of the current object</span>
+<a name="l00577"></a>00577 <span class="comment">              */</span>
+<a name="l00578"></a>00578             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab8ed7eb68163c48ba15eaa5aa951fa26">SetDihedralTypes</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7dea261373f15210d3eccd189faee24c">TopologyDihedralTypeMap</a> dihedral_types);<span class="comment"></span>
+<a name="l00579"></a>00579 <span class="comment">            /*! \fn</span>
+<a name="l00580"></a>00580 <span class="comment">              * A function in order to add the dihedral type to the current object</span>
+<a name="l00581"></a>00581 <span class="comment">              * Set the dihedral_Types_ attribute of the current topology file</span>
+<a name="l00582"></a>00582 <span class="comment">              * @param dihedral_type The dihedral_type that will be added to the current object</span>
+<a name="l00583"></a>00583 <span class="comment">              */</span>
+<a name="l00584"></a>00584             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#af555f624826d9743bd1436aed136113e">AddDihedralType</a>(<a class="code" href="../../da/dae/classTopologyFileSpace_1_1TopologyDihedralType.html">TopologyDihedralType</a>* dihedral_type);<span class="comment"></span>
+<a name="l00585"></a>00585 <span class="comment">            /*! \fn</span>
+<a name="l00586"></a>00586 <span class="comment">              * A function in order to set the atom pairs of the current object</span>
+<a name="l00587"></a>00587 <span class="comment">              * Set the pairs_ attribute of the current topology file</span>
+<a name="l00588"></a>00588 <span class="comment">              * @param pairs The pairs attribute of the current object</span>
+<a name="l00589"></a>00589 <span class="comment">              */</span>
+<a name="l00590"></a>00590             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a2ab84a6e9e66cb67077c550b98a1988a">SetAtomPairs</a>(<a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a0bf2642dd05083d2a771aca1c86329bb">TopologyAtomPairMap</a> pairs);<span class="comment"></span>
+<a name="l00591"></a>00591 <span class="comment">            /*! \fn</span>
+<a name="l00592"></a>00592 <span class="comment">              * A function in order to add the atom pairs to the current object</span>
+<a name="l00593"></a>00593 <span class="comment">              * Set the pairs_ attribute of the current topology file</span>
+<a name="l00594"></a>00594 <span class="comment">              * @param pair The atom pair that will be added to the current object</span>
+<a name="l00595"></a>00595 <span class="comment">              */</span>
+<a name="l00596"></a>00596             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#abd5901ec8580bca2a93a340079d88fa4">AddAtomPair</a>(<a class="code" href="../../dd/d26/classTopologyFileSpace_1_1TopologyAtomPair.html">TopologyAtomPair</a>* pair);
+<a name="l00597"></a>00597 <span class="comment"></span>
+<a name="l00598"></a>00598 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00599"></a>00599 <span class="comment"></span>            <span class="comment">//                        FUNCTIONS                     //</span><span class="comment"></span>
+<a name="l00600"></a>00600 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00601"></a>00601 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00602"></a>00602 <span class="comment">              * A function to parse the contents of a given stream of a file</span>
+<a name="l00603"></a>00603 <span class="comment">              * Parse the given stream and set the attributes of the current object accordingly</span>
+<a name="l00604"></a>00604 <span class="comment">              * @param in_file A stream contains whole contents of a topology file</span>
+<a name="l00605"></a>00605 <span class="comment">              */</span>
+<a name="l00606"></a>00606             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa38a1112cc918d9d09644102599946df">Read</a>(std::ifstream&amp; in_file);<span class="comment"></span>
+<a name="l00607"></a>00607 <span class="comment">            /*! \fn</span>
+<a name="l00608"></a>00608 <span class="comment">              * A function to parse the contents of a given stream of a file</span>
+<a name="l00609"></a>00609 <span class="comment">              * @param in_stream A stream contains whole contents of a topology file</span>
+<a name="l00610"></a>00610 <span class="comment">              */</span>
+<a name="l00611"></a>00611             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aae23c355d7d2dd4f0221474ff66de5b3">ParseSections</a>(std::ifstream&amp; in_stream);<span class="comment"></span>
+<a name="l00612"></a>00612 <span class="comment">            /*! \fn</span>
+<a name="l00613"></a>00613 <span class="comment">              * A function to partition a topology file to its sections</span>
+<a name="l00614"></a>00614 <span class="comment">              * @param stream Input stream built from topology input file</span>
+<a name="l00615"></a>00615 <span class="comment">              * @param line The line that the reader is currently at</span>
+<a name="l00616"></a>00616 <span class="comment">              * @param section Stream that the output section will be written on</span>
+<a name="l00617"></a>00617 <span class="comment">              */</span>
+<a name="l00618"></a>00618             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a64635598f2eeb27172a6f765e087c6ed">PartitionSection</a>(std::ifstream&amp; stream, std::string&amp; line, std::stringstream&amp; section);<span class="comment"></span>
+<a name="l00619"></a>00619 <span class="comment">            /*! \fn</span>
+<a name="l00620"></a>00620 <span class="comment">              * A function to parse title section of a pdb file</span>
+<a name="l00621"></a>00621 <span class="comment">              * @param stream Title section of a topology file as stream</span>
+<a name="l00622"></a>00622 <span class="comment">              */</span>
+<a name="l00623"></a>00623             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aaf7308680e84627e9970972c9de0b98d">ParseTitlePartition</a>(std::stringstream&amp; stream);<span class="comment"></span>
+<a name="l00624"></a>00624 <span class="comment">            /*! \fn</span>
+<a name="l00625"></a>00625 <span class="comment">              * A function to parse the pointer section of a topology file</span>
+<a name="l00626"></a>00626 <span class="comment">              * @param stream Pointer section of a topology file as stream</span>
+<a name="l00627"></a>00627 <span class="comment">              */</span>
+<a name="l00628"></a>00628             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a905a80cc5fccc10e2dc86cef948bdc43">ParsePointersPartition</a>(std::stringstream&amp; stream);<span class="comment"></span>
+<a name="l00629"></a>00629 <span class="comment">            /*! \fn</span>
+<a name="l00630"></a>00630 <span class="comment">              * A function to parse the other partitions of a topology file which have same template</span>
+<a name="l00631"></a>00631 <span class="comment">              * @param stream Stream of a section that has to be parsed</span>
+<a name="l00632"></a>00632 <span class="comment">              * @return Vector of types according to the section</span>
+<a name="l00633"></a>00633 <span class="comment">              */</span>
+<a name="l00634"></a>00634             <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<a name="l00635"></a>00635             std::vector&lt;T&gt; <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a91f100fc7255fc017d17ebaa458e6f71">ParsePartition</a>(std::stringstream&amp; stream);<span class="comment"></span>
+<a name="l00636"></a>00636 <span class="comment">            /*! \fn</span>
+<a name="l00637"></a>00637 <span class="comment">              * A function to parse a line of a section to its values</span>
+<a name="l00638"></a>00638 <span class="comment">              * @param line Line of a section</span>
+<a name="l00639"></a>00639 <span class="comment">              * @param format Format of the line which indicates the number and type of the values</span>
+<a name="l00640"></a>00640 <span class="comment">              * @return A vector of values in the given line parsed based on the given format</span>
 <a name="l00641"></a>00641 <span class="comment">              */</span>
-<a name="l00642"></a>00642             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab27d3c370ba57546f8deb45c4bbb684e">ResolveResiduePointersSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00643"></a>00643 <span class="comment">            /*! \fn</span>
-<a name="l00644"></a>00644 <span class="comment">              * A function to write back bond force constant section of the topology file into an output stream</span>
-<a name="l00645"></a>00645 <span class="comment">              * @param out Intermediate output stream in order to write bond force constant section</span>
-<a name="l00646"></a>00646 <span class="comment">              */</span>
-<a name="l00647"></a>00647             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aef4288fa43f2b177ce2a29eeade48a41">ResolveBondForceConstantSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00648"></a>00648 <span class="comment">            /*! \fn</span>
-<a name="l00649"></a>00649 <span class="comment">              * A function to write back bond equil value section of the topology file into an output stream</span>
-<a name="l00650"></a>00650 <span class="comment">              * @param out Intermediate output stream in order to write bond equil value section</span>
-<a name="l00651"></a>00651 <span class="comment">              */</span>
-<a name="l00652"></a>00652             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#af6130070d78ba1c76925bef44c22537a">ResolveBondEquilValueSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00653"></a>00653 <span class="comment">            /*! \fn</span>
-<a name="l00654"></a>00654 <span class="comment">              * A function to write back angle force constant section of the topology file into an output stream</span>
-<a name="l00655"></a>00655 <span class="comment">              * @param out Intermediate output stream in order to write angle force constant section</span>
-<a name="l00656"></a>00656 <span class="comment">              */</span>
-<a name="l00657"></a>00657             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa4899917aaee2092a630c23f046733ea">ResolveAngleForceConstantSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00658"></a>00658 <span class="comment">            /*! \fn</span>
-<a name="l00659"></a>00659 <span class="comment">              * A function to write back angle equil value section of the topology file into an output stream</span>
-<a name="l00660"></a>00660 <span class="comment">              * @param out Intermediate output stream in order to write angle equil value section</span>
-<a name="l00661"></a>00661 <span class="comment">              */</span>
-<a name="l00662"></a>00662             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7e780bd5d964a4b3150f5f6c3241009d">ResolveAngleEquilValueSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00663"></a>00663 <span class="comment">            /*! \fn</span>
-<a name="l00664"></a>00664 <span class="comment">              * A function to write back dihedral force constant section of the topology file into an output stream</span>
-<a name="l00665"></a>00665 <span class="comment">              * @param out Intermediate output stream in order to write dihedral force constant section</span>
-<a name="l00666"></a>00666 <span class="comment">              */</span>
-<a name="l00667"></a>00667             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab527a37d2fe34c70c350511e2fa94bbc">ResolveDihedralForceConstantSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00668"></a>00668 <span class="comment">            /*! \fn</span>
-<a name="l00669"></a>00669 <span class="comment">              * A function to write back dihedral periodicity section of the topology file into an output stream</span>
-<a name="l00670"></a>00670 <span class="comment">              * @param out Intermediate output stream in order to write dihedral periodicity section</span>
-<a name="l00671"></a>00671 <span class="comment">              */</span>
-<a name="l00672"></a>00672             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ad2a27aaa529b0b833a735a1ff9208f01">ResolveDihedralPeriodicitySection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00673"></a>00673 <span class="comment">            /*! \fn</span>
-<a name="l00674"></a>00674 <span class="comment">              * A function to write back dihedral phase section of the topology file into an output stream</span>
-<a name="l00675"></a>00675 <span class="comment">              * @param out Intermediate output stream in order to write dihedral phase section</span>
-<a name="l00676"></a>00676 <span class="comment">              */</span>
-<a name="l00677"></a>00677             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a97b94e7edf929e8ee71c8aae8961c316">ResolveDihedralPhaseSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00678"></a>00678 <span class="comment">            /*! \fn</span>
-<a name="l00679"></a>00679 <span class="comment">              * A function to write back scee scale factor section of the topology file into an output stream</span>
-<a name="l00680"></a>00680 <span class="comment">              * @param out Intermediate output stream in order to write scee scale factor section</span>
-<a name="l00681"></a>00681 <span class="comment">              */</span>
-<a name="l00682"></a>00682             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa685c485c4cfc71f44852be1843b31bf">ResolveSceeScaleFactorSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00683"></a>00683 <span class="comment">            /*! \fn</span>
-<a name="l00684"></a>00684 <span class="comment">              * A function to write back scnb scale factor section of the topology file into an output stream</span>
-<a name="l00685"></a>00685 <span class="comment">              * @param out Intermediate output stream in order to write scnb scale factor section</span>
-<a name="l00686"></a>00686 <span class="comment">              */</span>
-<a name="l00687"></a>00687             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4299968ba177d987749675eb958883dd">ResolveScnbScaleFactorSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00688"></a>00688 <span class="comment">            /*! \fn</span>
-<a name="l00689"></a>00689 <span class="comment">              * A function to write back solty section of the topology file into an output stream</span>
-<a name="l00690"></a>00690 <span class="comment">              * @param out Intermediate output stream in order to write solty section</span>
-<a name="l00691"></a>00691 <span class="comment">              */</span>
-<a name="l00692"></a>00692             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a0c7b600d5d5fc0871893713a15db1c6e">ResolveSoltySection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00693"></a>00693 <span class="comment">            /*! \fn</span>
-<a name="l00694"></a>00694 <span class="comment">              * A function to write back lennard jones a coefficient section of the topology file into an output stream</span>
-<a name="l00695"></a>00695 <span class="comment">              * @param out Intermediate output stream in order to write lennard jones a coefficient section</span>
-<a name="l00696"></a>00696 <span class="comment">              */</span>
-<a name="l00697"></a>00697             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab08c07ddeaa15cd672c743f348a44239">ResolveLennardJonesACoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00698"></a>00698 <span class="comment">            /*! \fn</span>
-<a name="l00699"></a>00699 <span class="comment">              * A function to write back lennard jones b coefficient section of the topology file into an output stream</span>
-<a name="l00700"></a>00700 <span class="comment">              * @param out Intermediate output stream in order to write lennard jones b coefficient section</span>
-<a name="l00701"></a>00701 <span class="comment">              */</span>
-<a name="l00702"></a>00702             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9ab2ffc254417cba3913b34ccc142b9c">ResolveLennardJonesBCoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00703"></a>00703 <span class="comment">            /*! \fn</span>
-<a name="l00704"></a>00704 <span class="comment">              * A function to write back bonds inc hydrogen section of the topology file into an output stream</span>
-<a name="l00705"></a>00705 <span class="comment">              * @param out Intermediate output stream in order to write bonds inc hydrogen section</span>
-<a name="l00706"></a>00706 <span class="comment">              */</span>
-<a name="l00707"></a>00707             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a1fac53937bbf09ec5387e2d81ac55b14">ResolveBondsIncHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00708"></a>00708 <span class="comment">            /*! \fn</span>
-<a name="l00709"></a>00709 <span class="comment">              * A function to write back bonds without hydrogen section of the topology file into an output stream</span>
-<a name="l00710"></a>00710 <span class="comment">              * @param out Intermediate output stream in order to write bonds without hydrogen section</span>
-<a name="l00711"></a>00711 <span class="comment">              */</span>
-<a name="l00712"></a>00712             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4f1b06098a1187c79e36f5b26a58a19a">ResolveBondsWithoutHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00713"></a>00713 <span class="comment">            /*! \fn</span>
-<a name="l00714"></a>00714 <span class="comment">              * A function to write back angles inc hydrogen section of the topology file into an output stream</span>
-<a name="l00715"></a>00715 <span class="comment">              * @param out Intermediate output stream in order to write angles including hydrogen section</span>
-<a name="l00716"></a>00716 <span class="comment">              */</span>
-<a name="l00717"></a>00717             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a6e884692174945e4cbbe81ba5944069f">ResolveAnglesIncHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00718"></a>00718 <span class="comment">            /*! \fn</span>
-<a name="l00719"></a>00719 <span class="comment">              * A function to write back angles without hydrogen section of the topology file into an output stream</span>
-<a name="l00720"></a>00720 <span class="comment">              * @param out Intermediate output stream in order to write angles without hydrogen section</span>
-<a name="l00721"></a>00721 <span class="comment">              */</span>
-<a name="l00722"></a>00722             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a3e3f28b93711640405d660495dcaa54e">ResolveAnglesWithoutHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00723"></a>00723 <span class="comment">            /*! \fn</span>
-<a name="l00724"></a>00724 <span class="comment">              * A function to write back dihedrals inc hydrogen section of the topology file into an output stream</span>
-<a name="l00725"></a>00725 <span class="comment">              * @param out Intermediate output stream in order to write dihedrals inc hydrogen section</span>
-<a name="l00726"></a>00726 <span class="comment">              */</span>
-<a name="l00727"></a>00727             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a423186b2942baf298a3a00ba3c39dd10">ResolveDihedralsIncHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00728"></a>00728 <span class="comment">            /*! \fn</span>
-<a name="l00729"></a>00729 <span class="comment">              * A function to write back dihedrals without hydrogen section of the topology file into an output stream</span>
-<a name="l00730"></a>00730 <span class="comment">              * @param out Intermediate output stream in order to write dihedral without hydrogen section</span>
-<a name="l00731"></a>00731 <span class="comment">              */</span>
-<a name="l00732"></a>00732             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#acdf6e07a942fe2453b400d3a4bb72544">ResolveDihedralsWithoutHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00733"></a>00733 <span class="comment">            /*! \fn</span>
-<a name="l00734"></a>00734 <span class="comment">              * A function to write back excluded atoms list section of the topology file into an output stream</span>
-<a name="l00735"></a>00735 <span class="comment">              * @param out Intermediate output stream in order to write excluded atoms list section</span>
-<a name="l00736"></a>00736 <span class="comment">              */</span>
-<a name="l00737"></a>00737             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a3df20868f502b878585a72ccd4f732e6">ResolveExcludedAtomsListSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00738"></a>00738 <span class="comment">            /*! \fn</span>
-<a name="l00739"></a>00739 <span class="comment">              * A function to write back hydrogen bond a coefficient section of the topology file into an output stream</span>
-<a name="l00740"></a>00740 <span class="comment">              * @param out Intermediate output stream in order to write hydrogen bond a coefficient section</span>
-<a name="l00741"></a>00741 <span class="comment">              */</span>
-<a name="l00742"></a>00742             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a2ee22b413a119db9cdb2f89cd4febcc4">ResolveHydrogenBondACoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00743"></a>00743 <span class="comment">            /*! \fn</span>
-<a name="l00744"></a>00744 <span class="comment">              * A function to write back hydrogen bond b coefficient section of the topology file into an output stream</span>
-<a name="l00745"></a>00745 <span class="comment">              * @param out Intermediate output stream in order to write hydrogen bond coefficient section</span>
-<a name="l00746"></a>00746 <span class="comment">              */</span>
-<a name="l00747"></a>00747             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a02265a49149364c421df0f1d7589b776">ResolveHydrogenBondBCoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00748"></a>00748 <span class="comment">            /*! \fn</span>
-<a name="l00749"></a>00749 <span class="comment">              * A function to write back hb cut section of the topology file into an output stream</span>
-<a name="l00750"></a>00750 <span class="comment">              * @param out Intermediate output stream in order to write hb cut section</span>
-<a name="l00751"></a>00751 <span class="comment">              */</span>
-<a name="l00752"></a>00752             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a0aba8f23c57be55b4cebb70bcdd6e0df">ResolveHBCutSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00753"></a>00753 <span class="comment">            /*! \fn</span>
-<a name="l00754"></a>00754 <span class="comment">              * A function to write back amber atom type section of the topology file into an output stream</span>
-<a name="l00755"></a>00755 <span class="comment">              * @param out Intermediate output stream in order to write amber atom type section</span>
-<a name="l00756"></a>00756 <span class="comment">              */</span>
-<a name="l00757"></a>00757             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9c4cf9bcf845ea630e4bec5686cc4bc0">ResolveAmberAtomTypeSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00758"></a>00758 <span class="comment">            /*! \fn</span>
-<a name="l00759"></a>00759 <span class="comment">              * A function to write back tree chain classification section of the topology file into an output stream</span>
-<a name="l00760"></a>00760 <span class="comment">              * @param out Intermediate output stream in order to write tree chain classification section</span>
-<a name="l00761"></a>00761 <span class="comment">              */</span>
-<a name="l00762"></a>00762             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a33e7de147140e752f433f8bfbf37b30c">ResolveTreeChainClassificationSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00763"></a>00763 <span class="comment">            /*! \fn</span>
-<a name="l00764"></a>00764 <span class="comment">              * A function to write back join array section of the topology file into an output stream</span>
-<a name="l00765"></a>00765 <span class="comment">              * @param out Intermediate output stream in order to write join array section</span>
-<a name="l00766"></a>00766 <span class="comment">              */</span>
-<a name="l00767"></a>00767             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#af5d06c665d12d1b736be94efdf4f02cf">ResolveJoinArraySection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00768"></a>00768 <span class="comment">            /*! \fn</span>
-<a name="l00769"></a>00769 <span class="comment">              * A function to write back irotat section of the topology file into an output stream</span>
-<a name="l00770"></a>00770 <span class="comment">              * @param out Intermediate output stream in order to write title section</span>
-<a name="l00771"></a>00771 <span class="comment">              */</span>
-<a name="l00772"></a>00772             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a5414688edcea452282b68761d52a5318">ResolveIRotatSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00773"></a>00773 <span class="comment">            /*! \fn</span>
-<a name="l00774"></a>00774 <span class="comment">              * A function to write back residue set section of the topology file into an output stream</span>
-<a name="l00775"></a>00775 <span class="comment">              * @param out Intermediate output stream in order to write residue set section</span>
-<a name="l00776"></a>00776 <span class="comment">              */</span>
-<a name="l00777"></a>00777             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ac365e83f2e5cbc858bd1ea92daebb88a">ResolveResidueSetSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00778"></a>00778 <span class="comment">            /*! \fn</span>
-<a name="l00779"></a>00779 <span class="comment">              * A function to write back radii section of the topology file into an output stream</span>
-<a name="l00780"></a>00780 <span class="comment">              * @param out Intermediate output stream in order to write radii section</span>
-<a name="l00781"></a>00781 <span class="comment">              */</span>
-<a name="l00782"></a>00782             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aea389662e57a731130cfe500d99c6bc5">ResolveRadiiSection</a>(std::ofstream&amp; out);<span class="comment"></span>
-<a name="l00783"></a>00783 <span class="comment">            /*! \fn</span>
-<a name="l00784"></a>00784 <span class="comment">              * A function to write back screen section of the topology file into an output stream</span>
-<a name="l00785"></a>00785 <span class="comment">              * @param out Intermediate output stream in order to write screen section</span>
-<a name="l00786"></a>00786 <span class="comment">              */</span>
-<a name="l00787"></a>00787             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ac327292d486f4fed004797a5e4980d91">ResolveScreenSection</a>(std::ofstream&amp; out);
-<a name="l00788"></a>00788 <span class="comment"></span>
-<a name="l00789"></a>00789 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00790"></a>00790 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
-<a name="l00791"></a>00791 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00792"></a>00792 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00793"></a>00793 <span class="comment">              * A function to print out the topology file contents in a structural format</span>
-<a name="l00794"></a>00794 <span class="comment">              * Print out the information in a defined structure</span>
-<a name="l00795"></a>00795 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
-<a name="l00796"></a>00796 <span class="comment">              */</span>
-<a name="l00797"></a>00797             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#af898364e4b9b821f12218cbfcb694ded">Print</a>(std::ostream&amp; out = std::cout);
-<a name="l00798"></a>00798 
-<a name="l00799"></a>00799         <span class="keyword">private</span>:<span class="comment"></span>
-<a name="l00800"></a>00800 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00801"></a>00801 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
-<a name="l00802"></a>00802 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00803"></a>00803 <span class="comment"></span>            std::string path_;                              <span class="comment">/*!&lt; Path of the file &gt;*/</span>
-<a name="l00804"></a>00804             std::string title_;                             <span class="comment">/*!&lt; Title of the file &gt;*/</span>
-<a name="l00805"></a>00805             <span class="keywordtype">int</span> number_of_atoms_;                           <span class="comment">/*!&lt; Number of atoms &gt;*/</span>
-<a name="l00806"></a>00806             <span class="keywordtype">int</span> number_of_types_;                           <span class="comment">/*!&lt; Number of types in a topology file &gt;*/</span>
-<a name="l00807"></a>00807             <span class="keywordtype">int</span> number_of_bonds_including_hydrogen_;        <span class="comment">/*!&lt; Number of bonds including hydrogen in a topology file &gt;*/</span>
-<a name="l00808"></a>00808             <span class="keywordtype">int</span> number_of_angles_including_hydrogen_;       <span class="comment">/*!&lt; Number of angles including hydrogen in a topology file &gt;*/</span>
-<a name="l00809"></a>00809             <span class="keywordtype">int</span> number_of_dihedrals_including_hydrogen_;    <span class="comment">/*!&lt; Number of dihedrals including hydrogen in a topology file &gt;*/</span>
-<a name="l00810"></a>00810             <span class="keywordtype">int</span> number_of_bonds_excluding_hydrogen_;        <span class="comment">/*!&lt; Number of bonds excluding hydrogen in a topology file &gt;*/</span>
-<a name="l00811"></a>00811             <span class="keywordtype">int</span> number_of_angles_excluding_hydrogen_;       <span class="comment">/*!&lt; Number of angles excluding hydrogen in a topology file &gt;*/</span>
-<a name="l00812"></a>00812             <span class="keywordtype">int</span> number_of_dihedrals_excluding_hydrogen_;    <span class="comment">/*!&lt; Number of dihedrals excluding hydrogen in a topology file &gt;*/</span>
-<a name="l00813"></a>00813             <span class="keywordtype">int</span> number_of_hydrogen_parameters_;             <span class="comment">/*!&lt; Number of hydrogen parameters in a topology file &gt;*/</span>
-<a name="l00814"></a>00814             <span class="keywordtype">int</span> number_of_parameters_;                      <span class="comment">/*!&lt; Number of parameters in a topology file &gt;*/</span>
-<a name="l00815"></a>00815             <span class="keywordtype">int</span> number_of_excluded_atoms_;                  <span class="comment">/*!&lt; Number of excluded atoms in a topology file &gt;*/</span>
-<a name="l00816"></a>00816             <span class="keywordtype">int</span> number_of_residues_;                        <span class="comment">/*!&lt; Number of residues in a topology file &gt;*/</span>
-<a name="l00817"></a>00817             <span class="keywordtype">int</span> total_number_of_bonds_;                     <span class="comment">/*!&lt; Total number of bonds in a topology file &gt;*/</span>
-<a name="l00818"></a>00818             <span class="keywordtype">int</span> total_number_of_angles_;                    <span class="comment">/*!&lt; Total number of angles in a topology file &gt;*/</span>
-<a name="l00819"></a>00819             <span class="keywordtype">int</span> total_number_of_dihedrals_;                 <span class="comment">/*!&lt; Total number of dihedrals in a topology file &gt;*/</span>
-<a name="l00820"></a>00820             <span class="keywordtype">int</span> number_of_bond_types_;                      <span class="comment">/*!&lt; Number of bond types in a topology file &gt;*/</span>
-<a name="l00821"></a>00821             <span class="keywordtype">int</span> number_of_angle_types_;                     <span class="comment">/*!&lt; Number of angle types in a topology file &gt;*/</span>
-<a name="l00822"></a>00822             <span class="keywordtype">int</span> number_of_dihedral_types_;                  <span class="comment">/*!&lt; Number of dihedral types in a topology file &gt;*/</span>
-<a name="l00823"></a>00823             <span class="keywordtype">int</span> number_of_atom_types_in_parameter_file_;    <span class="comment">/*!&lt; Number of atom types in parameter file in a topology file &gt;*/</span>
-<a name="l00824"></a>00824             <span class="keywordtype">int</span> number_of_distinct_hydrogen_bonds_;         <span class="comment">/*!&lt; Number of distinct hydrogen bonds in a topology file &gt;*/</span>
-<a name="l00825"></a>00825             <span class="keywordtype">int</span> perturbation_option_;                       <span class="comment">/*!&lt; Perturbation option in a topology file &gt;*/</span>
-<a name="l00826"></a>00826             <span class="keywordtype">int</span> number_of_bonds_perturbed_;                 <span class="comment">/*!&lt; Number of bonds perturbed in a topology file &gt;*/</span>
-<a name="l00827"></a>00827             <span class="keywordtype">int</span> number_of_angles_perturbed_;                <span class="comment">/*!&lt; Number of angles perturbed in a topology file &gt;*/</span>
-<a name="l00828"></a>00828             <span class="keywordtype">int</span> number_of_dihedrals_perturbed_;             <span class="comment">/*!&lt; Number of dihedrals perturbed in a topology file &gt;*/</span>
-<a name="l00829"></a>00829             <span class="keywordtype">int</span> number_of_bonds_group_perturbed_;           <span class="comment">/*!&lt; Number of bonds group perturbed in a topology file &gt;*/</span>
-<a name="l00830"></a>00830             <span class="keywordtype">int</span> number_of_angles_group_perturbed_;          <span class="comment">/*!&lt; Number of angles group perturbed in a topology file &gt;*/</span>
-<a name="l00831"></a>00831             <span class="keywordtype">int</span> number_of_dihedrals_group_perturbed_;       <span class="comment">/*!&lt; Number of dihedrals group perturbed in a topology file &gt;*/</span>
-<a name="l00832"></a>00832             <span class="keywordtype">int</span> standard_periodic_box_option_;              <span class="comment">/*!&lt; Standard periodic box option in a topology file &gt;*/</span>
-<a name="l00833"></a>00833             <span class="keywordtype">int</span> number_of_atoms_in_largest_residue_;        <span class="comment">/*!&lt; Number of atoms in largest residue in a topology file &gt;*/</span>
-<a name="l00834"></a>00834             <span class="keywordtype">int</span> cap_option_;                                <span class="comment">/*!&lt; Cap option in a topology file &gt;*/</span>
-<a name="l00835"></a>00835             <span class="keywordtype">int</span> number_of_extra_points_;                    <span class="comment">/*!&lt; Number of extra points in a topology file &gt;*/</span>
-<a name="l00836"></a>00836             <span class="keywordtype">int</span> number_of_beads_;                           <span class="comment">/*!&lt; Number of beads in a topology file &gt;*/</span>
-<a name="l00837"></a>00837             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a0bf2642dd05083d2a771aca1c86329bb">TopologyAtomPairMap</a> pairs_;
-<a name="l00838"></a>00838             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a09dd9ce49f103359eb493b8630727297">TopologyBondTypeMap</a> bond_types_;
-<a name="l00839"></a>00839             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ae073e6f684b3c7d26082e131b7a0bc28">TopologyAngleTypeMap</a> angle_types_;
-<a name="l00840"></a>00840             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7dea261373f15210d3eccd189faee24c">TopologyDihedralTypeMap</a> dihedral_types_;
-<a name="l00841"></a>00841             <a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html">TopologyAssembly</a>* assembly_;
-<a name="l00842"></a>00842             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a62a85a11f7d4010cce8ff8aa547372ca">RadiusSet</a> radius_set_;
-<a name="l00843"></a>00843             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46dc5b7597461396e1d3ea17c4bb880b">TopologyBondMap</a> bonds_;
-<a name="l00844"></a>00844             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ac6f1338b5e86d1b266bcfc64fcc4cd03">TopologyAngleMap</a> angles_;
-<a name="l00845"></a>00845             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7543bdbf200e6b4458dfb05b03443fac">TopologyDihedralMap</a> dihedrals_;
-<a name="l00846"></a>00846     };
-<a name="l00847"></a>00847 }
-<a name="l00848"></a>00848 
-<a name="l00849"></a>00849 <span class="preprocessor">#endif // TOPOLOGYFILE_HPP</span>
+<a name="l00642"></a>00642             <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<a name="l00643"></a>00643             std::vector&lt;T&gt; <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9f9b2d8212dcd3c4cf74ad4dcf5c02ce">PartitionLine</a>(std::string line, std::string format);<span class="comment"></span>
+<a name="l00644"></a>00644 <span class="comment">            /*! \fn</span>
+<a name="l00645"></a>00645 <span class="comment">              * A function to create an output topology file with the given name</span>
+<a name="l00646"></a>00646 <span class="comment">              * @param top_file Output topology file name</span>
+<a name="l00647"></a>00647 <span class="comment">              */</span>
+<a name="l00648"></a>00648             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aef72e4b9e41a1b65fbbc88f58d1ddac9">Write</a>(<span class="keyword">const</span> std::string&amp; top_file);<span class="comment"></span>
+<a name="l00649"></a>00649 <span class="comment">            /*! \fn</span>
+<a name="l00650"></a>00650 <span class="comment">              * A function that resolve sections of a topology file in order to write into an output stream</span>
+<a name="l00651"></a>00651 <span class="comment">              * @param out_stream Stream the the result has to be written into</span>
+<a name="l00652"></a>00652 <span class="comment">              */</span>
+<a name="l00653"></a>00653             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a563db4d487753732141be53170242120">ResolveSections</a>(std::ofstream&amp; out_stream);<span class="comment"></span>
+<a name="l00654"></a>00654 <span class="comment">            /*! \fn</span>
+<a name="l00655"></a>00655 <span class="comment">              * A function to write back title section of the topology file into an output stream</span>
+<a name="l00656"></a>00656 <span class="comment">              * @param out Intermediate output stream in order to write title section</span>
+<a name="l00657"></a>00657 <span class="comment">              */</span>
+<a name="l00658"></a>00658             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a323b8d86f4da019521226c64d26bc209">ResolveTitleSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00659"></a>00659 <span class="comment">            /*! \fn</span>
+<a name="l00660"></a>00660 <span class="comment">              * A function to write back pointer section of the topology file into an output stream</span>
+<a name="l00661"></a>00661 <span class="comment">              * @param out Intermediate output stream in order to write pointer section</span>
+<a name="l00662"></a>00662 <span class="comment">              */</span>
+<a name="l00663"></a>00663             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a966213660737beeb99045d421c39115d">ResolvePointersSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00664"></a>00664 <span class="comment">            /*! \fn</span>
+<a name="l00665"></a>00665 <span class="comment">              * A function to write back atom name section of the topology file into an output stream</span>
+<a name="l00666"></a>00666 <span class="comment">              * @param out Intermediate output stream in order to write atom name section</span>
+<a name="l00667"></a>00667 <span class="comment">              */</span>
+<a name="l00668"></a>00668             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4270c0f3ec8cc853fe0c01291ecc9141">ResolveAtomNameSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00669"></a>00669 <span class="comment">            /*! \fn</span>
+<a name="l00670"></a>00670 <span class="comment">              * A function to write back charge section of the topology file into an output stream</span>
+<a name="l00671"></a>00671 <span class="comment">              * @param out Intermediate output stream in order to write charge section</span>
+<a name="l00672"></a>00672 <span class="comment">              */</span>
+<a name="l00673"></a>00673             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a20bb3ef50007cc2f0c9503de2c30ebcb">ResolveChargeSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00674"></a>00674 <span class="comment">            /*! \fn</span>
+<a name="l00675"></a>00675 <span class="comment">              * A function to write back atomic number section of the topology file into an output stream</span>
+<a name="l00676"></a>00676 <span class="comment">              * @param out Intermediate output stream in order to write atomic number section</span>
+<a name="l00677"></a>00677 <span class="comment">              */</span>
+<a name="l00678"></a>00678             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a5d2fa1ff87ebb1c5ec49dc671456a79c">ResolveAtomicNumberSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00679"></a>00679 <span class="comment">            /*! \fn</span>
+<a name="l00680"></a>00680 <span class="comment">              * A function to write back mass section of the topology file into an output stream</span>
+<a name="l00681"></a>00681 <span class="comment">              * @param out Intermediate output stream in order to write mass section</span>
+<a name="l00682"></a>00682 <span class="comment">              */</span>
+<a name="l00683"></a>00683             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a6518583cd08af0614c05b9b1569d0d12">ResolveMassSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00684"></a>00684 <span class="comment">            /*! \fn</span>
+<a name="l00685"></a>00685 <span class="comment">              * A function to write back atom type index section of the topology file into an output stream</span>
+<a name="l00686"></a>00686 <span class="comment">              * @param out Intermediate output stream in order to write atom type index section</span>
+<a name="l00687"></a>00687 <span class="comment">              */</span>
+<a name="l00688"></a>00688             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4c99f0ed8276b3c28bb6401c39e0f6a9">ResolveAtomTypeIndexSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00689"></a>00689 <span class="comment">            /*! \fn</span>
+<a name="l00690"></a>00690 <span class="comment">              * A function to write back number excluded atoms section of the topology file into an output stream</span>
+<a name="l00691"></a>00691 <span class="comment">              * @param out Intermediate output stream in order to write number excluded atoms section</span>
+<a name="l00692"></a>00692 <span class="comment">              */</span>
+<a name="l00693"></a>00693             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46287790eee1e08f8334c3b10bbb7187">ResolveNumberExcludedAtomsSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00694"></a>00694 <span class="comment">            /*! \fn</span>
+<a name="l00695"></a>00695 <span class="comment">              * A function to write back non bonded parm index section of the topology file into an output stream</span>
+<a name="l00696"></a>00696 <span class="comment">              * @param out Intermediate output stream in order to write non bonded parm index section</span>
+<a name="l00697"></a>00697 <span class="comment">              */</span>
+<a name="l00698"></a>00698             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ad5e3827793e91ec6259d4fba8beb73c8">ResolveNonbondedParmIndexSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00699"></a>00699 <span class="comment">            /*! \fn</span>
+<a name="l00700"></a>00700 <span class="comment">              * A function to write back residue lab section of the topology file into an output stream</span>
+<a name="l00701"></a>00701 <span class="comment">              * @param out Intermediate output stream in order to write residue lab section</span>
+<a name="l00702"></a>00702 <span class="comment">              */</span>
+<a name="l00703"></a>00703             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46cc3a2c0a271f9fc8af8990e020ca26">ResolveResidueLabelSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00704"></a>00704 <span class="comment">            /*! \fn</span>
+<a name="l00705"></a>00705 <span class="comment">              * A function to write back residue pointers section of the topology file into an output stream</span>
+<a name="l00706"></a>00706 <span class="comment">              * @param out Intermediate output stream in order to write residue pointers section</span>
+<a name="l00707"></a>00707 <span class="comment">              */</span>
+<a name="l00708"></a>00708             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab27d3c370ba57546f8deb45c4bbb684e">ResolveResiduePointersSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00709"></a>00709 <span class="comment">            /*! \fn</span>
+<a name="l00710"></a>00710 <span class="comment">              * A function to write back bond force constant section of the topology file into an output stream</span>
+<a name="l00711"></a>00711 <span class="comment">              * @param out Intermediate output stream in order to write bond force constant section</span>
+<a name="l00712"></a>00712 <span class="comment">              */</span>
+<a name="l00713"></a>00713             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aef4288fa43f2b177ce2a29eeade48a41">ResolveBondForceConstantSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00714"></a>00714 <span class="comment">            /*! \fn</span>
+<a name="l00715"></a>00715 <span class="comment">              * A function to write back bond equil value section of the topology file into an output stream</span>
+<a name="l00716"></a>00716 <span class="comment">              * @param out Intermediate output stream in order to write bond equil value section</span>
+<a name="l00717"></a>00717 <span class="comment">              */</span>
+<a name="l00718"></a>00718             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#af6130070d78ba1c76925bef44c22537a">ResolveBondEquilValueSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00719"></a>00719 <span class="comment">            /*! \fn</span>
+<a name="l00720"></a>00720 <span class="comment">              * A function to write back angle force constant section of the topology file into an output stream</span>
+<a name="l00721"></a>00721 <span class="comment">              * @param out Intermediate output stream in order to write angle force constant section</span>
+<a name="l00722"></a>00722 <span class="comment">              */</span>
+<a name="l00723"></a>00723             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa4899917aaee2092a630c23f046733ea">ResolveAngleForceConstantSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00724"></a>00724 <span class="comment">            /*! \fn</span>
+<a name="l00725"></a>00725 <span class="comment">              * A function to write back angle equil value section of the topology file into an output stream</span>
+<a name="l00726"></a>00726 <span class="comment">              * @param out Intermediate output stream in order to write angle equil value section</span>
+<a name="l00727"></a>00727 <span class="comment">              */</span>
+<a name="l00728"></a>00728             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7e780bd5d964a4b3150f5f6c3241009d">ResolveAngleEquilValueSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00729"></a>00729 <span class="comment">            /*! \fn</span>
+<a name="l00730"></a>00730 <span class="comment">              * A function to write back dihedral force constant section of the topology file into an output stream</span>
+<a name="l00731"></a>00731 <span class="comment">              * @param out Intermediate output stream in order to write dihedral force constant section</span>
+<a name="l00732"></a>00732 <span class="comment">              */</span>
+<a name="l00733"></a>00733             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab527a37d2fe34c70c350511e2fa94bbc">ResolveDihedralForceConstantSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00734"></a>00734 <span class="comment">            /*! \fn</span>
+<a name="l00735"></a>00735 <span class="comment">              * A function to write back dihedral periodicity section of the topology file into an output stream</span>
+<a name="l00736"></a>00736 <span class="comment">              * @param out Intermediate output stream in order to write dihedral periodicity section</span>
+<a name="l00737"></a>00737 <span class="comment">              */</span>
+<a name="l00738"></a>00738             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ad2a27aaa529b0b833a735a1ff9208f01">ResolveDihedralPeriodicitySection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00739"></a>00739 <span class="comment">            /*! \fn</span>
+<a name="l00740"></a>00740 <span class="comment">              * A function to write back dihedral phase section of the topology file into an output stream</span>
+<a name="l00741"></a>00741 <span class="comment">              * @param out Intermediate output stream in order to write dihedral phase section</span>
+<a name="l00742"></a>00742 <span class="comment">              */</span>
+<a name="l00743"></a>00743             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a97b94e7edf929e8ee71c8aae8961c316">ResolveDihedralPhaseSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00744"></a>00744 <span class="comment">            /*! \fn</span>
+<a name="l00745"></a>00745 <span class="comment">              * A function to write back scee scale factor section of the topology file into an output stream</span>
+<a name="l00746"></a>00746 <span class="comment">              * @param out Intermediate output stream in order to write scee scale factor section</span>
+<a name="l00747"></a>00747 <span class="comment">              */</span>
+<a name="l00748"></a>00748             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa685c485c4cfc71f44852be1843b31bf">ResolveSceeScaleFactorSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00749"></a>00749 <span class="comment">            /*! \fn</span>
+<a name="l00750"></a>00750 <span class="comment">              * A function to write back scnb scale factor section of the topology file into an output stream</span>
+<a name="l00751"></a>00751 <span class="comment">              * @param out Intermediate output stream in order to write scnb scale factor section</span>
+<a name="l00752"></a>00752 <span class="comment">              */</span>
+<a name="l00753"></a>00753             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4299968ba177d987749675eb958883dd">ResolveScnbScaleFactorSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00754"></a>00754 <span class="comment">            /*! \fn</span>
+<a name="l00755"></a>00755 <span class="comment">              * A function to write back solty section of the topology file into an output stream</span>
+<a name="l00756"></a>00756 <span class="comment">              * @param out Intermediate output stream in order to write solty section</span>
+<a name="l00757"></a>00757 <span class="comment">              */</span>
+<a name="l00758"></a>00758             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a0c7b600d5d5fc0871893713a15db1c6e">ResolveSoltySection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00759"></a>00759 <span class="comment">            /*! \fn</span>
+<a name="l00760"></a>00760 <span class="comment">              * A function to write back lennard jones a coefficient section of the topology file into an output stream</span>
+<a name="l00761"></a>00761 <span class="comment">              * @param out Intermediate output stream in order to write lennard jones a coefficient section</span>
+<a name="l00762"></a>00762 <span class="comment">              */</span>
+<a name="l00763"></a>00763             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ab08c07ddeaa15cd672c743f348a44239">ResolveLennardJonesACoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00764"></a>00764 <span class="comment">            /*! \fn</span>
+<a name="l00765"></a>00765 <span class="comment">              * A function to write back lennard jones b coefficient section of the topology file into an output stream</span>
+<a name="l00766"></a>00766 <span class="comment">              * @param out Intermediate output stream in order to write lennard jones b coefficient section</span>
+<a name="l00767"></a>00767 <span class="comment">              */</span>
+<a name="l00768"></a>00768             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9ab2ffc254417cba3913b34ccc142b9c">ResolveLennardJonesBCoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00769"></a>00769 <span class="comment">            /*! \fn</span>
+<a name="l00770"></a>00770 <span class="comment">              * A function to write back bonds inc hydrogen section of the topology file into an output stream</span>
+<a name="l00771"></a>00771 <span class="comment">              * @param out Intermediate output stream in order to write bonds inc hydrogen section</span>
+<a name="l00772"></a>00772 <span class="comment">              */</span>
+<a name="l00773"></a>00773             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a1fac53937bbf09ec5387e2d81ac55b14">ResolveBondsIncHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00774"></a>00774 <span class="comment">            /*! \fn</span>
+<a name="l00775"></a>00775 <span class="comment">              * A function to write back bonds without hydrogen section of the topology file into an output stream</span>
+<a name="l00776"></a>00776 <span class="comment">              * @param out Intermediate output stream in order to write bonds without hydrogen section</span>
+<a name="l00777"></a>00777 <span class="comment">              */</span>
+<a name="l00778"></a>00778             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4f1b06098a1187c79e36f5b26a58a19a">ResolveBondsWithoutHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00779"></a>00779 <span class="comment">            /*! \fn</span>
+<a name="l00780"></a>00780 <span class="comment">              * A function to write back angles inc hydrogen section of the topology file into an output stream</span>
+<a name="l00781"></a>00781 <span class="comment">              * @param out Intermediate output stream in order to write angles including hydrogen section</span>
+<a name="l00782"></a>00782 <span class="comment">              */</span>
+<a name="l00783"></a>00783             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a6e884692174945e4cbbe81ba5944069f">ResolveAnglesIncHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00784"></a>00784 <span class="comment">            /*! \fn</span>
+<a name="l00785"></a>00785 <span class="comment">              * A function to write back angles without hydrogen section of the topology file into an output stream</span>
+<a name="l00786"></a>00786 <span class="comment">              * @param out Intermediate output stream in order to write angles without hydrogen section</span>
+<a name="l00787"></a>00787 <span class="comment">              */</span>
+<a name="l00788"></a>00788             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a3e3f28b93711640405d660495dcaa54e">ResolveAnglesWithoutHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00789"></a>00789 <span class="comment">            /*! \fn</span>
+<a name="l00790"></a>00790 <span class="comment">              * A function to write back dihedrals inc hydrogen section of the topology file into an output stream</span>
+<a name="l00791"></a>00791 <span class="comment">              * @param out Intermediate output stream in order to write dihedrals inc hydrogen section</span>
+<a name="l00792"></a>00792 <span class="comment">              */</span>
+<a name="l00793"></a>00793             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a423186b2942baf298a3a00ba3c39dd10">ResolveDihedralsIncHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00794"></a>00794 <span class="comment">            /*! \fn</span>
+<a name="l00795"></a>00795 <span class="comment">              * A function to write back dihedrals without hydrogen section of the topology file into an output stream</span>
+<a name="l00796"></a>00796 <span class="comment">              * @param out Intermediate output stream in order to write dihedral without hydrogen section</span>
+<a name="l00797"></a>00797 <span class="comment">              */</span>
+<a name="l00798"></a>00798             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#acdf6e07a942fe2453b400d3a4bb72544">ResolveDihedralsWithoutHydrogenSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00799"></a>00799 <span class="comment">            /*! \fn</span>
+<a name="l00800"></a>00800 <span class="comment">              * A function to write back excluded atoms list section of the topology file into an output stream</span>
+<a name="l00801"></a>00801 <span class="comment">              * @param out Intermediate output stream in order to write excluded atoms list section</span>
+<a name="l00802"></a>00802 <span class="comment">              */</span>
+<a name="l00803"></a>00803             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a3df20868f502b878585a72ccd4f732e6">ResolveExcludedAtomsListSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00804"></a>00804 <span class="comment">            /*! \fn</span>
+<a name="l00805"></a>00805 <span class="comment">              * A function to write back hydrogen bond a coefficient section of the topology file into an output stream</span>
+<a name="l00806"></a>00806 <span class="comment">              * @param out Intermediate output stream in order to write hydrogen bond a coefficient section</span>
+<a name="l00807"></a>00807 <span class="comment">              */</span>
+<a name="l00808"></a>00808             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a2ee22b413a119db9cdb2f89cd4febcc4">ResolveHydrogenBondACoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00809"></a>00809 <span class="comment">            /*! \fn</span>
+<a name="l00810"></a>00810 <span class="comment">              * A function to write back hydrogen bond b coefficient section of the topology file into an output stream</span>
+<a name="l00811"></a>00811 <span class="comment">              * @param out Intermediate output stream in order to write hydrogen bond coefficient section</span>
+<a name="l00812"></a>00812 <span class="comment">              */</span>
+<a name="l00813"></a>00813             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a02265a49149364c421df0f1d7589b776">ResolveHydrogenBondBCoefSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00814"></a>00814 <span class="comment">            /*! \fn</span>
+<a name="l00815"></a>00815 <span class="comment">              * A function to write back hb cut section of the topology file into an output stream</span>
+<a name="l00816"></a>00816 <span class="comment">              * @param out Intermediate output stream in order to write hb cut section</span>
+<a name="l00817"></a>00817 <span class="comment">              */</span>
+<a name="l00818"></a>00818             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a0aba8f23c57be55b4cebb70bcdd6e0df">ResolveHBCutSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00819"></a>00819 <span class="comment">            /*! \fn</span>
+<a name="l00820"></a>00820 <span class="comment">              * A function to write back amber atom type section of the topology file into an output stream</span>
+<a name="l00821"></a>00821 <span class="comment">              * @param out Intermediate output stream in order to write amber atom type section</span>
+<a name="l00822"></a>00822 <span class="comment">              */</span>
+<a name="l00823"></a>00823             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a9c4cf9bcf845ea630e4bec5686cc4bc0">ResolveAmberAtomTypeSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00824"></a>00824 <span class="comment">            /*! \fn</span>
+<a name="l00825"></a>00825 <span class="comment">              * A function to write back tree chain classification section of the topology file into an output stream</span>
+<a name="l00826"></a>00826 <span class="comment">              * @param out Intermediate output stream in order to write tree chain classification section</span>
+<a name="l00827"></a>00827 <span class="comment">              */</span>
+<a name="l00828"></a>00828             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a33e7de147140e752f433f8bfbf37b30c">ResolveTreeChainClassificationSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00829"></a>00829 <span class="comment">            /*! \fn</span>
+<a name="l00830"></a>00830 <span class="comment">              * A function to write back join array section of the topology file into an output stream</span>
+<a name="l00831"></a>00831 <span class="comment">              * @param out Intermediate output stream in order to write join array section</span>
+<a name="l00832"></a>00832 <span class="comment">              */</span>
+<a name="l00833"></a>00833             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#af5d06c665d12d1b736be94efdf4f02cf">ResolveJoinArraySection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00834"></a>00834 <span class="comment">            /*! \fn</span>
+<a name="l00835"></a>00835 <span class="comment">              * A function to write back irotat section of the topology file into an output stream</span>
+<a name="l00836"></a>00836 <span class="comment">              * @param out Intermediate output stream in order to write title section</span>
+<a name="l00837"></a>00837 <span class="comment">              */</span>
+<a name="l00838"></a>00838             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a5414688edcea452282b68761d52a5318">ResolveIRotatSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00839"></a>00839 <span class="comment">            /*! \fn</span>
+<a name="l00840"></a>00840 <span class="comment">              * A function to write back residue set section of the topology file into an output stream</span>
+<a name="l00841"></a>00841 <span class="comment">              * @param out Intermediate output stream in order to write residue set section</span>
+<a name="l00842"></a>00842 <span class="comment">              */</span>
+<a name="l00843"></a>00843             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aa44512b816a107c5c826571d844f658f">ResolveRadiusSetSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00844"></a>00844 <span class="comment">            /*! \fn</span>
+<a name="l00845"></a>00845 <span class="comment">              * A function to write back radii section of the topology file into an output stream</span>
+<a name="l00846"></a>00846 <span class="comment">              * @param out Intermediate output stream in order to write radii section</span>
+<a name="l00847"></a>00847 <span class="comment">              */</span>
+<a name="l00848"></a>00848             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#aea389662e57a731130cfe500d99c6bc5">ResolveRadiiSection</a>(std::ofstream&amp; out);<span class="comment"></span>
+<a name="l00849"></a>00849 <span class="comment">            /*! \fn</span>
+<a name="l00850"></a>00850 <span class="comment">              * A function to write back screen section of the topology file into an output stream</span>
+<a name="l00851"></a>00851 <span class="comment">              * @param out Intermediate output stream in order to write screen section</span>
+<a name="l00852"></a>00852 <span class="comment">              */</span>
+<a name="l00853"></a>00853             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ac327292d486f4fed004797a5e4980d91">ResolveScreenSection</a>(std::ofstream&amp; out);
+<a name="l00854"></a>00854 <span class="comment"></span>
+<a name="l00855"></a>00855 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00856"></a>00856 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
+<a name="l00857"></a>00857 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00858"></a>00858 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00859"></a>00859 <span class="comment">              * A function to print out the topology file contents in a structural format</span>
+<a name="l00860"></a>00860 <span class="comment">              * Print out the information in a defined structure</span>
+<a name="l00861"></a>00861 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
+<a name="l00862"></a>00862 <span class="comment">              */</span>
+<a name="l00863"></a>00863             <span class="keywordtype">void</span> <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#af898364e4b9b821f12218cbfcb694ded">Print</a>(std::ostream&amp; out = std::cout);
+<a name="l00864"></a>00864 
+<a name="l00865"></a>00865         <span class="keyword">private</span>:<span class="comment"></span>
+<a name="l00866"></a>00866 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00867"></a>00867 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
+<a name="l00868"></a>00868 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00869"></a>00869 <span class="comment"></span>            std::string path_;                              <span class="comment">/*!&lt; Path of the file &gt;*/</span>
+<a name="l00870"></a>00870             std::string title_;                             <span class="comment">/*!&lt; Title of the file &gt;*/</span>
+<a name="l00871"></a>00871             <span class="keywordtype">int</span> number_of_atoms_;                           <span class="comment">/*!&lt; Number of atoms &gt;*/</span>
+<a name="l00872"></a>00872             <span class="keywordtype">int</span> number_of_types_;                           <span class="comment">/*!&lt; Number of types in a topology file &gt;*/</span>
+<a name="l00873"></a>00873             <span class="keywordtype">int</span> number_of_bonds_including_hydrogen_;        <span class="comment">/*!&lt; Number of bonds including hydrogen in a topology file &gt;*/</span>
+<a name="l00874"></a>00874             <span class="keywordtype">int</span> number_of_angles_including_hydrogen_;       <span class="comment">/*!&lt; Number of angles including hydrogen in a topology file &gt;*/</span>
+<a name="l00875"></a>00875             <span class="keywordtype">int</span> number_of_dihedrals_including_hydrogen_;    <span class="comment">/*!&lt; Number of dihedrals including hydrogen in a topology file &gt;*/</span>
+<a name="l00876"></a>00876             <span class="keywordtype">int</span> number_of_bonds_excluding_hydrogen_;        <span class="comment">/*!&lt; Number of bonds excluding hydrogen in a topology file &gt;*/</span>
+<a name="l00877"></a>00877             <span class="keywordtype">int</span> number_of_angles_excluding_hydrogen_;       <span class="comment">/*!&lt; Number of angles excluding hydrogen in a topology file &gt;*/</span>
+<a name="l00878"></a>00878             <span class="keywordtype">int</span> number_of_dihedrals_excluding_hydrogen_;    <span class="comment">/*!&lt; Number of dihedrals excluding hydrogen in a topology file &gt;*/</span>
+<a name="l00879"></a>00879             <span class="keywordtype">int</span> number_of_hydrogen_parameters_;             <span class="comment">/*!&lt; Number of hydrogen parameters in a topology file &gt;*/</span>
+<a name="l00880"></a>00880             <span class="keywordtype">int</span> number_of_parameters_;                      <span class="comment">/*!&lt; Number of parameters in a topology file &gt;*/</span>
+<a name="l00881"></a>00881             <span class="keywordtype">int</span> number_of_excluded_atoms_;                  <span class="comment">/*!&lt; Number of excluded atoms in a topology file &gt;*/</span>
+<a name="l00882"></a>00882             <span class="keywordtype">int</span> number_of_residues_;                        <span class="comment">/*!&lt; Number of residues in a topology file &gt;*/</span>
+<a name="l00883"></a>00883             <span class="keywordtype">int</span> total_number_of_bonds_;                     <span class="comment">/*!&lt; Total number of bonds in a topology file &gt;*/</span>
+<a name="l00884"></a>00884             <span class="keywordtype">int</span> total_number_of_angles_;                    <span class="comment">/*!&lt; Total number of angles in a topology file &gt;*/</span>
+<a name="l00885"></a>00885             <span class="keywordtype">int</span> total_number_of_dihedrals_;                 <span class="comment">/*!&lt; Total number of dihedrals in a topology file &gt;*/</span>
+<a name="l00886"></a>00886             <span class="keywordtype">int</span> number_of_bond_types_;                      <span class="comment">/*!&lt; Number of bond types in a topology file &gt;*/</span>
+<a name="l00887"></a>00887             <span class="keywordtype">int</span> number_of_angle_types_;                     <span class="comment">/*!&lt; Number of angle types in a topology file &gt;*/</span>
+<a name="l00888"></a>00888             <span class="keywordtype">int</span> number_of_dihedral_types_;                  <span class="comment">/*!&lt; Number of dihedral types in a topology file &gt;*/</span>
+<a name="l00889"></a>00889             <span class="keywordtype">int</span> number_of_atom_types_in_parameter_file_;    <span class="comment">/*!&lt; Number of atom types in parameter file in a topology file &gt;*/</span>
+<a name="l00890"></a>00890             <span class="keywordtype">int</span> number_of_distinct_hydrogen_bonds_;         <span class="comment">/*!&lt; Number of distinct hydrogen bonds in a topology file &gt;*/</span>
+<a name="l00891"></a>00891             <span class="keywordtype">int</span> perturbation_option_;                       <span class="comment">/*!&lt; Perturbation option in a topology file &gt;*/</span>
+<a name="l00892"></a>00892             <span class="keywordtype">int</span> number_of_bonds_perturbed_;                 <span class="comment">/*!&lt; Number of bonds perturbed in a topology file &gt;*/</span>
+<a name="l00893"></a>00893             <span class="keywordtype">int</span> number_of_angles_perturbed_;                <span class="comment">/*!&lt; Number of angles perturbed in a topology file &gt;*/</span>
+<a name="l00894"></a>00894             <span class="keywordtype">int</span> number_of_dihedrals_perturbed_;             <span class="comment">/*!&lt; Number of dihedrals perturbed in a topology file &gt;*/</span>
+<a name="l00895"></a>00895             <span class="keywordtype">int</span> number_of_bonds_group_perturbed_;           <span class="comment">/*!&lt; Number of bonds group perturbed in a topology file &gt;*/</span>
+<a name="l00896"></a>00896             <span class="keywordtype">int</span> number_of_angles_group_perturbed_;          <span class="comment">/*!&lt; Number of angles group perturbed in a topology file &gt;*/</span>
+<a name="l00897"></a>00897             <span class="keywordtype">int</span> number_of_dihedrals_group_perturbed_;       <span class="comment">/*!&lt; Number of dihedrals group perturbed in a topology file &gt;*/</span>
+<a name="l00898"></a>00898             <span class="keywordtype">int</span> standard_periodic_box_option_;              <span class="comment">/*!&lt; Standard periodic box option in a topology file &gt;*/</span>
+<a name="l00899"></a>00899             <span class="keywordtype">int</span> number_of_atoms_in_largest_residue_;        <span class="comment">/*!&lt; Number of atoms in largest residue in a topology file &gt;*/</span>
+<a name="l00900"></a>00900             <span class="keywordtype">int</span> cap_option_;                                <span class="comment">/*!&lt; Cap option in a topology file &gt;*/</span>
+<a name="l00901"></a>00901             <span class="keywordtype">int</span> number_of_extra_points_;                    <span class="comment">/*!&lt; Number of extra points in a topology file &gt;*/</span>
+<a name="l00902"></a>00902             <span class="keywordtype">int</span> number_of_beads_;                           <span class="comment">/*!&lt; Number of beads in a topology file &gt;*/</span>
+<a name="l00903"></a>00903             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a0bf2642dd05083d2a771aca1c86329bb">TopologyAtomPairMap</a> pairs_;
+<a name="l00904"></a>00904             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a09dd9ce49f103359eb493b8630727297">TopologyBondTypeMap</a> bond_types_;
+<a name="l00905"></a>00905             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ae073e6f684b3c7d26082e131b7a0bc28">TopologyAngleTypeMap</a> angle_types_;
+<a name="l00906"></a>00906             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7dea261373f15210d3eccd189faee24c">TopologyDihedralTypeMap</a> dihedral_types_;
+<a name="l00907"></a>00907             <a class="code" href="../../d7/dd2/classTopologyFileSpace_1_1TopologyAssembly.html">TopologyAssembly</a>* assembly_;
+<a name="l00908"></a>00908             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a62a85a11f7d4010cce8ff8aa547372ca">RadiusSet</a> radius_set_;
+<a name="l00909"></a>00909             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a46dc5b7597461396e1d3ea17c4bb880b">TopologyBondMap</a> bonds_;
+<a name="l00910"></a>00910             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#ac6f1338b5e86d1b266bcfc64fcc4cd03">TopologyAngleMap</a> angles_;
+<a name="l00911"></a>00911             <a class="code" href="../../d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a7543bdbf200e6b4458dfb05b03443fac">TopologyDihedralMap</a> dihedrals_;
+<a name="l00912"></a>00912     };
+<a name="l00913"></a>00913 }
+<a name="l00914"></a>00914 
+<a name="l00915"></a>00915 <span class="preprocessor">#endif // TOPOLOGYFILE_HPP</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -956,7 +1021,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -969,7 +1034,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d5/def/topologyfile_8hpp.html">topologyfile.hpp</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

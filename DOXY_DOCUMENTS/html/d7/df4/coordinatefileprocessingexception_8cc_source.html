@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -124,7 +123,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00022"></a>00022 <span class="comment">/// Exception handler for parameter file exceptions</span>
 <a name="l00023"></a><a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a8b8e700eeef7c5f85675c67da238d8d8">00023</a> <span class="comment"></span><span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a8b8e700eeef7c5f85675c67da238d8d8">CoordinateFileProcessingException::what</a>() <span class="keyword">const</span> throw()
 <a name="l00024"></a>00024 {
-<a name="l00025"></a>00025     <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#ac269a07d9ac6a5ed446d7e4c31fdd17e">what_</a> = <span class="stringliteral">&quot;ParameterFile: &quot;</span> + <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a5ad07b39dc932cbd1716385d19fd712f">message_</a>;
+<a name="l00025"></a>00025     <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#ac269a07d9ac6a5ed446d7e4c31fdd17e">what_</a> = <span class="stringliteral">&quot;CoordinateFile: &quot;</span> + <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a5ad07b39dc932cbd1716385d19fd712f">message_</a>;
 <a name="l00026"></a>00026     <span class="keywordflow">if</span> (<a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#ae0d22f124f855c601f5c80810fbe28a7">line_number_</a> != <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)
 <a name="l00027"></a>00027     {
 <a name="l00028"></a>00028         std::stringstream ss;
@@ -133,14 +132,15 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00031"></a>00031             <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#ac269a07d9ac6a5ed446d7e4c31fdd17e">what_</a> += <span class="stringliteral">&quot; (line &quot;</span> + ss.str() + <span class="stringliteral">&quot;)&quot;</span>;
 <a name="l00032"></a>00032             <span class="keywordflow">return</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#ac269a07d9ac6a5ed446d7e4c31fdd17e">what_</a>.c_str();
 <a name="l00033"></a>00033         }
-<a name="l00034"></a>00034         <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
-<a name="l00035"></a>00035 <span class="comment"></span>    }
-<a name="l00036"></a>00036     <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
-<a name="l00037"></a>00037 }
-<a name="l00038"></a>00038 
-<a name="l00039"></a><a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a1fec734b78231389777c141217572c36">00039</a> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a1fec734b78231389777c141217572c36">CoordinateFileProcessingException::~CoordinateFileProcessingException</a>() throw() {}
-<a name="l00040"></a>00040 
+<a name="l00034"></a>00034         <span class="keywordflow">else</span>
+<a name="l00035"></a>00035             <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
+<a name="l00036"></a>00036 <span class="comment"></span>    }
+<a name="l00037"></a>00037     <span class="keywordflow">return</span> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#ac269a07d9ac6a5ed446d7e4c31fdd17e">what_</a>.c_str();
+<a name="l00038"></a>00038 }
+<a name="l00039"></a>00039 
+<a name="l00040"></a><a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a1fec734b78231389777c141217572c36">00040</a> <a class="code" href="../../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html#a1fec734b78231389777c141217572c36">CoordinateFileProcessingException::~CoordinateFileProcessingException</a>() throw() {}
 <a name="l00041"></a>00041 
+<a name="l00042"></a>00042 
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -148,7 +148,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -161,7 +161,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d7/df4/coordinatefileprocessingexception_8cc.html">coordinatefileprocessingexception.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

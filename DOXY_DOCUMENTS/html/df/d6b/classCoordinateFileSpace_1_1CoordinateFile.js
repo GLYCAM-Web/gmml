@@ -1,6 +1,7 @@
 var classCoordinateFileSpace_1_1CoordinateFile =
 [
-    [ "CoordinateFile", "df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ab693071e5fd38199e971c2eb6bdc20e6", null ],
+    [ "CoordinateFile", "df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a22e3b5cf465ddcc6d1121e7756029d49", null ],
+    [ "CoordinateFile", "df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a76a481010a01b2b5e35b80b5116af8d8", null ],
     [ "AddCoordinate", "df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a8ac42c2b8b8f5ee305e2bdda5fb80016", null ],
     [ "BuildCoordinateFile", "df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a5302d69f2a7ad03ff473c55b298e6cdb", null ],
     [ "GetCoordinates", "df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ab5c340135714841722148b8a8357d759", null ],

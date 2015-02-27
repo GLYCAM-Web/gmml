@@ -1,7 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$d9/d59/pdbresiduemodificationcard_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbresiduemodificationcard.hpp" alt="" coords="307,83,729,112"/>
-<area shape="rect" id="node13" href="$d8/d82/pdbresiduemodification_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbresiduemodification.hpp" alt="" coords="29,160,426,189"/>
-<area shape="rect" id="node17" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="930,83,1087,112"/>
-<area shape="rect" id="node35" href="$dd/d3a/common_8hpp.html" title="common.hpp" alt="" coords="1365,160,1461,189"/>
-<area shape="rect" id="node40" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="1173,160,1341,189"/>
+<area shape="rect" id="node3" href="$d9/d59/pdbresiduemodificationcard_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbresiduemodificationcard.hpp" alt="" coords="675,160,1096,189"/>
+<area shape="rect" id="node13" href="$d8/d82/pdbresiduemodification_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbresiduemodification.hpp" alt="" coords="253,160,651,189"/>
+<area shape="rect" id="node17" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="1268,83,1425,112"/>
+<area shape="rect" id="node35" href="$dd/d3a/common_8hpp.html" title="common.hpp" alt="" coords="1421,160,1517,189"/>
+<area shape="rect" id="node41" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="61,160,229,189"/>
 </map>

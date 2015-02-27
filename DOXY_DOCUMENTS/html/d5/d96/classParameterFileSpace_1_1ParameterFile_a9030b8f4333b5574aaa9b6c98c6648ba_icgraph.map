@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae4e14b6aab59d8eadec1e32b996d4754" title="MolecularModeling::Assembly::BuildTopologyFileStructureFromAssembly" alt="" coords="883,92,1331,121"/>
+<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ae1487a90371162f6b80b4bfc842c7b08" title="MolecularModeling::Assembly::CountNumberOfDihedrals" alt="" coords="424,38,779,68"/>
+<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#adf407da90839b50927db90993b7f0fa5" title="MolecularModeling::Assembly::CountNumberOfDihedralsExcludingHydrogen" alt="" coords="368,92,835,121"/>
+<area shape="rect" id="node10" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a850a0704296238817377a77974d18cf6" title="MolecularModeling::Assembly::CountNumberOfDihedralsIncludingHydrogen" alt="" coords="371,145,832,174"/>
+</map>

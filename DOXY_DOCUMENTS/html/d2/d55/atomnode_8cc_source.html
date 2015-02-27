@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -161,33 +160,33 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00059"></a>00059     <span class="keywordflow">switch</span>(number_of_bonds)
 <a name="l00060"></a>00060     {
 <a name="l00061"></a>00061         <span class="keywordflow">case</span> 0:
-<a name="l00062"></a>00062             out &lt;&lt; atom_-&gt;<a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html#ac8f24c3baaa363b9ca4c20291ffc3b70">GetResidue</a>()-&gt;<a class="code" href="../../da/d64/classMolecularModeling_1_1Residue.html#afd17cb3fc122cb00d084b523b9a82d28">GetName</a>() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; endl;
+<a name="l00062"></a>00062             out &lt;&lt; atom_-&gt;<a class="code" href="../../de/da2/classMolecularModeling_1_1Atom.html#ac8f24c3baaa363b9ca4c20291ffc3b70">GetResidue</a>()-&gt;<a class="code" href="../../da/d64/classMolecularModeling_1_1Residue.html#aefcd79d79b606f6203e5e27fe0d65c5c">GetId</a>() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; endl;
 <a name="l00063"></a>00063             <span class="keywordflow">break</span>;
 <a name="l00064"></a>00064         <span class="keywordflow">case</span> 1:
-<a name="l00065"></a>00065             out &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
-<a name="l00066"></a>00066                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; endl;
+<a name="l00065"></a>00065             out &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
+<a name="l00066"></a>00066                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; endl;
 <a name="l00067"></a>00067             <span class="keywordflow">break</span>;
 <a name="l00068"></a>00068         <span class="keywordflow">case</span> 2:
-<a name="l00069"></a>00069             out &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
-<a name="l00070"></a>00070                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
-<a name="l00071"></a>00071                 &lt;&lt; node_neighbors_.at(1)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetName() &lt;&lt; endl;
+<a name="l00069"></a>00069             out &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
+<a name="l00070"></a>00070                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
+<a name="l00071"></a>00071                 &lt;&lt; node_neighbors_.at(1)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetName() &lt;&lt; endl;
 <a name="l00072"></a>00072             <span class="keywordflow">break</span>;
 <a name="l00073"></a>00073         <span class="keywordflow">case</span> 3:
-<a name="l00074"></a>00074             out &lt;&lt; <span class="stringliteral">&quot;\t\t&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; endl
+<a name="l00074"></a>00074             out &lt;&lt; <span class="stringliteral">&quot;\t\t&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; endl
 <a name="l00075"></a>00075                 &lt;&lt; <span class="stringliteral">&quot;\t\t&quot;</span> &lt;&lt; <span class="stringliteral">&quot;  |  &quot;</span> &lt;&lt; endl
-<a name="l00076"></a>00076                 &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
-<a name="l00077"></a>00077                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; endl
+<a name="l00076"></a>00076                 &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
+<a name="l00077"></a>00077                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; endl
 <a name="l00078"></a>00078                 &lt;&lt; <span class="stringliteral">&quot;\t\t&quot;</span> &lt;&lt; <span class="stringliteral">&quot;  |  &quot;</span> &lt;&lt; endl
-<a name="l00079"></a>00079                 &lt;&lt; <span class="stringliteral">&quot;\t\t&quot;</span> &lt;&lt;  node_neighbors_.at(2)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(2)-&gt;GetName() &lt;&lt; endl;
+<a name="l00079"></a>00079                 &lt;&lt; <span class="stringliteral">&quot;\t\t&quot;</span> &lt;&lt;  node_neighbors_.at(2)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(2)-&gt;GetName() &lt;&lt; endl;
 <a name="l00080"></a>00080             <span class="keywordflow">break</span>;
 <a name="l00081"></a>00081         <span class="keywordflow">case</span> 4:
-<a name="l00082"></a>00082             out &lt;&lt; <span class="stringliteral">&quot;\t\t\t&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; endl
+<a name="l00082"></a>00082             out &lt;&lt; <span class="stringliteral">&quot;\t\t\t&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(0)-&gt;GetName() &lt;&lt; endl
 <a name="l00083"></a>00083                 &lt;&lt; <span class="stringliteral">&quot;\t\t\t&quot;</span> &lt;&lt; <span class="stringliteral">&quot;  |  &quot;</span> &lt;&lt; endl
-<a name="l00084"></a>00084                 &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
-<a name="l00085"></a>00085                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
-<a name="l00086"></a>00086                 &lt;&lt; node_neighbors_.at(2)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(2)-&gt;GetName() &lt;&lt; endl
+<a name="l00084"></a>00084                 &lt;&lt; <span class="stringliteral">&quot;\t&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(1)-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
+<a name="l00085"></a>00085                 &lt;&lt; atom_-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; atom_-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot; -- &quot;</span>
+<a name="l00086"></a>00086                 &lt;&lt; node_neighbors_.at(2)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(2)-&gt;GetName() &lt;&lt; endl
 <a name="l00087"></a>00087                 &lt;&lt; <span class="stringliteral">&quot;\t\t\t&quot;</span> &lt;&lt; <span class="stringliteral">&quot;  |  &quot;</span> &lt;&lt; endl
-<a name="l00088"></a>00088                 &lt;&lt; <span class="stringliteral">&quot;\t\t\t&quot;</span> &lt;&lt; node_neighbors_.at(3)-&gt;GetResidue()-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(3)-&gt;GetName() &lt;&lt; endl;
+<a name="l00088"></a>00088                 &lt;&lt; <span class="stringliteral">&quot;\t\t\t&quot;</span> &lt;&lt; node_neighbors_.at(3)-&gt;GetResidue()-&gt;GetId() &lt;&lt; <span class="stringliteral">&quot;:&quot;</span> &lt;&lt; node_neighbors_.at(3)-&gt;GetName() &lt;&lt; endl;
 <a name="l00089"></a>00089             <span class="keywordflow">break</span>;
 <a name="l00090"></a>00090         <span class="keywordflow">case</span> 5:
 <a name="l00091"></a>00091             <span class="keywordflow">break</span>;
@@ -201,7 +200,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -214,7 +213,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../d2/d55/atomnode_8cc.html">atomnode.cc</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:21 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

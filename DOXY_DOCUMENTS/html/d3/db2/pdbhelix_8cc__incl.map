@@ -1,7 +1,7 @@
 <map id="G" name="G">
-<area shape="rect" id="node3" href="$db/d74/pdbhelix_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbhelix.hpp" alt="" coords="435,160,747,189"/>
+<area shape="rect" id="node3" href="$db/d74/pdbhelix_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbhelix.hpp" alt="" coords="384,160,696,189"/>
 <area shape="rect" id="node11" href="$dd/dd4/pdbhelixresidue_8hpp.html" title="../../../includes/FileSet/PdbFileSpace/pdbhelixresidue.hpp" alt="" coords="5,160,360,189"/>
-<area shape="rect" id="node15" href="$dd/d3a/common_8hpp.html" title="../../../includes/common.hpp" alt="" coords="771,160,955,189"/>
-<area shape="rect" id="node21" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="1135,83,1292,112"/>
-<area shape="rect" id="node39" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="1683,160,1851,189"/>
+<area shape="rect" id="node15" href="$dd/d3a/common_8hpp.html" title="../../../includes/common.hpp" alt="" coords="1667,160,1851,189"/>
+<area shape="rect" id="node23" href="$df/d93/utils_8hpp.html" title="../../../includes/utils.hpp" alt="" coords="1244,83,1401,112"/>
+<area shape="rect" id="node41" href="$d2/dca/coordinate_8hpp.html" title="Geometry/coordinate.hpp" alt="" coords="1179,160,1347,189"/>
 </map>

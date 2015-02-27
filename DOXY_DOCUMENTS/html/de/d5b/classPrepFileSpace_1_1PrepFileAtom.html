@@ -115,6 +115,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#abc8b529994d51399e18c32bc7bf1fdd2">PrepFileAtom</a> (int index, const std::string &amp;name, const std::string &amp;type, <a class="el" href="../../dc/d2b/namespacePrepFileSpace.html#a7c65fac54efbe06f80f795ad145c47eb">TopologicalType</a> topological_type, int bond_index, int angle_index, int dihedral_index, double bond_length, double angle, double dihedral, double charge)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a368d387cf101ac23fbf5d6e290b5bb02">PrepFileAtom</a> (std::string &amp;line)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a prep file atom by a formatted line.  <a href="#a368d387cf101ac23fbf5d6e290b5bb02"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a164216ed39617c44186e1d2939535ec7">~PrepFileAtom</a> ()</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d2b/namespacePrepFileSpace.html#a7c65fac54efbe06f80f795ad145c47eb">TopologicalType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aeeacae3e72dec8e25d44c24e66918ab9">ExtractAtomTopologicalType</a> (std::istream &amp;ss)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a48a996a3640db68bc07ad8a4da327ba8">Print</a> (std::ostream &amp;out=std::cout)</td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a27503102d8cd8f0cfe1182d2a0a6c300">GetIndex</a> ()</td></tr>
@@ -280,7 +281,7 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">23</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">angle_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">angle_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">bond_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">bond_length_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">charge_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">dihedral_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">dihedral_index_</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00046">ExtractAtomTopologicalType()</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00235">index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">name_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">topological_type_</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">type_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">angle_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">angle_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">bond_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">bond_length_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00246">charge_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">dihedral_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">dihedral_index_</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00051">ExtractAtomTopologicalType()</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">name_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">topological_type_</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">type_</a>.</p>
 <div class="fragment"><pre class="fragment">{
     std::stringstream ss(line);
     ss &gt;&gt; <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a44a7ce9018b008e5cf74ceeecf437960">index_</a>
@@ -309,6 +310,27 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a class="anchor" id="a164216ed39617c44186e1d2939535ec7"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::~PrepFileAtom" ref="a164216ed39617c44186e1d2939535ec7" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a164216ed39617c44186e1d2939535ec7">PrepFileAtom::~PrepFileAtom</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00041">41</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<div class="fragment"><pre class="fragment">{
+
+}
+</pre></div>
+</div>
+</div>
 <hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="aeeacae3e72dec8e25d44c24e66918ab9"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::ExtractAtomTopologicalType" ref="aeeacae3e72dec8e25d44c24e66918ab9" args="(std::istream &amp;ss)" -->
 <div class="memitem">
@@ -326,7 +348,7 @@ Here is the call graph for this function:</div>
 <div class="memdoc">
 <p>Extract corresponding topological type from a stream line Return value is an enumeration type </p>
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00046">46</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00051">51</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
 <p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00018">PrepFileSpace::kTopType3</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00017">PrepFileSpace::kTopTypeB</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00015">PrepFileSpace::kTopTypeE</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00020">PrepFileSpace::kTopTypeM</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00016">PrepFileSpace::kTopTypeS</a>.</p>
 
@@ -371,11 +393,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00097">97</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00102">102</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">angle_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">angle_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, and <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                             {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a518e58dc33153ce785b75d45dc7391ef">angle_</a>;
 }
@@ -385,7 +407,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2347d8763e83d6a6bd50747089af8337_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2347d8763e83d6a6bd50747089af8337_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2347d8763e83d6a6bd50747089af8337_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2347d8763e83d6a6bd50747089af8337_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="311,5,679,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="371,59,619,88"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="337,5,705,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="397,59,645,88"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="311,112,732,141"/></map>
 </div>
 </p>
 
@@ -405,11 +427,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00085">85</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00090">90</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">angle_index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">angle_index_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, and <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
 <div class="fragment"><pre class="fragment">                               {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a860ad8664f476a6e1650e97733b95818">angle_index_</a>;
 }
@@ -419,7 +441,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a94a936aef8aaa872489692dbdf419fc8_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a94a936aef8aaa872489692dbdf419fc8_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a94a936aef8aaa872489692dbdf419fc8_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a94a936aef8aaa872489692dbdf419fc8_icgraph">
-<area shape="rect" id="node3" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="341,5,589,35"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="343,5,711,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="403,59,651,88"/></map>
 </div>
 </p>
 
@@ -439,11 +461,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00081">81</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00086">86</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">bond_index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">bond_index_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, and <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
 <div class="fragment"><pre class="fragment">                              {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a69bd5063483c91e15991558e10b3df1c">bond_index_</a>;
 }
@@ -453,7 +475,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a83402ff84c9e1a7f20b60c0af59d7b60_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a83402ff84c9e1a7f20b60c0af59d7b60_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a83402ff84c9e1a7f20b60c0af59d7b60_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a83402ff84c9e1a7f20b60c0af59d7b60_icgraph">
-<area shape="rect" id="node3" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="339,5,587,35"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="340,5,708,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="400,59,648,88"/></map>
 </div>
 </p>
 
@@ -473,11 +495,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00093">93</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00098">98</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">bond_length_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">bond_length_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, and <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                  {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a3639bbab4591bbcd23bd6a102ea4df8f">bond_length_</a>;
 }
@@ -487,7 +509,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a3e4a39908b38a79940b519bbb28e44d5_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a3e4a39908b38a79940b519bbb28e44d5_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a3e4a39908b38a79940b519bbb28e44d5_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a3e4a39908b38a79940b519bbb28e44d5_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="348,5,716,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="408,59,656,88"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="375,5,743,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="435,59,683,88"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="348,112,769,141"/></map>
 </div>
 </p>
 
@@ -507,11 +529,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00105">105</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00110">110</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">charge_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00246">charge_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00762">PrepFileSpace::PrepFileResidue::CalculatePrepResidueCharge()</a>.</p>
 <div class="fragment"><pre class="fragment">                              {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ae448661d57cdd9e68cd31cffc22118df">charge_</a>;
 }
@@ -521,7 +543,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_ab12aafb1889f04e3422f7f772bc1fa2c_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_ab12aafb1889f04e3422f7f772bc1fa2c_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ab12aafb1889f04e3422f7f772bc1fa2c_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ab12aafb1889f04e3422f7f772bc1fa2c_icgraph">
-<area shape="rect" id="node3" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="320,5,568,35"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="332,5,700,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="392,59,640,88"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a054d0f9e32e278808248edd3af1ea3c0" title="PrepFileSpace::PrepFileResidue::CalculatePrepResidueCharge" alt="" coords="321,112,711,141"/></map>
 </div>
 </p>
 
@@ -541,11 +563,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00101">101</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00106">106</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">dihedral_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">dihedral_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, and <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>, and <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#accbf82f10ff7661778df1310ef5878a1">dihedral_</a>;
 }
@@ -555,7 +577,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa472088d6ed2ee88183bf44fe78ec267_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa472088d6ed2ee88183bf44fe78ec267_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa472088d6ed2ee88183bf44fe78ec267_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa472088d6ed2ee88183bf44fe78ec267_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="327,5,695,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="387,59,635,88"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="353,5,721,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="413,59,661,88"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="327,112,748,141"/></map>
 </div>
 </p>
 
@@ -575,11 +597,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00089">89</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00094">94</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">dihedral_index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">dihedral_index_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, and <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
 <div class="fragment"><pre class="fragment">                                  {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a54d94cf41f59b722483cab5c9ba1a5be">dihedral_index_</a>;
 }
@@ -589,7 +611,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a541874affae1039b5d6bfb7babfa18ae_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a541874affae1039b5d6bfb7babfa18ae_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a541874affae1039b5d6bfb7babfa18ae_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a541874affae1039b5d6bfb7babfa18ae_icgraph">
-<area shape="rect" id="node3" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="357,5,605,35"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="359,5,727,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="419,59,667,88"/></map>
 </div>
 </p>
 
@@ -609,11 +631,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00065">65</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00070">70</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00235">index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">index_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00226">PrepFileSpace::PrepFileResidue::GetAtomNameByIndex()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00090">PrepFileSpace::PrepFileResidue::GetBondingsOfResidue()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00242">PrepFileSpace::PrepFileResidue::GetAtomNameByIndex()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00106">PrepFileSpace::PrepFileResidue::GetBondingsOfResidue()</a>.</p>
 <div class="fragment"><pre class="fragment">                          {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a44a7ce9018b008e5cf74ceeecf437960">index_</a>;
 }
@@ -623,7 +645,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a27503102d8cd8f0cfe1182d2a0a6c300_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a27503102d8cd8f0cfe1182d2a0a6c300_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a27503102d8cd8f0cfe1182d2a0a6c300_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a27503102d8cd8f0cfe1182d2a0a6c300_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="311,5,679,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="853,56,1101,85"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="317,109,672,139"/><area shape="rect" id="node19" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="317,163,672,192"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="771,163,1184,192"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="728,109,1227,139"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1276,163,1753,192"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1804,137,2089,167"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="311,5,679,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="853,56,1101,85"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="317,109,672,139"/><area shape="rect" id="node21" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="317,163,672,192"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="771,109,1184,139"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="728,163,1227,192"/><area shape="rect" id="node19" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#add083d4c1ba89f425aacc976075e5504" title="PrepFileSpace::PrepFileResidue::Print" alt="" coords="855,216,1100,245"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1276,111,1753,140"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1804,137,2089,167"/></map>
 </div>
 </p>
 
@@ -643,11 +665,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00069">69</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00074">74</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">name_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">name_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00855">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00808">MolecularModeling::Assembly::BuildStructureByPrepFileInformation()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00052">PrepFileSpace::PrepFile::GetAllAtomNamesOfResidue()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00226">PrepFileSpace::PrepFileResidue::GetAtomNameByIndex()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00079">PrepFileSpace::PrepFileResidue::GetPrepAtomByName()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02216">MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l02173">MolecularModeling::Assembly::BuildStructureByPrepFileInformation()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00072">PrepFileSpace::PrepFile::GetAllAtomNamesOfResidue()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01413">PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultiplePrepFiles()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00242">PrepFileSpace::PrepFileResidue::GetAtomNameByIndex()</a>, <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00446">PrepFileSpace::PrepFileResidue::GetPrepAtomByAtomName()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00095">PrepFileSpace::PrepFileResidue::GetPrepAtomByName()</a>.</p>
 <div class="fragment"><pre class="fragment">                               {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ac38498eb365540c2fe61c8fc342baac1">name_</a>;
 }
@@ -657,7 +679,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad7d57f51cbd2be070367c1a7fd0d40c3_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad7d57f51cbd2be070367c1a7fd0d40c3_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad7d57f51cbd2be070367c1a7fd0d40c3_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad7d57f51cbd2be070367c1a7fd0d40c3_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="313,5,681,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="895,83,1143,112"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="769,160,1268,189"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="812,213,1225,243"/><area shape="rect" id="node16" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a892b24d94a5e85599b1b0c9fe731a9ab" title="PrepFileSpace::PrepFile::GetAllAtomNamesOfResidue" alt="" coords="327,317,668,347"/><area shape="rect" id="node20" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="320,160,675,189"/><area shape="rect" id="node25" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab7ac19ffa21c6917d7bf3a9718a05eff" title="PrepFileSpace::PrepFileResidue::GetPrepAtomByName" alt="" coords="323,213,672,243"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1884,188,2169,217"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1356,213,1833,243"/><area shape="rect" id="node18" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a0c0b03a5162219928dea1fe3f81bd8d3" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles" alt="" coords="731,317,1307,347"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="437,5,805,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="1143,56,1391,85"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="1017,163,1516,192"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="1060,216,1473,245"/><area shape="rect" id="node16" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a892b24d94a5e85599b1b0c9fe731a9ab" title="PrepFileSpace::PrepFile::GetAllAtomNamesOfResidue" alt="" coords="451,317,792,347"/><area shape="rect" id="node20" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af9019b620b9218eb756f3bce8ddd790c" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueNamesFromMultiplePrepFiles" alt="" coords="312,371,931,400"/><area shape="rect" id="node22" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="444,109,799,139"/><area shape="rect" id="node29" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a50cb955fb8961fe96eb44e11413ce8cf" title="PrepFileSpace::PrepFileResidue::GetPrepAtomByAtomName" alt="" coords="432,424,811,453"/><area shape="rect" id="node31" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab7ac19ffa21c6917d7bf3a9718a05eff" title="PrepFileSpace::PrepFileResidue::GetPrepAtomByName" alt="" coords="447,213,796,243"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="2132,191,2417,220"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1604,216,2081,245"/><area shape="rect" id="node18" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a0c0b03a5162219928dea1fe3f81bd8d3" title="PdbPreprocessorSpace::PdbPreprocessor::GetAllAtomNamesOfResidueFromMultiplePrepFiles" alt="" coords="979,317,1555,347"/><area shape="rect" id="node27" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#add083d4c1ba89f425aacc976075e5504" title="PrepFileSpace::PrepFileResidue::Print" alt="" coords="1144,109,1389,139"/></map>
 </div>
 </p>
 
@@ -678,11 +700,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00108">108</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00113">113</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
 <p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00018">PrepFileSpace::kTopType3</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00019">PrepFileSpace::kTopType4</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00017">PrepFileSpace::kTopTypeB</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00015">PrepFileSpace::kTopTypeE</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00020">PrepFileSpace::kTopTypeM</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00016">PrepFileSpace::kTopTypeS</a>.</p>
 
-<p>Referenced by <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
+<p>Referenced by <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(topological_type)
     {
@@ -728,9 +750,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00128">128</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00133">133</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00018">PrepFileSpace::kTopType3</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00019">PrepFileSpace::kTopType4</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00017">PrepFileSpace::kTopTypeB</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00015">PrepFileSpace::kTopTypeE</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00020">PrepFileSpace::kTopTypeM</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00016">PrepFileSpace::kTopTypeS</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">topological_type_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00018">PrepFileSpace::kTopType3</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00019">PrepFileSpace::kTopType4</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00017">PrepFileSpace::kTopTypeB</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00015">PrepFileSpace::kTopTypeE</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00020">PrepFileSpace::kTopTypeM</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00016">PrepFileSpace::kTopTypeS</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">topological_type_</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(<a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ae7317ec3aca695b882ad1161ef2833aa">topological_type_</a>)
     {
@@ -767,11 +789,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00077">77</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00082">82</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">topological_type_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">topological_type_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00090">PrepFileSpace::PrepFileResidue::GetBondingsOfResidue()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00106">PrepFileSpace::PrepFileResidue::GetBondingsOfResidue()</a>.</p>
 <div class="fragment"><pre class="fragment">                                                {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ae7317ec3aca695b882ad1161ef2833aa">topological_type_</a>;
 }
@@ -781,7 +803,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa8499f251c3600afb8428bf9e1fc46ea_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa8499f251c3600afb8428bf9e1fc46ea_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa8499f251c3600afb8428bf9e1fc46ea_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_aa8499f251c3600afb8428bf9e1fc46ea_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="375,5,743,35"/><area shape="rect" id="node5" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="381,59,736,88"/><area shape="rect" id="node7" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="793,32,1207,61"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="1256,84,1755,113"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1267,31,1744,60"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1804,57,2089,87"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="401,5,769,35"/><area shape="rect" id="node5" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="375,59,796,88"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="408,112,763,141"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="847,60,1260,89"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="1309,113,1808,143"/><area shape="rect" id="node18" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#add083d4c1ba89f425aacc976075e5504" title="PrepFileSpace::PrepFileResidue::Print" alt="" coords="931,164,1176,193"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1320,60,1797,89"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1857,87,2143,116"/></map>
 </div>
 </p>
 
@@ -802,7 +824,7 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00148">148</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00153">153</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
 <p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00018">PrepFileSpace::kTopType3</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00019">PrepFileSpace::kTopType4</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00017">PrepFileSpace::kTopTypeB</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00015">PrepFileSpace::kTopTypeE</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00020">PrepFileSpace::kTopTypeM</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00016">PrepFileSpace::kTopTypeS</a>.</p>
 <div class="fragment"><pre class="fragment">{
@@ -838,11 +860,11 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00073">73</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00078">78</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">type_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">type_</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00446">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00109">PrepFileSpace::PrepFile::BuildPrepFile()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00090">PrepFileSpace::PrepFileResidue::GetBondingsOfResidue()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00625">MolecularModeling::Assembly::BuildAssemblyFromPrepFile()</a>, <a class="el" href="../../de/dca/prepfile_8cc_source.html#l00148">PrepFileSpace::PrepFile::BuildPrepFile()</a>, and <a class="el" href="../../d5/dd8/prepfileresidue_8cc_source.html#l00106">PrepFileSpace::PrepFileResidue::GetBondingsOfResidue()</a>.</p>
 <div class="fragment"><pre class="fragment">                               {
     <span class="keywordflow">return</span> <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a05dda0fabff67c2c468ef91cc7312be0">type_</a>;
 }
@@ -852,7 +874,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad3255525291ee215d41e51604d438e6a_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad3255525291ee215d41e51604d438e6a_icgraph" alt=""/></div>
 <map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad3255525291ee215d41e51604d438e6a_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ad3255525291ee215d41e51604d438e6a_icgraph">
-<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="308,5,676,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="368,59,616,88"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="315,112,669,141"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="727,85,1140,115"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="1189,137,1688,167"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1200,84,1677,113"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1737,111,2023,140"/></map>
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="308,5,676,35"/><area shape="rect" id="node5" href="../../dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="368,59,616,88"/><area shape="rect" id="node7" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="315,112,669,141"/><area shape="rect" id="node9" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="727,60,1140,89"/><area shape="rect" id="node15" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#a91916e3a16babcdd79b16c33b4eea6aa" title="MolecularModeling::Assembly::BuildStructureByDatabaseFilesBondingInformation" alt="" coords="1189,113,1688,143"/><area shape="rect" id="node18" href="../../df/da3/classPrepFileSpace_1_1PrepFileResidue.html#add083d4c1ba89f425aacc976075e5504" title="PrepFileSpace::PrepFileResidue::Print" alt="" coords="811,164,1056,193"/><area shape="rect" id="node11" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="1200,60,1677,89"/><area shape="rect" id="node13" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1737,87,2023,116"/></map>
 </div>
 </p>
 
@@ -873,9 +895,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">217</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">222</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">angle_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">angle_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">bond_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">bond_length_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">charge_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">dihedral_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">dihedral_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00235">index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00018">PrepFileSpace::kTopType3</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00019">PrepFileSpace::kTopType4</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00017">PrepFileSpace::kTopTypeB</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00015">PrepFileSpace::kTopTypeE</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00020">PrepFileSpace::kTopTypeM</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00016">PrepFileSpace::kTopTypeS</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">name_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">topological_type_</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">type_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">angle_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">angle_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">bond_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">bond_length_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00246">charge_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">dihedral_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">dihedral_index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">index_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00018">PrepFileSpace::kTopType3</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00019">PrepFileSpace::kTopType4</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00017">PrepFileSpace::kTopTypeB</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00015">PrepFileSpace::kTopTypeE</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00020">PrepFileSpace::kTopTypeM</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00016">PrepFileSpace::kTopTypeS</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">name_</a>, <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">topological_type_</a>, and <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">type_</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; setw(3) &lt;&lt; <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a44a7ce9018b008e5cf74ceeecf437960">index_</a>
         &lt;&lt; setw(6) &lt;&lt; <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ac38498eb365540c2fe61c8fc342baac1">name_</a>
@@ -923,13 +945,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00202">202</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00207">207</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">angle_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">angle_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                       {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a518e58dc33153ce785b75d45dc7391ef">angle_</a> = angle;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2bcbd6e7510277405dd040d41afc35c3_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2bcbd6e7510277405dd040d41afc35c3_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2bcbd6e7510277405dd040d41afc35c3_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a2bcbd6e7510277405dd040d41afc35c3_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="311,5,732,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a532b025dd9300a7db09ebdfc382fb3d9"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetAngleIndex" ref="a532b025dd9300a7db09ebdfc382fb3d9" args="(int angle_index)" -->
@@ -947,13 +980,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00190">190</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00195">195</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">angle_index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">angle_index_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                               {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a860ad8664f476a6e1650e97733b95818">angle_index_</a> = angle_index;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a532b025dd9300a7db09ebdfc382fb3d9_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a532b025dd9300a7db09ebdfc382fb3d9_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a532b025dd9300a7db09ebdfc382fb3d9_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a532b025dd9300a7db09ebdfc382fb3d9_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="343,5,764,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="ae48f93336a7d2c75b15a1bef988002cb"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetBondIndex" ref="ae48f93336a7d2c75b15a1bef988002cb" args="(int bond_index)" -->
@@ -971,13 +1015,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00186">186</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00191">191</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">bond_index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">bond_index_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                             {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a69bd5063483c91e15991558e10b3df1c">bond_index_</a> = bond_index;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_ae48f93336a7d2c75b15a1bef988002cb_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_ae48f93336a7d2c75b15a1bef988002cb_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ae48f93336a7d2c75b15a1bef988002cb_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_ae48f93336a7d2c75b15a1bef988002cb_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="340,5,761,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="afddef79e0963bbf5bb6398e13db01546"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetBondLength" ref="afddef79e0963bbf5bb6398e13db01546" args="(double bond_length)" -->
@@ -995,13 +1050,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00198">198</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00203">203</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">bond_length_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">bond_length_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                                  {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a3639bbab4591bbcd23bd6a102ea4df8f">bond_length_</a> = bond_length;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_afddef79e0963bbf5bb6398e13db01546_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_afddef79e0963bbf5bb6398e13db01546_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_afddef79e0963bbf5bb6398e13db01546_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_afddef79e0963bbf5bb6398e13db01546_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="345,5,767,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a787e0cbb0e847dffef755ae3b3e27745"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetCharge" ref="a787e0cbb0e847dffef755ae3b3e27745" args="(double charge)" -->
@@ -1019,13 +1085,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00210">210</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00215">215</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">charge_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00246">charge_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                         {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ae448661d57cdd9e68cd31cffc22118df">charge_</a> = charge;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a787e0cbb0e847dffef755ae3b3e27745_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a787e0cbb0e847dffef755ae3b3e27745_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a787e0cbb0e847dffef755ae3b3e27745_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a787e0cbb0e847dffef755ae3b3e27745_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="319,5,740,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="af0c6bbbf72e3da9e920ca3ea841a853e"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetDihedral" ref="af0c6bbbf72e3da9e920ca3ea841a853e" args="(double dihedral)" -->
@@ -1043,13 +1120,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00206">206</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00211">211</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">dihedral_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">dihedral_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                             {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#accbf82f10ff7661778df1310ef5878a1">dihedral_</a> = dihedral;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_af0c6bbbf72e3da9e920ca3ea841a853e_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_af0c6bbbf72e3da9e920ca3ea841a853e_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_af0c6bbbf72e3da9e920ca3ea841a853e_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_af0c6bbbf72e3da9e920ca3ea841a853e_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="327,5,748,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a6066ab51db36af56ef9841f37e321773"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetDihedralIndex" ref="a6066ab51db36af56ef9841f37e321773" args="(int dihedral_index)" -->
@@ -1067,9 +1155,9 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00194">194</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00199">199</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">dihedral_index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">dihedral_index_</a>.</p>
 <div class="fragment"><pre class="fragment">                                                     {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a54d94cf41f59b722483cab5c9ba1a5be">dihedral_index_</a> = dihedral_index;
 }
@@ -1091,13 +1179,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00170">170</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00175">175</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00235">index_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">index_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                    {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a44a7ce9018b008e5cf74ceeecf437960">index_</a> = index;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a5cf0eef2c97069680d430d52d65c9878_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a5cf0eef2c97069680d430d52d65c9878_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a5cf0eef2c97069680d430d52d65c9878_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a5cf0eef2c97069680d430d52d65c9878_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="311,5,732,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a19952cfe40c49a27256e0cf3a8eae8ab"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetName" ref="a19952cfe40c49a27256e0cf3a8eae8ab" args="(std::string name)" -->
@@ -1115,13 +1214,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00174">174</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00179">179</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">name_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">name_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                              {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ac38498eb365540c2fe61c8fc342baac1">name_</a> = name;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a19952cfe40c49a27256e0cf3a8eae8ab_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a19952cfe40c49a27256e0cf3a8eae8ab_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a19952cfe40c49a27256e0cf3a8eae8ab_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a19952cfe40c49a27256e0cf3a8eae8ab_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="313,5,735,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="af4d6897f81d7f910550807f25ed9de37"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetTopologicalType" ref="af4d6897f81d7f910550807f25ed9de37" args="(TopologicalType topological_type)" -->
@@ -1139,13 +1249,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00182">182</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00187">187</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">topological_type_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">topological_type_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                                                     {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ae7317ec3aca695b882ad1161ef2833aa">topological_type_</a> = topological_type;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_af4d6897f81d7f910550807f25ed9de37_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_af4d6897f81d7f910550807f25ed9de37_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_af4d6897f81d7f910550807f25ed9de37_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_af4d6897f81d7f910550807f25ed9de37_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="372,5,793,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <a class="anchor" id="a86bdd5e43007676a0e917afe96ca3fde"></a><!-- doxytag: member="PrepFileSpace::PrepFileAtom::SetType" ref="a86bdd5e43007676a0e917afe96ca3fde" args="(std::string type)" -->
@@ -1163,13 +1284,24 @@ Here is the caller graph for this function:</div>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00178">178</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00183">183</a> of file <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html">prepfileatom.cc</a>.</p>
 
-<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">type_</a>.</p>
+<p>References <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">type_</a>.</p>
+
+<p>Referenced by <a class="el" href="../../dd/df2/assembly_8cc_source.html#l00844">MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly()</a>.</p>
 <div class="fragment"><pre class="fragment">                                              {
     <a class="code" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a05dda0fabff67c2c468ef91cc7312be0">type_</a> = type;
 }
 </pre></div>
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom_a86bdd5e43007676a0e917afe96ca3fde_icgraph.png" border="0" usemap="#de/d5b/classPrepFileSpace_1_1PrepFileAtom_a86bdd5e43007676a0e917afe96ca3fde_icgraph" alt=""/></div>
+<map name="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a86bdd5e43007676a0e917afe96ca3fde_icgraph" id="de/d5b/classPrepFileSpace_1_1PrepFileAtom_a86bdd5e43007676a0e917afe96ca3fde_icgraph">
+<area shape="rect" id="node3" href="../../d7/de1/classMolecularModeling_1_1Assembly.html#aa5f0011cd551c829a8f09e5848e36cc7" title="MolecularModeling::Assembly::BuildPrepFileStructureFromAssembly" alt="" coords="305,5,727,35"/></map>
+</div>
+</p>
+
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
@@ -1185,9 +1317,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Angle; fill by the 9th column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">243</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">244</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00097">GetAngle()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00202">SetAngle()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00102">GetAngle()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00207">SetAngle()</a>.</p>
 
 </div>
 </div>
@@ -1203,9 +1335,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Angle index; fill by the 6th column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">240</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">241</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00085">GetAngleIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00190">SetAngleIndex()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00090">GetAngleIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00195">SetAngleIndex()</a>.</p>
 
 </div>
 </div>
@@ -1221,9 +1353,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Bond index; fill by the 5th column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">239</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00240">240</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00081">GetBondIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00186">SetBondIndex()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00086">GetBondIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00191">SetBondIndex()</a>.</p>
 
 </div>
 </div>
@@ -1239,9 +1371,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Bond length; fill by the 8th column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">242</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00243">243</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00093">GetBondLength()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00198">SetBondLength()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00098">GetBondLength()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00203">SetBondLength()</a>.</p>
 
 </div>
 </div>
@@ -1257,9 +1389,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Charge; fill by the 11th column of the residue section of the file Sample line of the residue section of a prep file: 4 H1 H1 M 3 2 1 1.000 90.0 180.0 0.0 </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">245</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00246">246</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00105">GetCharge()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00210">SetCharge()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00110">GetCharge()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00215">SetCharge()</a>.</p>
 
 </div>
 </div>
@@ -1275,9 +1407,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Dihedral; fill by the 10th column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00244">244</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00245">245</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00101">GetDihedral()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00206">SetDihedral()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00106">GetDihedral()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00211">SetDihedral()</a>.</p>
 
 </div>
 </div>
@@ -1293,9 +1425,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Dihedral index; fill by the 7th column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00241">241</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00242">242</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00089">GetDihedralIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00194">SetDihedralIndex()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00094">GetDihedralIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00199">SetDihedralIndex()</a>.</p>
 
 </div>
 </div>
@@ -1311,9 +1443,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Atom index; fill by the first column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00235">235</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">236</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00065">GetIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00170">SetIndex()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00070">GetIndex()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00175">SetIndex()</a>.</p>
 
 </div>
 </div>
@@ -1329,9 +1461,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Atom name; fill by the second column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00236">236</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">237</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00069">GetName()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00174">SetName()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00074">GetName()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00179">SetName()</a>.</p>
 
 </div>
 </div>
@@ -1347,9 +1479,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Topological type (for chain extraction of the residue); fill by th 4th column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">238</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00239">239</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00128">GetStringFormatOfTopologicalType()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00077">GetTopologicalType()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00182">SetTopologicalType()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00133">GetStringFormatOfTopologicalType()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00082">GetTopologicalType()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00187">SetTopologicalType()</a>.</p>
 
 </div>
 </div>
@@ -1365,9 +1497,9 @@ Here is the caller graph for this function:</div>
 <div class="memdoc">
 <p>Atom type; fill by the third column of the residue section of the file </p>
 
-<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00237">237</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html#l00238">238</a> of file <a class="el" href="../../d8/d4a/prepfileatom_8hpp_source.html">prepfileatom.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00073">GetType()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00217">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00178">SetType()</a>.</p>
+<p>Referenced by <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00078">GetType()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00023">PrepFileAtom()</a>, <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00222">Print()</a>, and <a class="el" href="../../dd/dc0/prepfileatom_8cc_source.html#l00183">SetType()</a>.</p>
 
 </div>
 </div>
@@ -1382,7 +1514,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -1396,7 +1528,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../dc/d2b/namespacePrepFileSpace.html">PrepFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../de/d5b/classPrepFileSpace_1_1PrepFileAtom.html">PrepFileAtom</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:25 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

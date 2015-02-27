@@ -1,0 +1,29 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#aed8dc3d4c8de468f3769ad748e1479b2" title="PdbFileSpace::PdbAtom::GetAtomAlternateLocation" alt="" coords="519,5,844,35"/>
+<area shape="rect" id="node5" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a8d21869af11b88a4f8f055b5f238b745" title="PdbFileSpace::PdbAtom::GetAtomChainId" alt="" coords="547,59,816,88"/>
+<area shape="rect" id="node7" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#ab897b67f80738b1c1b8b99069830434d" title="PdbFileSpace::PdbAtom::GetAtomCharge" alt="" coords="548,112,815,141"/>
+<area shape="rect" id="node9" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#af2d16dc91f3e1ea082156abd0751807a" title="PdbFileSpace::PdbAtom::GetAtomElementSymbol" alt="" coords="523,165,840,195"/>
+<area shape="rect" id="node11" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#aa2dbc7ac701bbcb4d92537eec569ad8f" title="PdbFileSpace::PdbAtom::GetAtomInsertionCode" alt="" coords="528,219,835,248"/>
+<area shape="rect" id="node13" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#ab317ef2b2ab116da72c6991b56be495d" title="PdbFileSpace::PdbAtom::GetAtomName" alt="" coords="552,272,811,301"/>
+<area shape="rect" id="node15" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a41221626c37dbcc6fd65260b75c4d4d2" title="PdbFileSpace::PdbAtom::GetAtomOccupancy" alt="" coords="536,325,827,355"/>
+<area shape="rect" id="node17" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#af4f4523bd067f2b1b38c8899f47d8032" title="PdbFileSpace::PdbAtom::GetAtomOrthogonalCoordinate" alt="" coords="507,379,856,408"/>
+<area shape="rect" id="node19" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#acc9a177ac9b4686b8fc7d481bef93abf" title="PdbFileSpace::PdbAtom::GetAtomResidueName" alt="" coords="528,432,835,461"/>
+<area shape="rect" id="node21" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a9904d4ec77de04c10ce7c77a35d92e16" title="PdbFileSpace::PdbAtom::GetAtomResidueSequenceNumber" alt="" coords="493,485,869,515"/>
+<area shape="rect" id="node23" href="$d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html#a16a169bfbb3c716608d7f413cf1614de" title="PdbFileSpace::PdbModelResidueSet::GetAtoms" alt="" coords="529,539,833,568"/>
+<area shape="rect" id="node25" href="$d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#ab07c3d7c02fbeeff68d48c768f2807c5" title="PdbFileSpace::PdbAtomCard::GetAtoms" alt="" coords="552,592,811,621"/>
+<area shape="rect" id="node27" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#a10ea553444a86c0ded3c57cf3ec4cd91" title="PdbFileSpace::PdbAtom::GetAtomTempretureFactor" alt="" coords="517,645,845,675"/>
+<area shape="rect" id="node29" href="$d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#a2e78118aec4e240c7265f31a6bd02c26" title="PdbFileSpace::PdbHeterogenAtomCard::GetHeterogenAtoms" alt="" coords="492,699,871,728"/>
+<area shape="rect" id="node31" href="$d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html#aa37cb07507690d3306b37925fb5e194f" title="PdbFileSpace::PdbModelResidueSet::GetHeterogenAtoms" alt="" coords="500,752,863,781"/>
+<area shape="rect" id="node33" href="$d0/d75/classPdbFileSpace_1_1PdbModel.html#a787503c8bb97d21251dd741a49f2c52f" title="PdbFileSpace::PdbModel::GetModelResidueSet" alt="" coords="531,805,832,835"/>
+<area shape="rect" id="node35" href="$d0/d75/classPdbFileSpace_1_1PdbModel.html#ad287fe58a1df4d49359d17be027f3ff5" title="PdbFileSpace::PdbModel::GetModelSerialNumber" alt="" coords="525,859,837,888"/>
+<area shape="rect" id="node37" href="$d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#acedcbb0aee74caa249d98768f563d154" title="PdbFileSpace::PdbAtomCard::GetRecordName" alt="" coords="532,912,831,941"/>
+<area shape="rect" id="node39" href="$d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#a1dfad84fef989eed60590d6c5a9af9f4" title="PdbFileSpace::PdbHeterogenAtomCard::GetRecordName" alt="" coords="503,965,860,995"/>
+<area shape="rect" id="node41" href="$d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html#a9db70a369043acbd1e5120ba2a59cee6" title="PdbFileSpace::PdbModelResidueSet::SetAtoms" alt="" coords="531,1019,832,1048"/>
+<area shape="rect" id="node43" href="$d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a06d1d60cbdb79fe12448f735adfdd05a" title="PdbFileSpace::PdbAtomCard::SetAtoms" alt="" coords="552,1072,811,1101"/>
+<area shape="rect" id="node45" href="$d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#a91ca796cdb8eb3362e0fe940259fd7f6" title="PdbFileSpace::PdbHeterogenAtomCard::SetHeterogenAtoms" alt="" coords="492,1125,871,1155"/>
+<area shape="rect" id="node47" href="$d6/d58/classPdbFileSpace_1_1PdbModelResidueSet.html#a1169a6db446ea9ea1f703354c252cb58" title="PdbFileSpace::PdbModelResidueSet::SetHeterogenAtoms" alt="" coords="500,1179,863,1208"/>
+<area shape="rect" id="node49" href="$d0/d75/classPdbFileSpace_1_1PdbModel.html#ae14f33ad2830b4e070932b1e53f9c592" title="PdbFileSpace::PdbModel::SetModelResidueSet" alt="" coords="532,1232,831,1261"/>
+<area shape="rect" id="node51" href="$d0/d75/classPdbFileSpace_1_1PdbModel.html#add1af18575139db80dcd8d0aa3e8870d" title="PdbFileSpace::PdbModel::SetModelSerialNumber" alt="" coords="527,1285,836,1315"/>
+<area shape="rect" id="node53" href="$d0/ddd/classPdbFileSpace_1_1PdbAtomCard.html#a3be7c1c47671c2da95213818e9aad7ca" title="PdbFileSpace::PdbAtomCard::SetRecordName" alt="" coords="532,1339,831,1368"/>
+<area shape="rect" id="node55" href="$d2/d36/classPdbFileSpace_1_1PdbHeterogenAtomCard.html#aaaa42fdf34a859dd53572e5f1ed18e8e" title="PdbFileSpace::PdbHeterogenAtomCard::SetRecordName" alt="" coords="503,1392,860,1421"/>
+</map>

@@ -78,7 +78,6 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="../../files.html"><span>File&#160;List</span></a></li>
-      <li><a href="../../globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 </div>
@@ -244,82 +243,88 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
 <a name="l00142"></a>00142 <span class="comment">              */</span>
 <a name="l00143"></a>00143             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#afe9cf65fa9854e6c21fbfe3878bae375">SetExcludedAtoms</a>(std::vector&lt;std::string&gt; excluded_atoms);<span class="comment"></span>
 <a name="l00144"></a>00144 <span class="comment">            /*! \fn</span>
-<a name="l00145"></a>00145 <span class="comment">              * A mutator function in order to set the radii of the current object</span>
-<a name="l00146"></a>00146 <span class="comment">              * Set the radii_ attribute of the current topology atom</span>
-<a name="l00147"></a>00147 <span class="comment">              * @param radii The radii attribute of the current object</span>
+<a name="l00145"></a>00145 <span class="comment">              * A function in order to add the excluded atom to the current object</span>
+<a name="l00146"></a>00146 <span class="comment">              * Set the excluded_atoms_ attribute of the current topology atom</span>
+<a name="l00147"></a>00147 <span class="comment">              * @param excluded_atom The excluded atom to be added to the current object</span>
 <a name="l00148"></a>00148 <span class="comment">              */</span>
-<a name="l00149"></a>00149             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#ab456fca631ecf4bfe804c10a39717999">SetRadii</a>(<span class="keywordtype">double</span> radii);<span class="comment"></span>
+<a name="l00149"></a>00149             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a03c9b5b847ee5a3cdaa5378ac025ce75">AddExcludedAtom</a>(std::string excluded_atom);<span class="comment"></span>
 <a name="l00150"></a>00150 <span class="comment">            /*! \fn</span>
-<a name="l00151"></a>00151 <span class="comment">              * A mutator function in order to set the screen of the current object</span>
-<a name="l00152"></a>00152 <span class="comment">              * Set the screen_ attribute of the current topology atom</span>
-<a name="l00153"></a>00153 <span class="comment">              * @param screen The screen attribute of the current object</span>
+<a name="l00151"></a>00151 <span class="comment">              * A mutator function in order to set the radii of the current object</span>
+<a name="l00152"></a>00152 <span class="comment">              * Set the radii_ attribute of the current topology atom</span>
+<a name="l00153"></a>00153 <span class="comment">              * @param radii The radii attribute of the current object</span>
 <a name="l00154"></a>00154 <span class="comment">              */</span>
-<a name="l00155"></a>00155             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a35746f8630f21520ce96f7047b54f862">SetScreen</a>(<span class="keywordtype">double</span> screen);<span class="comment"></span>
+<a name="l00155"></a>00155             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#ab456fca631ecf4bfe804c10a39717999">SetRadii</a>(<span class="keywordtype">double</span> radii);<span class="comment"></span>
 <a name="l00156"></a>00156 <span class="comment">            /*! \fn</span>
-<a name="l00157"></a>00157 <span class="comment">              * A mutator function in order to set the tree chain classification of the current object</span>
-<a name="l00158"></a>00158 <span class="comment">              * Set the tree_chain_classification_ attribute of the current topology atom</span>
-<a name="l00159"></a>00159 <span class="comment">              * @param tree_chain_classification The tree chain classification attribute of the current object</span>
+<a name="l00157"></a>00157 <span class="comment">              * A mutator function in order to set the screen of the current object</span>
+<a name="l00158"></a>00158 <span class="comment">              * Set the screen_ attribute of the current topology atom</span>
+<a name="l00159"></a>00159 <span class="comment">              * @param screen The screen attribute of the current object</span>
 <a name="l00160"></a>00160 <span class="comment">              */</span>
-<a name="l00161"></a>00161             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a40f9ac098cf6b77cc4161a473fab3c4c">SetTreeChainClasification</a>(std::string tree_chain_classification);<span class="comment"></span>
+<a name="l00161"></a>00161             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a35746f8630f21520ce96f7047b54f862">SetScreen</a>(<span class="keywordtype">double</span> screen);<span class="comment"></span>
 <a name="l00162"></a>00162 <span class="comment">            /*! \fn</span>
-<a name="l00163"></a>00163 <span class="comment">              * A mutator function in order to set the number of excluded atoms of the current object</span>
-<a name="l00164"></a>00164 <span class="comment">              * Set the number_of_excluded_atoms_ attribute of the current topology atom</span>
-<a name="l00165"></a>00165 <span class="comment">              * @param number_of_excluded_atoms The number of excluded atoms attribute of the current object</span>
+<a name="l00163"></a>00163 <span class="comment">              * A mutator function in order to set the tree chain classification of the current object</span>
+<a name="l00164"></a>00164 <span class="comment">              * Set the tree_chain_classification_ attribute of the current topology atom</span>
+<a name="l00165"></a>00165 <span class="comment">              * @param tree_chain_classification The tree chain classification attribute of the current object</span>
 <a name="l00166"></a>00166 <span class="comment">              */</span>
-<a name="l00167"></a>00167             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a86a23dfcfc70a00885f650d1e1026d34">SetNumberOfExcludedAtoms</a>(<span class="keywordtype">int</span> number_of_excluded_atoms);<span class="comment"></span>
+<a name="l00167"></a>00167             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a40f9ac098cf6b77cc4161a473fab3c4c">SetTreeChainClasification</a>(std::string tree_chain_classification);<span class="comment"></span>
 <a name="l00168"></a>00168 <span class="comment">            /*! \fn</span>
-<a name="l00169"></a>00169 <span class="comment">              * A mutator function in order to set the type of the current object</span>
-<a name="l00170"></a>00170 <span class="comment">              * Set the type_ attribute of the current topology atom</span>
-<a name="l00171"></a>00171 <span class="comment">              * @param type The type attribute of the current object</span>
+<a name="l00169"></a>00169 <span class="comment">              * A mutator function in order to set the number of excluded atoms of the current object</span>
+<a name="l00170"></a>00170 <span class="comment">              * Set the number_of_excluded_atoms_ attribute of the current topology atom</span>
+<a name="l00171"></a>00171 <span class="comment">              * @param number_of_excluded_atoms The number of excluded atoms attribute of the current object</span>
 <a name="l00172"></a>00172 <span class="comment">              */</span>
-<a name="l00173"></a>00173             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a934e55f21c7ffa232977b23c4beaa9ff">SetType</a>(std::string type);<span class="comment"></span>
+<a name="l00173"></a>00173             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a86a23dfcfc70a00885f650d1e1026d34">SetNumberOfExcludedAtoms</a>(<span class="keywordtype">int</span> number_of_excluded_atoms);<span class="comment"></span>
 <a name="l00174"></a>00174 <span class="comment">            /*! \fn</span>
-<a name="l00175"></a>00175 <span class="comment">              * A mutator function in order to set the index of the current object</span>
-<a name="l00176"></a>00176 <span class="comment">              * Set the index_ attribute of the current topology atom</span>
-<a name="l00177"></a>00177 <span class="comment">              * @param index The index attribute of the current object</span>
+<a name="l00175"></a>00175 <span class="comment">              * A mutator function in order to set the type of the current object</span>
+<a name="l00176"></a>00176 <span class="comment">              * Set the type_ attribute of the current topology atom</span>
+<a name="l00177"></a>00177 <span class="comment">              * @param type The type attribute of the current object</span>
 <a name="l00178"></a>00178 <span class="comment">              */</span>
-<a name="l00179"></a>00179             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#ac5f78fc0ba5982c9bac804fb29c8ec84">SetIndex</a>(<span class="keywordtype">int</span> index);<span class="comment"></span>
+<a name="l00179"></a>00179             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a934e55f21c7ffa232977b23c4beaa9ff">SetType</a>(std::string type);<span class="comment"></span>
 <a name="l00180"></a>00180 <span class="comment">            /*! \fn</span>
-<a name="l00181"></a>00181 <span class="comment">              * A mutator function in order to set the residue name of the current object</span>
-<a name="l00182"></a>00182 <span class="comment">              * Set the residue_name_ attribute of the current topology atom</span>
-<a name="l00183"></a>00183 <span class="comment">              * @param residue_name The residue name attribute of the current object</span>
+<a name="l00181"></a>00181 <span class="comment">              * A mutator function in order to set the index of the current object</span>
+<a name="l00182"></a>00182 <span class="comment">              * Set the index_ attribute of the current topology atom</span>
+<a name="l00183"></a>00183 <span class="comment">              * @param index The index attribute of the current object</span>
 <a name="l00184"></a>00184 <span class="comment">              */</span>
-<a name="l00185"></a>00185             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a0c660f71f62f2c67a76ddd88d3b93869">SetResidueName</a>(std::string residue_name);
-<a name="l00186"></a>00186 <span class="comment"></span>
-<a name="l00187"></a>00187 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00188"></a>00188 <span class="comment"></span>            <span class="comment">//                        FUNCTIONS                     //</span><span class="comment"></span>
-<a name="l00189"></a>00189 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00190"></a>00190 <span class="comment"></span><span class="comment"></span>
-<a name="l00191"></a>00191 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00192"></a>00192 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
+<a name="l00185"></a>00185             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#ac5f78fc0ba5982c9bac804fb29c8ec84">SetIndex</a>(<span class="keywordtype">int</span> index);<span class="comment"></span>
+<a name="l00186"></a>00186 <span class="comment">            /*! \fn</span>
+<a name="l00187"></a>00187 <span class="comment">              * A mutator function in order to set the residue name of the current object</span>
+<a name="l00188"></a>00188 <span class="comment">              * Set the residue_name_ attribute of the current topology atom</span>
+<a name="l00189"></a>00189 <span class="comment">              * @param residue_name The residue name attribute of the current object</span>
+<a name="l00190"></a>00190 <span class="comment">              */</span>
+<a name="l00191"></a>00191             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a0c660f71f62f2c67a76ddd88d3b93869">SetResidueName</a>(std::string residue_name);
+<a name="l00192"></a>00192 <span class="comment"></span>
 <a name="l00193"></a>00193 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00194"></a>00194 <span class="comment"></span><span class="comment">            /*! \fn</span>
-<a name="l00195"></a>00195 <span class="comment">              * A function to print out the atom contents in a structural format</span>
-<a name="l00196"></a>00196 <span class="comment">              * Print out the information in a defined structure</span>
-<a name="l00197"></a>00197 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
-<a name="l00198"></a>00198 <span class="comment">              */</span>
-<a name="l00199"></a>00199             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a62517250f632b514edef6c017ca7a3f6">Print</a>(std::ostream&amp; out = std::cout);
-<a name="l00200"></a>00200 
-<a name="l00201"></a>00201         <span class="keyword">private</span>:<span class="comment"></span>
-<a name="l00202"></a>00202 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00203"></a>00203 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
-<a name="l00204"></a>00204 <span class="comment">            //////////////////////////////////////////////////////////</span>
-<a name="l00205"></a>00205 <span class="comment"></span>            std::string atom_name_;                     <span class="comment">/*!&lt; Name of the atom appears in a topology file &gt;*/</span>
-<a name="l00206"></a>00206             <span class="keywordtype">double</span> atom_charge_;                        <span class="comment">/*!&lt; Charge of the atom that appears in a topology file &gt;*/</span>
-<a name="l00207"></a>00207             <span class="keywordtype">int</span> atomic_number_;                         <span class="comment">/*!&lt; Atomic number of the atom that appears in a topology file &gt;*/</span>
-<a name="l00208"></a>00208             <span class="keywordtype">double</span> atom_mass_;                          <span class="comment">/*!&lt; Mass of the atom  that appears in a topology file &gt;*/</span>
-<a name="l00209"></a>00209             std::vector&lt;std::string&gt; excluded_atoms_;   <span class="comment">/*!&lt; List of atom names that are excluded from interaction with the current atom &gt;*/</span>
-<a name="l00210"></a>00210             <span class="keywordtype">double</span> radii_;                              <span class="comment">/*!&lt; Radius of the atom that appears in a topology file &gt;*/</span>
-<a name="l00211"></a>00211             <span class="keywordtype">double</span> screen_;                             <span class="comment">/*!&lt; Screen value of the atom that appears in a topology file &gt;*/</span>
-<a name="l00212"></a>00212             std::string tree_chain_classification_;     <span class="comment">/*!&lt; Tree chain classification of the atom appears in a topology file in order to extract the bonding information inside a residue &gt;*/</span>
-<a name="l00213"></a>00213             <span class="keywordtype">int</span> number_of_excluded_atoms_;              <span class="comment">/*!&lt; Number of atoms that are excluded from interaction with the current atom &gt;*/</span>
-<a name="l00214"></a>00214             std::string type_;                          <span class="comment">/*!&lt; Amber type of the atom that appears in a topology file &gt;*/</span>
-<a name="l00215"></a>00215             <span class="keywordtype">int</span> index_;                                 <span class="comment">/*!&lt; Index of appearing o the atom in a topology file &gt;*/</span>
-<a name="l00216"></a>00216             std::string residue_name_;                  <span class="comment">/*!&lt; Name of the residue that the current atom belongs to &gt;*/</span>
-<a name="l00217"></a>00217     };
-<a name="l00218"></a>00218 }
-<a name="l00219"></a>00219 
-<a name="l00220"></a>00220 <span class="preprocessor">#endif // TOPOLOGYATOM_HPP</span>
+<a name="l00194"></a>00194 <span class="comment"></span>            <span class="comment">//                        FUNCTIONS                     //</span><span class="comment"></span>
+<a name="l00195"></a>00195 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00196"></a>00196 <span class="comment"></span><span class="comment"></span>
+<a name="l00197"></a>00197 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00198"></a>00198 <span class="comment"></span>            <span class="comment">//                       DISPLAY FUNCTION               //</span><span class="comment"></span>
+<a name="l00199"></a>00199 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00200"></a>00200 <span class="comment"></span><span class="comment">            /*! \fn</span>
+<a name="l00201"></a>00201 <span class="comment">              * A function to print out the atom contents in a structural format</span>
+<a name="l00202"></a>00202 <span class="comment">              * Print out the information in a defined structure</span>
+<a name="l00203"></a>00203 <span class="comment">              * @param out An output stream, the print result will be written in the given output stream</span>
+<a name="l00204"></a>00204 <span class="comment">              */</span>
+<a name="l00205"></a>00205             <span class="keywordtype">void</span> <a class="code" href="../../d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a62517250f632b514edef6c017ca7a3f6">Print</a>(std::ostream&amp; out = std::cout);
+<a name="l00206"></a>00206 
+<a name="l00207"></a>00207         <span class="keyword">private</span>:<span class="comment"></span>
+<a name="l00208"></a>00208 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00209"></a>00209 <span class="comment"></span>            <span class="comment">//                       ATTRIBUTES                     //</span><span class="comment"></span>
+<a name="l00210"></a>00210 <span class="comment">            //////////////////////////////////////////////////////////</span>
+<a name="l00211"></a>00211 <span class="comment"></span>            std::string atom_name_;                     <span class="comment">/*!&lt; Name of the atom appears in a topology file &gt;*/</span>
+<a name="l00212"></a>00212             <span class="keywordtype">double</span> atom_charge_;                        <span class="comment">/*!&lt; Charge of the atom that appears in a topology file &gt;*/</span>
+<a name="l00213"></a>00213             <span class="keywordtype">int</span> atomic_number_;                         <span class="comment">/*!&lt; Atomic number of the atom that appears in a topology file &gt;*/</span>
+<a name="l00214"></a>00214             <span class="keywordtype">double</span> atom_mass_;                          <span class="comment">/*!&lt; Mass of the atom  that appears in a topology file &gt;*/</span>
+<a name="l00215"></a>00215             std::vector&lt;std::string&gt; excluded_atoms_;   <span class="comment">/*!&lt; List of atom names that are excluded from interaction with the current atom &gt;*/</span>
+<a name="l00216"></a>00216             <span class="keywordtype">double</span> radii_;                              <span class="comment">/*!&lt; Radius of the atom that appears in a topology file &gt;*/</span>
+<a name="l00217"></a>00217             <span class="keywordtype">double</span> screen_;                             <span class="comment">/*!&lt; Screen value of the atom that appears in a topology file &gt;*/</span>
+<a name="l00218"></a>00218             std::string tree_chain_classification_;     <span class="comment">/*!&lt; Tree chain classification of the atom appears in a topology file in order to extract the bonding information inside a residue &gt;*/</span>
+<a name="l00219"></a>00219             <span class="keywordtype">int</span> number_of_excluded_atoms_;              <span class="comment">/*!&lt; Number of atoms that are excluded from interaction with the current atom &gt;*/</span>
+<a name="l00220"></a>00220             std::string type_;                          <span class="comment">/*!&lt; Amber type of the atom that appears in a topology file &gt;*/</span>
+<a name="l00221"></a>00221             <span class="keywordtype">int</span> index_;                                 <span class="comment">/*!&lt; Index of appearing o the atom in a topology file &gt;*/</span>
+<a name="l00222"></a>00222             std::string residue_name_;                  <span class="comment">/*!&lt; Name of the residue that the current atom belongs to &gt;*/</span>
+<a name="l00223"></a>00223     };
+<a name="l00224"></a>00224 }
+<a name="l00225"></a>00225 
+<a name="l00226"></a>00226 <span class="preprocessor">#endif // TOPOLOGYATOM_HPP</span>
 </pre></div></div><!-- contents -->
 </div>
 <!-- window showing the filter options -->
@@ -327,7 +332,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -340,7 +345,7 @@ var searchBox = new SearchBox("searchBox", "../../search",false,'Search');
     <ul>
       <li class="navelem"><a class="el" href="../../df/db5/topologyatom_8hpp.html">topologyatom.hpp</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:55 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:20 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

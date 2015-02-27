@@ -166,6 +166,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>CoordinateVector
 : <a class="el" href="de/d2f/classGeometry_1_1Angle.html#aef96ee4fb267d766b7d96f34dd574231">Geometry::Angle</a>
 , <a class="el" href="de/da2/classMolecularModeling_1_1Atom.html#aa17a3250b4c4b939a0d7131dd9c83c17">MolecularModeling::Atom</a>
+, <a class="el" href="d7/de1/classMolecularModeling_1_1Assembly.html#a543c742176eb902ecb8ac758c6b470d2">MolecularModeling::Assembly</a>
 , <a class="el" href="db/dad/classGeometry_1_1Distance.html#ae9fabd3e8356cc0267ef643e3524a0bc">Geometry::Distance</a>
 , <a class="el" href="dc/d0e/classGeometry_1_1Dihedral.html#a7e56fa0a00784c72a2578b081b8dfa85">Geometry::Dihedral</a>
 </li>
@@ -276,11 +277,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>PdbModelMap
 : <a class="el" href="d0/d18/classPdbFileSpace_1_1PdbModelCard.html#afc8f4f211f9de16e7f459c6585007d17">PdbFileSpace::PdbModelCard</a>
 </li>
+<li>PdbPairVectorAtomNamePositionFlag
+: <a class="el" href="d4/db5/classPdbFileSpace_1_1PdbFile.html#a845b412c27e3b0fa783b6d5c358d0064">PdbFileSpace::PdbFile</a>
+</li>
+<li>PdbPairVectorTerCardPositions
+: <a class="el" href="d4/db5/classPdbFileSpace_1_1PdbFile.html#a60792a070b523b9444ffb4445e4c5e0c">PdbFileSpace::PdbFile</a>
+</li>
 <li>PdbPreprocessorAlternateResidueMap
 : <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a026ca0343af25d90bbc9f23627197c2b">PdbPreprocessorSpace::PdbPreprocessor</a>
 </li>
 <li>PdbPreprocessorChainIdInsertionCodeMap
 : <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a4c163d2b6215bdffaa5eb5dc4b45fb46">PdbPreprocessorSpace::PdbPreprocessor</a>
+</li>
+<li>PdbPreprocessorChainIdResidueMap
+: <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#afb7d473d685f5a837b66383ed8505e4d">PdbPreprocessorSpace::PdbPreprocessor</a>
 </li>
 <li>PdbPreprocessorChainIdSequenceNumbersMap
 : <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ac0eaa8275752b0f558f99d1f9fa8228f">PdbPreprocessorSpace::PdbPreprocessor</a>
@@ -303,6 +313,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>PdbPreprocessorReplacedHydrogenVector
 : <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a295d9dfdba4fbcfdad880993d159e77e">PdbPreprocessorSpace::PdbPreprocessor</a>
 </li>
+<li>PdbPreprocessorResidueInfoMap
+: <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a78a4351ad8a48b266896daf0f2331e67">PdbPreprocessorSpace::PdbPreprocessor</a>
+</li>
+<li>PdbPreprocessorToBeDeletedAtomVector
+: <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ad5b8ea942cac63d37a2009c0c17bf31c">PdbPreprocessorSpace::PdbPreprocessor</a>
+</li>
+<li>PdbPreprocessorToBeDeletedResidueVector
+: <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af6ac4e121286b4f83e45f5bc12124808">PdbPreprocessorSpace::PdbPreprocessor</a>
+</li>
 <li>PdbPreprocessorUnrecognizedHeavyAtomVector
 : <a class="el" href="d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a77ac79f209178dfb9db27c15584c96ac">PdbPreprocessorSpace::PdbPreprocessor</a>
 </li>
@@ -314,6 +333,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>PdbResidueVector
 : <a class="el" href="d4/db5/classPdbFileSpace_1_1PdbFile.html#a20c0d4497bee75499440cb11066858bc">PdbFileSpace::PdbFile</a>
+</li>
+<li>PdbSequenceNumberMapping
+: <a class="el" href="d4/db5/classPdbFileSpace_1_1PdbFile.html#a0efe74b9570771cf30f7205249a3fe1e">PdbFileSpace::PdbFile</a>
+</li>
+<li>PdbSerialNumberMapping
+: <a class="el" href="d4/db5/classPdbFileSpace_1_1PdbFile.html#ae0966701b94042c467ac8dbb02573715">PdbFileSpace::PdbFile</a>
 </li>
 <li>PdbSiteMap
 : <a class="el" href="d2/d63/classPdbFileSpace_1_1PdbSiteCard.html#ad89a905330b933f1465359426dcf1c00">PdbFileSpace::PdbSiteCard</a>
@@ -404,7 +429,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -417,7 +442,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="nav-path" class="navpath">
     <ul>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:57 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:27 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

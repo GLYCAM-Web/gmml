@@ -1,4 +1,5 @@
 <map id="G" name="G">
 <area shape="rect" id="node3" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a4a4f0093153eca92d1d89ba108b48ee5" title="Process a line from the atom section of the file and return a new atom object." alt="" coords="208,5,483,35"/>
-<area shape="rect" id="node5" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a7c69b960e9bb5e16bdb3fd8cc71a08b6" title="LibraryFileSpace::LibraryFile::Read" alt="" coords="232,59,459,88"/>
+<area shape="rect" id="node5" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a7c69b960e9bb5e16bdb3fd8cc71a08b6" title="LibraryFileSpace::LibraryFile::Read" alt="" coords="531,32,757,61"/>
+<area shape="rect" id="node7" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#ac391c4d9968da0802a007994f4a50789" title="LibraryFileSpace::LibraryFile::LibraryFile" alt="" coords="807,32,1060,61"/>
 </map>

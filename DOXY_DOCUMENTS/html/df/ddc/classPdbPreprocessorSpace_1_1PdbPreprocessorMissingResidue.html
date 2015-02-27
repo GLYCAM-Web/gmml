@@ -245,7 +245,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00126">126</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00035">gmml::CO2</a>, <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00103">GetStringFormatOfCTermination()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00033">gmml::NH2</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00045">gmml::CO2</a>, <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00103">GetStringFormatOfCTermination()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00043">gmml::NH2</a>.</p>
 <div class="fragment"><pre class="fragment">{
     vector&lt;string&gt; all_possible_c_chian_termination_as_string;
     <span class="keywordflow">for</span>(<span class="keywordtype">int</span> possible_c_chian_termination = <a class="code" href="../../d0/ddd/namespacegmml.html#a0546b3980b4678b8fe9caeed0f43c3b8a5743d382197831c2741d24e4c44b215c">NH2</a>; possible_c_chian_termination != <a class="code" href="../../d0/ddd/namespacegmml.html#a0546b3980b4678b8fe9caeed0f43c3b8adf959ea9e443b1a9c126ae0b754f8429">CO2</a>; possible_c_chian_termination++)
@@ -280,7 +280,7 @@ Here is the call graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00118">118</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00024">gmml::COCH3</a>, <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00090">GetStringFormatOfNTermination()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00025">gmml::NH3</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00034">gmml::COCH3</a>, <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00090">GetStringFormatOfNTermination()</a>, and <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00035">gmml::NH3</a>.</p>
 <div class="fragment"><pre class="fragment">{
     vector&lt;string&gt; all_possible_n_chian_termination_as_string;
     <span class="keywordflow">for</span>(<span class="keywordtype">int</span> possible_n_chian_termination = <a class="code" href="../../d0/ddd/namespacegmml.html#ae9274b702b3e0f0bcaabb277062f91afa13d1165068aba6d30a69bb7ddcc364f8">COCH3</a>; possible_n_chian_termination != <a class="code" href="../../d0/ddd/namespacegmml.html#ae9274b702b3e0f0bcaabb277062f91afa2789212edd0dfe0b7e5df983d76590b4">NH3</a>; possible_n_chian_termination++)
@@ -357,7 +357,7 @@ Here is the call graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00041">41</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> residue_after_gap_;
 }
@@ -367,7 +367,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba75e865e836ea5cf3990b069171e5f4_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba75e865e836ea5cf3990b069171e5f4_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba75e865e836ea5cf3990b069171e5f4_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba75e865e836ea5cf3990b069171e5f4_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="545,5,1007,35"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="627,5,1088,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="544,59,1171,88"/></map>
 </div>
 </p>
 
@@ -389,7 +389,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00037">37</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> residue_before_gap_;
 }
@@ -399,7 +399,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a4f641af7803e81b382e7a6b48176dbe0_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a4f641af7803e81b382e7a6b48176dbe0_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a4f641af7803e81b382e7a6b48176dbe0_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a4f641af7803e81b382e7a6b48176dbe0_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="553,5,1015,35"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="635,5,1096,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="552,59,1179,88"/></map>
 </div>
 </p>
 
@@ -421,7 +421,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00025">25</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> residue_chain_id_;
 }
@@ -431,7 +431,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a311434c97ccbe97bb6bc9633a7fb45e1_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a311434c97ccbe97bb6bc9633a7fb45e1_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a311434c97ccbe97bb6bc9633a7fb45e1_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a311434c97ccbe97bb6bc9633a7fb45e1_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="537,5,999,35"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="619,5,1080,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="536,59,1163,88"/></map>
 </div>
 </p>
 
@@ -453,7 +453,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00049">49</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> selected_c_termination_;
 }
@@ -463,7 +463,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a20d3c8a7422474cf053f51abd41604c2_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a20d3c8a7422474cf053f51abd41604c2_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a20d3c8a7422474cf053f51abd41604c2_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a20d3c8a7422474cf053f51abd41604c2_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="575,5,1036,35"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="656,5,1117,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="573,59,1200,88"/></map>
 </div>
 </p>
 
@@ -485,7 +485,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00045">45</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">return</span> selected_n_termination_;
 }
@@ -495,7 +495,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ad2ebe6ee9192907dd5890a419707e381_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ad2ebe6ee9192907dd5890a419707e381_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ad2ebe6ee9192907dd5890a419707e381_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ad2ebe6ee9192907dd5890a419707e381_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="575,5,1036,35"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="656,5,1117,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="573,59,1200,88"/></map>
 </div>
 </p>
 
@@ -560,7 +560,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00103">103</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00126">GetAllPossibleCChainTerminationAsString()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00126">GetAllPossibleCChainTerminationAsString()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(c_termination)
     {
@@ -580,7 +580,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a41d10171a4be57b1b0174e2982d7d6bd_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a41d10171a4be57b1b0174e2982d7d6bd_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a41d10171a4be57b1b0174e2982d7d6bd_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a41d10171a4be57b1b0174e2982d7d6bd_icgraph">
-<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#a2acdb189a89cfba84113e18054457094" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::GetAllPossibleCChainTerminationAsString" alt="" coords="611,5,1227,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="688,59,1149,88"/></map>
+<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#a2acdb189a89cfba84113e18054457094" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::GetAllPossibleCChainTerminationAsString" alt="" coords="616,5,1232,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="693,59,1155,88"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="611,112,1237,141"/></map>
 </div>
 </p>
 
@@ -603,7 +603,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00090">90</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00118">GetAllPossibleNChainTerminationAsString()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00118">GetAllPossibleNChainTerminationAsString()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span> (n_termination)
     {
@@ -621,7 +621,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ac555f6f2b8b297c456e9b5aca9381ea0_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ac555f6f2b8b297c456e9b5aca9381ea0_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ac555f6f2b8b297c456e9b5aca9381ea0_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ac555f6f2b8b297c456e9b5aca9381ea0_icgraph">
-<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#a68dfd34e2008511b6f3d26a1cf548824" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::GetAllPossibleNChainTerminationAsString" alt="" coords="611,5,1227,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="688,59,1149,88"/></map>
+<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#a68dfd34e2008511b6f3d26a1cf548824" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::GetAllPossibleNChainTerminationAsString" alt="" coords="616,5,1232,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="693,59,1155,88"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="611,112,1237,141"/></map>
 </div>
 </p>
 
@@ -643,7 +643,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00075">75</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00177">Print()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00177">Print()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span>(selected_c_termination_)
     {
@@ -663,7 +663,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3510bd8823ac2a2ae1ea58f99d9e8d9d_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3510bd8823ac2a2ae1ea58f99d9e8d9d_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3510bd8823ac2a2ae1ea58f99d9e8d9d_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3510bd8823ac2a2ae1ea58f99d9e8d9d_icgraph">
-<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#aba1beba244e771e28c75e69862d6ed09" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::Print" alt="" coords="696,5,1091,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="663,59,1124,88"/></map>
+<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#aba1beba244e771e28c75e69862d6ed09" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::Print" alt="" coords="777,5,1172,35"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="744,59,1205,88"/><area shape="rect" id="node9" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="661,112,1288,141"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb96e6037af19492c9ab268568a589fe" title="PdbPreprocessorSpace::PdbPreprocessor::Print" alt="" coords="1337,5,1639,35"/></map>
 </div>
 </p>
 
@@ -685,7 +685,7 @@ Here is the caller graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00062">62</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00177">Print()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00177">Print()</a>, <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     <span class="keywordflow">switch</span> (selected_n_termination_)
     {
@@ -703,7 +703,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3b6b356569d104abe70c65cfd121e80e_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3b6b356569d104abe70c65cfd121e80e_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3b6b356569d104abe70c65cfd121e80e_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_a3b6b356569d104abe70c65cfd121e80e_icgraph">
-<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#aba1beba244e771e28c75e69862d6ed09" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::Print" alt="" coords="696,5,1091,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="663,59,1124,88"/></map>
+<area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#aba1beba244e771e28c75e69862d6ed09" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::Print" alt="" coords="777,5,1172,35"/><area shape="rect" id="node7" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="744,59,1205,88"/><area shape="rect" id="node9" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="661,112,1288,141"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb96e6037af19492c9ab268568a589fe" title="PdbPreprocessorSpace::PdbPreprocessor::Print" alt="" coords="1337,5,1639,35"/></map>
 </div>
 </p>
 
@@ -727,6 +727,8 @@ Here is the caller graph for this function:</div>
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00177">177</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
 <p>References <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00075">GetStringFormatOfSelectedCTermination()</a>, and <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00062">GetStringFormatOfSelectedNTermination()</a>.</p>
+
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l03672">PdbPreprocessorSpace::PdbPreprocessor::Print()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     out &lt;&lt; <span class="stringliteral">&quot;Chain: &quot;</span> &lt;&lt; starting_residue_sequence_number_ &lt;&lt; <span class="stringliteral">&quot;-&quot;</span> &lt;&lt; ending_residue_sequence_number_ &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; residue_chain_id_ &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>
            &lt;&lt; <span class="stringliteral">&quot;, Residue insertion code before gap: &quot;</span> &lt;&lt; starting_residue_insertion_code_
@@ -744,6 +746,15 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_cgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_cgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_cgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_cgraph">
 <area shape="rect" id="node3" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#a3510bd8823ac2a2ae1ea58f99d9e8d9d" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::GetStringFormatOfSelectedCTermination" alt="" coords="449,5,1055,35"/><area shape="rect" id="node5" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#a3b6b356569d104abe70c65cfd121e80e" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::GetStringFormatOfSelectedNTermination" alt="" coords="449,59,1055,88"/></map>
+</div>
+</p>
+
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_icgraph" alt=""/></div>
+<map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_aba1beba244e771e28c75e69862d6ed09_icgraph">
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb96e6037af19492c9ab268568a589fe" title="PdbPreprocessorSpace::PdbPreprocessor::Print" alt="" coords="449,5,751,35"/></map>
 </div>
 </p>
 
@@ -832,7 +843,7 @@ Here is the call graph for this function:</div>
 
 <p>Definition at line <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html#l00149">149</a> of file <a class="el" href="../../d3/d17/pdbpreprocessormissingresidue_8cc_source.html">pdbpreprocessormissingresidue.cc</a>.</p>
 
-<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l01028">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>.</p>
+<p>Referenced by <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02806">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains()</a>, and <a class="el" href="../../da/d8b/pdbpreprocessor_8cc_source.html#l02947">PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber()</a>.</p>
 <div class="fragment"><pre class="fragment">{
     residue_before_gap_ = residue_before_gap;
 }
@@ -842,7 +853,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ab79e4025b818d9389488a131f6d9a1cb_icgraph.png" border="0" usemap="#df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ab79e4025b818d9389488a131f6d9a1cb_icgraph" alt=""/></div>
 <map name="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ab79e4025b818d9389488a131f6d9a1cb_icgraph" id="df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue_ab79e4025b818d9389488a131f6d9a1cb_icgraph">
-<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#acb9fbfc3f13e1eb9a6ec38141aaf5e47" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="553,5,1015,35"/></map>
+<area shape="rect" id="node3" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="635,5,1096,35"/><area shape="rect" id="node5" href="../../d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="552,59,1179,88"/></map>
 </div>
 </p>
 
@@ -969,7 +980,7 @@ Here is the caller graph for this function:</div>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -983,7 +994,7 @@ Here is the caller graph for this function:</div>
       <li class="navelem"><a class="el" href="../../d5/d86/namespacePdbPreprocessorSpace.html">PdbPreprocessorSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html">PdbPreprocessorMissingResidue</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:25 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>

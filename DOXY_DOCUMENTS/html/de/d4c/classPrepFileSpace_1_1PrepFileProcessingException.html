@@ -189,7 +189,7 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../df/d63/prepfileprocessingexception_8cc_source.html#l00039">39</a> of file <a class="el" href="../../df/d63/prepfileprocessingexception_8cc_source.html">prepfileprocessingexception.cc</a>.</p>
+<p>Definition at line <a class="el" href="../../df/d63/prepfileprocessingexception_8cc_source.html#l00040">40</a> of file <a class="el" href="../../df/d63/prepfileprocessingexception_8cc_source.html">prepfileprocessingexception.cc</a>.</p>
 <div class="fragment"><pre class="fragment">{}
 </pre></div>
 </div>
@@ -213,9 +213,9 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="../../df/d63/prepfileprocessingexception_8cc_source.html#l00023">23</a> of file <a class="el" href="../../df/d63/prepfileprocessingexception_8cc_source.html">prepfileprocessingexception.cc</a>.</p>
 
-<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00010">gmml::dNotSet</a>, <a class="el" href="../../d4/dc3/prepfileprocessingexception_8hpp_source.html#l00042">line_number_</a>, <a class="el" href="../../d4/dc3/prepfileprocessingexception_8hpp_source.html#l00043">message_</a>, and <a class="el" href="../../d4/dc3/prepfileprocessingexception_8hpp_source.html#l00044">what_</a>.</p>
+<p>References <a class="el" href="../../dd/d3a/common_8hpp_source.html#l00018">gmml::dNotSet</a>, <a class="el" href="../../d4/dc3/prepfileprocessingexception_8hpp_source.html#l00042">line_number_</a>, <a class="el" href="../../d4/dc3/prepfileprocessingexception_8hpp_source.html#l00043">message_</a>, and <a class="el" href="../../d4/dc3/prepfileprocessingexception_8hpp_source.html#l00044">what_</a>.</p>
 <div class="fragment"><pre class="fragment">{
-    <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a17fb6a0eff25a1c0054d2b5471ee5883">what_</a> = <span class="stringliteral">&quot;ParameterFile: &quot;</span> + <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a6d9bc5625aca80ea1eacf17f1e3a934c">message_</a>;
+    <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a17fb6a0eff25a1c0054d2b5471ee5883">what_</a> = <span class="stringliteral">&quot;PrepFile: &quot;</span> + <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a6d9bc5625aca80ea1eacf17f1e3a934c">message_</a>;
     <span class="keywordflow">if</span> (<a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a532af7e55ad3b1c224d8a9fa3065f83e">line_number_</a> != <a class="code" href="../../d0/ddd/namespacegmml.html#a7b6381b88a47cfae1073a79a2b250895">dNotSet</a>)
     {
         std::stringstream ss;
@@ -224,9 +224,10 @@ Public Attributes</h2></td></tr>
             <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a17fb6a0eff25a1c0054d2b5471ee5883">what_</a> += <span class="stringliteral">&quot; (line &quot;</span> + ss.str() + <span class="stringliteral">&quot;)&quot;</span>;
             <span class="keywordflow">return</span> <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a17fb6a0eff25a1c0054d2b5471ee5883">what_</a>.c_str();
         }
-        <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
+        <span class="keywordflow">else</span>
+            <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;to_string: invalid conversion&quot;</span>);       <span class="comment">/// Invalid conversion from int to string</span>
 <span class="comment"></span>    }
-    <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;
+    <span class="keywordflow">return</span> <a class="code" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html#a17fb6a0eff25a1c0054d2b5471ee5883">what_</a>.c_str();
 }
 </pre></div>
 </div>
@@ -297,7 +298,7 @@ Public Attributes</h2></td></tr>
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -311,7 +312,7 @@ Public Attributes</h2></td></tr>
       <li class="navelem"><a class="el" href="../../dc/d2b/namespacePrepFileSpace.html">PrepFileSpace</a>      </li>
       <li class="navelem"><a class="el" href="../../de/d4c/classPrepFileSpace_1_1PrepFileProcessingException.html">PrepFileProcessingException</a>      </li>
 
-    <li class="footer">Generated on Wed Sep 3 2014 16:25:56 for gmmlNew by
+    <li class="footer">Generated on Fri Feb 27 2015 16:53:25 for gmmlNew by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.6.1 </li>
    </ul>
