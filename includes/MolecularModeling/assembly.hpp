@@ -11,6 +11,7 @@
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
@@ -137,7 +138,8 @@ namespace MolecularModeling
               * @param assembly_atoms Atoms of a residue in the assembly structure
               * @return List of all topological types of atoms in a residue of an assembly
               */
-            std::vector<PrepFileSpace::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms);
+            std::vector<PrepFileSpace::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
+                                                                                               PrepFileSpace::PrepFileResidue::Loop& loops, std::vector<int>& bond_index);
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////

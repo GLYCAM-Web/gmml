@@ -16,6 +16,7 @@ namespace MolecularModeling
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             typedef std::vector<Atom*> AtomVector;
+            typedef std::vector<bool> BooleanVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -39,8 +40,8 @@ namespace MolecularModeling
               */
             AtomVector GetNodeNeighbors();
             /*! \fn
-              * An accessor function in order to access to the id
-              * @return id_ attribute of the current object of this class
+              * An accessor function in order to know if the atom is visited
+              * @return visited_ attribute of the current object of this class
               */
             int GetId();
 

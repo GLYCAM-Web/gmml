@@ -45,7 +45,7 @@ namespace PrepFileSpace
               */
             typedef std::map<int, int> Loop;
             /*! \typedef
-              * A collection of four atom types
+              * A collection of four atom names
               */
             typedef std::vector<std::string> Dihedral;
             /*! \typedef

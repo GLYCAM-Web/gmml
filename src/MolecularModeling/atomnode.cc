@@ -17,10 +17,12 @@ Atom* AtomNode::GetAtom()
 {
     return atom_;
 }
+
 AtomNode::AtomVector AtomNode::GetNodeNeighbors()
 {
     return node_neighbors_;
 }
+
 int AtomNode::GetId()
 {
     return id_;
@@ -45,6 +47,7 @@ void AtomNode::AddNodeNeighbor(Atom *node_neighbor)
 {
     node_neighbors_.push_back(node_neighbor);
 }
+
 void AtomNode::SetId(int id)
 {
     id_ = id;
