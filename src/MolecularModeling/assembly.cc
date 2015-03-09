@@ -683,7 +683,6 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         else
             ss << prep_residue_name << "-";
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-        cout << prep_residue->GetName() << endl;
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
             Atom* assembly_atom = new Atom();
@@ -738,7 +737,6 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
                                                                                              prep_atom->GetAngle(), prep_atom->GetDihedral());
                 cartesian_coordinate_list.push_back(coordinate);
 
-                cout << "--------------------------------" << endl;
                 assembly_atom->AddCoordinate(coordinate);
             }
             else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
