@@ -72,6 +72,7 @@ namespace MolecularModeling
               * @param id_ The id attribute of the current object
               */
             void SetId(int id);
+            void RemoveNodeNeighbor(Atom* node_neighbor);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

@@ -79,6 +79,8 @@ namespace MolecularModeling
               */
             void Print(std::ostream& out = std::cout);
 
+            void PrintHet(std::ostream& out = std::cout);
+
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //

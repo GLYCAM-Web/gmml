@@ -1,4 +1,5 @@
 #include <math.h>
+#include <fstream>
 
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
@@ -239,6 +240,37 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
         {
             Atom* atom = (*it1);
             all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    return all_atoms_of_assembly;
+}
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
+{
+    AtomVector all_atoms_of_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
+        for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        Residue* residue = (*it);
+        if(residue->GetName().compare("HOH") != 0)
+        {
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+            {
+                Atom* atom = (*it1);
+                if(atom->GetDescription().find("Het;") != string::npos)
+                    all_atoms_of_assembly.push_back(atom);
+            }
         }
     }
     return all_atoms_of_assembly;
@@ -953,7 +985,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
         prep_residue->SetCharge(prep_residue->CalculatePrepResidueCharge());
         prep_residues[assembly_residue->GetName()] = prep_residue;
     }
-//    prep_file->SetPath();
+    //    prep_file->SetPath();
     prep_file->SetResidues(prep_residues);
     return prep_file;
 }
@@ -3123,7 +3155,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 stringstream reverse_sss;
                 reverse_sss << atom_type2 << "-" << atom_type1;
                 if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
-                   find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end()  )
+                        find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end()  )
                 {
                     TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
                     ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
@@ -3203,7 +3235,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                             if(key2.str().compare(key4.str()) != 0)
                             {
                                 ExtractTopologyDihedralTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
-                                                                 inserted_dihedral_types, dihedral_type_counter, topology_file, dihedrals);
+                                                                         inserted_dihedral_types, dihedral_type_counter, topology_file, dihedrals);
                                 ExtractTopologyDihedralsFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
                                                                      inserted_dihedrals, inserted_dihedral_types, dihedrals, topology_file);
 
@@ -3229,17 +3261,17 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
 
 
 
-//    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
-//    {
-//        Residue* assembly_residue = *it;
-//        AtomVector assembly_atoms = assembly_residue->GetAtoms();
-//        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
-//        {
-//            Atom* assembly_atom = (*it1);
+    //    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+    //    {
+    //        Residue* assembly_residue = *it;
+    //        AtomVector assembly_atoms = assembly_residue->GetAtoms();
+    //        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
+    //        {
+    //            Atom* assembly_atom = (*it1);
 
 
-//        }
-//    }
+    //        }
+    //    }
     topology_assembly->SetAssemblyName(ss.str());
     topology_file->SetAtomPairs(pairs);
     topology_file->SetAssembly(topology_assembly);
@@ -4700,7 +4732,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     int improper_counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -4771,7 +4803,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
             string neighbor2_name = neighbor2->GetName();
             string neighbor3_name = neighbor3->GetName();
             vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                          neighbor3->GetAtomType(), atom->GetAtomType());
+                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
 
             ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
             for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
@@ -4793,7 +4825,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
             }
         }
     }
-//    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
+    //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
     return counter/2 + improper_counter;
 }
 
@@ -4803,7 +4835,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     int improper_counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -4876,7 +4908,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
             string neighbor2_name = neighbor2->GetName();
             string neighbor3_name = neighbor3->GetName();
             vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                          neighbor3->GetAtomType(), atom->GetAtomType());
+                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
 
             ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
             for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
@@ -4900,7 +4932,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
             }
         }
     }
-//    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
+    //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
     return counter/2 + improper_counter;
 }
 
@@ -4910,7 +4942,7 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     int improper_counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -4947,7 +4979,7 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
                             for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
                             {
                                 vector<string> atom_types = (*it4);
-//                                cout << atom_types.at(0) << atom_types.at(1) << atom_types.at(2) << atom_types.at(3) << endl;
+                                //                                cout << atom_types.at(0) << atom_types.at(1) << atom_types.at(2) << atom_types.at(3) << endl;
                                 if(dihedrals[atom_types] != NULL)
                                 {
                                     ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
@@ -4986,7 +5018,7 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
             }
         }
     }
-//    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
+    //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
     return counter/2 + improper_counter;
 }
 
@@ -4996,7 +5028,7 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -5057,32 +5089,32 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
                                         break;
                                     }
                                 }
-//                                else
-//                                {
-//                                    atom_types[0] = neighbor_of_neighbor_of_neighbor->GetAtomType();
-//                                    atom_types[1] = neighbor_of_neighbor->GetAtomType();
-//                                    atom_types[2] = neighbor->GetAtomType();
-//                                    atom_types[3] = atom->GetAtomType();
-//                                    if(dihedrals[atom_types] != NULL)
-//                                    {
-//                                        stringstream ss6;
-//                                        ss6 << atom->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor_of_neighbor->GetAtomType();
-//                                        stringstream ss7;
-//                                        ss7 << neighbor_of_neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << atom->GetAtomType();
-//                                        if(find(type_list.begin(), type_list.end(), ss6.str()) == type_list.end() &&
-//                                                find(type_list.begin(), type_list.end(), ss7.str()) == type_list.end() )
-//                                        {
-//                                            type_list.push_back(ss7.str());
-//                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
-//                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
-//                                            counter += terms_count;
-//                                        }
-//                                    }
-//                                    else
-//                                    {
-//                                        not_found_counter++;
-//                                    }
-//                                }
+                                //                                else
+                                //                                {
+                                //                                    atom_types[0] = neighbor_of_neighbor_of_neighbor->GetAtomType();
+                                //                                    atom_types[1] = neighbor_of_neighbor->GetAtomType();
+                                //                                    atom_types[2] = neighbor->GetAtomType();
+                                //                                    atom_types[3] = atom->GetAtomType();
+                                //                                    if(dihedrals[atom_types] != NULL)
+                                //                                    {
+                                //                                        stringstream ss6;
+                                //                                        ss6 << atom->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor_of_neighbor->GetAtomType();
+                                //                                        stringstream ss7;
+                                //                                        ss7 << neighbor_of_neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << atom->GetAtomType();
+                                //                                        if(find(type_list.begin(), type_list.end(), ss6.str()) == type_list.end() &&
+                                //                                                find(type_list.begin(), type_list.end(), ss7.str()) == type_list.end() )
+                                //                                        {
+                                //                                            type_list.push_back(ss7.str());
+                                //                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
+                                //                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                                //                                            counter += terms_count;
+                                //                                        }
+                                //                                    }
+                                //                                    else
+                                //                                    {
+                                //                                        not_found_counter++;
+                                //                                    }
+                                //                                }
                             }
                         }
                     }
@@ -5121,8 +5153,8 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
             }
         }
     }
-//    cout << not_found_counter << " dihedrals not found in parameter file" << endl;
-//    cout << type_list.size() << endl;
+    //    cout << not_found_counter << " dihedrals not found in parameter file" << endl;
+    //    cout << type_list.size() << endl;
     return counter;
 }
 
@@ -5461,9 +5493,9 @@ int Assembly::CountNumberOfExcludedAtoms()
             {
                 Atom* neighbor_of_neighbor = (*it2);
                 stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();                
+                ss2 << neighbor_of_neighbor->GetId();
                 if(ss.str().compare(ss2.str()) != 0)
-                {                    
+                {
                     stringstream second_order_interaction;
                     stringstream reverse_second_order_interaction;
                     second_order_interaction << ss.str() << "-" << ss2.str();
@@ -5530,6 +5562,375 @@ void Assembly::ClearAssembly()
     //    this->model_index_ = 0;
 }
 
+void Assembly::CycleDetection()
+{
+    vector<vector<string> > cycles = vector<vector<string> >();
+    vector<string> cycle = vector<string>();
+    //    vector<string> visited_atoms = vector<string>();
+    vector<vector<string> > cycle_permutations = vector<vector<string> >();
+    ResidueVector residues = GetAllResiduesOfAssembly();
+    for(ResidueVector:: iterator res = residues.begin(); res != residues.end(); res++)
+    {
+        Residue* residue = (*res);
+        if(residue->GetName().compare("HOH") == 0)
+            continue;
+        cout << "residue: " << residue->GetId() << endl;
+        AtomVector atoms = residue->GetAtoms();
+        for(AtomVector:: iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        {
+            cycle.clear();
+            Atom* atom1 = (*it1);
+            string id1 = atom1->GetId();
+            cycle.push_back(id1);
+            AtomNode* node1 = atom1->GetNode();
+            AtomVector atom1_neigbors = node1->GetNodeNeighbors();
+            for(AtomVector:: iterator it2 = atom1_neigbors.begin(); it2 != atom1_neigbors.end(); it2++)
+            {
+                Atom* atom2 = (*it2);
+                string id2 = atom2->GetId();
+                cycle.push_back(id2);
+                AtomNode* node2 = atom2->GetNode();
+                AtomVector atom2_neigbors = node2->GetNodeNeighbors();
+                for(AtomVector:: iterator it3 = atom2_neigbors.begin(); it3 != atom2_neigbors.end(); it3++)
+                {
+                    Atom* atom3 = (*it3);
+                    string id3 = atom3->GetId();
+                    if(id1.compare(id3) != 0)
+                    {
+                        cycle.push_back(id3);
+                        AtomNode* node3 = atom3->GetNode();
+                        AtomVector atom3_neigbors = node3->GetNodeNeighbors();
+                        for(AtomVector:: iterator it4 = atom3_neigbors.begin(); it4 != atom3_neigbors.end(); it4++)
+                        {
+                            Atom* atom4 = (*it4);
+                            string id4 = atom4->GetId();
+                            if(id2.compare(id4) != 0)
+                            {
+                                cycle.push_back(id4);
+                                AtomNode* node4 = atom4->GetNode();
+                                AtomVector atom4_neigbors = node4->GetNodeNeighbors();
+                                for(AtomVector:: iterator it5 = atom4_neigbors.begin(); it5 != atom4_neigbors.end(); it5++)
+                                {
+                                    Atom* atom5 = (*it5);
+                                    string id5 = atom5->GetId();
+                                    if(id3.compare(id5) != 0)
+                                    {
+                                        cycle.push_back(id5);
+                                        AtomNode* node5 = atom5->GetNode();
+                                        AtomVector atom5_neigbors = node5->GetNodeNeighbors();
+                                        for(AtomVector:: iterator it6 = atom5_neigbors.begin(); it6 != atom5_neigbors.end(); it6++)
+                                        {
+                                            Atom* atom6 = (*it6);
+                                            string id6 = atom6->GetId();
+                                            if(id4.compare(id6) != 0)
+                                            {
+                                                AtomNode* node6 = atom6->GetNode();
+                                                AtomVector atom6_neigbors = node6->GetNodeNeighbors();
+                                                for(AtomVector:: iterator it7 = atom6_neigbors.begin(); it7 != atom6_neigbors.end(); it7++)
+                                                {
+                                                    Atom* atom7 = (*it7);
+                                                    string id7 = atom7->GetId();
+                                                    if(id1.compare(id7) == 0)
+                                                    {
+                                                        cout << id1 << ";" << id7 << endl;
+                                                        cycle.push_back(id6);
+                                                        cycle_permutations = CreateAllCyclePermutations(id1, id2, id3, id4, id5, id6);
+                                                        bool is_cycle_existed = false;
+                                                        for(vector<vector<string> >:: iterator perms = cycle_permutations.begin(); perms != cycle_permutations.end(); perms++)
+                                                        {
+                                                            if(is_cycle_existed)
+                                                                break;
+                                                            vector<string> perm = (*perms);
+                                                            stringstream ss_perm;
+                                                            ss_perm << perm.at(0) << "; " << perm.at(1) << "; " << perm.at(2) << "; " <<
+                                                                       perm.at(3) << "; " << perm.at(4) << "; " << perm.at(5);
+                                                            for(vector<vector<string> >:: iterator c = cycles.begin(); c != cycles.end(); c++)
+                                                            {
+                                                                vector<string> existing_cycle = (*c);
+                                                                stringstream ss_cycle;
+                                                                ss_cycle << existing_cycle.at(0) << "; " << existing_cycle.at(1) << "; " << existing_cycle.at(2) << "; " <<
+                                                                            existing_cycle.at(3) << "; " << existing_cycle.at(4) << "; " << existing_cycle.at(5);
+                                                                if(ss_perm.str().compare(ss_cycle.str()) == 0)
+                                                                {
+                                                                    is_cycle_existed = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        if(!is_cycle_existed)
+                                                        {
+                                                            cycles.push_back(cycle);
+
+                                                            cout << cycle.at(0) << "; " << cycle.at(1) << "; " << cycle.at(2) << "; " <<
+                                                                    cycle.at(3) << "; " << cycle.at(4) << "; " << cycle.at(5) << endl;
+                                                            break;
+                                                        }
+                                                    }
+                                                    //                                                    cycle.pop_back();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if(!cycle.empty())
+                                        cycle.pop_back();
+                                }
+                            }
+                            if(!cycle.empty())
+                                cycle.pop_back();
+                        }
+                    }
+                    if(!cycle.empty())
+                        cycle.pop_back();
+                }
+                if(!cycle.empty())
+                    cycle.pop_back();
+            }
+        }
+    }
+}
+std::vector<std::vector<std::string> > Assembly::CreateAllCyclePermutations(string id1, string id2, string id3, string id4, string id5, string id6)
+{
+    vector<vector<string> > all_permutations = vector<vector<string> >();
+    vector<string> order = vector<string>();
+    vector<string> rev_order = vector<string>();
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    return all_permutations;
+}
+
+Assembly::AtomVectorVector Assembly::DetectCyclesByDFS(string cycle_size)
+{
+    int counter = 0;
+    vector<string> size_vector = Split(cycle_size, "|");
+
+    AtomStatusMap atom_status_map = AtomStatusMap();
+    AtomIdAtomMap atom_parent_map = AtomIdAtomMap();
+    AtomIdAtomMap src_dest_map = AtomIdAtomMap();
+    AtomVector cycle = AtomVector();
+    AtomVectorVector  cycles = AtomVectorVector();
+    AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        atom_status_map[atom->GetId()] = gmml::UNVISITED;
+        Atom* parent = new Atom();
+        parent->SetId("null");
+        atom_parent_map[atom->GetId()] = parent;
+    }
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        if(atom_status_map[atom->GetId()] == gmml::UNVISITED)
+        {
+            DFSVisit(atoms, atom_status_map, atom_parent_map, atom, counter, src_dest_map);
+        }
+    }
+    cout << "Number of cycles found: " << counter << endl;
+    for(AtomIdAtomMap::iterator it = src_dest_map.begin(); it != src_dest_map.end(); it++)
+    {
+        string source_id = (*it).first;
+        Atom* destination = (*it).second;
+        cycle.clear();
+        ReturnCycleAtoms(source_id, destination, atom_parent_map, cycle);
+        if(find(size_vector.begin(), size_vector.end(), ConvertT(cycle.size())) != size_vector.end())
+            cycles.push_back(cycle);
+    }
+    for(AtomVectorVector::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        AtomVector cycle_atoms = (*it);
+        cout << "cycles with size: " << cycle_size << endl;
+        for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
+        {
+            Atom* cycle_atom = (*it1);
+            cout << cycle_atom->GetId() << ";";
+        }
+        cout << endl;
+        Atom* anomeric = FindAnomericCarbon(cycle_atoms);
+    }
+    return cycles;
+}
+
+void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom *atom, int& counter, AtomIdAtomMap& src_dest_map)
+{
+    atom_status_map[atom->GetId()] = gmml::VISITED;
+    AtomNode* node = atom->GetNode();
+    AtomVector neighbors = node->GetNodeNeighbors();
+
+    for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+    {
+        Atom* neighbor = (*it);
+        if(neighbor->GetDescription().find("Het;") != string::npos)
+        {
+            if(atom_status_map[neighbor->GetId()] == gmml::UNVISITED)
+            {
+                atom_parent_map[neighbor->GetId()] = atom;
+                DFSVisit(atoms, atom_status_map, atom_parent_map, neighbor, counter, src_dest_map);
+            }
+            if(atom_status_map[neighbor->GetId()] == gmml::VISITED)
+            {
+                Atom* parent = atom_parent_map[atom->GetId()];
+                if(neighbor->GetId().compare(parent->GetId()) != 0)///making sure we are not tracking back to the previous atom which is the parent of neigbor (current atom)
+                {
+                    counter++;
+                    src_dest_map[neighbor->GetId()] = atom;
+                }
+            }
+        }
+    }
+    atom_status_map[atom->GetId()] = gmml::DONE;
+}
+
+void Assembly::ReturnCycleAtoms(string src_id, Atom *current_atom, AtomIdAtomMap &atom_parent_map, AtomVector &cycle)
+{
+    cycle.push_back(current_atom);
+    Atom* parent = atom_parent_map[current_atom->GetId()];
+    if(src_id.compare(parent->GetId()) == 0)
+    {
+        cycle.push_back(parent);
+        return;
+    }
+    ReturnCycleAtoms(src_id, parent, atom_parent_map, cycle);
+}
+
+void Assembly::RemoveFusedCycles(AtomVectorVector &cycles)
+{
+
+}
+
+Atom* Assembly::FindAnomericCarbon(AtomVector cycle)
+{
+    Atom* anomeric_carbon = new Atom();
+    for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
+    {
+        Atom* cycle_atom = (*it);
+        if((cycle_atom->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))///find oxygen in ring
+        {
+            AtomNode* node = cycle_atom->GetNode();
+            AtomVector neighbors = node->GetNodeNeighbors();
+
+            Atom* o_neighbor1 = neighbors.at(0);
+            AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
+            AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen neighbor
+            {
+                Atom* neighbor1_neighbor = (*it1);
+                if((neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1)))))
+                {
+                    anomeric_carbon = o_neighbor1;
+                    cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
+                    return anomeric_carbon;
+                }
+            }
+
+            Atom* o_neighbor2 = neighbors.at(1);
+            AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
+            AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
+            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen neighbor
+            {
+                Atom* neighbor2_neighbor = (*it2);
+                if((neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1)))))
+                {
+                    anomeric_carbon = o_neighbor2;
+                    cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
+                    return anomeric_carbon;
+                }
+            }
+        }
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
@@ -5553,4 +5954,101 @@ void Assembly::Print(ostream &out)
             residue->Print(out);
         }
     }
+}
+
+void Assembly::PrettyPrintHet(ostream &out)
+{
+    out << "===================== " << "PDB" << " ============================" << endl;
+    out << "PDB file name: " << source_file_ << endl;
+    if(assemblies_.size() != 0)
+    {
+        for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+        {
+            Assembly* assembly = (*it);
+            assembly->PrettyPrintHet(out);
+        }
+    }
+    else
+    {
+        for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+        {
+            Residue* residue = (*it);
+            string name = residue->GetName();
+            if(name.compare("HOH") != 0)
+                residue->PrettyPrintHet(out);
+        }
+    }
+}
+
+void Assembly::PrintHetResidues(ostream &out)
+{
+    if(assemblies_.size() != 0)
+    {
+        for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+        {
+            Assembly* assembly = (*it);
+            assembly->PrintHetResidues(out);
+        }
+    }
+    else
+    {
+        for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+        {
+            Residue* residue = (*it);
+            string name = residue->GetName();
+            if(name.compare("HOH") != 0)
+                residue->PrintHetResidues(out);
+        }
+    }
+}
+void Assembly::PrintHetAtoms(ostream &out)
+{
+    if(assemblies_.size() != 0)
+    {
+        for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+        {
+            Assembly* assembly = (*it);
+            assembly->PrintHetAtoms(out);
+        }
+    }
+    else
+    {
+        for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+        {
+            Residue* residue = (*it);
+            string name = residue->GetName();
+            if(name.compare("HOH") != 0)
+                residue->PrintHetAtoms(out);
+        }
+    }
+}
+
+void Assembly::WriteHetResidues(string file_name)
+{
+    ofstream out_file;
+    out_file.open(file_name.c_str());
+
+    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        Residue* residue = (*it);
+        string name = residue->GetName();
+        if(name.compare("HOH") != 0)
+            residue->WriteHetResidues(out_file);
+    }
+    out_file.close();
+}
+
+void Assembly::WriteHetAtoms(string file_name)
+{
+    ofstream out_file;
+    out_file.open(file_name.c_str());
+
+    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        Residue* residue = (*it);
+        string name = residue->GetName();
+        if(name.compare("HOH") != 0)
+            residue->WriteHetAtoms(out_file);
+    }
+
 }

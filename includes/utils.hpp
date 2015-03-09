@@ -79,6 +79,18 @@ namespace gmml
     }
 
     /*! \fn
+      * Convert T (the given type) to string
+      * @param T the given type has to be converted to string
+      * @return The string version of the given type
+      */
+    template<typename T>
+    std::string ConvertT(const T& given_type) {
+        std::stringstream ss;
+        ss << given_type;
+        return ss.str();
+    }
+
+    /*! \fn
       * Expand a given line to a desired length by adding space at the end of the original one
       * @param line A line that have to be in a defined length
       * @param length Thel fixed length that the line has to be

@@ -98,7 +98,7 @@ PdbFile::PdbFile()
     sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
 }
 
-PdbFile::PdbFile(const std::string &pdb_file)
+PdbFile::PdbFile(const std::string &pdb_file, bool is_sugar_identification)
 {
     path_ = pdb_file;
     header_ = NULL;
@@ -148,6 +148,11 @@ PdbFile::PdbFile(const std::string &pdb_file)
         {
             temp = line.substr(0,6);
             temp = Trim(temp);
+            if(is_sugar_identification)
+            {
+                if(temp.compare("HETATM") != 0)
+                    continue;
+            }
             if(temp.find("END") != string::npos || temp.compare("END") == 0)
                 break;
             else if(!line.empty())
@@ -155,21 +160,37 @@ PdbFile::PdbFile(const std::string &pdb_file)
         }
     }
     in_file.close();
+    stringstream pdb_for_sugar_identification;
+    int index = pdb_file.find_last_of('.', pdb_file.length() - 1);
+    pdb_for_sugar_identification << pdb_file.substr(0, index) << "_sugar_identification.pdb";
     if(temp.find("END") == string::npos || temp.compare("END") != 0)
     {
         std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
+        if(is_sugar_identification)
+        {
+            out_file.open(pdb_for_sugar_identification.str().c_str());
+        }
+        else
+            out_file.open(pdb_file.c_str());
         out_file << ss.str() << "END";
         out_file.close();
     }
     else
     {
         std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
+        if(is_sugar_identification)
+        {
+            out_file.open(pdb_for_sugar_identification.str().c_str());
+        }
+        else
+            out_file.open(pdb_file.c_str());
         out_file << ss.str() << temp;
         out_file.close();
     }
-    in_file.open(pdb_file.c_str());
+    if(is_sugar_identification)
+        in_file.open(pdb_for_sugar_identification.str().c_str());
+    else
+        in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
