@@ -1,6 +1,7 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
+#include "../../includes/MolecularModeling/atomnode.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -129,5 +130,115 @@ void Residue::Print(ostream &out)
     {
         Atom* atom = *it;
         atom->Print(out);
+    }
+}
+
+void Residue::PrettyPrintHet(ostream &out)
+{
+    out << "------------------------ " << "Residue " << " --------------------------" << endl;
+    out << " ID: " << id_ << endl;
+    out << " Name: " << name_ << endl;
+//    out << " Chemical type: " << chemical_type_ << endl;
+//    out << " Description: " << description_ << endl;
+    out << " ATOMS: ";
+
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        out << atom->GetId() << ", ";
+    }
+
+    out << endl;
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        out << "------------------------ " << "Atom" << " --------------------------" << endl;
+        out << " ID: " << atom->GetId() << endl;
+        out << " Name: " << atom->GetName() << endl;
+        out << " Atom type: " << atom->GetAtomType() << endl;
+        out << " Charge: " << atom->GetCharge() << endl;
+//        out << " Chemical Type: " << atom->GetChemicalType() << endl;
+//        out << " Description: " << atom->GetDescription() << endl;
+        out << " Mass: " << atom->GetMass() << endl;
+        Geometry::Coordinate* coords = atom->GetCoordinates().at(0);
+        out << " Coordinates" <<  " X: " << coords->GetX() << ", Y: " << coords->GetY() << ", Z: " << coords->GetZ() << endl;
+        out << " Neighbors: ";
+        AtomNode* node = atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+            Atom* neighbor = *it1;
+            out << neighbor->GetId() << ", ";
+        }
+        out << endl;
+        atom->PrintHet(out);
+    }
+}
+
+void Residue::PrintHetResidues(ostream &out)
+{
+    out << id_ << ";" << name_ << ";";
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        out << atom->GetId() << ",";
+    }
+    out << endl;
+}
+
+void Residue::PrintHetAtoms(ostream &out)
+{
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        out << atom->GetId() << ";" << atom->GetName() << ";" << atom->GetAtomType() << ";" << atom->GetCharge() << ";" << atom->GetMass() << ";";
+        Geometry::Coordinate* coords = atom->GetCoordinates().at(0);
+        out << coords->GetX() << "," << coords->GetY() << "," << coords->GetZ() << ";";
+
+        AtomNode* node = atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+            Atom* neighbor = *it1;
+            out << neighbor->GetId() << ",";
+        }
+        out << endl;
+    }
+}
+
+void Residue::WriteHetResidues(ofstream& out)
+{
+    out << id_ << ";" << name_ << ";";
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        if (it == (atoms_.end() - 1) )
+            out << atom->GetId();
+        else
+            out << atom->GetId() << ",";
+    }
+    out << endl;
+}
+
+void Residue::WriteHetAtoms(ofstream& out)
+{
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        out << atom->GetId() << ";" << atom->GetName() << ";" << atom->GetAtomType() << ";" << atom->GetCharge() << ";" << atom->GetMass() << ";";
+        Geometry::Coordinate* coords = atom->GetCoordinates().at(0);
+        out << coords->GetX() << "," << coords->GetY() << "," << coords->GetZ() << ";";
+
+        AtomNode* node = atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+            Atom* neighbor = *it1;
+            if(it1 == (neighbors.end() - 1))
+                out << neighbor->GetId();
+            else
+                out << neighbor->GetId() << ",";
+        }
+        out << endl;
     }
 }

@@ -49,6 +49,15 @@ void AtomNode::SetId(int id)
 {
     id_ = id;
 }
+void AtomNode::RemoveNodeNeighbor(Atom *node_neighbor)
+{
+    for(AtomVector::iterator it = node_neighbors_.begin(); it != node_neighbors_.end(); it++)
+    {
+        Atom* atom = (*it);
+        if(atom->GetId().compare(node_neighbor->GetId()) == 0)
+                node_neighbors_.erase(it);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
