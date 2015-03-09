@@ -27,7 +27,7 @@ PrepFile::PrepFile(const std::string& prep_file)
         throw PrepFileProcessingException(__LINE__, "Prep file not found");
     }
     Read(in_file);
-    in_file.close();            /// Close the parameter files
+    in_file.close();            /// Close the prep files
 }
 
 PrepFile::PrepFile()
@@ -115,7 +115,7 @@ void PrepFile::Read(ifstream &in_file)
     while (residue != NULL)
     {
         residues_[residue->name_] = residue;
-        residue = ProcessResidueSection(in_file);
+        residue = ProcessResidueSection(in_file);        
     }
 }
 
@@ -151,10 +151,10 @@ void PrepFile::BuildPrepFile(ofstream &stream)
            << endl;
     for(ResidueMap::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        PrepFileResidue* residue = (*it).second;       
+        PrepFileResidue* residue = (*it).second;
         stream << residue->GetTitle() << endl << endl
                << left << setw(4) << residue->GetName() << " " << right << setw(3) << residue->GetStringFormatOfCoordinateType() << " "
-               << setw(1) << residue->GetStringFormatOfOutputFormat() << endl
+               << setw(1) << residue->GetOutputFormat() << endl
                << residue->GetStringFormatOfGeometryType() << " " << residue->GetStringFormatOfDummyAtomOmission() << " "
                << residue->GetDummyAtomType() << " " << residue->GetStringFormatOfDummyAtomPosition() << endl
                << right << setw(8) << fixed << setprecision(3) << residue->GetCharge() << endl;

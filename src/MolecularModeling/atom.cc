@@ -11,8 +11,10 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Atom::Atom()
+Atom::Atom() : name_(""), chemical_type_(""), element_symbol_(""), description_(""), id_("")
 {
+    coordinates_ = CoordinateVector();
+    residue_ = NULL;
     node_ = NULL;
 }
 

@@ -109,6 +109,24 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
     vector<PrepFileAtom*> stack = vector<PrepFileAtom*>();
     vector<int> number_of_bonds = vector<int>();
 
+
+    for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
+    {
+        int from = (*it).first;
+        int to = (*it).second;
+
+        bonded_atoms_map[from].push_back(to);
+        bonded_atoms_map[to].push_back(from);
+    }
+
+    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        PrepFileAtom* atom = *it;
+        bonded_atoms_map[atom->GetIndex()].push_back(atom->GetBondIndex());
+        bonded_atoms_map[atom->GetBondIndex()].push_back(atom->GetIndex());
+    }
+
+  /*
     for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileAtom* atom = (*it);
@@ -229,14 +247,8 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
             }
         }
     }
-    for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
-    {
-        int from = (*it).first;
-        int to = (*it).second;
+*/
 
-        bonded_atoms_map[from].push_back(to);
-        bonded_atoms_map[to].push_back(from);
-    }
     return bonded_atoms_map;
 }
 string PrepFileResidue::GetAtomNameByIndex(int atom_index)
@@ -538,7 +550,7 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     PrepFileResidue *residue = new PrepFileResidue();
 
     getline(in_file, line);             /// Read the first line of a residue section
-    if (Trim(line) == "STOP")           /// End of file
+    if (Trim(line).find("STOP") != string::npos)           /// End of file
         return NULL;
 
     residue->title_ = line;             /// Set title of the residue
@@ -546,11 +558,9 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     getline(in_file, line);             /// Read the next line
 
     ss.str(line);                       /// Create an stream from the read line
-
     /// Residue name extraction from the stream of the read line
     name = ExtractResidueName(ss);
     residue->name_ = name;
-
     /// Coordinate type extraction from the stream of the read line
     coordinate_type = ExtractResidueCoordinateType(ss);
     residue->coordinate_type_ = coordinate_type;
