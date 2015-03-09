@@ -1,5 +1,5 @@
 #############################################################################
-# Makefile for building: libgmml-refactoring.so.1.0.0
+# Makefile for building: libgmml.so.1.0.0
 # Project:  gmml
 # Template: lib
 #############################################################################
@@ -12,7 +12,7 @@ CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIC
 CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIC
 INCPATH       = -I. -Iincludes/ParameterSet/ParameterFileSpace -Iincludes -Iincludes/Geometry -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/FileSet/CoordinateFileSpace -Iincludes/FileSet/PdbFileSpace -Iincludes/Resolver/PdbPreprocessor -Iincludes/FileSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/Geometry/InternalCoordinate -I.
 LINK          = g++
-LFLAGS        = -m64 -Wl,-O1 -shared -Wl,-soname,libgmml-refactoring.so.1
+LFLAGS        = -m64 -Wl,-O1 -shared -Wl,-soname,libgmml.so.1
 LIBS          = $(SUBLIBS)  -L/usr/lib/x86_64-linux-gnu -lpthread 
 AR            = ar cqs
 RANLIB        = 
@@ -244,12 +244,12 @@ OBJECTS       = coordinate.o \
 		pdbpreprocessorunrecognizedheavyatom.o \
 		pdbpreprocessorunrecognizedresidue.o
 DESTDIR       = 
-TARGET        = libgmml-refactoring.so.1.0.0
-TARGETA       = libgmml-refactoring.a
-TARGETD       = libgmml-refactoring.so.1.0.0
-TARGET0       = libgmml-refactoring.so
-TARGET1       = libgmml-refactoring.so.1
-TARGET2       = libgmml-refactoring.so.1.0
+TARGET        = libgmml.so.1.0.0
+TARGETA       = libgmml.a
+TARGETD       = libgmml.so.1.0.0
+TARGET0       = libgmml.so
+TARGET1       = libgmml.so.1
+TARGET2       = libgmml.so.1.0
 
 first: all
 ####### Implicit rules
