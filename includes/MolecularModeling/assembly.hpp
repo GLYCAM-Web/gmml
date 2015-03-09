@@ -35,7 +35,8 @@ namespace MolecularModeling
             typedef std::vector<Geometry::Coordinate*> CoordinateVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
-            typedef std::vector<AtomVector > AtomVectorVector;
+//            typedef std::vector<AtomVector > AtomVectorVector;
+            typedef std::map<std::string, AtomVector> CycleMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -531,10 +532,11 @@ namespace MolecularModeling
             void CycleDetection();
             std::vector<std::vector<std::string> > CreateAllCyclePermutations(std::string id1, std::string id2, std::string id3, std::string id4, std::string id5, std::string id6);
 
-            AtomVectorVector DetectCyclesByDFS(std::string cycle_size = "5|6");
+//            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
+            CycleMap DetectCyclesByDFS();
             void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
-            void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle);
-            void RemoveFusedCycles(AtomVectorVector& cycles);
+            void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
+            void RemoveFusedCycles(CycleMap& cycles);
             Atom* FindAnomericCarbon(AtomVector cycle);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

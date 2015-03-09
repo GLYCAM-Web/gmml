@@ -5790,16 +5790,17 @@ std::vector<std::vector<std::string> > Assembly::CreateAllCyclePermutations(stri
     return all_permutations;
 }
 
-Assembly::AtomVectorVector Assembly::DetectCyclesByDFS(string cycle_size)
+Assembly::CycleMap Assembly::DetectCyclesByDFS()
 {
     int counter = 0;
-    vector<string> size_vector = Split(cycle_size, "|");
+//    vector<string> size_vector = Split(cycle_size, "|");
 
     AtomStatusMap atom_status_map = AtomStatusMap();
     AtomIdAtomMap atom_parent_map = AtomIdAtomMap();
     AtomIdAtomMap src_dest_map = AtomIdAtomMap();
     AtomVector cycle = AtomVector();
-    AtomVectorVector  cycles = AtomVectorVector();
+    CycleMap cycles = CycleMap();
+
     AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
@@ -5823,20 +5824,22 @@ Assembly::AtomVectorVector Assembly::DetectCyclesByDFS(string cycle_size)
         string source_id = (*it).first;
         Atom* destination = (*it).second;
         cycle.clear();
-        ReturnCycleAtoms(source_id, destination, atom_parent_map, cycle);
-        if(find(size_vector.begin(), size_vector.end(), ConvertT(cycle.size())) != size_vector.end())
-            cycles.push_back(cycle);
+        stringstream cycle_stream;
+        ReturnCycleAtoms(source_id, destination, atom_parent_map, cycle, cycle_stream);
+//        if(find(size_vector.begin(), size_vector.end(), ConvertT(cycle.size())) != size_vector.end())
+        cycles[cycle_stream.str()] = cycle;
     }
-    for(AtomVectorVector::iterator it = cycles.begin(); it != cycles.end(); it++)
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
-        AtomVector cycle_atoms = (*it);
-        cout << "cycles with size: " << cycle_size << endl;
-        for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
-        {
-            Atom* cycle_atom = (*it1);
-            cout << cycle_atom->GetId() << ";";
-        }
-        cout << endl;
+        string cycle_atoms_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        cout << cycle_atoms_str << endl;
+//        for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
+//        {
+//            Atom* cycle_atom = (*it1);
+//            cout << cycle_atom->GetId() << ";";
+//        }
+//        cout << endl;
         Atom* anomeric = FindAnomericCarbon(cycle_atoms);
     }
     return cycles;
@@ -5872,21 +5875,75 @@ void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomId
     atom_status_map[atom->GetId()] = gmml::DONE;
 }
 
-void Assembly::ReturnCycleAtoms(string src_id, Atom *current_atom, AtomIdAtomMap &atom_parent_map, AtomVector &cycle)
+void Assembly::ReturnCycleAtoms(string src_id, Atom *current_atom, AtomIdAtomMap &atom_parent_map, AtomVector &cycle, stringstream &cycle_stream)
 {
     cycle.push_back(current_atom);
+    cycle_stream << current_atom->GetId() << "-";
     Atom* parent = atom_parent_map[current_atom->GetId()];
     if(src_id.compare(parent->GetId()) == 0)
     {
         cycle.push_back(parent);
+        cycle_stream << parent->GetId();
         return;
     }
-    ReturnCycleAtoms(src_id, parent, atom_parent_map, cycle);
+    ReturnCycleAtoms(src_id, parent, atom_parent_map, cycle, cycle_stream);
 }
 
-void Assembly::RemoveFusedCycles(AtomVectorVector &cycles)
+void Assembly::RemoveFusedCycles(CycleMap &cycles)
 {
+//    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+//    {
+//        AtomVector cycle_i = (*it).second;
+//        for(AtomVector::iterator it1 = cycle_i.begin(); it1 != cycle_i.end(); it1++)
+//        {
+//            Atom* atom_i = (*it1);
+//        }
 
+//        for(CycleMap::iterator it1 = cycles.begin(); it1 != cycles.end(); it1++)
+//        {
+//            if(it != it1)///comparing cycle i with all the other cycles except itself
+//            {
+//                AtomVector cycle_j = (*it1).second;
+//                for(AtomVector::iterator it2 = cycle_j.begin(); it2 != cycle_j.end(); it2++)
+//                {
+//                    Atom* atom_j = (*it2);
+//                }
+
+//                stringstream atom_pair;
+//                stringstream atom_pair_rev;
+//                for(int i = 0; i < cycle_i.size(); i++)
+//                {
+//                    if(i == cycle_i.size() - 1)
+//                    {
+//                        Atom* a1 = cycle_i.at(i);
+//                        Atom* a2 = cycle_i.at(0);
+//                    }
+//                    else
+//                    {
+//                        Atom* a1 = cycle_i.at(i);
+//                        Atom* a2 = cycle_i.at(i + 1);
+//                    }
+//                    atom_pair << a1->GetId() << "-" << a2->GetId();
+//                    atom_pair_rev << a2->GetId() << "-" << a1->GetId();
+
+//                    if(cycle_i_str.find(atom_pair.str()) != string::npos)
+//                    {
+//                        to_be_deleted_cycles.push_back(cycle_i);
+//                        to_be_deleted_cycles.push_back(cycle_j);
+//                        break;
+//                    }
+//                    else if(cycle_i_str.find(atom_pair_rev.str()) != string::npos)
+//                    {
+//                        to_be_deleted_cycles.push_back(cycle_i);
+//                        to_be_deleted_cycles.push_back(cycle_j);
+//                        break;
+//                    }
+
+//                }
+//            }
+//            }
+//        }
+//    }
 }
 
 Atom* Assembly::FindAnomericCarbon(AtomVector cycle)
