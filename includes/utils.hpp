@@ -79,6 +79,18 @@ namespace gmml
     }
 
     /*! \fn
+      * Convert T (the given type) to string
+      * @param T the given type has to be converted to string
+      * @return The string version of the given type
+      */
+    template<typename T>
+    std::string ConvertT(const T& given_type) {
+        std::stringstream ss;
+        ss << given_type;
+        return ss.str();
+    }
+
+    /*! \fn
       * Expand a given line to a desired length by adding space at the end of the original one
       * @param line A line that have to be in a defined length
       * @param length Thel fixed length that the line has to be
@@ -216,14 +228,41 @@ namespace gmml
     inline Geometry::Coordinate* ConvertInternalCoordinate2CartesianCoordinate(std::vector<Geometry::Coordinate*> coordinate_list, double distance, double angle, double torsion)
     {
         if(coordinate_list.size() == 0)
-            return new Geometry::Coordinate();
+        {
+            Geometry::Coordinate* coordinate = new Geometry::Coordinate();
+            coordinate->Print(std::cout);
+            std::cout << std::endl;
+            return coordinate;
+        }
         if(coordinate_list.size() == 1)
-            return new Geometry::Coordinate(coordinate_list.at(0)->GetX() + distance, 0.0, 0.0);
+        {
+            coordinate_list.at(0)->Print(std::cout);
+            std::cout << std::endl;
+            Geometry::Coordinate* coordinate = new Geometry::Coordinate(coordinate_list.at(0)->GetX() + distance, 0.0, 0.0);
+            coordinate->Print(std::cout);
+            std::cout << std::endl;
+            return coordinate;
+        }
         if(coordinate_list.size() == 2)
-            return new Geometry::Coordinate(coordinate_list.at(1)->GetX() - cos(gmml::ConvertDegree2Radian(angle) * distance),
-                                            sin(gmml::ConvertDegree2Radian(angle)) * distance, 0.0);
+        {
+            coordinate_list.at(0)->Print(std::cout);
+            std::cout << std::endl;
+            coordinate_list.at(1)->Print(std::cout);
+            std::cout << std::endl;
+            Geometry::Coordinate* coordinate = new Geometry::Coordinate(coordinate_list.at(1)->GetX() - cos(gmml::ConvertDegree2Radian(angle) * distance),
+                                                                        sin(gmml::ConvertDegree2Radian(angle)) * distance, 0.0);
+            coordinate->Print(std::cout);
+            std::cout << std::endl;
+            return coordinate;
+        }
         else
         {
+            coordinate_list.at(0)->Print(std::cout);
+            std::cout << std::endl;
+            coordinate_list.at(1)->Print(std::cout);
+            std::cout << std::endl;
+            coordinate_list.at(2)->Print(std::cout);
+            std::cout << std::endl;
             torsion = gmml::PI_DEGREE - torsion;
 
             Geometry::Coordinate great_grandparent_vector = Geometry::Coordinate(coordinate_list.at(0)->GetX(), coordinate_list.at(0)->GetY(), coordinate_list.at(0)->GetZ());
@@ -262,10 +301,12 @@ namespace gmml
             v.push_back(distance * cos(gmml::ConvertDegree2Radian(angle)));
             v.push_back(1.0);
 
-            return new Geometry::Coordinate(p.GetX() * v.at(0) + r.GetX() * v.at(1) + v2.GetX() * v.at(2) + parent_vector.GetX() * v.at(3),
-                                            p.GetY() * v.at(0) + r.GetY() * v.at(1) + v2.GetY() * v.at(2) + parent_vector.GetY() * v.at(3),
-                                            p.GetZ() * v.at(0) + r.GetZ() * v.at(1) + v2.GetZ() * v.at(2) + parent_vector.GetZ() * v.at(3));
-
+            Geometry::Coordinate* coordinate = new Geometry::Coordinate(p.GetX() * v.at(0) + r.GetX() * v.at(1) + v2.GetX() * v.at(2) + parent_vector.GetX() * v.at(3),
+                                                                        p.GetY() * v.at(0) + r.GetY() * v.at(1) + v2.GetY() * v.at(2) + parent_vector.GetY() * v.at(3),
+                                                                        p.GetZ() * v.at(0) + r.GetZ() * v.at(1) + v2.GetZ() * v.at(2) + parent_vector.GetZ() * v.at(3));
+            coordinate->Print(std::cout);
+            std::cout << std::endl;
+            return coordinate;
         }
     }
 
@@ -275,6 +316,10 @@ namespace gmml
             return new Geometry::Coordinate();
         if(coordinate_list.size() == 1)
         {
+            coordinate_list.at(0)->Print(std::cout);
+            std::cout << std::endl;
+            coordinate->Print(std::cout);
+            std::cout << std::endl;
             Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(0));
             double distance = coordinate->Distance(parent_vector);
             return new Geometry::Coordinate(distance, 0.0, 0.0);
@@ -286,47 +331,51 @@ namespace gmml
             double distance = coordinate->Distance(parent_vector);
 
             Geometry::Coordinate dist_current_parent_vector = Geometry::Coordinate(*coordinate);
-            Geometry::Coordinate dist_parent_grandparent_vector = Geometry::Coordinate(parent_vector);
+            Geometry::Coordinate dist_grandparent_parent_vector = Geometry::Coordinate(grandparent_vector);
             dist_current_parent_vector.operator -(parent_vector);
-            dist_parent_grandparent_vector.operator -(grandparent_vector);
+            dist_grandparent_parent_vector.operator -(parent_vector);
             double dist_current_parent = dist_current_parent_vector.length();
-            double dist_parent_grandparent = dist_parent_grandparent_vector.length();
-            double dist_current_parent_dot_parent_grandparent = dist_current_parent_vector.DotProduct(dist_parent_grandparent_vector);
-            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_parent_grandparent/(dist_current_parent * dist_parent_grandparent)));
+            double dist_grandparent_parent = dist_grandparent_parent_vector.length();
+            double dist_current_parent_dot_grandparent_parent = dist_current_parent_vector.DotProduct(dist_grandparent_parent_vector);
+            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_grandparent_parent/(dist_current_parent * dist_grandparent_parent)));
 
             return new Geometry::Coordinate(distance, angle, 0.0);
         }
         else
         {
-            Geometry::Coordinate grandgrandparent_vector = Geometry::Coordinate(*coordinate_list.at(0));
+            Geometry::Coordinate greatgrandparent_vector = Geometry::Coordinate(*coordinate_list.at(0));
             Geometry::Coordinate grandparent_vector = Geometry::Coordinate(*coordinate_list.at(1));
             Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(2));
             double distance = coordinate->Distance(parent_vector);
 
             Geometry::Coordinate dist_current_parent_vector = Geometry::Coordinate(*coordinate);
-            Geometry::Coordinate dist_parent_grandparent_vector = Geometry::Coordinate(parent_vector);
+            Geometry::Coordinate dist_grandparent_parent_vector = Geometry::Coordinate(grandparent_vector);
             dist_current_parent_vector.operator -(parent_vector);
-            dist_parent_grandparent_vector.operator -(grandparent_vector);
+            dist_grandparent_parent_vector.operator -(parent_vector);
             double dist_current_parent = dist_current_parent_vector.length();
-            double dist_parent_grandparent = dist_parent_grandparent_vector.length();
-            double dist_current_parent_dot_parent_grandparent = dist_current_parent_vector.DotProduct(dist_parent_grandparent_vector);
-            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_parent_grandparent/(dist_current_parent * dist_parent_grandparent)));
+            double dist_grandparent_parent = dist_grandparent_parent_vector.length();
+            double dist_current_parent_dot_grandparent_parent = dist_current_parent_vector.DotProduct(dist_grandparent_parent_vector);
+            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_grandparent_parent/(dist_current_parent * dist_grandparent_parent)));
 
             Geometry::Coordinate dist_parent_current_vector = Geometry::Coordinate(parent_vector);
-            Geometry::Coordinate dist_grandparent_parent_vector = Geometry::Coordinate(grandparent_vector);
-            Geometry::Coordinate dist_grandgrandparent_grandparent_vector = Geometry::Coordinate(grandgrandparent_vector);
-            Geometry::Coordinate dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector =
+            dist_parent_current_vector.operator -(*coordinate);
+            Geometry::Coordinate dist_grandparent_parent_vector_1 = Geometry::Coordinate(grandparent_vector);
+            dist_grandparent_parent_vector_1.operator -(parent_vector);
+            Geometry::Coordinate dist_greatgrandparent_grandparent_vector = Geometry::Coordinate(greatgrandparent_vector);
+            dist_greatgrandparent_grandparent_vector.operator -(grandparent_vector);
+            Geometry::Coordinate dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector =
                     Geometry::Coordinate(dist_grandparent_parent_vector);
+            dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector.CrossProduct(dist_greatgrandparent_grandparent_vector);
             Geometry::Coordinate dist_parent_current_cross_dist_grandparent_parent_vector = Geometry::Coordinate(dist_parent_current_vector);
+            dist_parent_current_cross_dist_grandparent_parent_vector.CrossProduct(dist_grandparent_parent_vector_1);
             Geometry::Coordinate dist_parent_current_multiply_dist_grandparent_parent_vector = Geometry::Coordinate(dist_parent_current_vector);
-            dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector.CrossProduct(dist_grandgrandparent_grandparent_vector);
-            dist_parent_current_cross_dist_grandparent_parent_vector.CrossProduct(dist_grandparent_parent_vector);
             dist_parent_current_multiply_dist_grandparent_parent_vector.operator *(dist_grandparent_parent_vector.length());
+
             double torsion = ConvertRadian2Degree(
                         atan2(dist_parent_current_multiply_dist_grandparent_parent_vector.DotProduct(
-                                  dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector),
+                                  dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector),
                               dist_parent_current_cross_dist_grandparent_parent_vector.DotProduct(
-                                  dist_grandparent_parent_cross_dist_grandgrandparent_grandparent_vector)));
+                                  dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector)));
 
             return new Geometry::Coordinate(distance, angle, torsion);
         }

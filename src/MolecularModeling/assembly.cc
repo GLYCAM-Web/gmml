@@ -1,4 +1,5 @@
 #include <math.h>
+#include <fstream>
 
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
@@ -239,6 +240,37 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
         {
             Atom* atom = (*it1);
             all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    return all_atoms_of_assembly;
+}
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
+{
+    AtomVector all_atoms_of_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
+        for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            all_atoms_of_assembly.push_back(atom);
+        }
+    }
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        Residue* residue = (*it);
+        if(residue->GetName().compare("HOH") != 0)
+        {
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+            {
+                Atom* atom = (*it1);
+                if(atom->GetDescription().find("Het;") != string::npos)
+                    all_atoms_of_assembly.push_back(atom);
+            }
         }
     }
     return all_atoms_of_assembly;
@@ -633,6 +665,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
 
     for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
     {
+        CoordinateVector cartesian_coordinate_list = CoordinateVector();
         int head_atom_index = INFINITY;
         int tail_atom_index = -INFINITY;
         Atom* head_atom = new Atom();
@@ -650,6 +683,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         else
             ss << prep_residue_name << "-";
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+        cout << prep_residue->GetName() << endl;
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
             Atom* assembly_atom = new Atom();
@@ -675,34 +709,36 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
                 }
                 if(index == 1)
                 {
-                    PrepFileAtom* parent_atom = prep_atoms.at(prep_atom->GetBondIndex() - 1);
-                    Coordinate* parent_coordinate = new Coordinate(parent_atom->GetBondLength(), parent_atom->GetAngle(), parent_atom->GetDihedral());
+                    int parent_index = prep_atom->GetBondIndex() - 1;
+                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                     coordinate_list.push_back(parent_coordinate);
                 }
                 if(index == 2)
                 {
-                    PrepFileAtom* grandparent_atom = prep_atoms.at(prep_atom->GetAngleIndex() - 1);
-                    PrepFileAtom* parent_atom = prep_atoms.at(prep_atom->GetBondIndex() - 1);
-                    Coordinate* grandparent_coordinate = new Coordinate(grandparent_atom->GetBondLength(), grandparent_atom->GetAngle(), grandparent_atom->GetDihedral());
-                    Coordinate* parent_coordinate = new Coordinate(parent_atom->GetBondLength(), parent_atom->GetAngle(), parent_atom->GetDihedral());
+                    int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                    int parent_index = prep_atom->GetBondIndex() - 1;
+                    Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
                 }
                 if(index > 2)
                 {
-                    PrepFileAtom* great_grandparent_atom = prep_atoms.at(prep_atom->GetDihedralIndex() - 1);
-                    PrepFileAtom* grandparent_atom = prep_atoms.at(prep_atom->GetAngleIndex() - 1);
-                    PrepFileAtom* parent_atom = prep_atoms.at(prep_atom->GetBondIndex() - 1);
-                    Coordinate* great_grandparent_coordinate = new Coordinate(great_grandparent_atom->GetBondLength(), great_grandparent_atom->GetAngle(),
-                                                                              great_grandparent_atom->GetDihedral());
-                    Coordinate* grandparent_coordinate = new Coordinate(grandparent_atom->GetBondLength(), grandparent_atom->GetAngle(), grandparent_atom->GetDihedral());
-                    Coordinate* parent_coordinate = new Coordinate(parent_atom->GetBondLength(), parent_atom->GetAngle(), parent_atom->GetDihedral());
+                    int great_grabdparent_index = prep_atom->GetDihedralIndex() - 1;
+                    int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                    int parent_index = prep_atom->GetBondIndex() - 1;
+                    Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
+                    Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                     coordinate_list.push_back(great_grandparent_coordinate);
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
-                }
+                }                
                 Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
                                                                                              prep_atom->GetAngle(), prep_atom->GetDihedral());
+                cartesian_coordinate_list.push_back(coordinate);
+
+                cout << "--------------------------------" << endl;
                 assembly_atom->AddCoordinate(coordinate);
             }
             else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
@@ -858,14 +894,14 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
         prep_residue->SetCoordinateType(PrepFileSpace::kINT);
         prep_residue->SetDummyAtomOmission(PrepFileSpace::kOmit);
         prep_residue->SetDummyAtomType("DU");
-        prep_residue->SetDummyAtomPosition(PrepFileSpace::kPositionBeg);
-//        prep_residue->SetImproperDihedrals();
-//        prep_residue->SetLoops();
+        prep_residue->SetDummyAtomPosition(PrepFileSpace::kPositionBeg);        
         prep_residue->SetOutputFormat(PrepFileSpace::kFormatted);
 
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
-        CoordinateVector coordinate_list = CoordinateVector();
+        CoordinateVector cartesian_coordinate_list = CoordinateVector();
         int atom_index = 1;
+        PrepFileResidue::Loop loops = PrepFileResidue::Loop();
+        vector<int> bond_index = vector<int>();
         for(int i = 0; i < DEFAULT_DUMMY_ATOMS; i ++)
         {
             PrepFileAtom* dummy_atom = new PrepFileAtom();
@@ -874,420 +910,2139 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
             dummy_atom->SetType("DU");
             dummy_atom->SetTopologicalType(PrepFileSpace::kTopTypeM);
             dummy_atom->SetBondIndex(i);
+            bond_index.push_back(i);
             dummy_atom->SetAngleIndex(i-1);
             dummy_atom->SetDihedral(i-2);
             if(i <= 0)
+            {
                 dummy_atom->SetBondLength(0.0);
-            else
-                dummy_atom->SetBondLength(1.0);
-            if(i <= 1)
                 dummy_atom->SetAngle(0.0);
+                dummy_atom->SetDihedral(0.0);
+                cartesian_coordinate_list.push_back(new Coordinate(0.0, 0.0, 0.0)); //-5.0, -5.0, -5.0
+            }
+            else if(i <= 1)
+            {
+                dummy_atom->SetBondLength(dCutOff);
+                dummy_atom->SetAngle(0.0);
+                dummy_atom->SetDihedral(0.0);
+                cartesian_coordinate_list.push_back(new Coordinate(dCutOff, 0.0, 0.0)); //1.522, 0.0, 0.0 ; -4.5, -5.0, -5.0
+            }
             else
+            {
+                dummy_atom->SetBondLength(dCutOff);
                 dummy_atom->SetAngle(90.0);
-            dummy_atom->SetDihedral(0.0);
+                dummy_atom->SetDihedral(0.0);
+                cartesian_coordinate_list.push_back(new Coordinate(dCutOff, dCutOff, 0.0)); //2.43347, 1.34044, 0.0 ; -4.7, -4.2, -4.0
+            }
             dummy_atom->SetCharge(0.0);
             dummy_atom->SetTopologicalType(kTopTypeM);            
-            atom_index++;
-            coordinate_list.push_back(new Coordinate(dummy_atom->GetBondLength(), dummy_atom->GetAngle(), dummy_atom->GetDihedral()));
+            atom_index++;            
             prep_atoms.push_back(dummy_atom);
         }
-        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms);
+        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index);
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
+            CoordinateVector coordinate_list = CoordinateVector();
+
             Atom* assembly_atom = (*it1);
             PrepFileAtom* prep_atom = new PrepFileAtom();
             prep_atom->SetIndex(atom_index);
-            cout << assembly_atom->GetResidue()->GetName() << ":" << assembly_atom->GetName() << endl;
 
             // Set topological type
             // Set bond index, angle index, dihedral index
-            // Call function to set parent, grandparent and great_grandparent of the current atom
+            // Set parent, grandparent and great_grandparent of the current atom
             // Call coordinate conversion function
 
-
-//            if(atom_index == 4)
-//            {
-//                prep_atom->SetTopologicalType(kTopTypeM);
-//                coordinate_list.push_back(assembly_atom->GetCoordinates().at(0));
-//            }
-//            else if(atom_index > 4)
-//            {
-//                coordinate_list.at(0) = coordinate_list.at(1);
-//                coordinate_list.at(1) = coordinate_list.at(2);
-//                coordinate_list.at(2) = coordinate_list.at(3);
-//                coordinate_list.at(3) = assembly_atom->GetCoordinates().at(0);
-//            }
-//            Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(0),
-//                                                                                                  coordinate_list);
-//            prep_atom->SetAngle();
-//            prep_atom->SetAngleIndex();
-//            prep_atom->SetBondIndex();
-//            prep_atom->SetBondLength();
+            prep_atom->SetBondIndex(bond_index.at(atom_index - 1));
+            prep_atom->SetAngleIndex(bond_index.at(bond_index.at(atom_index - 1) - 1));
+            prep_atom->SetDihedralIndex(bond_index.at(bond_index.at(bond_index.at(atom_index - 1) - 1) - 1));
             prep_atom->SetCharge(assembly_atom->GetCharge());
-//            prep_atom->SetDihedral();
-//            prep_atom->SetDihedralIndex();
             prep_atom->SetName(assembly_atom->GetName());
             prep_atom->SetTopologicalType(residue_topological_types.at(atom_index - DEFAULT_DUMMY_ATOMS - 1));
             prep_atom->SetType(assembly_atom->GetAtomType());
+
+            int parent_index = prep_atom->GetBondIndex() - 1;
+            int grandparent_index = prep_atom->GetAngleIndex() - 1;
+            int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
+
+            coordinate_list.push_back(cartesian_coordinate_list.at(great_grandparent_index));
+            coordinate_list.push_back(cartesian_coordinate_list.at(grandparent_index));
+            coordinate_list.push_back(cartesian_coordinate_list.at(parent_index));
+            cartesian_coordinate_list.push_back(assembly_atom->GetCoordinates().at(0));
+
+            Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(0),
+                                                                                                  coordinate_list);
+            prep_atom->SetBondLength(internal_coordinate->GetX());
+            prep_atom->SetAngle(internal_coordinate->GetY());
+            prep_atom->SetDihedral(internal_coordinate->GetZ());
+
             atom_index++;
             prep_atoms.push_back(prep_atom);
         }
+//        prep_residue->SetImproperDihedrals();
+        prep_residue->SetLoops(loops);
         prep_residue->SetAtoms(prep_atoms);
         prep_residue->SetCharge(prep_residue->CalculatePrepResidueCharge());
         prep_residues[assembly_residue->GetName()] = prep_residue;
     }
-//    prep_file->SetPath();
+    //    prep_file->SetPath();
     prep_file->SetResidues(prep_residues);
     return prep_file;
 }
 
-vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms)
+vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms, PrepFileResidue::Loop& loops, vector<int> & bond_index)
 {
     vector<TopologicalTypeStackElement> stack = vector<TopologicalTypeStackElement>();
     vector<TopologicalType> topological_types = vector<TopologicalType>();
     TopologicalTypeStackElement top_stack = EMPTY;
+    vector<string> visited_atom_name = vector<string>();
+    vector<int> atom_index_stack = vector<int>();
     for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
     {
         Atom* assembly_atom = (*it1);
+        int index = distance(assembly_atoms.begin(), it1) + 1;
         if(stack.empty())
             top_stack = EMPTY;
         else
             top_stack = stack.at(stack.size() - 1);
 
-        switch ( top_stack ) {
+
+        int visited_neighbors = 0;
+        AtomVector neighbors = assembly_atom->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+        {
+            Atom* neighbor = *it;
+            if(find(visited_atom_name.begin(), visited_atom_name.end(), neighbor->GetName()) != visited_atom_name.end())
+                visited_neighbors++;
+        }
+//        cout << visited_neighbors << " " << assembly_atom->GetName() <<  " " << assembly_atom->GetNode()->GetNodeNeighbors().size() << endl;
+        switch ( top_stack )
+        {
             case EMPTY:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
-                    stack.push_back(M1);
-                    topological_types.push_back(kTopTypeM);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 1:
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
-                    stack.push_back(M2);
-                    topological_types.push_back(kTopTypeM);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 1:
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 2:
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
-                    stack.push_back(M3);
-                    topological_types.push_back(kTopTypeM);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 1:
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 2:
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 3:
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
-                    stack.push_back(M4);
-                    topological_types.push_back(kTopTypeM);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 1:
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 2:
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 3:
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 4:
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                    }
                 }
                 break;
             case M1:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 1:
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(parent_index);
+                            break;
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    topological_types.push_back(kTopTypeM);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M2);
-                    topological_types.push_back(kTopTypeM);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M3);
-                    topological_types.push_back(kTopTypeM);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case M2:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M1);
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M1);
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M1);
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M1);
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M1);
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M1);
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case M3:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M2);
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M2);
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M2);
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M2);
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M2);
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M2);
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case M4:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M3);
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M3);
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M3);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M3);
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M3);
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(M3);
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(M3);
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(M3);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case S1:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
+
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case B1:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case B2:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(B1);
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(B1);
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B1);
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(B1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(B1);
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B1);
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(B1);
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(B1);
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B1);
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(B1);
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B1);
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case T1:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case T2:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T1);
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T1);
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T1);
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T1);
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T1);
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T1);
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T1);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
             case T3:
                 if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 1)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T2);
-                    topological_types.push_back(kTopTypeE);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 2)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T2);
-                    stack.push_back(S1);
-                    topological_types.push_back(kTopTypeS);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T2);
+                            stack.push_back(S1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 3)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T2);
-                    stack.push_back(B2);
-                    topological_types.push_back(kTopTypeB);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T2);
+                            stack.push_back(B2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T2);
+                            stack.push_back(B1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 else if(assembly_atom->GetNode()->GetNodeNeighbors().size() == 4)
                 {
                     top_stack = stack.at(stack.size() - 1);
-                    stack.pop_back();
-                    stack.push_back(T2);
-                    stack.push_back(T3);
-                    topological_types.push_back(kTopType3);
+                    switch(visited_neighbors)
+                    {
+                        case 0:
+                        {
+                            stack.push_back(M4);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeM);
+                            bond_index.push_back(index + DEFAULT_DUMMY_ATOMS - 1);
+                            break;
+                        }
+                        case 1:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T2);
+                            stack.push_back(T3);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopType3);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 2:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            int top_atom_index_stack = atom_index_stack.at(0);
+                            loops[top_atom_index_stack] = index + DEFAULT_DUMMY_ATOMS;
+                            atom_index_stack.pop_back();
+                            stack.pop_back();
+                            stack.push_back(T2);
+                            stack.push_back(T2);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeB);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 3:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T2);
+                            stack.push_back(T1);
+                            atom_index_stack.push_back(index + DEFAULT_DUMMY_ATOMS);
+                            topological_types.push_back(kTopTypeS);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                        case 4:
+                        {
+                            stack.pop_back();
+                            int parent_index = atom_index_stack.at(atom_index_stack.size() - 1);
+                            atom_index_stack.pop_back();
+                            stack.push_back(T2);
+                            topological_types.push_back(kTopTypeE);
+                            bond_index.push_back(parent_index);
+                            break;
+                        }
+                    }
                 }
                 break;
         }
+        visited_atom_name.push_back(assembly_atom->GetName());
     }
     return topological_types;
 
@@ -1400,15 +3155,15 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 stringstream reverse_sss;
                 reverse_sss << atom_type2 << "-" << atom_type1;
                 if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
-                   find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end()  )
+                        find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end()  )
                 {
                     TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
                     ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
                     ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
                     double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
-                    double sigma = 0.5 * (parameter_atom1->GetRadius() * pow(2, -(1.0)/(6.0))) + parameter_atom2->GetRadius() * pow(2, -(1.0)/(6.0));
-                    double coefficient_a = 4 * epsilon * pow(sigma, 12);
-                    double coefficient_b = 4 * epsilon * pow(sigma, 6);
+                    double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
+                    double coefficient_a = epsilon * sigma * sigma;
+                    double coefficient_b = 2 * epsilon * sigma;
                     topology_atom_pair->SetCoefficientA(coefficient_a);
                     topology_atom_pair->SetCoefficientB(coefficient_b);
                     topology_atom_pair->SetPairType(sss.str());
@@ -1480,7 +3235,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                             if(key2.str().compare(key4.str()) != 0)
                             {
                                 ExtractTopologyDihedralTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
-                                                                 inserted_dihedral_types, dihedral_type_counter, topology_file, dihedrals);
+                                                                         inserted_dihedral_types, dihedral_type_counter, topology_file, dihedrals);
                                 ExtractTopologyDihedralsFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
                                                                      inserted_dihedrals, inserted_dihedral_types, dihedrals, topology_file);
 
@@ -1506,17 +3261,17 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
 
 
 
-//    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
-//    {
-//        Residue* assembly_residue = *it;
-//        AtomVector assembly_atoms = assembly_residue->GetAtoms();
-//        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
-//        {
-//            Atom* assembly_atom = (*it1);
+    //    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+    //    {
+    //        Residue* assembly_residue = *it;
+    //        AtomVector assembly_atoms = assembly_residue->GetAtoms();
+    //        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
+    //        {
+    //            Atom* assembly_atom = (*it1);
 
 
-//        }
-//    }
+    //        }
+    //    }
     topology_assembly->SetAssemblyName(ss.str());
     topology_file->SetAtomPairs(pairs);
     topology_file->SetAssembly(topology_assembly);
@@ -2524,6 +4279,7 @@ void Assembly::BuildStructureByPrepFileInformation()
         atom_node->SetId(i);
         i++;
         Residue* assembly_residue = atom->GetResidue();
+//        cout << assembly_residue->GetName() << endl;
         PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
         if(prep_residue != NULL)
         {
@@ -2976,7 +4732,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     int improper_counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -3047,7 +4803,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
             string neighbor2_name = neighbor2->GetName();
             string neighbor3_name = neighbor3->GetName();
             vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                          neighbor3->GetAtomType(), atom->GetAtomType());
+                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
 
             ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
             for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
@@ -3069,7 +4825,7 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
             }
         }
     }
-//    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
+    //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
     return counter/2 + improper_counter;
 }
 
@@ -3079,7 +4835,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     int improper_counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -3152,7 +4908,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
             string neighbor2_name = neighbor2->GetName();
             string neighbor3_name = neighbor3->GetName();
             vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                          neighbor3->GetAtomType(), atom->GetAtomType());
+                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
 
             ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
             for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
@@ -3176,7 +4932,7 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
             }
         }
     }
-//    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
+    //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
     return counter/2 + improper_counter;
 }
 
@@ -3186,7 +4942,7 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     int improper_counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -3223,7 +4979,7 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
                             for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
                             {
                                 vector<string> atom_types = (*it4);
-//                                cout << atom_types.at(0) << atom_types.at(1) << atom_types.at(2) << atom_types.at(3) << endl;
+                                //                                cout << atom_types.at(0) << atom_types.at(1) << atom_types.at(2) << atom_types.at(3) << endl;
                                 if(dihedrals[atom_types] != NULL)
                                 {
                                     ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
@@ -3262,7 +5018,7 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
             }
         }
     }
-//    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
+    //    cout << not_found_counter/2 << " dihedrals not found in parameter file" << endl;
     return counter/2 + improper_counter;
 }
 
@@ -3272,7 +5028,7 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
-//    int not_found_counter = 0;
+    //    int not_found_counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -3333,32 +5089,32 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
                                         break;
                                     }
                                 }
-//                                else
-//                                {
-//                                    atom_types[0] = neighbor_of_neighbor_of_neighbor->GetAtomType();
-//                                    atom_types[1] = neighbor_of_neighbor->GetAtomType();
-//                                    atom_types[2] = neighbor->GetAtomType();
-//                                    atom_types[3] = atom->GetAtomType();
-//                                    if(dihedrals[atom_types] != NULL)
-//                                    {
-//                                        stringstream ss6;
-//                                        ss6 << atom->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor_of_neighbor->GetAtomType();
-//                                        stringstream ss7;
-//                                        ss7 << neighbor_of_neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << atom->GetAtomType();
-//                                        if(find(type_list.begin(), type_list.end(), ss6.str()) == type_list.end() &&
-//                                                find(type_list.begin(), type_list.end(), ss7.str()) == type_list.end() )
-//                                        {
-//                                            type_list.push_back(ss7.str());
-//                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
-//                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
-//                                            counter += terms_count;
-//                                        }
-//                                    }
-//                                    else
-//                                    {
-//                                        not_found_counter++;
-//                                    }
-//                                }
+                                //                                else
+                                //                                {
+                                //                                    atom_types[0] = neighbor_of_neighbor_of_neighbor->GetAtomType();
+                                //                                    atom_types[1] = neighbor_of_neighbor->GetAtomType();
+                                //                                    atom_types[2] = neighbor->GetAtomType();
+                                //                                    atom_types[3] = atom->GetAtomType();
+                                //                                    if(dihedrals[atom_types] != NULL)
+                                //                                    {
+                                //                                        stringstream ss6;
+                                //                                        ss6 << atom->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor_of_neighbor->GetAtomType();
+                                //                                        stringstream ss7;
+                                //                                        ss7 << neighbor_of_neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << atom->GetAtomType();
+                                //                                        if(find(type_list.begin(), type_list.end(), ss6.str()) == type_list.end() &&
+                                //                                                find(type_list.begin(), type_list.end(), ss7.str()) == type_list.end() )
+                                //                                        {
+                                //                                            type_list.push_back(ss7.str());
+                                //                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
+                                //                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                                //                                            counter += terms_count;
+                                //                                        }
+                                //                                    }
+                                //                                    else
+                                //                                    {
+                                //                                        not_found_counter++;
+                                //                                    }
+                                //                                }
                             }
                         }
                     }
@@ -3397,8 +5153,8 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
             }
         }
     }
-//    cout << not_found_counter << " dihedrals not found in parameter file" << endl;
-//    cout << type_list.size() << endl;
+    //    cout << not_found_counter << " dihedrals not found in parameter file" << endl;
+    //    cout << type_list.size() << endl;
     return counter;
 }
 
@@ -3737,9 +5493,9 @@ int Assembly::CountNumberOfExcludedAtoms()
             {
                 Atom* neighbor_of_neighbor = (*it2);
                 stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();                
+                ss2 << neighbor_of_neighbor->GetId();
                 if(ss.str().compare(ss2.str()) != 0)
-                {                    
+                {
                     stringstream second_order_interaction;
                     stringstream reverse_second_order_interaction;
                     second_order_interaction << ss.str() << "-" << ss2.str();
@@ -3806,6 +5562,375 @@ void Assembly::ClearAssembly()
     //    this->model_index_ = 0;
 }
 
+void Assembly::CycleDetection()
+{
+    vector<vector<string> > cycles = vector<vector<string> >();
+    vector<string> cycle = vector<string>();
+    //    vector<string> visited_atoms = vector<string>();
+    vector<vector<string> > cycle_permutations = vector<vector<string> >();
+    ResidueVector residues = GetAllResiduesOfAssembly();
+    for(ResidueVector:: iterator res = residues.begin(); res != residues.end(); res++)
+    {
+        Residue* residue = (*res);
+        if(residue->GetName().compare("HOH") == 0)
+            continue;
+        cout << "residue: " << residue->GetId() << endl;
+        AtomVector atoms = residue->GetAtoms();
+        for(AtomVector:: iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        {
+            cycle.clear();
+            Atom* atom1 = (*it1);
+            string id1 = atom1->GetId();
+            cycle.push_back(id1);
+            AtomNode* node1 = atom1->GetNode();
+            AtomVector atom1_neigbors = node1->GetNodeNeighbors();
+            for(AtomVector:: iterator it2 = atom1_neigbors.begin(); it2 != atom1_neigbors.end(); it2++)
+            {
+                Atom* atom2 = (*it2);
+                string id2 = atom2->GetId();
+                cycle.push_back(id2);
+                AtomNode* node2 = atom2->GetNode();
+                AtomVector atom2_neigbors = node2->GetNodeNeighbors();
+                for(AtomVector:: iterator it3 = atom2_neigbors.begin(); it3 != atom2_neigbors.end(); it3++)
+                {
+                    Atom* atom3 = (*it3);
+                    string id3 = atom3->GetId();
+                    if(id1.compare(id3) != 0)
+                    {
+                        cycle.push_back(id3);
+                        AtomNode* node3 = atom3->GetNode();
+                        AtomVector atom3_neigbors = node3->GetNodeNeighbors();
+                        for(AtomVector:: iterator it4 = atom3_neigbors.begin(); it4 != atom3_neigbors.end(); it4++)
+                        {
+                            Atom* atom4 = (*it4);
+                            string id4 = atom4->GetId();
+                            if(id2.compare(id4) != 0)
+                            {
+                                cycle.push_back(id4);
+                                AtomNode* node4 = atom4->GetNode();
+                                AtomVector atom4_neigbors = node4->GetNodeNeighbors();
+                                for(AtomVector:: iterator it5 = atom4_neigbors.begin(); it5 != atom4_neigbors.end(); it5++)
+                                {
+                                    Atom* atom5 = (*it5);
+                                    string id5 = atom5->GetId();
+                                    if(id3.compare(id5) != 0)
+                                    {
+                                        cycle.push_back(id5);
+                                        AtomNode* node5 = atom5->GetNode();
+                                        AtomVector atom5_neigbors = node5->GetNodeNeighbors();
+                                        for(AtomVector:: iterator it6 = atom5_neigbors.begin(); it6 != atom5_neigbors.end(); it6++)
+                                        {
+                                            Atom* atom6 = (*it6);
+                                            string id6 = atom6->GetId();
+                                            if(id4.compare(id6) != 0)
+                                            {
+                                                AtomNode* node6 = atom6->GetNode();
+                                                AtomVector atom6_neigbors = node6->GetNodeNeighbors();
+                                                for(AtomVector:: iterator it7 = atom6_neigbors.begin(); it7 != atom6_neigbors.end(); it7++)
+                                                {
+                                                    Atom* atom7 = (*it7);
+                                                    string id7 = atom7->GetId();
+                                                    if(id1.compare(id7) == 0)
+                                                    {
+                                                        cout << id1 << ";" << id7 << endl;
+                                                        cycle.push_back(id6);
+                                                        cycle_permutations = CreateAllCyclePermutations(id1, id2, id3, id4, id5, id6);
+                                                        bool is_cycle_existed = false;
+                                                        for(vector<vector<string> >:: iterator perms = cycle_permutations.begin(); perms != cycle_permutations.end(); perms++)
+                                                        {
+                                                            if(is_cycle_existed)
+                                                                break;
+                                                            vector<string> perm = (*perms);
+                                                            stringstream ss_perm;
+                                                            ss_perm << perm.at(0) << "; " << perm.at(1) << "; " << perm.at(2) << "; " <<
+                                                                       perm.at(3) << "; " << perm.at(4) << "; " << perm.at(5);
+                                                            for(vector<vector<string> >:: iterator c = cycles.begin(); c != cycles.end(); c++)
+                                                            {
+                                                                vector<string> existing_cycle = (*c);
+                                                                stringstream ss_cycle;
+                                                                ss_cycle << existing_cycle.at(0) << "; " << existing_cycle.at(1) << "; " << existing_cycle.at(2) << "; " <<
+                                                                            existing_cycle.at(3) << "; " << existing_cycle.at(4) << "; " << existing_cycle.at(5);
+                                                                if(ss_perm.str().compare(ss_cycle.str()) == 0)
+                                                                {
+                                                                    is_cycle_existed = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        if(!is_cycle_existed)
+                                                        {
+                                                            cycles.push_back(cycle);
+
+                                                            cout << cycle.at(0) << "; " << cycle.at(1) << "; " << cycle.at(2) << "; " <<
+                                                                    cycle.at(3) << "; " << cycle.at(4) << "; " << cycle.at(5) << endl;
+                                                            break;
+                                                        }
+                                                    }
+                                                    //                                                    cycle.pop_back();
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if(!cycle.empty())
+                                        cycle.pop_back();
+                                }
+                            }
+                            if(!cycle.empty())
+                                cycle.pop_back();
+                        }
+                    }
+                    if(!cycle.empty())
+                        cycle.pop_back();
+                }
+                if(!cycle.empty())
+                    cycle.pop_back();
+            }
+        }
+    }
+}
+std::vector<std::vector<std::string> > Assembly::CreateAllCyclePermutations(string id1, string id2, string id3, string id4, string id5, string id6)
+{
+    vector<vector<string> > all_permutations = vector<vector<string> >();
+    vector<string> order = vector<string>();
+    vector<string> rev_order = vector<string>();
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id4);
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id5);
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    rev_order.push_back(id5);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    order.clear();
+    rev_order.clear();
+    order.push_back(id6);
+    order.push_back(id1);
+    order.push_back(id2);
+    order.push_back(id3);
+    order.push_back(id4);
+    order.push_back(id5);
+    rev_order.push_back(id5);
+    rev_order.push_back(id4);
+    rev_order.push_back(id3);
+    rev_order.push_back(id2);
+    rev_order.push_back(id1);
+    rev_order.push_back(id6);
+    all_permutations.push_back(order);
+    all_permutations.push_back(rev_order);
+    return all_permutations;
+}
+
+Assembly::AtomVectorVector Assembly::DetectCyclesByDFS(string cycle_size)
+{
+    int counter = 0;
+    vector<string> size_vector = Split(cycle_size, "|");
+
+    AtomStatusMap atom_status_map = AtomStatusMap();
+    AtomIdAtomMap atom_parent_map = AtomIdAtomMap();
+    AtomIdAtomMap src_dest_map = AtomIdAtomMap();
+    AtomVector cycle = AtomVector();
+    AtomVectorVector  cycles = AtomVectorVector();
+    AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        atom_status_map[atom->GetId()] = gmml::UNVISITED;
+        Atom* parent = new Atom();
+        parent->SetId("null");
+        atom_parent_map[atom->GetId()] = parent;
+    }
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        if(atom_status_map[atom->GetId()] == gmml::UNVISITED)
+        {
+            DFSVisit(atoms, atom_status_map, atom_parent_map, atom, counter, src_dest_map);
+        }
+    }
+    cout << "Number of cycles found: " << counter << endl;
+    for(AtomIdAtomMap::iterator it = src_dest_map.begin(); it != src_dest_map.end(); it++)
+    {
+        string source_id = (*it).first;
+        Atom* destination = (*it).second;
+        cycle.clear();
+        ReturnCycleAtoms(source_id, destination, atom_parent_map, cycle);
+        if(find(size_vector.begin(), size_vector.end(), ConvertT(cycle.size())) != size_vector.end())
+            cycles.push_back(cycle);
+    }
+    for(AtomVectorVector::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        AtomVector cycle_atoms = (*it);
+        cout << "cycles with size: " << cycle_size << endl;
+        for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
+        {
+            Atom* cycle_atom = (*it1);
+            cout << cycle_atom->GetId() << ";";
+        }
+        cout << endl;
+        Atom* anomeric = FindAnomericCarbon(cycle_atoms);
+    }
+    return cycles;
+}
+
+void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom *atom, int& counter, AtomIdAtomMap& src_dest_map)
+{
+    atom_status_map[atom->GetId()] = gmml::VISITED;
+    AtomNode* node = atom->GetNode();
+    AtomVector neighbors = node->GetNodeNeighbors();
+
+    for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+    {
+        Atom* neighbor = (*it);
+        if(neighbor->GetDescription().find("Het;") != string::npos)
+        {
+            if(atom_status_map[neighbor->GetId()] == gmml::UNVISITED)
+            {
+                atom_parent_map[neighbor->GetId()] = atom;
+                DFSVisit(atoms, atom_status_map, atom_parent_map, neighbor, counter, src_dest_map);
+            }
+            if(atom_status_map[neighbor->GetId()] == gmml::VISITED)
+            {
+                Atom* parent = atom_parent_map[atom->GetId()];
+                if(neighbor->GetId().compare(parent->GetId()) != 0)///making sure we are not tracking back to the previous atom which is the parent of neigbor (current atom)
+                {
+                    counter++;
+                    src_dest_map[neighbor->GetId()] = atom;
+                }
+            }
+        }
+    }
+    atom_status_map[atom->GetId()] = gmml::DONE;
+}
+
+void Assembly::ReturnCycleAtoms(string src_id, Atom *current_atom, AtomIdAtomMap &atom_parent_map, AtomVector &cycle)
+{
+    cycle.push_back(current_atom);
+    Atom* parent = atom_parent_map[current_atom->GetId()];
+    if(src_id.compare(parent->GetId()) == 0)
+    {
+        cycle.push_back(parent);
+        return;
+    }
+    ReturnCycleAtoms(src_id, parent, atom_parent_map, cycle);
+}
+
+void Assembly::RemoveFusedCycles(AtomVectorVector &cycles)
+{
+
+}
+
+Atom* Assembly::FindAnomericCarbon(AtomVector cycle)
+{
+    Atom* anomeric_carbon = new Atom();
+    for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
+    {
+        Atom* cycle_atom = (*it);
+        if((cycle_atom->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))///find oxygen in ring
+        {
+            AtomNode* node = cycle_atom->GetNode();
+            AtomVector neighbors = node->GetNodeNeighbors();
+
+            Atom* o_neighbor1 = neighbors.at(0);
+            AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
+            AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen neighbor
+            {
+                Atom* neighbor1_neighbor = (*it1);
+                if((neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1)))))
+                {
+                    anomeric_carbon = o_neighbor1;
+                    cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
+                    return anomeric_carbon;
+                }
+            }
+
+            Atom* o_neighbor2 = neighbors.at(1);
+            AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
+            AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
+            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen neighbor
+            {
+                Atom* neighbor2_neighbor = (*it2);
+                if((neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1)))))
+                {
+                    anomeric_carbon = o_neighbor2;
+                    cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
+                    return anomeric_carbon;
+                }
+            }
+        }
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
@@ -3829,4 +5954,101 @@ void Assembly::Print(ostream &out)
             residue->Print(out);
         }
     }
+}
+
+void Assembly::PrettyPrintHet(ostream &out)
+{
+    out << "===================== " << "PDB" << " ============================" << endl;
+    out << "PDB file name: " << source_file_ << endl;
+    if(assemblies_.size() != 0)
+    {
+        for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+        {
+            Assembly* assembly = (*it);
+            assembly->PrettyPrintHet(out);
+        }
+    }
+    else
+    {
+        for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+        {
+            Residue* residue = (*it);
+            string name = residue->GetName();
+            if(name.compare("HOH") != 0)
+                residue->PrettyPrintHet(out);
+        }
+    }
+}
+
+void Assembly::PrintHetResidues(ostream &out)
+{
+    if(assemblies_.size() != 0)
+    {
+        for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+        {
+            Assembly* assembly = (*it);
+            assembly->PrintHetResidues(out);
+        }
+    }
+    else
+    {
+        for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+        {
+            Residue* residue = (*it);
+            string name = residue->GetName();
+            if(name.compare("HOH") != 0)
+                residue->PrintHetResidues(out);
+        }
+    }
+}
+void Assembly::PrintHetAtoms(ostream &out)
+{
+    if(assemblies_.size() != 0)
+    {
+        for(AssemblyVector::iterator it = assemblies_.begin(); it != assemblies_.end(); it++)
+        {
+            Assembly* assembly = (*it);
+            assembly->PrintHetAtoms(out);
+        }
+    }
+    else
+    {
+        for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+        {
+            Residue* residue = (*it);
+            string name = residue->GetName();
+            if(name.compare("HOH") != 0)
+                residue->PrintHetAtoms(out);
+        }
+    }
+}
+
+void Assembly::WriteHetResidues(string file_name)
+{
+    ofstream out_file;
+    out_file.open(file_name.c_str());
+
+    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        Residue* residue = (*it);
+        string name = residue->GetName();
+        if(name.compare("HOH") != 0)
+            residue->WriteHetResidues(out_file);
+    }
+    out_file.close();
+}
+
+void Assembly::WriteHetAtoms(string file_name)
+{
+    ofstream out_file;
+    out_file.open(file_name.c_str());
+
+    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        Residue* residue = (*it);
+        string name = residue->GetName();
+        if(name.compare("HOH") != 0)
+            residue->WriteHetAtoms(out_file);
+    }
+
 }

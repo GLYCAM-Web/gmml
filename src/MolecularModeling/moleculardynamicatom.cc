@@ -54,3 +54,7 @@ void MolecularDynamicAtom::SetRadius(double radius)
 void MolecularDynamicAtom::Print(ostream &out)
 {    
 }
+
+void MolecularDynamicAtom::PrintHet(ostream &out)
+{
+}

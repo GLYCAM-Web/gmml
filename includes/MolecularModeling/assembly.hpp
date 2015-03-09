@@ -11,6 +11,7 @@
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
@@ -32,6 +33,9 @@ namespace MolecularModeling
             typedef std::vector<Residue*> ResidueVector;
             typedef std::vector<Atom*> AtomVector;
             typedef std::vector<Geometry::Coordinate*> CoordinateVector;
+            typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
+            typedef std::map<std::string, Atom*> AtomIdAtomMap;
+            typedef std::vector<AtomVector > AtomVectorVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -123,6 +127,11 @@ namespace MolecularModeling
               */
             AtomVector GetAllAtomsOfAssembly();
             /*! \fn
+              * A functions that extracts all atoms of an assembly except atoms of water residues
+              * @return Vector of all atoms in the current object of assembly except atoms of water residues
+              */
+            AtomVector GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+            /*! \fn
               * A functions that extracts all residues of an assembly
               * @return Vector of all residues in the current object of assembly
               */
@@ -137,7 +146,8 @@ namespace MolecularModeling
               * @param assembly_atoms Atoms of a residue in the assembly structure
               * @return List of all topological types of atoms in a residue of an assembly
               */
-            std::vector<PrepFileSpace::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms);
+            std::vector<PrepFileSpace::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
+                                                                                               PrepFileSpace::PrepFileResidue::Loop& loops, std::vector<int>& bond_index);
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -517,6 +527,15 @@ namespace MolecularModeling
             int CountMaxNumberOfAtomsInLargestResidue();
 
             void ClearAssembly();
+
+            void CycleDetection();
+            std::vector<std::vector<std::string> > CreateAllCyclePermutations(std::string id1, std::string id2, std::string id3, std::string id4, std::string id5, std::string id6);
+
+            AtomVectorVector DetectCyclesByDFS(std::string cycle_size = "5|6");
+            void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
+            void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle);
+            void RemoveFusedCycles(AtomVectorVector& cycles);
+            Atom* FindAnomericCarbon(AtomVector cycle);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -526,6 +545,13 @@ namespace MolecularModeling
               * @param out An output stream, the print result will be written in the given output stream
               */
             void Print(std::ostream& out = std::cout);
+
+            void PrettyPrintHet(std::ostream& out = std::cout);
+            void PrintHetResidues(std::ostream& out = std::cout);
+            void PrintHetAtoms(std::ostream& out = std::cout);
+
+            void WriteHetResidues(std::string file_name);
+            void WriteHetAtoms(std::string file_name);
 
         private:
             //////////////////////////////////////////////////////////

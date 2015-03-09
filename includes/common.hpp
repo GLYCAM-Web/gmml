@@ -106,6 +106,16 @@ namespace gmml
         T3 = 10
     };
 
+    /*! \enum
+      * Enumerator to topological type stack
+      */
+    enum GraphSearchNodeStatus
+    {
+        UNVISITED = 0,
+        VISITED = 1,
+        DONE = 2
+    };
+
 }
 
 #endif // COMMON_HPP
