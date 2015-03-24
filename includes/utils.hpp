@@ -197,6 +197,27 @@ namespace gmml
         }
     }
 
+    inline std::string ConvertTopologicalType2String(TopologicalType type)
+    {
+        switch(type)
+        {
+            case kTopTypeE:
+                return "E";
+            case kTopTypeS:
+                return "S";
+            case kTopTypeB:
+                return "B";
+            case kTopType3:
+                return "3";
+            case kTopType4:
+                return "4";
+            case kTopTypeM:
+                return "M";
+            default:
+                return "E";
+        }
+    }
+
     /*! \fn
       * Convert degree to radian
       * @param degree Magnitude of an angle in degree

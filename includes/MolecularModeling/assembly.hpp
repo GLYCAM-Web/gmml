@@ -147,8 +147,10 @@ namespace MolecularModeling
               * @param assembly_atoms Atoms of a residue in the assembly structure
               * @return List of all topological types of atoms in a residue of an assembly
               */
-            std::vector<PrepFileSpace::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
-                                                                                               PrepFileSpace::PrepFileResidue::Loop& loops, std::vector<int>& bond_index);
+            std::vector<gmml::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
+                                                                                               PrepFileSpace::PrepFileResidue::Loop& loops,
+                                                                                               std::vector<int>& bond_index,
+                                                                                               int dummy_atoms = gmml::DEFAULT_DUMMY_ATOMS);
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////

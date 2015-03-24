@@ -89,6 +89,19 @@ namespace gmml
     };
 
     /*! \enum
+      * Topological type enumerator
+      */
+    enum TopologicalType
+    {
+        kTopTypeE,
+        kTopTypeS,
+        kTopTypeB,
+        kTopType3,
+        kTopType4,
+        kTopTypeM
+    };
+
+    /*! \enum
       * Enumerator to topological type stack
       */
     enum TopologicalTypeStackElement
