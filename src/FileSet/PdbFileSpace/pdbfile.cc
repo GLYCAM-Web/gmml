@@ -2881,7 +2881,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
         cout << "Wrong input file format" << endl;
         throw PdbFileProcessingException("Error reading file");
     }
-    
+
     line = ExpandLine(line, iPdbLineLength);
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -4360,6 +4360,7 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     }
     
     // Model card
+//    cout << stream_block.str();
     models_ = new PdbModelCard(stream_block);
     return true;
 }

@@ -96,13 +96,14 @@ namespace gmml
       * @param length Thel fixed length that the line has to be
       * @return An expanded line into the given length
       */
-    inline std::string& ExpandLine(std::string& line, int length)
+    inline std::string ExpandLine(std::string line, int length)
     {
-        if((int)line.length() >= length)
+        int l = line.length();
+        if(l >= length)
             return line;
         else
         {
-            int space = length - line.length();
+            int space = length - l;
             std::stringstream ss;
             ss << line << std::setw(space) << " ";
             line = ss.str();
