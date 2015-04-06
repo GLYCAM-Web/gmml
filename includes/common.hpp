@@ -6,12 +6,15 @@
 #include <math.h>
 #include <map>
 
+#include "Geometry/coordinate.hpp"
+
 namespace gmml
 {
 
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
+    typedef Geometry::Coordinate Vector;
 
     //*******************************************
 

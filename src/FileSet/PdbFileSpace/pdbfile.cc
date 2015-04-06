@@ -98,7 +98,7 @@ PdbFile::PdbFile()
     sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
 }
 
-PdbFile::PdbFile(const std::string &pdb_file, bool is_sugar_identification)
+PdbFile::PdbFile(const std::string &pdb_file)
 {
     path_ = pdb_file;
     header_ = NULL;
@@ -125,7 +125,7 @@ PdbFile::PdbFile(const std::string &pdb_file, bool is_sugar_identification)
     connectivities_ = NULL;
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
     sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-    
+
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
     {
@@ -148,11 +148,6 @@ PdbFile::PdbFile(const std::string &pdb_file, bool is_sugar_identification)
         {
             temp = line.substr(0,6);
             temp = Trim(temp);
-            if(is_sugar_identification)
-            {
-                if(temp.compare("HETATM") != 0)
-                    continue;
-            }
             if(temp.find("END") != string::npos || temp.compare("END") == 0)
                 break;
             else if(!line.empty())
@@ -160,42 +155,36 @@ PdbFile::PdbFile(const std::string &pdb_file, bool is_sugar_identification)
         }
     }
     in_file.close();
-    stringstream pdb_for_sugar_identification;
-    int index = pdb_file.find_last_of('.', pdb_file.length() - 1);
-    pdb_for_sugar_identification << pdb_file.substr(0, index) << "_sugar_identification.pdb";
     if(temp.find("END") == string::npos || temp.compare("END") != 0)
     {
         std::ofstream out_file;
-        if(is_sugar_identification)
-        {
-            out_file.open(pdb_for_sugar_identification.str().c_str());
-        }
-        else
-            out_file.open(pdb_file.c_str());
+        out_file.open(pdb_file.c_str());
         out_file << ss.str() << "END";
         out_file.close();
     }
     else
     {
         std::ofstream out_file;
-        if(is_sugar_identification)
-        {
-            out_file.open(pdb_for_sugar_identification.str().c_str());
-        }
-        else
-            out_file.open(pdb_file.c_str());
+        out_file.open(pdb_file.c_str());
         out_file << ss.str() << temp;
         out_file.close();
     }
-    if(is_sugar_identification)
-        in_file.open(pdb_for_sugar_identification.str().c_str());
-    else
-        in_file.open(pdb_file.c_str());
+    in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
     }
     in_file.close();            /// Close the parameter files
+}
+PdbFile* PdbFile::LoadPdbFile()
+{
+    PdbFile* pdb = new PdbFile();
+    return pdb;
+}
+PdbFile* PdbFile::LoadPdbFile(const std::string &pdb_file)
+{
+    PdbFile* pdb = new PdbFile(pdb_file);
+    return pdb;
 }
 
 //////////////////////////////////////////////////////////

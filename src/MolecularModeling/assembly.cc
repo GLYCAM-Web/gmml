@@ -507,6 +507,120 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
+void Assembly::BuildAssemblyFromPdbFile(PdbFile* pdb_file)
+{
+    try
+    {
+        this->ClearAssembly();
+        vector<string> key_order = vector<string>();
+        PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
+        for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)
+        {
+            string residue_key = *it;
+            PdbFile::PdbAtomVector* atoms = residue_atoms_map[residue_key];
+            Residue* residue = new Residue();
+            residue->SetAssembly(this);
+
+            for(PdbFile::PdbAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
+            {
+                PdbAtom* atom = (*it1);
+                string residue_name = atom->GetAtomResidueName();
+                char chain_id = atom->GetAtomChainId();
+                int sequence_number = atom->GetAtomResidueSequenceNumber();
+                char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
+                stringstream ss;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+                string key = ss.str();
+                residue->SetId(key);
+
+                Atom* new_atom = new Atom();
+                residue->SetName(residue_name);
+                string atom_name = atom->GetAtomName();
+                new_atom->SetName(atom_name);
+                new_atom->MolecularDynamicAtom::SetCharge(gmml::ConvertString<double>(atom->GetAtomCharge()));
+                new_atom->SetResidue(residue);
+                stringstream atom_key;
+                atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
+                new_atom->SetId(atom_key.str());
+                PdbModelCard* models = pdb_file->GetModels();
+                PdbModelCard::PdbModelMap model_maps = models->GetModels();
+                if(model_maps.size() == 1)
+                {
+                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
+                    if(card_index.at(0).compare("ATOM") == 0)
+                    {
+                        new_atom->SetDescription("Atom;");
+                    }
+                    else if(card_index.at(0).compare("HETATOM") == 0)
+                    {
+                        new_atom->SetDescription("Het;");
+                    }
+                }
+                else
+                {
+                    for(PdbModelCard::PdbModelMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
+                    {
+                        PdbModel* model = (*it2).second;
+                        PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+                        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtoms();
+                        vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
+                        if(card_index.at(0).compare("ATOM") == 0)
+                        {
+                            PdbAtomCard* atom_card = atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
+                            PdbAtomCard::PdbAtomMap atom_map = atom_card->GetAtoms();
+                            PdbAtom* matching_atom = atom_map[atom->GetAtomSerialNumber()];
+                            string matching_residue_name = matching_atom->GetAtomResidueName();
+                            char matching_chain_id = matching_atom->GetAtomChainId();
+                            int matching_sequence_number = matching_atom->GetAtomResidueSequenceNumber();
+                            char matching_insertion_code = matching_atom->GetAtomInsertionCode();
+                            char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
+                            stringstream sss;
+                            sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
+                                << matching_insertion_code << "_" << matching_alternate_location;
+                            string matching_key = sss.str();
+
+                            if(key.compare(matching_key) == 0)
+                            {
+                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                                new_atom->AddCoordinate(coordinate);
+                                new_atom->SetDescription("Atom;");
+                            }
+                        }
+                        else if(card_index.at(0).compare("HETATOM") == 0)
+                        {
+                            PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtoms();
+                            PdbHeterogenAtomCard* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
+                            PdbAtomCard::PdbAtomMap heterogen_atom_map = heterogen_atom_card->GetHeterogenAtoms();
+                            PdbAtom* matching_heterogen_atom = heterogen_atom_map[atom->GetAtomSerialNumber()];
+                            string matching_heterogen_residue_name = matching_heterogen_atom->GetAtomResidueName();
+                            char matching_heterogen_chain_id = matching_heterogen_atom->GetAtomChainId();
+                            int matching_heterogen_sequence_number = matching_heterogen_atom->GetAtomResidueSequenceNumber();
+                            char matching_heterogen_insertion_code = matching_heterogen_atom->GetAtomInsertionCode();
+                            char matching_heterogen_alternate_location = matching_heterogen_atom->GetAtomAlternateLocation();
+                            stringstream ssss;
+                            ssss << matching_heterogen_residue_name << "_" << matching_heterogen_chain_id << "_" << matching_heterogen_sequence_number << "_"
+                                 << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location;
+                            string matching_heterogen_key = ssss.str();
+
+                            if(key.compare(matching_heterogen_key) == 0)
+                            {
+                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
+                                new_atom->AddCoordinate(coordinate);
+                                new_atom->SetDescription("Het;");
+                            }
+                        }
+                    }
+                }
+                residue->AddAtom(new_atom);
+            }
+            this->AddResidue(residue);
+        }
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
+}
 
 void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
 {
@@ -550,11 +664,105 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
 
     }
 }
+void Assembly::BuildAssemblyFromTopologyFile(TopologyFile* topology_file)
+{
+    this->ClearAssembly();
+    name_ = topology_file->GetTitle();
+    sequence_number_ = 1;
+    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    {
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        TopologyResidue* topology_residue = (*it).second;
+        stringstream id;
+        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        assembly_residue->SetId(id.str());
+
+        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            string atom_name = (*it1).first;
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << id.str() << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
+            TopologyAtom* topology_atom = (*it1).second;
+            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
+            assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
+            assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet); ///////////////////
+            assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
+
+            assembly_atom->SetResidue(assembly_residue);
+            assembly_atom->SetName(topology_atom->GetAtomName());
+
+            assembly_residue->AddAtom(assembly_atom);
+        }
+        this->AddResidue(assembly_residue);
+
+    }
+}
 
 void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
 {
     this->ClearAssembly();
     LibraryFile* library_file = new LibraryFile(library_file_path);
+    sequence_number_ = 1;
+    LibraryFile::ResidueMap library_residues = library_file->GetResidues();
+    stringstream ss;
+
+    for(LibraryFile::ResidueMap::iterator it = library_residues.begin(); it != library_residues.end(); it++)
+    {
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        assembly_residue->SetId(residue_name);
+        LibraryFileResidue* library_residue = (*it).second;
+        int lib_res_tail_atom_index = library_residue->GetTailAtomIndex();
+        int lib_res_head_atom_index = library_residue->GetHeadAtomIndex();
+        string library_residue_name = library_residue->GetName();
+        if(distance(library_residues.begin(), it) == (int)library_residues.size()-1)
+            ss << library_residue_name;
+        else
+            ss << library_residue_name << "-";
+
+        LibraryFileResidue::AtomMap library_atoms = library_residue->GetAtoms();
+        for(LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            LibraryFileAtom* library_atom = (*it1).second;
+            string atom_name = library_atom->GetName();
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << residue_name << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
+
+            assembly_atom->SetResidue(assembly_residue);
+            assembly_atom->SetName(library_atom->GetName());
+
+            assembly_atom->MolecularDynamicAtom::SetCharge(library_atom->GetCharge());
+            assembly_atom->MolecularDynamicAtom::SetAtomType(library_atom->GetType());
+
+            Coordinate* coordinate = new Coordinate(library_atom->GetCoordinate());
+            assembly_atom->AddCoordinate(coordinate);
+            assembly_residue->AddAtom(assembly_atom);
+
+            if(library_atom->GetAtomIndex() == lib_res_head_atom_index)
+                assembly_residue->AddHeadAtom(assembly_atom);
+            if(library_atom->GetAtomIndex() == lib_res_tail_atom_index)
+                assembly_residue->AddTailAtom(assembly_atom);
+        }
+        residues_.push_back(assembly_residue);
+    }
+    name_ = ss.str();
+}
+void Assembly::BuildAssemblyFromLibraryFile(LibraryFile* library_file)
+{
+    this->ClearAssembly();
     sequence_number_ = 1;
     LibraryFile::ResidueMap library_residues = library_file->GetResidues();
     stringstream ss;
@@ -651,7 +859,51 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
             assembly_residue->AddAtom(assembly_atom);
         }
         residues_.push_back(assembly_residue);
+    }
+}
+void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile* topology_file, CoordinateFile* coordinate_file)
+{
+    this->ClearAssembly();
+    name_ = topology_file->GetTitle();
+    sequence_number_ = 1;
+    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    {
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        TopologyResidue* topology_residue = (*it).second;
+        stringstream id;
+        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        assembly_residue->SetId(id.str());
 
+        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            string atom_name = (*it1).first;
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << id.str() << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
+            TopologyAtom* topology_atom = (*it1).second;
+
+            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
+            assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
+            assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet); ////////////////////////
+            assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
+
+            int topology_atom_index = topology_atom->GetIndex();
+
+            assembly_atom->SetResidue(assembly_residue);
+            assembly_atom->SetName(topology_atom->GetAtomName());
+
+            vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
+            assembly_residue->AddAtom(assembly_atom);
+        }
+        residues_.push_back(assembly_residue);
     }
 }
 
@@ -659,6 +911,115 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
 {
     this->ClearAssembly();
     PrepFile* prep_file = new PrepFile(prep_file_path);
+    sequence_number_ = 1;
+    PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
+    stringstream ss;
+
+    for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
+    {
+        CoordinateVector cartesian_coordinate_list = CoordinateVector();
+        int head_atom_index = INFINITY;
+        int tail_atom_index = -INFINITY;
+        Atom* head_atom = new Atom();
+        Atom* tail_atom = new Atom();
+
+        Residue* assembly_residue = new Residue();
+        assembly_residue->SetAssembly(this);
+        string residue_name = (*it).first;
+        assembly_residue->SetName(residue_name);
+        assembly_residue->SetId(residue_name);
+        PrepFileResidue* prep_residue = (*it).second;
+        string prep_residue_name = prep_residue->GetName();
+        if(distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
+            ss << prep_residue_name;
+        else
+            ss << prep_residue_name << "-";
+        PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+        for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+        {
+            Atom* assembly_atom = new Atom();
+            PrepFileAtom* prep_atom = (*it1);
+
+            assembly_atom->SetResidue(assembly_residue);
+            string atom_name = prep_atom->GetName();
+            assembly_atom->SetName(atom_name);
+            stringstream atom_id;
+            atom_id << residue_name << ":" << atom_name;
+            assembly_atom->SetId(atom_id.str());
+
+            assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
+            assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
+
+            if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
+            {
+                vector<Coordinate*> coordinate_list = vector<Coordinate*>();
+                int index = distance(prep_atoms.begin(), it1);
+                if(index == 0)
+                {
+
+                }
+                if(index == 1)
+                {
+                    int parent_index = prep_atom->GetBondIndex() - 1;
+                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                    coordinate_list.push_back(parent_coordinate);
+                }
+                if(index == 2)
+                {
+                    int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                    int parent_index = prep_atom->GetBondIndex() - 1;
+                    Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                    coordinate_list.push_back(grandparent_coordinate);
+                    coordinate_list.push_back(parent_coordinate);
+                }
+                if(index > 2)
+                {
+                    int great_grabdparent_index = prep_atom->GetDihedralIndex() - 1;
+                    int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                    int parent_index = prep_atom->GetBondIndex() - 1;
+                    Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
+                    Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                    coordinate_list.push_back(great_grandparent_coordinate);
+                    coordinate_list.push_back(grandparent_coordinate);
+                    coordinate_list.push_back(parent_coordinate);
+                }
+                Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                                                                                             prep_atom->GetAngle(), prep_atom->GetDihedral());
+                cartesian_coordinate_list.push_back(coordinate);
+
+                assembly_atom->AddCoordinate(coordinate);
+            }
+            else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
+            {
+                assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+            }
+            if(prep_atom->GetTopologicalType() == kTopTypeM && prep_atom->GetType().compare(prep_residue->GetDummyAtomType()) != 0)
+            {
+                if(head_atom_index > prep_atom->GetIndex())
+                {
+                    head_atom_index = prep_atom->GetIndex();
+                    head_atom = assembly_atom;
+                }
+                if(tail_atom_index < prep_atom->GetIndex())
+                {
+                    tail_atom_index = prep_atom->GetIndex();
+                    tail_atom = assembly_atom;
+                }
+            }
+            if(assembly_atom->GetAtomType().compare("DU") != 0)
+                assembly_residue->AddAtom(assembly_atom);
+        }
+        assembly_residue->AddHeadAtom(head_atom);
+        assembly_residue->AddTailAtom(tail_atom);
+        residues_.push_back(assembly_residue);
+    }
+    name_ = ss.str();
+}
+void Assembly::BuildAssemblyFromPrepFile(PrepFile* prep_file)
+{
+    this->ClearAssembly();
     sequence_number_ = 1;
     PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
     stringstream ss;
@@ -733,7 +1094,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
                     coordinate_list.push_back(great_grandparent_coordinate);
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
-                }                
+                }
                 Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
                                                                                              prep_atom->GetAngle(), prep_atom->GetDihedral());
                 cartesian_coordinate_list.push_back(coordinate);
@@ -893,7 +1254,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
         prep_residue->SetCoordinateType(PrepFileSpace::kINT);
         prep_residue->SetDummyAtomOmission(PrepFileSpace::kOmit);
         prep_residue->SetDummyAtomType("DU");
-        prep_residue->SetDummyAtomPosition(PrepFileSpace::kPositionBeg);        
+        prep_residue->SetDummyAtomPosition(PrepFileSpace::kPositionBeg);
         prep_residue->SetOutputFormat(PrepFileSpace::kFormatted);
 
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
@@ -934,8 +1295,8 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
                 cartesian_coordinate_list.push_back(new Coordinate(dCutOff, dCutOff, 0.0)); //2.43347, 1.34044, 0.0 ; -4.7, -4.2, -4.0
             }
             dummy_atom->SetCharge(0.0);
-            dummy_atom->SetTopologicalType(kTopTypeM);            
-            atom_index++;            
+            dummy_atom->SetTopologicalType(kTopTypeM);
+            atom_index++;
             prep_atoms.push_back(dummy_atom);
         }
         cout << assembly_residue->GetName() << endl;
@@ -979,7 +1340,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
             atom_index++;
             prep_atoms.push_back(prep_atom);
         }
-//        prep_residue->SetImproperDihedrals();
+        //        prep_residue->SetImproperDihedrals();
         prep_residue->SetLoops(loops);
         prep_residue->SetAtoms(prep_atoms);
         prep_residue->SetCharge(prep_residue->CalculatePrepResidueCharge());
@@ -2543,7 +2904,7 @@ void Assembly::BuildStructureByPrepFileInformation()
         atom_node->SetId(i);
         i++;
         Residue* assembly_residue = atom->GetResidue();
-//        cout << assembly_residue->GetName() << endl;
+        //        cout << assembly_residue->GetName() << endl;
         PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
         if(prep_residue != NULL)
         {
@@ -4054,10 +4415,51 @@ std::vector<std::vector<std::string> > Assembly::CreateAllCyclePermutations(stri
     return all_permutations;
 }
 
+void Assembly::ExtractMonosaccharides()
+{
+    CycleMap cycles = DetectCyclesByDFS();
+    RemoveFusedCycles(cycles);
+    if(cycles.size() == 0)
+        cout << "khalieeee" << endl;
+    FilterAllCarbonCycles(cycles);
+    cout << endl;
+    cout << "cycles after filtering carbons" << endl;
+    CycleMap sorted_cycles = CycleMap();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_atoms_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        cout << cycle_atoms_str << endl;
+        Atom* anomeric = FindAnomericCarbon(cycle_atoms, cycle_atoms_str);
+        if(anomeric != NULL)
+        {
+            AtomVector sorted_cycle_atoms = AtomVector();
+            stringstream sorted_cycle_stream;
+            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
+            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+        }
+    }
+    cycles = sorted_cycles;
+    cout << endl;
+    cout << "sorted cycles after filtering (fused, all carbons and rings without oxygen): " << endl;
+    vector<ChemicalCode*> codes = vector<ChemicalCode*>();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {        
+        string cycle_atoms_str = (*it).first;
+        AtomVector cycle = (*it).second;
+        cout << cycle_atoms_str << endl;
+        vector<string> orientations = GetSideGroupOrientations(cycle, cycle_atoms_str);
+        ChemicalCode* code = BuildChemicalCode(orientations);
+        GenerateSugarName(code);
+        if(code != NULL)
+            codes.push_back(code);
+        code->Print(cout);
+    }
+}
+
 Assembly::CycleMap Assembly::DetectCyclesByDFS()
 {
     int counter = 0;
-//    vector<string> size_vector = Split(cycle_size, "|");
 
     AtomStatusMap atom_status_map = AtomStatusMap();
     AtomIdAtomMap atom_parent_map = AtomIdAtomMap();
@@ -4082,29 +4484,17 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
             DFSVisit(atoms, atom_status_map, atom_parent_map, atom, counter, src_dest_map);
         }
     }
+
     cout << "Number of cycles found: " << counter << endl;
     for(AtomIdAtomMap::iterator it = src_dest_map.begin(); it != src_dest_map.end(); it++)
     {
-        string source_id = (*it).first;
+        string src_dest = (*it).first;
         Atom* destination = (*it).second;
         cycle.clear();
         stringstream cycle_stream;
-        ReturnCycleAtoms(source_id, destination, atom_parent_map, cycle, cycle_stream);
-//        if(find(size_vector.begin(), size_vector.end(), ConvertT(cycle.size())) != size_vector.end())
+        vector<string> key = Split(src_dest, "-");
+        ReturnCycleAtoms(key.at(0), destination, atom_parent_map, cycle, cycle_stream);
         cycles[cycle_stream.str()] = cycle;
-    }
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    {
-        string cycle_atoms_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
-        cout << cycle_atoms_str << endl;
-//        for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
-//        {
-//            Atom* cycle_atom = (*it1);
-//            cout << cycle_atom->GetId() << ";";
-//        }
-//        cout << endl;
-        Atom* anomeric = FindAnomericCarbon(cycle_atoms);
     }
     return cycles;
 }
@@ -4131,7 +4521,9 @@ void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomId
                 if(neighbor->GetId().compare(parent->GetId()) != 0)///making sure we are not tracking back to the previous atom which is the parent of neigbor (current atom)
                 {
                     counter++;
-                    src_dest_map[neighbor->GetId()] = atom;
+                    stringstream key;
+                    key << neighbor->GetId() << "-" << atom->GetId();
+                    src_dest_map[key.str()] = atom;
                 }
             }
         }
@@ -4153,64 +4545,120 @@ void Assembly::ReturnCycleAtoms(string src_id, Atom *current_atom, AtomIdAtomMap
     ReturnCycleAtoms(src_id, parent, atom_parent_map, cycle, cycle_stream);
 }
 
-void Assembly::RemoveFusedCycles(CycleMap &cycles)
+void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
+{
+    map<string, bool> to_be_deleted_cycles = map<string, bool>();
+    bool all_carbons = true;
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        all_carbons = true;
+        for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            atom->GetName().find("C") == string::npos;
+            {
+                all_carbons = false;
+                break;
+            }
+        }
+        if(all_carbons)
+            to_be_deleted_cycles[cycle_str] = true;
+    }
+    CycleMap all_carbons_filtered_cycles = CycleMap();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
+            all_carbons_filtered_cycles[cycle_str] = cycle_atoms;
+    }
+    cycles.clear();
+    cycles = all_carbons_filtered_cycles;
+}
+
+void Assembly::FilterNonMinCycles(CycleMap &cycles)
 {
 //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
 //    {
-//        AtomVector cycle_i = (*it).second;
-//        for(AtomVector::iterator it1 = cycle_i.begin(); it1 != cycle_i.end(); it1++)
+//        AtomVector cycle_atoms = (*it).second;
+//        if(cycle_i_atoms.size() > 6)
 //        {
-//            Atom* atom_i = (*it1);
-//        }
-
-//        for(CycleMap::iterator it1 = cycles.begin(); it1 != cycles.end(); it1++)
-//        {
-//            if(it != it1)///comparing cycle i with all the other cycles except itself
+//            vector<AtomVector> path_matrix = vector<AtomVector>();
+//            vector<vector<int> > length_matrix = vector<vector<int> >();
+//            for(int n = 0; n < cycle_atoms.size(); n++)
 //            {
-//                AtomVector cycle_j = (*it1).second;
-//                for(AtomVector::iterator it2 = cycle_j.begin(); it2 != cycle_j.end(); it2++)
+//                for(int m = 0; m < cycle_atoms.size(); m++)
 //                {
-//                    Atom* atom_j = (*it2);
-//                }
-
-//                stringstream atom_pair;
-//                stringstream atom_pair_rev;
-//                for(int i = 0; i < cycle_i.size(); i++)
-//                {
-//                    if(i == cycle_i.size() - 1)
-//                    {
-//                        Atom* a1 = cycle_i.at(i);
-//                        Atom* a2 = cycle_i.at(0);
-//                    }
-//                    else
-//                    {
-//                        Atom* a1 = cycle_i.at(i);
-//                        Atom* a2 = cycle_i.at(i + 1);
-//                    }
-//                    atom_pair << a1->GetId() << "-" << a2->GetId();
-//                    atom_pair_rev << a2->GetId() << "-" << a1->GetId();
-
-//                    if(cycle_i_str.find(atom_pair.str()) != string::npos)
-//                    {
-//                        to_be_deleted_cycles.push_back(cycle_i);
-//                        to_be_deleted_cycles.push_back(cycle_j);
-//                        break;
-//                    }
-//                    else if(cycle_i_str.find(atom_pair_rev.str()) != string::npos)
-//                    {
-//                        to_be_deleted_cycles.push_back(cycle_i);
-//                        to_be_deleted_cycles.push_back(cycle_j);
-//                        break;
-//                    }
-
+//                    length_matrix.at(n).at(m) = INFINITY;
+//                    path_matrix.at(n).at(m) =
 //                }
 //            }
-//            }
+//            for(int i = 0; i < cycle_atoms.size(); i++)
+//                for(int j = 0; j < cycle_atoms.size(); j++)
+//                    for(int k = 0; k < cycle_atoms.size(); k++)
+//                    {
+
+//                    }
 //        }
 //    }
 }
 
-Atom* Assembly::FindAnomericCarbon(AtomVector cycle)
+void Assembly::RemoveFusedCycles(CycleMap &cycles)
+{
+    map<string, bool> to_be_deleted_cycles = map<string, bool>();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_i_str = (*it).first; ///cycle i will be compared with all the other cycles
+        AtomVector cycle_i_atoms = (*it).second;
+        cout << cycle_i_str << endl;
+        for(CycleMap::iterator it1 = cycles.begin(); it1 != cycles.end(); it1++)
+        {
+            if(it != it1)
+            {
+                string cycle_j_str = (*it1).first; ///cycle j to be compared with cycle i
+                for(int i = 0; i < cycle_i_atoms.size(); i++)
+                {
+                    stringstream mutual_edge;
+                    stringstream mutual_edge_reverse;
+                    Atom* a1 = new Atom();
+                    Atom* a2 = new Atom();
+                    if(i == cycle_i_atoms.size() - 1)
+                    {
+                        a1 = cycle_i_atoms.at(i);
+                        a2 = cycle_i_atoms.at(0);
+                    }
+                    else
+                    {
+                        a1 = cycle_i_atoms.at(i);
+                        a2 = cycle_i_atoms.at(i + 1);
+                    }
+                    mutual_edge << a1->GetId() << "-" << a2->GetId();
+                    mutual_edge_reverse << a2->GetId() << "-" << a1->GetId();
+                    if(cycle_j_str.find(mutual_edge.str()) != string::npos || cycle_j_str.find(mutual_edge_reverse.str()) != string::npos)///mutual edge found
+                    {
+                        to_be_deleted_cycles[cycle_i_str] = true;
+                        to_be_deleted_cycles[cycle_j_str] = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    CycleMap fused_filtered_cycles = CycleMap();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
+            fused_filtered_cycles[cycle_str] = cycle_atoms;
+    }
+    cycles.clear();
+    cycles = fused_filtered_cycles;
+}
+
+Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
 {
     Atom* anomeric_carbon = new Atom();
     for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
@@ -4227,7 +4675,9 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle)
             for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen neighbor
             {
                 Atom* neighbor1_neighbor = (*it1);
-                if((neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1)))))
+                if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
+                        && neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 ///if first element is "O"
+                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
                 {
                     anomeric_carbon = o_neighbor1;
                     cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
@@ -4241,7 +4691,9 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle)
             for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen neighbor
             {
                 Atom* neighbor2_neighbor = (*it2);
-                if((neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1)))))
+                if( cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos
+                        & neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0
+                    && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
                 {
                     anomeric_carbon = o_neighbor2;
                     cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
@@ -4250,6 +4702,261 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle)
             }
         }
     }
+    return NULL;
+}
+
+Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, stringstream &sorted_cycle_stream)
+{
+    AtomVector sorted_cycle = AtomVector();
+    for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
+    {
+        Atom* atom = (*it);
+        int index = distance(cycle.begin(), it);
+        if(atom->GetId().compare(anomeric_atom->GetId()) == 0)
+        {
+            sorted_cycle.push_back(anomeric_atom);///anomeric atom as the first atom of the cycle
+            sorted_cycle_stream << anomeric_atom->GetId() << "-";
+            if(index == cycle.size() - 1)
+            {
+                Atom* a0 = cycle.at(0);
+                if(a0->GetId().find("O") != string::npos)///a0 is oxygen so the vector is in reverse order
+                {
+                    for(AtomVector::iterator it1 = it - 1; it1 != cycle.begin() - 1; it1--)///atoms befor the anomeric atom in reverse order
+                    {
+                        Atom* a = (*it1);
+                        sorted_cycle.push_back(a);
+                        if(it1 == cycle.begin())
+                            sorted_cycle_stream << a->GetId();
+                        else
+                            sorted_cycle_stream << a->GetId() << "-";
+                    }
+                }
+                else
+                {
+                    for(AtomVector::iterator it1 = cycle.begin(); it1 != it; it1++)///atoms befor the anomeric atom from beginning of vector
+                    {
+                        Atom* a = (*it1);
+                        sorted_cycle.push_back(a);
+                        if(it1 == it -1)
+                            sorted_cycle_stream << a->GetId();
+                        else
+                            sorted_cycle_stream << a->GetId() << "-";
+                    }
+                }
+            }
+            else
+            {
+                Atom* next_atom = cycle.at(index + 1);
+                if(next_atom->GetId().find("O") != string::npos)///next atom is oxygen so the vector is in reverse order
+                {
+                    for(AtomVector::iterator it1 = it; it1 != cycle.end(); it1--) ///atoms befor anomeric atom to down to beginning of the vector
+                    {
+                        Atom* a_before = (*it1);
+                        sorted_cycle.push_back(a_before);
+                        sorted_cycle_stream << a_before->GetId() << "-";
+                    }
+                    for(AtomVector::iterator it2 = cycle.end(); it2 != it; it2--)///atoms from end of the vector down to anomeric atom
+                    {
+                        Atom* atom_after = (*it2);
+                        sorted_cycle.push_back(atom_after);
+                        if(it2 == it + 1)
+                            sorted_cycle_stream << atom_after->GetId();
+                        else
+                            sorted_cycle_stream << atom_after->GetId() << "-";
+                    }
+                }
+                else
+                {
+                    for(AtomVector::iterator it1 = it+1; it1 != cycle.end(); it1++) ///atoms after anomeric atom to the end of the vector
+                    {
+                        Atom* atom_after = (*it1);
+                        sorted_cycle.push_back(atom_after);
+                        if(it1 == cycle.end())
+                            sorted_cycle_stream << atom_after->GetId();
+                        else
+                            sorted_cycle_stream << atom_after->GetId() << "-";
+                    }
+                    for(AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of vector
+                    {
+                        Atom* atom_before = (*it2);
+                        sorted_cycle.push_back(atom_before);
+                        sorted_cycle_stream << atom_before->GetId() << "-";
+                    }
+                }
+            }
+        }
+    }
+    return sorted_cycle;
+}
+
+vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle_atoms_str)
+{
+    vector<string> orientations = vector<string>();
+    for(AtomVector::iterator it = cycle.begin(); it != cycle.end() - 1; it++)
+    {
+        orientations.push_back("N");
+        int index = distance(cycle.begin(), it);
+        Atom* prev_atom = new Atom();
+        Atom* current_atom = (*it);
+        Atom* next_atom = new Atom();
+        if(index == 0)
+            prev_atom = cycle.at(cycle.size() - 1);
+        else
+            prev_atom = cycle.at(index - 1);
+        next_atom = cycle.at(index + 1);
+//                cout << "prev-curr-next " << prev_atom->GetName() << "-" << current_atom->GetName() << "-" <<next_atom->GetName() << endl;
+        Coordinate prev_atom_coord = Coordinate(*prev_atom->GetCoordinates().at(0));
+        Coordinate current_atom_coord = Coordinate(*current_atom->GetCoordinates().at(0));
+        Coordinate next_atom_coord = Coordinate(*next_atom->GetCoordinates().at(0));
+        prev_atom_coord.operator -(current_atom_coord) ;
+        next_atom_coord.operator -(current_atom_coord) ;
+        Plane plane = Plane();
+        plane.SetV1(prev_atom_coord);
+        plane.SetV2(next_atom_coord);
+        Coordinate normal_v = plane.GetUnitNormalVector();
+
+        AtomNode* node = current_atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+            Atom* neighbor = (*it1);
+            string neighbor_id = neighbor->GetId();
+            if(cycle_atoms_str.find(neighbor_id) == string::npos && (neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N'))///if not one of the cycle atoms
+            {
+                Coordinate side_atom_coord = Coordinate(*neighbor->GetCoordinates().at(0));
+                side_atom_coord.operator -(current_atom_coord);
+                side_atom_coord.Normalize();
+                double theta = acos(normal_v.DotProduct(side_atom_coord));
+                if(theta > (gmml::PI_RADIAN/2))
+                    orientations.at(index) = "D";
+                else
+                    orientations.at(index) = "U";
+                break;
+            }
+        }
+        if(orientations.at(index).compare("N") == 0)
+        {
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+            {
+                Atom* neighbor = (*it1);
+                AtomNode* neighbor_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+                if(cycle_atoms_str.find(neighbor->GetId()) == string::npos)
+                {
+                    for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+                    {
+                        Atom* neighbor_of_neighbor = (*it2);
+                        string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
+                        if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos && (neighbor_of_neighbor_id.at(0) == 'O' || neighbor_of_neighbor_id.at(0) == 'N'))///if not one of the cycle atoms
+                        {
+                            Coordinate side_atom_coord = Coordinate(*neighbor_of_neighbor->GetCoordinates().at(0));
+                            side_atom_coord.operator -(current_atom_coord);
+                            side_atom_coord.Normalize();
+                            double theta = acos(normal_v.DotProduct(side_atom_coord));
+                            if(theta > (gmml::PI_RADIAN/2))
+                                orientations.at(index) = "D";
+                            else
+                                orientations.at(index) = "U";
+                            break;
+                        }
+                    }
+                }
+                if(orientations.at(index).compare("N") != 0)
+                    break;
+            }
+        }
+    }
+//    cout << "orientation" << endl;
+//    for(vector<string>::iterator it3 = orientations.begin(); it3 != orientations.end(); it3++)
+//    {
+//        string o = (*it3);
+//        cout << o << endl;
+//    }
+    return orientations;
+}
+
+ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
+{
+    ChemicalCode* code = new ChemicalCode();
+    int counter = 0;
+
+    if(orientations.size() == 5 )
+        code->base_ = "P";
+    else if(orientations.size() == 4 )
+        code->base_ = "F";
+    else
+        code->base_ = "?";
+
+    if(orientations.at(0).compare("U") == 0)
+    {code->right_up_.push_back("a");counter ++;}
+    else if(orientations.at(0).compare("D") == 0)
+    {code->right_down_.push_back("a");counter ++;}
+    for(vector<string>::iterator it = orientations.begin() + 1; it != orientations.end() - 1; it++)
+    {
+        string orientation = (*it);
+        int index = distance(orientations.begin(), it);
+        if(orientation.compare("U") == 0)
+        {code->left_up_.push_back(gmml::ConvertT(index + 1));counter ++;}
+        else if(orientation.compare("D") == 0)
+        {code->left_down_.push_back(gmml::ConvertT(index + 1));counter ++;}
+    }
+    if(orientations.at(orientations.size() - 1).compare("U") == 0)
+    {code->right_up_.push_back("+1");counter ++;}
+    else if(orientations.at(orientations.size() - 1).compare("D") == 0)
+    {code->right_down_.push_back("+1");counter ++;}
+    cout << counter << endl;
+//    if (counter >= 3)
+        return code;
+//    else
+        return NULL;
+}
+void Assembly::GenerateSugarName(ChemicalCode* code)
+{
+    SugarName* sugar = new SugarName();
+    if(code->base_.compare("P") == 0)
+        sugar->ring_type_ = "pyranose";
+    else if(code->base_.compare("F") == 0)
+        sugar->ring_type_ = "furanose";
+    if(find(code->right_up_.begin(), code->right_up_.end(), "+1") != code->right_up_.end())
+        sugar->isomer_ = "D";
+    else if(find(code->right_down_.begin(), code->right_down_.end(), "+1") != code->right_down_.end())
+        sugar->isomer_ = "L";
+    if((find(code->right_up_.begin(), code->right_up_.end(), "+1") != code->right_up_.end() && find(code->right_up_.begin(), code->right_up_.end(), "a") != code->right_up_.end()) ||
+            (find(code->right_down_.begin(), code->right_down_.end(), "+1") != code->right_down_.end() && find(code->right_down_.begin(), code->right_down_.end(), "a") != code->right_down_.end()))
+        sugar->configuration_ = "beta";
+    else if((find(code->right_up_.begin(), code->right_up_.end(), "+1") != code->right_up_.end() && find(code->right_down_.begin(), code->right_down_.end(), "a") != code->right_down_.end()) ||
+            (find(code->right_down_.begin(), code->right_down_.end(), "+1") != code->right_down_.end() && find(code->right_up_.begin(), code->right_up_.end(), "a") != code->right_up_.end()))
+        sugar->configuration_ = "alpha";
+
+    if(sugar->isomer_.compare("D") == 0)
+    {
+        if(sugar->configuration_.compare("alpha"))
+        {
+
+        }
+        else if(sugar->configuration_.compare("beta"))
+        {
+
+        }
+
+    }
+    else if(sugar->isomer_.compare("L") == 0)
+    {
+        if(sugar->configuration_.compare("alpha"))
+        {
+
+        }
+        else if(sugar->configuration_.compare("beta"))
+        {
+
+        }
+
+    }
+
+    stringstream ss;
+    ss << sugar->configuration_ << "-" << sugar->isomer_ << "-" << sugar->monosaccharide_name_ << "-" << sugar->ring_type_;
+    sugar->name_ = ss.str();
+    cout << sugar->name_ << endl;
 }
 
 //////////////////////////////////////////////////////////
