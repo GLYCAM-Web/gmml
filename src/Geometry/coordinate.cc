@@ -82,11 +82,12 @@ double Coordinate::length()
 }
 void Coordinate::Normalize()
 {
-    if(length() != 0.0)
+    double length = this->length();
+    if(length != 0.0)
     {
-        x_ = x_ / length();
-        y_ = y_ / length();
-        z_ = z_ / length();
+        x_ = x_ / length;
+        y_ = y_ / length;
+        z_ = z_ / length;
     }
 }
 double Coordinate::DotProduct(Coordinate coordinate)
@@ -95,9 +96,12 @@ double Coordinate::DotProduct(Coordinate coordinate)
 }
 void Coordinate::CrossProduct(Coordinate coordinate)
 {
-    x_ = (y_ * coordinate.z_) - (coordinate.y_ * z_);
-    y_ = (z_ * coordinate.x_) - (coordinate.z_ * x_);
-    z_ = (x_ * coordinate.y_) - (coordinate.x_ * y_);
+    double x = x_;
+    double y = y_;
+    double z = z_;
+    x_ = (y * coordinate.z_) - (coordinate.y_ * z);
+    y_ = (z * coordinate.x_) - (coordinate.z_ * x);
+    z_ = (x * coordinate.y_) - (coordinate.x_ * y);
 }
 void Coordinate::operator+(Coordinate coordinate)
 {

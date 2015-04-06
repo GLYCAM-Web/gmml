@@ -26,6 +26,14 @@ namespace CoordinateFileSpace
               * @param crd_file An existing coordinate file path to be read
               */
             CoordinateFile(const std::string& crd_file);
+            /*!
+              * load coordinate file
+              */
+            CoordinateFile* LoadCoordinateFile();
+            /*!
+              * @param crd_file An existing coordinate file path to be loaded
+              */
+            CoordinateFile* LoadCoordinateFile(const std::string& crd_file);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //

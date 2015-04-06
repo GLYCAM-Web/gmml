@@ -33,7 +33,17 @@ CoordinateFile::CoordinateFile(const string &crd_file)
     Read(in_file);
     in_file.close();            /// Close the parameter files
 }
+CoordinateFile* CoordinateFile::LoadCoordinateFile()
+{
+    CoordinateFile* crd = new CoordinateFile();
+    return crd;
+}
 
+CoordinateFile* CoordinateFile::LoadCoordinateFile(const string &crd_file)
+{
+    CoordinateFile* crd = new CoordinateFile(crd_file);
+    return crd;
+}
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////

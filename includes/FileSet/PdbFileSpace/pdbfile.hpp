@@ -75,7 +75,15 @@ namespace PdbFileSpace
               * Constructor
               * @param pdb_file An existing pdb file path to be read
               */
-            PdbFile(const std::string& pdb_file, bool is_sugar_identification = false);
+            PdbFile(const std::string& pdb_file);
+            /*! \fn
+              * Load PDB file
+              */
+            PdbFile* LoadPdbFile();
+            /*! \fn
+              * @param pdb_file An existing pdb file path to be read
+              */
+            PdbFile* LoadPdbFile(const std::string& pdb_file);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
