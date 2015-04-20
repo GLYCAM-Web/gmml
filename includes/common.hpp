@@ -6,12 +6,15 @@
 #include <math.h>
 #include <map>
 
+#include "Geometry/coordinate.hpp"
+
 namespace gmml
 {
 
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
+    typedef Geometry::Coordinate Vector;
 
     //*******************************************
 
@@ -25,6 +28,7 @@ namespace gmml
     const double dCutOff = 1.6;
     const int PdbResidueThreshold = 500;
     const int DEFAULT_DUMMY_ATOMS = 3;
+    const char BLANK_SPACE = '?';
 
     /*! \enum
       * Enumerator to possible n chain termination
@@ -86,6 +90,19 @@ namespace gmml
     {
         MAIN = 0,           /*!< Main parameter file >*/
         MODIFIED = 1        /*!< Force modified parameter file >*/
+    };
+
+    /*! \enum
+      * Topological type enumerator
+      */
+    enum TopologicalType
+    {
+        kTopTypeE,
+        kTopTypeS,
+        kTopTypeB,
+        kTopType3,
+        kTopType4,
+        kTopTypeM
     };
 
     /*! \enum

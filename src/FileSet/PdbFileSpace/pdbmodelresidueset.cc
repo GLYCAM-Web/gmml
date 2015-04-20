@@ -22,6 +22,24 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
     while(!Trim(temp).empty())
     {
         stringstream atom_block;
+        stringstream head_exceptional_atom_block;
+        stringstream tail_exceptional_atom_block;
+        stringstream heterogen_atom_block;
+
+        while(line.find("HETATM") != string::npos)
+        {
+            head_exceptional_atom_block << line << endl;
+            getline(residue_set_block, line);
+            temp = line;
+        }
+        if(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos || line.find("TER") != string::npos)
+        {
+            atom_block << head_exceptional_atom_block.str();
+        }
+        else
+        {
+            heterogen_atom_block << head_exceptional_atom_block.str();
+        }
         while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos)
         {
             /// Extract ATOM section of the given residue set block
@@ -37,6 +55,20 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
                 getline(residue_set_block,line);        /// Skip lines
                 temp = line;
             }
+        }
+        while(line.find("HETATM") != string::npos)
+        {
+            tail_exceptional_atom_block << line << endl;
+            getline(residue_set_block, line);
+            temp = line;
+        }
+        if(line.find("TER") != string::npos)
+        {
+            atom_block << tail_exceptional_atom_block.str();
+        }
+        else
+        {
+            heterogen_atom_block << tail_exceptional_atom_block.str();
         }
         /// End of an ATOM section in the given residue set block
         if(line.find("TER") != string::npos || Trim(temp).empty())
@@ -59,7 +91,6 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
                 continue;
             }
         }
-        stringstream heterogen_atom_block;
         /// Extract HETATM section of the given residue set block
         while(line.find("HETATM") != string::npos)
         {

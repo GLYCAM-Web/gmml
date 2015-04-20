@@ -333,7 +333,7 @@ namespace PrepFileSpace
               */
             BondedAtomIndexMap GetBondingsOfResidue();
             PrepFileAtom* GetPrepAtomByAtomName(std::string atom_name);
-
+            PrepFileAtomVector GetAtomsParentVector();
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////

@@ -106,10 +106,10 @@ PrepFileAtom* PrepFileResidue::GetPrepAtomByName(string atom_name)
 PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
 {
     BondedAtomIndexMap bonded_atoms_map = BondedAtomIndexMap();
-    vector<PrepFileAtom*> stack = vector<PrepFileAtom*>();
-    vector<int> number_of_bonds = vector<int>();
+//    vector<PrepFileAtom*> stack = vector<PrepFileAtom*>();
+//    vector<int> number_of_bonds = vector<int>();
 
-
+    PrepFileAtomVector parents = this->GetAtomsParentVector();
     for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
     {
         int from = (*it).first;
@@ -122,8 +122,14 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
     for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileAtom* atom = *it;
-        bonded_atoms_map[atom->GetIndex()].push_back(atom->GetBondIndex());
-        bonded_atoms_map[atom->GetBondIndex()].push_back(atom->GetIndex());
+        int index = distance(atoms_.begin(), it);
+        int atom_index = atom->GetIndex();
+        int parent_index = parents.at(index)->GetIndex();
+        if(atom_index != parent_index)
+        {
+            bonded_atoms_map[atom_index].push_back(parent_index);
+            bonded_atoms_map[parent_index].push_back(atom_index);
+        }
     }
 
   /*
@@ -465,6 +471,94 @@ PrepFileAtom* PrepFileResidue::GetPrepAtomByAtomName(string atom_name)
     }
     return NULL;
 }
+
+PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
+{
+    PrepFileAtomVector parents = PrepFileAtomVector();
+    PrepFileAtomVector stack = PrepFileAtomVector();
+    vector<int> neighbors = vector<int>();
+    for(PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
+    {
+        parents.push_back(*it);
+        neighbors.push_back(0);
+    }
+    for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
+    {
+        int from = (*it).first;
+        int to = (*it).second;
+
+        neighbors.at(from - 1) = 1;
+        neighbors.at(to - 1) = 1;
+    }
+    for(PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
+    {
+        PrepFileAtom* atom = *it;
+        int index = distance(atoms_.begin(), it);
+        if(stack.empty())
+        {
+            switch(atom->GetTopologicalType())
+            {
+                case kTopTypeM:
+                case kTopType4:
+                case kTopType3:
+                    if(neighbors.at(index) == 0)
+                        stack.push_back(atom);
+                    stack.push_back(atom);
+                    stack.push_back(atom);
+                    stack.push_back(atom);
+                    break;
+                case kTopTypeB:
+                    if(neighbors.at(index) == 0)
+                        stack.push_back(atom);
+                    stack.push_back(atom);
+                    stack.push_back(atom);
+                    break;
+                case kTopTypeS:
+                    if(neighbors.at(index) == 0)
+                        stack.push_back(atom);
+                    stack.push_back(atom);
+                    break;
+                case kTopTypeE:
+                    if(neighbors.at(index) == 0)
+                        stack.push_back(atom);
+                    break;
+            }
+        }
+        else
+        {
+            switch(atom->GetTopologicalType())
+            {
+                case kTopTypeM:
+                case kTopType4:
+                case kTopType3:
+                    parents.at(index) = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    if(neighbors.at(index) == 0)
+                        stack.push_back(atom);
+                    stack.push_back(atom);
+                    stack.push_back(atom);
+                    break;
+                case kTopTypeB:
+                    parents.at(index) = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(atom);
+                    stack.push_back(atom);
+                    break;
+                case kTopTypeS:
+                    parents.at(index) = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    stack.push_back(atom);
+                    break;
+                case kTopTypeE:
+                    parents.at(index) = stack.at(stack.size() - 1);
+                    stack.pop_back();
+                    break;
+            }
+        }
+    }
+    return parents;
+}
+
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////

@@ -96,13 +96,14 @@ namespace gmml
       * @param length Thel fixed length that the line has to be
       * @return An expanded line into the given length
       */
-    inline std::string& ExpandLine(std::string& line, int length)
+    inline std::string ExpandLine(std::string line, int length)
     {
-        if((int)line.length() >= length)
+        int l = line.length();
+        if(l >= length)
             return line;
         else
         {
-            int space = length - line.length();
+            int space = length - l;
             std::stringstream ss;
             ss << line << std::setw(space) << " ";
             line = ss.str();
@@ -197,6 +198,27 @@ namespace gmml
         }
     }
 
+    inline std::string ConvertTopologicalType2String(TopologicalType type)
+    {
+        switch(type)
+        {
+            case kTopTypeE:
+                return "E";
+            case kTopTypeS:
+                return "S";
+            case kTopTypeB:
+                return "B";
+            case kTopType3:
+                return "3";
+            case kTopType4:
+                return "4";
+            case kTopTypeM:
+                return "M";
+            default:
+                return "E";
+        }
+    }
+
     /*! \fn
       * Convert degree to radian
       * @param degree Magnitude of an angle in degree
@@ -230,39 +252,21 @@ namespace gmml
         if(coordinate_list.size() == 0)
         {
             Geometry::Coordinate* coordinate = new Geometry::Coordinate();
-            coordinate->Print(std::cout);
-            std::cout << std::endl;
             return coordinate;
         }
         if(coordinate_list.size() == 1)
         {
-            coordinate_list.at(0)->Print(std::cout);
-            std::cout << std::endl;
             Geometry::Coordinate* coordinate = new Geometry::Coordinate(coordinate_list.at(0)->GetX() + distance, 0.0, 0.0);
-            coordinate->Print(std::cout);
-            std::cout << std::endl;
             return coordinate;
         }
         if(coordinate_list.size() == 2)
         {
-            coordinate_list.at(0)->Print(std::cout);
-            std::cout << std::endl;
-            coordinate_list.at(1)->Print(std::cout);
-            std::cout << std::endl;
             Geometry::Coordinate* coordinate = new Geometry::Coordinate(coordinate_list.at(1)->GetX() - cos(gmml::ConvertDegree2Radian(angle) * distance),
                                                                         sin(gmml::ConvertDegree2Radian(angle)) * distance, 0.0);
-            coordinate->Print(std::cout);
-            std::cout << std::endl;
             return coordinate;
         }
         else
         {
-            coordinate_list.at(0)->Print(std::cout);
-            std::cout << std::endl;
-            coordinate_list.at(1)->Print(std::cout);
-            std::cout << std::endl;
-            coordinate_list.at(2)->Print(std::cout);
-            std::cout << std::endl;
             torsion = gmml::PI_DEGREE - torsion;
 
             Geometry::Coordinate great_grandparent_vector = Geometry::Coordinate(coordinate_list.at(0)->GetX(), coordinate_list.at(0)->GetY(), coordinate_list.at(0)->GetZ());
@@ -304,8 +308,6 @@ namespace gmml
             Geometry::Coordinate* coordinate = new Geometry::Coordinate(p.GetX() * v.at(0) + r.GetX() * v.at(1) + v2.GetX() * v.at(2) + parent_vector.GetX() * v.at(3),
                                                                         p.GetY() * v.at(0) + r.GetY() * v.at(1) + v2.GetY() * v.at(2) + parent_vector.GetY() * v.at(3),
                                                                         p.GetZ() * v.at(0) + r.GetZ() * v.at(1) + v2.GetZ() * v.at(2) + parent_vector.GetZ() * v.at(3));
-            coordinate->Print(std::cout);
-            std::cout << std::endl;
             return coordinate;
         }
     }
@@ -316,10 +318,6 @@ namespace gmml
             return new Geometry::Coordinate();
         if(coordinate_list.size() == 1)
         {
-            coordinate_list.at(0)->Print(std::cout);
-            std::cout << std::endl;
-            coordinate->Print(std::cout);
-            std::cout << std::endl;
             Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(0));
             double distance = coordinate->Distance(parent_vector);
             return new Geometry::Coordinate(distance, 0.0, 0.0);

@@ -2608,6 +2608,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<
         }
 
         PdbFile::PdbResidueAtomsMap residue_atom_map;
+        residue_atom_map = pdb_file->GetAllAtomsOfResidues();
         for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_amino_acid_residue.begin(); it != all_chain_map_amino_acid_residue.end(); it++)
         {
             string chain_id = (*it).first;
@@ -2629,13 +2630,16 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<
                     PdbResidue* next_residue = *(it1 + 1);
                     int i = distance(residues.begin(), it1);
                     int j = distance(residues.begin(), it1 + 1);
-                    residue_atom_map = pdb_file->GetAllAtomsOfResidues();
                     PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
                     PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-                    Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
-                    Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
-                    double dist = c_atom_coordinate.Distance(n_atom_coordinate);
-                    if(dist > dCutOff + 1.0)
+                    double distance = INFINITY;
+                    if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
+                    {
+                        Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+                        Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+                        distance = c_atom_coordinate.Distance(n_atom_coordinate);
+                    }
+                    if(distance > dCutOff + 1.0)
                     {
                         PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
                                                                                                             *ending_sequence_number_iterator, sequence_numbers.at(i),
@@ -2727,7 +2731,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
         int internal_amino_acid_chain_counter = 0;
         chain_map_residue = PdbPreprocessorChainIdResidueMap();
         string chain_id = (*it).first;
-        residues = (*it).second;
+        residues = (*it).second;        
 
         for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
@@ -2761,7 +2765,9 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
         }
     }
 
+
     PdbFile::PdbResidueAtomsMap residue_atom_map;
+    residue_atom_map = pdb_file->GetAllAtomsOfResidues();
     for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_amino_acid_residue.begin(); it != all_chain_map_amino_acid_residue.end(); it++)
     {
         string chain_id = (*it).first;
@@ -2772,7 +2778,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
         vector<int> sequence_numbers = chain_map_sequence_number[c_id];
         vector<char> insertion_codes = chain_map_insertion_code[c_id];
         vector<int>::iterator starting_sequence_number_iterator = min_element(sequence_numbers.begin(), sequence_numbers.end());
-        vector<int>::iterator ending_sequence_number_iterator = max_element(sequence_numbers.begin(), sequence_numbers.end());
+        vector<int>::iterator ending_sequence_number_iterator = max_element(sequence_numbers.begin(), sequence_numbers.end());        
 
         for(PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
@@ -2783,13 +2789,16 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
                 PdbResidue* next_residue = *(it1 + 1);
                 int i = distance(residues.begin(), it1);
                 int j = distance(residues.begin(), it1 + 1);
-                residue_atom_map = pdb_file->GetAllAtomsOfResidues();
                 PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
                 PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-                Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
-                Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
-                double dist = c_atom_coordinate.Distance(n_atom_coordinate);
-                if(dist > dCutOff + 1.0)
+                double distance = INFINITY;
+                if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
+                {
+                    Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+                    Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+                    distance = c_atom_coordinate.Distance(n_atom_coordinate);
+                }
+                if(distance > dCutOff + 1.0)
                 {
                     PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
                                                                                                         *ending_sequence_number_iterator, sequence_numbers.at(i),
@@ -3563,37 +3572,37 @@ void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> amino_lib_fil
     {
         time_t t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Start preprocessing ..." << endl;
-        ExtractHISResidues(pdb_file);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "HIS residues extraction: done" << endl;
-        ExtractCYSResidues(pdb_file);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "CYS residues extraction: done" << endl;
-        ExtractAlternateResidue(pdb_file);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Alternate residues extraction: done" << endl;
-        ExtractUnrecognizedResidues(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Unrecognized residues extraction: done" << endl;
-        ExtractUnknownHeavyAtoms(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms extraction: done" << endl;
-        ExtractRemovedHydrogens(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Removed hydrogens extraction: done" << endl;
-        ExtractAminoAcidChains(pdb_file, amino_lib_files_path);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Amino acid chains extraction: done" << endl;
-        ExtractGapsInAminoAcidChains(pdb_file, amino_lib_files_path);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains extraction: done" << endl;
-        ExtractResidueInfo(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Residue info extraction: done" << endl;
-        t = time(0);
-        cout << "Model charge is " << CalculateModelCharge(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path) << endl;
-        cout << std::asctime(std::localtime(&t)) << "Model charge calculation: done" << endl;
-        t = time(0);
+//        ExtractHISResidues(pdb_file);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "HIS residues extraction: done" << endl;
+//        ExtractCYSResidues(pdb_file);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "CYS residues extraction: done" << endl;
+//        ExtractAlternateResidue(pdb_file);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "Alternate residues extraction: done" << endl;
+//        ExtractUnrecognizedResidues(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "Unrecognized residues extraction: done" << endl;
+//        ExtractUnknownHeavyAtoms(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms extraction: done" << endl;
+//        ExtractRemovedHydrogens(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "Removed hydrogens extraction: done" << endl;
+//        ExtractAminoAcidChains(pdb_file, amino_lib_files_path);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "Amino acid chains extraction: done" << endl;
+//        ExtractGapsInAminoAcidChains(pdb_file, amino_lib_files_path);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains extraction: done" << endl;
+//        ExtractResidueInfo(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
+//        t = time(0);
+//        cout << std::asctime(std::localtime(&t)) << "Residue info extraction: done" << endl;
+//        t = time(0);
+//        cout << "Model charge is " << CalculateModelCharge(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path) << endl;
+//        cout << std::asctime(std::localtime(&t)) << "Model charge calculation: done" << endl;
+//        t = time(0);
         cout << std::asctime(std::localtime(&t)) << "Preprocessing done" << endl;
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
@@ -3636,32 +3645,32 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(PdbFile *pdb_fil
                                                                 vector<string> glycam_lib_files_path, vector<string> prep_files_path, int model_number)
 {
     time_t t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Start to apply changes ..." << endl;
-    UpdateHISMappingWithTheGivenNumber(pdb_file,this->GetHistidineMappings(), model_number);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "HIS residues update: done" << endl;
-    UpdateCYSResiduesWithTheGivenModelNumber(pdb_file, this->GetDisulfideBonds());
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "CYS residues update: done" << endl;
-    RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(pdb_file,this->GetAlternateResidueMap(), model_number);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unselected alternate residues removed: done" << endl;
-    RemoveUnrecognizedResiduesWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedResidues(), model_number);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Remove unrecognized residues: done" << endl;
-    RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedHeavyAtoms(), model_number);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms removed: done" << endl;
-    RemoveRemovedHydrogensWithTheGivenModelNumber(pdb_file, this->GetReplacedHydrogens(), model_number);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Removed hydrogens removed: done" << endl;
-    UpdateAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, glycam_lib_files_path, prep_files_path, this->GetChainTerminations(), model_number);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Amino acid chains update: done" << endl;
-    UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number);
-    t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains update: done" << endl;
-    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "Start to apply changes ..." << endl;
+//    UpdateHISMappingWithTheGivenNumber(pdb_file,this->GetHistidineMappings(), model_number);
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "HIS residues update: done" << endl;
+//    UpdateCYSResiduesWithTheGivenModelNumber(pdb_file, this->GetDisulfideBonds());
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "CYS residues update: done" << endl;
+//    RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(pdb_file,this->GetAlternateResidueMap(), model_number);
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "Unselected alternate residues removed: done" << endl;
+//    RemoveUnrecognizedResiduesWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedResidues(), model_number);
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "Remove unrecognized residues: done" << endl;
+//    RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedHeavyAtoms(), model_number);
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms removed: done" << endl;
+//    RemoveRemovedHydrogensWithTheGivenModelNumber(pdb_file, this->GetReplacedHydrogens(), model_number);
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "Removed hydrogens removed: done" << endl;
+//    UpdateAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, glycam_lib_files_path, prep_files_path, this->GetChainTerminations(), model_number);
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "Amino acid chains update: done" << endl;
+//    UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number);
+//    t = time(0);
+//    cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains update: done" << endl;
+//    t = time(0);
     cout << std::asctime(std::localtime(&t)) << "Applying changes done" << endl;
 }
 

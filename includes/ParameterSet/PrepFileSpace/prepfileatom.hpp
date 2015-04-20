@@ -4,22 +4,10 @@
 #include <string>
 #include <iostream>
 #include <iostream>
+#include "../../common.hpp"
 
 namespace PrepFileSpace
 {
-    /*! \enum
-      * Topological type enumerator
-      */
-    enum TopologicalType
-    {
-        kTopTypeE,
-        kTopTypeS,
-        kTopTypeB,
-        kTopType3,
-        kTopType4,
-        kTopTypeM
-    };
-
     class PrepFileAtom
     {
         public:
@@ -44,7 +32,7 @@ namespace PrepFileSpace
               * @param dihedral The actual value of the dihedral that the atom is involved in
               * @param charge The actual value of charge of the atom
               */
-            PrepFileAtom(int index, const std::string& name, const std::string& type, TopologicalType topological_type, int bond_index,
+            PrepFileAtom(int index, const std::string& name, const std::string& type, gmml::TopologicalType topological_type, int bond_index,
                          int angle_index, int dihedral_index, double bond_length, double angle, double dihedral, double charge);
             /*! \fn
               * Constructor that extracts information of the atom from the given line from the atom section of each residue in a prep file
@@ -62,7 +50,7 @@ namespace PrepFileSpace
               * @param ss A string stream that contains the topological type of the atom
               * @return Topological type of the current atom that is in the given string stream
               */
-            TopologicalType ExtractAtomTopologicalType(std::istream& ss);
+            gmml::TopologicalType ExtractAtomTopologicalType(std::istream& ss);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
@@ -98,7 +86,7 @@ namespace PrepFileSpace
               * An accessor function in order to access to topological type of the current object
               * @return topological_type_ attribute of the current object of this class
               */
-            TopologicalType GetTopologicalType();
+            gmml::TopologicalType GetTopologicalType();
             /*! \fn
               * An accessor function in order to access to bond index of the current object
               * The attribute is set by the contents of the given file
@@ -146,7 +134,7 @@ namespace PrepFileSpace
               * @param topological_type A value of TopologicalType has to be converted to string
               * @return String format of the given value of TopologicalType enumerator
               */
-            std::string GetStringFormatOfTopologicalType(TopologicalType topological_type);
+            std::string GetStringFormatOfTopologicalType(gmml::TopologicalType topological_type);
             /*! \fn
               * Convert the value of TopologicalType attribute of the current object (topological_type_) to the string version of it
               * @return String format of the value of topological_type_ attribute of the current object
@@ -157,7 +145,7 @@ namespace PrepFileSpace
               * @param topological_type String indicates TopologicalType
               * @return A value selected from TopologicalType enumerator correspondence to the given string
               */
-            TopologicalType GetTopologicalTypeFromString(std::string topological_type);
+            gmml::TopologicalType GetTopologicalTypeFromString(std::string topological_type);
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
@@ -185,7 +173,7 @@ namespace PrepFileSpace
               * Set the topological_type_ attribute of the current object
               * @param topological_type The topological_type attribute of the current object
               */
-            void SetTopologicalType(TopologicalType topological_type);
+            void SetTopologicalType(gmml::TopologicalType topological_type);
             /*! \fn
               * A mutator function in order to set the bond index of the current object
               * Set the bond_index_ attribute of the current object
@@ -236,7 +224,7 @@ namespace PrepFileSpace
             int index_;                                 /*!< Atom index; fill by the first column of the residue section of the file */
             std::string name_;                          /*!< Atom name; fill by the second column of the residue section of the file */
             std::string type_;                          /*!< Atom type; fill by the third column of the residue section of the file */
-            TopologicalType topological_type_;          /*!< Topological type (for chain extraction of the residue); fill by th 4th column of the residue section of the file */
+            gmml::TopologicalType topological_type_;          /*!< Topological type (for chain extraction of the residue); fill by th 4th column of the residue section of the file */
             int bond_index_;                            /*!< Bond index; fill by the 5th column of the residue section of the file */
             int angle_index_;                           /*!< Angle index; fill by the 6th column of the residue section of the file */
             int dihedral_index_;                        /*!< Dihedral index; fill by the 7th column of the residue section of the file */

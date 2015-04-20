@@ -6,7 +6,9 @@
 #include <vector>
 
 #include "../Geometry/coordinate.hpp"
+#include "../Geometry/plane.hpp"
 #include "../common.hpp"
+#include "../structures.hpp"
 #include "../FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
@@ -35,7 +37,8 @@ namespace MolecularModeling
             typedef std::vector<Geometry::Coordinate*> CoordinateVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
-            typedef std::vector<AtomVector > AtomVectorVector;
+//            typedef std::vector<AtomVector > AtomVectorVector;
+            typedef std::map<std::string, AtomVector> CycleMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -146,8 +149,10 @@ namespace MolecularModeling
               * @param assembly_atoms Atoms of a residue in the assembly structure
               * @return List of all topological types of atoms in a residue of an assembly
               */
-            std::vector<PrepFileSpace::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
-                                                                                               PrepFileSpace::PrepFileResidue::Loop& loops, std::vector<int>& bond_index);
+            std::vector<gmml::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
+                                                                                               PrepFileSpace::PrepFileResidue::Loop& loops,
+                                                                                               std::vector<int>& bond_index,
+                                                                                               int dummy_atoms = gmml::DEFAULT_DUMMY_ATOMS);
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -245,11 +250,23 @@ namespace MolecularModeling
               */
             void BuildAssemblyFromPdbFile(std::string pdb_file_path);
             /*! \fn
+              * A function to build a structure from a single pdb file
+              * Imports data from pdb file data structure into central data structure
+              * @param pdb_file Pdb file object
+              */
+            void BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile* pdb_file);
+            /*! \fn
               * A function to build a structure from a single topology file
               * Imports data from topology file data structure into central data structure
               * @param topology_file_path Path to a topology file
               */
             void BuildAssemblyFromTopologyFile(std::string topology_file_path);
+            /*! \fn
+              * A function to build a structure from a single topology file
+              * Imports data from topology file data structure into central data structure
+              * @param topology_file Topology file object
+              */
+            void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file);
             /*! \fn
               * A function to build a structure from a single library file
               * Imports data from library file data structure into central data structure
@@ -257,18 +274,37 @@ namespace MolecularModeling
               */
             void BuildAssemblyFromLibraryFile(std::string library_file_path);
             /*! \fn
+              * A function to build a structure from a single library file
+              * Imports data from library file data structure into central data structure
+              * @param library_file Library file object
+              */
+            void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file);
+            /*! \fn
               * A function to build a structure from a combination of a topology file and its corresponding coordinate file
               * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file
               * @param topology_file_path Path to a topology file
-              * @param coordinate_file_path Path to a coordinate file corresponds to the given topology file
+              * @param coordinate_file_path Path to a coordinate file corresponding to the given topology file
               */
             void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
+            /*! \fn
+              * A function to build a structure from a combination of a topology file and its corresponding coordinate file
+              * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file
+              * @param topology_file Topology file object
+              * @param coordinate_file Coordinate file object corresponding to the given topology file
+              */
+            void BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file, CoordinateFileSpace::CoordinateFile* coordinate_file);
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
               * @param prep_file_path Path to a prep file
               */
             void BuildAssemblyFromPrepFile(std::string prep_file_path);
+            /*! \fn
+              * A function to build a structure from a single prep file
+              * Imports data from prep file data structure into central data structure
+              * @param prep_file Prep file object
+              */
+            void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file);
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
@@ -531,11 +567,19 @@ namespace MolecularModeling
             void CycleDetection();
             std::vector<std::vector<std::string> > CreateAllCyclePermutations(std::string id1, std::string id2, std::string id3, std::string id4, std::string id5, std::string id6);
 
-            AtomVectorVector DetectCyclesByDFS(std::string cycle_size = "5|6");
+//            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
+            void ExtractMonosaccharides();
+            CycleMap DetectCyclesByDFS();
             void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
-            void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle);
-            void RemoveFusedCycles(AtomVectorVector& cycles);
-            Atom* FindAnomericCarbon(AtomVector cycle);
+            void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
+            void FilterNonMinCycles(CycleMap& cycles);
+            void FilterAllCarbonCycles(CycleMap& cycles);
+            void RemoveFusedCycles(CycleMap& cycles);
+            Atom* FindAnomericCarbon(AtomVector cycle, std::string cycle_atoms_str);
+            AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
+            std::vector<std::string> GetSideGroupOrientations(AtomVector cycle, std::string cycle_atoms_str);
+            gmml::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
+            void GenerateSugarName(gmml::ChemicalCode* code);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
