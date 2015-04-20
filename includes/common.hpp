@@ -28,6 +28,7 @@ namespace gmml
     const double dCutOff = 1.6;
     const int PdbResidueThreshold = 500;
     const int DEFAULT_DUMMY_ATOMS = 3;
+    const char BLANK_SPACE = '?';
 
     /*! \enum
       * Enumerator to possible n chain termination

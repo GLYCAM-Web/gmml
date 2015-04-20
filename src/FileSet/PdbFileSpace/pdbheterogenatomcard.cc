@@ -21,7 +21,8 @@ PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block, string in
     while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+//            record_name_ = line.substr(0,6);
+            record_name_ = "HETATM";
             Trim(record_name_);
             is_record_name_set=true;
         }

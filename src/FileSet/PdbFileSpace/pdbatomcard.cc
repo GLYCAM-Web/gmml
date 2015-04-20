@@ -15,20 +15,23 @@ PdbAtomCard::PdbAtomCard() : record_name_("ATOM") {}
 
 PdbAtomCard::PdbAtomCard(stringstream &stream_block, string index)
 {
+    atoms_ = PdbAtomMap();
     string line;
     bool is_record_name_set = false;
+//    cout << stream_block.str() << endl;
     getline(stream_block, line);
     string temp = line;
     while (!Trim(temp).empty())
     {
         if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+//            record_name_ = line.substr(0,6);
+            record_name_ = "ATOM";
             Trim(record_name_);
             is_record_name_set=true;
         }
 
         PdbAtom* atom = new PdbAtom(line);
-        atom->SetAtomCardIndexInResidueSet(index);
+        atom->SetAtomCardIndexInResidueSet(index);        
         atoms_[atom->GetAtomSerialNumber()] = atom;
 
         getline(stream_block, line);

@@ -45,6 +45,7 @@ PdbModel::PdbModel(stringstream &model_block)
             getline(model_block, line);
             temp = line;
         }
+//        cout << residue_set_block.str() << endl;
         model_residue_set_ = new PdbModelResidueSet(residue_set_block);
     }
 

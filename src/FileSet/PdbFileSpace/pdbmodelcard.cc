@@ -53,6 +53,7 @@ PdbModelCard::PdbModelCard(stringstream &stream_block)
                 getline(stream_block,line);
                 temp = line;
             }
+//            cout << model_block.str() << endl;
             PdbModel* pdb_model = new PdbModel(model_block);
             models_[pdb_model->GetModelSerialNumber()] = pdb_model;
         }

@@ -14,74 +14,89 @@ PdbAtom::PdbAtom():atom_orthogonal_coordinate_() {}
 
 PdbAtom::PdbAtom(string &line)
 {
-    if(line.substr(6,5) == "     ")
+    string temp = line.substr(6, 5);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_serial_number_ =  iNotSet;
     }
     else
     {
-        atom_serial_number_ = ConvertString<int>(line.substr(6,5));
+        atom_serial_number_ = ConvertString<int>(temp);
     }
 
     atom_name_ = line.substr(12, 4);
     Trim(atom_name_);
 
-    if(line.substr(16,1) == " ")
+    temp = line.substr(16,1);
+    temp = Trim(temp);
+    if(temp.empty())
     {
-        atom_alternate_location_ = ' ';
+        atom_alternate_location_ = BLANK_SPACE;
     }
     else
     {
-        atom_alternate_location_ = ConvertString<char>(line.substr(16,1));
+        atom_alternate_location_ = ConvertString<char>(temp);
     }
 
-    if(line.substr(17,3) == "   ")
+    temp = line.substr(17,3);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_residue_name_ = " ";
     }
     else
     {
-        atom_residue_name_ = line.substr(17,3);
-        atom_residue_name_ = Trim(atom_residue_name_);
+        atom_residue_name_ = temp;
     }
 
-    if(line.substr(21,1) == " ")
+    temp = line.substr(21,1);
+    temp = Trim(temp);
+    if(temp.empty())
     {
-        atom_chain_id_ = ' ';
+        atom_chain_id_ = BLANK_SPACE;
     }
     else
     {
-        atom_chain_id_ = ConvertString<char>(line.substr(21, 1));
+        atom_chain_id_ = ConvertString<char>(temp);
     }
 
-    if(line.substr(22,4) == "    ")
+    temp = line.substr(22,4);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_residue_sequence_number_ = iNotSet;
     }
     else
     {
-        atom_residue_sequence_number_ = ConvertString<int>(line.substr(22, 4));
+        atom_residue_sequence_number_ = ConvertString<int>(temp);
     }
 
-    if(line.substr(26,1) == " ")
+    temp = line.substr(26,1);
+    temp = Trim(temp);
+    if(temp.empty())
     {
-        atom_insertion_code_ = ' ';
+        atom_insertion_code_ = BLANK_SPACE;
     }
     else
     {
-        atom_insertion_code_ = ConvertString<char>(line.substr(26, 1));
+        atom_insertion_code_ = ConvertString<char>(temp);
     }
 
-    if(line.substr(30,8) == "        ")
+    temp = line.substr(30, 8);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_orthogonal_coordinate_.SetX(dNotSet);
     }
     else
     {
-        atom_orthogonal_coordinate_.SetX(ConvertString<double>(line.substr(30, 8)));
+        atom_orthogonal_coordinate_.SetX(ConvertString<double>(temp));
     }
 
-    if(line.substr(38,8) == "        ")
+    temp = line.substr(38,8);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_orthogonal_coordinate_.SetY(dNotSet);
     }
@@ -90,38 +105,46 @@ PdbAtom::PdbAtom(string &line)
         atom_orthogonal_coordinate_.SetY( ConvertString<double>(line.substr(38,8)));
     }
 
-    if(line.substr(46,8) == "        ")
+    temp = line.substr(46,8);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_orthogonal_coordinate_.SetZ(dNotSet);
     }
     else
     {
-        atom_orthogonal_coordinate_.SetZ( ConvertString<double>(line.substr(46,8)));
+        atom_orthogonal_coordinate_.SetZ( ConvertString<double>(temp));
     }
 
-    if(line.substr(54, 6) == "      ")
+    temp = line.substr(54, 6);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_occupancy_ = dNotSet;
     }
     else
     {
-        atom_occupancy_ = ConvertString<double>(line.substr(54, 6));
+        atom_occupancy_ = ConvertString<double>(temp);
     }
 
-    if(line.substr(60, 6) == "      ")
+    temp = line.substr(60, 6);
+    temp = Trim(temp);
+    if(temp.empty())
     {
         atom_temperature_factor_ = dNotSet;
     }
     else
     {
-        atom_temperature_factor_ = ConvertString<double>(line.substr(60, 6));
+        atom_temperature_factor_ = ConvertString<double>(temp);
     }
 
-    atom_element_symbol_ = line.substr(76, 2);
-    Trim(atom_element_symbol_);
+    temp = line.substr(76, 2);
+    temp = Trim(temp);
+    atom_element_symbol_ = temp;
 
-    atom_charge_ = line.substr(78, 2);
-    Trim(atom_charge_);
+    temp = line.substr(78, 2);
+    temp = Trim(temp);
+    atom_charge_ = temp;
 }
 PdbAtom::PdbAtom(char residue_chain_id, string atom_name, string residue_name, int residue_sequence_number, char residue_insertion_code, char atom_alternate_location) :
     atom_chain_id_(residue_chain_id), atom_name_(atom_name), atom_residue_name_(residue_name), atom_residue_sequence_number_(residue_sequence_number),

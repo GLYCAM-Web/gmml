@@ -149,7 +149,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
             temp = line.substr(0,6);
             temp = Trim(temp);
             if(temp.find("END") != string::npos || temp.compare("END") == 0)
-                break;
+                break;            
             else if(!line.empty())
                 ss << line << endl;
         }
@@ -6185,17 +6185,26 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                     else
                         stream << right << setw(5) << " ";
                     stream << left << setw(1) << " "
-                           << left << setw(4) << atom->GetAtomName()
-                           << left << setw(1) << atom->GetAtomAlternateLocation()
-                           << right << setw(3) << atom->GetAtomResidueName()
-                           << left << setw(1) << " "
-                           << left << setw(1) << atom->GetAtomChainId();
+                           << left << setw(4) << atom->GetAtomName();
+                    if(atom->GetAtomAlternateLocation() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << atom->GetAtomAlternateLocation();
+                    stream << right << setw(3) << atom->GetAtomResidueName()
+                           << left << setw(1) << " ";
+                    if(atom->GetAtomChainId() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << atom->GetAtomChainId();
                     if(atom->GetAtomResidueSequenceNumber() != iNotSet)
                         stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
                     else
                         stream << right << setw(4) << " ";
-                    stream << left << setw(1) << atom->GetAtomInsertionCode()
-                           << left << setw(3) << " ";
+                    if(atom->GetAtomInsertionCode() == BLANK_SPACE)
+                        stream << left << setw(1) <<  ' ';
+                    else
+                        stream << left << setw(1) << atom->GetAtomInsertionCode();
+                    stream << left << setw(3) << " ";
                     if(atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
                     {
                         stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
@@ -6234,8 +6243,11 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                         stream << right << setw(5) << " ";
                     stream << left << setw(6) << " "
                            << right << setw(3) << residue_name
-                           << left << setw(1) << " "
-                           << left << setw(1) << chain_id;
+                           << left << setw(1) << " ";
+                    if(chain_id == BLANK_SPACE)
+                        stream << left << setw(1) << " ";
+                    else
+                        stream << left << setw(1) << chain_id;
                     if(residue_sequence_number != iNotSet)
                         stream << right << setw(4) << residue_sequence_number;
                     else
@@ -6259,17 +6271,26 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                     else
                         stream << right << setw(5) << " ";
                     stream << left << setw(1) << " "
-                           << left << setw(4) << heterogen_atom->GetAtomName()
-                           << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
-                           << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                           << left << setw(1) << " "
-                           << left << setw(1) << heterogen_atom->GetAtomChainId();
+                           << left << setw(4) << heterogen_atom->GetAtomName();
+                    if(heterogen_atom->GetAtomAlternateLocation() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << heterogen_atom->GetAtomAlternateLocation();
+                    stream << right << setw(3) << heterogen_atom->GetAtomResidueName()
+                           << left << setw(1) << " ";
+                    if(heterogen_atom->GetAtomChainId() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << heterogen_atom->GetAtomChainId();
                     if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
                         stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
                     else
                         stream << right << setw(4) << " ";
-                    stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
-                           << left << setw(3) << " ";
+                    if(heterogen_atom->GetAtomInsertionCode() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode();
+                    stream << left << setw(3) << " ";
                     if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
                     {
                         stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
@@ -6332,17 +6353,26 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                     else
                         stream << right << setw(5) << " ";
                     stream << left << setw(1) << " "
-                           << left << setw(4) << atom->GetAtomName()
-                           << left << setw(1) << atom->GetAtomAlternateLocation()
-                           << right << setw(3) << atom->GetAtomResidueName()
-                           << left << setw(1) << " "
-                           << left << setw(1) << atom->GetAtomChainId();
+                           << left << setw(4) << atom->GetAtomName();
+                    if(atom->GetAtomAlternateLocation() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << atom->GetAtomAlternateLocation();
+                    stream << right << setw(3) << atom->GetAtomResidueName()
+                           << left << setw(1) << " ";
+                    if(atom->GetAtomChainId() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << atom->GetAtomChainId();
                     if(atom->GetAtomResidueSequenceNumber() != iNotSet)
                         stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
                     else
                         stream << right << setw(4) << " ";
-                    stream << left << setw(1) << atom->GetAtomInsertionCode()
-                           << left << setw(3) << " ";
+                    if(atom->GetAtomInsertionCode() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << atom->GetAtomInsertionCode();
+                    stream << left << setw(3) << " ";
                     if(atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
                         stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
                                << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
@@ -6377,8 +6407,11 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                         stream << right << setw(5) << " ";
                     stream << left << setw(6) << " "
                            << right << setw(3) << residue_name
-                           << left << setw(1) << " "
-                           << left << setw(1) << chain_id;
+                           << left << setw(1) << " ";
+                    if(chain_id == BLANK_SPACE)
+                        stream << left << setw(1) << " ";
+                    else
+                        stream << left << setw(1) << chain_id;
                     if(residue_sequence_number != iNotSet)
                         stream << right << setw(4) << residue_sequence_number;
                     else
@@ -6402,17 +6435,26 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                     else
                         stream << right << setw(5) << " ";
                     stream << left << setw(1) << " "
-                           << left << setw(4) << heterogen_atom->GetAtomName()
-                           << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
-                           << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                           << left << setw(1) << " "
-                           << left << setw(1) << heterogen_atom->GetAtomChainId();
+                           << left << setw(4) << heterogen_atom->GetAtomName();
+                    if(heterogen_atom->GetAtomAlternateLocation() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << heterogen_atom->GetAtomAlternateLocation();
+                    stream << right << setw(3) << heterogen_atom->GetAtomResidueName()
+                           << left << setw(1) << " ";
+                    if(heterogen_atom->GetAtomChainId() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << heterogen_atom->GetAtomChainId();
                     if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
                         stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
                     else
                         stream << right << setw(4) << " ";
-                    stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
-                           << left << setw(3) << " ";
+                    if(heterogen_atom->GetAtomInsertionCode() == BLANK_SPACE)
+                        stream << left << setw(1) << ' ';
+                    else
+                        stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode();
+                    stream << left << setw(3) << " ";
                     if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
                         stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
                                << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
@@ -6469,17 +6511,26 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
                 else
                     stream << right << setw(5) << " ";
                 stream << left << setw(1) << " "
-                       << left << setw(4) << atom->GetAtomName()
-                       << left << setw(1) << atom->GetAtomAlternateLocation()
-                       << right << setw(3) << atom->GetAtomResidueName()
-                       << left << setw(1) << " "
-                       << left << setw(1) << atom->GetAtomChainId();
+                       << left << setw(4) << atom->GetAtomName();
+                if(atom->GetAtomAlternateLocation() == BLANK_SPACE)
+                    stream << left << setw(1) << ' ';
+                else
+                    stream << left << setw(1) << atom->GetAtomAlternateLocation();
+                stream << right << setw(3) << atom->GetAtomResidueName()
+                       << left << setw(1) << " ";
+                if(atom->GetAtomChainId() == BLANK_SPACE)
+                    stream << left << setw(1) << ' ';
+                else
+                    stream << left << setw(1) << atom->GetAtomChainId();
                 if(atom->GetAtomResidueSequenceNumber() != iNotSet)
                     stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
                 else
                     stream << right << setw(4) << " ";
-                stream << left << setw(1) << atom->GetAtomInsertionCode()
-                       << left << setw(3) << " ";
+                if(atom->GetAtomInsertionCode() == BLANK_SPACE)
+                    stream << left << setw(1) << ' ';
+                else
+                    stream << left << setw(1) << atom->GetAtomInsertionCode();
+                stream << left << setw(3) << " ";
                 if(atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
                 {
                     stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
@@ -6518,8 +6569,11 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
                     stream << right << setw(5) << " ";
                 stream << left << setw(6) << " "
                        << right << setw(3) << residue_name
-                       << left << setw(1) << " "
-                       << left << setw(1) << chain_id;
+                       << left << setw(1) << " ";
+                if(chain_id == BLANK_SPACE)
+                    stream << left << setw(1) << " ";
+                else
+                    stream << left << setw(1) << chain_id;
                 if(residue_sequence_number != iNotSet)
                     stream << right << setw(4) << residue_sequence_number;
                 else
@@ -6543,17 +6597,26 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
                 else
                     stream << right << setw(5) << " ";
                 stream << left << setw(1) << " "
-                       << left << setw(4) << heterogen_atom->GetAtomName()
-                       << left << setw(1) << heterogen_atom->GetAtomAlternateLocation()
-                       << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                       << left << setw(1) << " "
-                       << left << setw(1) << heterogen_atom->GetAtomChainId();
+                       << left << setw(4) << heterogen_atom->GetAtomName();
+                if(heterogen_atom->GetAtomAlternateLocation() == BLANK_SPACE)
+                    stream << left << setw(1) << ' ';
+                else
+                    stream << left << setw(1) << heterogen_atom->GetAtomAlternateLocation();
+                stream << right << setw(3) << heterogen_atom->GetAtomResidueName()
+                       << left << setw(1) << " ";
+                if(heterogen_atom->GetAtomChainId() == BLANK_SPACE)
+                    stream << left << setw(1) << ' ';
+                else
+                    stream << left << setw(1) << heterogen_atom->GetAtomChainId();
                 if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
                     stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
                 else
                     stream << right << setw(4) << " ";
-                stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode()
-                       << left << setw(3) << " ";
+                if(heterogen_atom->GetAtomInsertionCode() == BLANK_SPACE)
+                    stream << left << setw(1) << ' ';
+                else
+                    stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode();
+                stream << left << setw(3) << " ";
                 if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(Geometry::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
                 {
                     stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
