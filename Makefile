@@ -40,6 +40,7 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = src/Geometry/coordinate.cc \
+		src/Geometry/plane.cc \
 		src/MolecularModeling/assembly.cc \
 		src/MolecularModeling/atom.cc \
 		src/MolecularModeling/atomnode.cc \
@@ -142,6 +143,7 @@ SOURCES       = src/Geometry/coordinate.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc 
 OBJECTS       = coordinate.o \
+		plane.o \
 		assembly.o \
 		atom.o \
 		atomnode.o \
@@ -331,8 +333,14 @@ coordinate.o: src/Geometry/coordinate.cc includes/Geometry/coordinate.hpp \
 		includes/common.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coordinate.o src/Geometry/coordinate.cc
 
+plane.o: src/Geometry/plane.cc includes/Geometry/plane.hpp \
+		includes/Geometry/coordinate.hpp \
+		includes/common.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o plane.o src/Geometry/plane.cc
+
 assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/assembly.hpp \
 		includes/Geometry/coordinate.hpp \
+		includes/Geometry/plane.hpp \
 		includes/common.hpp \
 		includes/FileSet/PdbFileSpace/pdbfile.hpp \
 		includes/FileSet/TopologyFileSpace/topologyfile.hpp \
