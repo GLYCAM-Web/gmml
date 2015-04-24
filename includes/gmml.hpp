@@ -69,6 +69,7 @@
 #include "includes/FileSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 #include "includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
 #include "includes/Geometry/coordinate.hpp"
+#include "includes/Geometry/plane.hpp"
 #include "includes/Geometry/InternalCoordinate/angle.hpp"
 #include "includes/Geometry/InternalCoordinate/dihedral.hpp"
 #include "includes/Geometry/InternalCoordinate/distance.hpp"
