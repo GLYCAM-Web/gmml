@@ -6151,43 +6151,326 @@ std::vector<std::vector<std::string> > Assembly::CreateAllCyclePermutations(stri
 
 void Assembly::ExtractMonosaccharides()
 {
-    CycleMap cycles = DetectCyclesByDFS();
-    RemoveFusedCycles(cycles);
-    if(cycles.size() == 0)
-        cout << "khalieeee" << endl;
-    FilterAllCarbonCycles(cycles);
-    cout << endl;
-    cout << "cycles after filtering carbons" << endl;
-    CycleMap sorted_cycles = CycleMap();
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    DetectCyclesByExhaustiveRingPerception();
+    //    CycleMap cycles = DetectCyclesByDFS();
+    //    RemoveFusedCycles(cycles);
+    //    FilterAllCarbonCycles(cycles);
+    //    cout << "cycles after filtering carbons" << endl;
+    //    CycleMap sorted_cycles = CycleMap();
+    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    //    {
+    //        string cycle_atoms_str = (*it).first;
+    //        AtomVector cycle_atoms = (*it).second;
+    //        cout << cycle_atoms_str << endl;
+    //        Atom* anomeric = FindAnomericCarbon(cycle_atoms, cycle_atoms_str);
+    //        if(anomeric != NULL)
+    //        {
+    //            AtomVector sorted_cycle_atoms = AtomVector();
+    //            stringstream sorted_cycle_stream;
+    //            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
+    //            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+    //        }
+    //    }
+    //    cycles = sorted_cycles;
+    //    cout << endl;
+    //    cout << "sorted cycles after filtering (fused, all carbons and rings without oxygen): " << endl;
+    //    vector<ChemicalCode*> codes = vector<ChemicalCode*>();
+    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    //    {
+    //        string cycle_atoms_str = (*it).first;
+    //        AtomVector cycle = (*it).second;
+    //        cout << cycle_atoms_str << endl;
+    //        vector<string> orientations = GetSideGroupOrientations(cycle, cycle_atoms_str);
+    //        ChemicalCode* code = BuildChemicalCode(orientations);
+    //        GenerateSugarName(code);
+    //        if(code != NULL)
+    //            codes.push_back(code);
+    //        code->Print(cout);
+    //    }
+}
+
+Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
+{
+    CycleMap cycles = CycleMap();
+    AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+
+    ///Pruning the graph (filter out atoms with less than 2 neighbors)
+    PruneGraph(atoms);
+
+    vector<string> path_graph_edges = vector<string> ();
+    vector<string> path_graph_labels = vector<string> ();
+
+    ///Converting the molecular graph into a path graph
+    ConvertIntoPathGraph(path_graph_edges, path_graph_labels, atoms);
+
+    vector<string> reduced_path_graph_edges = path_graph_edges;
+    vector<string> reduced_path_graph_labels = path_graph_labels;
+
+    ///Reducing the path graph
+    vector<string> cycless = vector<string>();
+    int neighbor_counter = 2;
+    while(atoms.size() > 1 && path_graph_edges.size() != 0)
     {
-        string cycle_atoms_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
-        cout << cycle_atoms_str << endl;
-        Atom* anomeric = FindAnomericCarbon(cycle_atoms, cycle_atoms_str);
-        if(anomeric != NULL)
+        AtomVector::iterator common_atom_it;
+        bool neighbor_counter_update = true;
+        for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
         {
-            AtomVector sorted_cycle_atoms = AtomVector();
-            stringstream sorted_cycle_stream;
-            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
-            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+            common_atom_it = it;
+            int counter = 0;
+            for(vector<string>::iterator it1 = path_graph_edges.begin(); it1 != path_graph_edges.end(); it1++)
+            {
+                string edge = (*it1);
+                if(edge.find((*common_atom_it)->GetId()) != string::npos)
+                    counter++;
+            }
+            if(counter <= neighbor_counter)
+            {
+                neighbor_counter_update = false;
+                break;
+            }
+        }
+        if(neighbor_counter_update)
+        {
+            neighbor_counter++;
+            continue;
+        }
+
+            ReducePathGraph(path_graph_edges, path_graph_labels, reduced_path_graph_edges, reduced_path_graph_labels, (*common_atom_it)->GetId(), cycless);
+//            cout << "================================" << (*common_atom_it)->GetId() << "=====================================" << endl;
+            atoms.erase(common_atom_it);
+
+            path_graph_edges = reduced_path_graph_edges;
+            path_graph_labels = reduced_path_graph_labels;
+//            cout << "---------------------------------------------------------------------" << endl;
+//            for(int i = 0; i < reduced_path_graph_edges.size(); i ++)
+//            {
+//                cout << reduced_path_graph_edges.at(i) << "-------------->" << reduced_path_graph_labels.at(i) << endl;
+//            }
+    }
+
+
+    for(vector<string>::iterator it = cycless.begin(); it != cycless.end(); it++)
+    {
+        string cycles = (*it);
+        if(Split(cycles, "-").size() <= 7)
+            cout << cycles << endl;
+    }
+//    cout << cycless.size() << endl;
+
+    return cycles;
+
+}
+
+void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> path_graph_labels, vector<string>& reduced_path_graph_edges, vector<string>& reduced_path_graph_labels, string common_atom, vector<string>& cycles)
+{
+    vector<int> to_be_deleted_edges = vector<int>();
+    for(vector<string>::iterator it = path_graph_edges.begin(); it != path_graph_edges.end() - 1; it++)
+    {
+        int source_index = distance(path_graph_edges.begin(), it);
+        string source_edge = (*it);
+        string source_label = path_graph_labels.at(source_index);
+        vector<string> source_edge_atoms = Split(source_edge, ",");
+
+        for(vector<string>::iterator it1 = it + 1; it1 != path_graph_edges.end(); it1++)
+        {
+            bool walk_found = false;
+            int target_index = distance(path_graph_edges.begin(), it1);
+            string target_edge = (*it1);
+            string target_label = path_graph_labels.at(target_index);
+            vector<string> target_edge_atoms = Split(target_edge, ",");
+            stringstream new_edge;
+            stringstream new_label;
+            if(source_edge_atoms.at(0).compare(source_edge_atoms.at(1)) != 0 && target_edge_atoms.at(0).compare(target_edge_atoms.at(1)) != 0)
+            {///if the edges a != b and b != c
+
+                if(source_edge_atoms.at(1).compare(target_edge_atoms.at(0)) == 0 && source_edge_atoms.at(1).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: a,b and b,c)
+                {
+                    new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(1);
+                    new_label << source_label;
+                    vector<string> target_path_values = Split(target_label,"-");
+                    for(int i = 1; i < target_path_values.size(); i++)
+                        new_label << "-" << target_path_values.at(i);
+                    walk_found = true;
+                }
+                else if(source_edge_atoms.at(1).compare(target_edge_atoms.at(1)) == 0 && source_edge_atoms.at(1).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: a,b and c,b)
+                {
+                    new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(0);
+                    new_label << source_label;
+                    vector<string> target_path_values = Split(target_label,"-");
+                    for(int i = target_path_values.size() - 2 ; i >= 0; i--)
+                        new_label << "-" << target_path_values.at(i);
+                    walk_found = true;
+                }
+                else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(0)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and b,c)
+                {
+                    new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(1);
+                    vector<string> source_path_values = Split(source_label,"-");
+                    for(int i = source_path_values.size() - 1 ; i >= 1; i--)
+                        new_label << source_path_values.at(i) << "-";
+                    new_label << target_label;
+                    walk_found = true;
+                }
+                else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(1)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and c,b)
+                {
+                    new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(0);
+                    vector<string> source_path_values = Split(source_label,"-");
+                    for(int i = source_path_values.size() - 1 ; i >= 0; i--)
+                        new_label << source_path_values.at(i) << "-";
+                    vector<string> target_path_values = Split(target_label,"-");
+                    for(int i = target_path_values.size() - 2 ; i >= 0; i--)
+                    {
+                        if(i == 0)
+                            new_label << target_path_values.at(i);
+                        else
+                            new_label << target_path_values.at(i) << "-";
+                    }
+                    walk_found = true;
+                }
+            }
+            if(walk_found)
+            {
+                ///checking the new edge for cycle
+                vector<string> new_edge_atoms = Split(new_edge.str(), ",");
+                if(new_edge_atoms.at(0).compare(new_edge_atoms.at(1)) == 0) ///edge is a,a
+                {
+                    cycles.push_back(new_label.str());
+//                    cout << "CYCLE FOUND " << endl;
+//                    for(int i = 0; i < path_graph_edges.size(); i++)
+//                    {
+//                        string edge = path_graph_edges.at(i);
+//                        if(edge.find(new_edge_atoms.at(1)) != string::npos)
+//                            to_be_deleted_edges.push_back(i);
+//                    }
+                }
+                ///adding the newly-formed edge (a,c) and label(a-b-c)
+                else if(find(reduced_path_graph_labels.begin(), reduced_path_graph_labels.end(), new_label.str()) == reduced_path_graph_labels.end())
+                {
+                    reduced_path_graph_edges.push_back(new_edge.str());
+                    reduced_path_graph_labels.push_back(new_label.str());
+                }
+
+                ///adding to be deleted edges with the common atom b
+                if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), source_index) == to_be_deleted_edges.end())
+                    to_be_deleted_edges.push_back(source_index);
+                if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), target_index) == to_be_deleted_edges.end())
+                    to_be_deleted_edges.push_back(target_index);
+
+            }
+
         }
     }
-    cycles = sorted_cycles;
-    cout << endl;
-    cout << "sorted cycles after filtering (fused, all carbons and rings without oxygen): " << endl;
-    vector<ChemicalCode*> codes = vector<ChemicalCode*>();
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    {        
-        string cycle_atoms_str = (*it).first;
-        AtomVector cycle = (*it).second;
-        cout << cycle_atoms_str << endl;
-        vector<string> orientations = GetSideGroupOrientations(cycle, cycle_atoms_str);
-        ChemicalCode* code = BuildChemicalCode(orientations);
-        GenerateSugarName(code);
-        if(code != NULL)
-            codes.push_back(code);
-        code->Print(cout);
+
+    vector<string> temp_reduced_path_graph_edges = vector<string>();
+    vector<string> temp_reduced_path_graph_labels = vector<string>();
+    for(int i = 0; i < reduced_path_graph_edges.size(); i++)
+    {
+        if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), i) == to_be_deleted_edges.end())
+        {
+            temp_reduced_path_graph_edges.push_back(reduced_path_graph_edges.at(i));
+            temp_reduced_path_graph_labels.push_back(reduced_path_graph_labels.at(i));
+        }
+    }
+    reduced_path_graph_edges = temp_reduced_path_graph_edges;
+    reduced_path_graph_labels = temp_reduced_path_graph_labels;
+
+
+    //        if(walk_found)
+    //        {
+    //            AtomVector::iterator index;
+    //            for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    //            {
+    //                Atom* atom = *it;
+    //                if(atom->GetId().compare(source_edge_atoms.at(1)) == 0)
+    //                {
+    //                    index = it;
+    //                    break;
+    //                }
+    //            }
+    //            atoms.erase(index);cout << "earse ok" << endl;
+    //        }
+
+//    map<string , string> duplicate_reduced_path_graph = map<string, string>();
+//    for(map<string, string>::iterator it = reduced_path_graph.begin(); it != reduced_path_graph.end(); it++)
+//    {
+//        string key = (*it).first;
+//        string value = (*it).second;
+//        duplicate_reduced_path_graph[key] = value;
+//    }
+//    for(map<string, string>::iterator it = reduced_path_graph.begin(); it != reduced_path_graph.end(); it++)
+//    {
+//        string source_key_pair = (*it).first;
+//        string source_path_value = (*it).second;
+
+//        if(find(visited_atom_pairs.begin(), visited_atom_pairs.end(), source_key_pair) == visited_atom_pairs.end())
+//            ReducePathGraph(reduced_path_graph, duplicate_reduced_path_graph, atoms, source_key_pair, source_path_value, visited_atom_pairs, cycles);
+//    }
+
+}
+
+void Assembly::PruneGraph(AtomVector& all_atoms)
+{
+    AtomVector atoms_with_more_than_two_neighbors = AtomVector();
+    vector<string> het_atom_ids = vector<string>();
+    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        het_atom_ids.push_back(atom->GetId());
+    }
+    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* node = atom->GetNode();
+        int count = 0;
+        for(int i = 0; i < node->GetNodeNeighbors().size(); i++)
+        {
+            Atom* neighbor = node->GetNodeNeighbors().at(i);
+            if(find(het_atom_ids.begin(), het_atom_ids.end(), neighbor->GetId()) != het_atom_ids.end())
+                count++;
+        }
+        if(count > 1)
+            atoms_with_more_than_two_neighbors.push_back(atom);
+    }
+    if(atoms_with_more_than_two_neighbors.size() != all_atoms.size())
+    {
+        all_atoms = atoms_with_more_than_two_neighbors;
+        PruneGraph(all_atoms);
+    }
+    else
+        return;
+}
+
+void Assembly::ConvertIntoPathGraph(vector<string>& path_graph_edges, vector<string>& path_graph_labels, AtomVector atoms)
+{
+    vector<string> atoms_id = vector<string>();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        atoms_id.push_back(atom->GetId());
+    }
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* node = atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+            Atom* neighbor = (*it1);
+            if(find(atoms_id.begin(), atoms_id.end(), neighbor->GetId()) != atoms_id.end())
+            {
+                stringstream ss;
+                ss << atom->GetId() << "," << neighbor->GetId();
+                stringstream reverse_ss;
+                reverse_ss << neighbor->GetId() << "," << atom->GetId();
+                if(find(path_graph_edges.begin(), path_graph_edges.end(), ss.str()) == path_graph_edges.end() &&
+                        find(path_graph_edges.begin(), path_graph_edges.end(), reverse_ss.str()) == path_graph_edges.end()) ///path not existed before
+                {
+                    stringstream path;
+                    path << atom->GetId() << "-" << neighbor->GetId();
+                    path_graph_edges.push_back(ss.str());
+                    path_graph_labels.push_back(path.str());
+                }
+            }
+        }
     }
 }
 
@@ -6314,29 +6597,29 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
 
 void Assembly::FilterNonMinCycles(CycleMap &cycles)
 {
-//    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-//    {
-//        AtomVector cycle_atoms = (*it).second;
-//        if(cycle_i_atoms.size() > 6)
-//        {
-//            vector<AtomVector> path_matrix = vector<AtomVector>();
-//            vector<vector<int> > length_matrix = vector<vector<int> >();
-//            for(int n = 0; n < cycle_atoms.size(); n++)
-//            {
-//                for(int m = 0; m < cycle_atoms.size(); m++)
-//                {
-//                    length_matrix.at(n).at(m) = INFINITY;
-//                    path_matrix.at(n).at(m) =
-//                }
-//            }
-//            for(int i = 0; i < cycle_atoms.size(); i++)
-//                for(int j = 0; j < cycle_atoms.size(); j++)
-//                    for(int k = 0; k < cycle_atoms.size(); k++)
-//                    {
+    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    //    {
+    //        AtomVector cycle_atoms = (*it).second;
+    //        if(cycle_i_atoms.size() > 6)
+    //        {
+    //            vector<AtomVector> path_matrix = vector<AtomVector>();
+    //            vector<vector<int> > length_matrix = vector<vector<int> >();
+    //            for(int n = 0; n < cycle_atoms.size(); n++)
+    //            {
+    //                for(int m = 0; m < cycle_atoms.size(); m++)
+    //                {
+    //                    length_matrix.at(n).at(m) = INFINITY;
+    //                    path_matrix.at(n).at(m) =
+    //                }
+    //            }
+    //            for(int i = 0; i < cycle_atoms.size(); i++)
+    //                for(int j = 0; j < cycle_atoms.size(); j++)
+    //                    for(int k = 0; k < cycle_atoms.size(); k++)
+    //                    {
 
-//                    }
-//        }
-//    }
+    //                    }
+    //        }
+    //    }
 }
 
 void Assembly::RemoveFusedCycles(CycleMap &cycles)
@@ -6406,12 +6689,12 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
             Atom* o_neighbor1 = neighbors.at(0);
             AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
             AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
-            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen neighbor
+            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
             {
                 Atom* neighbor1_neighbor = (*it1);
                 if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 ///if first element is "O"
-                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
+                        && (neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor1_neighbor->GetName().substr(0,1).compare("N") == 0)) ///if first element is "O" or "N"
+                    //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
                 {
                     anomeric_carbon = o_neighbor1;
                     cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
@@ -6422,12 +6705,12 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
             Atom* o_neighbor2 = neighbors.at(1);
             AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
             AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen neighbor
+            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
             {
                 Atom* neighbor2_neighbor = (*it2);
                 if( cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos
-                        & neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0
-                    && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
+                        & (neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor2_neighbor->GetName().substr(0,1).compare("N") == 0)
+                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
                 {
                     anomeric_carbon = o_neighbor2;
                     cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
@@ -6526,7 +6809,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
 vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle_atoms_str)
 {
     vector<string> orientations = vector<string>();
-    for(AtomVector::iterator it = cycle.begin(); it != cycle.end() - 1; it++)
+    for(AtomVector::iterator it = cycle.begin(); it != cycle.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
     {
         orientations.push_back("N");
         int index = distance(cycle.begin(), it);
@@ -6534,11 +6817,11 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
         Atom* current_atom = (*it);
         Atom* next_atom = new Atom();
         if(index == 0)
-            prev_atom = cycle.at(cycle.size() - 1);
+            prev_atom = cycle.at(cycle.size() - 1); ///first atom is anomeric atom and the previous is the oxygen
         else
             prev_atom = cycle.at(index - 1);
         next_atom = cycle.at(index + 1);
-//                cout << "prev-curr-next " << prev_atom->GetName() << "-" << current_atom->GetName() << "-" <<next_atom->GetName() << endl;
+
         Coordinate prev_atom_coord = Coordinate(*prev_atom->GetCoordinates().at(0));
         Coordinate current_atom_coord = Coordinate(*current_atom->GetCoordinates().at(0));
         Coordinate next_atom_coord = Coordinate(*next_atom->GetCoordinates().at(0));
@@ -6555,38 +6838,88 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
         {
             Atom* neighbor = (*it1);
             string neighbor_id = neighbor->GetId();
-            if(cycle_atoms_str.find(neighbor_id) == string::npos && (neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N'))///if not one of the cycle atoms
+            if(cycle_atoms_str.find(neighbor_id) == string::npos) ///if not one of the cycle atoms
             {
                 Coordinate side_atom_coord = Coordinate(*neighbor->GetCoordinates().at(0));
                 side_atom_coord.operator -(current_atom_coord);
                 side_atom_coord.Normalize();
                 double theta = acos(normal_v.DotProduct(side_atom_coord));
-                if(theta > (gmml::PI_RADIAN/2))
-                    orientations.at(index) = "D";
-                else
-                    orientations.at(index) = "U";
-                break;
-            }
-        }
-        if(orientations.at(index).compare("N") == 0)
-        {
-            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
-            {
-                Atom* neighbor = (*it1);
-                AtomNode* neighbor_node = neighbor->GetNode();
-                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-                if(cycle_atoms_str.find(neighbor->GetId()) == string::npos)
+
+                if(index == 0 && neighbor_id.at(0) == 'C')///if anomeric atom has a non-ring carbon neighbor
                 {
+                    if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
+                    {
+                        if(theta > (gmml::PI_RADIAN/2))
+                            orientations.at(index) = "-1d";
+                        else
+                            orientations.at(index) = "-1u";
+                        continue;
+                    }
+                    else
+                    { ///position of non-ring oxygen or nitrogen + the non-ring carbon
+                        stringstream ss;
+                        if(theta > (gmml::PI_RADIAN/2))
+                        {
+                            ss << orientations.at(index) << "-1d";
+                            orientations.at(index) = ss.str();
+                        }
+                        else
+                        {
+                            ss << orientations.at(index) << "-1u";
+                            orientations.at(index) = ss.str();
+                        }
+                        break;
+                    }
+                }
+                else if(neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N')///if neighbor is a non-ring oxygen or nitrogen
+                {
+                    if(index == 0)
+                    {
+                        if(orientations.at(index).compare("N") == 0) ///if the position of non-ring carbon neighbor (if exist) hasn't been set yet
+                        {
+                            if(theta > (gmml::PI_RADIAN/2))
+                                orientations.at(index) = "D";
+                            else
+                                orientations.at(index) = "U";
+                            continue;
+                        }
+                        else
+                        { ///position of non-ring oxygen or nitrogen + the non-ring carbon
+                            stringstream ss;
+                            if(theta > (gmml::PI_RADIAN/2))
+                            {
+                                ss << "D" << orientations.at(index);
+                                orientations.at(index) = ss.str();
+                            }
+                            else
+                            {
+                                ss << "U" << orientations.at(index);
+                                orientations.at(index) = ss.str();
+                            }
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if(theta > (gmml::PI_RADIAN/2))
+                            orientations.at(index) = "D";
+                        else
+                            orientations.at(index) = "U";
+                        break;
+                    }
+                }
+                else if(index == cycle.size() - 2 && neighbor_id.at(0) == 'C')///if the last carbon ring has a non-ring carbon
+                {
+                    ///Check if neighbor of neighbor is oxygen or nitrogen
+                    AtomNode* neighbor_node = neighbor->GetNode();
+                    AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
                     for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                     {
                         Atom* neighbor_of_neighbor = (*it2);
                         string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
-                        if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos && (neighbor_of_neighbor_id.at(0) == 'O' || neighbor_of_neighbor_id.at(0) == 'N'))///if not one of the cycle atoms
+                        if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos &&
+                                (neighbor_of_neighbor_id.at(0) == 'O' || neighbor_of_neighbor_id.at(0) == 'N'))///if neighbor of neighbor is a non-ring oxygen or nitrogen
                         {
-                            Coordinate side_atom_coord = Coordinate(*neighbor_of_neighbor->GetCoordinates().at(0));
-                            side_atom_coord.operator -(current_atom_coord);
-                            side_atom_coord.Normalize();
-                            double theta = acos(normal_v.DotProduct(side_atom_coord));
                             if(theta > (gmml::PI_RADIAN/2))
                                 orientations.at(index) = "D";
                             else
@@ -6594,26 +6927,32 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
                             break;
                         }
                     }
+                    if(orientations.at(index).compare("N") == 0) ///deoxy
+                    {
+                        if(theta > (gmml::PI_RADIAN/2))
+                            orientations.at(index) = "Dd";
+                        else
+                            orientations.at(index) = "Ud";
+                        break;
+                    }
+                    if(orientations.at(index).compare("N") != 0)
+                        break;
                 }
-                if(orientations.at(index).compare("N") != 0)
-                    break;
             }
         }
     }
-//    cout << "orientation" << endl;
-//    for(vector<string>::iterator it3 = orientations.begin(); it3 != orientations.end(); it3++)
-//    {
-//        string o = (*it3);
-//        cout << o << endl;
-//    }
-    return orientations;
+    //    cout << "orientation" << endl;
+    //    for(vector<string>::iterator it3 = orientations.begin(); it3 != orientations.end(); it3++)
+    //    {
+    //        string o = (*it3);
+    //        cout << o << endl;
+    //    }
+    //    return orientations;
 }
 
 ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
 {
     ChemicalCode* code = new ChemicalCode();
-    int counter = 0;
-
     if(orientations.size() == 5 )
         code->base_ = "P";
     else if(orientations.size() == 4 )
@@ -6622,27 +6961,51 @@ ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
         code->base_ = "?";
 
     if(orientations.at(0).compare("U") == 0)
-    {code->right_up_.push_back("a");counter ++;}
+        code->right_up_.push_back("a");
     else if(orientations.at(0).compare("D") == 0)
-    {code->right_down_.push_back("a");counter ++;}
+        code->right_down_.push_back("a");
+    ///if anomeric atom has a carbon neighbor
+    else if(orientations.at(0).compare("U-1u") == 0)
+    {
+        code->right_up_.push_back("a");
+        code->right_up_.push_back("-1");
+    }
+    else if(orientations.at(0).compare("D-1u") == 0)
+    {
+        code->right_down_.push_back("a");
+        code->right_up_.push_back("-1");
+    }
+    else if(orientations.at(0).compare("U-1d") == 0)
+    {
+        code->right_up_.push_back("a");
+        code->right_down_.push_back("-1");
+    }
+    else if(orientations.at(0).compare("D-1d") == 0)
+    {
+        code->right_down_.push_back("a");
+        code->right_down_.push_back("-1");
+    }
+
     for(vector<string>::iterator it = orientations.begin() + 1; it != orientations.end() - 1; it++)
     {
         string orientation = (*it);
         int index = distance(orientations.begin(), it);
         if(orientation.compare("U") == 0)
-        {code->left_up_.push_back(gmml::ConvertT(index + 1));counter ++;}
+            code->left_up_.push_back(gmml::ConvertT(index + 1));
         else if(orientation.compare("D") == 0)
-        {code->left_down_.push_back(gmml::ConvertT(index + 1));counter ++;}
+            code->left_down_.push_back(gmml::ConvertT(index + 1));
     }
     if(orientations.at(orientations.size() - 1).compare("U") == 0)
-    {code->right_up_.push_back("+1");counter ++;}
+        code->right_up_.push_back("+1");
     else if(orientations.at(orientations.size() - 1).compare("D") == 0)
-    {code->right_down_.push_back("+1");counter ++;}
-    cout << counter << endl;
-//    if (counter >= 3)
-        return code;
-//    else
-        return NULL;
+        code->right_down_.push_back("+1");
+    ///if it is deoxy
+    else if(orientations.at(orientations.size() - 1).compare("Ud") == 0)
+        code->right_up_.push_back("+1d");
+    else if(orientations.at(orientations.size() - 1).compare("Dd") == 0)
+        code->right_down_.push_back("+1d");
+
+    return code;
 }
 void Assembly::GenerateSugarName(ChemicalCode* code)
 {

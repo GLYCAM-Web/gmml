@@ -567,6 +567,13 @@ namespace MolecularModeling
 
 //            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
             void ExtractMonosaccharides();
+
+            CycleMap DetectCyclesByExhaustiveRingPerception();
+            void PruneGraph(AtomVector& all_atoms);
+            void ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, std::vector<std::string>& path_graph_labels, AtomVector atoms);
+            void ReducePathGraph(std::vector<std::string> path_graph_edges, std::vector<std::string> path_graph_labels,
+                                 std::vector<std::string>& reduced_path_graph_edges, std::vector<std::string>& reduced_path_graph_labels, std::string common_atom, std::vector<std::string>& cycles);
+
             CycleMap DetectCyclesByDFS();
             void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
