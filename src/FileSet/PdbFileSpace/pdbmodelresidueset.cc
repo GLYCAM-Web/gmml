@@ -81,7 +81,7 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
             /// Check for the end of the block
             if(Trim(temp).empty())
             {
-                break;
+
             }
             /// Section may have another ATOM/HETATM section
             else
