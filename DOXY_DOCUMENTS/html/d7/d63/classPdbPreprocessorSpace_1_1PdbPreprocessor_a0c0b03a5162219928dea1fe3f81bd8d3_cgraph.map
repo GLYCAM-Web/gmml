@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a892b24d94a5e85599b1b0c9fe731a9ab" title="PrepFileSpace::PrepFile::GetAllAtomNamesOfResidue" alt="" coords="631,32,972,61"/>
-<area shape="rect" id="node9" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a5d773b7fbab87ece1329526843d0548b" title="PrepFileSpace::PrepFile::GetAllResidueNames" alt="" coords="653,85,949,115"/>
-<area shape="rect" id="node5" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a1ea65ec1f2427dd0e733fd1aee8810ff" title="PrepFileSpace::PrepFileResidue::GetAtoms" alt="" coords="1023,5,1300,35"/>
-<area shape="rect" id="node7" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad7d57f51cbd2be070367c1a7fd0d40c3" title="PrepFileSpace::PrepFileAtom::GetName" alt="" coords="1032,59,1291,88"/>
-</map>

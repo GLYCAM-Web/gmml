@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a8ff5dd4e22f8894ba5b210e10891f01c" title="MolecularModeling::Assembly::GetAllCoordinates" alt="" coords="555,32,864,61"/>
-<area shape="rect" id="node10" href="$df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#ad06e56be46a45a931f24a17c645d104e" title="Clear and set the list of coordinates in the coordinate file." alt="" coords="543,85,876,115"/>
-<area shape="rect" id="node12" href="$df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a2e909e05fd46d4cddd1eeb68b68a8ee9" title="Set the number of coordinates contained in the coordinate file." alt="" coords="513,139,905,168"/>
-<area shape="rect" id="node14" href="$df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html#a42e1197c3a68f6a453c3a55e066ccd3f" title="Set the title of the coordinate file." alt="" coords="565,192,853,221"/>
-<area shape="rect" id="node6" href="$da/d64/classMolecularModeling_1_1Residue.html#a00d6aa1fe3dbfb14672a12620b83ba74" title="MolecularModeling::Residue::GetAtoms" alt="" coords="963,5,1216,35"/>
-<area shape="rect" id="node8" href="$de/da2/classMolecularModeling_1_1Atom.html#a6915340084e3962fda682cbef08bb1a3" title="MolecularModeling::Atom::GetCoordinates" alt="" coords="956,59,1223,88"/>
-</map>

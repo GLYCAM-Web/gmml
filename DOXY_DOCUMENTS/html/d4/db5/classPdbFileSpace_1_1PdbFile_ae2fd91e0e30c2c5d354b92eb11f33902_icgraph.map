@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ae22d571da684e631e5ae3ee5f97ced91" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractHISResidues" alt="" coords="444,5,839,35"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a6af28bfa2a4209af7eb0d3d8621a84ad" title="PdbPreprocessorSpace::PdbPreprocessor::GetDistanceofCYS" alt="" coords="448,59,835,88"/>
-<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a8b385178294cd18fe900913c06c7ce21" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMapping" alt="" coords="447,112,836,141"/>
-<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a4cf0777511d38ebcd92476888c9f585a" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMappingWithTheGivenNumber" alt="" coords="383,165,900,195"/>
-</map>

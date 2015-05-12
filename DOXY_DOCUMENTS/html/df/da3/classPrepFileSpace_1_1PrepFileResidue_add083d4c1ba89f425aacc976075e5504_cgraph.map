@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ab373fe753c26173d9f4d67ac09df5787" title="PrepFileSpace::PrepFileResidue::GetAtomNameByIndex" alt="" coords="303,59,657,88"/>
-<area shape="rect" id="node9" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#ad939e62199ec5285b2243cf7bfff12c3" title="PrepFileSpace::PrepFileResidue::GetBondingsOfResidue" alt="" coords="303,112,657,141"/>
-<area shape="rect" id="node5" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#a27503102d8cd8f0cfe1182d2a0a6c300" title="PrepFileSpace::PrepFileAtom::GetIndex" alt="" coords="753,59,1007,88"/>
-<area shape="rect" id="node7" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad7d57f51cbd2be070367c1a7fd0d40c3" title="PrepFileSpace::PrepFileAtom::GetName" alt="" coords="751,5,1009,35"/>
-<area shape="rect" id="node11" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a05538515826eeec5feaaeb36c68fc714" title="PrepFileSpace::PrepFileResidue::GetDummyAtomType" alt="" coords="707,112,1053,141"/>
-<area shape="rect" id="node14" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#aa8499f251c3600afb8428bf9e1fc46ea" title="PrepFileSpace::PrepFileAtom::GetTopologicalType" alt="" coords="721,165,1039,195"/>
-<area shape="rect" id="node16" href="$de/d5b/classPrepFileSpace_1_1PrepFileAtom.html#ad3255525291ee215d41e51604d438e6a" title="PrepFileSpace::PrepFileAtom::GetType" alt="" coords="755,219,1005,248"/>
-</map>

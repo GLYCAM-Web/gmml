@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#af7f90ed79bbe51e419523a00ec3fbfb2" title="LibraryFileSpace::LibraryFile::ResolveAtomSection" alt="" coords="419,5,736,35"/>
-<area shape="rect" id="node9" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a1af16091bb1d1eb5bcda58083a3750ad" title="LibraryFileSpace::LibraryFile::ResolveConnectivitySection" alt="" coords="397,59,757,88"/>
-<area shape="rect" id="node12" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#aa94c6679b4bfd7596e14f9fd3d6b5b35" title="LibraryFileSpace::LibraryFile::ResolvePositionSection" alt="" coords="411,112,744,141"/>
-<area shape="rect" id="node5" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6154a7ec2b24d8eeb696e8b40b85d03c" title="LibraryFileSpace::LibraryFile::BuildLibraryFile" alt="" coords="807,59,1089,88"/>
-<area shape="rect" id="node7" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a0e31e1c64ce69e8e35b4344699a94112" title="LibraryFileSpace::LibraryFile::Write" alt="" coords="1139,59,1365,88"/>
-</map>

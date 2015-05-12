@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#abc1fe774867b67fc525b2965dab3f970" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractAlternateResidue" alt="" coords="384,5,800,35"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ae0c31c017ed48d071083ea84d663016a" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateCYSResidues" alt="" coords="392,59,792,88"/>
-<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a338c680e10a5bc00dee7d40d9023ec56" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateCYSResiduesWithTheGivenModelNumber" alt="" coords="311,112,873,141"/>
-<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a8b385178294cd18fe900913c06c7ce21" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMapping" alt="" coords="397,165,787,195"/>
-<area shape="rect" id="node11" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a4cf0777511d38ebcd92476888c9f585a" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMappingWithTheGivenNumber" alt="" coords="333,219,851,248"/>
-</map>

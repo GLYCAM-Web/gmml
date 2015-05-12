@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node4" href="$da/d64/classMolecularModeling_1_1Residue.html#a00d6aa1fe3dbfb14672a12620b83ba74" title="MolecularModeling::Residue::GetAtoms" alt="" coords="465,5,719,35"/>
-<area shape="rect" id="node6" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad46f5e6e6786b022b432f04a4ae0d9ff" title="MolecularModeling::Assembly::GetCenterOfGeometry" alt="" coords="425,59,759,88"/>
-<area shape="rect" id="node8" href="$de/da2/classMolecularModeling_1_1Atom.html#a6915340084e3962fda682cbef08bb1a3" title="MolecularModeling::Atom::GetCoordinates" alt="" coords="459,112,725,141"/>
-</map>

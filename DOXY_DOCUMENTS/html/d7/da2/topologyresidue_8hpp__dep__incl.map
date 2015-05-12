@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d2/d91/topologyassembly_8cc.html" title="src/FileSet/TopologyFileSpace/topologyassembly.cc" alt="" coords="5,83,331,112"/>
-<area shape="rect" id="node5" href="$d9/dbe/topologyfile_8cc.html" title="src/FileSet/TopologyFileSpace/topologyfile.cc" alt="" coords="355,83,643,112"/>
-<area shape="rect" id="node7" href="$d6/d52/topologyresidue_8cc.html" title="src/FileSet/TopologyFileSpace/topologyresidue.cc" alt="" coords="667,83,979,112"/>
-<area shape="rect" id="node9" href="$dd/df2/assembly_8cc.html" title="src/MolecularModeling/assembly.cc" alt="" coords="1003,83,1232,112"/>
-</map>

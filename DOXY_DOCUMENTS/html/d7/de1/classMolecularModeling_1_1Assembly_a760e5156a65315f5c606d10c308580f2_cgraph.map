@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a958d19487a0d2b664520ada15ba899b0" title="MolecularModeling::Assembly::GetAllAtomsOfAssembly" alt="" coords="393,59,743,88"/>
-<area shape="rect" id="node12" href="$de/da2/classMolecularModeling_1_1Atom.html#a95020e9c833ef7e4b19873f139f59924" title="MolecularModeling::Atom::GetId" alt="" coords="464,112,672,141"/>
-<area shape="rect" id="node14" href="$de/da2/classMolecularModeling_1_1Atom.html#af16eec04e2209f9c54fed13735402362" title="MolecularModeling::Atom::GetNode" alt="" coords="453,165,683,195"/>
-<area shape="rect" id="node16" href="$da/d1f/classMolecularModeling_1_1AtomNode.html#a044a078e22e08573471e516dfa54304e" title="MolecularModeling::AtomNode::GetNodeNeighbors" alt="" coords="409,219,727,248"/>
-<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a9ebe372931e72238e838c2100f82e1e3" title="MolecularModeling::Assembly::GetAssemblies" alt="" coords="792,5,1085,35"/>
-<area shape="rect" id="node8" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a3ef6deaca837f204d3ac1306d8c84623" title="MolecularModeling::Assembly::GetResidues" alt="" coords="799,59,1079,88"/>
-<area shape="rect" id="node10" href="$da/d64/classMolecularModeling_1_1Residue.html#a00d6aa1fe3dbfb14672a12620b83ba74" title="MolecularModeling::Residue::GetAtoms" alt="" coords="812,112,1065,141"/>
-</map>

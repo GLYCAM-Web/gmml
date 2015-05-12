@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a7c69b960e9bb5e16bdb3fd8cc71a08b6" title="LibraryFileSpace::LibraryFile::Read" alt="" coords="309,89,536,118"/>
-<area shape="rect" id="node5" href="$d0/ddd/namespacegmml.html#aa9f9a6ff7682c649cd9bc83fef689be0" title="gmml::RemoveQuotes" alt="" coords="943,37,1095,66"/>
-<area shape="rect" id="node7" href="$d0/ddd/namespacegmml.html#aea05f3085debf5ae3f7b4ead4cf73af9" title="gmml::RemoveSpaces" alt="" coords="661,36,816,65"/>
-<area shape="rect" id="node9" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a4a4f0093153eca92d1d89ba108b48ee5" title="Process a line from the atom section of the file and return a new atom object." alt="" coords="601,89,876,118"/>
-<area shape="rect" id="node12" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a45a6b253c156329f79b5bbb0113cc63b" title="Set the order of insertion of the current atom into its residue." alt="" coords="584,142,893,172"/>
-<area shape="rect" id="node14" href="$d0/ddd/namespacegmml.html#ad0d479ef4d57aa7c011a5304be78cf83" title="gmml::Trim" alt="" coords="695,196,783,225"/>
-</map>

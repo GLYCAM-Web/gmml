@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#ac91727a38f11287c500d9dcfcab7cb44" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedResidue::GetResidueAlternateLocation" alt="" coords="679,5,1252,35"/>
-<area shape="rect" id="node5" href="$d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a735273d8a95a4ad1939900a25c35e4ad" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedResidue::GetResidueChainId" alt="" coords="707,59,1224,88"/>
-<area shape="rect" id="node7" href="$d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#aa286e0b89ef10e147be7d2e67affaca7" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedResidue::GetResidueInsertionCode" alt="" coords="689,112,1241,141"/>
-<area shape="rect" id="node9" href="$d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#a157183d7d060a2ef5c0993d0541fb7e9" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedResidue::GetResidueName" alt="" coords="712,165,1219,195"/>
-<area shape="rect" id="node11" href="$d9/de1/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedResidue.html#adacf4a20451be23f4cc975aa1ddc6622" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedResidue::GetResidueSequenceNumber" alt="" coords="677,219,1253,248"/>
-</map>

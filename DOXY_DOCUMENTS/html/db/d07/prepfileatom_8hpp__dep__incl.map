@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$dd/df2/assembly_8cc.html" title="src/MolecularModeling/assembly.cc" alt="" coords="5,83,235,112"/>
-<area shape="rect" id="node5" href="$de/dca/prepfile_8cc.html" title="src/ParameterSet/PrepFileSpace/prepfile.cc" alt="" coords="259,83,536,112"/>
-<area shape="rect" id="node7" href="$dd/dc0/prepfileatom_8cc.html" title="src/ParameterSet/PrepFileSpace/prepfileatom.cc" alt="" coords="560,83,867,112"/>
-<area shape="rect" id="node9" href="$d5/dd8/prepfileresidue_8cc.html" title="src/ParameterSet/PrepFileSpace/prepfileresidue.cc" alt="" coords="891,83,1208,112"/>
-<area shape="rect" id="node11" href="$da/d8b/pdbpreprocessor_8cc.html" title="src/Resolver/PdbPreprocessor/pdbpreprocessor.cc" alt="" coords="1232,83,1549,112"/>
-</map>

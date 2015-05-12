@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="332,5,700,35"/>
-<area shape="rect" id="node5" href="$dd/d09/classPrepFileSpace_1_1PrepFile.html#a7fb3963cc1fb91ebfbf38cd2a9b95eb4" title="PrepFileSpace::PrepFile::BuildPrepFile" alt="" coords="392,59,640,88"/>
-<area shape="rect" id="node7" href="$df/da3/classPrepFileSpace_1_1PrepFileResidue.html#a054d0f9e32e278808248edd3af1ea3c0" title="PrepFileSpace::PrepFileResidue::CalculatePrepResidueCharge" alt="" coords="321,112,711,141"/>
-</map>

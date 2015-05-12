@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$df/d1f/classPdbFileSpace_1_1PdbResidueModification.html#a0c0fafa6b98d8df0c279afa4cca8b14f" title="PdbFileSpace::PdbResidueModification::GetChainId" alt="" coords="456,5,781,35"/>
-<area shape="rect" id="node5" href="$df/d1f/classPdbFileSpace_1_1PdbResidueModification.html#a5b1e5160b0dd264e6ee425a8bf66c10d" title="PdbFileSpace::PdbResidueModification::GetDscr" alt="" coords="464,59,773,88"/>
-<area shape="rect" id="node7" href="$df/d1f/classPdbFileSpace_1_1PdbResidueModification.html#ad1e5470408a997b5d4ae200ef2988681" title="PdbFileSpace::PdbResidueModification::GetIdCode" alt="" coords="457,112,780,141"/>
-<area shape="rect" id="node9" href="$df/d1f/classPdbFileSpace_1_1PdbResidueModification.html#acbdb4760e42e1f09fa3453f84307f859" title="PdbFileSpace::PdbResidueModification::GetInsertionCode" alt="" coords="437,165,800,195"/>
-<area shape="rect" id="node11" href="$df/d1f/classPdbFileSpace_1_1PdbResidueModification.html#a9270f0f89c58390b950ab83edd6a74de" title="PdbFileSpace::PdbResidueModification::GetResidueName" alt="" coords="437,219,800,248"/>
-<area shape="rect" id="node13" href="$df/d1f/classPdbFileSpace_1_1PdbResidueModification.html#ae57c7925980803805cb204f8d278032d" title="PdbFileSpace::PdbResidueModification::GetSequenceNumber" alt="" coords="427,272,811,301"/>
-<area shape="rect" id="node15" href="$df/d1f/classPdbFileSpace_1_1PdbResidueModification.html#afeeb67e1fba80f2300cb731ec4d09a39" title="PdbFileSpace::PdbResidueModification::GetStandardResidueName" alt="" coords="411,325,827,355"/>
-</map>

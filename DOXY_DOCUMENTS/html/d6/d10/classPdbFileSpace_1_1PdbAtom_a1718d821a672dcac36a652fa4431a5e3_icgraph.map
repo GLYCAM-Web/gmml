@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#aeef6178c301c7623203980ab5f805e2d" title="PdbFileSpace::PdbFile::UpdateResidueName" alt="" coords="443,59,731,88"/>
-<area shape="rect" id="node9" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#ab4d1c439b734e2d5ef846444e92f344b" title="PdbFileSpace::PdbFile::UpdateResidueNameWithTheGivenModelNumber" alt="" coords="361,112,812,141"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ae0c31c017ed48d071083ea84d663016a" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateCYSResidues" alt="" coords="944,5,1344,35"/>
-<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a8b385178294cd18fe900913c06c7ce21" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMapping" alt="" coords="949,59,1339,88"/>
-<area shape="rect" id="node11" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a338c680e10a5bc00dee7d40d9023ec56" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateCYSResiduesWithTheGivenModelNumber" alt="" coords="863,112,1425,141"/>
-<area shape="rect" id="node13" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a4cf0777511d38ebcd92476888c9f585a" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateHISMappingWithTheGivenNumber" alt="" coords="885,165,1403,195"/>
-</map>

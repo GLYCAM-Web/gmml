@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d2/d2b/classGeometry_1_1Coordinate.html#a3c19db1c64f26d7072e6ec0bab484ab6" title="Geometry::Coordinate::Distance" alt="" coords="511,5,721,35"/>
-<area shape="rect" id="node5" href="$d4/db5/classPdbFileSpace_1_1PdbFile.html#ae2fd91e0e30c2c5d354b92eb11f33902" title="PdbFileSpace::PdbFile::GetAtomOfResidueByName" alt="" coords="452,59,780,88"/>
-<area shape="rect" id="node7" href="$d6/d10/classPdbFileSpace_1_1PdbAtom.html#af4f4523bd067f2b1b38c8899f47d8032" title="PdbFileSpace::PdbAtom::GetAtomOrthogonalCoordinate" alt="" coords="441,112,791,141"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$df/ddc/classPdbPreprocessorSpace_1_1PdbPreprocessorMissingResidue.html#a68dfd34e2008511b6f3d26a1cf548824" title="PdbPreprocessorSpace::PdbPreprocessorMissingResidue::GetAllPossibleNChainTerminationAsString" alt="" coords="616,5,1232,35"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aed544e47bd4afd0afefdf26bd124a5ba" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChains" alt="" coords="693,59,1155,88"/>
-<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a31bf0e30d7c4dfa9f6ed8228d40dddd3" title="PdbPreprocessorSpace::PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber" alt="" coords="611,112,1237,141"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d0/ddd/namespacegmml.html#ab5da82ed3f2c4604e637561636788401" title="gmml::ConvertCartesianCoordinate2InternalCoordinate" alt="" coords="249,5,588,35"/>
-<area shape="rect" id="node5" href="$d2/d2b/classGeometry_1_1Coordinate.html#af68ce1403f5091ab554586b8998c474f" title="Geometry::Coordinate::Normalize" alt="" coords="311,59,527,88"/>
-<area shape="rect" id="node7" href="$d0/ddd/namespacegmml.html#a335662882ed7f754a41a40a3ad6a6233" title="gmml::ConvertInternalCoordinate2CartesianCoordinate" alt="" coords="639,59,977,88"/>
-<area shape="rect" id="node9" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a203b203feb1b5197c763bfe162c3937f" title="MolecularModeling::Assembly::BuildAssemblyFromPrepFile" alt="" coords="1028,59,1396,88"/>
-</map>

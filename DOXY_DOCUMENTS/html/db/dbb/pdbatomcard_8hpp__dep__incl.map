@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$db/da1/pdbatomcard_8cc.html" title="src/FileSet/PdbFileSpace/pdbatomcard.cc" alt="" coords="5,83,272,112"/>
-<area shape="rect" id="node5" href="$d8/dd5/pdbfile_8cc.html" title="src/FileSet/PdbFileSpace/pdbfile.cc" alt="" coords="296,83,525,112"/>
-<area shape="rect" id="node7" href="$da/d06/pdbmodelresidueset_8cc.html" title="src/FileSet/PdbFileSpace/pdbmodelresidueset.cc" alt="" coords="549,83,856,112"/>
-<area shape="rect" id="node9" href="$dd/df2/assembly_8cc.html" title="src/MolecularModeling/assembly.cc" alt="" coords="880,83,1109,112"/>
-<area shape="rect" id="node11" href="$da/d8b/pdbpreprocessor_8cc.html" title="src/Resolver/PdbPreprocessor/pdbpreprocessor.cc" alt="" coords="1133,83,1451,112"/>
-</map>

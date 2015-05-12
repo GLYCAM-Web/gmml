@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$db/d17/classTopologyFileSpace_1_1TopologyBondType.html#ac235ba6ac8c9e0c9cec81396d24c8a0f" title="TopologyFileSpace::TopologyBondType::Print" alt="" coords="644,22,932,51"/>
-<area shape="rect" id="node5" href="$d1/d46/classTopologyFileSpace_1_1TopologyAngleType.html#aaea5d0648f43f8c57b4bb6acb6f8bc00" title="TopologyFileSpace::TopologyAngleType::Print" alt="" coords="643,126,933,155"/>
-<area shape="rect" id="node7" href="$d1/d9a/classTopologyFileSpace_1_1TopologyBond.html#a242a46b167fd32712d5e1a8e557c2b56" title="TopologyFileSpace::TopologyBond::Print" alt="" coords="316,47,575,77"/>
-<area shape="rect" id="node10" href="$d1/dfa/classTopologyFileSpace_1_1TopologyAngle.html#a07653718e82d8a3916fefe89a3c227a0" title="TopologyFileSpace::TopologyAngle::Print" alt="" coords="315,151,576,181"/>
-<area shape="rect" id="node13" href="$dd/d26/classTopologyFileSpace_1_1TopologyAtomPair.html#aadbacd4f381b35a33c2253bcc924c9f0" title="TopologyFileSpace::TopologyAtomPair::Print" alt="" coords="304,205,587,234"/>
-<area shape="rect" id="node15" href="$d5/d9c/classTopologyFileSpace_1_1TopologyDihedral.html#a79857fc52b44a97e4a5363906aa320cc" title="TopologyFileSpace::TopologyDihedral::Print" alt="" coords="307,258,584,287"/>
-<area shape="rect" id="node17" href="$da/dae/classTopologyFileSpace_1_1TopologyDihedralType.html#a2f3745ca4dd183866408fa09a3727e03" title="TopologyFileSpace::TopologyDihedralType::Print" alt="" coords="635,283,941,313"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d5/d9c/classTopologyFileSpace_1_1TopologyDihedral.html#a39e6e7ccc5f136b03cb86431c3656ed1" title="TopologyFileSpace::TopologyDihedral::GetDihedrals" alt="" coords="568,5,893,35"/>
-<area shape="rect" id="node5" href="$d5/d9c/classTopologyFileSpace_1_1TopologyDihedral.html#a6eeb3d42a5854dd766f06ad9d66de140" title="TopologyFileSpace::TopologyDihedral::GetDihedralType" alt="" coords="557,59,904,88"/>
-<area shape="rect" id="node7" href="$d5/d9c/classTopologyFileSpace_1_1TopologyDihedral.html#aa710e023a9920584d9a500f47eae502d" title="TopologyFileSpace::TopologyDihedral::GetIgnoredGroupInteraction" alt="" coords="525,112,936,141"/>
-<area shape="rect" id="node9" href="$d5/d9c/classTopologyFileSpace_1_1TopologyDihedral.html#a994a8ae3c863f07d33b60a32c761d6b7" title="TopologyFileSpace::TopologyDihedral::GetIncludingHydrogen" alt="" coords="541,165,920,195"/>
-<area shape="rect" id="node11" href="$da/dae/classTopologyFileSpace_1_1TopologyDihedralType.html#afe8dbfa8adecc1021b757e444e016509" title="TopologyFileSpace::TopologyDihedralType::GetIndex" alt="" coords="565,219,896,248"/>
-<area shape="rect" id="node13" href="$d5/d9c/classTopologyFileSpace_1_1TopologyDihedral.html#a7982b842e1351c5b14ff8496f90cbdbe" title="TopologyFileSpace::TopologyDihedral::GetIsImproper" alt="" coords="564,272,897,301"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d5/d85/classPdbFileSpace_1_1PdbSheetStrand.html#afa905982a18d9e30364d35411aa5f264" title="PdbFileSpace::PdbSheetStrand::GetCurrentAtom" alt="" coords="337,5,647,35"/>
-<area shape="rect" id="node5" href="$df/ddf/classPdbFileSpace_1_1PdbSheet.html#a6066c413d47de4f368c09820fbfd4c1d" title="PdbFileSpace::PdbSheet::GetNumberOfStrands" alt="" coords="341,59,643,88"/>
-<area shape="rect" id="node7" href="$d5/d85/classPdbFileSpace_1_1PdbSheetStrand.html#a80fcece3e98b7cf283805e95805e76e5" title="PdbFileSpace::PdbSheetStrand::GetPreviousAtom" alt="" coords="333,112,651,141"/>
-<area shape="rect" id="node9" href="$d5/d85/classPdbFileSpace_1_1PdbSheetStrand.html#a6afbc96ad4a5bbc03e75f5f0b548ef99" title="PdbFileSpace::PdbSheetStrand::GetSense" alt="" coords="356,165,628,195"/>
-<area shape="rect" id="node11" href="$df/ddf/classPdbFileSpace_1_1PdbSheet.html#aa751354c0e8958a2f656f219b062c540" title="PdbFileSpace::PdbSheet::GetSheetId" alt="" coords="371,219,613,248"/>
-<area shape="rect" id="node13" href="$d5/d85/classPdbFileSpace_1_1PdbSheetStrand.html#a63dcfef7b6b6e47d6e9f54314f95d337" title="PdbFileSpace::PdbSheetStrand::GetStrandResidues" alt="" coords="328,272,656,301"/>
-<area shape="rect" id="node15" href="$df/ddf/classPdbFileSpace_1_1PdbSheet.html#af456c8afe40ea41dbee1184050f626a1" title="PdbFileSpace::PdbSheet::GetStrands" alt="" coords="371,325,613,355"/>
-</map>

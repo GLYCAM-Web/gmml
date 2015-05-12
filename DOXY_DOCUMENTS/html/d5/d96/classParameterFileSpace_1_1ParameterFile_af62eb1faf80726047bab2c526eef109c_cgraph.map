@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#a5a064009be88627edcb1247b437289ca" title="ParameterFileSpace::ParameterFileDihedralTerm::GetDscr" alt="" coords="463,5,825,35"/>
-<area shape="rect" id="node5" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#abc900b11082ad62b2f71eebe4edf82f4" title="ParameterFileSpace::ParameterFileDihedralTerm::GetFactor" alt="" coords="457,59,831,88"/>
-<area shape="rect" id="node7" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#a5b3b69d9b2aa878eee3e49987ad1e703" title="ParameterFileSpace::ParameterFileDihedralTerm::GetForceConstant" alt="" coords="433,112,855,141"/>
-<area shape="rect" id="node9" href="$d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#ae34649f5317ae10219f3074dd019ff78" title="ParameterFileSpace::ParameterFileDihedral::GetIsImproper" alt="" coords="460,165,828,195"/>
-<area shape="rect" id="node11" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#a7bccca45d4e7fc1e78f344a81195f871" title="ParameterFileSpace::ParameterFileDihedralTerm::GetPeriodicity" alt="" coords="445,219,843,248"/>
-<area shape="rect" id="node13" href="$dc/d13/classParameterFileSpace_1_1ParameterFileDihedralTerm.html#accceecdb9a922915e37b9c944aa9ba21" title="ParameterFileSpace::ParameterFileDihedralTerm::GetPhase" alt="" coords="457,272,831,301"/>
-<area shape="rect" id="node15" href="$d3/d32/classParameterFileSpace_1_1ParameterFileDihedral.html#a58ba5ca75d634b005e6dfbaeb5facc18" title="ParameterFileSpace::ParameterFileDihedral::GetTerms" alt="" coords="473,325,815,355"/>
-</map>

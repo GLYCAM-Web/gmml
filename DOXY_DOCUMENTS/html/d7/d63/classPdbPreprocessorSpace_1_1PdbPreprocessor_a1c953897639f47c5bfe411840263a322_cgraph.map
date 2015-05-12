@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html#ab05d283f22ea608889534eb437ffeb63" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedHeavyAtom::GetAtomName" alt="" coords="553,5,1063,35"/>
-<area shape="rect" id="node5" href="$d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html#aa2b08f869f8352423b18eb3991e5164e" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedHeavyAtom::GetResidueAlternateLocation" alt="" coords="511,59,1105,88"/>
-<area shape="rect" id="node7" href="$d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html#a46ae06aab1aa4bf81202113cdac95783" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedHeavyAtom::GetResidueChainId" alt="" coords="539,112,1077,141"/>
-<area shape="rect" id="node9" href="$d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html#a0846403c016ae58efabd1c9405b0230e" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedHeavyAtom::GetResidueInsertionCode" alt="" coords="521,165,1095,195"/>
-<area shape="rect" id="node11" href="$d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html#a47e4f132bbbfac9e6eaa3a2fde5c02ba" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedHeavyAtom::GetResidueName" alt="" coords="544,219,1072,248"/>
-<area shape="rect" id="node13" href="$d0/dcf/classPdbPreprocessorSpace_1_1PdbPreprocessorUnrecognizedHeavyAtom.html#ac45cd7454005ae83740b587b840198d9" title="PdbPreprocessorSpace::PdbPreprocessorUnrecognizedHeavyAtom::GetResidueSequenceNumber" alt="" coords="509,272,1107,301"/>
-</map>
