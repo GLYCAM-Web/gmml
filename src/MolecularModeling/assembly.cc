@@ -60,7 +60,11 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Assembly::Assembly() : description_(""), center_of_geometry_(0,0,0), model_index_(0) {}
+Assembly::Assembly() : description_(""), center_of_geometry_(0,0,0), model_index_(0), sequence_number_(1)
+{
+    residues_ = ResidueVector();
+    assemblies_ = AssemblyVector();
+}
 
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
 {
@@ -71,26 +75,31 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
     {
         case gmml::PDB:
             source_file_ = file_paths.at(0);
+            residues_ = ResidueVector();
             BuildAssemblyFromPdbFile(source_file_);
             assemblies_ = AssemblyVector();
             break;
         case gmml::TOP:
             source_file_ = file_paths.at(0);
+            residues_ = ResidueVector();
             BuildAssemblyFromTopologyFile(source_file_);
             assemblies_ = AssemblyVector();
             break;
         case gmml::LIB:
             source_file_ = file_paths.at(0);
+            residues_ = ResidueVector();
             BuildAssemblyFromLibraryFile(source_file_);
             assemblies_ = AssemblyVector();
             break;
         case gmml::PREP:
             source_file_ = file_paths.at(0);
+            residues_ = ResidueVector();
             BuildAssemblyFromPrepFile(source_file_);
             assemblies_ = AssemblyVector();
             break;
         case gmml::TOP_CRD:
             source_file_ = file_paths.at(0)+";"+file_paths.at(1);
+            residues_ = ResidueVector();
             BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
             assemblies_ = AssemblyVector();
             break;
@@ -312,33 +321,15 @@ void Assembly::SetAssemblies(AssemblyVector assemblies)
 }
 void Assembly::AddAssembly(Assembly *assembly)
 {
-    if(assemblies_.size() == 0)
-    {
-        assemblies_.push_back(this);
-        assembly->SetSequenceNumber(assemblies_.size() + 1);
-        assemblies_.push_back(assembly);
-        stringstream ss;
-        ss << this->name_ << "-" << assembly->GetName();
-        this->name_ = ss.str();
-        this->residues_ = ResidueVector();
-        this->chemical_type_ = "";
-        this->sequence_number_ = 1;
-        this->total_mass_ = 0;
-        this->center_of_geometry_ = Coordinate();
-        this->center_of_mass_ = Coordinate();
-        stringstream sss;
-        sss << this->source_file_ << "#" << assembly->GetSourceFile();
-        this->source_file_ = sss.str();
-        source_file_type_ = gmml::MULTIPLE;
-        model_index_ = 0;
-    }
-    else
-    {
-        stringstream ss;
-        ss << this->name_ << "-" << assembly->GetName();
-        assembly->SetSequenceNumber(assemblies_.size() + 1);
-        assemblies_.push_back(assembly);
-    }
+    stringstream ss;
+    ss << this->name_ << "-" << assembly->GetName();
+    this->name_ = ss.str();
+    stringstream sss;
+    sss << this->source_file_ << "#" << assembly->GetSourceFile();
+    this->source_file_ = sss.str();
+    source_file_type_ = gmml::MULTIPLE;
+    assembly->SetSequenceNumber(assemblies_.size() + 1);
+    this->assemblies_.push_back(assembly);
 }
 void Assembly::SetResidues(ResidueVector residues)
 {
@@ -4172,6 +4163,2182 @@ int Assembly::CountMaxNumberOfAtomsInLargestResidue()
     return max;
 }
 
+Assembly::AtomVector Assembly::Select(string pattern)
+{
+    AtomVector selection = AtomVector();
+
+    HierarchicalContainmentMap hierarchical_map;
+    stringstream index;
+    index << this->GetSequenceNumber();
+    this->GetHierarchicalMapOfAssembly(hierarchical_map, index);
+
+    for(HierarchicalContainmentMap::iterator it = hierarchical_map.begin(); it != hierarchical_map.end(); it++)
+        cout << (*it).first << " " << (*it).second.size() << endl;
+
+    SelectPatternMap select_pattern_map = ParsePatternString(pattern);
+
+//    for(SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
+//    {
+//        cout << "================================= " << (*it).first << " ================================" << endl;
+//        map<string, vector<string> > value = (*it).second;
+//        for(map<string, vector<string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+//        {
+//            cout << "-------------------------------- " << (*it1).first << " --------------------------" << endl;
+//            vector<string> atom_names = (*it1).second;
+//            for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+//            {
+//                cout << (*it3) << endl;
+//            }
+//        }
+//    }
+
+    for(SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
+    {
+        string key = (*it).first;
+        if(key.find("*") == string::npos)
+        {
+            ResidueVector residues_of_assembly = hierarchical_map.at(key);
+            map<string, vector<string> > value = (*it).second;
+            for(map<string, vector<string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+            {
+                string residue_name = (*it1).first;
+                int residue_name_search_type = 0;
+                if(residue_name.at(0) == '^')
+                {
+                    residue_name = residue_name.substr(1);
+                    residue_name_search_type = -1;
+                }
+                else if(residue_name.at(residue_name.size() - 1) == '$')
+                {
+                    residue_name = residue_name.substr(0, residue_name.size() - 2);
+                    residue_name_search_type = 1;
+                }
+                else if(residue_name.at(0) == '#')
+                {
+                    residue_name = residue_name.substr(1);
+                    residue_name_search_type = -2;
+                }
+                else
+                    residue_name_search_type = 0;
+                if(residue_name.find("*") == string::npos)
+                {
+                    for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                    {
+                        Residue* residue = *it2;
+                        switch(residue_name_search_type)
+                        {
+                            case 0:  /// Search in residue set by matching the whole name of the residue
+                            {
+                                if(residue->GetName().compare(residue_name) == 0)
+                                {
+                                    vector<string> atom_names = (*it1).second;
+                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                        {
+                                            string atom_name = *it3;
+                                            int atom_name_search_type = 0;
+                                            if(atom_name.at(0) == '^')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -1;
+                                            }
+                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                            {
+                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                atom_name_search_type = 1;
+                                            }
+                                            else if(atom_name.at(0) == '#')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -2;
+                                            }
+                                            else
+                                                atom_name_search_type = 0;
+                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                            {
+                                                Atom* atom = *it4;
+                                                switch(atom_name_search_type)
+                                                {
+                                                    case 0:
+                                                    {
+                                                        if(atom->GetName().compare(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case 1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -2:
+                                                    {
+                                                        string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                        int range_selection = 0;
+                                                        if(atom_name.find("-") != string::npos)
+                                                        {
+                                                            range_selection = 1;
+
+                                                        }
+                                                        else
+                                                            range_selection = 0;
+                                                        switch(range_selection)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                        atom_serial_number.find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                string start_index = Split(atom_name, "-").at(0);
+                                                                string end_index = Split(atom_name, "-").at(1);
+                                                                int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                int start_index_int = ConvertString<int>(start_index);
+                                                                int end_index_int = ConvertString<int>(end_index);
+                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                        {
+                                            Atom* atom = *it4;
+                                            selection.push_back(atom);
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            case 1:   /// Searching the residue set by maching the end of the residue names
+                            {
+                                if(residue->GetName().find(residue_name) != string::npos &&
+                                        residue->GetName().find(residue_name) == residue->GetName().size() - residue_name.size())
+                                {
+                                    vector<string> atom_names = (*it1).second;
+                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                        {
+                                            string atom_name = *it3;
+                                            int atom_name_search_type = 0;
+                                            if(atom_name.at(0) == '^')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -1;
+                                            }
+                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                            {
+                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                atom_name_search_type = 1;
+                                            }
+                                            else if(atom_name.at(0) == '#')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -2;
+                                            }
+                                            else
+                                                atom_name_search_type = 0;
+                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                            {
+                                                Atom* atom = *it4;
+                                                switch(atom_name_search_type)
+                                                {
+                                                    case 0:
+                                                    {
+                                                        if(atom->GetName().compare(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case 1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -2:
+                                                    {
+                                                        string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                        int range_selection = 0;
+                                                        if(atom_name.find("-") != string::npos)
+                                                        {
+                                                            range_selection = 1;
+
+                                                        }
+                                                        else
+                                                            range_selection = 0;
+                                                        switch(range_selection)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                        atom_serial_number.find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                string start_index = Split(atom_name, "-").at(0);
+                                                                string end_index = Split(atom_name, "-").at(1);
+                                                                int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                int start_index_int = ConvertString<int>(start_index);
+                                                                int end_index_int = ConvertString<int>(end_index);
+                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                        {
+                                            Atom* atom = *it4;
+                                            selection.push_back(atom);
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            case -1:  /// Searching the residue set by matching the begining of the residue names
+                            {
+                                if(residue->GetName().find(residue_name) != string::npos &&
+                                        residue->GetName().find(residue_name) == 0)
+                                {
+                                    vector<string> atom_names = (*it1).second;
+                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                        {
+                                            string atom_name = *it3;
+                                            int atom_name_search_type = 0;
+                                            if(atom_name.at(0) == '^')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -1;
+                                            }
+                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                            {
+                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                atom_name_search_type = 1;
+                                            }
+                                            else if(atom_name.at(0) == '#')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -2;
+                                            }
+                                            else
+                                                atom_name_search_type = 0;
+                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                            {
+                                                Atom* atom = *it4;
+                                                switch(atom_name_search_type)
+                                                {
+                                                    case 0:
+                                                    {
+                                                        if(atom->GetName().compare(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case 1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -2:
+                                                    {
+                                                        string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                        int range_selection = 0;
+                                                        if(atom_name.find("-") != string::npos)
+                                                        {
+                                                            range_selection = 1;
+
+                                                        }
+                                                        else
+                                                            range_selection = 0;
+                                                        switch(range_selection)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                        atom_serial_number.find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                string start_index = Split(atom_name, "-").at(0);
+                                                                string end_index = Split(atom_name, "-").at(1);
+                                                                int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                int start_index_int = ConvertString<int>(start_index);
+                                                                int end_index_int = ConvertString<int>(end_index);
+                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                        {
+                                            Atom* atom = *it4;
+                                            selection.push_back(atom);
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            case -2:  /// Searching the residue set by matching the residue sequence number
+                            {
+                                string residue_sequence_number = Split(residue->GetId(), "_").at(2);
+                                int range_residue_selection = 0;
+                                if(residue_sequence_number.find("-") != string::npos)
+                                {
+                                    range_residue_selection = 1;
+                                }
+                                else
+                                    range_residue_selection = 0;
+                                switch(range_residue_selection)
+                                {
+                                    case 0:
+                                    {
+                                        if(residue_sequence_number.find(residue_name) != string::npos &&
+                                                residue_sequence_number.find(residue_name) == 0)
+                                        {
+                                            vector<string> atom_names = (*it1).second;
+                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                {
+                                                    string atom_name = *it3;
+                                                    int atom_name_search_type = 0;
+                                                    if(atom_name.at(0) == '^')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -1;
+                                                    }
+                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                    {
+                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                        atom_name_search_type = 1;
+                                                    }
+                                                    else if(atom_name.at(0) == '#')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -2;
+                                                    }
+                                                    else
+                                                        atom_name_search_type = 0;
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        switch(atom_name_search_type)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom->GetName().compare(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -2:
+                                                            {
+                                                                string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                int range_selection = 0;
+                                                                if(atom_name.find("-") != string::npos)
+                                                                {
+                                                                    range_selection = 1;
+
+                                                                }
+                                                                else
+                                                                    range_selection = 0;
+                                                                switch(range_selection)
+                                                                {
+                                                                    case 0:
+                                                                    {
+                                                                        if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                atom_serial_number.find(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case 1:
+                                                                    {
+                                                                        string start_index = Split(atom_name, "-").at(0);
+                                                                        string end_index = Split(atom_name, "-").at(1);
+                                                                        int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                        int start_index_int = ConvertString<int>(start_index);
+                                                                        int end_index_int = ConvertString<int>(end_index);
+                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                {
+                                                    Atom* atom = *it4;
+                                                    selection.push_back(atom);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    case 1:
+                                    {
+                                        string residue_start_index = Split(residue_name, "-").at(0);
+                                        string residue_end_index = Split(residue_name, "-").at(1);
+                                        int residue_sequence_number_int = ConvertString<int>(residue_sequence_number);
+                                        int residue_start_index_int = ConvertString<int>(residue_start_index);
+                                        int residue_end_index_int = ConvertString<int>(residue_end_index);
+                                        if(residue_sequence_number_int >= residue_start_index_int && residue_sequence_number_int <= residue_end_index_int)
+                                        {
+                                            vector<string> atom_names = (*it1).second;
+                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                {
+                                                    string atom_name = *it3;
+                                                    int atom_name_search_type = 0;
+                                                    if(atom_name.at(0) == '^')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -1;
+                                                    }
+                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                    {
+                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                        atom_name_search_type = 1;
+                                                    }
+                                                    else if(atom_name.at(0) == '#')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -2;
+                                                    }
+                                                    else
+                                                        atom_name_search_type = 0;
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        switch(atom_name_search_type)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom->GetName().compare(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -2:
+                                                            {
+                                                                string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                int range_selection = 0;
+                                                                if(atom_name.find("-") != string::npos)
+                                                                {
+                                                                    range_selection = 1;
+
+                                                                }
+                                                                else
+                                                                    range_selection = 0;
+                                                                switch(range_selection)
+                                                                {
+                                                                    case 0:
+                                                                    {
+                                                                        if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                atom_serial_number.find(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case 1:
+                                                                    {
+                                                                        string start_index = Split(atom_name, "-").at(0);
+                                                                        string end_index = Split(atom_name, "-").at(1);
+                                                                        int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                        int start_index_int = ConvertString<int>(start_index);
+                                                                        int end_index_int = ConvertString<int>(end_index);
+                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                {
+                                                    Atom* atom = *it4;
+                                                    selection.push_back(atom);
+                                                }
+                                            }
+                                        break;
+                                    }
+                                }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                    {
+                        Residue* residue = *it2;
+                        vector<string> atom_names = (*it1).second;
+                        if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                        {
+                            AtomVector atoms = residue->GetAtoms();
+                            for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                            {
+                                string atom_name = *it3;
+                                int atom_name_search_type = 0;
+                                if(atom_name.at(0) == '^')
+                                {
+                                    atom_name = atom_name.substr(1);
+                                    atom_name_search_type = -1;
+                                }
+                                else if(atom_name.at(atom_name.size() - 1) == '$')
+                                {
+                                    atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                    atom_name_search_type = 1;
+                                }
+                                else if(atom_name.at(0) == '#')
+                                {
+                                    atom_name = atom_name.substr(1);
+                                    atom_name_search_type = -2;
+                                }
+                                else
+                                    atom_name_search_type = 0;
+                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                {
+                                    Atom* atom = *it4;
+                                    switch(atom_name_search_type)
+                                    {
+                                        case 0:
+                                        {
+                                            if(atom->GetName().compare(atom_name) == 0)
+                                                selection.push_back(atom);
+                                            break;
+                                        }
+                                        case 1:
+                                        {
+                                            if(atom->GetName().find(atom_name) != string::npos &&
+                                                    atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                selection.push_back(atom);
+                                            break;
+                                        }
+                                        case -1:
+                                        {
+                                            if(atom->GetName().find(atom_name) != string::npos &&
+                                                    atom->GetName().find(atom_name) == 0)
+                                                selection.push_back(atom);
+                                            break;
+                                        }
+                                        case -2:
+                                        {
+                                            string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                            int range_selection = 0;
+                                            if(atom_name.find("-") != string::npos)
+                                            {
+                                                range_selection = 1;
+
+                                            }
+                                            else
+                                                range_selection = 0;
+                                            switch(range_selection)
+                                            {
+                                                case 0:
+                                                {
+                                                    if(atom_serial_number.find(atom_name) != string::npos &&
+                                                            atom_serial_number.find(atom_name) == 0)
+                                                        selection.push_back(atom);
+                                                    break;
+                                                }
+                                                case 1:
+                                                {
+                                                    string start_index = Split(atom_name, "-").at(0);
+                                                    string end_index = Split(atom_name, "-").at(1);
+                                                    int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                    int start_index_int = ConvertString<int>(start_index);
+                                                    int end_index_int = ConvertString<int>(end_index);
+                                                    if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                        selection.push_back(atom);
+                                                    break;
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            AtomVector atoms = residue->GetAtoms();
+                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                            {
+                                Atom* atom = *it4;
+                                selection.push_back(atom);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+        else
+        {
+            int start_index = key.find("*");
+            if(start_index == 0)
+            {
+                for(HierarchicalContainmentMap::iterator it5 = hierarchical_map.begin(); it5 != hierarchical_map.end(); it5++)
+                {
+                    ResidueVector residues_of_assembly = (*it5).second;
+                    map<string, vector<string> > value = (*it).second;
+                    for(map<string, vector<string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+                    {
+                        string residue_name = (*it1).first;
+                        int residue_name_search_type = 0;
+                        if(residue_name.at(0) == '^')
+                        {
+                            residue_name = residue_name.substr(1);
+                            residue_name_search_type = -1;
+                        }
+                        else if(residue_name.at(residue_name.size() - 1) == '$')
+                        {
+                            residue_name = residue_name.substr(0, residue_name.size() - 2);
+                            residue_name_search_type = 1;
+                        }
+                        else if(residue_name.at(0) == '#')
+                        {
+                            residue_name = residue_name.substr(1);
+                            residue_name_search_type = -2;
+                        }
+                        else
+                            residue_name_search_type = 0;
+                        if(residue_name.find("*") == string::npos)
+                        {
+                            for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                            {
+                                Residue* residue = *it2;
+                                switch(residue_name_search_type)
+                                {
+                                    case 0:  /// Search in residue set by matching the whole name of the residue
+                                    {
+                                        if(residue->GetName().compare(residue_name) == 0)
+                                        {
+                                            vector<string> atom_names = (*it1).second;
+                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                {
+                                                    string atom_name = *it3;
+                                                    int atom_name_search_type = 0;
+                                                    if(atom_name.at(0) == '^')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -1;
+                                                    }
+                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                    {
+                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                        atom_name_search_type = 1;
+                                                    }
+                                                    else if(atom_name.at(0) == '#')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -2;
+                                                    }
+                                                    else
+                                                        atom_name_search_type = 0;
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        switch(atom_name_search_type)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom->GetName().compare(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -2:
+                                                            {
+                                                                string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                int range_selection = 0;
+                                                                if(atom_name.find("-") != string::npos)
+                                                                {
+                                                                    range_selection = 1;
+
+                                                                }
+                                                                else
+                                                                    range_selection = 0;
+                                                                switch(range_selection)
+                                                                {
+                                                                    case 0:
+                                                                    {
+                                                                        if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                atom_serial_number.find(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case 1:
+                                                                    {
+                                                                        string start_index = Split(atom_name, "-").at(0);
+                                                                        string end_index = Split(atom_name, "-").at(1);
+                                                                        int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                        int start_index_int = ConvertString<int>(start_index);
+                                                                        int end_index_int = ConvertString<int>(end_index);
+                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                {
+                                                    Atom* atom = *it4;
+                                                    selection.push_back(atom);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    case 1:   /// Searching the residue set by maching the end of the residue names
+                                    {
+                                        if(residue->GetName().find(residue_name) != string::npos &&
+                                                residue->GetName().find(residue_name) == residue->GetName().size() - residue_name.size())
+                                        {
+                                            vector<string> atom_names = (*it1).second;
+                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                {
+                                                    string atom_name = *it3;
+                                                    int atom_name_search_type = 0;
+                                                    if(atom_name.at(0) == '^')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -1;
+                                                    }
+                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                    {
+                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                        atom_name_search_type = 1;
+                                                    }
+                                                    else if(atom_name.at(0) == '#')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -2;
+                                                    }
+                                                    else
+                                                        atom_name_search_type = 0;
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        switch(atom_name_search_type)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom->GetName().compare(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -2:
+                                                            {
+                                                                string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                int range_selection = 0;
+                                                                if(atom_name.find("-") != string::npos)
+                                                                {
+                                                                    range_selection = 1;
+
+                                                                }
+                                                                else
+                                                                    range_selection = 0;
+                                                                switch(range_selection)
+                                                                {
+                                                                    case 0:
+                                                                    {
+                                                                        if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                atom_serial_number.find(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case 1:
+                                                                    {
+                                                                        string start_index = Split(atom_name, "-").at(0);
+                                                                        string end_index = Split(atom_name, "-").at(1);
+                                                                        int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                        int start_index_int = ConvertString<int>(start_index);
+                                                                        int end_index_int = ConvertString<int>(end_index);
+                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                {
+                                                    Atom* atom = *it4;
+                                                    selection.push_back(atom);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    case -1:  /// Searching the residue set by matching the begining of the residue names
+                                    {
+                                        if(residue->GetName().find(residue_name) != string::npos &&
+                                                residue->GetName().find(residue_name) == 0)
+                                        {
+                                            vector<string> atom_names = (*it1).second;
+                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                {
+                                                    string atom_name = *it3;
+                                                    int atom_name_search_type = 0;
+                                                    if(atom_name.at(0) == '^')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -1;
+                                                    }
+                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                    {
+                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                        atom_name_search_type = 1;
+                                                    }
+                                                    else if(atom_name.at(0) == '#')
+                                                    {
+                                                        atom_name = atom_name.substr(1);
+                                                        atom_name_search_type = -2;
+                                                    }
+                                                    else
+                                                        atom_name_search_type = 0;
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        switch(atom_name_search_type)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom->GetName().compare(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -1:
+                                                            {
+                                                                if(atom->GetName().find(atom_name) != string::npos &&
+                                                                        atom->GetName().find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case -2:
+                                                            {
+                                                                string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                int range_selection = 0;
+                                                                if(atom_name.find("-") != string::npos)
+                                                                {
+                                                                    range_selection = 1;
+
+                                                                }
+                                                                else
+                                                                    range_selection = 0;
+                                                                switch(range_selection)
+                                                                {
+                                                                    case 0:
+                                                                    {
+                                                                        if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                atom_serial_number.find(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case 1:
+                                                                    {
+                                                                        string start_index = Split(atom_name, "-").at(0);
+                                                                        string end_index = Split(atom_name, "-").at(1);
+                                                                        int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                        int start_index_int = ConvertString<int>(start_index);
+                                                                        int end_index_int = ConvertString<int>(end_index);
+                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                AtomVector atoms = residue->GetAtoms();
+                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                {
+                                                    Atom* atom = *it4;
+                                                    selection.push_back(atom);
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                    case -2:  /// Searching the residue set by matching the residue sequence number
+                                    {
+                                        string residue_sequence_number = Split(residue->GetId(), "_").at(2);
+                                        int range_residue_selection = 0;
+                                        if(residue_sequence_number.find("-") != string::npos)
+                                        {
+                                            range_residue_selection = 1;
+                                        }
+                                        else
+                                            range_residue_selection = 0;
+                                        switch(range_residue_selection)
+                                        {
+                                            case 0:
+                                            {
+                                                if(residue_sequence_number.find(residue_name) != string::npos &&
+                                                        residue_sequence_number.find(residue_name) == 0)
+                                                {
+                                                    vector<string> atom_names = (*it1).second;
+                                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                    {
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                        {
+                                                            string atom_name = *it3;
+                                                            int atom_name_search_type = 0;
+                                                            if(atom_name.at(0) == '^')
+                                                            {
+                                                                atom_name = atom_name.substr(1);
+                                                                atom_name_search_type = -1;
+                                                            }
+                                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                            {
+                                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                                atom_name_search_type = 1;
+                                                            }
+                                                            else if(atom_name.at(0) == '#')
+                                                            {
+                                                                atom_name = atom_name.substr(1);
+                                                                atom_name_search_type = -2;
+                                                            }
+                                                            else
+                                                                atom_name_search_type = 0;
+                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                            {
+                                                                Atom* atom = *it4;
+                                                                switch(atom_name_search_type)
+                                                                {
+                                                                    case 0:
+                                                                    {
+                                                                        if(atom->GetName().compare(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case 1:
+                                                                    {
+                                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case -1:
+                                                                    {
+                                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                atom->GetName().find(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case -2:
+                                                                    {
+                                                                        string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                        int range_selection = 0;
+                                                                        if(atom_name.find("-") != string::npos)
+                                                                        {
+                                                                            range_selection = 1;
+
+                                                                        }
+                                                                        else
+                                                                            range_selection = 0;
+                                                                        switch(range_selection)
+                                                                        {
+                                                                            case 0:
+                                                                            {
+                                                                                if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                        atom_serial_number.find(atom_name) == 0)
+                                                                                    selection.push_back(atom);
+                                                                                break;
+                                                                            }
+                                                                            case 1:
+                                                                            {
+                                                                                string start_index = Split(atom_name, "-").at(0);
+                                                                                string end_index = Split(atom_name, "-").at(1);
+                                                                                int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                                int start_index_int = ConvertString<int>(start_index);
+                                                                                int end_index_int = ConvertString<int>(end_index);
+                                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                                    selection.push_back(atom);
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            selection.push_back(atom);
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                            case 1:
+                                            {
+                                                string residue_start_index = Split(residue_name, "-").at(0);
+                                                string residue_end_index = Split(residue_name, "-").at(1);
+                                                int residue_sequence_number_int = ConvertString<int>(residue_sequence_number);
+                                                int residue_start_index_int = ConvertString<int>(residue_start_index);
+                                                int residue_end_index_int = ConvertString<int>(residue_end_index);
+                                                if(residue_sequence_number_int >= residue_start_index_int && residue_sequence_number_int <= residue_end_index_int)
+                                                {
+                                                    vector<string> atom_names = (*it1).second;
+                                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                    {
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                        {
+                                                            string atom_name = *it3;
+                                                            int atom_name_search_type = 0;
+                                                            if(atom_name.at(0) == '^')
+                                                            {
+                                                                atom_name = atom_name.substr(1);
+                                                                atom_name_search_type = -1;
+                                                            }
+                                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                            {
+                                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                                atom_name_search_type = 1;
+                                                            }
+                                                            else if(atom_name.at(0) == '#')
+                                                            {
+                                                                atom_name = atom_name.substr(1);
+                                                                atom_name_search_type = -2;
+                                                            }
+                                                            else
+                                                                atom_name_search_type = 0;
+                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                            {
+                                                                Atom* atom = *it4;
+                                                                switch(atom_name_search_type)
+                                                                {
+                                                                    case 0:
+                                                                    {
+                                                                        if(atom->GetName().compare(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case 1:
+                                                                    {
+                                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case -1:
+                                                                    {
+                                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                atom->GetName().find(atom_name) == 0)
+                                                                            selection.push_back(atom);
+                                                                        break;
+                                                                    }
+                                                                    case -2:
+                                                                    {
+                                                                        string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                        int range_selection = 0;
+                                                                        if(atom_name.find("-") != string::npos)
+                                                                        {
+                                                                            range_selection = 1;
+
+                                                                        }
+                                                                        else
+                                                                            range_selection = 0;
+                                                                        switch(range_selection)
+                                                                        {
+                                                                            case 0:
+                                                                            {
+                                                                                if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                        atom_serial_number.find(atom_name) == 0)
+                                                                                    selection.push_back(atom);
+                                                                                break;
+                                                                            }
+                                                                            case 1:
+                                                                            {
+                                                                                string start_index = Split(atom_name, "-").at(0);
+                                                                                string end_index = Split(atom_name, "-").at(1);
+                                                                                int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                                int start_index_int = ConvertString<int>(start_index);
+                                                                                int end_index_int = ConvertString<int>(end_index);
+                                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                                    selection.push_back(atom);
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            selection.push_back(atom);
+                                                        }
+                                                    }
+                                                break;
+                                            }
+                                        }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                            {
+                                Residue* residue = *it2;
+                                vector<string> atom_names = (*it1).second;
+                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                {
+                                    AtomVector atoms = residue->GetAtoms();
+                                    for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                    {
+                                        string atom_name = *it3;
+                                        int atom_name_search_type = 0;
+                                        if(atom_name.at(0) == '^')
+                                        {
+                                            atom_name = atom_name.substr(1);
+                                            atom_name_search_type = -1;
+                                        }
+                                        else if(atom_name.at(atom_name.size() - 1) == '$')
+                                        {
+                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                            atom_name_search_type = 1;
+                                        }
+                                        else if(atom_name.at(0) == '#')
+                                        {
+                                            atom_name = atom_name.substr(1);
+                                            atom_name_search_type = -2;
+                                        }
+                                        else
+                                            atom_name_search_type = 0;
+                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                        {
+                                            Atom* atom = *it4;
+                                            switch(atom_name_search_type)
+                                            {
+                                                case 0:
+                                                {
+                                                    if(atom->GetName().compare(atom_name) == 0)
+                                                        selection.push_back(atom);
+                                                    break;
+                                                }
+                                                case 1:
+                                                {
+                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                        selection.push_back(atom);
+                                                    break;
+                                                }
+                                                case -1:
+                                                {
+                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                            atom->GetName().find(atom_name) == 0)
+                                                        selection.push_back(atom);
+                                                    break;
+                                                }
+                                                case -2:
+                                                {
+                                                    string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                    int range_selection = 0;
+                                                    if(atom_name.find("-") != string::npos)
+                                                    {
+                                                        range_selection = 1;
+
+                                                    }
+                                                    else
+                                                        range_selection = 0;
+                                                    switch(range_selection)
+                                                    {
+                                                        case 0:
+                                                        {
+                                                            if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                    atom_serial_number.find(atom_name) == 0)
+                                                                selection.push_back(atom);
+                                                            break;
+                                                        }
+                                                        case 1:
+                                                        {
+                                                            string start_index = Split(atom_name, "-").at(0);
+                                                            string end_index = Split(atom_name, "-").at(1);
+                                                            int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                            int start_index_int = ConvertString<int>(start_index);
+                                                            int end_index_int = ConvertString<int>(end_index);
+                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                selection.push_back(atom);
+                                                            break;
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    AtomVector atoms = residue->GetAtoms();
+                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                    {
+                                        Atom* atom = *it4;
+                                        selection.push_back(atom);
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            else
+            {
+                string partial_key = key.substr(0, key.find(".*"));
+                for(HierarchicalContainmentMap::iterator it5 = hierarchical_map.begin(); it5 != hierarchical_map.end(); it5++)
+                {
+                    if((*it5).first.find(partial_key) == 0)
+                    {
+                        ResidueVector residues_of_assembly = (*it5).second;
+                        map<string, vector<string> > value = (*it).second;
+                        for(map<string, vector<string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+                        {
+                            string residue_name = (*it1).first;
+                            int residue_name_search_type = 0;
+                            if(residue_name.at(0) == '^')
+                            {
+                                residue_name = residue_name.substr(1);
+                                residue_name_search_type = -1;
+                            }
+                            else if(residue_name.at(residue_name.size() - 1) == '$')
+                            {
+                                residue_name = residue_name.substr(0, residue_name.size() - 2);
+                                residue_name_search_type = 1;
+                            }
+                            else if(residue_name.at(0) == '#')
+                            {
+                                residue_name = residue_name.substr(1);
+                                residue_name_search_type = -2;
+                            }
+                            else
+                                residue_name_search_type = 0;
+                            if(residue_name.find("*") == string::npos)
+                            {
+                                for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                                {
+                                    Residue* residue = *it2;
+                                    switch(residue_name_search_type)
+                                    {
+                                        case 0:  /// Search in residue set by matching the whole name of the residue
+                                        {
+                                            if(residue->GetName().compare(residue_name) == 0)
+                                            {
+                                                vector<string> atom_names = (*it1).second;
+                                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                    {
+                                                        string atom_name = *it3;
+                                                        int atom_name_search_type = 0;
+                                                        if(atom_name.at(0) == '^')
+                                                        {
+                                                            atom_name = atom_name.substr(1);
+                                                            atom_name_search_type = -1;
+                                                        }
+                                                        else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                        {
+                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                            atom_name_search_type = 1;
+                                                        }
+                                                        else if(atom_name.at(0) == '#')
+                                                        {
+                                                            atom_name = atom_name.substr(1);
+                                                            atom_name_search_type = -2;
+                                                        }
+                                                        else
+                                                            atom_name_search_type = 0;
+                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            switch(atom_name_search_type)
+                                                            {
+                                                                case 0:
+                                                                {
+                                                                    if(atom->GetName().compare(atom_name) == 0)
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case 1:
+                                                                {
+                                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case -1:
+                                                                {
+                                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                                            atom->GetName().find(atom_name) == 0)
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case -2:
+                                                                {
+                                                                    string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                    int range_selection = 0;
+                                                                    if(atom_name.find("-") != string::npos)
+                                                                    {
+                                                                        range_selection = 1;
+
+                                                                    }
+                                                                    else
+                                                                        range_selection = 0;
+                                                                    switch(range_selection)
+                                                                    {
+                                                                        case 0:
+                                                                        {
+                                                                            if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                    atom_serial_number.find(atom_name) == 0)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case 1:
+                                                                        {
+                                                                            string start_index = Split(atom_name, "-").at(0);
+                                                                            string end_index = Split(atom_name, "-").at(1);
+                                                                            int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                            int start_index_int = ConvertString<int>(start_index);
+                                                                            int end_index_int = ConvertString<int>(end_index);
+                                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        selection.push_back(atom);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                        case 1:   /// Searching the residue set by maching the end of the residue names
+                                        {
+                                            if(residue->GetName().find(residue_name) != string::npos &&
+                                                    residue->GetName().find(residue_name) == residue->GetName().size() - residue_name.size())
+                                            {
+                                                vector<string> atom_names = (*it1).second;
+                                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                    {
+                                                        string atom_name = *it3;
+                                                        int atom_name_search_type = 0;
+                                                        if(atom_name.at(0) == '^')
+                                                        {
+                                                            atom_name = atom_name.substr(1);
+                                                            atom_name_search_type = -1;
+                                                        }
+                                                        else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                        {
+                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                            atom_name_search_type = 1;
+                                                        }
+                                                        else if(atom_name.at(0) == '#')
+                                                        {
+                                                            atom_name = atom_name.substr(1);
+                                                            atom_name_search_type = -2;
+                                                        }
+                                                        else
+                                                            atom_name_search_type = 0;
+                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            switch(atom_name_search_type)
+                                                            {
+                                                                case 0:
+                                                                {
+                                                                    if(atom->GetName().compare(atom_name) == 0)
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case 1:
+                                                                {
+                                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case -1:
+                                                                {
+                                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                                            atom->GetName().find(atom_name) == 0)
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case -2:
+                                                                {
+                                                                    string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                    int range_selection = 0;
+                                                                    if(atom_name.find("-") != string::npos)
+                                                                    {
+                                                                        range_selection = 1;
+
+                                                                    }
+                                                                    else
+                                                                        range_selection = 0;
+                                                                    switch(range_selection)
+                                                                    {
+                                                                        case 0:
+                                                                        {
+                                                                            if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                    atom_serial_number.find(atom_name) == 0)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case 1:
+                                                                        {
+                                                                            string start_index = Split(atom_name, "-").at(0);
+                                                                            string end_index = Split(atom_name, "-").at(1);
+                                                                            int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                            int start_index_int = ConvertString<int>(start_index);
+                                                                            int end_index_int = ConvertString<int>(end_index);
+                                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        selection.push_back(atom);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                        case -1:  /// Searching the residue set by matching the begining of the residue names
+                                        {
+                                            if(residue->GetName().find(residue_name) != string::npos &&
+                                                    residue->GetName().find(residue_name) == 0)
+                                            {
+                                                vector<string> atom_names = (*it1).second;
+                                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                    {
+                                                        string atom_name = *it3;
+                                                        int atom_name_search_type = 0;
+                                                        if(atom_name.at(0) == '^')
+                                                        {
+                                                            atom_name = atom_name.substr(1);
+                                                            atom_name_search_type = -1;
+                                                        }
+                                                        else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                        {
+                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                            atom_name_search_type = 1;
+                                                        }
+                                                        else if(atom_name.at(0) == '#')
+                                                        {
+                                                            atom_name = atom_name.substr(1);
+                                                            atom_name_search_type = -2;
+                                                        }
+                                                        else
+                                                            atom_name_search_type = 0;
+                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            switch(atom_name_search_type)
+                                                            {
+                                                                case 0:
+                                                                {
+                                                                    if(atom->GetName().compare(atom_name) == 0)
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case 1:
+                                                                {
+                                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case -1:
+                                                                {
+                                                                    if(atom->GetName().find(atom_name) != string::npos &&
+                                                                            atom->GetName().find(atom_name) == 0)
+                                                                        selection.push_back(atom);
+                                                                    break;
+                                                                }
+                                                                case -2:
+                                                                {
+                                                                    string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                    int range_selection = 0;
+                                                                    if(atom_name.find("-") != string::npos)
+                                                                    {
+                                                                        range_selection = 1;
+
+                                                                    }
+                                                                    else
+                                                                        range_selection = 0;
+                                                                    switch(range_selection)
+                                                                    {
+                                                                        case 0:
+                                                                        {
+                                                                            if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                    atom_serial_number.find(atom_name) == 0)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case 1:
+                                                                        {
+                                                                            string start_index = Split(atom_name, "-").at(0);
+                                                                            string end_index = Split(atom_name, "-").at(1);
+                                                                            int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                            int start_index_int = ConvertString<int>(start_index);
+                                                                            int end_index_int = ConvertString<int>(end_index);
+                                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        selection.push_back(atom);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                        case -2:  /// Searching the residue set by matching the residue sequence number
+                                        {
+                                            string residue_sequence_number = Split(residue->GetId(), "_").at(2);
+                                            int range_residue_selection = 0;
+                                            if(residue_sequence_number.find("-") != string::npos)
+                                            {
+                                                range_residue_selection = 1;
+                                            }
+                                            else
+                                                range_residue_selection = 0;
+                                            switch(range_residue_selection)
+                                            {
+                                                case 0:
+                                                {
+                                                    if(residue_sequence_number.find(residue_name) != string::npos &&
+                                                            residue_sequence_number.find(residue_name) == 0)
+                                                    {
+                                                        vector<string> atom_names = (*it1).second;
+                                                        if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                        {
+                                                            AtomVector atoms = residue->GetAtoms();
+                                                            for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                            {
+                                                                string atom_name = *it3;
+                                                                int atom_name_search_type = 0;
+                                                                if(atom_name.at(0) == '^')
+                                                                {
+                                                                    atom_name = atom_name.substr(1);
+                                                                    atom_name_search_type = -1;
+                                                                }
+                                                                else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                                {
+                                                                    atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                                    atom_name_search_type = 1;
+                                                                }
+                                                                else if(atom_name.at(0) == '#')
+                                                                {
+                                                                    atom_name = atom_name.substr(1);
+                                                                    atom_name_search_type = -2;
+                                                                }
+                                                                else
+                                                                    atom_name_search_type = 0;
+                                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                                {
+                                                                    Atom* atom = *it4;
+                                                                    switch(atom_name_search_type)
+                                                                    {
+                                                                        case 0:
+                                                                        {
+                                                                            if(atom->GetName().compare(atom_name) == 0)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case 1:
+                                                                        {
+                                                                            if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                    atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case -1:
+                                                                        {
+                                                                            if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                    atom->GetName().find(atom_name) == 0)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case -2:
+                                                                        {
+                                                                            string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                            int range_selection = 0;
+                                                                            if(atom_name.find("-") != string::npos)
+                                                                            {
+                                                                                range_selection = 1;
+
+                                                                            }
+                                                                            else
+                                                                                range_selection = 0;
+                                                                            switch(range_selection)
+                                                                            {
+                                                                                case 0:
+                                                                                {
+                                                                                    if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                            atom_serial_number.find(atom_name) == 0)
+                                                                                        selection.push_back(atom);
+                                                                                    break;
+                                                                                }
+                                                                                case 1:
+                                                                                {
+                                                                                    string start_index = Split(atom_name, "-").at(0);
+                                                                                    string end_index = Split(atom_name, "-").at(1);
+                                                                                    int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                                    int start_index_int = ConvertString<int>(start_index);
+                                                                                    int end_index_int = ConvertString<int>(end_index);
+                                                                                    if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                                        selection.push_back(atom);
+                                                                                    break;
+                                                                                }
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            AtomVector atoms = residue->GetAtoms();
+                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                            {
+                                                                Atom* atom = *it4;
+                                                                selection.push_back(atom);
+                                                            }
+                                                        }
+                                                    }
+                                                    break;
+                                                }
+                                                case 1:
+                                                {
+                                                    string residue_start_index = Split(residue_name, "-").at(0);
+                                                    string residue_end_index = Split(residue_name, "-").at(1);
+                                                    int residue_sequence_number_int = ConvertString<int>(residue_sequence_number);
+                                                    int residue_start_index_int = ConvertString<int>(residue_start_index);
+                                                    int residue_end_index_int = ConvertString<int>(residue_end_index);
+                                                    if(residue_sequence_number_int >= residue_start_index_int && residue_sequence_number_int <= residue_end_index_int)
+                                                    {
+                                                        vector<string> atom_names = (*it1).second;
+                                                        if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                        {
+                                                            AtomVector atoms = residue->GetAtoms();
+                                                            for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                            {
+                                                                string atom_name = *it3;
+                                                                int atom_name_search_type = 0;
+                                                                if(atom_name.at(0) == '^')
+                                                                {
+                                                                    atom_name = atom_name.substr(1);
+                                                                    atom_name_search_type = -1;
+                                                                }
+                                                                else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                                {
+                                                                    atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                                    atom_name_search_type = 1;
+                                                                }
+                                                                else if(atom_name.at(0) == '#')
+                                                                {
+                                                                    atom_name = atom_name.substr(1);
+                                                                    atom_name_search_type = -2;
+                                                                }
+                                                                else
+                                                                    atom_name_search_type = 0;
+                                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                                {
+                                                                    Atom* atom = *it4;
+                                                                    switch(atom_name_search_type)
+                                                                    {
+                                                                        case 0:
+                                                                        {
+                                                                            if(atom->GetName().compare(atom_name) == 0)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case 1:
+                                                                        {
+                                                                            if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                    atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case -1:
+                                                                        {
+                                                                            if(atom->GetName().find(atom_name) != string::npos &&
+                                                                                    atom->GetName().find(atom_name) == 0)
+                                                                                selection.push_back(atom);
+                                                                            break;
+                                                                        }
+                                                                        case -2:
+                                                                        {
+                                                                            string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                                            int range_selection = 0;
+                                                                            if(atom_name.find("-") != string::npos)
+                                                                            {
+                                                                                range_selection = 1;
+
+                                                                            }
+                                                                            else
+                                                                                range_selection = 0;
+                                                                            switch(range_selection)
+                                                                            {
+                                                                                case 0:
+                                                                                {
+                                                                                    if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                                            atom_serial_number.find(atom_name) == 0)
+                                                                                        selection.push_back(atom);
+                                                                                    break;
+                                                                                }
+                                                                                case 1:
+                                                                                {
+                                                                                    string start_index = Split(atom_name, "-").at(0);
+                                                                                    string end_index = Split(atom_name, "-").at(1);
+                                                                                    int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                                    int start_index_int = ConvertString<int>(start_index);
+                                                                                    int end_index_int = ConvertString<int>(end_index);
+                                                                                    if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                                        selection.push_back(atom);
+                                                                                    break;
+                                                                                }
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            AtomVector atoms = residue->GetAtoms();
+                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                            {
+                                                                Atom* atom = *it4;
+                                                                selection.push_back(atom);
+                                                            }
+                                                        }
+                                                    break;
+                                                }
+                                            }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                                {
+                                    Residue* residue = *it2;
+                                    vector<string> atom_names = (*it1).second;
+                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                        {
+                                            string atom_name = *it3;
+                                            int atom_name_search_type = 0;
+                                            if(atom_name.at(0) == '^')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -1;
+                                            }
+                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                            {
+                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                atom_name_search_type = 1;
+                                            }
+                                            else if(atom_name.at(0) == '#')
+                                            {
+                                                atom_name = atom_name.substr(1);
+                                                atom_name_search_type = -2;
+                                            }
+                                            else
+                                                atom_name_search_type = 0;
+                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                            {
+                                                Atom* atom = *it4;
+                                                switch(atom_name_search_type)
+                                                {
+                                                    case 0:
+                                                    {
+                                                        if(atom->GetName().compare(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case 1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -1:
+                                                    {
+                                                        if(atom->GetName().find(atom_name) != string::npos &&
+                                                                atom->GetName().find(atom_name) == 0)
+                                                            selection.push_back(atom);
+                                                        break;
+                                                    }
+                                                    case -2:
+                                                    {
+                                                        string atom_serial_number = Split(atom->GetId(), "_").at(1);
+                                                        int range_selection = 0;
+                                                        if(atom_name.find("-") != string::npos)
+                                                        {
+                                                            range_selection = 1;
+
+                                                        }
+                                                        else
+                                                            range_selection = 0;
+                                                        switch(range_selection)
+                                                        {
+                                                            case 0:
+                                                            {
+                                                                if(atom_serial_number.find(atom_name) != string::npos &&
+                                                                        atom_serial_number.find(atom_name) == 0)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                            case 1:
+                                                            {
+                                                                string start_index = Split(atom_name, "-").at(0);
+                                                                string end_index = Split(atom_name, "-").at(1);
+                                                                int atom_serial_number_int = ConvertString<int>(atom_serial_number);
+                                                                int start_index_int = ConvertString<int>(start_index);
+                                                                int end_index_int = ConvertString<int>(end_index);
+                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                    selection.push_back(atom);
+                                                                break;
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        AtomVector atoms = residue->GetAtoms();
+                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                        {
+                                            Atom* atom = *it4;
+                                            selection.push_back(atom);
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
+        }
+    }
+
+    return selection;
+}
+
+Assembly::SelectPatternMap Assembly::ParsePatternString(string pattern)
+{
+    SelectPatternMap select_pattern_map = SelectPatternMap();
+    vector<string> tokens = Split(pattern, ";");
+    for(int i = 0; i < tokens.size(); i++)
+    {
+        string token = tokens.at(i);
+        vector<string> assembly_tokens = Split(token, ":");
+        string assembly_id_token = assembly_tokens.at(0);
+        vector<string> assembly_ids = Split(assembly_id_token, ",");
+        map<string, vector<string> > residues = map<string, vector<string> >();
+        for(int j = 1; j < assembly_tokens.size(); j++)
+        {
+            string assembly_token = assembly_tokens.at(j);
+            vector<string> assembly_residue_tokens = Split(assembly_token, "@");
+            string residue_token = assembly_residue_tokens.at(0);
+            string atom_token = assembly_residue_tokens.at(1);
+            vector<string> residue_tokens = Split(residue_token, ",");
+            vector<string> atom_tokens = Split(atom_token, ",");
+            for(int k = 0; k < residue_tokens.size(); k++)
+            {
+                for(int l = 0; l < atom_tokens.size(); l++)
+                {
+                    if(find(residues[residue_tokens.at(k)].begin(), residues[residue_tokens.at(k)].end(), atom_tokens.at(l)) == residues[residue_tokens.at(k)].end())
+                        residues[residue_tokens.at(k)].push_back(atom_tokens.at(l));
+                }
+            }
+        }
+        for(int j = 0; j < assembly_ids.size(); j++)
+            select_pattern_map[assembly_ids.at(j)] = residues;
+    }
+    return select_pattern_map;
+}
+
+void Assembly::GetHierarchicalMapOfAssembly(HierarchicalContainmentMap &hierarchical_map, stringstream &index)
+{
+    hierarchical_map[index.str()] = this->residues_;
+    if(this->assemblies_.size() == 0)
+        return;
+    for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
+    {
+        stringstream i;
+        i << index.str() << "." << (*it)->GetSequenceNumber();
+        Assembly* assembly = (*it);
+        assembly->GetHierarchicalMapOfAssembly(hierarchical_map, i);
+    }
+}
+
 void Assembly::ClearAssembly()
 {
     this->residues_.clear();
@@ -4417,43 +6584,348 @@ std::vector<std::vector<std::string> > Assembly::CreateAllCyclePermutations(stri
 
 void Assembly::ExtractMonosaccharides()
 {
-    CycleMap cycles = DetectCyclesByDFS();
-    RemoveFusedCycles(cycles);
-    if(cycles.size() == 0)
-        cout << "khalieeee" << endl;
-    FilterAllCarbonCycles(cycles);
-    cout << endl;
-    cout << "cycles after filtering carbons" << endl;
-    CycleMap sorted_cycles = CycleMap();
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    DetectCyclesByExhaustiveRingPerception();
+    //    CycleMap cycles = DetectCyclesByDFS();
+    //    RemoveFusedCycles(cycles);
+    //    FilterAllCarbonCycles(cycles);
+    //    cout << "cycles after filtering carbons" << endl;
+    //    CycleMap sorted_cycles = CycleMap();
+    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    //    {
+    //        string cycle_atoms_str = (*it).first;
+    //        AtomVector cycle_atoms = (*it).second;
+    //        cout << cycle_atoms_str << endl;
+    //        Atom* anomeric = FindAnomericCarbon(cycle_atoms, cycle_atoms_str);
+    //        if(anomeric != NULL)
+    //        {
+    //            AtomVector sorted_cycle_atoms = AtomVector();
+    //            stringstream sorted_cycle_stream;
+    //            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
+    //            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+    //        }
+    //    }
+    //    cycles = sorted_cycles;
+    //    cout << endl;
+    //    cout << "sorted cycles after filtering (fused, all carbons and rings without oxygen): " << endl;
+    //    vector<ChemicalCode*> codes = vector<ChemicalCode*>();
+    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    //    {
+    //        string cycle_atoms_str = (*it).first;
+    //        AtomVector cycle = (*it).second;
+    //        cout << cycle_atoms_str << endl;
+    //        vector<string> orientations = GetSideGroupOrientations(cycle, cycle_atoms_str);
+    //        ChemicalCode* code = BuildChemicalCode(orientations);
+    //        GenerateSugarName(code);
+    //        if(code != NULL)
+    //            codes.push_back(code);
+    //        code->Print(cout);
+    //    }
+}
+
+Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
+{
+    CycleMap cycles = CycleMap();
+    AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    map<string, Atom*> IdAtom = map<string, Atom*>();
+
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
-        string cycle_atoms_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
-        cout << cycle_atoms_str << endl;
-        Atom* anomeric = FindAnomericCarbon(cycle_atoms, cycle_atoms_str);
-        if(anomeric != NULL)
+        Atom* atom = (*it);
+        IdAtom[atom->GetId()] = atom;
+    }
+    ///Pruning the graph (filter out atoms with less than 2 neighbors)
+    PruneGraph(atoms);
+
+    vector<string> path_graph_edges = vector<string> ();
+    vector<string> path_graph_labels = vector<string> ();
+
+    ///Converting the molecular graph into a path graph
+    ConvertIntoPathGraph(path_graph_edges, path_graph_labels, atoms);
+
+    vector<string> reduced_path_graph_edges = path_graph_edges;
+    vector<string> reduced_path_graph_labels = path_graph_labels;
+
+    ///Reducing the path graph
+    vector<string> cycless = vector<string>();
+    int neighbor_counter = 2;
+    while(atoms.size() > 1 && path_graph_edges.size() != 0)
+    {
+        AtomVector::iterator common_atom_it;
+        bool neighbor_counter_update = true;
+        for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
         {
-            AtomVector sorted_cycle_atoms = AtomVector();
-            stringstream sorted_cycle_stream;
-            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
-            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+            common_atom_it = it;
+            int counter = 0;
+            for(vector<string>::iterator it1 = path_graph_edges.begin(); it1 != path_graph_edges.end(); it1++)
+            {
+                string edge = (*it1);
+                if(edge.find((*common_atom_it)->GetId()) != string::npos)
+                    counter++;
+            }
+            if(counter <= neighbor_counter)
+            {
+                neighbor_counter_update = false;
+                break;
+            }
+        }
+        if(neighbor_counter_update)
+        {
+            neighbor_counter++;
+            continue;
+        }
+
+            ReducePathGraph(path_graph_edges, path_graph_labels, reduced_path_graph_edges, reduced_path_graph_labels, (*common_atom_it)->GetId(), cycless);
+//            cout << "================================" << (*common_atom_it)->GetId() << "=====================================" << endl;
+            atoms.erase(common_atom_it);
+
+            path_graph_edges = reduced_path_graph_edges;
+            path_graph_labels = reduced_path_graph_labels;
+//            cout << "---------------------------------------------------------------------" << endl;
+//            for(int i = 0; i < reduced_path_graph_edges.size(); i ++)
+//            {
+//                cout << reduced_path_graph_edges.at(i) << "-------------->" << reduced_path_graph_labels.at(i) << endl;
+//            }
+    }
+
+
+    for(vector<string>::iterator it = cycless.begin(); it != cycless.end(); it++)
+    {
+        string cycle = (*it);
+        vector<string> splitted_cycle = Split(cycle, "-");
+        if(splitted_cycle.size() <= 7)
+        {
+            AtomVector atomvector = AtomVector();
+            stringstream ss;
+            for(vector<string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
+            {
+                string atom_str = (*it1);
+                map<string, Atom*>::iterator mit = IdAtom.find(atom_str);
+                atomvector.push_back((*mit).second);
+                if(it1 == splitted_cycle.end() - 2)
+                    ss << atom_str;
+                else
+                    ss << atom_str << "-";
+            }
+            cycles[ss.str()] = atomvector;
+        }
+//            cout << cycles << endl;
+    }
+//    cout << cycless.size() << endl;
+
+    return cycles;
+
+}
+
+void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> path_graph_labels, vector<string>& reduced_path_graph_edges, vector<string>& reduced_path_graph_labels, string common_atom, vector<string>& cycles)
+{
+    vector<int> to_be_deleted_edges = vector<int>();
+    for(vector<string>::iterator it = path_graph_edges.begin(); it != path_graph_edges.end() - 1; it++)
+    {
+        int source_index = distance(path_graph_edges.begin(), it);
+        string source_edge = (*it);
+        string source_label = path_graph_labels.at(source_index);
+        vector<string> source_edge_atoms = Split(source_edge, ",");
+
+        for(vector<string>::iterator it1 = it + 1; it1 != path_graph_edges.end(); it1++)
+        {
+            bool walk_found = false;
+            int target_index = distance(path_graph_edges.begin(), it1);
+            string target_edge = (*it1);
+            string target_label = path_graph_labels.at(target_index);
+            vector<string> target_edge_atoms = Split(target_edge, ",");
+            stringstream new_edge;
+            stringstream new_label;
+            if(source_edge_atoms.at(0).compare(source_edge_atoms.at(1)) != 0 && target_edge_atoms.at(0).compare(target_edge_atoms.at(1)) != 0)
+            {///if the edges a != b and b != c
+
+                if(source_edge_atoms.at(1).compare(target_edge_atoms.at(0)) == 0 && source_edge_atoms.at(1).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: a,b and b,c)
+                {
+                    new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(1);
+                    new_label << source_label;
+                    vector<string> target_path_values = Split(target_label,"-");
+                    for(int i = 1; i < target_path_values.size(); i++)
+                        new_label << "-" << target_path_values.at(i);
+                    walk_found = true;
+                }
+                else if(source_edge_atoms.at(1).compare(target_edge_atoms.at(1)) == 0 && source_edge_atoms.at(1).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: a,b and c,b)
+                {
+                    new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(0);
+                    new_label << source_label;
+                    vector<string> target_path_values = Split(target_label,"-");
+                    for(int i = target_path_values.size() - 2 ; i >= 0; i--)
+                        new_label << "-" << target_path_values.at(i);
+                    walk_found = true;
+                }
+                else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(0)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and b,c)
+                {
+                    new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(1);
+                    vector<string> source_path_values = Split(source_label,"-");
+                    for(int i = source_path_values.size() - 1 ; i >= 1; i--)
+                        new_label << source_path_values.at(i) << "-";
+                    new_label << target_label;
+                    walk_found = true;
+                }
+                else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(1)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and c,b)
+                {
+                    new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(0);
+                    vector<string> source_path_values = Split(source_label,"-");
+                    for(int i = source_path_values.size() - 1 ; i >= 0; i--)
+                        new_label << source_path_values.at(i) << "-";
+                    vector<string> target_path_values = Split(target_label,"-");
+                    for(int i = target_path_values.size() - 2 ; i >= 0; i--)
+                    {
+                        if(i == 0)
+                            new_label << target_path_values.at(i);
+                        else
+                            new_label << target_path_values.at(i) << "-";
+                    }
+                    walk_found = true;
+                }
+            }
+            if(walk_found)
+            {
+                ///checking the new edge for cycle
+                vector<string> new_edge_atoms = Split(new_edge.str(), ",");
+                if(new_edge_atoms.at(0).compare(new_edge_atoms.at(1)) == 0) ///edge is a,a
+                {
+                    cycles.push_back(new_label.str());
+//                    cout << "CYCLE FOUND " << endl;
+//                    for(int i = 0; i < path_graph_edges.size(); i++)
+//                    {
+//                        string edge = path_graph_edges.at(i);
+//                        if(edge.find(new_edge_atoms.at(1)) != string::npos)
+//                            to_be_deleted_edges.push_back(i);
+//                    }
+                }
+                ///adding the newly-formed edge (a,c) and label(a-b-c)
+                else if(find(reduced_path_graph_labels.begin(), reduced_path_graph_labels.end(), new_label.str()) == reduced_path_graph_labels.end())
+                {
+                    reduced_path_graph_edges.push_back(new_edge.str());
+                    reduced_path_graph_labels.push_back(new_label.str());
+                }
+
+                ///adding to be deleted edges with the common atom b
+                if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), source_index) == to_be_deleted_edges.end())
+                    to_be_deleted_edges.push_back(source_index);
+                if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), target_index) == to_be_deleted_edges.end())
+                    to_be_deleted_edges.push_back(target_index);
+
+            }
+
         }
     }
-    cycles = sorted_cycles;
-    cout << endl;
-    cout << "sorted cycles after filtering (fused, all carbons and rings without oxygen): " << endl;
-    vector<ChemicalCode*> codes = vector<ChemicalCode*>();
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    {        
-        string cycle_atoms_str = (*it).first;
-        AtomVector cycle = (*it).second;
-        cout << cycle_atoms_str << endl;
-        vector<string> orientations = GetSideGroupOrientations(cycle, cycle_atoms_str);
-        ChemicalCode* code = BuildChemicalCode(orientations);
-        GenerateSugarName(code);
-        if(code != NULL)
-            codes.push_back(code);
-        code->Print(cout);
+
+    vector<string> temp_reduced_path_graph_edges = vector<string>();
+    vector<string> temp_reduced_path_graph_labels = vector<string>();
+    for(int i = 0; i < reduced_path_graph_edges.size(); i++)
+    {
+        if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), i) == to_be_deleted_edges.end())
+        {
+            temp_reduced_path_graph_edges.push_back(reduced_path_graph_edges.at(i));
+            temp_reduced_path_graph_labels.push_back(reduced_path_graph_labels.at(i));
+        }
+    }
+    reduced_path_graph_edges = temp_reduced_path_graph_edges;
+    reduced_path_graph_labels = temp_reduced_path_graph_labels;
+
+
+    //        if(walk_found)
+    //        {
+    //            AtomVector::iterator index;
+    //            for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    //            {
+    //                Atom* atom = *it;
+    //                if(atom->GetId().compare(source_edge_atoms.at(1)) == 0)
+    //                {
+    //                    index = it;
+    //                    break;
+    //                }
+    //            }
+    //            atoms.erase(index);cout << "earse ok" << endl;
+    //        }
+
+//    map<string , string> duplicate_reduced_path_graph = map<string, string>();
+//    for(map<string, string>::iterator it = reduced_path_graph.begin(); it != reduced_path_graph.end(); it++)
+//    {
+//        string key = (*it).first;
+//        string value = (*it).second;
+//        duplicate_reduced_path_graph[key] = value;
+//    }
+//    for(map<string, string>::iterator it = reduced_path_graph.begin(); it != reduced_path_graph.end(); it++)
+//    {
+//        string source_key_pair = (*it).first;
+//        string source_path_value = (*it).second;
+
+//        if(find(visited_atom_pairs.begin(), visited_atom_pairs.end(), source_key_pair) == visited_atom_pairs.end())
+//            ReducePathGraph(reduced_path_graph, duplicate_reduced_path_graph, atoms, source_key_pair, source_path_value, visited_atom_pairs, cycles);
+//    }
+
+}
+
+void Assembly::PruneGraph(AtomVector& all_atoms)
+{
+    AtomVector atoms_with_more_than_two_neighbors = AtomVector();
+    vector<string> het_atom_ids = vector<string>();
+    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        het_atom_ids.push_back(atom->GetId());
+    }
+    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* node = atom->GetNode();
+        int count = 0;
+        for(int i = 0; i < node->GetNodeNeighbors().size(); i++)
+        {
+            Atom* neighbor = node->GetNodeNeighbors().at(i);
+            if(find(het_atom_ids.begin(), het_atom_ids.end(), neighbor->GetId()) != het_atom_ids.end())
+                count++;
+        }
+        if(count > 1)
+            atoms_with_more_than_two_neighbors.push_back(atom);
+    }
+    if(atoms_with_more_than_two_neighbors.size() != all_atoms.size())
+    {
+        all_atoms = atoms_with_more_than_two_neighbors;
+        PruneGraph(all_atoms);
+    }
+    else
+        return;
+}
+
+void Assembly::ConvertIntoPathGraph(vector<string>& path_graph_edges, vector<string>& path_graph_labels, AtomVector atoms)
+{
+    vector<string> atoms_id = vector<string>();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        atoms_id.push_back(atom->GetId());
+    }
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        AtomNode* node = atom->GetNode();
+        AtomVector neighbors = node->GetNodeNeighbors();
+        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+            Atom* neighbor = (*it1);
+            if(find(atoms_id.begin(), atoms_id.end(), neighbor->GetId()) != atoms_id.end())
+            {
+                stringstream ss;
+                ss << atom->GetId() << "," << neighbor->GetId();
+                stringstream reverse_ss;
+                reverse_ss << neighbor->GetId() << "," << atom->GetId();
+                if(find(path_graph_edges.begin(), path_graph_edges.end(), ss.str()) == path_graph_edges.end() &&
+                        find(path_graph_edges.begin(), path_graph_edges.end(), reverse_ss.str()) == path_graph_edges.end()) ///path not existed before
+                {
+                    stringstream path;
+                    path << atom->GetId() << "-" << neighbor->GetId();
+                    path_graph_edges.push_back(ss.str());
+                    path_graph_labels.push_back(path.str());
+                }
+            }
+        }
     }
 }
 
@@ -4580,29 +7052,29 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
 
 void Assembly::FilterNonMinCycles(CycleMap &cycles)
 {
-//    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-//    {
-//        AtomVector cycle_atoms = (*it).second;
-//        if(cycle_i_atoms.size() > 6)
-//        {
-//            vector<AtomVector> path_matrix = vector<AtomVector>();
-//            vector<vector<int> > length_matrix = vector<vector<int> >();
-//            for(int n = 0; n < cycle_atoms.size(); n++)
-//            {
-//                for(int m = 0; m < cycle_atoms.size(); m++)
-//                {
-//                    length_matrix.at(n).at(m) = INFINITY;
-//                    path_matrix.at(n).at(m) =
-//                }
-//            }
-//            for(int i = 0; i < cycle_atoms.size(); i++)
-//                for(int j = 0; j < cycle_atoms.size(); j++)
-//                    for(int k = 0; k < cycle_atoms.size(); k++)
-//                    {
+    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    //    {
+    //        AtomVector cycle_atoms = (*it).second;
+    //        if(cycle_i_atoms.size() > 6)
+    //        {
+    //            vector<AtomVector> path_matrix = vector<AtomVector>();
+    //            vector<vector<int> > length_matrix = vector<vector<int> >();
+    //            for(int n = 0; n < cycle_atoms.size(); n++)
+    //            {
+    //                for(int m = 0; m < cycle_atoms.size(); m++)
+    //                {
+    //                    length_matrix.at(n).at(m) = INFINITY;
+    //                    path_matrix.at(n).at(m) =
+    //                }
+    //            }
+    //            for(int i = 0; i < cycle_atoms.size(); i++)
+    //                for(int j = 0; j < cycle_atoms.size(); j++)
+    //                    for(int k = 0; k < cycle_atoms.size(); k++)
+    //                    {
 
-//                    }
-//        }
-//    }
+    //                    }
+    //        }
+    //    }
 }
 
 void Assembly::RemoveFusedCycles(CycleMap &cycles)
@@ -4672,12 +7144,12 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
             Atom* o_neighbor1 = neighbors.at(0);
             AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
             AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
-            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen neighbor
+            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
             {
                 Atom* neighbor1_neighbor = (*it1);
                 if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 ///if first element is "O"
-                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
+                        && (neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor1_neighbor->GetName().substr(0,1).compare("N") == 0)) ///if first element is "O" or "N"
+                    //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
                 {
                     anomeric_carbon = o_neighbor1;
                     cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
@@ -4688,12 +7160,12 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
             Atom* o_neighbor2 = neighbors.at(1);
             AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
             AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen neighbor
+            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
             {
                 Atom* neighbor2_neighbor = (*it2);
                 if( cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos
-                        & neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0
-                    && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
+                        & (neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor2_neighbor->GetName().substr(0,1).compare("N") == 0)
+                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
                 {
                     anomeric_carbon = o_neighbor2;
                     cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
@@ -4792,7 +7264,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
 vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle_atoms_str)
 {
     vector<string> orientations = vector<string>();
-    for(AtomVector::iterator it = cycle.begin(); it != cycle.end() - 1; it++)
+    for(AtomVector::iterator it = cycle.begin(); it != cycle.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
     {
         orientations.push_back("N");
         int index = distance(cycle.begin(), it);
@@ -4800,11 +7272,11 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
         Atom* current_atom = (*it);
         Atom* next_atom = new Atom();
         if(index == 0)
-            prev_atom = cycle.at(cycle.size() - 1);
+            prev_atom = cycle.at(cycle.size() - 1); ///first atom is anomeric atom and the previous is the oxygen
         else
             prev_atom = cycle.at(index - 1);
         next_atom = cycle.at(index + 1);
-//                cout << "prev-curr-next " << prev_atom->GetName() << "-" << current_atom->GetName() << "-" <<next_atom->GetName() << endl;
+
         Coordinate prev_atom_coord = Coordinate(*prev_atom->GetCoordinates().at(0));
         Coordinate current_atom_coord = Coordinate(*current_atom->GetCoordinates().at(0));
         Coordinate next_atom_coord = Coordinate(*next_atom->GetCoordinates().at(0));
@@ -4821,38 +7293,88 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
         {
             Atom* neighbor = (*it1);
             string neighbor_id = neighbor->GetId();
-            if(cycle_atoms_str.find(neighbor_id) == string::npos && (neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N'))///if not one of the cycle atoms
+            if(cycle_atoms_str.find(neighbor_id) == string::npos) ///if not one of the cycle atoms
             {
                 Coordinate side_atom_coord = Coordinate(*neighbor->GetCoordinates().at(0));
                 side_atom_coord.operator -(current_atom_coord);
                 side_atom_coord.Normalize();
                 double theta = acos(normal_v.DotProduct(side_atom_coord));
-                if(theta > (gmml::PI_RADIAN/2))
-                    orientations.at(index) = "D";
-                else
-                    orientations.at(index) = "U";
-                break;
-            }
-        }
-        if(orientations.at(index).compare("N") == 0)
-        {
-            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
-            {
-                Atom* neighbor = (*it1);
-                AtomNode* neighbor_node = neighbor->GetNode();
-                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-                if(cycle_atoms_str.find(neighbor->GetId()) == string::npos)
+
+                if(index == 0 && neighbor_id.at(0) == 'C')///if anomeric atom has a non-ring carbon neighbor
                 {
+                    if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
+                    {
+                        if(theta > (gmml::PI_RADIAN/2))
+                            orientations.at(index) = "-1d";
+                        else
+                            orientations.at(index) = "-1u";
+                        continue;
+                    }
+                    else
+                    { ///position of non-ring oxygen or nitrogen + the non-ring carbon
+                        stringstream ss;
+                        if(theta > (gmml::PI_RADIAN/2))
+                        {
+                            ss << orientations.at(index) << "-1d";
+                            orientations.at(index) = ss.str();
+                        }
+                        else
+                        {
+                            ss << orientations.at(index) << "-1u";
+                            orientations.at(index) = ss.str();
+                        }
+                        break;
+                    }
+                }
+                else if(neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N')///if neighbor is a non-ring oxygen or nitrogen
+                {
+                    if(index == 0)
+                    {
+                        if(orientations.at(index).compare("N") == 0) ///if the position of non-ring carbon neighbor (if exist) hasn't been set yet
+                        {
+                            if(theta > (gmml::PI_RADIAN/2))
+                                orientations.at(index) = "D";
+                            else
+                                orientations.at(index) = "U";
+                            continue;
+                        }
+                        else
+                        { ///position of non-ring oxygen or nitrogen + the non-ring carbon
+                            stringstream ss;
+                            if(theta > (gmml::PI_RADIAN/2))
+                            {
+                                ss << "D" << orientations.at(index);
+                                orientations.at(index) = ss.str();
+                            }
+                            else
+                            {
+                                ss << "U" << orientations.at(index);
+                                orientations.at(index) = ss.str();
+                            }
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if(theta > (gmml::PI_RADIAN/2))
+                            orientations.at(index) = "D";
+                        else
+                            orientations.at(index) = "U";
+                        break;
+                    }
+                }
+                else if(index == cycle.size() - 2 && neighbor_id.at(0) == 'C')///if the last carbon ring has a non-ring carbon
+                {
+                    ///Check if neighbor of neighbor is oxygen or nitrogen
+                    AtomNode* neighbor_node = neighbor->GetNode();
+                    AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
                     for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                     {
                         Atom* neighbor_of_neighbor = (*it2);
                         string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
-                        if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos && (neighbor_of_neighbor_id.at(0) == 'O' || neighbor_of_neighbor_id.at(0) == 'N'))///if not one of the cycle atoms
+                        if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos &&
+                                (neighbor_of_neighbor_id.at(0) == 'O' || neighbor_of_neighbor_id.at(0) == 'N'))///if neighbor of neighbor is a non-ring oxygen or nitrogen
                         {
-                            Coordinate side_atom_coord = Coordinate(*neighbor_of_neighbor->GetCoordinates().at(0));
-                            side_atom_coord.operator -(current_atom_coord);
-                            side_atom_coord.Normalize();
-                            double theta = acos(normal_v.DotProduct(side_atom_coord));
                             if(theta > (gmml::PI_RADIAN/2))
                                 orientations.at(index) = "D";
                             else
@@ -4860,26 +7382,32 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
                             break;
                         }
                     }
+                    if(orientations.at(index).compare("N") == 0) ///deoxy
+                    {
+                        if(theta > (gmml::PI_RADIAN/2))
+                            orientations.at(index) = "Dd";
+                        else
+                            orientations.at(index) = "Ud";
+                        break;
+                    }
+                    if(orientations.at(index).compare("N") != 0)
+                        break;
                 }
-                if(orientations.at(index).compare("N") != 0)
-                    break;
             }
         }
     }
-//    cout << "orientation" << endl;
-//    for(vector<string>::iterator it3 = orientations.begin(); it3 != orientations.end(); it3++)
-//    {
-//        string o = (*it3);
-//        cout << o << endl;
-//    }
-    return orientations;
+    //    cout << "orientation" << endl;
+    //    for(vector<string>::iterator it3 = orientations.begin(); it3 != orientations.end(); it3++)
+    //    {
+    //        string o = (*it3);
+    //        cout << o << endl;
+    //    }
+    //    return orientations;
 }
 
 ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
 {
     ChemicalCode* code = new ChemicalCode();
-    int counter = 0;
-
     if(orientations.size() == 5 )
         code->base_ = "P";
     else if(orientations.size() == 4 )
@@ -4888,27 +7416,51 @@ ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
         code->base_ = "?";
 
     if(orientations.at(0).compare("U") == 0)
-    {code->right_up_.push_back("a");counter ++;}
+        code->right_up_.push_back("a");
     else if(orientations.at(0).compare("D") == 0)
-    {code->right_down_.push_back("a");counter ++;}
+        code->right_down_.push_back("a");
+    ///if anomeric atom has a carbon neighbor
+    else if(orientations.at(0).compare("U-1u") == 0)
+    {
+        code->right_up_.push_back("a");
+        code->right_up_.push_back("-1");
+    }
+    else if(orientations.at(0).compare("D-1u") == 0)
+    {
+        code->right_down_.push_back("a");
+        code->right_up_.push_back("-1");
+    }
+    else if(orientations.at(0).compare("U-1d") == 0)
+    {
+        code->right_up_.push_back("a");
+        code->right_down_.push_back("-1");
+    }
+    else if(orientations.at(0).compare("D-1d") == 0)
+    {
+        code->right_down_.push_back("a");
+        code->right_down_.push_back("-1");
+    }
+
     for(vector<string>::iterator it = orientations.begin() + 1; it != orientations.end() - 1; it++)
     {
         string orientation = (*it);
         int index = distance(orientations.begin(), it);
         if(orientation.compare("U") == 0)
-        {code->left_up_.push_back(gmml::ConvertT(index + 1));counter ++;}
+            code->left_up_.push_back(gmml::ConvertT(index + 1));
         else if(orientation.compare("D") == 0)
-        {code->left_down_.push_back(gmml::ConvertT(index + 1));counter ++;}
+            code->left_down_.push_back(gmml::ConvertT(index + 1));
     }
     if(orientations.at(orientations.size() - 1).compare("U") == 0)
-    {code->right_up_.push_back("+1");counter ++;}
+        code->right_up_.push_back("+1");
     else if(orientations.at(orientations.size() - 1).compare("D") == 0)
-    {code->right_down_.push_back("+1");counter ++;}
-    cout << counter << endl;
-//    if (counter >= 3)
-        return code;
-//    else
-        return NULL;
+        code->right_down_.push_back("+1");
+    ///if it is deoxy
+    else if(orientations.at(orientations.size() - 1).compare("Ud") == 0)
+        code->right_up_.push_back("+1d");
+    else if(orientations.at(orientations.size() - 1).compare("Dd") == 0)
+        code->right_down_.push_back("+1d");
+
+    return code;
 }
 void Assembly::GenerateSugarName(ChemicalCode* code)
 {

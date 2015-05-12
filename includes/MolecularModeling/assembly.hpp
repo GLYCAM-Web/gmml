@@ -39,6 +39,8 @@ namespace MolecularModeling
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
 //            typedef std::vector<AtomVector > AtomVectorVector;
             typedef std::map<std::string, AtomVector> CycleMap;
+            typedef std::map<std::string, std::map<std::string, std::vector<std::string> > > SelectPatternMap;
+            typedef std::map<std::string, ResidueVector> HierarchicalContainmentMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -562,6 +564,16 @@ namespace MolecularModeling
               */
             int CountMaxNumberOfAtomsInLargestResidue();
 
+            /*! \fn
+              * A function to select a set of atoms in an assembly by using a string pattern
+              * @param pattern Pattern of selection inclusing assembly number, residue name and/or atom name
+              * Sample pattern: "1.*:#520,MAN,GAL@#3740-3750,^C:ALA@O1;1.1.2,1.1.3:NAG@O$"
+              * @return A list of atoms which satisfy the condition specified in the pattern
+              */
+            AtomVector Select(std::string pattern);
+            SelectPatternMap ParsePatternString(std::string pattern);
+            void GetHierarchicalMapOfAssembly(HierarchicalContainmentMap& hierarchical_map, std::stringstream& index);
+
             void ClearAssembly();
 
             void CycleDetection();
@@ -569,6 +581,13 @@ namespace MolecularModeling
 
 //            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
             void ExtractMonosaccharides();
+
+            CycleMap DetectCyclesByExhaustiveRingPerception();
+            void PruneGraph(AtomVector& all_atoms);
+            void ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, std::vector<std::string>& path_graph_labels, AtomVector atoms);
+            void ReducePathGraph(std::vector<std::string> path_graph_edges, std::vector<std::string> path_graph_labels,
+                                 std::vector<std::string>& reduced_path_graph_edges, std::vector<std::string>& reduced_path_graph_labels, std::string common_atom, std::vector<std::string>& cycles);
+
             CycleMap DetectCyclesByDFS();
             void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
