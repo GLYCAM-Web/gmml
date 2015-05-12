@@ -6626,7 +6626,13 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
     CycleMap cycles = CycleMap();
     AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    map<string, Atom*> IdAtom = map<string, Atom*>();
 
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    {
+        Atom* atom = (*it);
+        IdAtom[atom->GetId()] = atom;
+    }
     ///Pruning the graph (filter out atoms with less than 2 neighbors)
     PruneGraph(atoms);
 
@@ -6684,9 +6690,25 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     for(vector<string>::iterator it = cycless.begin(); it != cycless.end(); it++)
     {
-        string cycles = (*it);
-        if(Split(cycles, "-").size() <= 7)
-            cout << cycles << endl;
+        string cycle = (*it);
+        vector<string> splitted_cycle = Split(cycle, "-");
+        if(splitted_cycle.size() <= 7)
+        {
+            AtomVector atomvector = AtomVector();
+            stringstream ss;
+            for(vector<string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
+            {
+                string atom_str = (*it1);
+                map<string, Atom*>::iterator mit = IdAtom.find(atom_str);
+                atomvector.push_back((*mit).second);
+                if(it1 == splitted_cycle.end() - 2)
+                    ss << atom_str;
+                else
+                    ss << atom_str << "-";
+            }
+            cycles[ss.str()] = atomvector;
+        }
+//            cout << cycles << endl;
     }
 //    cout << cycless.size() << endl;
 
