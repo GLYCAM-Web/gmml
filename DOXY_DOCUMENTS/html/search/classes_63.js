@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['coordinate',['Coordinate',['../d2/d2b/classGeometry_1_1Coordinate.html',1,'Geometry']]],
-  ['coordinatefile',['CoordinateFile',['../df/d6b/classCoordinateFileSpace_1_1CoordinateFile.html',1,'CoordinateFileSpace']]],
-  ['coordinatefileprocessingexception',['CoordinateFileProcessingException',['../d7/d34/classCoordinateFileSpace_1_1CoordinateFileProcessingException.html',1,'CoordinateFileSpace']]]
+  ['chemicalcode',['ChemicalCode',['../da/da0/a00009.html',1,'gmml']]],
+  ['coordinate',['Coordinate',['../dd/dad/a00005.html',1,'Geometry']]],
+  ['coordinatefile',['CoordinateFile',['../d7/d46/a00002.html',1,'CoordinateFileSpace']]],
+  ['coordinatefileprocessingexception',['CoordinateFileProcessingException',['../d1/d7c/a00003.html',1,'CoordinateFileSpace']]]
 ];

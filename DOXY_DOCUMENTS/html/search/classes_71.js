@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quantommechanicatom',['QuantomMechanicAtom',['../d9/d78/classMolecularModeling_1_1QuantomMechanicAtom.html',1,'MolecularModeling']]]
+  ['quantommechanicatom',['QuantomMechanicAtom',['../de/d11/a00021.html',1,'MolecularModeling']]]
 ];

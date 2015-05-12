@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['residue',['Residue',['../da/d64/classMolecularModeling_1_1Residue.html',1,'MolecularModeling']]]
+  ['residue',['Residue',['../d7/de0/a00022.html',1,'MolecularModeling']]]
 ];

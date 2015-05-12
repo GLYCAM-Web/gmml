@@ -39,6 +39,8 @@ namespace MolecularModeling
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
 //            typedef std::vector<AtomVector > AtomVectorVector;
             typedef std::map<std::string, AtomVector> CycleMap;
+            typedef std::map<std::string, std::map<std::string, std::vector<std::string> > > SelectPatternMap;
+            typedef std::map<std::string, ResidueVector> HierarchicalContainmentMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -561,6 +563,16 @@ namespace MolecularModeling
               * @return max Number of atoms in largest residue in all assemblies and residues in the current object of assembly
               */
             int CountMaxNumberOfAtomsInLargestResidue();
+
+            /*! \fn
+              * A function to select a set of atoms in an assembly by using a string pattern
+              * @param pattern Pattern of selection inclusing assembly number, residue name and/or atom name
+              * Sample pattern: "1.*:#520,MAN,GAL@#3740-3750,^C:ALA@O1;1.1.2,1.1.3:NAG@O$"
+              * @return A list of atoms which satisfy the condition specified in the pattern
+              */
+            AtomVector Select(std::string pattern);
+            SelectPatternMap ParsePatternString(std::string pattern);
+            void GetHierarchicalMapOfAssembly(HierarchicalContainmentMap& hierarchical_map, std::stringstream& index);
 
             void ClearAssembly();
 
