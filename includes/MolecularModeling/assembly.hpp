@@ -8,7 +8,9 @@
 #include "../Geometry/coordinate.hpp"
 #include "../Geometry/plane.hpp"
 #include "../common.hpp"
-#include "../structures.hpp"
+#include "../Glycam/chemicalcode.hpp"
+#include "../Glycam/sugarname.hpp"
+#include "../Glycam/monosaccharide.hpp"
 #include "../FileSet/PdbFileSpace/pdbfile.hpp"
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
@@ -591,14 +593,23 @@ namespace MolecularModeling
             CycleMap DetectCyclesByDFS();
             void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
-            void FilterNonMinCycles(CycleMap& cycles);
             void FilterAllCarbonCycles(CycleMap& cycles);
             void RemoveFusedCycles(CycleMap& cycles);
             Atom* FindAnomericCarbon(AtomVector cycle, std::string cycle_atoms_str);
             AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
-            std::vector<std::string> GetSideGroupOrientations(AtomVector cycle, std::string cycle_atoms_str);
-            gmml::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
-            void GenerateSugarName(gmml::ChemicalCode* code);
+            std::vector<std::string> GetSideGroupOrientations(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
+            Glycam::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
+            void ExtractDerivatives(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
+            void GenerateCompleteSugarName(Glycam::Monosaccharide* mono);
+
+            std::string CheckxC_N(Atom* target, std::string cycle_atoms_str);
+            std::string CheckxC_NxO_CO_C(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_CO_CO(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_SO3(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_PO3(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_C(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxCOO(Atom* target, std::string cycle_atoms_str);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

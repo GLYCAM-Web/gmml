@@ -1,6 +1,5 @@
 
 #include "../../includes/Geometry/plane.hpp"
-#include "../../includes/Geometry/coordinate.hpp"
 
 using namespace Geometry;
 using namespace std;
