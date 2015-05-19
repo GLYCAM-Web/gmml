@@ -56,6 +56,7 @@ using namespace ParameterFileSpace;
 using namespace Geometry;
 using namespace LibraryFileSpace;
 using namespace gmml;
+using namespace Glycam;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -1252,7 +1253,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
         CoordinateVector cartesian_coordinate_list = CoordinateVector();
         int atom_index = 1;
         PrepFileResidue::Loop loops = PrepFileResidue::Loop();
-        vector<int> bond_index = vector<int>();        
+        vector<int> bond_index = vector<int>();
         for(int i = 0; i < DEFAULT_DUMMY_ATOMS; i ++)
         {
             PrepFileAtom* dummy_atom = new PrepFileAtom();
@@ -1532,7 +1533,7 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
                 }
                 if(stack_neighbor_index == -1)
                 {
-                    cout << "EMPTY" << endl;
+//                    cout << "EMPTY" << endl;
                 }
                 else
                 {
@@ -1725,10 +1726,10 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             ss << assembly_residue->GetName() << "-";
         topology_residue->SetStartingAtomIndex(atom_counter);
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
-//        PrepFileResidue::Loop loops = PrepFileResidue::Loop();
-//        vector<int> bond_index = vector<int>();
-//        int atom_index = 1;
-//        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);
+        PrepFileResidue::Loop loops = PrepFileResidue::Loop();
+        vector<int> bond_index = vector<int>();
+        int atom_index = 1;
+        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);
 
         ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
         ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
@@ -1752,10 +1753,10 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             topology_atom->SetRadii(dNotSet);
             topology_atom->SetScreen(dNotSet);
             topology_atom->SetIndex(atom_counter);
-//            topology_atom->SetTreeChainClasification(gmml::ConvertTopologicalType2String(residue_topological_types.at(atom_index - 1)));
+            topology_atom->SetTreeChainClasification(gmml::ConvertTopologicalType2String(residue_topological_types.at(atom_index - 1)));
             topology_residue->AddAtom(topology_atom);
             atom_counter++;
-//            atom_index++;
+            atom_index++;
 
             ///Pairs
             for(AtomVector::iterator it2 = assembly_atoms.begin(); it2 != assembly_atoms.end(); it2++)
@@ -1771,7 +1772,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 stringstream reverse_sss;
                 reverse_sss << atom_type2 << "-" << atom_type1;
                 if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
-                        find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end()  )
+                        find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end())
                 {
                     TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
                     ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
@@ -1875,19 +1876,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         topology_assembly->AddResidue(topology_residue);
     }
 
-
-
-    //    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
-    //    {
-    //        Residue* assembly_residue = *it;
-    //        AtomVector assembly_atoms = assembly_residue->GetAtoms();
-    //        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
-    //        {
-    //            Atom* assembly_atom = (*it1);
-
-
-    //        }
-    //    }
     topology_assembly->SetAssemblyName(ss.str());
     topology_file->SetAtomPairs(pairs);
     topology_file->SetAssembly(topology_assembly);
@@ -6584,42 +6572,141 @@ std::vector<std::vector<std::string> > Assembly::CreateAllCyclePermutations(stri
 
 void Assembly::ExtractMonosaccharides()
 {
-    DetectCyclesByExhaustiveRingPerception();
+    CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
+
     //    CycleMap cycles = DetectCyclesByDFS();
-    //    RemoveFusedCycles(cycles);
-    //    FilterAllCarbonCycles(cycles);
-    //    cout << "cycles after filtering carbons" << endl;
-    //    CycleMap sorted_cycles = CycleMap();
-    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    //    {
-    //        string cycle_atoms_str = (*it).first;
-    //        AtomVector cycle_atoms = (*it).second;
-    //        cout << cycle_atoms_str << endl;
-    //        Atom* anomeric = FindAnomericCarbon(cycle_atoms, cycle_atoms_str);
-    //        if(anomeric != NULL)
-    //        {
-    //            AtomVector sorted_cycle_atoms = AtomVector();
-    //            stringstream sorted_cycle_stream;
-    //            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
-    //            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
-    //        }
-    //    }
-    //    cycles = sorted_cycles;
-    //    cout << endl;
-    //    cout << "sorted cycles after filtering (fused, all carbons and rings without oxygen): " << endl;
-    //    vector<ChemicalCode*> codes = vector<ChemicalCode*>();
-    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    //    {
-    //        string cycle_atoms_str = (*it).first;
-    //        AtomVector cycle = (*it).second;
-    //        cout << cycle_atoms_str << endl;
-    //        vector<string> orientations = GetSideGroupOrientations(cycle, cycle_atoms_str);
-    //        ChemicalCode* code = BuildChemicalCode(orientations);
-    //        GenerateSugarName(code);
-    //        if(code != NULL)
-    //            codes.push_back(code);
-    //        code->Print(cout);
-    //    }
+
+
+    cout << endl << "All detected cycles" << endl;
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_atoms_str = (*it).first;
+        cout << cycle_atoms_str << endl;
+    }
+
+    RemoveFusedCycles(cycles);
+    FilterAllCarbonCycles(cycles);
+    cout << endl << "Cycles after filtering out all-carbon cycles" << endl;
+    CycleMap sorted_cycles = CycleMap();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_atoms_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        cout << cycle_atoms_str << endl;
+        Atom* anomeric = FindAnomericCarbon(cycle_atoms, cycle_atoms_str);
+        if(anomeric != NULL)
+        {
+            AtomVector sorted_cycle_atoms = AtomVector();
+            stringstream sorted_cycle_stream;
+            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
+            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+        }
+    }
+    cycles = sorted_cycles;
+    cout << endl << "Sorted cycles after filtering out (fused, all carbons and rings without oxygen): " << endl;
+
+    vector<Monosaccharide*> monos = vector<Monosaccharide*>();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_atoms_str = (*it).first;
+        AtomVector cycle = (*it).second;
+        cout << cycle_atoms_str << endl;
+        Monosaccharide* mono = new Monosaccharide();
+        mono->cycle_atoms_str_ = cycle_atoms_str;
+        mono->cycle_atoms_ = cycle;
+        vector<string> orientations = GetSideGroupOrientations(mono, cycle_atoms_str);
+        ChemicalCode* code = BuildChemicalCode(orientations);
+
+        if(code != NULL)
+        {
+            mono->chemical_code_ = code;
+        }
+        cout << endl << "Chemical code:"  << endl;
+        code->Print(cout);
+        string code_str = code->toString();
+
+        mono->sugar_name_ = SugarStereoChemistryNameLookup(code_str);
+
+        ExtractDerivatives(mono, cycle_atoms_str);
+        for(map<string, string>::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++)
+        {
+            string key = (*it1).first;
+            string value = (*it1).second;
+            cout << "ring carbon : " << key << " is attached to " << value << endl;
+        }
+
+        GenerateCompleteSugarName(mono);
+        cout << endl;
+        cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << endl;
+        cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << endl;
+        cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << endl;
+        cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << endl;
+        cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+        monos.push_back(mono);
+    }
+    cout << "Monosaccharide linkage(s):" << endl;
+    for(vector<Monosaccharide*>::iterator it = monos.begin(); it != monos.end() - 1; it++)
+    {
+        Monosaccharide* mono1 = (*it);
+        for(vector<AtomVector>::iterator it1 = mono1->side_atoms_.begin(); it1 != mono1->side_atoms_.end(); it1++) ///iterate on side atoms
+        {
+            int index = distance(mono1->side_atoms_.begin(), it1);
+            AtomVector sides = (*it1);
+            Atom* target = NULL;
+            Atom* second_target = NULL;
+            if(it1 == mono1->side_atoms_.begin())///side atoms of anomeric
+            {
+//                if(sides.at(0) != NULL)
+//                    second_target = sides.at(0);///first index of each side is for carbon atoms in the vector<AtomVector> structure
+                if(sides.at(1) != NULL)
+                    target = sides.at(1);
+            }
+            else if(it1 == mono1->side_atoms_.end() - 1) ///side atom is +1
+            {
+//                if(sides.at(0) != NULL)
+//                    target = sides.at(0);
+            }
+            else
+            {
+                if(sides.at(1) != NULL)
+                    target = sides.at(1);///index 1 of each side is for non-carbon side atoms in the vector<AtomVector> structure
+            }
+            if(target != NULL)
+            {
+                AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = t_neighbors.begin(); it2 != t_neighbors.end(); it2++)
+                {
+                    Atom* t_neighbor = (*it2);
+                    if(mono1->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///neighbor is not the ring atom of the first monosaccharide
+                    {
+                        for(vector<Monosaccharide*>::iterator it3 = it + 1; it3 != monos.end(); it3++)
+                        {
+                            Monosaccharide* mono2 = (*it3);
+                            if(mono2->cycle_atoms_str_.find(t_neighbor->GetId()) != string::npos)///target atom has been found in another cycle
+                            {
+                                string mono1_carbon = mono1->cycle_atoms_.at(index)->GetId();
+                                string mono1_name = "";
+                                string mono2_carbon = t_neighbor->GetId();
+                                string mono2_name = "";
+                                if(mono1->sugar_name_.monosaccharide_short_name_.compare("") != 0)
+                                    mono1_name = mono1->sugar_name_.monosaccharide_short_name_;
+                                else
+                                    mono1_name = mono1->sugar_name_.monosaccharide_stereochemistry_short_name_;
+
+                                if(mono2->sugar_name_.monosaccharide_short_name_.compare("") != 0)
+                                    mono2_name = mono2->sugar_name_.monosaccharide_short_name_;
+                                else
+                                    mono2_name = mono2->sugar_name_.monosaccharide_stereochemistry_short_name_;
+
+                                cout << mono1_name << " (" << mono1_carbon << "-" << target->GetId() << "-" << mono2_carbon << ") " << mono2_name << endl;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 }
 
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
@@ -6674,19 +6761,18 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
             continue;
         }
 
-            ReducePathGraph(path_graph_edges, path_graph_labels, reduced_path_graph_edges, reduced_path_graph_labels, (*common_atom_it)->GetId(), cycless);
-//            cout << "================================" << (*common_atom_it)->GetId() << "=====================================" << endl;
-            atoms.erase(common_atom_it);
+        ReducePathGraph(path_graph_edges, path_graph_labels, reduced_path_graph_edges, reduced_path_graph_labels, (*common_atom_it)->GetId(), cycless);
+        //            cout << "================================" << (*common_atom_it)->GetId() << "=====================================" << endl;
+        atoms.erase(common_atom_it);
 
-            path_graph_edges = reduced_path_graph_edges;
-            path_graph_labels = reduced_path_graph_labels;
-//            cout << "---------------------------------------------------------------------" << endl;
-//            for(int i = 0; i < reduced_path_graph_edges.size(); i ++)
-//            {
-//                cout << reduced_path_graph_edges.at(i) << "-------------->" << reduced_path_graph_labels.at(i) << endl;
-//            }
+        path_graph_edges = reduced_path_graph_edges;
+        path_graph_labels = reduced_path_graph_labels;
+        //            cout << "---------------------------------------------------------------------" << endl;
+        //            for(int i = 0; i < reduced_path_graph_edges.size(); i ++)
+        //            {
+        //                cout << reduced_path_graph_edges.at(i) << "-------------->" << reduced_path_graph_labels.at(i) << endl;
+        //            }
     }
-
 
     for(vector<string>::iterator it = cycless.begin(); it != cycless.end(); it++)
     {
@@ -6708,12 +6794,8 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
             }
             cycles[ss.str()] = atomvector;
         }
-//            cout << cycles << endl;
     }
-//    cout << cycless.size() << endl;
-
     return cycles;
-
 }
 
 void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> path_graph_labels, vector<string>& reduced_path_graph_edges, vector<string>& reduced_path_graph_labels, string common_atom, vector<string>& cycles)
@@ -6789,13 +6871,13 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                 if(new_edge_atoms.at(0).compare(new_edge_atoms.at(1)) == 0) ///edge is a,a
                 {
                     cycles.push_back(new_label.str());
-//                    cout << "CYCLE FOUND " << endl;
-//                    for(int i = 0; i < path_graph_edges.size(); i++)
-//                    {
-//                        string edge = path_graph_edges.at(i);
-//                        if(edge.find(new_edge_atoms.at(1)) != string::npos)
-//                            to_be_deleted_edges.push_back(i);
-//                    }
+                    //                    cout << "CYCLE FOUND " << endl;
+                    //                    for(int i = 0; i < path_graph_edges.size(); i++)
+                    //                    {
+                    //                        string edge = path_graph_edges.at(i);
+                    //                        if(edge.find(new_edge_atoms.at(1)) != string::npos)
+                    //                            to_be_deleted_edges.push_back(i);
+                    //                    }
                 }
                 ///adding the newly-formed edge (a,c) and label(a-b-c)
                 else if(find(reduced_path_graph_labels.begin(), reduced_path_graph_labels.end(), new_label.str()) == reduced_path_graph_labels.end())
@@ -6827,39 +6909,6 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
     }
     reduced_path_graph_edges = temp_reduced_path_graph_edges;
     reduced_path_graph_labels = temp_reduced_path_graph_labels;
-
-
-    //        if(walk_found)
-    //        {
-    //            AtomVector::iterator index;
-    //            for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
-    //            {
-    //                Atom* atom = *it;
-    //                if(atom->GetId().compare(source_edge_atoms.at(1)) == 0)
-    //                {
-    //                    index = it;
-    //                    break;
-    //                }
-    //            }
-    //            atoms.erase(index);cout << "earse ok" << endl;
-    //        }
-
-//    map<string , string> duplicate_reduced_path_graph = map<string, string>();
-//    for(map<string, string>::iterator it = reduced_path_graph.begin(); it != reduced_path_graph.end(); it++)
-//    {
-//        string key = (*it).first;
-//        string value = (*it).second;
-//        duplicate_reduced_path_graph[key] = value;
-//    }
-//    for(map<string, string>::iterator it = reduced_path_graph.begin(); it != reduced_path_graph.end(); it++)
-//    {
-//        string source_key_pair = (*it).first;
-//        string source_path_value = (*it).second;
-
-//        if(find(visited_atom_pairs.begin(), visited_atom_pairs.end(), source_key_pair) == visited_atom_pairs.end())
-//            ReducePathGraph(reduced_path_graph, duplicate_reduced_path_graph, atoms, source_key_pair, source_path_value, visited_atom_pairs, cycles);
-//    }
-
 }
 
 void Assembly::PruneGraph(AtomVector& all_atoms)
@@ -7050,33 +7099,6 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
     cycles = all_carbons_filtered_cycles;
 }
 
-void Assembly::FilterNonMinCycles(CycleMap &cycles)
-{
-    //    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    //    {
-    //        AtomVector cycle_atoms = (*it).second;
-    //        if(cycle_i_atoms.size() > 6)
-    //        {
-    //            vector<AtomVector> path_matrix = vector<AtomVector>();
-    //            vector<vector<int> > length_matrix = vector<vector<int> >();
-    //            for(int n = 0; n < cycle_atoms.size(); n++)
-    //            {
-    //                for(int m = 0; m < cycle_atoms.size(); m++)
-    //                {
-    //                    length_matrix.at(n).at(m) = INFINITY;
-    //                    path_matrix.at(n).at(m) =
-    //                }
-    //            }
-    //            for(int i = 0; i < cycle_atoms.size(); i++)
-    //                for(int j = 0; j < cycle_atoms.size(); j++)
-    //                    for(int k = 0; k < cycle_atoms.size(); k++)
-    //                    {
-
-    //                    }
-    //        }
-    //    }
-}
-
 void Assembly::RemoveFusedCycles(CycleMap &cycles)
 {
     map<string, bool> to_be_deleted_cycles = map<string, bool>();
@@ -7084,7 +7106,6 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
     {
         string cycle_i_str = (*it).first; ///cycle i will be compared with all the other cycles
         AtomVector cycle_i_atoms = (*it).second;
-        cout << cycle_i_str << endl;
         for(CycleMap::iterator it1 = cycles.begin(); it1 != cycles.end(); it1++)
         {
             if(it != it1)
@@ -7136,11 +7157,13 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
     for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
     {
         Atom* cycle_atom = (*it);
-        if((cycle_atom->GetName().substr(0,1).compare("O") == 0 && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))///find oxygen in ring
+        if((cycle_atom->GetName().substr(0,1).compare("O") == 0 ))///find oxygen in ring
+            //                && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
         {
             AtomNode* node = cycle_atom->GetNode();
             AtomVector neighbors = node->GetNodeNeighbors();
 
+            ///Check the first neighbor of oxygen
             Atom* o_neighbor1 = neighbors.at(0);
             AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
             AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
@@ -7152,11 +7175,12 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
                     //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
                 {
                     anomeric_carbon = o_neighbor1;
-                    cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
+                    cout << "Anomeric carbon is: " << anomeric_carbon->GetName() << endl;
                     return anomeric_carbon;
                 }
             }
 
+            ///Check the second neighbor of oxygen
             Atom* o_neighbor2 = neighbors.at(1);
             AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
             AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
@@ -7164,14 +7188,74 @@ Atom* Assembly::FindAnomericCarbon(AtomVector cycle, string cycle_atoms_str)
             {
                 Atom* neighbor2_neighbor = (*it2);
                 if( cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos
-                        & (neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor2_neighbor->GetName().substr(0,1).compare("N") == 0)
-                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
+                        && (neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor2_neighbor->GetName().substr(0,1).compare("N") == 0))
+                    //                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
                 {
                     anomeric_carbon = o_neighbor2;
-                    cout << "anomeric carbon is: " << anomeric_carbon->GetName() << endl;
+                    cout << "Anomeric carbon is: " << anomeric_carbon->GetName() << endl;
                     return anomeric_carbon;
                 }
             }
+
+            ///Check the order of the carbons based on their names to locate the anomeric
+            stringstream ss1;
+            for(int i = 0; i < o_neighbor1->GetName().size(); i++)
+            {
+                if(isdigit(o_neighbor1->GetName().at(i)) != 0)
+                    ss1 << o_neighbor1->GetName().at(i);
+            }
+            stringstream ss2;
+            for(int i = 0; i < o_neighbor2->GetName().size(); i++)
+            {
+                if(isdigit(o_neighbor2->GetName().at(i)) != 0)
+                    ss2 << o_neighbor2->GetName().at(i);
+            }
+            if(ConvertString<int>(ss1.str()) < ConvertString<int>(ss2.str()))
+            {
+                cout << "Anomeric carbon probably is: " << o_neighbor1->GetName() << endl;
+                return o_neighbor1;
+            }
+            if(ConvertString<int>(ss2.str()) < ConvertString<int>(ss1.str()))
+            {
+                cout << "Anomeric carbon probably is: " << o_neighbor2->GetName() << endl;
+                return o_neighbor2;
+            }
+
+            ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
+            bool neighbor2_is_anomeric = false;
+            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has non-ring carbon neighbor
+            {
+                Atom* neighbor1_neighbor = (*it1);
+                if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
+                        && (neighbor1_neighbor->GetName().substr(0,1).compare("C") == 0 )) ///if first element is "C"
+                {
+                    neighbor2_is_anomeric = true;
+                    break;
+                }
+            }
+            bool neighbor1_is_anomeric = false;
+            for(AtomVector::iterator it1 = o_neighbor2_neighbors.begin(); it1 != o_neighbor2_neighbors.end(); it1++)///check if neighbor1 of oxygen has non-ring carbon neighbor
+            {
+                Atom* neighbor2_neighbor = (*it1);
+                if(cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
+                        && (neighbor2_neighbor->GetName().substr(0,1).compare("C") == 0 )) ///if first element is "C"
+                {
+                    neighbor1_is_anomeric = true;
+                }
+            }
+            if(!neighbor1_is_anomeric)
+            {
+                cout << "Anomeric carbon probably is: " << o_neighbor2->GetName() << endl;
+                return o_neighbor2;
+            }
+            else if(!neighbor2_is_anomeric)
+            {
+                cout << "Anomeric carbon probably is: " << o_neighbor1->GetName() << endl;
+                return o_neighbor1;
+            }
+
+            cout << "Not enough information to detect the anomeric carbon, it has been chosen randomely: " << o_neighbor1->GetName() << endl;
+            return o_neighbor1;
         }
     }
     return NULL;
@@ -7186,26 +7270,25 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
         int index = distance(cycle.begin(), it);
         if(atom->GetId().compare(anomeric_atom->GetId()) == 0)
         {
-            sorted_cycle.push_back(anomeric_atom);///anomeric atom as the first atom of the cycle
-            sorted_cycle_stream << anomeric_atom->GetId() << "-";
-            if(index == cycle.size() - 1)
+            if(index == cycle.size() - 1)///anomeric atom is at the end of the cycle
             {
+                sorted_cycle.push_back(anomeric_atom);///anomeric atom as the first atom of the cycle
+                sorted_cycle_stream << anomeric_atom->GetId() << "-";
                 Atom* a0 = cycle.at(0);
-                if(a0->GetId().find("O") != string::npos)///a0 is oxygen so the vector is in reverse order
+                if(a0->GetName().substr(0,1).compare("O") == 0)///a0 is oxygen so the vector is in reverse order
                 {
-                    for(AtomVector::iterator it1 = it - 1; it1 != cycle.begin() - 1; it1--)///atoms befor the anomeric atom in reverse order
+                    for(AtomVector::iterator it1 = it - 1; it1 != cycle.begin(); it1--)///atoms before the anomeric atom in reverse order
                     {
                         Atom* a = (*it1);
                         sorted_cycle.push_back(a);
-                        if(it1 == cycle.begin())
-                            sorted_cycle_stream << a->GetId();
-                        else
-                            sorted_cycle_stream << a->GetId() << "-";
+                        sorted_cycle_stream << a->GetId() << "-";
                     }
+                    sorted_cycle.push_back((*cycle.begin()));
+                    sorted_cycle_stream << (*cycle.begin())->GetId();
                 }
                 else
                 {
-                    for(AtomVector::iterator it1 = cycle.begin(); it1 != it; it1++)///atoms befor the anomeric atom from beginning of vector
+                    for(AtomVector::iterator it1 = cycle.begin(); it1 != it; it1++)///atoms before the anomeric atom from beginning of vector
                     {
                         Atom* a = (*it1);
                         sorted_cycle.push_back(a);
@@ -7216,18 +7299,20 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                     }
                 }
             }
-            else
+            else///anomeric is not at the end of the cycle
             {
                 Atom* next_atom = cycle.at(index + 1);
-                if(next_atom->GetId().find("O") != string::npos)///next atom is oxygen so the vector is in reverse order
+                if(next_atom->GetName().substr(0,1).compare("O") == 0)///next atom is oxygen so the vector is in reverse order
                 {
-                    for(AtomVector::iterator it1 = it; it1 != cycle.end(); it1--) ///atoms befor anomeric atom to down to beginning of the vector
+                    for(AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom to down to beginning of the vector
                     {
                         Atom* a_before = (*it1);
                         sorted_cycle.push_back(a_before);
                         sorted_cycle_stream << a_before->GetId() << "-";
                     }
-                    for(AtomVector::iterator it2 = cycle.end(); it2 != it; it2--)///atoms from end of the vector down to anomeric atom
+                    sorted_cycle.push_back((*cycle.begin()));
+                    sorted_cycle_stream << (*cycle.begin())->GetId() << "-";
+                    for(AtomVector::iterator it2 = cycle.end() - 1; it2 != it; it2--)///atoms from end of the vector down to anomeric atom
                     {
                         Atom* atom_after = (*it2);
                         sorted_cycle.push_back(atom_after);
@@ -7237,9 +7322,9 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                             sorted_cycle_stream << atom_after->GetId() << "-";
                     }
                 }
-                else
+                else///oxygen is before the anomeric atom so the vector is in normal order
                 {
-                    for(AtomVector::iterator it1 = it+1; it1 != cycle.end(); it1++) ///atoms after anomeric atom to the end of the vector
+                    for(AtomVector::iterator it1 = it; it1 != cycle.end(); it1++) ///atoms after anomeric atom to the end of the vector
                     {
                         Atom* atom_after = (*it1);
                         sorted_cycle.push_back(atom_after);
@@ -7261,22 +7346,27 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
     return sorted_cycle;
 }
 
-vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle_atoms_str)
+vector<string> Assembly::GetSideGroupOrientations(Monosaccharide* mono, string cycle_atoms_str)
 {
     vector<string> orientations = vector<string>();
-    for(AtomVector::iterator it = cycle.begin(); it != cycle.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
+    vector<AtomVector> side_atoms = vector<AtomVector>();
+    AtomVector default_atom_vector = AtomVector(2, NULL);
+
+    for(AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
     {
         orientations.push_back("N");
-        int index = distance(cycle.begin(), it);
+        side_atoms.push_back(default_atom_vector);
+        int index = distance(mono->cycle_atoms_.begin(), it);
         Atom* prev_atom = new Atom();
         Atom* current_atom = (*it);
         Atom* next_atom = new Atom();
-        if(index == 0)
-            prev_atom = cycle.at(cycle.size() - 1); ///first atom is anomeric atom and the previous is the oxygen
+        if(index == 0)///if the current atom is the anomeric atom
+            prev_atom = mono->cycle_atoms_.at(mono->cycle_atoms_.size() - 1); ///previous atom is the oxygen(last atom of the sorted cycle)
         else
-            prev_atom = cycle.at(index - 1);
-        next_atom = cycle.at(index + 1);
+            prev_atom = mono->cycle_atoms_.at(index - 1);
+        next_atom = mono->cycle_atoms_.at(index + 1);
 
+        ///Calculating the plane based on the two ring neighbors of the current atom
         Coordinate prev_atom_coord = Coordinate(*prev_atom->GetCoordinates().at(0));
         Coordinate current_atom_coord = Coordinate(*current_atom->GetCoordinates().at(0));
         Coordinate next_atom_coord = Coordinate(*next_atom->GetCoordinates().at(0));
@@ -7287,55 +7377,49 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
         plane.SetV2(next_atom_coord);
         Coordinate normal_v = plane.GetUnitNormalVector();
 
+        ///Calculating the orientation of the side atoms
         AtomNode* node = current_atom->GetNode();
         AtomVector neighbors = node->GetNodeNeighbors();
+        int not_h_neighbors = 0;
         for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
         {
             Atom* neighbor = (*it1);
             string neighbor_id = neighbor->GetId();
             if(cycle_atoms_str.find(neighbor_id) == string::npos) ///if not one of the cycle atoms
             {
-                Coordinate side_atom_coord = Coordinate(*neighbor->GetCoordinates().at(0));
-                side_atom_coord.operator -(current_atom_coord);
-                side_atom_coord.Normalize();
-                double theta = acos(normal_v.DotProduct(side_atom_coord));
+                if(neighbor->GetName().at(0) != 'H') ///deoxy check
+                    not_h_neighbors++;
+            }
+        }
+        if(not_h_neighbors != 0)
+        {
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+            {
+                Atom* neighbor = (*it1);
+                string neighbor_id = neighbor->GetId();
+                if(cycle_atoms_str.find(neighbor_id) == string::npos) ///if not one of the cycle atoms
+                {
+                    if(neighbor->GetName().at(0) != 'H') ///deoxy check
+                        not_h_neighbors++;
+                    Coordinate side_atom_coord = Coordinate(*neighbor->GetCoordinates().at(0));
+                    side_atom_coord.operator -(current_atom_coord);
+                    side_atom_coord.Normalize();
+                    double theta = acos(normal_v.DotProduct(side_atom_coord));
 
-                if(index == 0 && neighbor_id.at(0) == 'C')///if anomeric atom has a non-ring carbon neighbor
-                {
-                    if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
+                    if(index == 0 && neighbor_id.at(0) == 'C')///if anomeric atom has a non-ring carbon neighbor
                     {
-                        if(theta > (gmml::PI_RADIAN/2))
-                            orientations.at(index) = "-1d";
-                        else
-                            orientations.at(index) = "-1u";
-                        continue;
-                    }
-                    else
-                    { ///position of non-ring oxygen or nitrogen + the non-ring carbon
-                        stringstream ss;
-                        if(theta > (gmml::PI_RADIAN/2))
-                        {
-                            ss << orientations.at(index) << "-1d";
-                            orientations.at(index) = ss.str();
-                        }
-                        else
-                        {
-                            ss << orientations.at(index) << "-1u";
-                            orientations.at(index) = ss.str();
-                        }
-                        break;
-                    }
-                }
-                else if(neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N')///if neighbor is a non-ring oxygen or nitrogen
-                {
-                    if(index == 0)
-                    {
-                        if(orientations.at(index).compare("N") == 0) ///if the position of non-ring carbon neighbor (if exist) hasn't been set yet
+                        if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
                         {
                             if(theta > (gmml::PI_RADIAN/2))
-                                orientations.at(index) = "D";
+                            {
+                                orientations.at(index) = "-1D";
+                                side_atoms.at(index).at(0) = neighbor;
+                            }
                             else
-                                orientations.at(index) = "U";
+                            {
+                                orientations.at(index) = "-1U";
+                                side_atoms.at(index).at(0) = neighbor;
+                            }
                             continue;
                         }
                         else
@@ -7343,66 +7427,125 @@ vector<string> Assembly::GetSideGroupOrientations(AtomVector cycle, string cycle
                             stringstream ss;
                             if(theta > (gmml::PI_RADIAN/2))
                             {
-                                ss << "D" << orientations.at(index);
+                                ss << orientations.at(index) << "-1D";
                                 orientations.at(index) = ss.str();
+                                side_atoms.at(index).at(0) = neighbor;
                             }
                             else
                             {
-                                ss << "U" << orientations.at(index);
+                                ss << orientations.at(index) << "-1U";
                                 orientations.at(index) = ss.str();
+                                side_atoms.at(index).at(0) = neighbor;
+                            }
+                        }
+                        break;
+                    }
+                    else if(neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N')///if neighbor is a non-ring oxygen or nitrogen
+                    {
+                        if(index == 0)///current atom is anomeric
+                        {
+                            if(orientations.at(index).compare("N") == 0) ///if the position of non-ring carbon neighbor (if exist) hasn't been set yet
+                            {
+                                if(theta > (gmml::PI_RADIAN/2))
+                                {
+                                    orientations.at(index) = "D";
+                                    side_atoms.at(index).at(1) = neighbor;
+                                }
+                                else
+                                {
+                                    orientations.at(index) = "U";
+                                    side_atoms.at(index).at(1) = neighbor;
+                                }
+                                continue;
+                            }
+                            else
+                            { ///position of non-ring oxygen or nitrogen + the non-ring carbon
+                                stringstream ss;
+                                if(theta > (gmml::PI_RADIAN/2))
+                                {
+                                    ss << "D" << orientations.at(index);
+                                    orientations.at(index) = ss.str();
+                                    side_atoms.at(index).at(1) = neighbor;
+                                }
+                                else
+                                {
+                                    ss << "U" << orientations.at(index);
+                                    orientations.at(index) = ss.str();
+                                    side_atoms.at(index).at(1) = neighbor;
+                                }
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if(theta > (gmml::PI_RADIAN/2))
+                            {
+                                orientations.at(index) = "D";
+                                side_atoms.at(index).at(1) = neighbor;
+                            }
+                            else
+                            {
+                                orientations.at(index) = "U";
+                                side_atoms.at(index).at(1) = neighbor;
                             }
                             break;
                         }
                     }
-                    else
+                    else if(index == mono->cycle_atoms_.size() - 2 && neighbor_id.at(0) == 'C')///if the last ring carbon has a non-ring carbon neighbor
                     {
-                        if(theta > (gmml::PI_RADIAN/2))
-                            orientations.at(index) = "D";
-                        else
-                            orientations.at(index) = "U";
-                        break;
-                    }
-                }
-                else if(index == cycle.size() - 2 && neighbor_id.at(0) == 'C')///if the last carbon ring has a non-ring carbon
-                {
-                    ///Check if neighbor of neighbor is oxygen or nitrogen
-                    AtomNode* neighbor_node = neighbor->GetNode();
-                    AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-                    for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
-                    {
-                        Atom* neighbor_of_neighbor = (*it2);
-                        string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
-                        if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos &&
-                                (neighbor_of_neighbor_id.at(0) == 'O' || neighbor_of_neighbor_id.at(0) == 'N'))///if neighbor of neighbor is a non-ring oxygen or nitrogen
+                        ///Check if neighbor of neighbor is oxygen or nitrogen
+                        AtomNode* neighbor_node = neighbor->GetNode();
+                        AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+                        int o_neighbors = 0;
+                        int not_h_neighbors = 0;
+                        for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+                        {
+                            Atom* neighbor_of_neighbor = (*it2);
+                            string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
+                            if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos &&
+                                    (neighbor_of_neighbor_id.at(0) == 'O' || neighbor_of_neighbor_id.at(0) == 'N'))///if neighbor of neighbor is a non-ring oxygen or nitrogen
+                                o_neighbors++;
+                            if(cycle_atoms_str.find(neighbor_of_neighbor_id) == string::npos &&
+                                    (neighbor_of_neighbor_id.at(0) != 'H'))///if neighbor of neighbor is any non-ring atom other than hydrogen
+                                not_h_neighbors++;
+                        }
+                        if (o_neighbors >= 1)
                         {
                             if(theta > (gmml::PI_RADIAN/2))
+                            {
                                 orientations.at(index) = "D";
+                                side_atoms.at(index).at(0) = neighbor;
+                            }
                             else
+                            {
                                 orientations.at(index) = "U";
+                                side_atoms.at(index).at(0) = neighbor;
+                            }
+                        }
+                        else if(not_h_neighbors == 0)///Type Deoxy
+                        {
+                            if(theta > (gmml::PI_RADIAN/2))
+                            {
+                                orientations.at(index) = "Dd";
+                                side_atoms.at(index).at(0) = neighbor;
+                            }
+                            else
+                            {
+                                orientations.at(index) = "Ud";
+                                side_atoms.at(index).at(0) = neighbor;
+                            }
                             break;
                         }
+                        if(orientations.at(index).compare("N") != 0)
+                            break;
                     }
-                    if(orientations.at(index).compare("N") == 0) ///deoxy
-                    {
-                        if(theta > (gmml::PI_RADIAN/2))
-                            orientations.at(index) = "Dd";
-                        else
-                            orientations.at(index) = "Ud";
-                        break;
-                    }
-                    if(orientations.at(index).compare("N") != 0)
-                        break;
                 }
             }
         }
     }
-    //    cout << "orientation" << endl;
-    //    for(vector<string>::iterator it3 = orientations.begin(); it3 != orientations.end(); it3++)
-    //    {
-    //        string o = (*it3);
-    //        cout << o << endl;
-    //    }
-    //    return orientations;
+    mono->side_atoms_ = side_atoms;
+
+    return orientations;
 }
 
 ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
@@ -7415,32 +7558,42 @@ ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
     else
         code->base_ = "?";
 
+    ///Side atom(s) of anomeric
+    ///Has only non-ring oxygen neighbor
     if(orientations.at(0).compare("U") == 0)
         code->right_up_.push_back("a");
     else if(orientations.at(0).compare("D") == 0)
         code->right_down_.push_back("a");
-    ///if anomeric atom has a carbon neighbor
-    else if(orientations.at(0).compare("U-1u") == 0)
+
+    ///Has non-ring oxygen and carbon neighbors
+    else if(orientations.at(0).compare("U-1U") == 0)
     {
         code->right_up_.push_back("a");
         code->right_up_.push_back("-1");
     }
-    else if(orientations.at(0).compare("D-1u") == 0)
+    else if(orientations.at(0).compare("D-1U") == 0)
     {
         code->right_down_.push_back("a");
         code->right_up_.push_back("-1");
     }
-    else if(orientations.at(0).compare("U-1d") == 0)
+    else if(orientations.at(0).compare("U-1D") == 0)
     {
         code->right_up_.push_back("a");
         code->right_down_.push_back("-1");
     }
-    else if(orientations.at(0).compare("D-1d") == 0)
+    else if(orientations.at(0).compare("D-1D") == 0)
     {
         code->right_down_.push_back("a");
         code->right_down_.push_back("-1");
     }
 
+    ///Has only non-ring carbon neighbor
+    else if(orientations.at(0).compare("-1U") == 0)
+        code->right_up_.push_back("-1");
+    else if(orientations.at(0).compare("-1D") == 0)
+        code->right_down_.push_back("-1");
+
+    ///Side atom of other carbons of the ring
     for(vector<string>::iterator it = orientations.begin() + 1; it != orientations.end() - 1; it++)
     {
         string orientation = (*it);
@@ -7449,12 +7602,20 @@ ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
             code->left_up_.push_back(gmml::ConvertT(index + 1));
         else if(orientation.compare("D") == 0)
             code->left_down_.push_back(gmml::ConvertT(index + 1));
+        else if(orientation.compare("N") == 0)
+        {
+            stringstream ss;
+            ss << gmml::ConvertT(index + 1) << "d";
+            code->left_middle_.push_back(ss.str() );
+        }
     }
+
+    ///Side atom(s) of last carbon
     if(orientations.at(orientations.size() - 1).compare("U") == 0)
         code->right_up_.push_back("+1");
     else if(orientations.at(orientations.size() - 1).compare("D") == 0)
         code->right_down_.push_back("+1");
-    ///if it is deoxy
+    ///Type Deoxy
     else if(orientations.at(orientations.size() - 1).compare("Ud") == 0)
         code->right_up_.push_back("+1d");
     else if(orientations.at(orientations.size() - 1).compare("Dd") == 0)
@@ -7462,54 +7623,1080 @@ ChemicalCode* Assembly::BuildChemicalCode(vector<string> orientations)
 
     return code;
 }
-void Assembly::GenerateSugarName(ChemicalCode* code)
+
+void Assembly::ExtractDerivatives(Monosaccharide * mono, string cycle_atoms_str)
 {
-    SugarName* sugar = new SugarName();
-    if(code->base_.compare("P") == 0)
-        sugar->ring_type_ = "pyranose";
-    else if(code->base_.compare("F") == 0)
-        sugar->ring_type_ = "furanose";
-    if(find(code->right_up_.begin(), code->right_up_.end(), "+1") != code->right_up_.end())
-        sugar->isomer_ = "D";
-    else if(find(code->right_down_.begin(), code->right_down_.end(), "+1") != code->right_down_.end())
-        sugar->isomer_ = "L";
-    if((find(code->right_up_.begin(), code->right_up_.end(), "+1") != code->right_up_.end() && find(code->right_up_.begin(), code->right_up_.end(), "a") != code->right_up_.end()) ||
-            (find(code->right_down_.begin(), code->right_down_.end(), "+1") != code->right_down_.end() && find(code->right_down_.begin(), code->right_down_.end(), "a") != code->right_down_.end()))
-        sugar->configuration_ = "beta";
-    else if((find(code->right_up_.begin(), code->right_up_.end(), "+1") != code->right_up_.end() && find(code->right_down_.begin(), code->right_down_.end(), "a") != code->right_down_.end()) ||
-            (find(code->right_down_.begin(), code->right_down_.end(), "+1") != code->right_down_.end() && find(code->right_up_.begin(), code->right_up_.end(), "a") != code->right_up_.end()))
-        sugar->configuration_ = "alpha";
-
-    if(sugar->isomer_.compare("D") == 0)
+    for(AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
     {
-        if(sugar->configuration_.compare("alpha"))
+        int index = distance(mono->cycle_atoms_.begin(), it);
+        Atom* target = (*it);
+//        cout << "Target ring: " << target->GetName() << endl;
+        string key = "";
+        string value = "";
+        AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
         {
-
+            Atom* t_neighbor = (*it1);
+            if(t_neighbor->GetName().at(0) == 'N' && cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)///check formulas with nitrogen
+            {
+                if((value = CheckxC_N(target, cycle_atoms_str)).compare("") != 0)///xCH-N
+                {
+//                    cout << "expected pattern: " << "xCH-N" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_CO_C(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-C=OCH3
+                {
+//                    cout << "expected pattern : " << "xC-N-C=OCH3" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_CO_CO(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-C=OCH2OH
+                {
+//                    cout << "expected pattern : " << "xC-N-C=OCH2OH" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_SO3(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-SO3
+                {
+//                    cout << "expected pattern : " << "xC-N-SO3" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_PO3(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-PO3
+                {
+//                    cout << "expected pattern : " << "xC-N-PO3" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_C(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-CH3
+                {
+//                    cout << "expected pattern : " << "xC-N-CH3" << endl;
+                    break;
+                }
+            }
+            if(t_neighbor->GetName().at(0) == 'O' && cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)///check formulas with oxygen
+            {
+                if((value = CheckxC_NxO_CO_C(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-C=OCH3
+                {
+//                    cout << "expected pattern : " << "xC-O-C=OCH3" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_CO_CO(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-C=OCH2OH
+                {
+//                    cout << "expected pattern : " << "xC-O-C=OCH2OH" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_SO3(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-SO3
+                {
+//                    cout << "expected pattern : " << "xC-O-SO3" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_PO3(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-PO3
+                {
+//                    cout << "expected pattern : " << "xC-O-PO3" << endl;
+                    break;
+                }
+                if((value = CheckxC_NxO_C(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-CH3
+                {
+//                    cout << "expected pattern : " << "xC-O-CH3" << endl;
+                    break;
+                }
+                if((value = CheckxCOO(target, cycle_atoms_str)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
+                {
+//                    cout << "expected pattern : " << "xC-(O,O) and xC-(O,OH)" << endl;
+                    break;
+                }
+            }
         }
-        else if(sugar->configuration_.compare("beta"))
+
+        if(value.compare("") != 0)///if any pattern matched add it to the index-derivative map
         {
-
+            if(index == 0)
+                key = "a";
+            else
+                key = gmml::ConvertT(index + 1);
+            mono->derivatives_map_[key] = value;
         }
-
     }
-    else if(sugar->isomer_.compare("L") == 0)
+//    cout << "SDIES! " << endl;
+    for(vector<AtomVector>::iterator it = mono->side_atoms_.begin(); it != mono->side_atoms_.end(); it++) ///iterate on side atoms
     {
-        if(sugar->configuration_.compare("alpha"))
-        {
-
+        int index = distance(mono->side_atoms_.begin(), it);
+        AtomVector sides = (*it);
+        Atom* target = NULL;
+        string key = "";
+        string value = "";
+        if(it == mono->side_atoms_.begin() || it == mono->side_atoms_.end() - 1)///if the side atom is -1 or +1
+        {if(sides.at(0) != NULL)
+                target = sides.at(0);///first index of each side is for carbon atoms in the vector<AtomVector> structure
         }
-        else if(sugar->configuration_.compare("beta"))
+        if(target != NULL)
         {
-
+//            cout << "Target side: " << target->GetName() << endl;
+            AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
+            {
+                Atom* t_neighbor = (*it1);
+                if(t_neighbor->GetName().at(0) == 'N' && cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)///check formulas with nitrogen
+                {
+                    if((value = CheckxC_N(target, cycle_atoms_str)).compare("") != 0)///xCH-N
+                    {
+//                        cout << "expected pattern : " << "xCH-N" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_CO_C(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-C=OCH3
+                    {
+//                        cout << "expected pattern : " << "xC-N-C=OCH3" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_CO_CO(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-C=OCH2OH
+                    {
+//                        cout << "expected pattern : " << "xC-N-C=OCH2OH" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_SO3(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-SO3
+                    {
+//                        cout << "expected pattern : " << "xC-N-SO3" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_PO3(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-PO3
+                    {
+//                        cout << "expected pattern : " << "xC-N-PO3" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_C(target, cycle_atoms_str, 'N')).compare("") != 0)///xC-N-CH3
+                    {
+//                        cout << "expected pattern : " << "xC-N-CH3" << endl;
+                        break;
+                    }
+                }
+                if(t_neighbor->GetName().at(0) == 'O' && cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)///check formulas with oxygen
+                {
+                    if((value = CheckxC_NxO_CO_C(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-C=OCH3
+                    {
+//                        cout << "expected pattern : " << "xC-O-C=OCH3" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_CO_CO(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-C=OCH2OH
+                    {
+//                        cout << "expected pattern : " << "xC-O-C=OCH2OH" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_SO3(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-SO3
+                    {
+//                        cout << "expected pattern : " << "xC-O-SO3" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_PO3(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-PO3
+                    {
+//                        cout << "expected pattern : " << "xC-O-PO3" << endl;
+                        break;
+                    }
+                    if((value = CheckxC_NxO_C(target, cycle_atoms_str, 'O')).compare("") != 0)///xC-O-CH3
+                    {
+//                        cout << "expected pattern : " << "xC-O-CH3" << endl;
+                        break;
+                    }
+                    if((value = CheckxCOO(target, cycle_atoms_str)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
+                    {
+//                        cout << "expected pattern : " << "xC-(O,O) and xC-(O,OH)" << endl;
+                        break;
+                    }
+                }
+            }
+            if(value.compare("") != 0)///if any pattern matched add it to the index-derivative map
+            {
+                if(index == 0)
+                    key = "-1";
+                else
+                    key = "+1";
+                mono->derivatives_map_[key] = value;
+            }
         }
-
     }
-
-    stringstream ss;
-    ss << sugar->configuration_ << "-" << sugar->isomer_ << "-" << sugar->monosaccharide_name_ << "-" << sugar->ring_type_;
-    sugar->name_ = ss.str();
-    cout << sugar->name_ << endl;
 }
+
+string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str)
+{
+    stringstream pattern;
+    pattern << "xC";
+    Atom* N = NULL;
+    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
+    {
+        Atom* t_neighbor = (*it1);
+        if(cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)
+        {
+            if(t_neighbor->GetName().at(0) != 'N')
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == 'N' && N != NULL)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == 'N' && N == NULL)
+                N = t_neighbor;
+        }
+    }
+    if(N != NULL)
+    {
+        pattern << "-N";
+        AtomVector n_neighbors = N->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        {
+            Atom* n_neighbor = (*it);
+            if(n_neighbor->GetId().compare(target->GetId()) != 0)
+                pattern << n_neighbor->GetName().at(0);
+        }
+    }
+//    cout << "CheckxC_N:" << pattern.str() << endl;
+    if(pattern.str().compare("xCH-NHH") == 0 || pattern.str().compare("xC-N") == 0 || pattern.str().compare("xCHH-NHH") == 0 )
+        return "xCH-N";
+    else
+        return "";
+}
+
+string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO)
+{
+    stringstream pattern;
+    pattern << "xC";
+    Atom* N_or_O = NULL;
+    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    {
+        Atom* t_neighbor = (*it);
+        if(cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)
+        {
+            if(t_neighbor->GetName().at(0) != NxO)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+                N_or_O = t_neighbor;
+        }
+    }
+    if(N_or_O != NULL)
+    {
+        Atom* C = NULL;
+        pattern << "-" << NxO;
+        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        {
+            Atom* n_neighbor = (*it);
+            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C != NULL)
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C == NULL)
+                C = n_neighbor;
+        }
+        if(C != NULL)
+        {
+            Atom* CC = NULL;
+            Atom* CO = NULL;
+            pattern << "-C";
+            AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+            {
+                Atom* c_neighbor = (*it);
+                if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetName().at(0) != 'C' && c_neighbor->GetName().at(0) != 'O')
+                    pattern << c_neighbor->GetName().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC != NULL)
+                    pattern << c_neighbor->GetName().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO != NULL)
+                    pattern << c_neighbor->GetName().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO == NULL)
+                    CO = c_neighbor;
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC == NULL)
+                    CC = c_neighbor;
+            }
+            if(CO != NULL)
+            {
+                pattern << "O";
+                AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
+                {
+                    Atom* co_neighbor = (*it);
+                    if(co_neighbor->GetId().compare(C->GetId()) != 0)
+                        pattern << co_neighbor->GetName().at(0);
+                }
+            }
+            if(CC != NULL)
+            {
+                pattern << "-C";
+                AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
+                {
+                    Atom* cc_neighbor = (*it);
+                    if(cc_neighbor->GetId().compare(C->GetId()) != 0)
+                        pattern << cc_neighbor->GetName().at(0);
+                }
+            }
+        }
+    }
+//    cout << "CheckxC_NxO_CO_C:" << pattern.str() << endl;
+    if(NxO == 'N')
+    {
+        if(pattern.str().compare("xCH-NH-CO-CHHH") == 0 || pattern.str().compare("xC-N-CO-C") == 0 || pattern.str().compare("xCHH-NH-CO-CHHH") == 0 )
+            return "xC-N-C=OCH3";
+        else
+            return "";
+    }
+    else if(NxO == 'O')
+    {
+        if(pattern.str().compare("xCH-OH-CO-CHHH") == 0 || pattern.str().compare("xC-O-CO-C") == 0 || pattern.str().compare("xCHH-OH-CO-CHHH") == 0 )
+            return "xC-O-C=OCH3";
+        else
+            return "";
+    }
+    else
+        return "";
+}
+
+string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char NxO)
+{
+    stringstream pattern;
+    pattern << "xC";
+    Atom* N_or_O = NULL;
+    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    {
+        Atom* t_neighbor = (*it);
+        if(cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)
+        {
+            if(t_neighbor->GetName().at(0) != NxO)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+                N_or_O = t_neighbor;
+        }
+    }
+    if(N_or_O != NULL)
+    {
+        Atom* C = NULL;
+        pattern << "-" << NxO;
+        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        {
+            Atom* n_neighbor = (*it);
+            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C != NULL)
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C == NULL)
+                C = n_neighbor;
+        }
+        if(C != NULL)
+        {
+            Atom* CC = NULL;
+            Atom* CO = NULL;
+            pattern << "-C";
+            AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+            {
+                Atom* c_neighbor = (*it);
+                if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetName().at(0) != 'C' && c_neighbor->GetName().at(0) != 'O')
+                    pattern << c_neighbor->GetName().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC != NULL)
+                    pattern << c_neighbor->GetName().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO != NULL)
+                    pattern << c_neighbor->GetName().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO == NULL)
+                    CO = c_neighbor;
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC == NULL)
+                    CC = c_neighbor;
+            }
+            if(CO != NULL)
+            {
+                pattern << "O";
+                AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
+                {
+                    Atom* co_neighbor = (*it);
+                    if(co_neighbor->GetId().compare(C->GetId()) != 0)
+                        pattern << co_neighbor->GetName().at(0);
+                }
+            }
+            if(CC != NULL)
+            {
+                Atom* O = NULL;
+                pattern << "-C";
+                AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
+                {
+                    Atom* cc_neighbor = (*it);
+                    if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) != 'O')
+                        pattern << cc_neighbor->GetName().at(0);
+                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) == 'O' && O != NULL)
+                        pattern << cc_neighbor->GetName().at(0);
+                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) == 'O' && O == NULL)
+                        O = cc_neighbor;
+                }
+                if(O != NULL)
+                {
+                    pattern << "-O";
+                    AtomVector o_neighbors = O->GetNode()->GetNodeNeighbors();
+                    for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
+                    {
+                        Atom* o_neighbor = (*it);
+                        if(o_neighbor->GetId().compare(CC->GetId()) != 0)
+                            pattern << o_neighbor->GetName().at(0);
+                    }
+                }
+            }
+        }
+    }
+//    cout << "CheckxC_NxO_CO_CO: " << pattern.str() << endl;
+    if(NxO == 'N')
+    {
+        if(pattern.str().compare("xCH-NH-CO-CHH-OH") == 0 || pattern.str().compare("xC-N-CO-C-O") == 0 || pattern.str().compare("xCHH-NH-CO-CHH-OH") == 0 )
+            return "xC-N-C=OCH2OH";
+        else
+            return "";
+    }
+    else if(NxO == 'O')
+    {
+        if(pattern.str().compare("xCH-OH-CO-CHH-OH") == 0 || pattern.str().compare("xC-O-CO-C-O") == 0 || pattern.str().compare("xCHH-OH-CO-CHH-OH") == 0 )
+            return "xC-O-C=OCH2OH";
+        else
+            return "";
+    }
+    else
+        return "";
+}
+
+string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
+{
+    stringstream pattern;
+    pattern << "xC";
+    Atom* N_or_O = NULL;
+    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    {
+        Atom* t_neighbor = (*it);
+        if(cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)
+        {
+            if(t_neighbor->GetName().at(0) != NxO)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+                N_or_O = t_neighbor;
+        }
+    }
+    if(N_or_O != NULL)
+    {
+        Atom* S = NULL;
+        pattern << "-" << NxO;
+        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        {
+            Atom* n_neighbor = (*it);
+            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'S')
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'S' && S != NULL)
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'S' && S == NULL)
+                S = n_neighbor;
+        }
+        if(S != NULL)
+        {
+            Atom* O1 = NULL;
+            Atom* O2 = NULL;
+            Atom* O3 = NULL;
+            pattern << "-S";
+            AtomVector s_neighbors = S->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = s_neighbors.begin(); it != s_neighbors.end(); it++)
+            {
+                Atom* s_neighbor = (*it);
+                if(s_neighbor->GetId().compare(N_or_O->GetId()) != 0 && s_neighbor->GetName().at(0) != 'O')
+                    pattern << s_neighbor->GetName().at(0);
+                else if(s_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  s_neighbor->GetName().at(0) == 'O' && O1 == NULL)
+                    O1 = s_neighbor;
+                else if(s_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  s_neighbor->GetName().at(0) == 'O' && O2 == NULL)
+                    O2 = s_neighbor;
+                else if(s_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  s_neighbor->GetName().at(0) == 'O' && O3 == NULL)
+                    O3 = s_neighbor;
+            }
+            if(O1 != NULL && O2 != NULL && O3 != NULL)
+            {
+                pattern << "OOO";
+                AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
+                {
+                    Atom* o1_neighbor = (*it);
+                    if(o1_neighbor->GetId().compare(S->GetId()) != 0)
+                        pattern << o1_neighbor->GetName().at(0);
+                }
+                AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
+                {
+                    Atom* o2_neighbor = (*it);
+                    if(o2_neighbor->GetId().compare(S->GetId()) != 0)
+                        pattern << o2_neighbor->GetName().at(0);
+                }
+                AtomVector o3_neighbors = O3->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = o3_neighbors.begin(); it != o3_neighbors.end(); it++)
+                {
+                    Atom* o3_neighbor = (*it);
+                    if(o3_neighbor->GetId().compare(S->GetId()) != 0)
+                        pattern << o3_neighbor->GetName().at(0);
+                }
+            }
+        }
+    }
+//    cout << "CheckxC_NxO_SO3: " << pattern.str() << endl;
+    if(NxO == 'N')
+    {
+        if(pattern.str().compare("xCH-NH-SOOOH") == 0 || pattern.str().compare("xCHH-NH-SOOOH") == 0 || pattern.str().compare("xC-N-SOOO") == 0)
+            return "xC-N-SO3";
+        else
+            return "";
+    }
+    else if(NxO == 'O')
+    {
+        if(pattern.str().compare("xCH-OH-SOOOH") == 0 || pattern.str().compare("xCHH-OH-SOOOH") == 0 || pattern.str().compare("xC-O-SOOO") == 0)
+            return "xC-O-SO3";
+        else
+            return "";
+    }
+    else
+        return "";
+}
+
+string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
+{
+    stringstream pattern;
+    pattern << "xC";
+    Atom* N_or_O = NULL;
+    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    {
+        Atom* t_neighbor = (*it);
+        if(cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)
+        {
+            if(t_neighbor->GetName().at(0) != NxO)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+                N_or_O = t_neighbor;
+        }
+    }
+    if(N_or_O != NULL)
+    {
+        Atom* P = NULL;
+        pattern << "-" << NxO;
+        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        {
+            Atom* n_neighbor = (*it);
+            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'P')
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'P' && P != NULL)
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'P' && P == NULL)
+                P = n_neighbor;
+        }
+        if(P != NULL)
+        {
+            Atom* O1 = NULL;
+            Atom* O2 = NULL;
+            Atom* O3 = NULL;
+            pattern << "-P";
+            AtomVector p_neighbors = P->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = p_neighbors.begin(); it != p_neighbors.end(); it++)
+            {
+                Atom* p_neighbor = (*it);
+                if(p_neighbor->GetId().compare(N_or_O->GetId()) != 0 && p_neighbor->GetName().at(0) != 'O')
+                    pattern << p_neighbor->GetName().at(0);
+                else if(p_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  p_neighbor->GetName().at(0) == 'O' && O1 == NULL)
+                    O1 = p_neighbor;
+                else if(p_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  p_neighbor->GetName().at(0) == 'O' && O2 == NULL)
+                    O2 = p_neighbor;
+                else if(p_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  p_neighbor->GetName().at(0) == 'O' && O3 == NULL)
+                    O3 = p_neighbor;
+            }
+            if(O1 != NULL && O2 != NULL && O3 != NULL)
+            {
+                pattern << "OOO";
+                AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
+                {
+                    Atom* o1_neighbor = (*it);
+                    if(o1_neighbor->GetId().compare(P->GetId()) != 0)
+                        pattern << o1_neighbor->GetName().at(0);
+                }
+                AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
+                {
+                    Atom* o2_neighbor = (*it);
+                    if(o2_neighbor->GetId().compare(P->GetId()) != 0)
+                        pattern << o2_neighbor->GetName().at(0);
+                }
+                AtomVector o3_neighbors = O3->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = o3_neighbors.begin(); it != o3_neighbors.end(); it++)
+                {
+                    Atom* o3_neighbor = (*it);
+                    if(o3_neighbor->GetId().compare(P->GetId()) != 0)
+                        pattern << o3_neighbor->GetName().at(0);
+                }
+            }
+        }
+    }
+//    cout << "CheckxC_NxO_PO3: " << pattern.str() << endl;
+    if(NxO == 'N')
+    {
+        if(pattern.str().compare("xCH-NH-POOOH") == 0 || pattern.str().compare("xCHH-NH-POOOH") == 0  || pattern.str().compare("xC-N-POOO") == 0)
+            return "xC-N-PO3";
+        else
+            return "";
+    }
+    else if(NxO = 'O')
+    {
+        if(pattern.str().compare("xCH-OH-POOOH") == 0 || pattern.str().compare("xCHH-OH-POOOH") == 0  || pattern.str().compare("xC-O-POOO") == 0)
+            return "xC-O-PO3";
+        else
+            return "";
+    }
+    else
+        return "";
+}
+
+string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
+{
+    stringstream pattern;
+    pattern << "xC";
+    Atom* N_or_O = NULL;
+    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    {
+        Atom* t_neighbor = (*it);
+        if(cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)
+        {
+            if(t_neighbor->GetName().at(0) != NxO)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+                N_or_O = t_neighbor;
+        }
+    }
+    if(N_or_O != NULL)
+    {
+        Atom* C = NULL;
+        pattern << "-" << NxO;
+        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        {
+            Atom* n_neighbor = (*it);
+            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C != NULL)
+                pattern << n_neighbor->GetName().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C == NULL)
+                C = n_neighbor;
+        }
+        if(C != NULL)
+        {
+            pattern << "-C";
+            AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+            {
+                Atom* c_neighbor = (*it);
+                if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0)
+                    pattern << c_neighbor->GetName().at(0);
+            }
+        }
+    }
+//    cout << "CheckxC_NxO_C: " << pattern.str() << endl;
+    if(NxO == 'N')
+    {
+        if(pattern.str().compare("xCH-NH-CHHH") == 0 || pattern.str().compare("xCHH-NH-CHHH") == 0 || pattern.str().compare("xC-N-C") == 0 )
+            return "xC-N-CH3";
+        else
+            return "";
+    }
+    else if(NxO == 'O')
+    {
+        if(pattern.str().compare("xCH-OH-CHHH") == 0 || pattern.str().compare("xCHH-OH-CHHH") == 0 || pattern.str().compare("xC-O-C") == 0 )
+            return "xC-O-CH3";
+        else
+            return "";
+    }
+    else
+        return "";
+}
+
+string Assembly::CheckxCOO(Atom *target, string cycle_atoms_str)
+{
+    stringstream pattern;
+    pattern << "xC";
+    Atom* O1 = NULL;
+    Atom* O2 = NULL;
+    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    {
+        Atom* t_neighbor = (*it);
+        if(cycle_atoms_str.find(t_neighbor->GetId()) == string::npos)
+        {
+            if(t_neighbor->GetName().at(0) != 'O')
+                pattern << t_neighbor->GetName().at(0);
+            else if(t_neighbor->GetName().at(0) == 'O' && O1 == NULL)
+                O1 = t_neighbor;
+            else if(t_neighbor->GetName().at(0) == 'O' && O2 == NULL)
+                O2 = t_neighbor;
+        }
+    }
+    if(O1 != NULL && O2 != NULL)
+    {
+        pattern << "OO";
+        AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
+        {
+            Atom* o1_neighbor = (*it);
+            if(o1_neighbor->GetId().compare(target->GetId()) != 0)
+                pattern << o1_neighbor->GetName().at(0);
+        }
+        AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
+        {
+            Atom* o2_neighbor = (*it);
+            if(o2_neighbor->GetId().compare(target->GetId()) != 0)
+                pattern << o2_neighbor->GetName().at(0);
+        }
+    }
+//    cout << "CheckxCOO: " << pattern.str() << endl;
+    if(pattern.str().compare("xCOO") == 0 || pattern.str().compare("xCHOO") == 0)
+        return "xC-(O,O)";
+    else if(pattern.str().compare("xCOOH") == 0 || pattern.str().compare("xCHOOH") == 0)
+        return "xC-(O,OH)";
+    else
+        return "";
+}
+
+void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
+{
+    stringstream in_bracket;
+    for(map<string, string>::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++)
+    {
+        string key = (*it1).first;
+        string value = (*it1).second;
+
+        if(value.compare("xCH-N") == 0)
+        {
+            if(key.compare("a") == 0)
+                cout << "CH-N is at warning position: anomeric" << endl;
+            else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
+                    find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
+                    find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
+                    mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "-osamine";
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "N";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "CH-N is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "CH-N is at error position: 5" << endl;
+            else
+                in_bracket << key << "N, ";
+        }
+
+        if(value.compare("xC-N-C=OCH3") == 0)
+        {
+            if(key.compare("a") == 0)
+                cout << "C-N-C=OCH3 is at warning position: anomeric" << endl;
+            else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
+                    find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
+                    find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
+                    mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << "N-acetyl-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NAc";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-N-C=OCH3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-N-C=OCH3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "NAc, ";
+        }
+        if(value.compare("xC-N-C=OCH2OH") == 0)
+        {
+            if(key.compare("a") == 0)
+                cout << "C-N-C=OCH2OH is at warning position: anomeric" << endl;
+            else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
+                    find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
+                    find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
+                    mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << "N-glycolyl-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NGc";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-N-C=OCH2OH is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-N-C=OCH2OH is at error position: 5" << endl;
+            else
+                in_bracket << key << "NGc, ";
+        }
+        if(value.compare("xC-N-SO3") == 0)
+        {
+            if(key.compare("a") == 0)
+                cout << "C-N-SO3 is at warning position: anomeric" << endl;
+            else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
+                    find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
+                    find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
+                    mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << "N-sulfo-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NS";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-N-SO3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-N-SO3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "NS, ";
+        }
+        if(value.compare("xC-N-PO3") == 0)
+        {
+            if(key.compare("a") == 0)
+                cout << "C-N-PO3 is at warning position: anomeric" << endl;
+            else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
+                    find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
+                    find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
+                    mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << "N-phospho-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NP";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-N-PO3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-N-PO3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "NP, ";
+        }
+        if(value.compare("xC-N-CH3") == 0)
+        {
+            if(key.compare("a") == 0)
+                cout << "C-N-CH3 is at warning position: anomeric" << endl;
+            else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
+                    find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
+                    find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
+                    mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << "N-methyl-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NMe";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-N-CH3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-N-CH3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "NMe, ";
+        }
+
+        if(value.compare("xC-O-C=OCH3") == 0)
+        {
+            stringstream long_name;
+            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                long_name << key << "acetyl-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+            }
+            else if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                in_bracket << key << "Ac, ";
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-O-C=OCH3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-O-C=OCH3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "Ac, ";
+        }
+        if(value.compare("xC-O-C=OCH2OH") == 0)
+        {
+            stringstream long_name;
+            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                long_name << key << "glycolyl-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+            }
+            else if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                in_bracket << key << "Gc, ";
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-O-C=OCH2OH is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-O-C=OCH2OH is at error position: 5" << endl;
+            else
+                in_bracket << key << "Gc, ";
+        }
+        if(value.compare("xC-O-SO3") == 0)
+        {
+            stringstream long_name;
+            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                long_name << key << "sulfo-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+            }
+            else if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                in_bracket << key << "S, ";
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-O-SO3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-O-SO3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "S, ";
+        }
+        if(value.compare("xC-O-PO3") == 0)
+        {
+            stringstream long_name;
+            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                long_name << key << "phospho-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+            }
+            else if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                in_bracket << key << "P, ";
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-O-PO3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-O-PO3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "P, ";
+        }
+        if(value.compare("xC-O-CH3") == 0)
+        {
+            stringstream long_name;
+            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                long_name << key << "methyl-" << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+            }
+            else if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                in_bracket << key << "Me, ";
+            else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+                cout << "C-O-CH3 is at error position: 4" << endl;
+
+            else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+                cout << "C-O-CH3 is at error position: 5" << endl;
+            else
+                in_bracket << key << "Me, ";
+        }
+        if(value.compare("xC-(O,OH)") == 0)
+        {
+            if(key.compare("-1") == 0 && mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                cout << "C-(O,OH) is at error position: -1" << endl;
+                stringstream long_name;
+                long_name << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "-ulosonic acid";
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                    in_bracket << key << "AH, ";
+            }
+            else if(key.compare("+1") == 0 && mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "-uronic acid";
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "AH";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+            else
+                cout << "C-(O,OH) is at error position: " << key << endl;
+        }
+        if(value.compare("xC-(O,O)") == 0)
+        {
+            if(key.compare("-1") == 0 && mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                cout << "C-(O,O) is at error position: -1" << endl;
+                stringstream long_name;
+                long_name << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "-ulosonate";
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                    in_bracket << key << "A, ";
+            }
+            else if(key.compare("+1") == 0 && mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+            {
+                stringstream long_name;
+                long_name << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "-uronate";
+                mono->sugar_name_.monosaccharide_name_ = long_name.str();
+                stringstream short_name;
+                if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+                {
+                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "A";
+                    mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+                }
+            }
+            else
+                cout << "C-(O,O) is at error position: " << key << endl;
+        }
+    }
+    if(in_bracket.str().size() != 0)
+    {
+        stringstream short_name;
+        short_name << mono->sugar_name_.monosaccharide_short_name_ << "[" << in_bracket.str().substr(0, in_bracket.str().size() - 2) << "]";
+        mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
+    }
+}
+
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

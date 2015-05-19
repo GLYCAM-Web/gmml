@@ -378,6 +378,16 @@ namespace gmml
             return new Geometry::Coordinate(distance, angle, torsion);
         }
     }
+
+    inline Glycam::SugarName SugarStereoChemistryNameLookup(std::string code)
+    {
+        for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
+        {
+            if(code.compare(SUGARNAMELOOKUP[i].chemical_code_string_) == 0)
+                return SUGARNAMELOOKUP[i];
+        }
+        return SUGARNAMELOOKUP[0];
+    }
 }
 
 #endif // UTILS_HPP
