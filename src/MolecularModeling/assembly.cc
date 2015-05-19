@@ -1533,7 +1533,7 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
                 }
                 if(stack_neighbor_index == -1)
                 {
-                    cout << "EMPTY" << endl;
+//                    cout << "EMPTY" << endl;
                 }
                 else
                 {
@@ -1726,10 +1726,10 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             ss << assembly_residue->GetName() << "-";
         topology_residue->SetStartingAtomIndex(atom_counter);
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
-        //        PrepFileResidue::Loop loops = PrepFileResidue::Loop();
-        //        vector<int> bond_index = vector<int>();
-        //        int atom_index = 1;
-        //        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);
+        PrepFileResidue::Loop loops = PrepFileResidue::Loop();
+        vector<int> bond_index = vector<int>();
+        int atom_index = 1;
+        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);
 
         ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
         ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
@@ -1753,10 +1753,10 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             topology_atom->SetRadii(dNotSet);
             topology_atom->SetScreen(dNotSet);
             topology_atom->SetIndex(atom_counter);
-            //            topology_atom->SetTreeChainClasification(gmml::ConvertTopologicalType2String(residue_topological_types.at(atom_index - 1)));
+            topology_atom->SetTreeChainClasification(gmml::ConvertTopologicalType2String(residue_topological_types.at(atom_index - 1)));
             topology_residue->AddAtom(topology_atom);
             atom_counter++;
-            //            atom_index++;
+            atom_index++;
 
             ///Pairs
             for(AtomVector::iterator it2 = assembly_atoms.begin(); it2 != assembly_atoms.end(); it2++)
@@ -1772,7 +1772,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 stringstream reverse_sss;
                 reverse_sss << atom_type2 << "-" << atom_type1;
                 if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
-                        find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end()  )
+                        find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end())
                 {
                     TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
                     ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
@@ -1876,19 +1876,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         topology_assembly->AddResidue(topology_residue);
     }
 
-
-
-    //    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
-    //    {
-    //        Residue* assembly_residue = *it;
-    //        AtomVector assembly_atoms = assembly_residue->GetAtoms();
-    //        for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
-    //        {
-    //            Atom* assembly_atom = (*it1);
-
-
-    //        }
-    //    }
     topology_assembly->SetAssemblyName(ss.str());
     topology_file->SetAtomPairs(pairs);
     topology_file->SetAssembly(topology_assembly);
