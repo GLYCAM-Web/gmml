@@ -22,6 +22,7 @@
 #include "../FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../includes/Glycam/oligosaccharide.hpp"
 
 namespace MolecularModeling
 {
@@ -570,7 +571,7 @@ namespace MolecularModeling
             std::vector<std::vector<std::string> > CreateAllCyclePermutations(std::string id1, std::string id2, std::string id3, std::string id4, std::string id5, std::string id6);
 
 //            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
-            void ExtractMonosaccharides();
+            void ExtractSugars();
 
             CycleMap DetectCyclesByExhaustiveRingPerception();
             void PruneGraph(AtomVector& all_atoms);
@@ -587,8 +588,10 @@ namespace MolecularModeling
             AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
             std::vector<std::string> GetSideGroupOrientations(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
             Glycam::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
+            void ExtractAdditionalSideAtoms(Glycam::Monosaccharide* mono);
             void ExtractDerivatives(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
             void GenerateCompleteSugarName(Glycam::Monosaccharide* mono);
+            std::vector<Glycam::Oligosaccharide*> ExtractOligosaccharides(std::vector<Glycam::Monosaccharide*>);
 
             std::string CheckxC_N(Atom* target, std::string cycle_atoms_str);
             std::string CheckxC_NxO_CO_C(Atom* target, std::string cycle_atoms_str, char NxO);
