@@ -26,7 +26,7 @@ namespace gmml
     const double PI_RADIAN = 4.0*atan(1.0);
     const double PI_DEGREE = 180.0;
     const double EPSILON = 0.001;
-    const double dCutOff = 1.6;
+    const double dCutOff = 1.65;
     const int PdbResidueThreshold = 500;
     const int DEFAULT_DUMMY_ATOMS = 3;
     const char BLANK_SPACE = '?';
