@@ -18,7 +18,7 @@ namespace Glycam
             SugarName sugar_name_;
             std::map<std::string, std::string> derivatives_map_;
             std::string cycle_atoms_str_;
-
+//            std::vector<Monosaccharide*> derivatives_map_;
             Monosaccharide() {}
     } ;
 }
