@@ -94,6 +94,7 @@ namespace MolecularModeling
               * @return sequence_number_ attribute of the current object of this class
               */
             int GetSequenceNumber();
+            std::string GetId();
             /*! \fn
               * An accessor function in order to access to the total mass
               * @return total_mass_ attribute of the current object of this class
@@ -179,6 +180,7 @@ namespace MolecularModeling
               * @param assembly The assembly of the current object
               */
             void AddAssembly(Assembly* assembly);
+            void UpdateIds(std::string new_id);
             /*! \fn
               * A mutator function in order to set the residues of the current object
               * Set the residues_ attribute of the current assembly
@@ -203,6 +205,7 @@ namespace MolecularModeling
               * @param sequence_number The sequence number attribute of the current object
               */
             void SetSequenceNumber(int sequence_number);
+            void SetId(std::string id);
             /*! \fn
               * A mutator function in order to set the total mass of the current object
               * Set the total_mass_ attribute of the current assembly
@@ -639,6 +642,7 @@ namespace MolecularModeling
             ResidueVector residues_;                        /*!< List of residues involved in the current object of assembly >*/
             std::string chemical_type_;                     /*!< A descriptor for the chemical type of the current object of assembly >*/
             int sequence_number_;                           /*!< An integer number to indicates sequence of importing the current assembly >*/
+            std::string id_;
             double total_mass_;                             /*!< Total mass of the assembly >*/
             Geometry::Coordinate center_of_mass_;           /*!< Center of mass of the assembly >*/
             Geometry::Coordinate center_of_geometry_;       /*!< Center of geometry of the assembly >*/
