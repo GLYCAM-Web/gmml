@@ -31,6 +31,16 @@ namespace gmml
     const int DEFAULT_DUMMY_ATOMS = 3;
     const char BLANK_SPACE = '?';
 
+    // Ionizing
+    const double DEFAULT_GRID_LENGTH = 2;//0.5;
+    const double DEFAULT_GRID_WIDTH = 2;//0.5;
+    const double DEFAULT_GRID_HEIGHT = 2;//0.5;
+    const double DEFAULT_BOX_WIDTH = INFINITY;//20;
+    const double DEFAULT_BOX_LENGTH = INFINITY;//20;
+    const double DEFAULT_BOX_HEIGHT = INFINITY;//20;
+    const double THRESHOLD = 0.001;//0.001
+    const double THRESHOLD_PARTITIONING = 0.001;//0.0001;
+
 
     const Glycam::SugarName SUGARNAMELOOKUP[] = {
 

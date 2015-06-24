@@ -61,7 +61,7 @@ using namespace Glycam;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Assembly::Assembly() : description_(""), center_of_geometry_(0,0,0), model_index_(0), sequence_number_(1)
+Assembly::Assembly() : description_(""), center_of_geometry_(0,0,0), model_index_(0), sequence_number_(1), id_("1")
 {
     residues_ = ResidueVector();
     assemblies_ = AssemblyVector();
@@ -72,6 +72,8 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
     source_file_type_ = type;
     description_ = "";
     model_index_ = 0;
+    sequence_number_ = 1;
+    id_ = "1";
     switch(type)
     {
         case gmml::PDB:
@@ -115,12 +117,17 @@ Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileTyp
 {
     stringstream name;
     stringstream source_file;
+    sequence_number_ = 1;
+    id_ = "1";
     for(unsigned int i = 0; i < file_paths.size(); i++)
     {
         vector<string> file = file_paths.at(i);
         gmml::InputFileType input_type = types.at(i);
         Assembly* assembly = new Assembly(file, input_type);
         assembly->SetSequenceNumber(i + 1);
+        stringstream ss;
+        ss << id_ << "." << i + 1;
+        assembly->SetId(ss.str());
         assemblies_.push_back(assembly);
         if(i < file_paths.size() - 1)
         {
@@ -160,6 +167,10 @@ string Assembly::GetChemicalType()
 int Assembly::GetSequenceNumber()
 {
     return sequence_number_;
+}
+string Assembly::GetId()
+{
+    return id_;
 }
 double Assembly::GetTotalMass()
 {
@@ -330,7 +341,46 @@ void Assembly::AddAssembly(Assembly *assembly)
     this->source_file_ = sss.str();
     source_file_type_ = gmml::MULTIPLE;
     assembly->SetSequenceNumber(assemblies_.size() + 1);
+    stringstream ssss;
+    ssss << this->id_ << "." << assemblies_.size() + 1;
+    assembly->UpdateIds(ssss.str());
+    assembly->SetId(ssss.str());
     this->assemblies_.push_back(assembly);
+}
+void Assembly::UpdateIds(string new_id)
+{
+    for(AssemblyVector::iterator  it = assemblies_.begin(); it != assemblies_.end(); it++)
+    {
+        Assembly* assembly = *it;
+        stringstream ss;
+        ss << new_id << "." << assembly->GetId().substr(assembly->GetId().find_first_of(this->id_) + this->id_.size() + 1);
+        (*it)->UpdateIds(ss.str());
+        (*it)->SetId(ss.str());
+    }
+    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
+    {
+        vector<string> id_tokens = Split((*it)->GetId(), "_");
+        stringstream ss;
+        for(int i = 0; i < id_tokens.size() - 1; i++)
+        {
+            ss << id_tokens.at(i) << "_";
+        }
+        ss << new_id;
+        (*it)->SetId(ss.str());
+
+        AtomVector atoms = (*it)->GetAtoms();
+        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        {
+            vector<string> id_tokens = Split((*it1)->GetId(), "_");
+            stringstream ss;
+            for(int i = 0; i < id_tokens.size() - 1; i++)
+            {
+                ss << id_tokens.at(i) << "_";
+            }
+            ss << new_id;
+            (*it1)->SetId(ss.str());
+        }
+    }
 }
 void Assembly::SetResidues(ResidueVector residues)
 {
@@ -351,6 +401,10 @@ void Assembly::SetChemicalType(string chemical_type)
 void Assembly::SetSequenceNumber(int sequence_number)
 {
     sequence_number_ = sequence_number;
+}
+void Assembly::SetId(string id)
+{
+    id_ = id;
 }
 void Assembly::SetTtoalMass(double total_mass)
 {
@@ -408,7 +462,8 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream ss;
-                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
+                   << alternate_location << "_" << id_;
                 string key = ss.str();
                 residue->SetId(key);
 
@@ -522,7 +577,8 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile* pdb_file)
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
                 stringstream ss;
-                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
+                   << alternate_location << "_" << id_;
                 string key = ss.str();
                 residue->SetId(key);
 
@@ -629,17 +685,20 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path)
         assembly_residue->SetName(residue_name);
         TopologyResidue* topology_residue = (*it).second;
         stringstream id;
-        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << topology_residue->GetIndex() << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        int serial_number = 0;
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             string atom_name = (*it1).first;
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << id.str() << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
@@ -670,17 +729,20 @@ void Assembly::BuildAssemblyFromTopologyFile(TopologyFile* topology_file)
         assembly_residue->SetName(residue_name);
         TopologyResidue* topology_residue = (*it).second;
         stringstream id;
-        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << topology_residue->GetIndex()
+           << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << sequence_number_;
         assembly_residue->SetId(id.str());
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        int serial_number = 0;
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             string atom_name = (*it1).first;
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << id.str() << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge());
@@ -706,13 +768,18 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
     LibraryFile::ResidueMap library_residues = library_file->GetResidues();
     stringstream ss;
 
+    int sequence_number = 0;
     for(LibraryFile::ResidueMap::iterator it = library_residues.begin(); it != library_residues.end(); it++)
     {
+        sequence_number++;
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
         string residue_name = (*it).first;
         assembly_residue->SetName(residue_name);
-        assembly_residue->SetId(residue_name);
+        stringstream id;
+        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
+        assembly_residue->SetId(id.str());
         LibraryFileResidue* library_residue = (*it).second;
         int lib_res_tail_atom_index = library_residue->GetTailAtomIndex();
         int lib_res_head_atom_index = library_residue->GetHeadAtomIndex();
@@ -723,14 +790,16 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path)
             ss << library_residue_name << "-";
 
         LibraryFileResidue::AtomMap library_atoms = library_residue->GetAtoms();
+        int serial_number = 0;
         for(LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             LibraryFileAtom* library_atom = (*it1).second;
             string atom_name = library_atom->GetName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << residue_name << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
 
             assembly_atom->SetResidue(assembly_residue);
@@ -759,13 +828,18 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFile* library_file)
     LibraryFile::ResidueMap library_residues = library_file->GetResidues();
     stringstream ss;
 
+    int sequence_number = 0;
     for(LibraryFile::ResidueMap::iterator it = library_residues.begin(); it != library_residues.end(); it++)
     {
+        sequence_number++;
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
         string residue_name = (*it).first;
         assembly_residue->SetName(residue_name);
-        assembly_residue->SetId(residue_name);
+        stringstream id;
+        id << residue_name << "_" << gmml::BLANK_SPACE << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
+        assembly_residue->SetId(id.str());
         LibraryFileResidue* library_residue = (*it).second;
         int lib_res_tail_atom_index = library_residue->GetTailAtomIndex();
         int lib_res_head_atom_index = library_residue->GetHeadAtomIndex();
@@ -776,14 +850,16 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFile* library_file)
             ss << library_residue_name << "-";
 
         LibraryFileResidue::AtomMap library_atoms = library_residue->GetAtoms();
+        int serial_number = 0;
         for(LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             LibraryFileAtom* library_atom = (*it1).second;
             string atom_name = library_atom->GetName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << residue_name << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
 
             assembly_atom->SetResidue(assembly_residue);
@@ -812,7 +888,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
-    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
+    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();    
     for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
@@ -821,17 +897,20 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
         assembly_residue->SetName(residue_name);
         TopologyResidue* topology_residue = (*it).second;
         stringstream id;
-        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        id << residue_name << "_" << gmml::BLANK_SPACE << topology_residue->GetIndex() << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        int serial_number = 0;
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             string atom_name = (*it1).first;
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << id.str() << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
 
@@ -867,17 +946,20 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile* topology_fi
         assembly_residue->SetName(residue_name);
         TopologyResidue* topology_residue = (*it).second;
         stringstream id;
-        id << residue_name << "(" << topology_residue->GetIndex() << ")" ;
+        id << residue_name << "_" << gmml::BLANK_SPACE << topology_residue->GetIndex() << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
         TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        int serial_number = 0;
         for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             string atom_name = (*it1).first;
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << id.str() << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << id.str();
             assembly_atom->SetId(atom_id.str());
             TopologyAtom* topology_atom = (*it1).second;
 
@@ -907,8 +989,10 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
     PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
     stringstream ss;
 
+    int sequence_number = 0;
     for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
     {
+        sequence_number++;
         CoordinateVector cartesian_coordinate_list = CoordinateVector();
         int head_atom_index = INFINITY;
         int tail_atom_index = -INFINITY;
@@ -919,7 +1003,10 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         assembly_residue->SetAssembly(this);
         string residue_name = (*it).first;
         assembly_residue->SetName(residue_name);
-        assembly_residue->SetId(residue_name);
+        stringstream id;
+        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
+        assembly_residue->SetId(id.str());
         PrepFileResidue* prep_residue = (*it).second;
         string prep_residue_name = prep_residue->GetName();
         if(distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
@@ -927,8 +1014,10 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
         else
             ss << prep_residue_name << "-";
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+        int serial_number = 0;
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             PrepFileAtom* prep_atom = (*it1);
 
@@ -936,7 +1025,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path)
             string atom_name = prep_atom->GetName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << residue_name << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
 
             assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
@@ -1016,8 +1105,10 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile* prep_file)
     PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
     stringstream ss;
 
+    int sequence_number = 0;
     for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
     {
+        sequence_number++;
         CoordinateVector cartesian_coordinate_list = CoordinateVector();
         int head_atom_index = INFINITY;
         int tail_atom_index = -INFINITY;
@@ -1028,7 +1119,10 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile* prep_file)
         assembly_residue->SetAssembly(this);
         string residue_name = (*it).first;
         assembly_residue->SetName(residue_name);
-        assembly_residue->SetId(residue_name);
+        stringstream id;
+        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
+        assembly_residue->SetId(id.str());
         PrepFileResidue* prep_residue = (*it).second;
         string prep_residue_name = prep_residue->GetName();
         if(distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
@@ -1037,8 +1131,10 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile* prep_file)
             ss << prep_residue_name << "-";
         PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
         PrepFileResidue::PrepFileAtomVector parent_atoms = prep_residue->GetAtomsParentVector();
+        int serial_number = 0;
         for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
+            serial_number++;
             Atom* assembly_atom = new Atom();
             PrepFileAtom* prep_atom = (*it1);
 
@@ -1046,7 +1142,7 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile* prep_file)
             string atom_name = prep_atom->GetName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
-            atom_id << residue_name << ":" << atom_name;
+            atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
 
             assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
@@ -1291,7 +1387,6 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
             atom_index++;
             prep_atoms.push_back(dummy_atom);
         }
-        cout << assembly_residue->GetName() << endl;
         vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index);
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
@@ -2795,7 +2890,10 @@ void Assembly::BuildStructureByTOPFileInformation()
             {
                 Atom* atom_2 = (*it1);
                 stringstream ss;
-                ss << atom_1->GetId() << "-" << atom_2->GetId();
+                ss << gmml::Split(atom_1->GetId(), "_").at(2) << "(" << gmml::Split(atom_1->GetId(), "_").at(4) << ")"
+                   << ":" << gmml::Split(atom_1->GetId(), "_").at(0) << "-"
+                   << gmml::Split(atom_2->GetId(), "_").at(2) << "(" << gmml::Split(atom_2->GetId(), "_").at(4) << ")"
+                   << ":" << gmml::Split(atom_2->GetId(), "_").at(0);
                 string key = ss.str();
                 TopologyFile::TopologyBondMap topology_bond = topology_file->GetBonds();
                 for(TopologyFile::TopologyBondMap::iterator it2 = topology_bond.begin(); it2 != topology_bond.end(); it2++)
@@ -2856,7 +2954,10 @@ void Assembly::BuildStructureByLIBFileInformation()
                         stringstream ss;
                         ss << library_residue->GetName() << ":" << library_atom->GetName();
                         string library_atom_id = ss.str();
-                        if(assembly_atom_id.compare(library_atom_id) == 0)
+                        vector<string> atom_id_tokens = gmml::Split(assembly_atom_id, "_");
+                        stringstream sss;
+                        sss << atom_id_tokens.at(2) << ":" << atom_id_tokens.at(0);
+                        if(sss.str().compare(library_atom_id) == 0)
                         {
                             atom_node->AddNodeNeighbor(assembly_atom);
                             break;
@@ -2900,7 +3001,10 @@ void Assembly::BuildStructureByPrepFileInformation()
                     for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                     {
                         Atom* assembly_atom = (*it2);
-                        if(assembly_atom->GetId().compare(ss.str()) == 0)
+                        vector<string> atom_id_tokens = gmml::Split(assembly_atom->GetId(), "_");
+                        stringstream sss;
+                        sss << atom_id_tokens.at(2) << ":" << atom_id_tokens.at(0);
+                        if(sss.str().compare(ss.str()) == 0)
                         {
                             atom_node->AddNodeNeighbor(assembly_atom);
                             break;
