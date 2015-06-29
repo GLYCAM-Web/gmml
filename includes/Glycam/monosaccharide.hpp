@@ -12,13 +12,15 @@
 namespace Glycam
 {
     struct Monosaccharide {
+            int mono_id;
             std::vector<std::vector<MolecularModeling::Atom*> > side_atoms_;
             std::vector<MolecularModeling::Atom*> cycle_atoms_;
             ChemicalCode* chemical_code_;
             SugarName sugar_name_;
             std::map<std::string, std::string> derivatives_map_;
             std::string cycle_atoms_str_;
-//            std::vector<Monosaccharide*> derivatives_map_;
+            std::string anomeric_status_;
+
             Monosaccharide() {}
     } ;
 }
