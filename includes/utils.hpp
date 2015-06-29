@@ -388,6 +388,27 @@ namespace gmml
         }
         return SUGARNAMELOOKUP[0];
     }
+
+    inline Glycam::SugarName ComplexSugarNameLookup(std::string code)
+    {
+        for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
+        {
+            if(code.compare(COMPLEXSUGARNAMELOOKUP[i].chemical_code_string_) == 0)
+                return COMPLEXSUGARNAMELOOKUP[i];
+        }
+        return COMPLEXSUGARNAMELOOKUP[0];
+    }
+
+    inline ResidueNameMap InitializeCommonTerminalResidueMap()
+    {
+        ResidueNameMap COMMON_TERMINAL_REDSIDUES = ResidueNameMap();
+        COMMON_TERMINAL_REDSIDUES["ROH"] = "ROH";
+        COMMON_TERMINAL_REDSIDUES["TBT"] = "TBT";
+        COMMON_TERMINAL_REDSIDUES["OME"] = "OME";
+        return COMMON_TERMINAL_REDSIDUES;
+    }
 }
+
+
 
 #endif // UTILS_HPP

@@ -22,7 +22,7 @@
 #include "../FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodel.hpp"
-#include "../../includes/Glycam/oligosaccharide.hpp"
+#include "../Glycam/oligosaccharide.hpp"
 
 namespace MolecularModeling
 {
@@ -567,11 +567,14 @@ namespace MolecularModeling
 
             void ClearAssembly();
 
-            void CycleDetection();
-            std::vector<std::vector<std::string> > CreateAllCyclePermutations(std::string id1, std::string id2, std::string id3, std::string id4, std::string id5, std::string id6);
+//            void CycleDetection();
+//            std::vector<std::vector<std::string> > CreateAllCyclePermutations(std::string id1, std::string id2, std::string id3, std::string id4, std::string id5, std::string id6);
 
 //            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
-            void ExtractSugars();
+
+            gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
+
+            void ExtractSugars(std::vector<std::string> amino_lib_files);
 
             CycleMap DetectCyclesByExhaustiveRingPerception();
             void PruneGraph(AtomVector& all_atoms);
@@ -584,14 +587,20 @@ namespace MolecularModeling
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
             void FilterAllCarbonCycles(CycleMap& cycles);
             void RemoveFusedCycles(CycleMap& cycles);
-            Atom* FindAnomericCarbon(AtomVector cycle, std::string cycle_atoms_str);
+            Atom* FindAnomericCarbon(std::vector<std::string>& anomeric_carbons_status, AtomVector cycle, std::string cycle_atoms_str);
             AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
             std::vector<std::string> GetSideGroupOrientations(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
             Glycam::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
-            void ExtractAdditionalSideAtoms(Glycam::Monosaccharide* mono);
+            AtomVector ExtractAdditionalSideAtoms(Glycam::Monosaccharide* mono);
             void ExtractDerivatives(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
             void GenerateCompleteSugarName(Glycam::Monosaccharide* mono);
-            std::vector<Glycam::Oligosaccharide*> ExtractOligosaccharides(std::vector<Glycam::Monosaccharide*>);
+            void UpdateComplexSugarChemicalCode(Glycam::Monosaccharide* mono);
+            std::vector<Glycam::Oligosaccharide*> ExtractOligosaccharides(std::vector<Glycam::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
+                                                                          std::string& terminal_residue_name);
+            std::string CalculateRSOrientations(Atom* prev_atom, Atom* target, Atom* next_atom);
+            void BuildOligosaccharideTreeStructure(Glycam::Monosaccharide* key, std::vector<Glycam::Monosaccharide*> val, Glycam::Oligosaccharide* oligo,
+                                                                  std::vector<int>& visited_monos, std::map<Glycam::Monosaccharide*, std::vector<Glycam::Monosaccharide*> >,
+                                                                  std::map<Glycam::Monosaccharide*, std::vector<std::string> > monos_table_linkages, std::vector<std::string>& visited_linkages);
 
             std::string CheckxC_N(Atom* target, std::string cycle_atoms_str);
             std::string CheckxC_NxO_CO_C(Atom* target, std::string cycle_atoms_str, char NxO);
