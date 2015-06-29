@@ -1,0 +1,4 @@
+#ifndef PDBQTFILE_HPP
+#define PDBQTFILE_HPP
+
+#endif // PDBQTFILE_HPP

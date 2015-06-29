@@ -68,7 +68,8 @@ void TopologyAssembly::SetResidues(TopologyResidueMap residues)
     for(TopologyResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
     {
         TopologyResidue* residue = (*it).second;
-        residues_[residue->GetResidueName()] = residue;
+        string key = (*it).first;
+        residues_[key] = residue;
     }
 }
 void TopologyAssembly::AddResidue(TopologyResidue *residue)
