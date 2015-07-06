@@ -1,13 +1,11 @@
 #ifndef CELL_HPP
 #define CELL_HPP
 
-#include <ostream>
-#include "../MolecularModeling/assembly.hpp"
+#include <iostream>
+#include "coordinate.hpp"
 
 namespace Geometry
 {
-    class Coordinate;
-
     class Cell
     {
         public:
@@ -15,14 +13,14 @@ namespace Geometry
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             Cell();
-            Cell(Coordinate min, Coordinate max);
-            Cell(Coordinate min, Coordinate max, double charge, double potential_energy);
+            Cell(Geometry::Coordinate min, Geometry::Coordinate max);
+            Cell(Geometry::Coordinate min, Geometry::Coordinate max, double charge, double potential_energy);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
-            Coordinate GetMinCorner();
-            Coordinate GetMaxCorner();
+            Geometry::Coordinate GetMinCorner();
+            Geometry::Coordinate GetMaxCorner();
             double GetCellCharge();
             double GetCellPotentialEnergy();
             double GetCellLength();
@@ -32,19 +30,15 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
-            void SetMinCorner(Coordinate min);
-            void SetMaxCorner(Coordinate max);
+            void SetMinCorner(Geometry::Coordinate min);
+            void SetMaxCorner(Geometry::Coordinate max);
             void SetCellCharge(double charge);
             void SetCellPotentialEnergy(double potential_energy);
 
             //////////////////////////////////////////////////////////+
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
-            Coordinate GetCellCenter();
-            void CalculateCellCharge(MolecularModeling::Assembly* assembly);
-            void CalculateCellPotentialEnergy(MolecularModeling::Assembly* assembly, double radius);
-            void CalculateBoxCharge(Assembly* assembly);
-            void CalculateBoxPotentialEnergy(Assembly* assembly);
+            Geometry::Coordinate GetCellCenter();
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
@@ -60,8 +54,8 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////
-            Coordinate min_corner_;
-            Coordinate max_corner_;
+            Geometry::Coordinate min_corner_;
+            Geometry::Coordinate max_corner_;
             double cell_charge_;
             double cell_potential_energy_;
     };

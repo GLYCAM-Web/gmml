@@ -116,6 +116,7 @@ SOURCES       = src/Geometry/coordinate.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtremarkcard.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc \
 		src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc \
+		src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc \
 		src/FileSet/TopologyFileSpace/topologyangle.cc \
 		src/FileSet/TopologyFileSpace/topologyangletype.cc \
 		src/FileSet/TopologyFileSpace/topologyassembly.cc \
@@ -229,6 +230,7 @@ OBJECTS       = coordinate.o \
 		pdbqtremarkcard.o \
 		pdbqtrootcard.o \
 		pdbqttorsionaldofcard.o \
+		pdbqtfileprocessingexception.o \
 		topologyangle.o \
 		topologyangletype.o \
 		topologyassembly.o \
@@ -1036,6 +1038,12 @@ pdbqtrootcard.o: src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc
 
 pdbqttorsionaldofcard.o: src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqttorsionaldofcard.o src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc
+
+pdbqtfileprocessingexception.o: src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc includes/common.hpp \
+                includes/Geometry/coordinate.hpp \
+                includes/Glycam/sugarname.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp
+        $(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtfileprocessingexception.o src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc
 
 topologyangle.o: src/FileSet/TopologyFileSpace/topologyangle.cc includes/FileSet/TopologyFileSpace/topologyangle.hpp \
 		includes/FileSet/TopologyFileSpace/topologyangletype.hpp

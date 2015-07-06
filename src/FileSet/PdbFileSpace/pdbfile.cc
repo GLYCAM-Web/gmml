@@ -174,7 +174,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
     }
-    in_file.close();            /// Close the parameter files
+    in_file.close();            /// Close the pdb files
 }
 PdbFile* PdbFile::LoadPdbFile()
 {
