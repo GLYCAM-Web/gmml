@@ -9351,7 +9351,9 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                 if(key->side_atoms_.at(0).at(1) != NULL)
                     anomeric_o = key->side_atoms_.at(0).at(1);
 
-                if(anomeric_o != NULL)
+                if(anomeric_o == NULL)
+                    isRoot = true;
+                else
                 {
                     if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
                             common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
@@ -9364,10 +9366,6 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                     else if((monos_table_linkages[values.at(0)].size() == 1) && (mono2_linkage.at(0).find(mono2_anomeric_linkage.str()) != string::npos))///mono is attached to other mono through anomeric, the other mono is only attached to this mono through anomeric
                         isRoot = true;
                 }
-                else {
-                    if((monos_table_linkages[values.at(0)].size() == 1) && (mono2_linkage.at(0).find(mono2_anomeric_linkage.str()) != string::npos))///mono doesn't have any anomeric oxygen and the other mono is attached to this mono through anomeric
-                        isRoot = true;
-                }
             }
             else if (values.size() > 1)
             {
@@ -9375,7 +9373,9 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                 if(key->side_atoms_.at(0).at(1) != NULL)
                     anomeric_o = key->side_atoms_.at(0).at(1);
 
-                if(anomeric_o != NULL)
+                if(anomeric_o == NULL)
+                    isRoot = true;
+                else
                 {
                     if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
                             common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
