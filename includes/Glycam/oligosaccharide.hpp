@@ -33,14 +33,22 @@ namespace Glycam
 
                 if(is_cycle)
                 {
-                    int start_index = oligosaccharide_name_.find_first_of('-') + 1;
                     int end_index = oligosaccharide_name_.find_last_of('-');
                     std::vector<std::string> tokens = gmml::Split(oligosaccharide_name_, "-");
 
-                    std::string middle_sub_name = oligosaccharide_name_.substr(start_index, end_index - start_index);
+                    std::string sub_name = oligosaccharide_name_.substr(0, end_index);
                     std::stringstream new_name;
-                    new_name << tokens.at(0) << "-[" << middle_sub_name << "]-" << tokens.at(tokens.size() - 1).at(0);
+                    new_name << "[" << tokens.at(tokens.size() - 1).at(0) << sub_name << "-]";
                     oligosaccharide_name_ = new_name.str();
+
+//                    int start_index = oligosaccharide_name_.find_first_of('-') + 1;
+//                    int end_index = oligosaccharide_name_.find_last_of('-');
+//                    std::vector<std::string> tokens = gmml::Split(oligosaccharide_name_, "-");
+
+//                    std::string middle_sub_name = oligosaccharide_name_.substr(start_index, end_index - start_index);
+//                    std::stringstream new_name;
+//                    new_name << tokens.at(0) << "-[" << middle_sub_name << "]-" << tokens.at(tokens.size() - 1).at(0);
+//                    oligosaccharide_name_ = new_name.str();
                 }
                 out << oligosaccharide_name_ << std::endl;
                 out << oligosaccharide_linkages_ << std::endl;
