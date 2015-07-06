@@ -69,8 +69,6 @@ namespace PdbqtFileSpace
             //////////////////////////////////////////////////////////
             std::string record_name_;
             std::string value_;
-
-
     };
 }
 
