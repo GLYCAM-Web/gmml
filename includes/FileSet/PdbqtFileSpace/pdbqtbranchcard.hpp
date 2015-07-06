@@ -66,19 +66,19 @@ namespace PdbqtFileSpace
             //////////////////////////////////////////////////////////
             /*! \fn
               * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current qt branch card
+              * Set the record_name_ attribute of the current pdbqt branch card
               * @param record_name The record name attribute of the current object
               */
             void SetRecordName(const std::string record_name);
             /*! \fn
               * A mutator function in order to set the solid atom serial number of the current object
-              * Set the solid_atom_serial_number_ attribute of the current qt branch card
+              * Set the solid_atom_serial_number_ attribute of the current pdbqt branch card
               * @param solid_atom_serial_number The solid atom serial number attribute of the current object
               */
             void SetSolidAtomSerialNumber(int solid_atom_serial_number);
             /*! \fn
               * A mutator function in order to set the rotatable atom serial number of the current object
-              * Set the rotatable_atom_serial_number_ attribute of the current qt branch card
+              * Set the rotatable_atom_serial_number_ attribute of the current pdbqt branch card
               * @param rotatable_atom_serial_number The rotatable atom serial number attribute of the current object
               */
             void SetRotatableAtomSerialNumber(int rotatable_atom_serial_number);
