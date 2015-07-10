@@ -345,8 +345,27 @@ namespace MolecularModeling
             /*! \fn
               * A function to build a prep file structure from the current assembly object
               * Exports data from assembly data structure into prep file structure
+              * @param parameter_file_path A path to a parameter file
               */
-            PrepFileSpace::PrepFile* BuildPrepFileStructureFromAssembly();
+            PrepFileSpace::PrepFile* BuildPrepFileStructureFromAssembly(std::string parameter_file_path);
+            /*! \fn
+              * A function to build improper dihedral types of prep file structure from the current assembly object
+              * Exports data from assembly data structure to generate prep improper dihedral types
+              * @param assembly_atom A source atom in a dihedral in the assembly structure
+              * @param inserted_improper_dihedrals_types Improper dihedral types that have been already detected in an assembly structure
+              * @param dihedrals All known dihedrals from parameter file
+              */
+            void ExtractPrepImproperDihedralTypesFromAssembly(Atom* assembly_atom, std::vector<std::string> &inserted_improper_dihedral_types, ParameterFileSpace::ParameterFile::DihedralMap &dihedrals);
+            /*! \fn
+              * A function to build dihedrals of prep file structure from the current assembly object
+              * Exports data from assembly data structure to generate prep dihedrals
+              * @param assembly_atom A source atom in a dihedral in the assembly structure
+              * @param inserted_improper_dihedrals Improper dihedrals that have been already detected in an assembly structure
+              * @param inserted_improper_dihedral_types Improper dihedral types that have been already detected in an assembly structure
+              * @param dihedrals All known dihedrals from parameter file
+              */
+            void ExtractPrepImproperDihedralsFromAssembly(Atom* assembly_atom, std::vector<std::vector<std::string> > &inserted_improper_dihedrals, std::vector<std::string> inserted_improper_dihedral_types,
+                                                          ParameterFileSpace::ParameterFile::DihedralMap &dihedrals);
             /*! \fn
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure
@@ -382,34 +401,34 @@ namespace MolecularModeling
                                                              std::vector<std::vector<std::string> > &inserted_angles,
                                                              std::vector<std::vector<std::string> > &inserted_angle_types, TopologyFileSpace::TopologyFile* topology_file);
             /*! \fn
-              * A function to build agnle types of topology file structure from the current assembly object
-              * Exports data from assembly data structure to generate topology atom types
+              * A function to build dihedral types of topology file structure from the current assembly object
+              * Exports data from assembly data structure to generate topology dihedral types
               * @param assembly_atom A source atom in a dihedral in the assembly structure
               * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom
               * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not identical to assmebly_atom
-              * @param neighbor_of_neighbor_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom
+              * @param neighbor_of_neighbor_of_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom
               * @param inserted_dihedrals_types Dihedral types that have been already detected in an assembly structure
               * @param dihedral_type_counter A counter that indicates the number of dihedral types that have been already detected and also determines the index associated with it
               * @param topology_file Output topology file structure that the detected angle types belong to
               * @param dihedrals All known dihedrals from parameter file
               */
-            void ExtractTopologyDihedralTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, Atom* neighbor_of_neighbor_neighbor,
+            void ExtractTopologyDihedralTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, Atom* neighbor_of_neighbor_of_neighbor,
                                                        std::vector<std::string> &inserted_dihedral_types,
                                                        int &dihedral_type_counter, TopologyFileSpace::TopologyFile* topology_file,
                                                        ParameterFileSpace::ParameterFile::DihedralMap &dihedrals);
             /*! \fn
-              * A function to build agnle types of topology file structure from the current assembly object
-              * Exports data from assembly data structure to generate topology atom types
+              * A function to build dihedrals of topology file structure from the current assembly object
+              * Exports data from assembly data structure to generate topology dihedrals
               * @param assembly_atom A source atom in a dihedral in the assembly structure
               * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom
               * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not identical to assmebly_atom
-              * @param neighbor_of_neighbor_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom
+              * @param neighbor_of_neighbor_of_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor atom and it is not identical to neighbor atom
               * @param inserted_dihedrals Dihedrals that have been already detected in an assembly structure
               * @param inserted_dihedral_types Dihedral types that have been already detected in an assembly structure
               * @param dihedrals All known dihedrals from parameter file
               * @param topology_file Output topology file structure that the detected angle types belong to
               */
-            void ExtractTopologyDihedralsFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, Atom* neighbor_of_neighbor_neighbor,
+            void ExtractTopologyDihedralsFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, Atom* neighbor_of_neighbor_of_neighbor,
                                                              std::vector<std::vector<std::string> > &inserted_dihedrals, std::vector<std::string> &inserted_dihedral_types,
                                                              ParameterFileSpace::ParameterFile::DihedralMap &dihedrals,
                                                              TopologyFileSpace::TopologyFile* topology_file);
