@@ -1326,11 +1326,15 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
     residue_set->AddHeterogenAtom(het_atom_card);
 }
 
-PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
+PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_path)
 {
     PrepFile* prep_file = new PrepFile();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
     PrepFile::ResidueMap prep_residues = PrepFile::ResidueMap();
+    vector<string> inserted_improper_dihedral_types = vector<string>();
+    vector<vector<string> > inserted_improper_dihedrals = vector<vector<string> >();
+    ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
+    ParameterFileSpace::ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
@@ -1426,6 +1430,30 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
 
             atom_index++;
             prep_atoms.push_back(prep_atom);
+
+            AtomVector neighbors = assembly_atom->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it2 = neighbors.begin(); it2 != neighbors.end(); it2++)
+            {
+                Atom* neighbor = (*it2);
+                AtomVector neighbors_of_neighbor = neighbor->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it3 = neighbors_of_neighbor.begin(); it3 !=  neighbors_of_neighbor.end(); it3++)
+                {
+                    Atom* neighbor_of_neighbor = (*it3);
+                    if(assembly_atom->GetId().compare(neighbor_of_neighbor->GetId()) != 0)
+                    {
+                        AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor->GetNode()->GetNodeNeighbors();
+                        for(AtomVector::iterator it4 =  neighbors_of_neighbor_of_neighbor.begin(); it4 != neighbors_of_neighbor_of_neighbor.end(); it4++)
+                        {
+                            Atom* neighbor_of_neighbor_of_neighbor = (*it4);
+                            if(neighbor->GetId().compare(neighbor_of_neighbor_of_neighbor->GetId()) != 0)
+                            {
+                                ExtractPrepImproperDihedralTypesFromAssembly(assembly_atom, inserted_improper_dihedral_types, dihedrals);
+                                ExtractPrepImproperDihedralsFromAssembly(assembly_atom, inserted_improper_dihedrals, inserted_improper_dihedral_types, dihedrals);
+                            }
+                        }
+                    }
+                }
+            }
         }
         //        prep_residue->SetImproperDihedrals();
         prep_residue->SetLoops(loops);
@@ -1437,6 +1465,303 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly()
     prep_file->SetResidues(prep_residues);
     return prep_file;
 }
+
+void Assembly::ExtractPrepImproperDihedralTypesFromAssembly(Atom *assembly_atom, vector<string>
+                                                            & inserted_improper_dihedral_types, ParameterFile::DihedralMap& dihedrals)
+{
+    AtomNode* atom_node = assembly_atom->GetNode();
+    AtomVector neighbors = atom_node->GetNodeNeighbors();
+    if(neighbors.size() == 3)
+    {
+        Atom* neighbor1 = neighbors.at(0);
+        Atom* neighbor2 = neighbors.at(1);
+        Atom* neighbor3 = neighbors.at(2);
+        vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                     neighbor3->GetAtomType(), assembly_atom->GetAtomType());
+        for(vector<vector<string> >::iterator it = all_improper_dihedrals_atom_type_permutations.begin(); it != all_improper_dihedrals_atom_type_permutations.end(); it++)
+        {
+            vector<string> improper_dihedral_permutation = (*it);
+            if(dihedrals[improper_dihedral_permutation] != NULL)
+            {
+                stringstream ss;
+                ss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
+                if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), ss.str()) == inserted_improper_dihedral_types.end())
+                {
+                    inserted_improper_dihedral_types.push_back(ss.str());
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void Assembly::ExtractPrepImproperDihedralsFromAssembly(Atom *assembly_atom, vector<vector<string> >& inserted_improper_dihedrals, vector<string> inserted_improper_dihedral_types,
+                                                        ParameterFile::DihedralMap &dihedrals)
+{
+    ///Improper Dihedrals
+    AtomNode* atom_node = assembly_atom->GetNode();
+    AtomVector neighbors = atom_node->GetNodeNeighbors();
+    if(neighbors.size() == 3)
+    {
+        Atom* neighbor1 = neighbors.at(0);
+        Atom* neighbor2 = neighbors.at(1);
+        Atom* neighbor3 = neighbors.at(2);
+        vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                     neighbor3->GetAtomType(), assembly_atom->GetAtomType());
+        for(vector<vector<string> >::iterator it = all_improper_dihedrals_atom_type_permutations.begin(); it != all_improper_dihedrals_atom_type_permutations.end(); it++)
+        {
+            vector<string> improper_dihedral_permutation = (*it);
+            stringstream sss;
+            sss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
+            if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str()) != inserted_improper_dihedral_types.end())
+            {
+                vector<string> dihedral_atom_names1 = vector<string>();
+                dihedral_atom_names1.push_back(neighbor1->GetName());
+                dihedral_atom_names1.push_back(neighbor2->GetName());
+                dihedral_atom_names1.push_back(assembly_atom->GetName());
+                dihedral_atom_names1.push_back(neighbor3->GetName());
+                vector<string> dihedral_atom_names2 = vector<string>();
+                dihedral_atom_names2.push_back(neighbor1->GetName());
+                dihedral_atom_names2.push_back(assembly_atom->GetName());
+                dihedral_atom_names2.push_back(neighbor3->GetName());
+                dihedral_atom_names2.push_back(neighbor2->GetName());
+                vector<string> dihedral_atom_names3 = vector<string>();
+                dihedral_atom_names3.push_back(neighbor1->GetName());
+                dihedral_atom_names3.push_back(neighbor3->GetName());
+                dihedral_atom_names3.push_back(assembly_atom->GetName());
+                dihedral_atom_names3.push_back(neighbor2->GetName());
+
+                vector<string> reverse_dihedral_atom_names1 = vector<string>();
+                reverse_dihedral_atom_names1.push_back(neighbor3->GetName());
+                reverse_dihedral_atom_names1.push_back(assembly_atom->GetName());
+                reverse_dihedral_atom_names1.push_back(neighbor2->GetName());
+                reverse_dihedral_atom_names1.push_back(neighbor1->GetName());
+                vector<string> reverse_dihedral_atom_names2 = vector<string>();
+                reverse_dihedral_atom_names2.push_back(neighbor2->GetName());
+                reverse_dihedral_atom_names2.push_back(neighbor3->GetName());
+                reverse_dihedral_atom_names2.push_back(assembly_atom->GetName());
+                reverse_dihedral_atom_names2.push_back(neighbor1->GetName());
+                vector<string> reverse_dihedral_atom_names3 = vector<string>();
+                reverse_dihedral_atom_names3.push_back(neighbor2->GetName());
+                reverse_dihedral_atom_names3.push_back(assembly_atom->GetName());
+                reverse_dihedral_atom_names3.push_back(neighbor3->GetName());
+                reverse_dihedral_atom_names3.push_back(neighbor1->GetName());
+
+//                vector<string> residue_names1 = vector<string>();
+//                residue_names1.push_back(neighbor1->GetResidue()->GetName());
+//                residue_names1.push_back(neighbor2->GetResidue()->GetName());
+//                residue_names1.push_back(assembly_atom->GetResidue()->GetName());
+//                residue_names1.push_back(neighbor3->GetResidue()->GetName());
+//                vector<string> residue_names2 = vector<string>();
+//                residue_names2.push_back(neighbor1->GetName());
+//                residue_names2.push_back(assembly_atom->GetResidue()->GetName());
+//                residue_names2.push_back(neighbor3->GetResidue()->GetName());
+//                residue_names2.push_back(neighbor2->GetResidue()->GetName());
+//                vector<string> residue_names3 = vector<string>();
+//                residue_names3.push_back(neighbor1->GetResidue()->GetName());
+//                residue_names3.push_back(neighbor3->GetResidue()->GetName());
+//                residue_names3.push_back(assembly_atom->GetResidue()->GetName());
+//                residue_names3.push_back(neighbor2->GetResidue()->GetName());
+
+//                vector<string> reverse_residue_names1 = vector<string>();
+//                reverse_residue_names1.push_back(neighbor3->GetResidue()->GetName());
+//                reverse_residue_names1.push_back(assembly_atom->GetResidue()->GetName());
+//                reverse_residue_names1.push_back(neighbor2->GetResidue()->GetName());
+//                reverse_residue_names1.push_back(neighbor1->GetResidue()->GetName());
+//                vector<string> reverse_residue_names2 = vector<string>();
+//                reverse_residue_names2.push_back(neighbor2->GetResidue()->GetName());
+//                reverse_residue_names2.push_back(neighbor3->GetResidue()->GetName());
+//                reverse_residue_names2.push_back(assembly_atom->GetResidue()->GetName());
+//                reverse_residue_names2.push_back(neighbor1->GetName());
+//                vector<string> reverse_residue_names3 = vector<string>();
+//                reverse_residue_names3.push_back(neighbor2->GetResidue()->GetName());
+//                reverse_residue_names3.push_back(assembly_atom->GetResidue()->GetName());
+//                reverse_residue_names3.push_back(neighbor3->GetResidue()->GetName());
+//                reverse_residue_names3.push_back(neighbor1->GetResidue()->GetName());
+
+                vector<string> dihedral1 = vector<string>();
+                vector<string> dihedral2 = vector<string>();
+                vector<string> dihedral3 = vector<string>();
+                vector<string> reverse_dihedral1 = vector<string>();
+                vector<string> reverse_dihedral2 = vector<string>();
+                vector<string> reverse_dihedral3 = vector<string>();
+//                stringstream ss;
+//                ss << residue_names1.at(2) << ":" << dihedral_atom_names1.at(2);
+//                stringstream ss1;
+//                ss1 << residue_names1.at(0) << ":" << dihedral_atom_names1.at(0);
+//                stringstream ss2;
+//                ss2 << residue_names1.at(1) << ":" << dihedral_atom_names1.at(1);
+//                stringstream ss3;
+//                ss3 << residue_names1.at(3) << ":" << dihedral_atom_names1.at(3);
+
+//                ss << residue_names1.at(2) << ":" << dihedral_atom_names1.at(2);
+//                stringstream ss1;
+//                ss1 << residue_names1.at(0) << ":" << dihedral_atom_names1.at(0);
+//                stringstream ss2;
+//                ss2 << residue_names1.at(1) << ":" << dihedral_atom_names1.at(1);
+//                stringstream ss3;
+//                ss3 << residue_names1.at(3) << ":" << dihedral_atom_names1.at(3);
+
+//                dihedral1.push_back(ss1.str());
+//                dihedral1.push_back(ss2.str());
+//                dihedral1.push_back(ss.str());
+//                dihedral1.push_back(ss3.str());
+//                reverse_dihedral1.push_back(ss3.str());
+//                reverse_dihedral1.push_back(ss.str());
+//                reverse_dihedral1.push_back(ss2.str());
+//                reverse_dihedral1.push_back(ss1.str());
+
+//                dihedral2.push_back(ss1.str());
+//                dihedral2.push_back(ss.str());
+//                dihedral2.push_back(ss3.str());
+//                dihedral2.push_back(ss2.str());
+//                reverse_dihedral2.push_back(ss2.str());
+//                reverse_dihedral2.push_back(ss3.str());
+//                reverse_dihedral2.push_back(ss.str());
+//                reverse_dihedral2.push_back(ss1.str());
+
+//                dihedral3.push_back(ss1.str());
+//                dihedral3.push_back(ss3.str());
+//                dihedral3.push_back(ss.str());
+//                dihedral3.push_back(ss2.str());
+//                reverse_dihedral3.push_back(ss2.str());
+//                reverse_dihedral3.push_back(ss.str());
+//                reverse_dihedral3.push_back(ss3.str());
+//                reverse_dihedral3.push_back(ss1.str());
+
+                dihedral1.push_back(dihedral_atom_names1.at(0));
+                dihedral1.push_back(dihedral_atom_names1.at(1));
+                dihedral1.push_back(dihedral_atom_names1.at(2));
+                dihedral1.push_back(dihedral_atom_names1.at(3));
+                reverse_dihedral1.push_back(dihedral_atom_names1.at(3));
+                reverse_dihedral1.push_back(dihedral_atom_names1.at(2));
+                reverse_dihedral1.push_back(dihedral_atom_names1.at(1));
+                reverse_dihedral1.push_back(dihedral_atom_names1.at(0));
+
+                dihedral2.push_back(dihedral_atom_names1.at(0));
+                dihedral2.push_back(dihedral_atom_names1.at(2));
+                dihedral2.push_back(dihedral_atom_names1.at(3));
+                dihedral2.push_back(dihedral_atom_names1.at(1));
+                reverse_dihedral2.push_back(dihedral_atom_names1.at(1));
+                reverse_dihedral2.push_back(dihedral_atom_names1.at(3));
+                reverse_dihedral2.push_back(dihedral_atom_names1.at(2));
+                reverse_dihedral2.push_back(dihedral_atom_names1.at(0));
+
+                dihedral3.push_back(dihedral_atom_names1.at(0));
+                dihedral3.push_back(dihedral_atom_names1.at(3));
+                dihedral3.push_back(dihedral_atom_names1.at(2));
+                dihedral3.push_back(dihedral_atom_names1.at(1));
+                reverse_dihedral3.push_back(dihedral_atom_names1.at(1));
+                reverse_dihedral3.push_back(dihedral_atom_names1.at(2));
+                reverse_dihedral3.push_back(dihedral_atom_names1.at(3));
+                reverse_dihedral3.push_back(dihedral_atom_names1.at(0));
+
+
+                if(find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral1) == inserted_improper_dihedrals.end() &&
+                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral2) == inserted_improper_dihedrals.end() &&
+                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral3) == inserted_improper_dihedrals.end() &&
+                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral1) == inserted_improper_dihedrals.end() &&
+                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral2) == inserted_improper_dihedrals.end() &&
+                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral3) == inserted_improper_dihedrals.end())
+                {
+                    int permutation_index = distance(all_improper_dihedrals_atom_type_permutations.begin(), it);
+                    ParameterFileDihedral* parameter_file_dihedral = NULL;
+                    parameter_file_dihedral = dihedrals[improper_dihedral_permutation];
+
+//                    vector<ParameterFileDihedralTerm> dihedral_terms = parameter_file_dihedral->GetTerms();
+//                    for(vector<ParameterFileDihedralTerm>::iterator it1 = dihedral_terms.begin(); it1 != dihedral_terms.end(); it1++)
+//                    {
+//                        TopologyDihedral* prep_dihedral = new TopologyDihedral();
+//                        topology_dihedral->SetIgnoredGroupInteraction(false);///not sure
+
+//                        if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
+//                            (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
+//                                || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
+//                                    (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1)))))
+//                                ||(neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
+//                                   (neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor->GetName().substr(0,1)))))
+//                                ||(neighbor_of_neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
+//                                   (neighbor_of_neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_of_neighbor->GetName().substr(0,1))))))
+//                            topology_dihedral->SetIncludingHydrogen(true);
+//                        else
+//                            topology_dihedral->SetIncludingHydrogen(false);
+
+//                        if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
+//                        {
+//                            topology_dihedral->SetResidueNames(residue_names1);
+//                            topology_dihedral->SetDihedrals(dihedral_atom_names1);
+//                        }
+//                        if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
+//                        {
+//                            topology_dihedral->SetResidueNames(residue_names2);
+//                            topology_dihedral->SetDihedrals(dihedral_atom_names2);
+//                        }
+//                        if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
+//                        {
+//                            topology_dihedral->SetResidueNames(residue_names3);
+//                            topology_dihedral->SetDihedrals(dihedral_atom_names3);
+//                        }
+//                        if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
+//                        {
+//                            topology_dihedral->SetResidueNames(reverse_residue_names1);
+//                            topology_dihedral->SetDihedrals(reverse_dihedral_atom_names1);
+//                        }
+//                        if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
+//                        {
+//                            topology_dihedral->SetResidueNames(reverse_residue_names2);
+//                            topology_dihedral->SetDihedrals(reverse_dihedral_atom_names2);
+//                        }
+//                        if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
+//                        {
+//                            topology_dihedral->SetResidueNames(reverse_residue_names3);
+//                            topology_dihedral->SetDihedrals(reverse_dihedral_atom_names3);
+//                        }
+
+//                        int index = 0;
+//                        if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str()) != inserted_improper_dihedral_types.end())
+//                            index = distance(inserted_improper_dihedral_types.begin(), find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str())) +
+//                                    distance(dihedral_terms.begin(), it1);
+//                        topology_dihedral->SetDihedralType(topology_file->GetDihedralTypeByIndex(index));
+//                        topology_file->AddDihedral(topology_dihedral);
+//                    }
+//                    if(parameter_file_dihedral->GetIsImproper())
+//                    {
+                    if(parameter_file_dihedral != NULL)
+                    {
+                        if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
+                        {
+                            inserted_improper_dihedrals.push_back(dihedral1);
+                        }
+                        if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
+                        {
+                            inserted_improper_dihedrals.push_back(dihedral2);
+                        }
+                        if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
+                        {
+                            inserted_improper_dihedrals.push_back(dihedral3);
+                        }
+                        if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
+                        {
+                            inserted_improper_dihedrals.push_back(reverse_dihedral1);
+                        }
+                        if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
+                        {
+                            inserted_improper_dihedrals.push_back(reverse_dihedral2);
+                        }
+                        if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
+                        {
+                            inserted_improper_dihedrals.push_back(reverse_dihedral3);
+                        }
+                        break;
+                    }
+//                    }
+                }
+            }
+        }
+    }
+    /**/
+}
+
 
 vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms, PrepFileResidue::Loop& loops,
                                                                          vector<int> & bond_index, int dummy_atoms)
@@ -2090,6 +2415,8 @@ void Assembly::ExtractTopologyBondsFromAssembly(vector<vector<string> > &inserte
         topology_file->AddBond(topology_bond);
     }
 }
+
+
 
 void Assembly::ExtractTopologyAngleTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor, vector<vector<string> > &inserted_angle_types,
                                                      int &angle_type_counter, TopologyFile* topology_file, ParameterFileSpace::ParameterFile::AngleMap &angles)
@@ -8622,16 +8949,16 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
             }
         }
     }
-    //    cout << "CheckxC_NxO_C: " << pattern.str() << endl;
+//        cout << "CheckxC_NxO_C: " << pattern.str() << endl;
     if(NxO == 'N')
-    {
-        if(pattern.str().compare("xCH-NH-CHHH") == 0 || pattern.str().compare("xCHH-NH-CHHH") == 0 || pattern.str().compare("xC-N-C") == 0 )
+    {///xCH-N-CHHH??
+        if(pattern.str().compare("xCH-N-CHHH") == 0 || pattern.str().compare("xCH-NH-CHHH") == 0 || pattern.str().compare("xCHH-NH-CHHH") == 0 || pattern.str().compare("xC-N-C") == 0 )
             return "xC-N-CH3";
         else
             return "";
     }
     else if(NxO == 'O')
-    {
+    {///xCH-O-CHHH??
         if(pattern.str().compare("xCH-OH-CHHH") == 0 || pattern.str().compare("xCHH-OH-CHHH") == 0 || pattern.str().compare("xC-O-C") == 0 )
             return "xC-O-CH3";
         else
@@ -8711,7 +9038,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "N";
+                    ///moving a, b or x to after the N expression: short-name + N + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "N" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
@@ -8744,7 +9077,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NAc";
+                    ///moving a, b or x to after the NAc expression: short-name + NAc + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "NAc" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
@@ -8777,7 +9116,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NGc";
+                    ///moving a, b or x to after the NGc expression: short-name + NGc + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "NGc" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
@@ -8810,7 +9155,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NS";
+                    ///moving a, b or x to after the NS expression: short-name + NS + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "NS" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
@@ -8842,7 +9193,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NP";
+                    ///moving a, b or x to after the NP expression: short-name + NP + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "NP" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
@@ -8875,7 +9232,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "NMe";
+                    ///moving a, b or x to after the NMe expression: short-name + NMe + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "NMe" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
@@ -9078,7 +9441,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "AH";
+                    ///moving a, b or x to after the AH expression: short-name + AH + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "AH" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
@@ -9105,7 +9474,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 stringstream short_name;
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
-                    short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "A";
+                    ///moving a, b or x to after the A expression: short-name + A + a/b/x
+                    int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+                    string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+                    string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+                    char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+                    short_name << new_name_part1 << "A" << new_name_part2;
+
                     mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
                 }
             }
