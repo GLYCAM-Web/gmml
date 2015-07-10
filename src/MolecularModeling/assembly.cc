@@ -8959,7 +8959,7 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
     }
     else if(NxO == 'O')
     {///xCH-O-CHHH??
-        if(pattern.str().compare("xCH-OH-CHHH") == 0 || pattern.str().compare("xCHH-OH-CHHH") == 0 || pattern.str().compare("xC-O-C") == 0 )
+        if(pattern.str().compare("xCH-O-CHHH") == 0 || pattern.str().compare("xCH-OH-CHHH") == 0 || pattern.str().compare("xCHH-OH-CHHH") == 0 || pattern.str().compare("xC-O-C") == 0 )
             return "xC-O-CH3";
         else
             return "";
