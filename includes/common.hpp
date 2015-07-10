@@ -194,7 +194,7 @@ namespace gmml
         {"_3_4^2P_+1d^a", "a-L-fucopyranose", "LFucpa", "L", "", "P", "a", "", ""},
         {"_4^23dP_a_+1d", "b-L-abequopyranose", "LAbepb", "L", "", "P", "b", "", ""},
         {"_4^23dP_a^+1d", "a-L-abequopyranose",	"LAbepa", "L", "", "P", "a", "", ""},
-        {"_3_2^4P_a_+1d", "b-L-rhamnoopyranose", "LRhapb", "L", "", "P", "b", "", ""},
+        {"_2_3^4P_a_+1d", "b-L-rhamnoopyranose", "LRhapb", "L", "", "P", "b", "", ""},
         {"_2_3^4P_+1d^a", "a-L-rhamnoopyranose", "LRhapa", "L", "", "P", "a", "", ""},
         {"_2^43dP_+1d_a", "b-L-ascarylopyranose", "", "L", "", "P", "b", "", ""},
         {"_2^43dP_+1d^a", "a-L-ascarylopyranose", "", "L", "", "P", "a", "", ""},
