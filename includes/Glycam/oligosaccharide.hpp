@@ -111,7 +111,7 @@ namespace Glycam
                                                  <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                  << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                 else
-                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")"  << atom_id_tokens.at(0)
+                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) <<  "-" << atom_id_tokens.at(3) << ")"  << atom_id_tokens.at(0)
                                                  <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                  << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                 break;
@@ -135,7 +135,7 @@ namespace Glycam
                                                  <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                  << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                 else
-                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0)
+                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0)
                                                  <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                  << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                 break;
@@ -167,7 +167,7 @@ namespace Glycam
                                 if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                     res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
                                 else
-                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
                                 break;
                             }
                         }
@@ -186,7 +186,7 @@ namespace Glycam
                                 if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                     res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
                                 else
-                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
                                 break;
                             }
                         }
@@ -315,7 +315,7 @@ namespace Glycam
                                                      <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                      << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                     else
-                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0)
+                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0)
                                                      <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                      << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                     break;
@@ -339,7 +339,7 @@ namespace Glycam
                                                      <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                      << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                     else
-                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0)
+                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0)
                                                      <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << glycosidic_linkage_id_tokens.at(3)
                                                      << ")"  << glycosidic_linkage_id_tokens.at(0) << std::endl;
                                     break;
@@ -371,7 +371,7 @@ namespace Glycam
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                         res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
                                     else
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
                                     break;
                                 }
                             }
@@ -390,7 +390,7 @@ namespace Glycam
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                         res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
                                     else
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
                                     break;
                                 }
                             }
@@ -422,7 +422,6 @@ namespace Glycam
                     }
                 }
             }
-
 
     };
 }
