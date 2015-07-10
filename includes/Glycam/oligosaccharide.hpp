@@ -423,7 +423,6 @@ namespace Glycam
                 }
             }
 
-
     };
 }
 
