@@ -2687,32 +2687,32 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                         else
                             topology_dihedral->SetIncludingHydrogen(false);
 
-                        if(permutation_index % 6 = 0)
+                        if(permutation_index % 6 == 0)
                         {
                             topology_dihedral->SetResidueNames(residue_names1);
                             topology_dihedral->SetDihedrals(dihedral_atom_names1);
                         }
-                        if(permutation_index % 6 = 2)
+                        if(permutation_index % 6 == 2)
                         {
                             topology_dihedral->SetResidueNames(residue_names2);
                             topology_dihedral->SetDihedrals(dihedral_atom_names2);
                         }
-                        if(permutation_index % 6 = 4)
+                        if(permutation_index % 6 == 4)
                         {
                             topology_dihedral->SetResidueNames(residue_names3);
                             topology_dihedral->SetDihedrals(dihedral_atom_names3);
                         }
-                        if(permutation_index % 6 = 1)
+                        if(permutation_index % 6 == 1)
                         {
                             topology_dihedral->SetResidueNames(reverse_residue_names1);
                             topology_dihedral->SetDihedrals(reverse_dihedral_atom_names1);
                         }
-                        if(permutation_index % 6 = 3)
+                        if(permutation_index % 6 == 3)
                         {
                             topology_dihedral->SetResidueNames(reverse_residue_names2);
                             topology_dihedral->SetDihedrals(reverse_dihedral_atom_names2);
                         }
-                        if(permutation_index % 6 = 5)
+                        if(permutation_index % 6 == 5)
                         {
                             topology_dihedral->SetResidueNames(reverse_residue_names3);
                             topology_dihedral->SetDihedrals(reverse_dihedral_atom_names3);
@@ -2725,27 +2725,27 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                         topology_dihedral->SetDihedralType(topology_file->GetDihedralTypeByIndex(index));
                         topology_file->AddDihedral(topology_dihedral);
                     }
-                    if(permutation_index % 6 = 0)
+                    if(permutation_index % 6 == 0)
                     {
                         inserted_dihedrals.push_back(dihedral1);
                     }
-                    if(permutation_index % 6 = 2)
+                    if(permutation_index % 6 == 2)
                     {
                         inserted_dihedrals.push_back(dihedral2);
                     }
-                    if(permutation_index % 6 = 4)
+                    if(permutation_index % 6 == 4)
                     {
                         inserted_dihedrals.push_back(dihedral3);
                     }
-                    if(permutation_index % 6 = 1)
+                    if(permutation_index % 6 == 1)
                     {
                         inserted_dihedrals.push_back(reverse_dihedral1);
                     }
-                    if(permutation_index % 6 = 3)
+                    if(permutation_index % 6 == 3)
                     {
                         inserted_dihedrals.push_back(reverse_dihedral2);
                     }
-                    if(permutation_index % 6 = 5)
+                    if(permutation_index % 6 == 5)
                     {
                         inserted_dihedrals.push_back(reverse_dihedral3);
                     }
@@ -2910,18 +2910,34 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
         Atom* atom = (*it);
-        AtomNode* atom_node = new AtomNode();
-        atom_node->SetAtom(atom);
+        AtomNode* atom_node;
+//        if(atom->GetNode() == NULL)
+//        {
+            atom_node = new AtomNode();
+            atom_node->SetAtom(atom);
+//        }
+//        else
+//            atom_node = atom->GetNode();
         atom_node->SetId(i);
         i++;
-        for(AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++)
+        for(AtomVector::iterator it1 = it; it1 != all_atoms_of_assembly.end(); it1++)
         {
-            if(it != it1)
+//            if(it != it1)
             {
                 Atom* neighbor_atom = (*it1);
                 if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                 {
+                    AtomNode* neighbor_node;
+                    if (neighbor_atom->GetNode() == NULL)
+                    {
+                        neighbor_node = new AtomNode();
+                        neighbor_node->SetAtom(neighbor_atom);
+                    }
+                    else
+                        neighbor_node = neighbor_atom->GetNode();
                     atom_node->AddNodeNeighbor(neighbor_atom);
+                    neighbor_node->AddNodeNeighbor(atom);
+                    neighbor_atom->SetNode(neighbor_node);
                 }
             }
         }
