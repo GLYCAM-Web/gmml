@@ -21,6 +21,12 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtRemarkCard();
+            /*! \fn
+              * Constructor with required parameters
+              * @param line
+              */
+            PdbqtRemarkCard(std::string line);
+
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

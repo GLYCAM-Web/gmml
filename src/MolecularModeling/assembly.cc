@@ -31,6 +31,12 @@
 #include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
 #include "../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
@@ -52,6 +58,7 @@ using namespace TopologyFileSpace;
 using namespace CoordinateFileSpace;
 using namespace PrepFileSpace;
 using namespace PdbFileSpace;
+using namespace PdbqtFileSpace;
 using namespace ParameterFileSpace;
 using namespace Geometry;
 using namespace LibraryFileSpace;
@@ -80,6 +87,12 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
             source_file_ = file_paths.at(0);
             residues_ = ResidueVector();
             BuildAssemblyFromPdbFile(source_file_);
+            assemblies_ = AssemblyVector();
+            break;
+        case gmml::PDBQT:
+            source_file_ = file_paths.at(0);
+            residues_ = ResidueVector();
+            BuildAssemblyFromPdbqtFile(source_file_);
             assemblies_ = AssemblyVector();
             break;
         case gmml::TOP:
@@ -511,7 +524,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
                             char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
                             stringstream sss;
                             sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
-                                << matching_insertion_code << "_" << matching_alternate_location;
+                                << matching_insertion_code << "_" << matching_alternate_location << "_" << id_;
                             string matching_key = sss.str();
 
                             if(key.compare(matching_key) == 0)
@@ -534,7 +547,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
                             char matching_heterogen_alternate_location = matching_heterogen_atom->GetAtomAlternateLocation();
                             stringstream ssss;
                             ssss << matching_heterogen_residue_name << "_" << matching_heterogen_chain_id << "_" << matching_heterogen_sequence_number << "_"
-                                 << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location;
+                                 << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location << "_" << id_;
                             string matching_heterogen_key = ssss.str();
 
                             if(key.compare(matching_heterogen_key) == 0)
@@ -554,6 +567,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path)
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
 }
+
 void Assembly::BuildAssemblyFromPdbFile(PdbFile* pdb_file)
 {
     try
@@ -626,7 +640,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile* pdb_file)
                             char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
                             stringstream sss;
                             sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
-                                << matching_insertion_code << "_" << matching_alternate_location;
+                                << matching_insertion_code << "_" << matching_alternate_location << "_" << id_;
                             string matching_key = sss.str();
 
                             if(key.compare(matching_key) == 0)
@@ -649,13 +663,203 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile* pdb_file)
                             char matching_heterogen_alternate_location = matching_heterogen_atom->GetAtomAlternateLocation();
                             stringstream ssss;
                             ssss << matching_heterogen_residue_name << "_" << matching_heterogen_chain_id << "_" << matching_heterogen_sequence_number << "_"
-                                 << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location;
+                                 << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location << "_" << id_;
                             string matching_heterogen_key = ssss.str();
 
                             if(key.compare(matching_heterogen_key) == 0)
                             {
                                 Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
+                                new_atom->SetDescription("Het;");
+                            }
+                        }
+                    }
+                }
+                residue->AddAtom(new_atom);
+            }
+            this->AddResidue(residue);
+        }
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
+}
+
+void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path)
+{
+    try
+    {
+        this->ClearAssembly();
+        PdbqtFile* pdbqt_file = new PdbqtFile(pdbqt_file_path);
+        vector<string> key_order = vector<string>();
+        PdbqtFile::PdbqtResidueAtomsMap residue_atoms_map = pdbqt_file->GetAllAtomsInOrder(key_order);
+        for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)
+        {
+            string residue_key = *it;
+            PdbqtFile::PdbqtAtomVector* atoms = residue_atoms_map[residue_key];
+            Residue* residue = new Residue();
+            residue->SetAssembly(this);
+
+            for(PdbqtFile::PdbqtAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
+            {
+                PdbqtAtom* atom = (*it1);
+                string residue_name = atom->GetAtomResidueName();
+                char chain_id = atom->GetAtomChainId();
+                int sequence_number = atom->GetAtomResidueSequenceNumber();
+                char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
+                stringstream ss;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
+                   << alternate_location << "_" << id_;
+                string key = ss.str();
+                residue->SetId(key);
+
+                Atom* new_atom = new Atom();
+                residue->SetName(residue_name);
+                string atom_name = atom->GetAtomName();
+                new_atom->SetName(atom_name);
+                new_atom->MolecularDynamicAtom::SetCharge(atom->GetAtomCharge());
+                new_atom->MolecularDynamicAtom::SetAtomType(atom->GetAtomType());
+                new_atom->SetResidue(residue);
+                stringstream atom_key;
+                atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
+                new_atom->SetId(atom_key.str());
+                PdbqtModelCard* models = pdbqt_file->GetModels();
+                PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
+                if(model_maps.size() == 1)
+                {
+                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    if(atom->GetType().compare("ATOM") == 0)
+                    {
+                        new_atom->SetDescription("Atom;");
+                    }
+                    else if(atom->GetType().compare("HETATOM") == 0)
+                    {
+                        new_atom->SetDescription("Het;");
+                    }
+                }
+                else
+                {
+                    for(PdbqtModelCard::PdbqtModelMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
+                    {
+                        PdbqtModel* model = (*it2).second;
+                        PdbqtModelResidueSet* residue_set = model->GetModelResidueSet();
+                        PdbqtAtomCard* atom_card = residue_set->GetAtoms();
+                        PdbqtAtomCard::PdbqtAtomMap atom_map = atom_card->GetAtoms();
+                        PdbqtAtom* matching_atom = atom_map[atom->GetAtomSerialNumber()];
+                        string matching_residue_name = matching_atom->GetAtomResidueName();
+                        char matching_chain_id = matching_atom->GetAtomChainId();
+                        int matching_sequence_number = matching_atom->GetAtomResidueSequenceNumber();
+                        char matching_insertion_code = matching_atom->GetAtomInsertionCode();
+                        char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
+                        stringstream sss;
+                        sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
+                            << matching_insertion_code << "_" << matching_alternate_location << "_" << id_;
+                        string matching_key = sss.str();
+
+                        if(key.compare(matching_key) == 0)
+                        {
+                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                            new_atom->AddCoordinate(coordinate);
+                            if(atom->GetType().compare("ATOM") == 0)
+                            {
+                                new_atom->SetDescription("Atom;");
+                            }
+                            else if(atom->GetType().compare("HETATOM") == 0)
+                            {
+                                new_atom->SetDescription("Het;");
+                            }
+                        }
+                    }
+                }
+                residue->AddAtom(new_atom);
+            }
+            this->AddResidue(residue);
+        }
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {}
+}
+
+void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file)
+{
+    try
+    {
+        this->ClearAssembly();
+        vector<string> key_order = vector<string>();
+        PdbqtFile::PdbqtResidueAtomsMap residue_atoms_map = pdbqt_file->GetAllAtomsInOrder(key_order);
+        for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)
+        {
+            string residue_key = *it;
+            PdbqtFile::PdbqtAtomVector* atoms = residue_atoms_map[residue_key];
+            Residue* residue = new Residue();
+            residue->SetAssembly(this);
+
+            for(PdbqtFile::PdbqtAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
+            {
+                PdbqtAtom* atom = (*it1);
+                string residue_name = atom->GetAtomResidueName();
+                char chain_id = atom->GetAtomChainId();
+                int sequence_number = atom->GetAtomResidueSequenceNumber();
+                char insertion_code = atom->GetAtomInsertionCode();
+                char alternate_location = atom->GetAtomAlternateLocation();
+                stringstream ss;
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
+                   << alternate_location << "_" << id_;
+                string key = ss.str();
+                residue->SetId(key);
+
+                Atom* new_atom = new Atom();
+                residue->SetName(residue_name);
+                string atom_name = atom->GetAtomName();
+                new_atom->SetName(atom_name);
+                new_atom->MolecularDynamicAtom::SetCharge(atom->GetAtomCharge());
+                new_atom->SetResidue(residue);
+                stringstream atom_key;
+                atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
+                new_atom->SetId(atom_key.str());
+                PdbqtModelCard* models = pdbqt_file->GetModels();
+                PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
+                if(model_maps.size() == 1)
+                {
+                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    if(atom->GetType().compare("ATOM") == 0)
+                    {
+                        new_atom->SetDescription("Atom;");
+                    }
+                    else if(atom->GetType().compare("HETATOM") == 0)
+                    {
+                        new_atom->SetDescription("Het;");
+                    }
+                }
+                else
+                {
+                    for(PdbqtModelCard::PdbqtModelMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
+                    {
+                        PdbqtModel* model = (*it2).second;
+                        PdbqtModelResidueSet* residue_set = model->GetModelResidueSet();
+                        PdbqtAtomCard* atom_card = residue_set->GetAtoms();
+                        PdbqtAtomCard::PdbqtAtomMap atom_map = atom_card->GetAtoms();
+                        PdbqtAtom* matching_atom = atom_map[atom->GetAtomSerialNumber()];
+                        string matching_residue_name = matching_atom->GetAtomResidueName();
+                        char matching_chain_id = matching_atom->GetAtomChainId();
+                        int matching_sequence_number = matching_atom->GetAtomResidueSequenceNumber();
+                        char matching_insertion_code = matching_atom->GetAtomInsertionCode();
+                        char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
+                        stringstream sss;
+                        sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
+                            << matching_insertion_code << "_" << matching_alternate_location << "_" << id_;
+                        string matching_key = sss.str();
+
+                        if(key.compare(matching_key) == 0)
+                        {
+                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                            new_atom->AddCoordinate(coordinate);
+                            if(atom->GetType().compare("ATOM") == 0)
+                            {
+                                new_atom->SetDescription("Atom;");
+                            }
+                            else if(atom->GetType().compare("HETATOM") == 0)
+                            {
                                 new_atom->SetDescription("Het;");
                             }
                         }
@@ -1242,6 +1446,28 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
     return pdb_file;
 }
 
+PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
+{
+    PdbqtFile* pdbqt_file = new PdbqtFile();
+
+    PdbqtModelCard* model_card = new PdbqtModelCard();
+    PdbqtModelCard::PdbqtModelMap models = PdbqtModelCard::PdbqtModelMap();
+    PdbqtModel* model = new PdbqtModel();
+    model->SetModelSerialNumber(1);
+    PdbqtModelResidueSet* residue_set = new PdbqtModelResidueSet();
+    int serial_number = 1;
+    int sequence_number = 1;
+
+    ExtractPdbqtModelCardFromAssembly(residue_set, serial_number, sequence_number, model_index_);
+
+    model->SetModelResidueSet(residue_set);
+    models[1] = model;
+    model_card->SetModels(models);
+    pdbqt_file->SetModels(model_card);
+
+    return pdbqt_file;
+}
+
 void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number)
 {
     cout << "Creating PDB file" << endl;
@@ -1326,18 +1552,93 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
     residue_set->AddHeterogenAtom(het_atom_card);
 }
 
+void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number)
+{
+    cout << "Creating PDBQT file" << endl;
+    PdbqtAtomCard* atom_card = new PdbqtAtomCard();
+    PdbqtAtomCard::PdbqtAtomMap atom_map = PdbqtAtomCard::PdbqtAtomMap();
+    for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        AssemblyVector assemblies = assembly->GetAssemblies();
+        for(AssemblyVector::iterator it1 = assemblies.begin(); it1 != assemblies.end(); it1++)
+        {
+            ExtractPdbqtModelCardFromAssembly(residue_set, serial_number, sequence_number, model_number);
+        }
+        ResidueVector residues = assembly->GetResidues();
+        for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+        {
+            Residue* residue = (*it1);
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            {
+                Atom* atom = (*it2);
+                vector<string> dscr = Split(atom->GetDescription(), ";");
+                if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
+                {
+                    PdbqtAtom* pdb_atom = new PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                                                        *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetCharge(),
+                                                        atom->GetAtomType(), "ATOM");
+
+                    atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
+                else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
+                {
+                    PdbqtAtom* pdb_atom = new PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                                                        *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetCharge(),
+                                                        atom->GetAtomType(), "HETATOM");
+                    atom_map[serial_number] = pdb_atom;
+                    serial_number++;
+                }
+            }
+            sequence_number++;
+        }
+    }
+    for(ResidueVector::iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        AtomVector atoms = residue->GetAtoms();
+        for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        {
+            Atom* atom = (*it2);
+            vector<string> dscr = Split(atom->GetDescription(), ";");
+
+            if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
+            {
+                PdbqtAtom* pdb_atom = new PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                                                *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetCharge(),
+                                                    atom->GetAtomType(), "ATOM");
+                atom_map[serial_number] = pdb_atom;
+                serial_number++;
+            }
+            else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
+            {
+                PdbqtAtom* pdb_atom = new PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                                                *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetCharge(),
+                                                    atom->GetAtomType(), "HETATOM");
+                atom_map[serial_number] = pdb_atom;
+                serial_number++;
+            }
+        }
+        sequence_number++;
+    }
+    atom_card->SetAtoms(atom_map);
+    residue_set->SetAtoms(atom_card);
+}
+
 PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_path)
 {
     PrepFile* prep_file = new PrepFile();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
     PrepFile::ResidueMap prep_residues = PrepFile::ResidueMap();
-    vector<string> inserted_improper_dihedral_types = vector<string>();
-    vector<vector<string> > inserted_improper_dihedrals = vector<vector<string> >();
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     ParameterFileSpace::ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
+        vector<string> inserted_improper_dihedral_types = vector<string>();
+        vector<vector<string> > inserted_improper_dihedrals = vector<vector<string> >();
         PrepFileResidue* prep_residue = new PrepFileResidue();
         PrepFileResidue::PrepFileAtomVector prep_atoms = PrepFileResidue::PrepFileAtomVector();
         prep_residue->SetTitle(assembly_residue->GetName());
@@ -1416,7 +1717,6 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_pat
             int parent_index = prep_atom->GetBondIndex() - 1;
             int grandparent_index = prep_atom->GetAngleIndex() - 1;
             int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
-
             coordinate_list.push_back(cartesian_coordinate_list.at(great_grandparent_index));
             coordinate_list.push_back(cartesian_coordinate_list.at(grandparent_index));
             coordinate_list.push_back(cartesian_coordinate_list.at(parent_index));
@@ -1431,31 +1731,10 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_pat
             atom_index++;
             prep_atoms.push_back(prep_atom);
 
-            AtomVector neighbors = assembly_atom->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors.begin(); it2 != neighbors.end(); it2++)
-            {
-                Atom* neighbor = (*it2);
-                AtomVector neighbors_of_neighbor = neighbor->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it3 = neighbors_of_neighbor.begin(); it3 !=  neighbors_of_neighbor.end(); it3++)
-                {
-                    Atom* neighbor_of_neighbor = (*it3);
-                    if(assembly_atom->GetId().compare(neighbor_of_neighbor->GetId()) != 0)
-                    {
-                        AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor->GetNode()->GetNodeNeighbors();
-                        for(AtomVector::iterator it4 =  neighbors_of_neighbor_of_neighbor.begin(); it4 != neighbors_of_neighbor_of_neighbor.end(); it4++)
-                        {
-                            Atom* neighbor_of_neighbor_of_neighbor = (*it4);
-                            if(neighbor->GetId().compare(neighbor_of_neighbor_of_neighbor->GetId()) != 0)
-                            {
-                                ExtractPrepImproperDihedralTypesFromAssembly(assembly_atom, inserted_improper_dihedral_types, dihedrals);
-                                ExtractPrepImproperDihedralsFromAssembly(assembly_atom, inserted_improper_dihedrals, inserted_improper_dihedral_types, dihedrals);
-                            }
-                        }
-                    }
-                }
-            }
+            ExtractPrepImproperDihedralTypesFromAssembly(assembly_atom, inserted_improper_dihedral_types, dihedrals);
+            ExtractPrepImproperDihedralsFromAssembly(assembly_atom, inserted_improper_dihedrals, inserted_improper_dihedral_types, dihedrals);
         }
-        //        prep_residue->SetImproperDihedrals();
+        prep_residue->SetImproperDihedrals(inserted_improper_dihedrals);
         prep_residue->SetLoops(loops);
         prep_residue->SetAtoms(prep_atoms);
         prep_residue->SetCharge(prep_residue->CalculatePrepResidueCharge());
@@ -1498,7 +1777,6 @@ void Assembly::ExtractPrepImproperDihedralTypesFromAssembly(Atom *assembly_atom,
 void Assembly::ExtractPrepImproperDihedralsFromAssembly(Atom *assembly_atom, vector<vector<string> >& inserted_improper_dihedrals, vector<string> inserted_improper_dihedral_types,
                                                         ParameterFile::DihedralMap &dihedrals)
 {
-    ///Improper Dihedrals
     AtomNode* atom_node = assembly_atom->GetNode();
     AtomVector neighbors = atom_node->GetNodeNeighbors();
     if(neighbors.size() == 3)
@@ -1515,147 +1793,39 @@ void Assembly::ExtractPrepImproperDihedralsFromAssembly(Atom *assembly_atom, vec
             sss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
             if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str()) != inserted_improper_dihedral_types.end())
             {
-                vector<string> dihedral_atom_names1 = vector<string>();
-                dihedral_atom_names1.push_back(neighbor1->GetName());
-                dihedral_atom_names1.push_back(neighbor2->GetName());
-                dihedral_atom_names1.push_back(assembly_atom->GetName());
-                dihedral_atom_names1.push_back(neighbor3->GetName());
-                vector<string> dihedral_atom_names2 = vector<string>();
-                dihedral_atom_names2.push_back(neighbor1->GetName());
-                dihedral_atom_names2.push_back(assembly_atom->GetName());
-                dihedral_atom_names2.push_back(neighbor3->GetName());
-                dihedral_atom_names2.push_back(neighbor2->GetName());
-                vector<string> dihedral_atom_names3 = vector<string>();
-                dihedral_atom_names3.push_back(neighbor1->GetName());
-                dihedral_atom_names3.push_back(neighbor3->GetName());
-                dihedral_atom_names3.push_back(assembly_atom->GetName());
-                dihedral_atom_names3.push_back(neighbor2->GetName());
-
-                vector<string> reverse_dihedral_atom_names1 = vector<string>();
-                reverse_dihedral_atom_names1.push_back(neighbor3->GetName());
-                reverse_dihedral_atom_names1.push_back(assembly_atom->GetName());
-                reverse_dihedral_atom_names1.push_back(neighbor2->GetName());
-                reverse_dihedral_atom_names1.push_back(neighbor1->GetName());
-                vector<string> reverse_dihedral_atom_names2 = vector<string>();
-                reverse_dihedral_atom_names2.push_back(neighbor2->GetName());
-                reverse_dihedral_atom_names2.push_back(neighbor3->GetName());
-                reverse_dihedral_atom_names2.push_back(assembly_atom->GetName());
-                reverse_dihedral_atom_names2.push_back(neighbor1->GetName());
-                vector<string> reverse_dihedral_atom_names3 = vector<string>();
-                reverse_dihedral_atom_names3.push_back(neighbor2->GetName());
-                reverse_dihedral_atom_names3.push_back(assembly_atom->GetName());
-                reverse_dihedral_atom_names3.push_back(neighbor3->GetName());
-                reverse_dihedral_atom_names3.push_back(neighbor1->GetName());
-
-//                vector<string> residue_names1 = vector<string>();
-//                residue_names1.push_back(neighbor1->GetResidue()->GetName());
-//                residue_names1.push_back(neighbor2->GetResidue()->GetName());
-//                residue_names1.push_back(assembly_atom->GetResidue()->GetName());
-//                residue_names1.push_back(neighbor3->GetResidue()->GetName());
-//                vector<string> residue_names2 = vector<string>();
-//                residue_names2.push_back(neighbor1->GetName());
-//                residue_names2.push_back(assembly_atom->GetResidue()->GetName());
-//                residue_names2.push_back(neighbor3->GetResidue()->GetName());
-//                residue_names2.push_back(neighbor2->GetResidue()->GetName());
-//                vector<string> residue_names3 = vector<string>();
-//                residue_names3.push_back(neighbor1->GetResidue()->GetName());
-//                residue_names3.push_back(neighbor3->GetResidue()->GetName());
-//                residue_names3.push_back(assembly_atom->GetResidue()->GetName());
-//                residue_names3.push_back(neighbor2->GetResidue()->GetName());
-
-//                vector<string> reverse_residue_names1 = vector<string>();
-//                reverse_residue_names1.push_back(neighbor3->GetResidue()->GetName());
-//                reverse_residue_names1.push_back(assembly_atom->GetResidue()->GetName());
-//                reverse_residue_names1.push_back(neighbor2->GetResidue()->GetName());
-//                reverse_residue_names1.push_back(neighbor1->GetResidue()->GetName());
-//                vector<string> reverse_residue_names2 = vector<string>();
-//                reverse_residue_names2.push_back(neighbor2->GetResidue()->GetName());
-//                reverse_residue_names2.push_back(neighbor3->GetResidue()->GetName());
-//                reverse_residue_names2.push_back(assembly_atom->GetResidue()->GetName());
-//                reverse_residue_names2.push_back(neighbor1->GetName());
-//                vector<string> reverse_residue_names3 = vector<string>();
-//                reverse_residue_names3.push_back(neighbor2->GetResidue()->GetName());
-//                reverse_residue_names3.push_back(assembly_atom->GetResidue()->GetName());
-//                reverse_residue_names3.push_back(neighbor3->GetResidue()->GetName());
-//                reverse_residue_names3.push_back(neighbor1->GetResidue()->GetName());
-
                 vector<string> dihedral1 = vector<string>();
                 vector<string> dihedral2 = vector<string>();
                 vector<string> dihedral3 = vector<string>();
                 vector<string> reverse_dihedral1 = vector<string>();
                 vector<string> reverse_dihedral2 = vector<string>();
                 vector<string> reverse_dihedral3 = vector<string>();
-//                stringstream ss;
-//                ss << residue_names1.at(2) << ":" << dihedral_atom_names1.at(2);
-//                stringstream ss1;
-//                ss1 << residue_names1.at(0) << ":" << dihedral_atom_names1.at(0);
-//                stringstream ss2;
-//                ss2 << residue_names1.at(1) << ":" << dihedral_atom_names1.at(1);
-//                stringstream ss3;
-//                ss3 << residue_names1.at(3) << ":" << dihedral_atom_names1.at(3);
 
-//                ss << residue_names1.at(2) << ":" << dihedral_atom_names1.at(2);
-//                stringstream ss1;
-//                ss1 << residue_names1.at(0) << ":" << dihedral_atom_names1.at(0);
-//                stringstream ss2;
-//                ss2 << residue_names1.at(1) << ":" << dihedral_atom_names1.at(1);
-//                stringstream ss3;
-//                ss3 << residue_names1.at(3) << ":" << dihedral_atom_names1.at(3);
+                dihedral1.push_back(neighbor1->GetName());
+                dihedral1.push_back(neighbor2->GetName());
+                dihedral1.push_back(assembly_atom->GetName());
+                dihedral1.push_back(neighbor3->GetName());
+                reverse_dihedral1.push_back(neighbor3->GetName());
+                reverse_dihedral1.push_back(assembly_atom->GetName());
+                reverse_dihedral1.push_back(neighbor2->GetName());
+                reverse_dihedral1.push_back(neighbor1->GetName());
 
-//                dihedral1.push_back(ss1.str());
-//                dihedral1.push_back(ss2.str());
-//                dihedral1.push_back(ss.str());
-//                dihedral1.push_back(ss3.str());
-//                reverse_dihedral1.push_back(ss3.str());
-//                reverse_dihedral1.push_back(ss.str());
-//                reverse_dihedral1.push_back(ss2.str());
-//                reverse_dihedral1.push_back(ss1.str());
+                dihedral2.push_back(neighbor1->GetName());
+                dihedral2.push_back(assembly_atom->GetName());
+                dihedral2.push_back(neighbor3->GetName());
+                dihedral2.push_back(neighbor2->GetName());
+                reverse_dihedral2.push_back(neighbor2->GetName());
+                reverse_dihedral2.push_back(neighbor3->GetName());
+                reverse_dihedral2.push_back(assembly_atom->GetName());
+                reverse_dihedral2.push_back(neighbor1->GetName());
 
-//                dihedral2.push_back(ss1.str());
-//                dihedral2.push_back(ss.str());
-//                dihedral2.push_back(ss3.str());
-//                dihedral2.push_back(ss2.str());
-//                reverse_dihedral2.push_back(ss2.str());
-//                reverse_dihedral2.push_back(ss3.str());
-//                reverse_dihedral2.push_back(ss.str());
-//                reverse_dihedral2.push_back(ss1.str());
-
-//                dihedral3.push_back(ss1.str());
-//                dihedral3.push_back(ss3.str());
-//                dihedral3.push_back(ss.str());
-//                dihedral3.push_back(ss2.str());
-//                reverse_dihedral3.push_back(ss2.str());
-//                reverse_dihedral3.push_back(ss.str());
-//                reverse_dihedral3.push_back(ss3.str());
-//                reverse_dihedral3.push_back(ss1.str());
-
-                dihedral1.push_back(dihedral_atom_names1.at(0));
-                dihedral1.push_back(dihedral_atom_names1.at(1));
-                dihedral1.push_back(dihedral_atom_names1.at(2));
-                dihedral1.push_back(dihedral_atom_names1.at(3));
-                reverse_dihedral1.push_back(dihedral_atom_names1.at(3));
-                reverse_dihedral1.push_back(dihedral_atom_names1.at(2));
-                reverse_dihedral1.push_back(dihedral_atom_names1.at(1));
-                reverse_dihedral1.push_back(dihedral_atom_names1.at(0));
-
-                dihedral2.push_back(dihedral_atom_names1.at(0));
-                dihedral2.push_back(dihedral_atom_names1.at(2));
-                dihedral2.push_back(dihedral_atom_names1.at(3));
-                dihedral2.push_back(dihedral_atom_names1.at(1));
-                reverse_dihedral2.push_back(dihedral_atom_names1.at(1));
-                reverse_dihedral2.push_back(dihedral_atom_names1.at(3));
-                reverse_dihedral2.push_back(dihedral_atom_names1.at(2));
-                reverse_dihedral2.push_back(dihedral_atom_names1.at(0));
-
-                dihedral3.push_back(dihedral_atom_names1.at(0));
-                dihedral3.push_back(dihedral_atom_names1.at(3));
-                dihedral3.push_back(dihedral_atom_names1.at(2));
-                dihedral3.push_back(dihedral_atom_names1.at(1));
-                reverse_dihedral3.push_back(dihedral_atom_names1.at(1));
-                reverse_dihedral3.push_back(dihedral_atom_names1.at(2));
-                reverse_dihedral3.push_back(dihedral_atom_names1.at(3));
-                reverse_dihedral3.push_back(dihedral_atom_names1.at(0));
-
+                dihedral3.push_back(neighbor1->GetName());
+                dihedral3.push_back(neighbor3->GetName());
+                dihedral3.push_back(assembly_atom->GetName());
+                dihedral3.push_back(neighbor2->GetName());
+                reverse_dihedral3.push_back(neighbor2->GetName());
+                reverse_dihedral3.push_back(assembly_atom->GetName());
+                reverse_dihedral3.push_back(neighbor3->GetName());
+                reverse_dihedral3.push_back(neighbor1->GetName());
 
                 if(find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral1) == inserted_improper_dihedrals.end() &&
                         find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral2) == inserted_improper_dihedrals.end() &&
@@ -1668,98 +1838,38 @@ void Assembly::ExtractPrepImproperDihedralsFromAssembly(Atom *assembly_atom, vec
                     ParameterFileDihedral* parameter_file_dihedral = NULL;
                     parameter_file_dihedral = dihedrals[improper_dihedral_permutation];
 
-//                    vector<ParameterFileDihedralTerm> dihedral_terms = parameter_file_dihedral->GetTerms();
-//                    for(vector<ParameterFileDihedralTerm>::iterator it1 = dihedral_terms.begin(); it1 != dihedral_terms.end(); it1++)
-//                    {
-//                        TopologyDihedral* prep_dihedral = new TopologyDihedral();
-//                        topology_dihedral->SetIgnoredGroupInteraction(false);///not sure
-
-//                        if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
-//                            (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
-//                                || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
-//                                    (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1)))))
-//                                ||(neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
-//                                   (neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor->GetName().substr(0,1)))))
-//                                ||(neighbor_of_neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
-//                                   (neighbor_of_neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_of_neighbor->GetName().substr(0,1))))))
-//                            topology_dihedral->SetIncludingHydrogen(true);
-//                        else
-//                            topology_dihedral->SetIncludingHydrogen(false);
-
-//                        if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
-//                        {
-//                            topology_dihedral->SetResidueNames(residue_names1);
-//                            topology_dihedral->SetDihedrals(dihedral_atom_names1);
-//                        }
-//                        if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
-//                        {
-//                            topology_dihedral->SetResidueNames(residue_names2);
-//                            topology_dihedral->SetDihedrals(dihedral_atom_names2);
-//                        }
-//                        if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
-//                        {
-//                            topology_dihedral->SetResidueNames(residue_names3);
-//                            topology_dihedral->SetDihedrals(dihedral_atom_names3);
-//                        }
-//                        if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
-//                        {
-//                            topology_dihedral->SetResidueNames(reverse_residue_names1);
-//                            topology_dihedral->SetDihedrals(reverse_dihedral_atom_names1);
-//                        }
-//                        if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
-//                        {
-//                            topology_dihedral->SetResidueNames(reverse_residue_names2);
-//                            topology_dihedral->SetDihedrals(reverse_dihedral_atom_names2);
-//                        }
-//                        if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
-//                        {
-//                            topology_dihedral->SetResidueNames(reverse_residue_names3);
-//                            topology_dihedral->SetDihedrals(reverse_dihedral_atom_names3);
-//                        }
-
-//                        int index = 0;
-//                        if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str()) != inserted_improper_dihedral_types.end())
-//                            index = distance(inserted_improper_dihedral_types.begin(), find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str())) +
-//                                    distance(dihedral_terms.begin(), it1);
-//                        topology_dihedral->SetDihedralType(topology_file->GetDihedralTypeByIndex(index));
-//                        topology_file->AddDihedral(topology_dihedral);
-//                    }
-//                    if(parameter_file_dihedral->GetIsImproper())
-//                    {
                     if(parameter_file_dihedral != NULL)
                     {
-                        if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
+                        if(permutation_index % 6 == 0)
                         {
                             inserted_improper_dihedrals.push_back(dihedral1);
                         }
-                        if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
+                        if(permutation_index % 6 == 2)
                         {
                             inserted_improper_dihedrals.push_back(dihedral2);
                         }
-                        if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
+                        if(permutation_index % 6 == 4)
                         {
                             inserted_improper_dihedrals.push_back(dihedral3);
                         }
-                        if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
+                        if(permutation_index % 6 == 1)
                         {
                             inserted_improper_dihedrals.push_back(reverse_dihedral1);
                         }
-                        if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
+                        if(permutation_index % 6 == 3)
                         {
                             inserted_improper_dihedrals.push_back(reverse_dihedral2);
                         }
-                        if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
+                        if(permutation_index % 6 == 5)
                         {
                             inserted_improper_dihedrals.push_back(reverse_dihedral3);
                         }
                         break;
                     }
-//                    }
                 }
             }
         }
     }
-    /**/
 }
 
 
@@ -2878,32 +2988,32 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                         else
                             topology_dihedral->SetIncludingHydrogen(false);
 
-                        if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
+                        if(permutation_index % 6 == 0)
                         {
                             topology_dihedral->SetResidueNames(residue_names1);
                             topology_dihedral->SetDihedrals(dihedral_atom_names1);
                         }
-                        if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
+                        if(permutation_index % 6 == 2)
                         {
                             topology_dihedral->SetResidueNames(residue_names2);
                             topology_dihedral->SetDihedrals(dihedral_atom_names2);
                         }
-                        if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
+                        if(permutation_index % 6 == 4)
                         {
                             topology_dihedral->SetResidueNames(residue_names3);
                             topology_dihedral->SetDihedrals(dihedral_atom_names3);
                         }
-                        if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
+                        if(permutation_index % 6 == 1)
                         {
                             topology_dihedral->SetResidueNames(reverse_residue_names1);
                             topology_dihedral->SetDihedrals(reverse_dihedral_atom_names1);
                         }
-                        if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
+                        if(permutation_index % 6 == 3)
                         {
                             topology_dihedral->SetResidueNames(reverse_residue_names2);
                             topology_dihedral->SetDihedrals(reverse_dihedral_atom_names2);
                         }
-                        if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
+                        if(permutation_index % 6 == 5)
                         {
                             topology_dihedral->SetResidueNames(reverse_residue_names3);
                             topology_dihedral->SetDihedrals(reverse_dihedral_atom_names3);
@@ -2916,27 +3026,27 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                         topology_dihedral->SetDihedralType(topology_file->GetDihedralTypeByIndex(index));
                         topology_file->AddDihedral(topology_dihedral);
                     }
-                    if(permutation_index == 0 || (permutation_index >= 6 && permutation_index <= 9) || (permutation_index >= 30 && permutation_index <= 35) || (permutation_index >= 66 && permutation_index <= 69))
+                    if(permutation_index % 6 == 0)
                     {
                         inserted_dihedrals.push_back(dihedral1);
                     }
-                    if(permutation_index == 2 || (permutation_index >= 14 && permutation_index <= 17) || (permutation_index >= 42 && permutation_index <= 47) || (permutation_index >= 74 && permutation_index <= 77))
+                    if(permutation_index % 6 == 2)
                     {
                         inserted_dihedrals.push_back(dihedral2);
                     }
-                    if(permutation_index == 4 || (permutation_index >= 22 && permutation_index <= 25) || (permutation_index >= 54 && permutation_index <= 59) || (permutation_index >= 82 && permutation_index <= 85))
+                    if(permutation_index % 6 == 4)
                     {
                         inserted_dihedrals.push_back(dihedral3);
                     }
-                    if(permutation_index == 1 || (permutation_index >= 10 && permutation_index <= 13) || (permutation_index >= 36 && permutation_index <= 41) || (permutation_index >= 70 && permutation_index <= 73))
+                    if(permutation_index % 6 == 1)
                     {
                         inserted_dihedrals.push_back(reverse_dihedral1);
                     }
-                    if(permutation_index == 3 || (permutation_index >= 18 && permutation_index <= 21) || (permutation_index >= 48 && permutation_index <= 53) || (permutation_index >= 78 && permutation_index <= 81))
+                    if(permutation_index % 6 == 3)
                     {
                         inserted_dihedrals.push_back(reverse_dihedral2);
                     }
-                    if(permutation_index == 5 || (permutation_index >= 26 && permutation_index <= 29) || (permutation_index >= 60 && permutation_index <= 65) || (permutation_index >= 86 && permutation_index <= 89))
+                    if(permutation_index % 6 == 5)
                     {
                         inserted_dihedrals.push_back(reverse_dihedral3);
                     }
@@ -3101,18 +3211,34 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
         Atom* atom = (*it);
-        AtomNode* atom_node = new AtomNode();
-        atom_node->SetAtom(atom);
+        AtomNode* atom_node;
+//        if(atom->GetNode() == NULL)
+//        {
+            atom_node = new AtomNode();
+            atom_node->SetAtom(atom);
+//        }
+//        else
+//            atom_node = atom->GetNode();
         atom_node->SetId(i);
         i++;
-        for(AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++)
+        for(AtomVector::iterator it1 = it; it1 != all_atoms_of_assembly.end(); it1++)
         {
-            if(it != it1)
+//            if(it != it1)
             {
                 Atom* neighbor_atom = (*it1);
                 if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                 {
+                    AtomNode* neighbor_node;
+                    if (neighbor_atom->GetNode() == NULL)
+                    {
+                        neighbor_node = new AtomNode();
+                        neighbor_node->SetAtom(neighbor_atom);
+                    }
+                    else
+                        neighbor_node = neighbor_atom->GetNode();
                     atom_node->AddNodeNeighbor(neighbor_atom);
+                    neighbor_node->AddNodeNeighbor(atom);
+                    neighbor_atom->SetNode(neighbor_node);
                 }
             }
         }
@@ -3127,6 +3253,8 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
     {
         case gmml::PDB:
             this->BuildStructureByPDBFileInformation();
+            break;
+        case gmml::PDBQT:
             break;
         case gmml::TOP:
             this->BuildStructureByTOPFileInformation();

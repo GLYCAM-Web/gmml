@@ -10,12 +10,48 @@ using namespace PdbqtFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbqtRootCard::PdbqtRootCard(){}
+PdbqtRootCard::PdbqtRootCard() : record_name_("ROOT")
+{
+    root_atoms_ = NULL;
+}
+
+PdbqtRootCard::PdbqtRootCard(stringstream &root_block)
+{
+    root_atoms_ = NULL;
+    string line;
+    bool is_record_name_set = false;
+    getline(root_block, line);
+    string temp = line;
+    if(line.find("ROOT") != string::npos)
+    {
+        if(!is_record_name_set){
+            record_name_ = line.substr(0,6);
+            Trim(record_name_);
+            is_record_name_set=true;
+        }
+    }
+
+    stringstream stream_block;
+    while(line.find("ATOM") != string::npos || line.find("HETATOM") != string::npos)
+    {
+        stream_block << line << endl;
+        getline(root_block,line);
+        temp = line;
+    }
+    if(line.find("ENDROOT") != string::npos)
+    {
+        root_atoms_ = new PdbqtAtomCard(stream_block);
+    }
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-PdbqtRootCard::AtomCardVector PdbqtRootCard::GetRootAtoms()
+string PdbqtRootCard::GetRecordName()
+{
+    return record_name_;
+}
+PdbqtAtomCard* PdbqtRootCard::GetRootAtoms()
 {
     return root_atoms_;
 }
@@ -23,17 +59,16 @@ PdbqtRootCard::AtomCardVector PdbqtRootCard::GetRootAtoms()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbqtRootCard::SetRootAtoms(AtomCardVector root_atoms)
+void PdbqtRootCard::SetRecordName(const string record_name)
 {
-    root_atoms_.clear();
-    for(AtomCardVector::iterator it = root_atoms.begin(); it != root_atoms.end(); it++)
-    {
-        root_atoms_.push_back(*it);
-    }
+    record_name_ = record_name;
 }
-void PdbqtRootCard::AddRootAtom(PdbqtAtomCard *root_atom)
-{
-    root_atoms_.push_back(root_atom);
+
+void PdbqtRootCard::SetRootAtoms(PdbqtAtomCard* root_atoms)
+{    
+    root_atoms_ = new PdbqtAtomCard();
+    root_atoms_->SetRecordName(root_atoms->GetRecordName());
+    root_atoms_->SetAtoms(root_atoms->GetAtoms());
 }
 
 //////////////////////////////////////////////////////////
@@ -45,6 +80,8 @@ void PdbqtRootCard::AddRootAtom(PdbqtAtomCard *root_atom)
 //////////////////////////////////////////////////////////
 void PdbqtRootCard::Print(ostream &out)
 {
+    if(root_atoms_ != NULL)
+        root_atoms_->Print(out);
 }
 
 

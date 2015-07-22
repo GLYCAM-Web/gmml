@@ -27,7 +27,11 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtAtomCard();
-
+            /*! \fn
+              * A constructor that get a stream block of atom card and parse the whole block to fill the related fields
+              * @param stream_block A whole block of atoms belonging to a model in a pdbqt file
+              */
+            PdbqtAtomCard(std::stringstream& stream_block);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

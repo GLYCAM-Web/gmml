@@ -9,6 +9,7 @@ namespace PdbqtFileSpace
 {
     class PdbqtRootCard;
     class PdbqtBranchCard;
+    class PdbqtAtomCard;
     class PdbqtModelResidueSet
     {
         public:
@@ -27,7 +28,11 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtModelResidueSet();
-
+            /*! \fn
+              * Constructor with required parameters
+              * @param residue_stream_block
+              */
+            PdbqtModelResidueSet(std::stringstream& residue_set_block);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -41,7 +46,11 @@ namespace PdbqtFileSpace
               * @return branches_ attribute of the current object of this class
               */
             BranchCardVector GetBranches();
-
+            /*! \fn
+              * An accessor function in order to access to the all atoms in a pdbqt model residue set
+              * @return atoms_ attribute of the current object of this class
+              */
+            PdbqtAtomCard* GetAtoms();
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -63,7 +72,12 @@ namespace PdbqtFileSpace
               * @param branch The branch of the current object
               */
             void AddBranch(PdbqtBranchCard* branch);
-
+            /*! \fn
+              * A mutator function in order to set the atoms of the current object
+              * Set the atoms_ attribute of the current pdbqt model residue set
+              * @param atoms The roots attribute of the current object
+              */
+            void SetAtoms(PdbqtAtomCard* atoms);
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
@@ -84,6 +98,7 @@ namespace PdbqtFileSpace
             //////////////////////////////////////////////////////////
             PdbqtRootCard* roots_;                          /*!< List of roots that are in a pdbqt model >*/
             BranchCardVector branches_;       /*!< List of branch cards that are in a pdbqt model >*/
+            PdbqtAtomCard* atoms_;
 
     };
 }

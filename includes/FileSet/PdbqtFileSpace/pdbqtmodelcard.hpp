@@ -27,6 +27,12 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtModelCard();
+            /*! \fn
+              * Constructor with required parameters
+              * @param stream_block
+              */
+            PdbqtModelCard(std::stringstream& stream_block);
+
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

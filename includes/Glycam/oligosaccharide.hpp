@@ -379,7 +379,7 @@ namespace Glycam
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                         res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
                                     else
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
                                     break;
                                 }
                             }
@@ -398,7 +398,7 @@ namespace Glycam
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                         res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
                                     else
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "-" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
                                     break;
                                 }
                             }
