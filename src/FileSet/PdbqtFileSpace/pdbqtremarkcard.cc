@@ -10,7 +10,13 @@ using namespace PdbqtFileSpace;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-PdbqtRemarkCard::PdbqtRemarkCard(){}
+PdbqtRemarkCard::PdbqtRemarkCard() : record_name_("REMARK"){}
+
+PdbqtRemarkCard::PdbqtRemarkCard(string line)
+{
+    record_name_ = line.substr(0,6);
+    value_ = line.substr(10);
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -47,5 +53,6 @@ void PdbqtRemarkCard::SetValue(const string value)
 //////////////////////////////////////////////////////////
 void PdbqtRemarkCard::Print(ostream &out)
 {
+    out << "REMARK: " << value_ << endl;
 }
 

@@ -479,6 +479,7 @@ namespace gmml
     enum InputFileType
     {
         PDB,
+        PDBQT,
         LIB,
         PREP,
         TOP,

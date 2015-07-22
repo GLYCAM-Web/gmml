@@ -120,6 +120,8 @@ namespace gmml
     {
         if(type.compare("PDB") == 0)
             return PDB;
+        if(type.compare("PDBQT") == 0)
+            return PDBQT;
         if(type.compare("LIB") == 0)
             return LIB;
         if(type.compare("PREP") == 0)
@@ -144,6 +146,8 @@ namespace gmml
         {
             case PDB:
                 return "PDB";
+            case PDBQT:
+                return "PDBQT";
             case LIB:
                 return "LIB";
             case PREP:

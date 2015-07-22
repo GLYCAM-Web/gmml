@@ -2,14 +2,28 @@
 #define PDBQTFILE_HPP
 
 #include <string>
+#include <vector>
+#include <map>
 
 namespace PdbqtFileSpace{
 
+    class PdbqtAtom;
     class PdbqtModelCard;
     class PdbqtFile
     {
         public:
 
+            //////////////////////////////////////////////////////////
+            //                    TYPE DEFINITION                   //
+            //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of pdb atom
+              */
+            typedef std::vector<PdbqtAtom*> PdbqtAtomVector;
+            /*! \typedef
+              * A mapping between a
+              */
+            typedef std::map<std::string, PdbqtAtomVector* > PdbqtResidueAtomsMap;
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
@@ -44,7 +58,11 @@ namespace PdbqtFileSpace{
               * @return models_ attribute of the current object of this class
               */
             PdbqtModelCard* GetModels();
-
+            /*! \fn
+              * An accessor function in order to access to all atoms of all residues of the current object
+              * @return atoms The vector of all atoms in a pdbqt file in the order that they appear in the file
+              */
+            PdbqtResidueAtomsMap GetAllAtomsInOrder(std::vector<std::string>& key_order);
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////

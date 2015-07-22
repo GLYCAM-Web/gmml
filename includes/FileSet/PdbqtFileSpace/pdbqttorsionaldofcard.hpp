@@ -21,6 +21,11 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtTorsionalDoFCard();
+            /*! \fn
+              * Constructor with required parameters
+              * @param line
+              */
+            PdbqtTorsionalDoFCard(std::string line);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

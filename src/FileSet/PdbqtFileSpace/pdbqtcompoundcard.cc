@@ -1,4 +1,4 @@
-#include "../../../includes/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
+#include "../../../includes/FileSet/PdbqtFileSpace/pdbqtcompoundcard.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
@@ -9,40 +9,39 @@ using namespace PdbqtFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbqtTorsionalDoFCard::PdbqtTorsionalDoFCard() : record_name_("TORSDOF"){}
 
-PdbqtTorsionalDoFCard::PdbqtTorsionalDoFCard(string line)
+PdbqtCompoundCard::PdbqtCompoundCard() : record_name_("COMPND"){}
+
+PdbqtCompoundCard::PdbqtCompoundCard(string line)
 {
-    record_name_ = line.substr(0, 7);
-    string temp = line.substr(7);
-    temp = Trim(temp);
-    number_of_tosional_dof_ = ConvertString<int>(temp);
+    record_name_ = line.substr(0, 6);
+    value_ = line.substr(10);
 }
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbqtTorsionalDoFCard::GetRecordName()
+string PdbqtCompoundCard::GetRecordName()
 {
     return record_name_;
 }
 
-int PdbqtTorsionalDoFCard::GetNumberofTorsionalDoF()
+string PdbqtCompoundCard::GetValue()
 {
-    return number_of_tosional_dof_;
+    return value_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbqtTorsionalDoFCard::SetRecordName(const string record_name)
+void PdbqtCompoundCard::SetRecordName(const string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbqtTorsionalDoFCard::SetNumberOfTorsionalDoF(int number_of_torsional_dof)
+void PdbqtCompoundCard::SetValue(const string value)
 {
-    number_of_tosional_dof_ = number_of_torsional_dof;
+    value_ = value;
 }
 
 //////////////////////////////////////////////////////////
@@ -52,14 +51,8 @@ void PdbqtTorsionalDoFCard::SetNumberOfTorsionalDoF(int number_of_torsional_dof)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtTorsionalDoFCard::Print(ostream &out)
+void PdbqtCompoundCard::Print(ostream &out)
 {
-    out << "Torsional DOF: ";
-    if(number_of_tosional_dof_ != iNotSet)
-        out << number_of_tosional_dof_;
-    else
-        out << "";
-    out << endl;
 }
 
 

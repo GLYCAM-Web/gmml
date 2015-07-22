@@ -1,7 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include "../../includes/utils.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
 #include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp"
 #include "../../includes/FileSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../includes/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
 
@@ -63,6 +67,37 @@ string PdbqtFile::GetPath()
 PdbqtModelCard* PdbqtFile::GetModels()
 {
     return models_;
+}
+PdbqtFile::PdbqtResidueAtomsMap PdbqtFile::GetAllAtomsInOrder(vector<string> &key_order)
+{
+    PdbqtFile::PdbqtResidueAtomsMap residue_atom_map;
+    map<string, bool> inserted_residues;
+    PdbqtModelCard::PdbqtModelMap models = models_->GetModels();
+    PdbqtModel* model = (*models.begin()).second;
+    PdbqtModelResidueSet* residue_set = model->GetModelResidueSet();
+    PdbqtAtomCard* atom_card = residue_set->GetAtoms();
+    PdbqtAtomCard::PdbqtAtomMap atoms = atom_card->GetAtoms();
+    for(PdbqtAtomCard::PdbqtAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+    {
+        PdbqtAtom* atom = (*it2).second;
+        string residue_name = atom->GetAtomResidueName();
+        char chain_id = atom->GetAtomChainId();
+        int sequence_number = atom->GetAtomResidueSequenceNumber();
+        char insertion_code = atom->GetAtomInsertionCode();
+        char alternate_location = atom->GetAtomAlternateLocation();
+        stringstream ss;
+        ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
+        string key = ss.str();
+        if(!inserted_residues[key])
+        {
+            residue_atom_map[key] = new vector<PdbqtAtom*>();
+            inserted_residues[key] = true;
+            key_order.push_back(key);
+        }
+        residue_atom_map[key]->push_back(atom);
+
+    }
+    return residue_atom_map;
 }
 
 //////////////////////////////////////////////////////////
@@ -133,18 +168,28 @@ bool PdbqtFile::ParseModelCard(ifstream &stream, string &line)
         stream_block << line << endl;
         if(getline(stream, line))
         {
-            record_name = line.substr(0,6);
+            record_name = Split(line, " ").at(0);
             record_name = Trim(record_name);
         }
         else
         {
-            cout << "Model card corruption" << endl;
-            cout << "Wrong input file format" << endl;
-            return false;
+            if(record_name.compare("ENDMDL") == 0)
+                break;
+            else
+            {
+                cout << "Model card corruption" << endl;
+                cout << "Wrong input file format" << endl;
+                return false;
+            }
         }
     }
-
     // Model card
-//    models_ = new PdbqtModelCard(stream_block);
+    models_ = new PdbqtModelCard(stream_block);
     return true;
+}
+
+void PdbqtFile::Print(ostream &out)
+{
+    if(models_ != NULL)
+        models_->Print(out);
 }

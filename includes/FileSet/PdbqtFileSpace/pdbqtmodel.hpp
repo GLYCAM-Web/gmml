@@ -11,6 +11,7 @@ namespace PdbqtFileSpace
     class PdbqtRemarkCard;
     class PdbqtTorsionalDoFCard;
     class PdbqtModelResidueSet;
+    class PdbqtCompoundCard;
     class PdbqtModel
     {
         public:
@@ -33,6 +34,11 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtModel();
+            /*! \fn
+              * Constructor with required parameters
+              * @param model_block
+              */
+            PdbqtModel(std::stringstream& model_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -42,6 +48,11 @@ namespace PdbqtFileSpace
               * @return model_serial_number_ attribute of the current object of this class
               */
             int GetModelSerialNumber();
+            /*! \fn
+              * An accessor function in order to access to the model compound card in a pdbqt model
+              * @return model_compound_card_ attribute of the current object of this class
+              */
+            PdbqtCompoundCard* GetModelCompoundCard();
             /*! \fn
               * An accessor function in order to access to the model residue set in a pdbqt model
               * @return model_residue_set_ attribute of the current object of this class
@@ -67,6 +78,12 @@ namespace PdbqtFileSpace
               * @param model_serial_number The model serial number attribute of the current object
               */
             void SetModelSerialNumber(int model_serial_number);
+            /*! \fn
+              * A mutator function in order to set the model compound card of the current object
+              * Set the compound_card_ attribute of the current pdbqt model
+              * @param model_compound_card The model compound card attribute of the current object
+              */
+            void SetModelCompundCard(PdbqtCompoundCard* model_compound_card);
             /*! \fn
               * A mutator function in order to set the model residue set of the current object
               * Set the model_residue_set_ attribute of the current pdbqt model
@@ -117,6 +134,7 @@ namespace PdbqtFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             int model_serial_number_;                    /*!< Serial number of a model >*/
+            PdbqtCompoundCard* model_compound_card_;/*!< Compund card of a model >*/
             PdbqtModelResidueSet* model_residue_set_;    /*!< Residue sets involving in a model >*/
             RemarkCardVector remarks_;                   /*!< Remark cards of a model >*/
             TorsionalDoFCardVector torsional_dof_cards_; /*!< Torsional degree of freedom cards of a model >*/

@@ -12,6 +12,7 @@
 #include "../Glycam/sugarname.hpp"
 #include "../Glycam/monosaccharide.hpp"
 #include "../FileSet/PdbFileSpace/pdbfile.hpp"
+#include "../FileSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../FileSet/TopologyFileSpace/topologyfile.hpp"
 #include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
@@ -19,6 +20,7 @@
 #include "../ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
+#include "../FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../FileSet/PdbFileSpace/pdbmodel.hpp"
@@ -264,6 +266,18 @@ namespace MolecularModeling
               */
             void BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile* pdb_file);
             /*! \fn
+              * A function to build a structure from a single pdbqt file
+              * Imports data from pdbqt file data structure into central data structure
+              * @param pdbqt_file_path Path to a pdbqt file
+              */
+            void BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path);
+            /*! \fn
+              * A function to build a structure from a single pdbqt file
+              * Imports data from pdbqt file data structure into central data structure
+              * @param pdbqt_file Pdbqt file object
+              */
+            void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file);
+            /*! \fn
               * A function to build a structure from a single topology file
               * Imports data from topology file data structure into central data structure
               * @param topology_file_path Path to a topology file
@@ -318,8 +332,14 @@ namespace MolecularModeling
               * Exports data from assembly data structure into pdb file structure
               */
             PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly();
+            /*! \fn
+              * A function to build a pdbqt file structure from the current assembly object
+              * Exports data from assembly data structure into pdbqt file structure
+              */
+            PdbqtFileSpace::PdbqtFile* BuildPdbqtFileStructureFromAssembly();
 
             void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
+            void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
             /*! \fn
               * A function to extract bonds from the current assembly object
               * @param inserted_bond_types Bond types that have been already detected in the assembly structure
