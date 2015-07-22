@@ -19,10 +19,6 @@ namespace PdbqtFileSpace
               * A vector of pdbqt branch cards
               */
             typedef std::vector<PdbqtBranchCard*> BranchCardVector;
-            /*! \typedef
-              * A vector of pdbqt atom cards
-              */
-            typedef std::vector<PdbqtAtomCard*> AtomCardVector;
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
@@ -31,7 +27,11 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtBranchCard();
-
+            /*! \fn
+              * A constructor that get a stream block of branch card and parse the whole block to fill the related fields
+              * @param stream_block A whole block of branches belonging to a model in a pdbqt file
+              */
+            PdbqtBranchCard(std::stringstream& stream_block);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ namespace PdbqtFileSpace
               * An accessor function in order to access to the pdbqt rotatble atom set
               * @return rotatable_atom_set_ attribute of the current object of this class
               */
-            AtomCardVector GetRotatableAtomSet();
+            PdbqtAtomCard* GetRotatableAtomSet();
             /*! \fn
               * An accessor function in order to access to the pdbqt branch cards
               * @return sub_branches_ attribute of the current object of this class
@@ -87,13 +87,7 @@ namespace PdbqtFileSpace
               * Set the rotatable_atom_set_ attribute of the current pdbqt branch card
               * @param rotatable_atom_set The rotatable atom set attribute of the current object
               */
-            void SetRotatableAtomSet(AtomCardVector rotatable_atom_set);
-            /*! \fn
-              * A function in order to add the rotatable atom to the current object
-              * Set the rotatable_atom_ attribute of the current pdbqt branch card
-              * @param rotatable_atom The rotatable atom of the current object
-              */
-            void AddRotatableAtom(PdbqtAtomCard* rotatable_atom);
+            void SetRotatableAtomSet(PdbqtAtomCard* rotatable_atom_set);
             /*! \fn
               * A mutator function in order to set sub branches of the current object
               * Set the sub_branches_ attribute of the current pdbqt branch card
@@ -124,7 +118,7 @@ namespace PdbqtFileSpace
             std::string record_name_;
             int solid_atom_serial_number_;
             int rotatable_atom_serial_number_;
-            AtomCardVector rotatable_atom_set_;
+            PdbqtAtomCard* rotatable_atom_set_;
             BranchCardVector sub_branches_;
     };
 }

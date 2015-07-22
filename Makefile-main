@@ -300,7 +300,7 @@ first: all
 
 ####### Build rules
 
-all: Makefile  $(TARGET)
+all: Makefile-main  $(TARGET)
 
 $(TARGET):  $(OBJECTS) $(SUBLIBS) $(OBJCOMP)  
 	-$(DEL_FILE) $(TARGET) $(TARGET0) $(TARGET1) $(TARGET2)
@@ -413,6 +413,10 @@ assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/assembl
 		includes/FileSet/PdbFileSpace/pdbatom.hpp \
 		includes/FileSet/PdbFileSpace/pdbconnectcard.hpp \
 		includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
@@ -943,13 +947,24 @@ pdbqtbranchcard.o: src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc includes/FileSe
 		includes/Glycam/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtbranchcard.o src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc
 
+pdbqtcompoundcard.o: src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc includes/FileSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
+                includes/utils.hpp \
+                includes/common.hpp \
+                includes/Geometry/coordinate.hpp \
+                includes/Glycam/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtcompoundcard.o src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc
+
 pdbqtfile.o: src/FileSet/PdbqtFileSpace/pdbqtfile.cc includes/utils.hpp \
-		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtfile.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp
+                includes/common.hpp \
+                includes/Geometry/coordinate.hpp \
+                includes/Glycam/sugarname.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtfile.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtfile.o src/FileSet/PdbqtFileSpace/pdbqtfile.cc
 
 pdbqtfileprocessingexception.o: src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc includes/common.hpp \
@@ -958,12 +973,15 @@ pdbqtfileprocessingexception.o: src/FileSet/PdbqtFileSpace/pdbqtfileprocessingex
 		includes/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtfileprocessingexception.o src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc
 
-pdbqtmodel.o: src/FileSet/PdbqtFileSpace/pdbqtmodel.cc includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
-		includes/utils.hpp \
-		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
+pdbqtmodel.o: src/FileSet/PdbqtFileSpace/pdbqtmodel.cc includes/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtremarkcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
+                includes/utils.hpp \
+                includes/common.hpp \
+                includes/Geometry/coordinate.hpp \
+                includes/Glycam/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtmodel.o src/FileSet/PdbqtFileSpace/pdbqtmodel.cc
 
 pdbqtmodelcard.o: src/FileSet/PdbqtFileSpace/pdbqtmodelcard.cc includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
@@ -975,12 +993,13 @@ pdbqtmodelcard.o: src/FileSet/PdbqtFileSpace/pdbqtmodelcard.cc includes/FileSet/
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtmodelcard.o src/FileSet/PdbqtFileSpace/pdbqtmodelcard.cc
 
 pdbqtmodelresidueset.o: src/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.cc includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtbranchcard.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtrootcard.hpp \
-		includes/utils.hpp \
-		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
+                includes/FileSet/PdbqtFileSpace/pdbqtbranchcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtrootcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+                includes/utils.hpp \
+                includes/common.hpp \
+                includes/Geometry/coordinate.hpp \
+                includes/Glycam/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtmodelresidueset.o src/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.cc
 
 pdbqtremarkcard.o: src/FileSet/PdbqtFileSpace/pdbqtremarkcard.cc includes/FileSet/PdbqtFileSpace/pdbqtremarkcard.hpp \
@@ -990,10 +1009,19 @@ pdbqtremarkcard.o: src/FileSet/PdbqtFileSpace/pdbqtremarkcard.cc includes/FileSe
 		includes/Glycam/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtremarkcard.o src/FileSet/PdbqtFileSpace/pdbqtremarkcard.cc
 
-pdbqtrootcard.o: src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc 
+pdbqtrootcard.o: src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc includes/FileSet/PdbqtFileSpace/pdbqtrootcard.hpp \
+                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+                includes/utils.hpp \
+                includes/common.hpp \
+                includes/Geometry/coordinate.hpp \
+                includes/Glycam/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtrootcard.o src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc
 
-pdbqttorsionaldofcard.o: src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc 
+pdbqttorsionaldofcard.o: src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc includes/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp \
+                includes/utils.hpp \
+                includes/common.hpp \
+                includes/Geometry/coordinate.hpp \
+                includes/Glycam/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqttorsionaldofcard.o src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc
 
 topologyangle.o: src/FileSet/TopologyFileSpace/topologyangle.cc includes/FileSet/TopologyFileSpace/topologyangle.hpp \

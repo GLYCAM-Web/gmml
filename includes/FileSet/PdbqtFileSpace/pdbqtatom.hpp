@@ -17,6 +17,29 @@ namespace PdbqtFileSpace
               * Default constructor
               */
             PdbqtAtom();
+            /*! \fn
+              * Constructor with required parameters
+              * @param line A single line in a pdb file that represents pdbqt atom in model card
+              */
+            PdbqtAtom(std::string& line);
+            /*! \fn
+              * Constructor with required parameters
+              * @param atom_serial_number
+              * @param atom_name
+              * @param atom_alternate_location
+              * @param residue_name
+              * @param chain_id
+              * @param residue_sequence_number
+              * @param insertion_code
+              * @param coordinate
+              * @param occupancy
+              * @param temperature_factor
+              * @param charge
+              * @param atom_type
+              */
+            PdbqtAtom(int atom_serial_number, std::string atom_name, char atom_alternate_location, std::string residue_name, char chain_id,
+                    int residue_sequence_number, char insertion_code, Geometry::Coordinate coordinate, double occupancy, double temperature_factor,
+                    double charge, std::string atom_type, std::string type);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -82,10 +105,15 @@ namespace PdbqtFileSpace
               */
             double GetAtomCharge();
             /*! \fn
-              * An accessor function in order to access to the atom card index in a residue set in a pdbqt atom
+              * An accessor function in order to access to the atom type in a pdbqt atom
               * @return atom_type_ attribute of the current object of this class
               */
             std::string GetAtomType();
+            /*! \fn
+              * An accessor function in order to access to the type of the pdbqt atom
+              * @return type_ attribute of the current object of this class
+              */
+            std::string GetType();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -170,6 +198,13 @@ namespace PdbqtFileSpace
               */
             void SetAtomType(std::string atom_type);
 
+            /*! \fn
+              * A mutator function in order to set the type of the current object
+              * Set the type_ attribute of the current pdbqt atom
+              * @param type The type of the current object
+              */
+            void SetType(std::string type);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -197,6 +232,7 @@ namespace PdbqtFileSpace
             double atom_temperature_factor_;
             double atom_charge_;
             std::string atom_type_;
+            std::string type_;
 
     };
 }
