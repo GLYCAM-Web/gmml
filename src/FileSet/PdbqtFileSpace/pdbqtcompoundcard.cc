@@ -14,8 +14,9 @@ PdbqtCompoundCard::PdbqtCompoundCard() : record_name_("COMPND"){}
 
 PdbqtCompoundCard::PdbqtCompoundCard(string line)
 {
-    record_name_ = line.substr(0, 6);
-    value_ = line.substr(10);
+    vector<string> tokens = Split(line, " ");
+    record_name_ = tokens.at(0);
+    value_ = tokens.at(1);
 }
 
 //////////////////////////////////////////////////////////
@@ -53,6 +54,7 @@ void PdbqtCompoundCard::SetValue(const string value)
 //////////////////////////////////////////////////////////
 void PdbqtCompoundCard::Print(ostream &out)
 {
+    out << record_name_ << "   " << value_ << endl;
 }
 
 
