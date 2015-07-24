@@ -106,6 +106,7 @@ SOURCES       = src/Geometry/cell.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtatom.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtatomcard.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc \
+		src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtfile.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc \
 		src/FileSet/PdbqtFileSpace/pdbqtmodel.cc \
@@ -221,6 +222,7 @@ OBJECTS       = cell.o \
 		pdbqtatom.o \
 		pdbqtatomcard.o \
 		pdbqtbranchcard.o \
+		pdbqtcompoundcard.o \
 		pdbqtfile.o \
 		pdbqtfileprocessingexception.o \
 		pdbqtmodel.o \
@@ -948,10 +950,10 @@ pdbqtbranchcard.o: src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc includes/FileSe
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtbranchcard.o src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc
 
 pdbqtcompoundcard.o: src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc includes/FileSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
-                includes/utils.hpp \
-                includes/common.hpp \
-                includes/Geometry/coordinate.hpp \
-                includes/Glycam/sugarname.hpp
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/Geometry/coordinate.hpp \
+		includes/Glycam/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtcompoundcard.o src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc
 
 pdbqtfile.o: src/FileSet/PdbqtFileSpace/pdbqtfile.cc includes/utils.hpp \
