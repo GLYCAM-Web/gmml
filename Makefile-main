@@ -8,11 +8,11 @@
 
 CC            = gcc
 CXX           = g++
-CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIC
-CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIC
+CFLAGS        = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
+CXXFLAGS      = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
 INCPATH       = -I. -Iincludes -Iincludes/Geometry -Iincludes/Glycam -Iincludes/FileSet/CoordinateFileSpace -Iincludes/FileSet/PdbFileSpace -Iincludes/FileSet/TopologyFileSpace -Iincludes/Geometry/InternalCoordinate -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/Resolver/PdbPreprocessor -Iincludes/FileSet/PdbqtFileSpace -I.
 LINK          = g++
-LFLAGS        = -m64 -Wl,-O1 -shared -Wl,-soname,libgmml.so.1
+LFLAGS        = -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1
 LIBS          = $(SUBLIBS)  -L/usr/lib/x86_64-linux-gnu -lpthread 
 AR            = ar cqs
 RANLIB        = 
