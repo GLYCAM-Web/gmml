@@ -21,6 +21,7 @@ PdbqtModel::PdbqtModel(stringstream &model_block)
     stringstream residue_set_block;
     remarks_ = RemarkCardVector();
     torsional_dof_cards_ = TorsionalDoFCardVector();
+    model_compound_card_ = NULL;
     getline(model_block, line);
     if(line.find("MODEL") != string::npos)
     {

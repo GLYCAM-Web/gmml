@@ -46,7 +46,7 @@ PdbqtModelResidueSet::PdbqtModelResidueSet(stringstream &residue_set_block)
     roots_ = new PdbqtRootCard(root_block);
     getline(residue_set_block, line);
     while(!Trim(temp).empty())
-    {        
+    {
         stringstream branch_block;
         if(line.find("BRANCH") != string::npos)
         {
