@@ -57,7 +57,6 @@
 //#include "rasqal/rasqal.h"
 //#include "redland.h"
 
-
 using namespace std;
 using namespace MolecularModeling;
 using namespace TopologyFileSpace;
@@ -3218,13 +3217,13 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
     {
         Atom* atom = (*it);
         AtomNode* atom_node;
-//        if(atom->GetNode() == NULL)
-//        {
+        if(atom->GetNode() == NULL)
+        {
             atom_node = new AtomNode();
             atom_node->SetAtom(atom);
-//        }
-//        else
-//            atom_node = atom->GetNode();
+        }
+        else
+            atom_node = atom->GetNode();
         atom_node->SetId(i);
         i++;
         for(AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
