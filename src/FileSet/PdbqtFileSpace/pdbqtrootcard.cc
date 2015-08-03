@@ -31,6 +31,7 @@ PdbqtRootCard::PdbqtRootCard(stringstream &root_block)
         }
     }
 
+    getline(root_block,line);
     stringstream stream_block;
     while(line.find("ATOM") != string::npos || line.find("HETATOM") != string::npos)
     {
