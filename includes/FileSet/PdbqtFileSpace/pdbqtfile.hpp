@@ -9,6 +9,8 @@ namespace PdbqtFileSpace{
 
     class PdbqtAtom;
     class PdbqtModelCard;
+    class PdbqtAtomCard;
+    class PdbqtBranchCard;
     class PdbqtFile
     {
         public:
@@ -63,6 +65,7 @@ namespace PdbqtFileSpace{
               * @return atoms The vector of all atoms in a pdbqt file in the order that they appear in the file
               */
             PdbqtResidueAtomsMap GetAllAtomsInOrder(std::vector<std::string>& key_order);
+
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -100,6 +103,27 @@ namespace PdbqtFileSpace{
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseModelCard(std::ifstream& stream, std::string& line);
+
+            /*! \fn
+              * A function to create an output pdbqt file with the given name
+              * @param pdbqt_file Output pdb file name
+              */
+            void Write(const std::string& pdbqt_file);
+            /*! \fn
+              * A function to write back model card of the pdbqt file into an output stream
+              * @param stream Intermediate output stream in order to write model card
+              */
+            void ResolveModelCard(std::ofstream& stream);            
+            /*! \fn
+              * A function to write back root card of the pdbqt file into an output stream
+              * @param stream Intermediate output stream in order to write root card
+              */
+            void ResolveRootCard(std::ofstream& stream, PdbqtAtomCard* atom_card);
+            /*! \fn
+              * A function to write back branch cards of the pdbqt file into an output stream
+              * @param stream Intermediate output stream in order to write branch cards
+              */
+            void ResolveBranchCards(std::ofstream& stream, std::vector<PdbqtBranchCard*> branches);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

@@ -52,6 +52,12 @@
 #include "../../includes/utils.hpp"
 #include "../../includes/common.hpp"
 
+//#include "raptor2/raptor.h"
+//#include "raptor2/raptor2.h"
+//#include "rasqal/rasqal.h"
+//#include "redland.h"
+
+
 using namespace std;
 using namespace MolecularModeling;
 using namespace TopologyFileSpace;
@@ -3208,7 +3214,7 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
     model_index_ = model_index;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
-    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() - 1; it++)
     {
         Atom* atom = (*it);
         AtomNode* atom_node;
@@ -3221,7 +3227,7 @@ void Assembly::BuildStructureByDistance(double cutoff, int model_index)
 //            atom_node = atom->GetNode();
         atom_node->SetId(i);
         i++;
-        for(AtomVector::iterator it1 = it; it1 != all_atoms_of_assembly.end(); it1++)
+        for(AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
 //            if(it != it1)
             {
@@ -7414,6 +7420,8 @@ void Assembly::ExtractSugars(vector<string> amino_lib_files)
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
         (*it)->Print(terminal_residue_name, cout);
 }
+
+//////////populate ontology
 
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {

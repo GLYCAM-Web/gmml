@@ -43,7 +43,7 @@ namespace PdbqtFileSpace
               */
             std::string GetRecordName();
             /*! \fn
-              * An accessor function in order to access to the models in a pdb qt model card
+              * An accessor function in order to access to the models in a pdbqt model card
               * @return models_ attribute of the current object of this class
               */
             PdbqtModelMap GetModels();
