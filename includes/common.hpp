@@ -30,6 +30,10 @@ namespace gmml
     const int PdbResidueThreshold = 500;
     const int DEFAULT_DUMMY_ATOMS = 3;
     const char BLANK_SPACE = '?';
+    const double MINIMUM_RADIUS = 0.6;
+    const double DIST_EPSILON = 0.000001;
+    const int MAX_PDB_ATOM = 99999;
+    const double CHARGE_DIVIDER = 18.2223;
 
     // Ionizing
     const double DEFAULT_GRID_LENGTH = 2;//0.5;
@@ -40,6 +44,10 @@ namespace gmml
     const double DEFAULT_BOX_HEIGHT = INFINITY;//20;
     const double THRESHOLD = 0.001;//0.001
     const double THRESHOLD_PARTITIONING = 0.001;//0.0001;
+    const double CHARGE_TOLERANCE = 0.001;//0.0001;
+    const double GRID_OFFSET = 1.0;
+    const double MARGIN = 0.0;//10.0;
+    const double CRITICAL_RADIOUS = 1.0;
 
 
     const Glycam::SugarName SUGARNAMELOOKUP[] = {

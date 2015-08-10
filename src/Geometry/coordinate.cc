@@ -109,11 +109,23 @@ void Coordinate::operator+(Coordinate coordinate)
     y_ += coordinate.y_;
     z_ += coordinate.z_;
 }
+void Coordinate::operator +(double addition)
+{
+    x_ += addition;
+    y_ += addition;
+    z_ += addition;
+}
 void Coordinate::operator-(Coordinate coordinate)
 {
     x_ -= coordinate.x_;
     y_ -= coordinate.y_;
     z_ -= coordinate.z_;
+}
+void Coordinate::operator /(Coordinate coordinate)
+{
+    x_ /= coordinate.x_;
+    y_ /= coordinate.y_;
+    z_ /= coordinate.z_;
 }
 void Coordinate::operator/(double divisor)
 {

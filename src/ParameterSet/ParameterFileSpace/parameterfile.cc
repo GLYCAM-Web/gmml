@@ -291,7 +291,7 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Atom type section reading
     getline(in_file, line);             /// Read the first line of the atom type section
     line_number++;                      /// Increment line counter
-    if(Trim(line).compare("MASS") == 0)
+    if(Trim(line).find("MASS") != string::npos)
     {
         getline(in_file, line);             /// Read the first line of the atom type section
         line_number++;                      /// Increment line counter
@@ -312,7 +312,7 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Bond section reading
     getline(in_file, line);             /// Read the first line of the atom type section
     line_number++;                      /// Increment line counter
-    if(Trim(line).compare("BOND") == 0)
+    if(Trim(line).find("BOND") != string::npos)
     {
         getline(in_file, line);             /// Read the first line of the atom type section
         line_number++;                      /// Increment line counter
@@ -333,7 +333,7 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Angle section reading
     getline(in_file, line);             /// Read the first line of the angle section
     line_number++;                      /// Increment line counter
-    if(Trim(line).compare("ANGL") == 0)
+    if(Trim(line).find("ANGL") != string::npos || Trim(line).find("ANGLE") != string::npos)
     {
         getline(in_file, line);             /// Read the first line of the angle section
         line_number++;                      /// Increment line counter
@@ -354,7 +354,7 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Dihedral section reading
     getline(in_file, line);             /// Read the first line of the dihedral section
     line_number++;                      /// Increment line counter
-    if(Trim(line).compare("DIHE") == 0)
+    if(Trim(line).find("DIHE") != string::npos || Trim(line).find("DIHEDRAL") != string::npos)
     {
         getline(in_file, line);             /// Read the first line of the angle section
         line_number++;                      /// Increment line counter
@@ -375,7 +375,7 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Improper dihedral section reading
     getline(in_file, line);             /// Read the first line of the improper dihedral section
     line_number++;                      /// Increment line counter
-    if(Trim(line).compare("IMPR") == 0)
+    if(Trim(line).find("IMPR") != string::npos || Trim(line).find("IMPROPER") != string::npos)
     {
         getline(in_file, line);             /// Read the first line of the improper dihedral section
         line_number++;                      /// Increment line counter
@@ -396,7 +396,7 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Potential parameter section reading
     getline(in_file, line);         /// Read the first line of the potential parameter section
     line_number++;                  /// Increment line counter
-    if(Trim(line).compare("NONB") == 0)
+    if(Trim(line).find("NONB") != string::npos || Trim(line).find("NONBON") != string::npos)
     {
         getline(in_file, line);             /// Read the first line of the improper dihedral section
         line_number++;                      /// Increment line counter

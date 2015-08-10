@@ -54,7 +54,8 @@ namespace PdbFileSpace
               * @param residue_insertion_code
               * @param atom_alternate_location
               */
-            PdbAtom(char chain_id, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code, char atom_alternate_location);
+            PdbAtom(char chain_id, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code,
+                    char atom_alternate_location);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
