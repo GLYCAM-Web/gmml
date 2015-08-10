@@ -32,6 +32,7 @@ namespace MolecularModeling
               * Default constructor
               */
             Atom();
+            Atom(Residue* residue, std::string name, CoordinateVector coordinates);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

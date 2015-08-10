@@ -1,53 +1,53 @@
-#ifndef CELL_HPP
-#define CELL_HPP
+#ifndef GRID_HPP
+#define GRID_HPP
 
-#include <iostream>
-#include "coordinate.hpp"
-#include "grid.hpp"
+#include <vector>
+#include "../MolecularModeling/assembly.hpp"
 
 namespace Geometry
 {
-    class Cell
+    class Coordinate;
+    class Cell;
+    class Grid
     {
         public:
             //////////////////////////////////////////////////////////
+            //                    TYPE DEFINITION                   //
+            //////////////////////////////////////////////////////////
+            typedef std::vector<Cell*> CellVector;
+
+            //////////////////////////////////////////////////////////
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
-            Cell();
-            Cell(Geometry::Coordinate* min, Geometry::Coordinate* max);
-            Cell(Grid* grid, Geometry::Coordinate* min, Geometry::Coordinate* max);
-            Cell(Geometry::Coordinate* min, Geometry::Coordinate* max, double charge, double potential_energy);
-            Cell(Grid* grid, Geometry::Coordinate* min, Geometry::Coordinate* max, double charge, double potential_energy);
+            Grid();
+            Grid(MolecularModeling::Assembly* assembly, Coordinate* min, Coordinate* max, double ion_radius, double ion_charge);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
-            Geometry::Coordinate* GetMinCorner();
-            Geometry::Coordinate* GetMaxCorner();
-            double GetCellCharge();
-            double GetCellPotentialEnergy();
-            double GetCellLength();
-            double GetCellWidth();
-            double GetCellHeight();
-            Grid* GetGrid();
+            Coordinate* GetMinCorner();
+            Coordinate* GetMaxCorner();
+            CellVector GetCells();
+            MolecularModeling::Assembly* GetAssembly();
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
-            void SetMinCorner(Geometry::Coordinate* min);
-            void SetMaxCorner(Geometry::Coordinate* max);
-            void SetCellCharge(double charge);
-            void SetCellPotentialEnergy(double potential_energy);
-            void SetGrid(Grid* grid);
+            void SetMinCorner(Coordinate* min);
+            void SetMaxCorner(Coordinate* max);
+            void SetCells(CellVector cells);
+            void SetAssembly(MolecularModeling::Assembly* assembly);
 
-            //////////////////////////////////////////////////////////+
+            //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
-            Geometry::Coordinate* GetCellCenter();
-            void CalculateCellCharge();
-            void CalculateCellPotentialEnergy(double ion_radius);
+            void UpdateGrid(double ion_charge);
+            void CalculateCellsCharge();
+            void CalculateCellsPotentialEnergy(double ion_radius);
             void CalculateBoxCharge();
             void CalculateBoxPotentialEnergy();
+            Cell* GetBestBox(Grid* grid, double ion_charge);
+            std::vector<Coordinate*> GetBestPositions(double ion_charge);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
@@ -63,11 +63,12 @@ namespace Geometry
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////
-            Geometry::Coordinate* min_corner_;
-            Geometry::Coordinate* max_corner_;
-            double cell_charge_;
-            double cell_potential_energy_;
-            Grid* grid_;
+            Coordinate* min_corner_;
+            Coordinate* max_corner_;
+            CellVector cells_;
+            MolecularModeling::Assembly* assembly_;
+
     };
 }
-#endif // CELL_HPP
+
+#endif // GRID_HPP

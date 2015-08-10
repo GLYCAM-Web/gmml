@@ -96,22 +96,7 @@ namespace MolecularModeling
               * @return sequence_number_ attribute of the current object of this class
               */
             int GetSequenceNumber();
-            std::string GetId();
-            /*! \fn
-              * An accessor function in order to access to the total mass
-              * @return total_mass_ attribute of the current object of this class
-              */
-            double GetTotalMass();
-            /*! \fn
-              * An accessor function in order to access to the center of mass
-              * @return center_of_mass_ attribute of the current object of this class
-              */
-            Geometry::Coordinate GetCenterOfMass();
-            /*! \fn
-              * An accessor function in order to access to the center of geometry
-              * @return center_of_geometry_ attribute of the current object of this class
-              */
-            Geometry::Coordinate GetCenterOfGeometry();
+            std::string GetId();            
             /*! \fn
               * An accessor function in order to access to the center of description
               * @return description_ attribute of the current object of this class
@@ -151,16 +136,8 @@ namespace MolecularModeling
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
-            CoordinateVector GetAllCoordinates();
-            /*! \fn
-              * A function to extract topological types of atoms of a residue in assembly object
-              * @param assembly_atoms Atoms of a residue in the assembly structure
-              * @return List of all topological types of atoms in a residue of an assembly
-              */
-            std::vector<gmml::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
-                                                                                               PrepFileSpace::PrepFileResidue::Loop& loops,
-                                                                                               std::vector<int>& bond_index,
-                                                                                               int dummy_atoms = gmml::DEFAULT_DUMMY_ATOMS);
+            CoordinateVector GetAllCoordinates();            
+
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -207,25 +184,7 @@ namespace MolecularModeling
               * @param sequence_number The sequence number attribute of the current object
               */
             void SetSequenceNumber(int sequence_number);
-            void SetId(std::string id);
-            /*! \fn
-              * A mutator function in order to set the total mass of the current object
-              * Set the total_mass_ attribute of the current assembly
-              * @param total_mass The total mass attribute of the current object
-              */
-            void SetTtoalMass(double total_mass);
-            /*! \fn
-              * A mutator function in order to set the center of mass of the current object
-              * Set the center_of_mass_ attribute of the current assembly
-              * @param center_of_mass The center of mass attribute of the current object
-              */
-            void SetCenterOfMass(Geometry::Coordinate center_of_mass);
-            /*! \fn
-              * A mutator function in order to set the center of geometry of the current object
-              * Set the residues_ attribute of the current assembly
-              * @param center_of_geometry The center of geometry attribute of the current object
-              */
-            void SetCenterOfGeometry(Geometry::Coordinate center_of_geometry);
+            void SetId(std::string id);            
             /*! \fn
               * A mutator function in order to set the description of the current object
               * Set the description_ attribute of the current assembly
@@ -258,75 +217,77 @@ namespace MolecularModeling
               * Imports data from pdb file data structure into central data structure
               * @param pdb_file_path Path to a pdb file
               */
-            void BuildAssemblyFromPdbFile(std::string pdb_file_path);
+            void BuildAssemblyFromPdbFile(std::string pdb_file_path, std::string lib_file = "", std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
               * @param pdb_file Pdb file object
               */
-            void BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile* pdb_file);
+            void BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile* pdb_file,
+                                          LibraryFileSpace::LibraryFile* lib_file = NULL, ParameterFileSpace::ParameterFile* parameter_file = NULL);
             /*! \fn
               * A function to build a structure from a single pdbqt file
               * Imports data from pdbqt file data structure into central data structure
               * @param pdbqt_file_path Path to a pdbqt file
               */
-            void BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path);
+            void BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdbqt file
               * Imports data from pdbqt file data structure into central data structure
               * @param pdbqt_file Pdbqt file object
               */
-            void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file);
+            void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
             /*! \fn
               * A function to build a structure from a single topology file
               * Imports data from topology file data structure into central data structure
               * @param topology_file_path Path to a topology file
               */
-            void BuildAssemblyFromTopologyFile(std::string topology_file_path);
+            void BuildAssemblyFromTopologyFile(std::string topology_file_path, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single topology file
               * Imports data from topology file data structure into central data structure
               * @param topology_file Topology file object
               */
-            void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file);
+            void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
             /*! \fn
               * A function to build a structure from a single library file
               * Imports data from library file data structure into central data structure
               * @param library_file_path Path to a library file
               */
-            void BuildAssemblyFromLibraryFile(std::string library_file_path);
+            void BuildAssemblyFromLibraryFile(std::string library_file_path, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single library file
               * Imports data from library file data structure into central data structure
               * @param library_file Library file object
               */
-            void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file);
+            void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
             /*! \fn
               * A function to build a structure from a combination of a topology file and its corresponding coordinate file
               * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file
               * @param topology_file_path Path to a topology file
               * @param coordinate_file_path Path to a coordinate file corresponding to the given topology file
               */
-            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path);
+            void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a combination of a topology file and its corresponding coordinate file
               * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file
               * @param topology_file Topology file object
               * @param coordinate_file Coordinate file object corresponding to the given topology file
               */
-            void BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file, CoordinateFileSpace::CoordinateFile* coordinate_file);
+            void BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file, CoordinateFileSpace::CoordinateFile* coordinate_file,
+                                                         ParameterFileSpace::ParameterFile* parameter_file = NULL);
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
               * @param prep_file_path Path to a prep file
               */
-            void BuildAssemblyFromPrepFile(std::string prep_file_path);
+            void BuildAssemblyFromPrepFile(std::string prep_file_path, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
               * @param prep_file Prep file object
               */
-            void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file);
+            void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
@@ -386,6 +347,15 @@ namespace MolecularModeling
               */
             void ExtractPrepImproperDihedralsFromAssembly(Atom* assembly_atom, std::vector<std::vector<std::string> > &inserted_improper_dihedrals, std::vector<std::string> inserted_improper_dihedral_types,
                                                           ParameterFileSpace::ParameterFile::DihedralMap &dihedrals);
+            /*! \fn
+              * A function to extract topological types of atoms of a residue in assembly object
+              * @param assembly_atoms Atoms of a residue in the assembly structure
+              * @return List of all topological types of atoms in a residue of an assembly
+              */
+            std::vector<gmml::TopologicalType> GetAllTopologicalTypesOfAtomsOfResidue(AtomVector assembly_atoms,
+                                                                                      PrepFileSpace::PrepFileResidue::Loop& loops,
+                                                                                      std::vector<int>& bond_index,
+                                                                                      int dummy_atoms = gmml::DEFAULT_DUMMY_ATOMS);
             /*! \fn
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure
@@ -507,11 +477,7 @@ namespace MolecularModeling
               * @param types List of types of the database files
               * @param file_paths List of the database file paths
               */
-            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);            
-            /*! \fn
-              * A function to calculate the center of geometry of the assembly
-              */
-            void CalculateCenterOfGeometry();
+            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);                       
             /*! \fn
               * A function that counts the number of atoms in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
@@ -664,8 +630,14 @@ namespace MolecularModeling
             std::string CheckxC_NxO_C(Atom* target, std::string cycle_atoms_str, char NxO);
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str);
 
-//            void Ionizing2Neutralize(std::string ion_atom_type);
-//            void Ionizing2Charge(std::vector<std::string> ions_atom_type, std::vector<int> ions_count);
+            void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
+
+            double GetTotalCharge();
+            double GetRadius();
+            double GetTotalMass();
+            void GetCenterOfMass(Geometry::Coordinate* center_of_mass);
+            void GetCenterOfGeometry(Geometry::Coordinate* center_of_geometry);
+            void GetBoundary(Geometry::Coordinate* lower_left_back_corner, Geometry::Coordinate* upper_right_front_corner);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -692,10 +664,7 @@ namespace MolecularModeling
             ResidueVector residues_;                        /*!< List of residues involved in the current object of assembly >*/
             std::string chemical_type_;                     /*!< A descriptor for the chemical type of the current object of assembly >*/
             int sequence_number_;                           /*!< An integer number to indicates sequence of importing the current assembly >*/
-            std::string id_;
-            double total_mass_;                             /*!< Total mass of the assembly >*/
-            Geometry::Coordinate center_of_mass_;           /*!< Center of mass of the assembly >*/
-            Geometry::Coordinate center_of_geometry_;       /*!< Center of geometry of the assembly >*/
+            std::string id_;            
             std::string description_;                       /*!< Short description for the current assembly >*/
             std::string source_file_;                       /*!< File name that the current assembly has been built upon >*/
             gmml::InputFileType source_file_type_;          /*!< Type of the file that the current assembly has been built upon >*/

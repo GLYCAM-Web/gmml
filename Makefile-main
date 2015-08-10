@@ -154,7 +154,8 @@ SOURCES       = src/Geometry/cell.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc \
-		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc 
+		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc \
+		src/Geometry/grid.cc
 OBJECTS       = cell.o \
 		coordinate.o \
 		plane.o \
@@ -270,7 +271,8 @@ OBJECTS       = cell.o \
 		pdbpreprocessorreplacedhydrogen.o \
 		pdbpreprocessorresidueinfo.o \
 		pdbpreprocessorunrecognizedheavyatom.o \
-		pdbpreprocessorunrecognizedresidue.o
+		pdbpreprocessorunrecognizedresidue.o \
+		grid.o
 QMAKE_TARGET  = gmml
 DESTDIR       = 
 TARGET        = libgmml.so.1.0.0
@@ -361,6 +363,11 @@ compiler_clean:
 cell.o: src/Geometry/cell.cc includes/Geometry/cell.hpp \
 		includes/Geometry/coordinate.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cell.o src/Geometry/cell.cc
+
+grid.o: src/Geometry/grid.cc includes/Geometry/grid.hpp \
+		includes/Geometry/coordinate.hpp \
+		includes/Geometry/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o grid.o src/Geometry/grid.cc
 
 coordinate.o: src/Geometry/coordinate.cc includes/Geometry/coordinate.hpp \
 		includes/common.hpp \

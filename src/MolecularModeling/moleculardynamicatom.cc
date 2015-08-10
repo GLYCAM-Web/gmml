@@ -1,4 +1,5 @@
 #include "../../includes/MolecularModeling/moleculardynamicatom.hpp"
+#include "../../includes/common.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -6,7 +7,7 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-MolecularDynamicAtom::MolecularDynamicAtom() : atom_type_(""), charge_(0.0), mass_(0.0), radius_(0.0) {}
+MolecularDynamicAtom::MolecularDynamicAtom() : atom_type_(""), charge_(gmml::dNotSet), mass_(gmml::dNotSet), radius_(gmml::dNotSet) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
