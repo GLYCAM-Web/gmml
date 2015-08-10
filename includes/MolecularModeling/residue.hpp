@@ -26,6 +26,7 @@ namespace MolecularModeling
               * Default constructor
               */
             Residue();
+            Residue(Assembly* assembly, std::string name);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

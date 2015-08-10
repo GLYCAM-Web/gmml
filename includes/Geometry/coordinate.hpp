@@ -111,11 +111,13 @@ namespace Geometry
               * @param coordinate Second vector in the add operator
               */
             void operator+(Coordinate coordinate);
+            void operator +(double addition);
             /*! \fn
               * Subtract current object to the given one and update the current one
               * @param coordinate Second vector in the subtract operator
               */
             void operator-(Coordinate coordinate);
+            void operator /(Coordinate coordinate);
             void operator/(double divisor);
             void operator*(double multiplier);
 

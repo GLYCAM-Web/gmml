@@ -18,6 +18,16 @@ Atom::Atom() : name_(""), chemical_type_(""), element_symbol_(""), description_(
     node_ = NULL;
 }
 
+Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
+    chemical_type_(""), element_symbol_(""), description_("")
+{
+    residue_ = residue;
+    name_ = name;
+    coordinates_ = CoordinateVector();
+    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+        coordinates_.push_back(*it);
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

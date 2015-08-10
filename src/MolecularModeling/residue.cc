@@ -10,6 +10,13 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 Residue::Residue() {}
 
+Residue::Residue(Assembly *assembly, string name)
+{
+    assembly_ = assembly;
+    name_ = name;
+    atoms_ = AtomVector();
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

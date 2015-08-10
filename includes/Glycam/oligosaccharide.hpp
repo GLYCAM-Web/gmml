@@ -51,7 +51,10 @@ namespace Glycam
 //                    oligosaccharide_name_ = new_name.str();
                 }
                 out << oligosaccharide_name_ << std::endl;
-                out << oligosaccharide_linkages_ << std::endl;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_name_);
+                out << oligosaccharide_linkages_;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);
+                out << std::endl;
             }
 
             void GenerateNameLinkage(std::string& oligosaccharide_name, std::string& oligosaccharide_linkages, int& i, int main_root_id, bool& is_cycle)
