@@ -227,6 +227,7 @@ vector<string> PdbPreprocessor::GetUnrecognizedResidueNames(PdbFile::PdbPairVect
         }
     }
     cout << "HIS residue(s) found" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "HIS residue(s) found" );
     return unrecognized_residue_names;
 }
 
@@ -272,6 +273,7 @@ ResidueNameMap PdbPreprocessor::GetUnrecognizedResidueNamesMap(PdbFile::PdbPairV
         }
     }
     cout << "HIS residue(s) found" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "HIS residue(s) found" );
     return unrecognized_residue_names;
 }
 
@@ -318,6 +320,7 @@ vector<string> PdbPreprocessor::GetRecognizedResidueNames(PdbFile::PdbPairVector
         }
     }
     cout << "HIS residue(s) found" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "HIS residue(s) found" );
     return recognized_residue_names;
 }
 
@@ -364,6 +367,7 @@ ResidueNameMap PdbPreprocessor::GetRecognizedResidueNamesMap(PdbFile::PdbPairVec
         }
     }
     cout << "HIS residue(s) found" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "HIS residue(s) found" );
     return recognized_residue_names;
 }
 
@@ -2060,7 +2064,9 @@ bool PdbPreprocessor::ExtractAminoAcidChains(string pdb_file_path, vector<string
             if(chain_map_residue.size() > 2)
             {
                 cout << "There is an undefined protein in the middle of the chain" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is an undefined protein in the middle of the chain" );
                 cout << "Pdb file is not processible at this time" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "Pdb file is not processible at this time" );
 
                 return false;
             }
@@ -2177,7 +2183,10 @@ bool PdbPreprocessor::ExtractAminoAcidChains(PdbFile* pdb_file, vector<string> a
             if(chain_map_residue.size() > 2)
             {
                 cout << "There is an undefined protein in the middle of the chain" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is an undefined protein in the middle of the chain" );
                 cout << "Pdb file is not processible at this time" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "Pdb file is not processible at this time" );
+
 
                 return false;
             }
@@ -2213,6 +2222,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
         pdb_file->SplitAtomCardOfModelCard(chain->GetResidueChainId(), chain->GetEndingResidueSequenceNumber() + 1);
     }
     cout << "Putting TER card after non-amino acid residues: Done" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Putting TER card after non-amino acid residues: Done" );
     vector<string> glycam_residue_names = this->GetAllResidueNamesFromDatasetFiles(glycam_lib_files, prep_files);
     // Get all TER card positions and split
     vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions(glycam_residue_names);
@@ -2224,6 +2234,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
         pdb_file->SplitAtomCardOfModelCard(chain_id, sequence_number);
     }
     cout << "Putting TER card after residues with no tail or with at least 2 tails: Done" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Putting TER card after residues with no tail or with at least 2 tails: Done" );
 
     // Add Terminals
     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms;
@@ -2343,6 +2354,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
         }
     }
     cout << "Add terminals: Done" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Add terminals: Done" );
 }
 
 void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_file, vector<string> amino_lib_files,
@@ -2357,6 +2369,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
     }
 
     cout << "Putting TER card after non-amino acid residues: Done" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Putting TER card after non-amino acid residues: Done" );
     vector<string> glycam_residue_names = this->GetAllResidueNamesFromDatasetFiles(glycam_lib_files, prep_files);
     // Get all TER card positions and split
     vector<pair<char, int> > ter_card_positions = pdb_file->GetAllTerCardPositions(glycam_residue_names);
@@ -2369,6 +2382,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
         pdb_file->SplitAtomCardOfModelCard(chain_id, sequence_number);
     }
     cout << "Putting TER card after residues with no tail or with at least 2 tails: Done" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Putting TER card after residues with no tail or with at least 2 tails: Done" );
 
     // Add Terminals
     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms;
@@ -2488,6 +2502,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
         }
     }
     cout << "Add terminals: Done" << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Add terminals: Done" );
 }
 
 bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path)
@@ -2601,7 +2616,10 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<
             if(chain_map_residue.size() > 2)
             {
                 cout << "There is an undefined protein in the middle of the chain" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is an undefined protein in the middle of the chain" );
                 cout << "Pdb file is not processible at this time" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "Pdb file is not processible at this time" );
+
 
                 return false;
             }
@@ -2759,7 +2777,9 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
         if(chain_map_residue.size() > 2)
         {
             cout << "There is an undefined protein in the middle of the chain" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is an undefined protein in the middle of the chain" );
             cout << "Pdb file is not processible at this time" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Pdb file is not processible at this time" );
 
             return false;
         }
@@ -3571,39 +3591,88 @@ void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> amino_lib_fil
     try
     {
         time_t t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Start preprocessing ..." << endl;
+        string time_str = std::asctime(std::localtime(&t));
+        cout << time_str.substr(0, time_str.size() - 1) << "Start preprocessing ..." << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Start preprocessing ..." );
         ExtractHISResidues(pdb_file);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "HIS residues extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream his;
+        his << time_str.substr(0, time_str.size() - 1) << "HIS residues extraction: done";
+        cout << his.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, his.str());
         ExtractCYSResidues(pdb_file);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "CYS residues extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream cys;
+        cys << time_str.substr(0, time_str.size() - 1) << "CYS residues extraction: done";
+        cout << cys.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, cys.str() );
         ExtractAlternateResidue(pdb_file);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Alternate residues extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream alt;
+        alt << time_str.substr(0, time_str.size() - 1) << "Alternate residues extraction: done";
+        cout << alt.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, alt.str() );
         ExtractUnrecognizedResidues(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Unrecognized residues extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream unrecognized;
+        unrecognized << time_str.substr(0, time_str.size() - 1) << "Unrecognized residues extraction: done";
+        cout << unrecognized.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, unrecognized.str() );
         ExtractUnknownHeavyAtoms(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream heavy;
+        heavy << time_str.substr(0, time_str.size() - 1) << "Unknown heavy atoms extraction: done" ;
+        cout << heavy.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, heavy.str() );
         ExtractRemovedHydrogens(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Removed hydrogens extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream hydrogen;
+        hydrogen << time_str.substr(0, time_str.size() - 1) << "Removed hydrogens extraction: done" ;
+        cout << hydrogen.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, hydrogen.str() );
         ExtractAminoAcidChains(pdb_file, amino_lib_files_path);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Amino acid chains extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream amino;
+        amino << time_str.substr(0, time_str.size() - 1) << "Amino acid chains extraction: done" ;
+        cout << amino.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, amino.str() );
         ExtractGapsInAminoAcidChains(pdb_file, amino_lib_files_path);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream gaps;
+        gaps << time_str.substr(0, time_str.size() - 1) << "Gaps in amino acid chains extraction: done";
+        cout << gaps.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, gaps.str() );
         ExtractResidueInfo(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Residue info extraction: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream info;
+        info << time_str.substr(0, time_str.size() - 1) << "Residue info extraction: done" ;
+        cout << info.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, info.str() );
         t = time(0);
-        cout << "Model charge is " << CalculateModelCharge(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path) << endl;
-        cout << std::asctime(std::localtime(&t)) << "Model charge calculation: done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream model_charge;
+        model_charge << "Model charge is " << CalculateModelCharge(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path) ;
+        cout << model_charge.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, model_charge.str() );
+        stringstream model_done;
+        model_done << time_str.substr(0, time_str.size() - 1) << "Model charge calculation: done" ;
+        cout << model_done << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, model_done.str() );
         t = time(0);
-        cout << std::asctime(std::localtime(&t)) << "Preprocessing done" << endl;
+        time_str = std::asctime(std::localtime(&t));
+        stringstream pre;
+        pre << time_str.substr(0, time_str.size() - 1) << "Preprocessing done";
+        cout << pre.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, pre.str() );
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {}
@@ -3612,66 +3681,146 @@ void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> amino_lib_fil
 void PdbPreprocessor::ApplyPreprocessing(PdbFile *pdb_file, vector<string> amino_lib_files_path, vector<string> glycam_lib_files_path, vector<string> prep_files_path)
 {
     time_t t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Start to apply changes ..." << endl;
+    string time_str = std::asctime(std::localtime(&t));
+    stringstream changes;
+    changes << time_str.substr(0, time_str.size() - 1) << "Start to apply changes ...";
+    cout << changes.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, changes.str() );
     UpdateHISMapping(pdb_file,this->GetHistidineMappings());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "HIS residues update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream his_update;
+    his_update << time_str.substr(0, time_str.size() - 1) << "HIS residues update: done" ;
+    cout << his_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, his_update.str() );
     UpdateCYSResidues(pdb_file, this->GetDisulfideBonds());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "CYS residues update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream cys_update;
+    cys_update << time_str.substr(0, time_str.size() - 1) << "CYS residues update: done" ;
+    cout << cys_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, cys_update.str() );
     RemoveUnselectedAlternateResidues(pdb_file,this->GetAlternateResidueMap());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unselected alternate residues removed: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream alt_res;
+    alt_res << time_str.substr(0, time_str.size() - 1) << "Unselected alternate residues removed: done" ;
+    cout << alt_res.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, alt_res.str() );
     RemoveUnrecognizedResidues(pdb_file, this->GetUnrecognizedResidues());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Remove unrecognized residues: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream remove_res;
+    remove_res << time_str.substr(0, time_str.size() - 1) << "Remove unrecognized residues: done" ;
+    cout << remove_res.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_res.str() );
     RemoveResiduesOfUnknownHeavyAtoms(pdb_file, this->GetUnrecognizedHeavyAtoms());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms removed: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream remove_heavy;
+    remove_heavy << time_str.substr(0, time_str.size() - 1) << "Unknown heavy atoms removed: done" ;
+    cout << remove_heavy.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_heavy.str() );
     RemoveRemovedHydrogens(pdb_file, this->GetReplacedHydrogens());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Removed hydrogens removed: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream remove_hydrogen;
+    remove_hydrogen << time_str.substr(0, time_str.size() - 1) << "Removed hydrogens removed: done" ;
+    cout << remove_hydrogen.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_hydrogen.str() );
     UpdateAminoAcidChains(pdb_file, amino_lib_files_path, glycam_lib_files_path, prep_files_path, this->GetChainTerminations());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Amino acid chains update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream amino_update;
+    amino_update << time_str.substr(0, time_str.size() - 1) << "Amino acid chains update: done" ;
+    cout << amino_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
     UpdateGapsInAminoAcidChains(pdb_file, amino_lib_files_path, this->GetMissingResidues());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream gaps_update;
+    gaps_update << time_str.substr(0, time_str.size() - 1) << "Gaps in amino acid chains update: done" ;
+    cout << gaps_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Applying changes done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream applied;
+    applied << time_str.substr(0, time_str.size() - 1) << "Applying changes done" ;
+    cout << applied.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, applied.str() );
 }
 
 void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(PdbFile *pdb_file, vector<string> amino_lib_files_path,
                                                                 vector<string> glycam_lib_files_path, vector<string> prep_files_path, int model_number)
 {
     time_t t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Start to apply changes ..." << endl;
+    string time_str = std::asctime(std::localtime(&t));
+    stringstream changes;
+    changes << time_str.substr(0, time_str.size() - 1) << "Start to apply changes ..." ;
+    cout << changes.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, changes.str() );
     UpdateHISMappingWithTheGivenNumber(pdb_file,this->GetHistidineMappings(), model_number);
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "HIS residues update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream his_update;
+    his_update << time_str.substr(0, time_str.size() - 1) << "HIS residues update: done" ;
+    cout << his_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, his_update.str() );
     UpdateCYSResiduesWithTheGivenModelNumber(pdb_file, this->GetDisulfideBonds());
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "CYS residues update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream cys_update;
+    cys_update << time_str.substr(0, time_str.size() - 1) << "CYS residues update: done" ;
+    cout << cys_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, cys_update.str() );
     RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(pdb_file,this->GetAlternateResidueMap(), model_number);
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unselected alternate residues removed: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream alt_res;
+    alt_res << time_str.substr(0, time_str.size() - 1) << "Unselected alternate residues removed: done" ;
+    cout << alt_res.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, alt_res.str() );
     RemoveUnrecognizedResiduesWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedResidues(), model_number);
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Remove unrecognized residues: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream remove_res;
+    remove_res << time_str.substr(0, time_str.size() - 1) << "Remove unrecognized residues: done" ;
+    cout << remove_res.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_res.str() );
     RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(pdb_file, this->GetUnrecognizedHeavyAtoms(), model_number);
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Unknown heavy atoms removed: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream remove_heavy;
+    remove_heavy << time_str.substr(0, time_str.size() - 1) << "Unknown heavy atoms removed: done" ;
+    cout << remove_heavy.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_heavy.str() );
     RemoveRemovedHydrogensWithTheGivenModelNumber(pdb_file, this->GetReplacedHydrogens(), model_number);
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Removed hydrogens removed: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream remove_hydrogen;
+    remove_hydrogen << time_str.substr(0, time_str.size() - 1) << "Removed hydrogens removed: done" ;
+    cout << remove_hydrogen.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_hydrogen.str() );
     UpdateAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, glycam_lib_files_path, prep_files_path, this->GetChainTerminations(), model_number);
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Amino acid chains update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream amino_update;
+    amino_update << time_str.substr(0, time_str.size() - 1) << "Amino acid chains update: done" ;
+    cout << amino_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
     UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number);
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Gaps in amino acid chains update: done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream gaps_update;
+    gaps_update << time_str.substr(0, time_str.size() - 1) << "Gaps in amino acid chains update: done" ;
+    cout << gaps_update.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
     t = time(0);
-    cout << std::asctime(std::localtime(&t)) << "Applying changes done" << endl;
+    time_str = std::asctime(std::localtime(&t));
+    stringstream applied;
+    applied << time_str.substr(0, time_str.size() - 1) << "Applying changes done" ;
+    cout << applied.str() << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, applied.str() );
 }
 
 

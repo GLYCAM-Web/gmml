@@ -547,6 +547,15 @@ namespace gmml
         VISITED = 1,
         DONE = 2
     };
+    /*! \enum
+      * LogLevel enumerator
+      */
+    enum LogLevel
+    {
+        INF,
+        ERR,
+        WAR
+    };
 
 }
 

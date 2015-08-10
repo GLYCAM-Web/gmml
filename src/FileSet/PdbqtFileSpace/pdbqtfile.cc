@@ -35,6 +35,7 @@ PdbqtFile::PdbqtFile(const string &pdbqt_file)
     ifstream in_file;
     if(ifstream(pdbqt_file.c_str()))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::INF,"Opening PDBQT file ...");
         cout << "Opening PDBQT file ..." << endl;
         in_file.open(pdbqt_file.c_str());
     }
@@ -46,6 +47,8 @@ PdbqtFile::PdbqtFile(const string &pdbqt_file)
     {
         throw PdbqtFileProcessingException(__LINE__, "Reading PDB file exception");
     }
+    gmml::log(__LINE__, __FILE__,  gmml::INF,"End of file");
+    cout << "End of file" << endl;
     in_file.close();            /// Close the pdbqt files
 }
 
@@ -135,6 +138,7 @@ bool PdbqtFile::ParseCards(ifstream &in_stream)
     /// Unable to read file
     if (!getline(in_stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
         cout << "Wrong input file format" << endl;
         throw PdbqtFileProcessingException("Error reading file");
     }
@@ -146,6 +150,7 @@ bool PdbqtFile::ParseCards(ifstream &in_stream)
     }
     else
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -158,7 +163,9 @@ bool PdbqtFile::ParseModelCard(ifstream &stream, string &line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Model card corruption");
         cout << "Model card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -182,7 +189,9 @@ bool PdbqtFile::ParseModelCard(ifstream &stream, string &line)
                 break;
             else
             {
+                gmml::log(__LINE__, __FILE__,  gmml::ERR,"Model card corruption");
                 cout << "Model card corruption" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
                 cout << "Wrong input file format" << endl;
                 return false;
             }

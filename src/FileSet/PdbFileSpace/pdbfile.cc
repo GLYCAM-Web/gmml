@@ -129,6 +129,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Opening PDB file ...");
         cout << "Opening PDB file ..." << endl;
         in_file.open(pdb_file.c_str());
     }
@@ -2867,6 +2868,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     /// Unable to read file
     if (!getline(in_stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
         cout << "Wrong input file format" << endl;
         throw PdbFileProcessingException("Error reading file");
     }
@@ -3129,7 +3131,8 @@ bool PdbFile::ParseCards(ifstream &in_stream)
 
     if(record_name.compare("MODEL") == 0)
     {
-        cout << "Multiple connect card between model cards --> Unexpected entry"  << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Multiple connect card between model cards --> Unexpected entry");
+        cout << "Multiple connect card between model cards --> Unexpected entry" << endl;
         return false;
     }
     if(record_name.compare("MASTER") == 0)
@@ -3147,6 +3150,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     }
     else
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3159,7 +3163,9 @@ bool PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
-        cout << "Header card corupption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Header card corupption");
+        cout << "Header card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3178,7 +3184,9 @@ bool PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Header card corruption");
             cout << "Header card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3194,7 +3202,9 @@ bool PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Obsolete card corruption");
         cout << "Obsolete card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3213,7 +3223,9 @@ bool PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Obsolete card corruption");
             cout << "Obsolete card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3227,7 +3239,9 @@ bool PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Title card corruption");
         cout << "Title card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3246,7 +3260,9 @@ bool PdbFile::ParseTitleCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Title card corruption");
             cout << "Title card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3262,7 +3278,9 @@ bool PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Split card corruption" );
         cout << "Split card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3281,7 +3299,9 @@ bool PdbFile::ParseSplitCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Split card corruption" );
             cout << "Split card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3295,7 +3315,9 @@ bool PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Caveat card corruption" );
         cout << "Caveat card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3314,7 +3336,9 @@ bool PdbFile::ParseCaveatCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Caveat card corruption" );
             cout << "Caveat card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3328,7 +3352,9 @@ bool PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Compound card corruption" );
         cout << "Compound card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3347,7 +3373,9 @@ bool PdbFile::ParseCompoundCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Compound card corruption" );
             cout << "Compound card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3363,7 +3391,9 @@ bool PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Source card corruption" );
         cout << "Source card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3382,7 +3412,9 @@ bool PdbFile::ParseSourceCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Source card corruption" );
             cout << "Source card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3396,7 +3428,9 @@ bool PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Keyword card corruption" );
         cout << "Keyword card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3415,7 +3449,9 @@ bool PdbFile::ParseKeywordCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Keyword card corruption" );
             cout << "Keyword card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3429,7 +3465,9 @@ bool PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Expiration date card corruption" );
         cout << "Expiration date card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3448,7 +3486,9 @@ bool PdbFile::ParseExpirationDateCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Expiration date card corruption" );
             cout << "Expiration date card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3462,7 +3502,9 @@ bool PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Number of model card corruption" );
         cout << "Number of model card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3481,7 +3523,9 @@ bool PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Number of model card corruption" );
             cout << "Number of model card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3497,7 +3541,9 @@ bool PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model type card corruption" );
         cout << "Model type card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3516,7 +3562,9 @@ bool PdbFile::ParseModelTypeCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model type card corruption" );
             cout << "Model type card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3532,7 +3580,9 @@ bool PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Author card corruption" );
         cout << "Author card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3551,7 +3601,9 @@ bool PdbFile::ParseAuthorCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Author card corruption" );
             cout << "Author card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3565,7 +3617,9 @@ bool PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision date card corruption" );
         cout << "Revision date card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3584,7 +3638,9 @@ bool PdbFile::ParseRevisionDateCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision date card corruption" );
             cout << "Revision date card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3598,7 +3654,9 @@ bool PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Superseded entries card corruption" );
         cout << "Superseded entries card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3617,7 +3675,9 @@ bool PdbFile::ParseSupersededEntriesCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Superseded entries card corruption" );
             cout << "Superseded entries card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3631,7 +3691,9 @@ bool PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Journal card corruption" );
         cout << "Journal card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3650,7 +3712,9 @@ bool PdbFile::ParseJournalCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Journal card corruption" );
             cout << "Journal card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3664,7 +3728,9 @@ bool PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Remark card corruption" );
         cout << "Remark card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3683,7 +3749,9 @@ bool PdbFile::ParseRemarkCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Remark card corruption" );
             cout << "Remark card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3697,7 +3765,9 @@ bool PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "database reference card corruption" );
         cout << "database reference card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3716,7 +3786,9 @@ bool PdbFile::ParseDatabaseReferenceCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "database reference card corruption" );
             cout << "database reference card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3730,7 +3802,9 @@ bool PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence advanced card corruption" );
         cout << "Sequence advanced card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3749,7 +3823,9 @@ bool PdbFile::ParseSequenceAdvancedCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence advanced card corruption" );
             cout << "Sequence advanced card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3763,7 +3839,9 @@ bool PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence residue card corruption" );
         cout << "Sequence residue card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3782,7 +3860,9 @@ bool PdbFile::ParseSequenceResidueCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence residue card corruption" );
             cout << "Sequence residue card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3798,7 +3878,9 @@ bool PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Modification residue card corruption" );
         cout << "Modification residue card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3817,7 +3899,9 @@ bool PdbFile::ParseModificationResidueCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Modification residue card corruption" );
             cout << "Modification residue card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3833,7 +3917,9 @@ bool PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen card corruption" );
         cout << "Heterogen card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3852,7 +3938,9 @@ bool PdbFile::ParseHeterogenCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen card corruption" );
             cout << "Heterogen card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3868,7 +3956,9 @@ bool PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen name card corruption" );
         cout << "Heterogen name card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3887,7 +3977,9 @@ bool PdbFile::ParseHeterogenNameCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen name card corruption" );
             cout << "Heterogen name card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3903,7 +3995,9 @@ bool PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen synonym card corruption" );
         cout << "Heterogen synonym card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3922,7 +4016,9 @@ bool PdbFile::ParseHeterogenSynonymCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen synonym card corruption" );
             cout << "Heterogen synonym card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3938,7 +4034,9 @@ bool PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Formula card corruption" );
         cout << "Formula card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3957,7 +4055,9 @@ bool PdbFile::ParseFormulaCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Formula card corruption" );
             cout << "Formula card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -3973,7 +4073,9 @@ bool PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Helix card corruption" );
         cout << "Helix card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -3992,7 +4094,9 @@ bool PdbFile::ParseHelixCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Helix card corruption" );
             cout << "Helix card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4008,7 +4112,9 @@ bool PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sheet card corruption" );
         cout << "Sheet card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4027,7 +4133,9 @@ bool PdbFile::ParseSheetCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sheet card corruption" );
             cout << "Sheet card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4043,7 +4151,9 @@ bool PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Disulfide bond card corruption" );
         cout << "Disulfide bond card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4062,7 +4172,9 @@ bool PdbFile::ParseDisulfideBondCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Disulfide bond card corruption" );
             cout << "Disulfide bond card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4078,7 +4190,9 @@ bool PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Link card corruption" );
         cout << "Link card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4097,7 +4211,9 @@ bool PdbFile::ParseLinkCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Link card corruption" );
             cout << "Link card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4113,7 +4229,9 @@ bool PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "CIS peptide card corruption" );
         cout << "CIS peptide card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4132,7 +4250,9 @@ bool PdbFile::ParseCISPeptideCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "CIS peptide card corruption" );
             cout << "CIS peptide card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4146,7 +4266,9 @@ bool PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Site card corruption" );
         cout << "Site card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4165,7 +4287,9 @@ bool PdbFile::ParseSiteCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Site card corruption" );
             cout << "Site card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4181,7 +4305,9 @@ bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Crystallography card corruption" );
         cout << "Crystallography card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4200,7 +4326,9 @@ bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Crystallography card corruption" );
             cout << "Crystallography card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4216,7 +4344,9 @@ bool PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Origin card corruption" );
         cout << "Origin card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4235,7 +4365,9 @@ bool PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Origin card corruption" );
             cout << "Origin card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4251,7 +4383,9 @@ bool PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Scale card corruption" );
         cout << "Scale card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4270,7 +4404,9 @@ bool PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Scale card corruption" );
             cout << "Scale card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4286,7 +4422,9 @@ bool PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Matrix card corruption" );
         cout << "Matrix card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4305,7 +4443,9 @@ bool PdbFile::ParseMatrixCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Matrix card corruption" );
             cout << "Matrix card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4321,7 +4461,9 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
         cout << "Model card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4342,14 +4484,16 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
             cout << "Model card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
     }
     
     // Model card
-//    cout << stream_block.str();
+//    gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str();
     models_ = new PdbModelCard(stream_block);
     return true;
 }
@@ -4360,7 +4504,9 @@ bool PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Connectivity card corruption" );
         cout << "Connectivity card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4379,7 +4525,9 @@ bool PdbFile::ParseConnectivityCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Connectivity card corruption" );
             cout << "Connectivity card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4395,7 +4543,9 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Master card corruption" );
         cout << "Master card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
     }
@@ -4414,7 +4564,9 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Master card corruption" );
             cout << "Master card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
@@ -4428,6 +4580,7 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "End of file" );
         cout << "End of file" << endl;
         return true;
     }
@@ -4446,7 +4599,7 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, string& line)
         }
         else
         {
-            cout << "End of file" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "End of file" );
             return true;
         }
     }

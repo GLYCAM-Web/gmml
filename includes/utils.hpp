@@ -1,6 +1,7 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
+#include <ctime>
 #include <string>
 #include <stdexcept>
 #include <sstream>
@@ -12,6 +13,8 @@
 #include "boost/foreach.hpp"
 #include "common.hpp"
 #include "Geometry/coordinate.hpp"
+
+#include <fstream>
 
 namespace gmml
 {
@@ -410,6 +413,31 @@ namespace gmml
         COMMON_TERMINAL_REDSIDUES["TBT"] = "TBT";
         COMMON_TERMINAL_REDSIDUES["OME"] = "OME";
         return COMMON_TERMINAL_REDSIDUES;
+    }
+
+    inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "log.log")
+    {
+        std::ofstream file;
+        file.open(out_file_name.c_str(), std::ios_base::app);
+
+        time_t t = time(0);
+        std::string time_str = std::asctime(std::localtime(&t));
+        file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>> ";
+        switch(level)
+        {
+            case INF:
+                file << " [INFO]: ";
+                break;
+            case ERR:
+                file << " [ERROR]: ";
+                break;
+            case WAR:
+                file << " [WARNING]: ";
+                break;
+        }
+        file << msg << std::endl;
+
+        file.close();
     }
 }
 

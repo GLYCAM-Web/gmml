@@ -664,8 +664,8 @@ namespace MolecularModeling
             std::string CheckxC_NxO_C(Atom* target, std::string cycle_atoms_str, char NxO);
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str);
 
-            void Ionizing2Neutralize(std::string ion_atom_type);
-            void Ionizing2Charge(std::vector<std::string> ions_atom_type, std::vector<int> ions_count);
+//            void Ionizing2Neutralize(std::string ion_atom_type);
+//            void Ionizing2Charge(std::vector<std::string> ions_atom_type, std::vector<int> ions_count);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
