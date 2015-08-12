@@ -217,14 +217,22 @@ namespace MolecularModeling
               * Imports data from pdb file data structure into central data structure
               * @param pdb_file_path Path to a pdb file
               */
-            void BuildAssemblyFromPdbFile(std::string pdb_file_path, std::string lib_file = "", std::string parameter_file = "");
+            void BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<std::string> amino_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> glycam_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> other_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> prep_files = std::vector<std::string>(),
+                                          std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
               * @param pdb_file Pdb file object
               */
             void BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile* pdb_file,
-                                          LibraryFileSpace::LibraryFile* lib_file = NULL, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+                                          std::vector<std::string> amino_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> glycam_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> other_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> prep_files = std::vector<std::string>(),
+                                          std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdbqt file
               * Imports data from pdbqt file data structure into central data structure
@@ -236,7 +244,7 @@ namespace MolecularModeling
               * Imports data from pdbqt file data structure into central data structure
               * @param pdbqt_file Pdbqt file object
               */
-            void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single topology file
               * Imports data from topology file data structure into central data structure
@@ -248,7 +256,7 @@ namespace MolecularModeling
               * Imports data from topology file data structure into central data structure
               * @param topology_file Topology file object
               */
-            void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single library file
               * Imports data from library file data structure into central data structure
@@ -260,7 +268,7 @@ namespace MolecularModeling
               * Imports data from library file data structure into central data structure
               * @param library_file Library file object
               */
-            void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a combination of a topology file and its corresponding coordinate file
               * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file
@@ -275,7 +283,7 @@ namespace MolecularModeling
               * @param coordinate_file Coordinate file object corresponding to the given topology file
               */
             void BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file, CoordinateFileSpace::CoordinateFile* coordinate_file,
-                                                         ParameterFileSpace::ParameterFile* parameter_file = NULL);
+                                                         std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
@@ -287,7 +295,7 @@ namespace MolecularModeling
               * Imports data from prep file data structure into central data structure
               * @param prep_file Prep file object
               */
-            void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
@@ -591,6 +599,19 @@ namespace MolecularModeling
 //            std::vector<std::vector<std::string> > CreateAllCyclePermutations(std::string id1, std::string id2, std::string id3, std::string id4, std::string id5, std::string id6);
 
 //            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
+
+            /*! \fn
+              * A function in order to access to the list of all residue from lib files
+              * @param lib_files The list of paths to library files
+              * @return all_residues_
+              */
+            LibraryFileSpace::LibraryFile::ResidueMap GetAllResiduesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
+            /*! \fn
+              * A function in order to access to the list of all residue from prep files
+              * @param prep_files The list of paths to prep files
+              * @return all_residues_
+              */
+            PrepFileSpace::PrepFile::ResidueMap GetAllResiduesFromMultiplePrepFilesMap(std::vector<std::string> prep_files);
 
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
