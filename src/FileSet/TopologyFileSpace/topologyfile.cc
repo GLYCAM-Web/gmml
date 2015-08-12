@@ -2821,7 +2821,8 @@ void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
             for(vector<string>::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
             {
                 string atom_id = (*it);
-                int index = this->assembly_->GetAtomIndexByName(Split(atom_id, ":").at(1));
+                int index = this->assembly_->GetAtomIndexByName(Split(atom_id, "_").at(0));
+                cout << setw(ITEM_LENGTH) << right << index;
                 out << setw(ITEM_LENGTH) << right << index;
                 count++;
                 if(count == MAX_IN_LINE)

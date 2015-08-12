@@ -2043,11 +2043,11 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_pat
             coordinate_list.push_back(cartesian_coordinate_list.at(parent_index));
             cartesian_coordinate_list.push_back(assembly_atom->GetCoordinates().at(model_index_));
 
-            Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(model_index_),
-                                                                                                  coordinate_list);
-            prep_atom->SetBondLength(internal_coordinate->GetX());
-            prep_atom->SetAngle(internal_coordinate->GetY());
-            prep_atom->SetDihedral(internal_coordinate->GetZ());
+//            Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(model_index_),
+//                                                                                                  coordinate_list);
+//            prep_atom->SetBondLength(internal_coordinate->GetX());
+//            prep_atom->SetAngle(internal_coordinate->GetY());
+//            prep_atom->SetDihedral(internal_coordinate->GetZ());
 
             atom_index++;
             prep_atoms.push_back(prep_atom);
@@ -2528,10 +2528,11 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
     topology_file->SetTotalNumberOfBonds(this->CountNumberOfBondsExcludingHydrogen());
     topology_file->SetTotalNumberOfAngles(this->CountNumberOfAnglesExcludingHydrogen());
+    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedralsExcludingHydrogen(parameter_file_path));
     topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes());
     topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes());
     topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes(parameter_file_path));
-    //    topology_file->SetNumberOfAtomTypesInParameterFile();
+//        topology_file->SetNumberOfAtomTypesInParameterFile();
     //    topology_file->SetNumberOfDistinctHydrogenBonds();
     //    topology_file->SetPerturbationOption();
     //    topology_file->SetNumberOfBondsPerturbed();
