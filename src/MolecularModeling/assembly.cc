@@ -437,6 +437,7 @@ void Assembly::SetModelIndex(int model_index)
 void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> amino_lib_files, vector<string> glycam_lib_files,
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
+    cout << "Building assembly from pdb file ..." << endl;
     try
     {                
         this->ClearAssembly();
@@ -658,6 +659,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
 void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_lib_files, vector<string> glycam_lib_files,
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
+    cout << "Building assembly from pdb file ..." << endl;
     try
     {
         this->ClearAssembly();
@@ -877,6 +879,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 
 void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string parameter_file)
 {
+    cout << "Building assembly from pdbqt file ..." << endl;
     try
     {
         this->ClearAssembly();
@@ -999,6 +1002,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string paramet
 
 void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string parameter_file)
 {
+    cout << "Building assembly from pdbqt file ..." << endl;
     try
     {
         this->ClearAssembly();
@@ -1120,6 +1124,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
 
 void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string parameter_file)
 {
+    cout << "Building assembly from topology file ..." << endl;
     this->ClearAssembly();
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
     ParameterFile* parameter = NULL;
@@ -1187,6 +1192,7 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string p
 }
 void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string parameter_file)
 {
+    cout << "Building assembly from topology file ..." << endl;
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1253,6 +1259,7 @@ void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string
 
 void Assembly::BuildAssemblyFromLibraryFile(string library_file_path, string parameter_file)
 {
+    cout << "Building assembly from library file ..." << endl;
     this->ClearAssembly();
     LibraryFile* library_file = new LibraryFile(library_file_path);
     ParameterFile* parameter = NULL;
@@ -1340,6 +1347,7 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path, string par
 }
 void Assembly::BuildAssemblyFromLibraryFile(LibraryFile *library_file, string parameter_file)
 {
+    cout << "Building assembly from library file ..." << endl;
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1427,6 +1435,7 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFile *library_file, string pa
 
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path, string coordinate_file_path, string parameter_file)
 {
+    cout << "Building assembly from topology and coordinate files ..." << endl;
     this->ClearAssembly();
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
     ParameterFile* parameter = NULL;
@@ -1499,6 +1508,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
 }
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_file, CoordinateFile *coordinate_file, string parameter_file)
 {
+    cout << "Building assembly from topology and coordinate files ..." << endl;
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1571,6 +1581,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
 
 void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter_file)
 {
+    cout << "Building assembly from prep file ..." << endl;
     this->ClearAssembly();
     PrepFile* prep_file = new PrepFile(prep_file_path);
     ParameterFile* parameter = NULL;
@@ -1714,6 +1725,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter
 }
 void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_file)
 {
+    cout << "Build assembly from prep file ..." << endl;
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1858,6 +1870,7 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
 
 PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
 {
+    cout << "Creating PDB file" << endl;
     PdbFile* pdb_file = new PdbFile();
     PdbTitleCard* title_card = new PdbTitleCard();
     title_card->SetTitle("Generated by GMML");
@@ -1884,6 +1897,7 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
 
 PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
 {
+    cout << "Creating PDBQT file" << endl;
     PdbqtFile* pdbqt_file = new PdbqtFile();
 
     PdbqtModelCard* model_card = new PdbqtModelCard();
@@ -1906,7 +1920,6 @@ PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
 
 void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number)
 {
-    cout << "Creating PDB file" << endl;
     for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
     {
         Assembly* assembly = (*it);
@@ -2000,7 +2013,6 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
 
 void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number)
 {
-    cout << "Creating PDBQT file" << endl;
     PdbqtAtomCard* atom_card = new PdbqtAtomCard();
     PdbqtAtomCard::PdbqtAtomMap atom_map = PdbqtAtomCard::PdbqtAtomMap();
     for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
@@ -2092,6 +2104,7 @@ void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_s
 
 PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_path)
 {
+    cout << "Creating prep file ..." << endl;
     PrepFile* prep_file = new PrepFile();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
     PrepFile::ResidueMap prep_residues = PrepFile::ResidueMap();
@@ -2654,10 +2667,12 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
 
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path)
 {
+    cout << "Creating topology file ..." << endl;
     TopologyFile* topology_file = new TopologyFile();
 
     topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
     topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
+    cout << "CRASH" << endl;
     topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
     topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
     topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
@@ -2688,7 +2703,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     //    topology_file->SetCapOption();
     //    topology_file->SetNumberOfExtraPoints();
     //    topology_file->SetNumberOfBeads();
-
     TopologyAssembly* topology_assembly = new TopologyAssembly();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
     int residue_counter = 0;
@@ -3524,6 +3538,7 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
 
 CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
 {
+    cout << "Creating coordinate file ..." << endl;
     vector<Coordinate*> coordinates = this->GetAllCoordinates();
     CoordinateFile* coordinate_file = new CoordinateFile();
     coordinate_file->SetCoordinates(coordinates);
@@ -3535,6 +3550,7 @@ CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
 
 LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
 {
+    cout << "Creating library file ..." << endl;
     LibraryFile* library_file = new LibraryFile();
     LibraryFile::ResidueMap residue_map = LibraryFile::ResidueMap();
     ResidueVector residues_of_assembly = this->GetAllResiduesOfAssembly();
@@ -3741,7 +3757,7 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
 void Assembly::BuildStructureByPDBFileInformation()
 {
     try{
-        cout << "Building structure ..." << endl;
+        cout << "Building structure by pdb file information ..." << endl;
         PdbFile* pdb_file = new PdbFile(this->GetSourceFile());
         AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
         int i = 0;
@@ -3792,7 +3808,7 @@ void Assembly::BuildStructureByPDBFileInformation()
 
 void Assembly::BuildStructureByTOPFileInformation()
 {
-    cout << "Building structure ..." << endl;
+    cout << "Building structure by topology file information ..." << endl;
     TopologyFile* topology_file = new TopologyFile(gmml::Split(this->GetSourceFile(), ";")[0]);
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -3843,7 +3859,7 @@ void Assembly::BuildStructureByTOPFileInformation()
 
 void Assembly::BuildStructureByLIBFileInformation()
 {
-    cout << "Building structure ..." << endl;
+    cout << "Building structure by library file information..." << endl;
     LibraryFile* library_file = new LibraryFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -3891,7 +3907,7 @@ void Assembly::BuildStructureByLIBFileInformation()
 
 void Assembly::BuildStructureByPrepFileInformation()
 {
-    cout << "Building structure ..." << endl;
+    cout << "Building structure by prep file information ..." << endl;
     PrepFile* prep_file = new PrepFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -3938,7 +3954,7 @@ void Assembly::BuildStructureByPrepFileInformation()
 
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
 {
-    cout << "Building structure ..." << endl;
+    cout << "Building structure by dataset files information ..." << endl;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)

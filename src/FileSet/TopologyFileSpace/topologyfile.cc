@@ -2822,7 +2822,6 @@ void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
             {
                 string atom_id = (*it);
                 int index = this->assembly_->GetAtomIndexByName(Split(atom_id, "_").at(0));
-                cout << setw(ITEM_LENGTH) << right << index;
                 out << setw(ITEM_LENGTH) << right << index;
                 count++;
                 if(count == MAX_IN_LINE)
