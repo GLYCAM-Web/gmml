@@ -2168,15 +2168,13 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_pat
             // Set bond index, angle index, dihedral index
             // Set parent, grandparent and great_grandparent of the current atom
             // Call coordinate conversion function
-
             prep_atom->SetBondIndex(bond_index.at(atom_index - 1));
             prep_atom->SetAngleIndex(bond_index.at(bond_index.at(atom_index - 1) - 1));
-            prep_atom->SetDihedralIndex(bond_index.at(bond_index.at(bond_index.at(atom_index - 1) - 1) - 1));
+            prep_atom->SetDihedralIndex(bond_index.at(bond_index.at(bond_index.at(atom_index - 1) - 1) - 1));           
             prep_atom->SetCharge(assembly_atom->GetCharge());
             prep_atom->SetName(assembly_atom->GetName());
             prep_atom->SetTopologicalType(residue_topological_types.at(atom_index - DEFAULT_DUMMY_ATOMS - 1));
             prep_atom->SetType(assembly_atom->GetAtomType());
-
             int parent_index = prep_atom->GetBondIndex() - 1;
             int grandparent_index = prep_atom->GetAngleIndex() - 1;
             int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
@@ -3541,6 +3539,7 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
     for(ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
     {
         Residue* assembly_residue = *it;
+        cout << assembly_residue->GetId() << endl;
         int residue_index = distance(residues_of_assembly.begin(), it) + 1;
         AtomVector assembly_residue_atoms = assembly_residue->GetAtoms();
         LibraryFileResidue* library_residue = new LibraryFileResidue();
@@ -3564,11 +3563,14 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
             int atom_index = distance(assembly_residue_atoms.begin(), it1) + 1;
             vector<int> bonded_atom_indices = vector<int>();
             AtomNode* atom_node = residue_atom->GetNode();
-            AtomVector atom_neighbours = atom_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = atom_neighbours.begin(); it2 != atom_neighbours.end(); it2++)
+            if(atom_node != NULL)
             {
-                int bonded_atom_index = distance(assembly_residue_atoms.begin(), it2);
-                bonded_atom_indices.push_back(bonded_atom_index);
+                AtomVector atom_neighbours = atom_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = atom_neighbours.begin(); it2 != atom_neighbours.end(); it2++)
+                {
+                    int bonded_atom_index = distance(assembly_residue_atoms.begin(), it2);
+                    bonded_atom_indices.push_back(bonded_atom_index);
+                }
             }
             LibraryFileAtom* atom = new LibraryFileAtom(residue_atom->GetAtomType(), residue_atom->GetName(), residue_index, atom_index,
                                                         gmml::iNotSet, residue_atom->GetCharge(),
