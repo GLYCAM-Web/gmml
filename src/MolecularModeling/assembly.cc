@@ -2366,19 +2366,23 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
         int index = distance(assembly_atoms.begin(), it);
 
         // Finding all neighbors' indices of current atom in the assembly
-        AtomVector atom_neighbors = assembly_atom->GetNode()->GetNodeNeighbors();
+        AtomNode* node = assembly_atom->GetNode();
         vector<int> neighbors_atom_index = vector<int>();
-        for(AtomVector::iterator it1 = atom_neighbors.begin(); it1 != atom_neighbors.end(); it1++)
+        if(node != NULL)
         {
-            Atom* atom_neighbor = *it1;
-            for(AtomVector::iterator it2 = assembly_atoms.begin(); it2 != assembly_atoms.end(); it2++)
+            AtomVector atom_neighbors = node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = atom_neighbors.begin(); it1 != atom_neighbors.end(); it1++)
             {
-                Atom* atom = *it2;
-                if(atom->GetId().compare(atom_neighbor->GetId()) == 0)
+                Atom* atom_neighbor = *it1;
+                for(AtomVector::iterator it2 = assembly_atoms.begin(); it2 != assembly_atoms.end(); it2++)
                 {
-                    int atom_index = distance(assembly_atoms.begin(), it2);
-                    neighbors_atom_index.push_back(atom_index);
-                    break;
+                    Atom* atom = *it2;
+                    if(atom->GetId().compare(atom_neighbor->GetId()) == 0)
+                    {
+                        int atom_index = distance(assembly_atoms.begin(), it2);
+                        neighbors_atom_index.push_back(atom_index);
+                        break;
+                    }
                 }
             }
         }
@@ -2663,14 +2667,13 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
     return topological_types;
 }
 
-TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path)
+TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path, string ion_parameter_file_path)
 {
     cout << "Creating topology file ..." << endl;
     TopologyFile* topology_file = new TopologyFile();
 
     topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
     topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
-    cout << "CRASH" << endl;
     topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
     topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
     topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
@@ -2735,8 +2738,16 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         PrepFileResidue::Loop loops = PrepFileResidue::Loop();
         vector<int> bond_index = vector<int>();
         int atom_index = 1;
+
         vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);
 
+        ParameterFile* ion_parameter_file = NULL;
+        ParameterFileSpace::ParameterFile::AtomTypeMap ion_atom_types_map = ParameterFile::AtomTypeMap();
+        if(ion_parameter_file_path.compare("") != 0)
+        {
+            ion_parameter_file = new ParameterFile(ion_parameter_file_path, gmml::MODIFIED);
+            ion_atom_types_map = ion_parameter_file->GetAtomTypes();
+        }
         ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
         ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
         ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
@@ -2781,97 +2792,120 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                         find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end())
                 {
                     TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
-                    ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
-                    ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
-                    double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
-                    double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
-                    double coefficient_a = epsilon * sigma * sigma;
-                    double coefficient_b = 2 * epsilon * sigma;
-                    topology_atom_pair->SetCoefficientA(coefficient_a);
-                    topology_atom_pair->SetCoefficientB(coefficient_b);
-                    topology_atom_pair->SetPairType(sss.str());
-                    topology_atom_pair->SetIndex(pair_count);
-                    pair_count++;
-                    inserted_pairs.push_back(sss.str());
-                    pairs[sss.str()] = topology_atom_pair;
+                    if(atom_types_map.find(atom_type1) != atom_types_map.end() && atom_types_map.find(atom_type2) != atom_types_map.end())
+                    {
+                        ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
+                        ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
+                        double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
+                        double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
+                        double coefficient_a = epsilon * sigma * sigma;
+                        double coefficient_b = 2 * epsilon * sigma;
+                        topology_atom_pair->SetCoefficientA(coefficient_a);
+                        topology_atom_pair->SetCoefficientB(coefficient_b);
+                        topology_atom_pair->SetPairType(sss.str());
+                        topology_atom_pair->SetIndex(pair_count);
+                        pair_count++;
+                        inserted_pairs.push_back(sss.str());
+                        pairs[sss.str()] = topology_atom_pair;
+                    }
+                    else if(!ion_atom_types_map.empty() && ion_atom_types_map.find(atom_type1) != ion_atom_types_map.end() &&
+                            ion_atom_types_map.find(atom_type2) != ion_atom_types_map.end())
+                    {
+                        ParameterFileAtom* parameter_atom1 = ion_atom_types_map[atom_type1];
+                        ParameterFileAtom* parameter_atom2 = ion_atom_types_map[atom_type2];
+                        double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
+                        double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
+                        double coefficient_a = epsilon * sigma * sigma;
+                        double coefficient_b = 2 * epsilon * sigma;
+                        topology_atom_pair->SetCoefficientA(coefficient_a);
+                        topology_atom_pair->SetCoefficientB(coefficient_b);
+                        topology_atom_pair->SetPairType(sss.str());
+                        topology_atom_pair->SetIndex(pair_count);
+                        pair_count++;
+                        inserted_pairs.push_back(sss.str());
+                        pairs[sss.str()] = topology_atom_pair;
+                    }
                 }
             }
 
             ///Bond Types, Bonds
             AtomNode* atom_node = assembly_atom->GetNode();
-            AtomVector neighbors = atom_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors.begin(); it2 != neighbors.end(); it2++)
+            if(atom_node != NULL)
             {
-                Atom* neighbor = (*it2);
-                stringstream key2;
-                key2 << neighbor->GetId();
-                ExtractTopologyBondTypesFromAssembly(inserted_bond_types, assembly_atom, neighbor, bonds, bond_type_counter, topology_file);
-                ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
-
-                ///Excluded Atoms
-                stringstream first_order_interaction;
-                stringstream reverse_first_order_interaction;
-                first_order_interaction << key1.str() << "-" << key2.str();
-                reverse_first_order_interaction << key2.str() << "-" << key1.str();
-                if(find(excluded_atom_list.begin(), excluded_atom_list.end(), first_order_interaction.str()) == excluded_atom_list.end() &&
-                        find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_first_order_interaction.str()) == excluded_atom_list.end())
+                AtomVector neighbors = atom_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors.begin(); it2 != neighbors.end(); it2++)
                 {
-                    excluded_atom_list.push_back(first_order_interaction.str());
-                    topology_atom->AddExcludedAtom(key2.str());
-                }
+                    Atom* neighbor = (*it2);
+                    stringstream key2;
+                    key2 << neighbor->GetId();
+                    ExtractTopologyBondTypesFromAssembly(inserted_bond_types, assembly_atom, neighbor, bonds, bond_type_counter, topology_file);
+                    ExtractTopologyBondsFromAssembly(inserted_bonds, inserted_bond_types, assembly_atom, neighbor, topology_file);
 
-                ///Angle Types, Angle
-                AtomNode* neighbor_node = neighbor->GetNode();
-                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-
-                for(AtomVector::iterator it3 = neighbors_of_neighbor.begin(); it3 != neighbors_of_neighbor.end(); it3++)
-                {
-                    Atom* neighbor_of_neighbor = (*it3);
-                    stringstream key3;
-                    key3 << neighbor_of_neighbor->GetId();
-                    if(key1.str().compare(key3.str()) != 0)
+                    ///Excluded Atoms
+                    stringstream first_order_interaction;
+                    stringstream reverse_first_order_interaction;
+                    first_order_interaction << key1.str() << "-" << key2.str();
+                    reverse_first_order_interaction << key2.str() << "-" << key1.str();
+                    if(find(excluded_atom_list.begin(), excluded_atom_list.end(), first_order_interaction.str()) == excluded_atom_list.end() &&
+                            find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_first_order_interaction.str()) == excluded_atom_list.end())
                     {
-                        ExtractTopologyAngleTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angle_types, angle_type_counter,
-                                                              topology_file, angles);
-                        ExtractTopologyAnglesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angles, inserted_angle_types, topology_file);
+                        excluded_atom_list.push_back(first_order_interaction.str());
+                        topology_atom->AddExcludedAtom(key2.str());
+                    }
 
-                        ///Excluded Atoms
-                        stringstream second_order_interaction;
-                        stringstream reverse_second_order_interaction;
-                        second_order_interaction << key1.str() << "-" << key3.str();
-                        reverse_second_order_interaction << key3.str() << "-" << key1.str();
-                        if(find(excluded_atom_list.begin(), excluded_atom_list.end(), second_order_interaction.str()) == excluded_atom_list.end() &&
-                                find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_second_order_interaction.str()) == excluded_atom_list.end())
-                        {
-                            excluded_atom_list.push_back(second_order_interaction.str());
-                            topology_atom->AddExcludedAtom(key3.str());
-                        }
+                    ///Angle Types, Angle
+                    AtomNode* neighbor_node = neighbor->GetNode();
+                    AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
 
-                        //Dihedral Types, Dihedrals
-                        AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
-                        AtomVector neighbors_of_neighbor_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
-                        for(AtomVector::iterator it4 =  neighbors_of_neighbor_neighbor.begin(); it4 != neighbors_of_neighbor_neighbor.end(); it4++)
+                    for(AtomVector::iterator it3 = neighbors_of_neighbor.begin(); it3 != neighbors_of_neighbor.end(); it3++)
+                    {
+                        Atom* neighbor_of_neighbor = (*it3);
+                        stringstream key3;
+                        key3 << neighbor_of_neighbor->GetId();
+                        if(key1.str().compare(key3.str()) != 0)
                         {
-                            Atom* neighbor_of_neighbor_of_neighbor = (*it4);
-                            stringstream key4;
-                            key4 << neighbor_of_neighbor_of_neighbor->GetId();
-                            if(key2.str().compare(key4.str()) != 0)
+                            ExtractTopologyAngleTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angle_types, angle_type_counter,
+                                                                  topology_file, angles);
+                            ExtractTopologyAnglesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, inserted_angles, inserted_angle_types, topology_file);
+
+                            ///Excluded Atoms
+                            stringstream second_order_interaction;
+                            stringstream reverse_second_order_interaction;
+                            second_order_interaction << key1.str() << "-" << key3.str();
+                            reverse_second_order_interaction << key3.str() << "-" << key1.str();
+                            if(find(excluded_atom_list.begin(), excluded_atom_list.end(), second_order_interaction.str()) == excluded_atom_list.end() &&
+                                    find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_second_order_interaction.str()) == excluded_atom_list.end())
                             {
-                                ExtractTopologyDihedralTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
-                                                                         inserted_dihedral_types, dihedral_type_counter, topology_file, dihedrals);
-                                ExtractTopologyDihedralsFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
-                                                                     inserted_dihedrals, inserted_dihedral_types, dihedrals, topology_file);
+                                excluded_atom_list.push_back(second_order_interaction.str());
+                                topology_atom->AddExcludedAtom(key3.str());
+                            }
 
-                                ///Excluded Atoms
-                                stringstream third_order_interaction;
-                                stringstream reverse_third_order_interaction;
-                                third_order_interaction << key1.str() << "-" << key4.str();
-                                reverse_third_order_interaction << key4.str() << "-" << key1.str();
-                                if(find(excluded_atom_list.begin(), excluded_atom_list.end(), third_order_interaction.str()) == excluded_atom_list.end() &&
-                                        find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_third_order_interaction.str()) == excluded_atom_list.end())
+                            //Dihedral Types, Dihedrals
+                            AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
+                            AtomVector neighbors_of_neighbor_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
+                            for(AtomVector::iterator it4 =  neighbors_of_neighbor_neighbor.begin(); it4 != neighbors_of_neighbor_neighbor.end(); it4++)
+                            {
+                                Atom* neighbor_of_neighbor_of_neighbor = (*it4);
+                                stringstream key4;
+                                key4 << neighbor_of_neighbor_of_neighbor->GetId();
+                                if(key2.str().compare(key4.str()) != 0)
                                 {
-                                    excluded_atom_list.push_back(third_order_interaction.str());
-                                    topology_atom->AddExcludedAtom(key4.str());
+                                    ExtractTopologyDihedralTypesFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
+                                                                             inserted_dihedral_types, dihedral_type_counter, topology_file, dihedrals);
+                                    ExtractTopologyDihedralsFromAssembly(assembly_atom, neighbor, neighbor_of_neighbor, neighbor_of_neighbor_of_neighbor,
+                                                                         inserted_dihedrals, inserted_dihedral_types, dihedrals, topology_file);
+
+                                    ///Excluded Atoms
+                                    stringstream third_order_interaction;
+                                    stringstream reverse_third_order_interaction;
+                                    third_order_interaction << key1.str() << "-" << key4.str();
+                                    reverse_third_order_interaction << key4.str() << "-" << key1.str();
+                                    if(find(excluded_atom_list.begin(), excluded_atom_list.end(), third_order_interaction.str()) == excluded_atom_list.end() &&
+                                            find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_third_order_interaction.str()) == excluded_atom_list.end())
+                                    {
+                                        excluded_atom_list.push_back(third_order_interaction.str());
+                                        topology_atom->AddExcludedAtom(key4.str());
+                                    }
                                 }
                             }
                         }
@@ -4093,22 +4127,25 @@ int Assembly::CountNumberOfBondsIncludingHydrogen()
         Atom* atom = (*it);
         string atom_name = atom->GetName();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
-        if((atom_name.substr(0,1).compare("H") == 0 ||
-            (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+        if(atom_node != NULL)
         {
-            counter += node_neighbors.size();
-        }
-        else
-        {
-            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+            if((atom_name.substr(0,1).compare("H") == 0 ||
+                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
             {
-                Atom* node_neighbor = (*it1);
-                string node_neighbor_name = node_neighbor->GetName();
-                if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
-                    (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                counter += node_neighbors.size();
+            }
+            else
+            {
+                for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
                 {
-                    counter++;
+                    Atom* node_neighbor = (*it1);
+                    string node_neighbor_name = node_neighbor->GetName();
+                    if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
+                        (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                    {
+                        counter++;
+                    }
                 }
             }
         }
@@ -4125,22 +4162,26 @@ int Assembly::CountNumberOfBondsExcludingHydrogen()
         Atom* atom = (*it);
         string atom_name = atom->GetName();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
-        if((atom_name.substr(0,1).compare("H") == 0 ||
-            (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
-        {}
-        else
+        if(atom_node != NULL)
         {
-            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+
+            if((atom_name.substr(0,1).compare("H") == 0 ||
+                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+            {}
+            else
             {
-                Atom* node_neighbor = (*it1);
-                string node_neighbor_name = node_neighbor->GetName();
-                if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
-                    (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
-                {}
-                else
+                for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
                 {
-                    counter++;
+                    Atom* node_neighbor = (*it1);
+                    string node_neighbor_name = node_neighbor->GetName();
+                    if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
+                        (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                    {}
+                    else
+                    {
+                        counter++;
+                    }
                 }
             }
         }
@@ -4156,8 +4197,11 @@ int Assembly::CountNumberOfBonds()
     {
         Atom* atom = (*it);
         AtomNode* atom_node = atom->GetNode();
-        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
-        counter += node_neighbors.size();
+        if(atom_node != NULL)
+        {
+            AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+            counter += node_neighbors.size();
+        }
     }
     return counter/2;
 }
@@ -4171,23 +4215,26 @@ int Assembly::CountNumberOfBondTypes()
         Atom* atom = (*it);
         string atom_bond_type = atom->GetAtomType();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector node_neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* node_neighbor = (*it1);
-            string node_neighbor_bond_type = node_neighbor->GetAtomType();
-            stringstream ss;
-            ss << atom_bond_type << "_" << node_neighbor_bond_type;
-            string key = ss.str();
-            stringstream ss1;
-            ss1 << node_neighbor_bond_type << "_" << atom_bond_type;
-            string key1 = ss1.str();
-            if(find(type_list.begin(), type_list.end(), key ) != type_list.end() ||
-                    find(type_list.begin(), type_list.end(), key1 ) != type_list.end())
-            {}
-            else
+            AtomVector node_neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
             {
-                type_list.push_back(key);
+                Atom* node_neighbor = (*it1);
+                string node_neighbor_bond_type = node_neighbor->GetAtomType();
+                stringstream ss;
+                ss << atom_bond_type << "_" << node_neighbor_bond_type;
+                string key = ss.str();
+                stringstream ss1;
+                ss1 << node_neighbor_bond_type << "_" << atom_bond_type;
+                string key1 = ss1.str();
+                if(find(type_list.begin(), type_list.end(), key ) != type_list.end() ||
+                        find(type_list.begin(), type_list.end(), key1 ) != type_list.end())
+                {}
+                else
+                {
+                    type_list.push_back(key);
+                }
             }
         }
     }
@@ -4205,26 +4252,29 @@ int Assembly::CountNumberOfAnglesIncludingHydrogen()
         ss << atom->GetId();
         string atom_name = atom->GetName();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            string neighbor_name = neighbor->GetName();
-            AtomNode* neighbor_atom_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss1;
-                ss1 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss1.str()) != 0)
+                Atom* neighbor = (*it1);
+                string neighbor_name = neighbor->GetName();
+                AtomNode* neighbor_atom_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
-                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                            (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
-                            (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))))
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss1;
+                    ss1 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss1.str()) != 0)
                     {
-                        counter++;
+                        string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
+                        if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                                (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
+                                (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))))
+                        {
+                            counter++;
+                        }
                     }
                 }
             }
@@ -4244,27 +4294,30 @@ int Assembly::CountNumberOfAnglesExcludingHydrogen()
         ss << atom->GetId();
         string atom_name = atom->GetName();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            string neighbor_name = neighbor->GetName();
-            AtomNode* neighbor_atom_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss1;
-                ss1 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss1.str()) != 0)
+                Atom* neighbor = (*it1);
+                string neighbor_name = neighbor->GetName();
+                AtomNode* neighbor_atom_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
-                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                            (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
-                            (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))))
-                    {}
-                    else
-                        counter++;
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss1;
+                    ss1 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss1.str()) != 0)
+                    {
+                        string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
+                        if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                                (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
+                                (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))))
+                        {}
+                        else
+                            counter++;
+                    }
                 }
             }
         }
@@ -4282,20 +4335,23 @@ int Assembly::CountNumberOfAngles()
         stringstream ss;
         ss << atom->GetId();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            AtomNode* neighbor_atom_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss1;
-                ss1 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss1.str()) != 0)
+                Atom* neighbor = (*it1);
+                AtomNode* neighbor_atom_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    counter++;
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss1;
+                    ss1 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss1.str()) != 0)
+                    {
+                        counter++;
+                    }
                 }
             }
         }
@@ -4314,28 +4370,31 @@ int Assembly::CountNumberOfAngleTypes()
         stringstream ss;
         ss << atom->GetId();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            string type2 = neighbor->GetAtomType();
-            AtomNode* neighbor_atom_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                string type3 = neighbor_of_neighbor->GetAtomType();
-                stringstream ss1;
-                ss1 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss1.str()) != 0)
+                Atom* neighbor = (*it1);
+                string type2 = neighbor->GetAtomType();
+                AtomNode* neighbor_atom_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_atom_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    stringstream ss2;
-                    ss2 << type1 << "_" << type2 << "_" << type3;
-                    stringstream ss3;
-                    ss3 << type3 << "_" << type2 << "_" << type1;
-                    if(find(type_list.begin(), type_list.end(), ss2.str()) == type_list.end() &&
-                            find(type_list.begin(), type_list.end(), ss3.str()) == type_list.end())
-                        type_list.push_back(ss2.str());
+                    Atom* neighbor_of_neighbor = (*it2);
+                    string type3 = neighbor_of_neighbor->GetAtomType();
+                    stringstream ss1;
+                    ss1 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss1.str()) != 0)
+                    {
+                        stringstream ss2;
+                        ss2 << type1 << "_" << type2 << "_" << type3;
+                        stringstream ss3;
+                        ss3 << type3 << "_" << type2 << "_" << type1;
+                        if(find(type_list.begin(), type_list.end(), ss2.str()) == type_list.end() &&
+                                find(type_list.begin(), type_list.end(), ss3.str()) == type_list.end())
+                            type_list.push_back(ss2.str());
+                    }
                 }
             }
         }
@@ -4357,51 +4416,54 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
         ss << atom->GetId();
         string atom_name = atom->GetName();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            stringstream ss1;
-            ss1 << neighbor->GetId();
-            string neighbor_name = neighbor->GetName();
-            AtomNode* neighbor_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss2.str()) != 0)
+                Atom* neighbor = (*it1);
+                stringstream ss1;
+                ss1 << neighbor->GetId();
+                string neighbor_name = neighbor->GetName();
+                AtomNode* neighbor_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
-                    AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
-                    AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
-                    for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss2;
+                    ss2 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss2.str()) != 0)
                     {
-                        Atom* neighbor_of_neighbor_of_neighbor = (*it3);
-                        stringstream ss3;
-                        ss3 << neighbor_of_neighbor_of_neighbor->GetId();
-                        if(ss1.str().compare(ss3.str()) != 0)
+                        string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
+                        AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
+                        AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
+                        for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
                         {
-                            string neighbor_of_neighbor_of_neighbor_name = neighbor_of_neighbor_of_neighbor->GetName();
-                            if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                                    (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
-                                    (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))) ||
-                                    (neighbor_of_neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_of_neighbor_name.substr(0,1))))))
+                            Atom* neighbor_of_neighbor_of_neighbor = (*it3);
+                            stringstream ss3;
+                            ss3 << neighbor_of_neighbor_of_neighbor->GetId();
+                            if(ss1.str().compare(ss3.str()) != 0)
                             {
-
-                                vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
-                                                                                                                                  neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
-                                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-                                for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
+                                string neighbor_of_neighbor_of_neighbor_name = neighbor_of_neighbor_of_neighbor->GetName();
+                                if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                                        (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
+                                        (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))) ||
+                                        (neighbor_of_neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_of_neighbor_name.substr(0,1))))))
                                 {
-                                    vector<string> atom_types = (*it4);
-                                    if(dihedrals[atom_types] != NULL)
+
+                                    vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
+                                                                                                                                      neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
+                                    ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                                    for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
                                     {
-                                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
-                                        int terms_count = parameter_file_dihedrals->GetTerms().size();
-                                        counter += terms_count;
-                                        break;
+                                        vector<string> atom_types = (*it4);
+                                        if(dihedrals[atom_types] != NULL)
+                                        {
+                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
+                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                                            counter += terms_count;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -4409,34 +4471,34 @@ int Assembly::CountNumberOfDihedralsIncludingHydrogen(string parameter_file_path
                     }
                 }
             }
-        }
-        ///Improper Dihedrals
-        if(neighbors.size() == 3)
-        {
-            Atom* neighbor1 = neighbors.at(0);
-            Atom* neighbor2 = neighbors.at(1);
-            Atom* neighbor3 = neighbors.at(2);
-            string neighbor1_name = neighbor1->GetName();
-            string neighbor2_name = neighbor2->GetName();
-            string neighbor3_name = neighbor3->GetName();
-            vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
-
-            ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-            for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
+            ///Improper Dihedrals
+            if(neighbors.size() == 3)
             {
-                vector<string> improper_dihedral_permutation = (*it1);
-                if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                        (neighbor1_name.substr(0,1).compare("H") == 0 || (neighbor1_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor1_name.substr(0,1))))) ||
-                        (neighbor2_name.substr(0,1).compare("H") == 0 || (neighbor2_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor2_name.substr(0,1))))) ||
-                        (neighbor3_name.substr(0,1).compare("H") == 0 || (neighbor3_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor3_name.substr(0,1))))))
+                Atom* neighbor1 = neighbors.at(0);
+                Atom* neighbor2 = neighbors.at(1);
+                Atom* neighbor3 = neighbors.at(2);
+                string neighbor1_name = neighbor1->GetName();
+                string neighbor2_name = neighbor2->GetName();
+                string neighbor3_name = neighbor3->GetName();
+                vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                             neighbor3->GetAtomType(), atom->GetAtomType());
+
+                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
                 {
-                    if(dihedrals[improper_dihedral_permutation] != NULL)
+                    vector<string> improper_dihedral_permutation = (*it1);
+                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                            (neighbor1_name.substr(0,1).compare("H") == 0 || (neighbor1_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor1_name.substr(0,1))))) ||
+                            (neighbor2_name.substr(0,1).compare("H") == 0 || (neighbor2_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor2_name.substr(0,1))))) ||
+                            (neighbor3_name.substr(0,1).compare("H") == 0 || (neighbor3_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor3_name.substr(0,1))))))
                     {
-                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
-                        int terms_count = parameter_file_dihedrals->GetTerms().size();
-                        improper_counter += terms_count;
-                        break;
+                        if(dihedrals[improper_dihedral_permutation] != NULL)
+                        {
+                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
+                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                            improper_counter += terms_count;
+                            break;
+                        }
                     }
                 }
             }
@@ -4460,53 +4522,56 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
         ss << atom->GetId();
         string atom_name = atom->GetName();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            stringstream ss1;
-            ss1 << neighbor->GetId();
-            string neighbor_name = neighbor->GetName();
-            AtomNode* neighbor_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss2.str()) != 0)
+                Atom* neighbor = (*it1);
+                stringstream ss1;
+                ss1 << neighbor->GetId();
+                string neighbor_name = neighbor->GetName();
+                AtomNode* neighbor_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
-                    AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
-                    AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
-                    for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss2;
+                    ss2 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss2.str()) != 0)
                     {
-                        Atom* neighbor_of_neighbor_of_neighbor = (*it3);
-                        stringstream ss3;
-                        ss3 << neighbor_of_neighbor_of_neighbor->GetId();
-                        if(ss1.str().compare(ss3.str()) != 0)
+                        string neighbor_of_neighbor_name = neighbor_of_neighbor->GetName();
+                        AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
+                        AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
+                        for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
                         {
-                            string neighbor_of_neighbor_of_neighbor_name = neighbor_of_neighbor_of_neighbor->GetName();
-                            if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                                    (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
-                                    (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))) ||
-                                    (neighbor_of_neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_of_neighbor_name.substr(0,1))))))
-                            {}
-                            else
+                            Atom* neighbor_of_neighbor_of_neighbor = (*it3);
+                            stringstream ss3;
+                            ss3 << neighbor_of_neighbor_of_neighbor->GetId();
+                            if(ss1.str().compare(ss3.str()) != 0)
                             {
-
-                                vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
-                                                                                                                                  neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
-                                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-                                for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
+                                string neighbor_of_neighbor_of_neighbor_name = neighbor_of_neighbor_of_neighbor->GetName();
+                                if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                                        (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
+                                        (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))) ||
+                                        (neighbor_of_neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_of_neighbor_name.substr(0,1))))))
+                                {}
+                                else
                                 {
-                                    vector<string> atom_types = (*it4);
-                                    if(dihedrals[atom_types] != NULL)
+
+                                    vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
+                                                                                                                                      neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
+                                    ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                                    for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
                                     {
-                                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
-                                        int terms_count = parameter_file_dihedrals->GetTerms().size();
-                                        counter += terms_count;
-                                        break;
+                                        vector<string> atom_types = (*it4);
+                                        if(dihedrals[atom_types] != NULL)
+                                        {
+                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
+                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                                            counter += terms_count;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -4514,36 +4579,36 @@ int Assembly::CountNumberOfDihedralsExcludingHydrogen(string parameter_file_path
                     }
                 }
             }
-        }
-        ///Improper Dihedrals
-        if(neighbors.size() == 3)
-        {
-            Atom* neighbor1 = neighbors.at(0);
-            Atom* neighbor2 = neighbors.at(1);
-            Atom* neighbor3 = neighbors.at(2);
-            string neighbor1_name = neighbor1->GetName();
-            string neighbor2_name = neighbor2->GetName();
-            string neighbor3_name = neighbor3->GetName();
-            vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
-
-            ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-            for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
+            ///Improper Dihedrals
+            if(neighbors.size() == 3)
             {
-                vector<string> improper_dihedral_permutation = (*it1);
-                if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                        (neighbor1_name.substr(0,1).compare("H") == 0 || (neighbor1_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor1_name.substr(0,1))))) ||
-                        (neighbor2_name.substr(0,1).compare("H") == 0 || (neighbor2_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor2_name.substr(0,1))))) ||
-                        (neighbor3_name.substr(0,1).compare("H") == 0 || (neighbor3_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor3_name.substr(0,1))))))
-                {}
-                else
+                Atom* neighbor1 = neighbors.at(0);
+                Atom* neighbor2 = neighbors.at(1);
+                Atom* neighbor3 = neighbors.at(2);
+                string neighbor1_name = neighbor1->GetName();
+                string neighbor2_name = neighbor2->GetName();
+                string neighbor3_name = neighbor3->GetName();
+                vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                             neighbor3->GetAtomType(), atom->GetAtomType());
+
+                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
                 {
-                    if(dihedrals[improper_dihedral_permutation] != NULL)
+                    vector<string> improper_dihedral_permutation = (*it1);
+                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                            (neighbor1_name.substr(0,1).compare("H") == 0 || (neighbor1_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor1_name.substr(0,1))))) ||
+                            (neighbor2_name.substr(0,1).compare("H") == 0 || (neighbor2_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor2_name.substr(0,1))))) ||
+                            (neighbor3_name.substr(0,1).compare("H") == 0 || (neighbor3_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor3_name.substr(0,1))))))
+                    {}
+                    else
                     {
-                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
-                        int terms_count = parameter_file_dihedrals->GetTerms().size();
-                        improper_counter += terms_count;
-                        break;
+                        if(dihedrals[improper_dihedral_permutation] != NULL)
+                        {
+                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
+                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                            improper_counter += terms_count;
+                            break;
+                        }
                     }
                 }
             }
@@ -4566,71 +4631,74 @@ int Assembly::CountNumberOfDihedrals(string parameter_file_path)
         stringstream ss;
         ss << atom->GetId();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            stringstream ss1;
-            ss1 << neighbor->GetId();
-            AtomNode* neighbor_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss2.str()) != 0)
+                Atom* neighbor = (*it1);
+                stringstream ss1;
+                ss1 << neighbor->GetId();
+                AtomNode* neighbor_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
-                    AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
-                    for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss2;
+                    ss2 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss2.str()) != 0)
                     {
-                        Atom* neighbor_of_neighbor_of_neighbor = (*it3);
-                        stringstream ss3;
-                        ss3 << neighbor_of_neighbor_of_neighbor->GetId();
-                        if(ss1.str().compare(ss3.str()) != 0)
+                        AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
+                        AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
+                        for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
                         {
-                            vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
-                                                                                                                              neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
-                            ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-                            for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
+                            Atom* neighbor_of_neighbor_of_neighbor = (*it3);
+                            stringstream ss3;
+                            ss3 << neighbor_of_neighbor_of_neighbor->GetId();
+                            if(ss1.str().compare(ss3.str()) != 0)
                             {
-                                vector<string> atom_types = (*it4);
-                                //                                cout << atom_types.at(0) << atom_types.at(1) << atom_types.at(2) << atom_types.at(3) << endl;
-                                if(dihedrals[atom_types] != NULL)
+                                vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
+                                                                                                                                  neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
+                                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                                for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
                                 {
-                                    ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
-                                    int terms_count = parameter_file_dihedrals->GetTerms().size();
-                                    counter += terms_count;
-                                    break;
-                                }
+                                    vector<string> atom_types = (*it4);
+                                    //                                cout << atom_types.at(0) << atom_types.at(1) << atom_types.at(2) << atom_types.at(3) << endl;
+                                    if(dihedrals[atom_types] != NULL)
+                                    {
+                                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
+                                        int terms_count = parameter_file_dihedrals->GetTerms().size();
+                                        counter += terms_count;
+                                        break;
+                                    }
 
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        ///Improper Dihedrals
-        if(neighbors.size() == 3)
-        {
-
-            Atom* neighbor1 = neighbors.at(0);
-            Atom* neighbor2 = neighbors.at(1);
-            Atom* neighbor3 = neighbors.at(2);
-
-            vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
-            ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-            for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
+            ///Improper Dihedrals
+            if(neighbors.size() == 3)
             {
-                vector<string> improper_dihedral_permutation = (*it1);
-                if(dihedrals[improper_dihedral_permutation] != NULL)
+
+                Atom* neighbor1 = neighbors.at(0);
+                Atom* neighbor2 = neighbors.at(1);
+                Atom* neighbor3 = neighbors.at(2);
+
+                vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                             neighbor3->GetAtomType(), atom->GetAtomType());
+                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
                 {
-                    ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
-                    int terms_count = parameter_file_dihedrals->GetTerms().size();
-                    improper_counter += terms_count;
-                    break;
+                    vector<string> improper_dihedral_permutation = (*it1);
+                    if(dihedrals[improper_dihedral_permutation] != NULL)
+                    {
+                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
+                        int terms_count = parameter_file_dihedrals->GetTerms().size();
+                        improper_counter += terms_count;
+                        break;
+                    }
                 }
             }
         }
@@ -4652,119 +4720,122 @@ int Assembly::CountNumberOfDihedralTypes(string parameter_file_path)
         stringstream ss;
         ss << atom->GetId();
         AtomNode* atom_node = atom->GetNode();
-        AtomVector neighbors = atom_node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(atom_node != NULL)
         {
-            Atom* neighbor = (*it1);
-            stringstream ss1;
-            ss1 << neighbor->GetId();
-            AtomNode* neighbor_node = neighbor->GetNode();
-            AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+            AtomVector neighbors = atom_node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss2.str()) != 0)
+                Atom* neighbor = (*it1);
+                stringstream ss1;
+                ss1 << neighbor->GetId();
+                AtomNode* neighbor_node = neighbor->GetNode();
+                AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
                 {
-                    AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
-                    AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
-                    for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss2;
+                    ss2 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss2.str()) != 0)
                     {
-                        Atom* neighbor_of_neighbor_of_neighbor = (*it3);
-                        stringstream ss3;
-                        ss3 << neighbor_of_neighbor_of_neighbor->GetId();
-                        if(ss1.str().compare(ss3.str()) != 0)
+                        AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
+                        AtomVector neighbors_of_neighbor_of_neighbor = neighbor_of_neighbor_node->GetNodeNeighbors();
+                        for(AtomVector::iterator it3 = neighbors_of_neighbor_of_neighbor.begin(); it3 != neighbors_of_neighbor_of_neighbor.end(); it3++)
                         {
-
-                            vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
-                                                                                                                              neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
-                            ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-                            for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
+                            Atom* neighbor_of_neighbor_of_neighbor = (*it3);
+                            stringstream ss3;
+                            ss3 << neighbor_of_neighbor_of_neighbor->GetId();
+                            if(ss1.str().compare(ss3.str()) != 0)
                             {
-                                vector<string> atom_types = (*it4);
 
-
-                                //                            vector<string> atom_types = vector<string>();
-                                //                            atom_types.push_back(atom->GetAtomType());
-                                //                            atom_types.push_back(neighbor->GetAtomType());
-                                //                            atom_types.push_back(neighbor_of_neighbor->GetAtomType());
-                                //                            atom_types.push_back(neighbor_of_neighbor_of_neighbor->GetAtomType());
-                                if(dihedrals[atom_types] != NULL)
+                                vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(atom->GetAtomType(), neighbor->GetAtomType(),
+                                                                                                                                  neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
+                                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                                for(vector<vector<string> >::iterator it4 = all_atom_type_permutations.begin(); it4 != all_atom_type_permutations.end(); it4++)
                                 {
-                                    stringstream ss4;
-                                    ss4 << atom_types.at(0) << "_" << atom_types.at(1) << "_" << atom_types.at(2) << "_" << atom_types.at(3);
-                                    stringstream ss5;
-                                    ss5 << atom_types.at(3) << "_" << atom_types.at(2) << "_" << atom_types.at(1) << "_" << atom_types.at(0);
-                                    if(find(type_list.begin(), type_list.end(), ss4.str()) == type_list.end() &&
-                                            find(type_list.begin(), type_list.end(), ss5.str()) == type_list.end())
+                                    vector<string> atom_types = (*it4);
+
+
+                                    //                            vector<string> atom_types = vector<string>();
+                                    //                            atom_types.push_back(atom->GetAtomType());
+                                    //                            atom_types.push_back(neighbor->GetAtomType());
+                                    //                            atom_types.push_back(neighbor_of_neighbor->GetAtomType());
+                                    //                            atom_types.push_back(neighbor_of_neighbor_of_neighbor->GetAtomType());
+                                    if(dihedrals[atom_types] != NULL)
                                     {
-                                        type_list.push_back(ss4.str());
-                                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
-                                        int terms_count = parameter_file_dihedrals->GetTerms().size();
-                                        counter += terms_count;
-                                        break;
+                                        stringstream ss4;
+                                        ss4 << atom_types.at(0) << "_" << atom_types.at(1) << "_" << atom_types.at(2) << "_" << atom_types.at(3);
+                                        stringstream ss5;
+                                        ss5 << atom_types.at(3) << "_" << atom_types.at(2) << "_" << atom_types.at(1) << "_" << atom_types.at(0);
+                                        if(find(type_list.begin(), type_list.end(), ss4.str()) == type_list.end() &&
+                                                find(type_list.begin(), type_list.end(), ss5.str()) == type_list.end())
+                                        {
+                                            type_list.push_back(ss4.str());
+                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
+                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                                            counter += terms_count;
+                                            break;
+                                        }
                                     }
+                                    //                                else
+                                    //                                {
+                                    //                                    atom_types[0] = neighbor_of_neighbor_of_neighbor->GetAtomType();
+                                    //                                    atom_types[1] = neighbor_of_neighbor->GetAtomType();
+                                    //                                    atom_types[2] = neighbor->GetAtomType();
+                                    //                                    atom_types[3] = atom->GetAtomType();
+                                    //                                    if(dihedrals[atom_types] != NULL)
+                                    //                                    {
+                                    //                                        stringstream ss6;
+                                    //                                        ss6 << atom->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor_of_neighbor->GetAtomType();
+                                    //                                        stringstream ss7;
+                                    //                                        ss7 << neighbor_of_neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << atom->GetAtomType();
+                                    //                                        if(find(type_list.begin(), type_list.end(), ss6.str()) == type_list.end() &&
+                                    //                                                find(type_list.begin(), type_list.end(), ss7.str()) == type_list.end() )
+                                    //                                        {
+                                    //                                            type_list.push_back(ss7.str());
+                                    //                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
+                                    //                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                                    //                                            counter += terms_count;
+                                    //                                        }
+                                    //                                    }
+                                    //                                    else
+                                    //                                    {
+                                    //                                        not_found_counter++;
+                                    //                                    }
+                                    //                                }
                                 }
-                                //                                else
-                                //                                {
-                                //                                    atom_types[0] = neighbor_of_neighbor_of_neighbor->GetAtomType();
-                                //                                    atom_types[1] = neighbor_of_neighbor->GetAtomType();
-                                //                                    atom_types[2] = neighbor->GetAtomType();
-                                //                                    atom_types[3] = atom->GetAtomType();
-                                //                                    if(dihedrals[atom_types] != NULL)
-                                //                                    {
-                                //                                        stringstream ss6;
-                                //                                        ss6 << atom->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor_of_neighbor->GetAtomType();
-                                //                                        stringstream ss7;
-                                //                                        ss7 << neighbor_of_neighbor_of_neighbor->GetAtomType() << "_" << neighbor_of_neighbor->GetAtomType() << "_" << neighbor->GetAtomType() << "_" << atom->GetAtomType();
-                                //                                        if(find(type_list.begin(), type_list.end(), ss6.str()) == type_list.end() &&
-                                //                                                find(type_list.begin(), type_list.end(), ss7.str()) == type_list.end() )
-                                //                                        {
-                                //                                            type_list.push_back(ss7.str());
-                                //                                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[atom_types];
-                                //                                            int terms_count = parameter_file_dihedrals->GetTerms().size();
-                                //                                            counter += terms_count;
-                                //                                        }
-                                //                                    }
-                                //                                    else
-                                //                                    {
-                                //                                        not_found_counter++;
-                                //                                    }
-                                //                                }
                             }
                         }
                     }
                 }
             }
-        }
-        ///Improper Dihedrals
-        if(neighbors.size() == 3)
-        {
-            Atom* neighbor1 = neighbors.at(0);
-            Atom* neighbor2 = neighbors.at(1);
-            Atom* neighbor3 = neighbors.at(2);
-            vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                                                         neighbor3->GetAtomType(), atom->GetAtomType());
-
-            for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
+            ///Improper Dihedrals
+            if(neighbors.size() == 3)
             {
-                vector<string> improper_dihedral_permutation = (*it1);
-                ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-                if(dihedrals[improper_dihedral_permutation] != NULL)
+                Atom* neighbor1 = neighbors.at(0);
+                Atom* neighbor2 = neighbors.at(1);
+                Atom* neighbor3 = neighbors.at(2);
+                vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                             neighbor3->GetAtomType(), atom->GetAtomType());
+
+                for(vector<vector<string> >::iterator it1 = all_improper_dihedrals_atom_type_permutations.begin(); it1 != all_improper_dihedrals_atom_type_permutations.end(); it1++)
                 {
-                    stringstream ss;
-                    ss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
-                    stringstream ss1;
-                    ss1 << improper_dihedral_permutation.at(3) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(0);
-                    if(find(type_list.begin(), type_list.end(), ss.str()) == type_list.end() &&
-                            find(type_list.begin(), type_list.end(), ss1.str()) == type_list.end())
+                    vector<string> improper_dihedral_permutation = (*it1);
+                    ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+                    if(dihedrals[improper_dihedral_permutation] != NULL)
                     {
-                        type_list.push_back(ss.str());
-                        ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
-                        int terms_count = parameter_file_dihedrals->GetTerms().size();
-                        counter += terms_count;
-                        break;
+                        stringstream ss;
+                        ss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
+                        stringstream ss1;
+                        ss1 << improper_dihedral_permutation.at(3) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(0);
+                        if(find(type_list.begin(), type_list.end(), ss.str()) == type_list.end() &&
+                                find(type_list.begin(), type_list.end(), ss1.str()) == type_list.end())
+                        {
+                            type_list.push_back(ss.str());
+                            ParameterFileDihedral* parameter_file_dihedrals = dihedrals[improper_dihedral_permutation];
+                            int terms_count = parameter_file_dihedrals->GetTerms().size();
+                            counter += terms_count;
+                            break;
+                        }
                     }
                 }
             }
@@ -5091,51 +5162,54 @@ int Assembly::CountNumberOfExcludedAtoms()
         stringstream ss;
         ss << atom->GetId();
         AtomNode* node = atom->GetNode();
-        AtomVector neighbors = node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        if(node != NULL)
         {
-            Atom* neighbor = (*it1);
-            stringstream ss1;
-            ss1 << neighbor->GetId();
-            stringstream first_order_interaction;
-            stringstream reverse_first_order_interaction;
-            first_order_interaction << ss.str() << "-" << ss1.str();
-            reverse_first_order_interaction << ss1.str() << "-" << ss.str();
-            if(find(excluded_atom_list.begin(), excluded_atom_list.end(), first_order_interaction.str()) == excluded_atom_list.end() &&
-                    find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_first_order_interaction.str()) == excluded_atom_list.end())
-                excluded_atom_list.push_back(first_order_interaction.str());
-            AtomNode* neighbor_node = neighbor->GetNode();
-            AtomVector neighbor_of_neighbors = neighbor_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = neighbor_of_neighbors.begin(); it2 != neighbor_of_neighbors.end(); it2++)
+            AtomVector neighbors = node->GetNodeNeighbors();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
-                Atom* neighbor_of_neighbor = (*it2);
-                stringstream ss2;
-                ss2 << neighbor_of_neighbor->GetId();
-                if(ss.str().compare(ss2.str()) != 0)
+                Atom* neighbor = (*it1);
+                stringstream ss1;
+                ss1 << neighbor->GetId();
+                stringstream first_order_interaction;
+                stringstream reverse_first_order_interaction;
+                first_order_interaction << ss.str() << "-" << ss1.str();
+                reverse_first_order_interaction << ss1.str() << "-" << ss.str();
+                if(find(excluded_atom_list.begin(), excluded_atom_list.end(), first_order_interaction.str()) == excluded_atom_list.end() &&
+                        find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_first_order_interaction.str()) == excluded_atom_list.end())
+                    excluded_atom_list.push_back(first_order_interaction.str());
+                AtomNode* neighbor_node = neighbor->GetNode();
+                AtomVector neighbor_of_neighbors = neighbor_node->GetNodeNeighbors();
+                for(AtomVector::iterator it2 = neighbor_of_neighbors.begin(); it2 != neighbor_of_neighbors.end(); it2++)
                 {
-                    stringstream second_order_interaction;
-                    stringstream reverse_second_order_interaction;
-                    second_order_interaction << ss.str() << "-" << ss2.str();
-                    reverse_second_order_interaction << ss2.str() << "-" << ss.str();
-                    if(find(excluded_atom_list.begin(), excluded_atom_list.end(), second_order_interaction.str()) == excluded_atom_list.end() &&
-                            find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_second_order_interaction.str()) == excluded_atom_list.end())
-                        excluded_atom_list.push_back(second_order_interaction.str());
-                    AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
-                    AtomVector neighbor_of_neighbor_of_neighbors = neighbor_of_neighbor_node->GetNodeNeighbors();
-                    for(AtomVector::iterator it3 = neighbor_of_neighbor_of_neighbors.begin(); it3 != neighbor_of_neighbor_of_neighbors.end(); it3++)
+                    Atom* neighbor_of_neighbor = (*it2);
+                    stringstream ss2;
+                    ss2 << neighbor_of_neighbor->GetId();
+                    if(ss.str().compare(ss2.str()) != 0)
                     {
-                        Atom* neighbor_of_neighbor_of_neighbor = (*it3);
-                        stringstream ss3;
-                        ss3 << neighbor_of_neighbor_of_neighbor->GetId();
-                        if(ss1.str().compare(ss3.str()) != 0)
+                        stringstream second_order_interaction;
+                        stringstream reverse_second_order_interaction;
+                        second_order_interaction << ss.str() << "-" << ss2.str();
+                        reverse_second_order_interaction << ss2.str() << "-" << ss.str();
+                        if(find(excluded_atom_list.begin(), excluded_atom_list.end(), second_order_interaction.str()) == excluded_atom_list.end() &&
+                                find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_second_order_interaction.str()) == excluded_atom_list.end())
+                            excluded_atom_list.push_back(second_order_interaction.str());
+                        AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
+                        AtomVector neighbor_of_neighbor_of_neighbors = neighbor_of_neighbor_node->GetNodeNeighbors();
+                        for(AtomVector::iterator it3 = neighbor_of_neighbor_of_neighbors.begin(); it3 != neighbor_of_neighbor_of_neighbors.end(); it3++)
                         {
-                            stringstream third_order_interaction;
-                            stringstream reverse_third_order_interaction;
-                            third_order_interaction << ss.str() << "-" << ss3.str();
-                            reverse_third_order_interaction << ss3.str() << "-" << ss.str();
-                            if(find(excluded_atom_list.begin(), excluded_atom_list.end(), third_order_interaction.str()) == excluded_atom_list.end() &&
-                                    find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_third_order_interaction.str()) == excluded_atom_list.end())
-                                excluded_atom_list.push_back(third_order_interaction.str());
+                            Atom* neighbor_of_neighbor_of_neighbor = (*it3);
+                            stringstream ss3;
+                            ss3 << neighbor_of_neighbor_of_neighbor->GetId();
+                            if(ss1.str().compare(ss3.str()) != 0)
+                            {
+                                stringstream third_order_interaction;
+                                stringstream reverse_third_order_interaction;
+                                third_order_interaction << ss.str() << "-" << ss3.str();
+                                reverse_third_order_interaction << ss3.str() << "-" << ss.str();
+                                if(find(excluded_atom_list.begin(), excluded_atom_list.end(), third_order_interaction.str()) == excluded_atom_list.end() &&
+                                        find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_third_order_interaction.str()) == excluded_atom_list.end())
+                                    excluded_atom_list.push_back(third_order_interaction.str());
+                            }
                         }
                     }
                 }

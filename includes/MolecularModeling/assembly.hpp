@@ -368,7 +368,7 @@ namespace MolecularModeling
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure
               */
-            TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly(std::string parameter_file_path);
+            TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly(std::string parameter_file_path, std::string ion_parameter_file_path = "");
             /*! \fn
               * A function to build agnle types of topology file structure from the current assembly object
               * Exports data from assembly data structure to generate topology atom types
