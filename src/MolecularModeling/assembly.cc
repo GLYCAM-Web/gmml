@@ -1607,14 +1607,13 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter
 
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        string residue_name = (*it).first;
-        assembly_residue->SetName(residue_name);
-        stringstream id;
-        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
-           << gmml::BLANK_SPACE << "_" << id_;
-        assembly_residue->SetId(id.str());
         PrepFileResidue* prep_residue = (*it).second;
         string prep_residue_name = prep_residue->GetName();
+        assembly_residue->SetName(prep_residue_name);
+        stringstream id;
+        id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+           << gmml::BLANK_SPACE << "_" << id_;
+        assembly_residue->SetId(id.str());
         if(distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
             ss << prep_residue_name;
         else
@@ -1626,7 +1625,6 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter
             serial_number++;
             Atom* assembly_atom = new Atom();
             PrepFileAtom* prep_atom = (*it1);
-
             assembly_atom->SetResidue(assembly_residue);
             string atom_name = prep_atom->GetName();
             assembly_atom->SetName(atom_name);
@@ -1662,7 +1660,6 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter
                 int index = distance(prep_atoms.begin(), it1);
                 if(index == 0)
                 {
-
                 }
                 if(index == 1)
                 {
@@ -1681,17 +1678,19 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter
                 }
                 if(index > 2)
                 {
-                    int great_grabdparent_index = prep_atom->GetDihedralIndex() - 1;
+                    int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
                     int grandparent_index = prep_atom->GetAngleIndex() - 1;
                     int parent_index = prep_atom->GetBondIndex() - 1;
-                    Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
+
+                    Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
                     Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
                     Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                     coordinate_list.push_back(great_grandparent_coordinate);
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
                 }
-                Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                Coordinate* coordinate = new Coordinate();
+                coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
                                                                                              prep_atom->GetAngle(), prep_atom->GetDihedral());
                 cartesian_coordinate_list.push_back(coordinate);
 
@@ -2196,11 +2195,11 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_pat
             coordinate_list.push_back(cartesian_coordinate_list.at(parent_index));
             cartesian_coordinate_list.push_back(assembly_atom->GetCoordinates().at(model_index_));
 
-//            Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(model_index_),
-//                                                                                                  coordinate_list);
-//            prep_atom->SetBondLength(internal_coordinate->GetX());
-//            prep_atom->SetAngle(internal_coordinate->GetY());
-//            prep_atom->SetDihedral(internal_coordinate->GetZ());
+            Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(model_index_),
+                                                                                                  coordinate_list);
+            prep_atom->SetBondLength(internal_coordinate->GetX());
+            prep_atom->SetAngle(internal_coordinate->GetY());
+            prep_atom->SetDihedral(internal_coordinate->GetZ());
 
             atom_index++;
             prep_atoms.push_back(prep_atom);
@@ -2223,25 +2222,28 @@ void Assembly::ExtractPrepImproperDihedralTypesFromAssembly(Atom *assembly_atom,
                                                             & inserted_improper_dihedral_types, ParameterFile::DihedralMap& dihedrals)
 {
     AtomNode* atom_node = assembly_atom->GetNode();
-    AtomVector neighbors = atom_node->GetNodeNeighbors();
-    if(neighbors.size() == 3)
+    if(atom_node != NULL)
     {
-        Atom* neighbor1 = neighbors.at(0);
-        Atom* neighbor2 = neighbors.at(1);
-        Atom* neighbor3 = neighbors.at(2);
-        vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                                                     neighbor3->GetAtomType(), assembly_atom->GetAtomType());
-        for(vector<vector<string> >::iterator it = all_improper_dihedrals_atom_type_permutations.begin(); it != all_improper_dihedrals_atom_type_permutations.end(); it++)
+        AtomVector neighbors = atom_node->GetNodeNeighbors();
+        if(neighbors.size() == 3)
         {
-            vector<string> improper_dihedral_permutation = (*it);
-            if(dihedrals[improper_dihedral_permutation] != NULL)
+            Atom* neighbor1 = neighbors.at(0);
+            Atom* neighbor2 = neighbors.at(1);
+            Atom* neighbor3 = neighbors.at(2);
+            vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                         neighbor3->GetAtomType(), assembly_atom->GetAtomType());
+            for(vector<vector<string> >::iterator it = all_improper_dihedrals_atom_type_permutations.begin(); it != all_improper_dihedrals_atom_type_permutations.end(); it++)
             {
-                stringstream ss;
-                ss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
-                if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), ss.str()) == inserted_improper_dihedral_types.end())
+                vector<string> improper_dihedral_permutation = (*it);
+                if(dihedrals[improper_dihedral_permutation] != NULL)
                 {
-                    inserted_improper_dihedral_types.push_back(ss.str());
-                    break;
+                    stringstream ss;
+                    ss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
+                    if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), ss.str()) == inserted_improper_dihedral_types.end())
+                    {
+                        inserted_improper_dihedral_types.push_back(ss.str());
+                        break;
+                    }
                 }
             }
         }
@@ -2252,93 +2254,96 @@ void Assembly::ExtractPrepImproperDihedralsFromAssembly(Atom *assembly_atom, vec
                                                         ParameterFile::DihedralMap &dihedrals)
 {
     AtomNode* atom_node = assembly_atom->GetNode();
-    AtomVector neighbors = atom_node->GetNodeNeighbors();
-    if(neighbors.size() == 3)
+    if(atom_node != NULL)
     {
-        Atom* neighbor1 = neighbors.at(0);
-        Atom* neighbor2 = neighbors.at(1);
-        Atom* neighbor3 = neighbors.at(2);
-        vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
-                                                                                                                                     neighbor3->GetAtomType(), assembly_atom->GetAtomType());
-        for(vector<vector<string> >::iterator it = all_improper_dihedrals_atom_type_permutations.begin(); it != all_improper_dihedrals_atom_type_permutations.end(); it++)
+        AtomVector neighbors = atom_node->GetNodeNeighbors();
+        if(neighbors.size() == 3)
         {
-            vector<string> improper_dihedral_permutation = (*it);
-            stringstream sss;
-            sss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
-            if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str()) != inserted_improper_dihedral_types.end())
+            Atom* neighbor1 = neighbors.at(0);
+            Atom* neighbor2 = neighbors.at(1);
+            Atom* neighbor3 = neighbors.at(2);
+            vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
+                                                                                                                                         neighbor3->GetAtomType(), assembly_atom->GetAtomType());
+            for(vector<vector<string> >::iterator it = all_improper_dihedrals_atom_type_permutations.begin(); it != all_improper_dihedrals_atom_type_permutations.end(); it++)
             {
-                vector<string> dihedral1 = vector<string>();
-                vector<string> dihedral2 = vector<string>();
-                vector<string> dihedral3 = vector<string>();
-                vector<string> reverse_dihedral1 = vector<string>();
-                vector<string> reverse_dihedral2 = vector<string>();
-                vector<string> reverse_dihedral3 = vector<string>();
-
-                dihedral1.push_back(neighbor1->GetName());
-                dihedral1.push_back(neighbor2->GetName());
-                dihedral1.push_back(assembly_atom->GetName());
-                dihedral1.push_back(neighbor3->GetName());
-                reverse_dihedral1.push_back(neighbor3->GetName());
-                reverse_dihedral1.push_back(assembly_atom->GetName());
-                reverse_dihedral1.push_back(neighbor2->GetName());
-                reverse_dihedral1.push_back(neighbor1->GetName());
-
-                dihedral2.push_back(neighbor1->GetName());
-                dihedral2.push_back(assembly_atom->GetName());
-                dihedral2.push_back(neighbor3->GetName());
-                dihedral2.push_back(neighbor2->GetName());
-                reverse_dihedral2.push_back(neighbor2->GetName());
-                reverse_dihedral2.push_back(neighbor3->GetName());
-                reverse_dihedral2.push_back(assembly_atom->GetName());
-                reverse_dihedral2.push_back(neighbor1->GetName());
-
-                dihedral3.push_back(neighbor1->GetName());
-                dihedral3.push_back(neighbor3->GetName());
-                dihedral3.push_back(assembly_atom->GetName());
-                dihedral3.push_back(neighbor2->GetName());
-                reverse_dihedral3.push_back(neighbor2->GetName());
-                reverse_dihedral3.push_back(assembly_atom->GetName());
-                reverse_dihedral3.push_back(neighbor3->GetName());
-                reverse_dihedral3.push_back(neighbor1->GetName());
-
-                if(find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral1) == inserted_improper_dihedrals.end() &&
-                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral2) == inserted_improper_dihedrals.end() &&
-                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral3) == inserted_improper_dihedrals.end() &&
-                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral1) == inserted_improper_dihedrals.end() &&
-                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral2) == inserted_improper_dihedrals.end() &&
-                        find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral3) == inserted_improper_dihedrals.end())
+                vector<string> improper_dihedral_permutation = (*it);
+                stringstream sss;
+                sss << improper_dihedral_permutation.at(0) << "_" << improper_dihedral_permutation.at(1) << "_" << improper_dihedral_permutation.at(2) << "_" << improper_dihedral_permutation.at(3);
+                if(find(inserted_improper_dihedral_types.begin(), inserted_improper_dihedral_types.end(), sss.str()) != inserted_improper_dihedral_types.end())
                 {
-                    int permutation_index = distance(all_improper_dihedrals_atom_type_permutations.begin(), it);
-                    ParameterFileDihedral* parameter_file_dihedral = NULL;
-                    parameter_file_dihedral = dihedrals[improper_dihedral_permutation];
+                    vector<string> dihedral1 = vector<string>();
+                    vector<string> dihedral2 = vector<string>();
+                    vector<string> dihedral3 = vector<string>();
+                    vector<string> reverse_dihedral1 = vector<string>();
+                    vector<string> reverse_dihedral2 = vector<string>();
+                    vector<string> reverse_dihedral3 = vector<string>();
 
-                    if(parameter_file_dihedral != NULL)
+                    dihedral1.push_back(neighbor1->GetName());
+                    dihedral1.push_back(neighbor2->GetName());
+                    dihedral1.push_back(assembly_atom->GetName());
+                    dihedral1.push_back(neighbor3->GetName());
+                    reverse_dihedral1.push_back(neighbor3->GetName());
+                    reverse_dihedral1.push_back(assembly_atom->GetName());
+                    reverse_dihedral1.push_back(neighbor2->GetName());
+                    reverse_dihedral1.push_back(neighbor1->GetName());
+
+                    dihedral2.push_back(neighbor1->GetName());
+                    dihedral2.push_back(assembly_atom->GetName());
+                    dihedral2.push_back(neighbor3->GetName());
+                    dihedral2.push_back(neighbor2->GetName());
+                    reverse_dihedral2.push_back(neighbor2->GetName());
+                    reverse_dihedral2.push_back(neighbor3->GetName());
+                    reverse_dihedral2.push_back(assembly_atom->GetName());
+                    reverse_dihedral2.push_back(neighbor1->GetName());
+
+                    dihedral3.push_back(neighbor1->GetName());
+                    dihedral3.push_back(neighbor3->GetName());
+                    dihedral3.push_back(assembly_atom->GetName());
+                    dihedral3.push_back(neighbor2->GetName());
+                    reverse_dihedral3.push_back(neighbor2->GetName());
+                    reverse_dihedral3.push_back(assembly_atom->GetName());
+                    reverse_dihedral3.push_back(neighbor3->GetName());
+                    reverse_dihedral3.push_back(neighbor1->GetName());
+
+                    if(find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral1) == inserted_improper_dihedrals.end() &&
+                            find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral2) == inserted_improper_dihedrals.end() &&
+                            find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), dihedral3) == inserted_improper_dihedrals.end() &&
+                            find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral1) == inserted_improper_dihedrals.end() &&
+                            find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral2) == inserted_improper_dihedrals.end() &&
+                            find(inserted_improper_dihedrals.begin(), inserted_improper_dihedrals.end(), reverse_dihedral3) == inserted_improper_dihedrals.end())
                     {
-                        if(permutation_index % 6 == 0)
+                        int permutation_index = distance(all_improper_dihedrals_atom_type_permutations.begin(), it);
+                        ParameterFileDihedral* parameter_file_dihedral = NULL;
+                        parameter_file_dihedral = dihedrals[improper_dihedral_permutation];
+
+                        if(parameter_file_dihedral != NULL)
                         {
-                            inserted_improper_dihedrals.push_back(dihedral1);
+                            if(permutation_index % 6 == 0)
+                            {
+                                inserted_improper_dihedrals.push_back(dihedral1);
+                            }
+                            if(permutation_index % 6 == 2)
+                            {
+                                inserted_improper_dihedrals.push_back(dihedral2);
+                            }
+                            if(permutation_index % 6 == 4)
+                            {
+                                inserted_improper_dihedrals.push_back(dihedral3);
+                            }
+                            if(permutation_index % 6 == 1)
+                            {
+                                inserted_improper_dihedrals.push_back(reverse_dihedral1);
+                            }
+                            if(permutation_index % 6 == 3)
+                            {
+                                inserted_improper_dihedrals.push_back(reverse_dihedral2);
+                            }
+                            if(permutation_index % 6 == 5)
+                            {
+                                inserted_improper_dihedrals.push_back(reverse_dihedral3);
+                            }
+                            break;
                         }
-                        if(permutation_index % 6 == 2)
-                        {
-                            inserted_improper_dihedrals.push_back(dihedral2);
-                        }
-                        if(permutation_index % 6 == 4)
-                        {
-                            inserted_improper_dihedrals.push_back(dihedral3);
-                        }
-                        if(permutation_index % 6 == 1)
-                        {
-                            inserted_improper_dihedrals.push_back(reverse_dihedral1);
-                        }
-                        if(permutation_index % 6 == 3)
-                        {
-                            inserted_improper_dihedrals.push_back(reverse_dihedral2);
-                        }
-                        if(permutation_index % 6 == 5)
-                        {
-                            inserted_improper_dihedrals.push_back(reverse_dihedral3);
-                        }
-                        break;
                     }
                 }
             }
@@ -3589,7 +3594,7 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
     for(ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
     {
         Residue* assembly_residue = *it;
-        cout << assembly_residue->GetId() << endl;
+//        cout << assembly_residue->GetId() << endl;
         int residue_index = distance(residues_of_assembly.begin(), it) + 1;
         AtomVector assembly_residue_atoms = assembly_residue->GetAtoms();
         LibraryFileResidue* library_residue = new LibraryFileResidue();
@@ -3955,7 +3960,7 @@ void Assembly::BuildStructureByPrepFileInformation()
         atom_node->SetId(i);
         i++;
         Residue* assembly_residue = atom->GetResidue();
-        //        cout << assembly_residue->GetName() << endl;
+//        cout << assembly_residue->GetName() << endl;
         PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
         if(prep_residue != NULL)
         {
