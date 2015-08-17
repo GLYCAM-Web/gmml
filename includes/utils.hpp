@@ -422,7 +422,7 @@ namespace gmml
 
         time_t t = time(0);
         std::string time_str = std::asctime(std::localtime(&t));
-        file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>> ";
+        file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>>";
         switch(level)
         {
             case INF:
