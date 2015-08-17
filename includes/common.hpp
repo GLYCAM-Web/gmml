@@ -31,6 +31,7 @@ namespace gmml
     const int DEFAULT_DUMMY_ATOMS = 3;
     const char BLANK_SPACE = '?';
     const double MINIMUM_RADIUS = 0.6;
+    const double DEFAULT_RADIUS = 1.35;
     const double DIST_EPSILON = 0.000001;
     const int MAX_PDB_ATOM = 99999;
     const double CHARGE_DIVIDER = 18.2223;

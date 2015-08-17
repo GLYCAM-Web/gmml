@@ -296,6 +296,7 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
         if(assembly_coordinate.size() == 0)
         {
             cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
             return CoordinateVector();
         }
         for(CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
@@ -313,6 +314,7 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
             if(atom->GetCoordinates().size() == 0)
             {
                 cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << endl;
+                gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
                 return CoordinateVector();
             }
             else
@@ -438,6 +440,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
     cout << "Building assembly from pdb file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     try
     {                
         this->ClearAssembly();
@@ -660,6 +663,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
     cout << "Building assembly from pdb file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     try
     {
         this->ClearAssembly();
@@ -880,6 +884,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string parameter_file)
 {
     cout << "Building assembly from pdbqt file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdbqt file ...");
     try
     {
         this->ClearAssembly();
@@ -1003,6 +1008,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string paramet
 void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string parameter_file)
 {
     cout << "Building assembly from pdbqt file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdbqt file ...");
     try
     {
         this->ClearAssembly();
@@ -1125,6 +1131,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
 void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string parameter_file)
 {
     cout << "Building assembly from topology file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology file ...");
     this->ClearAssembly();
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
     ParameterFile* parameter = NULL;
@@ -1143,7 +1150,6 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string p
         assembly_residue->SetAssembly(this);
         TopologyResidue* topology_residue = (*it).second;
         string residue_name = topology_residue->GetResidueName();
-        cout << residue_name << endl;
         assembly_residue->SetName(residue_name);
         stringstream id;
         id << residue_name << "_" << gmml::BLANK_SPACE << "_" << topology_residue->GetIndex() << "_" << gmml::BLANK_SPACE << "_"
@@ -1193,6 +1199,7 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string p
 void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string parameter_file)
 {
     cout << "Building assembly from topology file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology file ...");
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1260,6 +1267,7 @@ void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string
 void Assembly::BuildAssemblyFromLibraryFile(string library_file_path, string parameter_file)
 {
     cout << "Building assembly from library file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from library file ...");
     this->ClearAssembly();
     LibraryFile* library_file = new LibraryFile(library_file_path);
     ParameterFile* parameter = NULL;
@@ -1348,6 +1356,7 @@ void Assembly::BuildAssemblyFromLibraryFile(string library_file_path, string par
 void Assembly::BuildAssemblyFromLibraryFile(LibraryFile *library_file, string parameter_file)
 {
     cout << "Building assembly from library file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from library file ...");
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1436,6 +1445,7 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFile *library_file, string pa
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path, string coordinate_file_path, string parameter_file)
 {
     cout << "Building assembly from topology and coordinate files ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology and coordinate files ...");
     this->ClearAssembly();
     TopologyFile* topology_file = new TopologyFile(topology_file_path);
     ParameterFile* parameter = NULL;
@@ -1509,6 +1519,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_file, CoordinateFile *coordinate_file, string parameter_file)
 {
     cout << "Building assembly from topology and coordinate files ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology and coordinate files ...");
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1582,6 +1593,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
 void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter_file)
 {
     cout << "Building assembly from prep file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from prep file ...");
     this->ClearAssembly();
     PrepFile* prep_file = new PrepFile(prep_file_path);
     ParameterFile* parameter = NULL;
@@ -1726,6 +1738,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter
 void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_file)
 {
     cout << "Build assembly from prep file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from prep file ...");
     this->ClearAssembly();
     ParameterFile* parameter = NULL;
     ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
@@ -1871,6 +1884,7 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
 PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
 {
     cout << "Creating PDB file" << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDB file ...");
     PdbFile* pdb_file = new PdbFile();
     PdbTitleCard* title_card = new PdbTitleCard();
     title_card->SetTitle("Generated by GMML");
@@ -1898,6 +1912,7 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
 PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
 {
     cout << "Creating PDBQT file" << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDBQT file ...");
     PdbqtFile* pdbqt_file = new PdbqtFile();
 
     PdbqtModelCard* model_card = new PdbqtModelCard();
@@ -2105,6 +2120,7 @@ void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_s
 PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_path)
 {
     cout << "Creating prep file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating prep file ...");
     PrepFile* prep_file = new PrepFile();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
     PrepFile::ResidueMap prep_residues = PrepFile::ResidueMap();
@@ -2542,6 +2558,7 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
                 if(stack_neighbor_index == -1)
                 {
 //                    cout << "EMPTY" << endl;
+
                 }
                 else
                 {
@@ -2670,6 +2687,7 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
 TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_file_path, string ion_parameter_file_path)
 {
     cout << "Creating topology file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating topology file ...");
     TopologyFile* topology_file = new TopologyFile();
 
     topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
@@ -2951,7 +2969,10 @@ void Assembly::ExtractTopologyBondTypesFromAssembly(vector<vector<string> > &ins
         }
         else
         {
-            cout << atom_pair_type.at(0) << "-" << atom_pair_type.at(1) << " bond type does not exist in the parameter files" << endl;
+            stringstream ss;
+            ss << atom_pair_type.at(0) << "-" << atom_pair_type.at(1) << " bond type does not exist in the parameter files";
+            cout << ss.str() << endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
             return;
         }
         TopologyBondType* topology_bond_type = new TopologyBondType();
@@ -3028,7 +3049,10 @@ void Assembly::ExtractTopologyBondsFromAssembly(vector<vector<string> > &inserte
             index = distance(inserted_bond_types.begin(), find(inserted_bond_types.begin(), inserted_bond_types.end(), reverse_atom_pair_type));
         else
         {
-            cout << atom_pair_type.at(0) << "-" << atom_pair_type.at(1) << " bond type does not exist in the parameter files" << endl;
+            stringstream ss;
+            ss << atom_pair_type.at(0) << "-" << atom_pair_type.at(1) << " bond type does not exist in the parameter files";
+            cout << ss.str() << endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
             return;
         }
         topology_bond->SetBondType(topology_file->GetBondTypeByIndex(index));
@@ -3066,7 +3090,10 @@ void Assembly::ExtractTopologyAngleTypesFromAssembly(Atom* assembly_atom, Atom* 
         }
         else
         {
-            cout << angle_type.at(0) << "-" << angle_type.at(1) << "-" << angle_type.at(2) << " angle type does not exist in the parameter files" << endl;
+            stringstream ss;
+            ss << angle_type.at(0) << "-" << angle_type.at(1) << "-" << angle_type.at(2) << " angle type does not exist in the parameter files";
+            cout << ss.str() << endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
             return;
         }
         TopologyAngleType* topology_angle_type = new TopologyAngleType();
@@ -3153,7 +3180,10 @@ void Assembly::ExtractTopologyAnglesFromAssembly(Atom* assembly_atom, Atom* neig
             index = distance(inserted_angle_types.begin(), find(inserted_angle_types.begin(), inserted_angle_types.end(), reverse_angle_type));
         else
         {
-            cout << angle_type.at(0) << "-" << angle_type.at(1) << "-" << angle_type.at(2) << " angle type does not exist in the parameter files" << endl;
+            stringstream ss;
+            ss << angle_type.at(0) << "-" << angle_type.at(1) << "-" << angle_type.at(2) << " angle type does not exist in the parameter files";
+            cout << ss.str() << endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
             return;
         }
         topology_angle->SetAnlgeType(topology_file->GetAngleTypeByIndex(index));
@@ -3166,6 +3196,7 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
 {
     vector<vector<string> > all_atom_type_permutations = CreateAllAtomTypePermutationsforDihedralType(assembly_atom->GetAtomType(), neighbor->GetAtomType(),
                                                                                                       neighbor_of_neighbor->GetAtomType(), neighbor_of_neighbor_of_neighbor->GetAtomType());
+    bool is_found = false;
     for(vector<vector<string> >::iterator it = all_atom_type_permutations.begin(); it != all_atom_type_permutations.end(); it++)
     {
         vector<string> atom_types = (*it);
@@ -3191,10 +3222,20 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
                     topology_dihedral_type->SetScnb(parameter_file_dihedral->GetScnb());
                     topology_file->AddDihedralType(topology_dihedral_type);
                 }
+                is_found = true;
                 break;
             }
         }
     }
+    if(!is_found)
+    {
+        stringstream ss;
+        ss << all_atom_type_permutations.at(0).at(0) << "-" << all_atom_type_permutations.at(0).at(1) << "-" << all_atom_type_permutations.at(0).at(2) << "-"
+           << all_atom_type_permutations.at(0).at(3) << " dihedral type (or any other permutation of it) does not exist in the parameter files";
+        cout << ss.str() << endl;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+    }
+
     ///Improper Dihedrals
     AtomNode* atom_node = assembly_atom->GetNode();
     AtomVector neighbors = atom_node->GetNodeNeighbors();
@@ -3205,6 +3246,7 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
         Atom* neighbor3 = neighbors.at(2);
         vector<vector<string> > all_improper_dihedrals_atom_type_permutations = CreateAllAtomTypePermutationsforImproperDihedralType(neighbor1->GetAtomType(), neighbor2->GetAtomType(),
                                                                                                                                      neighbor3->GetAtomType(), assembly_atom->GetAtomType());
+        bool is_improper_found = false;
         for(vector<vector<string> >::iterator it = all_improper_dihedrals_atom_type_permutations.begin(); it != all_improper_dihedrals_atom_type_permutations.end(); it++)
         {
             vector<string> improper_dihedral_permutation = (*it);
@@ -3230,9 +3272,19 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
                         topology_dihedral_type->SetScnb(parameter_file_dihedral->GetScnb());
                         topology_file->AddDihedralType(topology_dihedral_type);
                     }
+                    is_improper_found = true;
                     break;
                 }
             }
+        }
+        if(!is_improper_found)
+        {
+            stringstream ss;
+            ss << all_improper_dihedrals_atom_type_permutations.at(0).at(0) << "-" << all_improper_dihedrals_atom_type_permutations.at(0).at(1) << "-"
+               << all_improper_dihedrals_atom_type_permutations.at(0).at(2) << "-" << all_improper_dihedrals_atom_type_permutations.at(0).at(3)
+               << " improer dihedral type (or any other permutation of it) does not exist in the parameter files";
+            cout << ss.str() << endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
         }
     }
 }
@@ -3571,6 +3623,7 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
 CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
 {
     cout << "Creating coordinate file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating coordinate file ...");
     vector<Coordinate*> coordinates = this->GetAllCoordinates();
     CoordinateFile* coordinate_file = new CoordinateFile();
     coordinate_file->SetCoordinates(coordinates);
@@ -3583,13 +3636,13 @@ CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
 LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
 {
     cout << "Creating library file ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating library file ...");
     LibraryFile* library_file = new LibraryFile();
     LibraryFile::ResidueMap residue_map = LibraryFile::ResidueMap();
     ResidueVector residues_of_assembly = this->GetAllResiduesOfAssembly();
     for(ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
     {
         Residue* assembly_residue = *it;
-        cout << assembly_residue->GetId() << endl;
         int residue_index = distance(residues_of_assembly.begin(), it) + 1;
         AtomVector assembly_residue_atoms = assembly_residue->GetAtoms();
         LibraryFileResidue* library_residue = new LibraryFileResidue();
@@ -3721,6 +3774,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
 void Assembly::BuildStructureByDistance(double cutoff, int model_index)
 {
     cout << "Building structure by distance ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -3794,6 +3848,7 @@ void Assembly::BuildStructureByPDBFileInformation()
 {
     try{
         cout << "Building structure by pdb file information ..." << endl;
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by pdb file information ...");
         PdbFile* pdb_file = new PdbFile(this->GetSourceFile());
         AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
         int i = 0;
@@ -3845,6 +3900,7 @@ void Assembly::BuildStructureByPDBFileInformation()
 void Assembly::BuildStructureByTOPFileInformation()
 {
     cout << "Building structure by topology file information ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by topology file information ...");
     TopologyFile* topology_file = new TopologyFile(gmml::Split(this->GetSourceFile(), ";")[0]);
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -3896,6 +3952,7 @@ void Assembly::BuildStructureByTOPFileInformation()
 void Assembly::BuildStructureByLIBFileInformation()
 {
     cout << "Building structure by library file information..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by library file information ...");
     LibraryFile* library_file = new LibraryFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -3944,6 +4001,7 @@ void Assembly::BuildStructureByLIBFileInformation()
 void Assembly::BuildStructureByPrepFileInformation()
 {
     cout << "Building structure by prep file information ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by prep file information ...");
     PrepFile* prep_file = new PrepFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
@@ -3991,6 +4049,7 @@ void Assembly::BuildStructureByPrepFileInformation()
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
 {
     cout << "Building structure by dataset files information ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by dataset files information ...");
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
@@ -9923,7 +9982,9 @@ void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper
         if(atom->MolecularDynamicAtom::GetRadius() == dNotSet)
         {
             cout << "There is no information of the atom type/radius/charge of the atoms in the given library/parameter file" << endl;
-            return;
+            atom->SetRadius(DEFAULT_RADIUS);
+            cout << "The default value has been set for " << atom->GetId() << endl;
+//            return;
         }
         double upper_right_front_x = atom->GetCoordinates().at(model_index_)->GetX() + atom->MolecularDynamicAtom::GetRadius();
         double lower_left_back_x = atom->GetCoordinates().at(model_index_)->GetX() - atom->MolecularDynamicAtom::GetRadius();

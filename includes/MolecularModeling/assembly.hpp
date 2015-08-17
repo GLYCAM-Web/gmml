@@ -613,17 +613,59 @@ namespace MolecularModeling
               */
             PrepFileSpace::PrepFile::ResidueMap GetAllResiduesFromMultiplePrepFilesMap(std::vector<std::string> prep_files);
 
+            /*! \fn
+              * A function in order to extract all residue names existing in the given lib files
+              * @param lib_files The list of paths to library files
+              * @return all_residue_names
+              */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
+            /*! \fn
+              * A function in order to extract all the saccharide structures
+              * @param amino_lib_files The list of paths to amino library files
+              */
             void ExtractSugars(std::vector<std::string> amino_lib_files);
-
+            /*! \fn
+              * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
+              * @return cycles
+              */
             CycleMap DetectCyclesByExhaustiveRingPerception();
+            /*! \fn
+              * A function in order to prune the graph (recursively removing nodes with zero or 1 neighbors)
+              * @param all_atoms The list of atoms of the graph
+              */
             void PruneGraph(AtomVector& all_atoms);
+            /*! \fn
+              * A function in order to convert the graph into a path graph (creating list of edges between the nodes and a list of labels for those edges )
+              * @param path_graph_edges The list of edges between the nodes to be filled by the function
+              * @param path_graph_labels The list of edge labels to be filled by the function
+              * @param atoms The list of atoms of the graph
+              */
             void ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, std::vector<std::string>& path_graph_labels, AtomVector atoms);
+            /*! \fn
+              * A function in order to reduce the path graph such that if there is a path/walk a-b-c in the graph converting it to a-c and creating a new label
+                    for the new edge and checking if the new edge makes a cycle
+              * @param path_graph_edges The list of edges between the nodes
+              * @param path_graph_labels The list of edge labels
+              * @param reduced_path_graph_edges The list of edges of the (reduced) path graph
+              * @param reduced_path_graph_labels The list of edge labels of the (reduced) path graph
+              * @param common_atom The atom that needs to be checked if it is involved in a walk (a path like a-b-c)
+              * @param cycles The list of cycles to be filled by the function
+              */
             void ReducePathGraph(std::vector<std::string> path_graph_edges, std::vector<std::string> path_graph_labels,
                                  std::vector<std::string>& reduced_path_graph_edges, std::vector<std::string>& reduced_path_graph_labels, std::string common_atom, std::vector<std::string>& cycles);
 
+            /*! \fn
+              * A function in order to detect cycles in the molecular graph using depth first search algorithm
+              * @return cycles
+              */
             CycleMap DetectCyclesByDFS();
+            /*! \fn
+              * A function of depth first search algorithm in order to traverse the graph
+              * @param path_graph_edges The list of edges between the nodes to be filled by the function
+              * @param path_graph_labels The list of edge labels to be filled by the function
+              * @param atoms The list of atoms of the graph
+              */
             void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
             void FilterAllCarbonCycles(CycleMap& cycles);
