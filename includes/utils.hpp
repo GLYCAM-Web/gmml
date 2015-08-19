@@ -386,6 +386,11 @@ namespace gmml
         }
     }
 
+    /*! \fn
+      * A function in order to look up the stereochemistry name of the sugar structure based on the given string chemical code structure
+      * @param code The string chemical code structure
+      * @return SUGARNAMELOOKUP[0]
+      */
     inline Glycam::SugarName SugarStereoChemistryNameLookup(std::string code)
     {
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)

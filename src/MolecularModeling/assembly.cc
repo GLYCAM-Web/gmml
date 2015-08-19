@@ -10600,7 +10600,6 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
 
 void Assembly::UpdateComplexSugarChemicalCode(Monosaccharide *mono)
 {
-    string value = "";
     if(mono->side_atoms_.at(0).at(0) != NULL)
     {
         if(mono->derivatives_map_["-1"].compare("xC-(O,O)") == 0)
@@ -10955,12 +10954,12 @@ string Assembly::CalculateRSOrientations(Atom *prev_atom, Atom *target, Atom *ne
             side_atom_coord.operator -(current_atom_coord);
             side_atom_coord.Normalize();
             Coordinate normal_v_x_side_atom = normal_v;
-            normal_v_x_side_atom.CrossProduct(side_atom_coord);
+            normal_v_x_side_atom.CrossProduct(side_atom_coord); ///cross product (perpendicular vector to plan's normal vector and the normal vector of side atom oxygen)
             double sin_theta = normal_v_x_side_atom.length()/(normal_v.length()*side_atom_coord.length());
 
-            if(sin_theta >= 0)
+            if(sin_theta >= 0) ///theta between plan's normal vector and the vector of side oxygen is between 0 to 180 degree
                 orientation = "R";
-            else
+            else ///theta between plan's normal vector and the vector of side oxygen is between grater than 180 degree
                 orientation = "S";
             break;
         }
