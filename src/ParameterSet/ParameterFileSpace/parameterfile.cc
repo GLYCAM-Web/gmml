@@ -422,7 +422,7 @@ void ParameterFile::ProcessAtomType(const std::string& line)
     string type, dscr;
 
     istringstream in(line);
-    in >> std::setw(2) >> type                          /// Extract type from the line
+    in >> std::setw(3) >> type                          /// Extract type from the line
        >> std::setw(10) >> mass                         /// Extract mass from the line
        >> std::setw(10) >> polarizability;              /// Extract polarizability from the line
     if(polarizability == 0)

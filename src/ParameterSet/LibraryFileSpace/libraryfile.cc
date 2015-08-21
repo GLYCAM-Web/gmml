@@ -651,9 +651,11 @@ void LibraryFile::ResolveConnectivitySection(ofstream& stream, LibraryFileResidu
     {
         LibraryFileAtom* atom = residue->GetAtomByOrder(i+1);
         vector<int> bonded_atoms_indices = atom->GetBondedAtomsIndices();
+//        cout << bonded_atoms_indices.size() << endl;
         for(vector<int>::iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
         {
             int bonded_atom_index = (*it);
+//            cout << bonded_atom_index << endl;
             if(bonded_atom_index > atom->GetAtomIndex())
             {
                 stream << atom->GetAtomIndex() << " " << bonded_atom_index << " " << "1" << endl;

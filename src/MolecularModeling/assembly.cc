@@ -1457,7 +1457,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
     }
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
-    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();    
+    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
     for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
@@ -2563,7 +2563,12 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
                 if(stack_neighbor_index == -1)
                 {
 //                    cout << "EMPTY" << endl;
-
+                    topological_types.at(index) = kTopTypeM;
+                    visited.at(index) = true;
+                    bond_index.at(index + dummy_atoms) = dummy_atoms;
+                    int neighbors = neighbors_atom_index.size();
+                    for(int i = 0; i < neighbors; i++)
+                        stack.push_back(index);
                 }
                 else
                 {
@@ -2745,6 +2750,18 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     int pair_count = 1;
     vector<string> inserted_pairs = vector<string>();
     vector<string> excluded_atom_list = vector<string>();
+    ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
+    ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
+    ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
+    ParameterFileSpace::ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
+    ParameterFileSpace::ParameterFile::AtomTypeMap atom_types_map = parameter_file->GetAtomTypes();
+    ParameterFile* ion_parameter_file = NULL;
+    ParameterFileSpace::ParameterFile::AtomTypeMap ion_atom_types_map = ParameterFile::AtomTypeMap();
+    if(ion_parameter_file_path.compare("") != 0)
+    {
+        ion_parameter_file = new ParameterFile(ion_parameter_file_path, gmml::MODIFIED);
+        ion_atom_types_map = ion_parameter_file->GetAtomTypes();
+    }
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
@@ -2762,20 +2779,8 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         vector<int> bond_index = vector<int>();
         int atom_index = 1;
 
-        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);
+        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);        
 
-        ParameterFile* ion_parameter_file = NULL;
-        ParameterFileSpace::ParameterFile::AtomTypeMap ion_atom_types_map = ParameterFile::AtomTypeMap();
-        if(ion_parameter_file_path.compare("") != 0)
-        {
-            ion_parameter_file = new ParameterFile(ion_parameter_file_path, gmml::MODIFIED);
-            ion_atom_types_map = ion_parameter_file->GetAtomTypes();
-        }
-        ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
-        ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
-        ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
-        ParameterFileSpace::ParameterFile::DihedralMap dihedrals = parameter_file->GetDihedrals();
-        ParameterFileSpace::ParameterFile::AtomTypeMap atom_types_map = parameter_file->GetAtomTypes();
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
             Atom* assembly_atom = (*it1);
@@ -2786,7 +2791,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             topology_atom->SetAtomCharge(assembly_atom->GetCharge() * CHARGE_DIVIDER);
             topology_atom->SetAtomicNumber(iNotSet);
             topology_atom->SetAtomMass(assembly_atom->GetMass());
-            //            topology_atom->SetNumberOfExcludedAtomsForEachAtom();
             topology_atom->SetResidueName(assembly_residue->GetName());
             topology_atom->SetType(assembly_atom->GetAtomType());
             topology_atom->SetTreeChainClasification("0");
@@ -2796,60 +2800,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             topology_atom->SetTreeChainClasification(gmml::ConvertTopologicalType2String(residue_topological_types.at(atom_index - 1)));
             topology_residue->AddAtom(topology_atom);
             atom_counter++;
-            atom_index++;
-
-            ///Pairs
-            for(AtomVector::iterator it2 = assembly_atoms.begin(); it2 != assembly_atoms.end(); it2++)
-            {
-                Atom* pair_assembly_atom = (*it2);
-                string atom_type1 = assembly_atom->GetAtomType();
-                string atom_type2 = pair_assembly_atom->GetAtomType();
-                vector<string> pair_vector = vector<string>();
-                pair_vector.push_back(atom_type1);
-                pair_vector.push_back(atom_type2);
-                stringstream sss;
-                sss << atom_type1 << "-" << atom_type2;
-                stringstream reverse_sss;
-                reverse_sss << atom_type2 << "-" << atom_type1;
-                if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
-                        find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end())
-                {
-                    TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
-                    if(atom_types_map.find(atom_type1) != atom_types_map.end() && atom_types_map.find(atom_type2) != atom_types_map.end())
-                    {
-                        ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
-                        ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
-                        double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
-                        double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
-                        double coefficient_a = epsilon * sigma * sigma;
-                        double coefficient_b = 2 * epsilon * sigma;
-                        topology_atom_pair->SetCoefficientA(coefficient_a);
-                        topology_atom_pair->SetCoefficientB(coefficient_b);
-                        topology_atom_pair->SetPairType(sss.str());
-                        topology_atom_pair->SetIndex(pair_count);
-                        pair_count++;
-                        inserted_pairs.push_back(sss.str());
-                        pairs[sss.str()] = topology_atom_pair;
-                    }
-                    else if(!ion_atom_types_map.empty() && ion_atom_types_map.find(atom_type1) != ion_atom_types_map.end() &&
-                            ion_atom_types_map.find(atom_type2) != ion_atom_types_map.end())
-                    {
-                        ParameterFileAtom* parameter_atom1 = ion_atom_types_map[atom_type1];
-                        ParameterFileAtom* parameter_atom2 = ion_atom_types_map[atom_type2];
-                        double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
-                        double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
-                        double coefficient_a = epsilon * sigma * sigma;
-                        double coefficient_b = 2 * epsilon * sigma;
-                        topology_atom_pair->SetCoefficientA(coefficient_a);
-                        topology_atom_pair->SetCoefficientB(coefficient_b);
-                        topology_atom_pair->SetPairType(sss.str());
-                        topology_atom_pair->SetIndex(pair_count);
-                        pair_count++;
-                        inserted_pairs.push_back(sss.str());
-                        pairs[sss.str()] = topology_atom_pair;
-                    }
-                }
-            }
+            atom_index++;          
 
             ///Bond Types, Bonds
             AtomNode* atom_node = assembly_atom->GetNode();
@@ -2937,6 +2888,103 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             }
         }
         topology_assembly->AddResidue(topology_residue);
+    }
+
+    AtomVector all_atoms = this->GetAllAtomsOfAssembly();
+    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    {
+        Atom* assembly_atom = *it;
+        ///Pairs
+        for(AtomVector::iterator it2 = all_atoms.begin(); it2 != all_atoms.end(); it2++)
+        {
+            Atom* pair_assembly_atom = (*it2);
+            string atom_type1 = assembly_atom->GetAtomType();
+            string atom_type2 = pair_assembly_atom->GetAtomType();
+            vector<string> pair_vector = vector<string>();
+            pair_vector.push_back(atom_type1);
+            pair_vector.push_back(atom_type2);
+            stringstream sss;
+            sss << atom_type1 << "-" << atom_type2;
+            stringstream reverse_sss;
+            reverse_sss << atom_type2 << "-" << atom_type1;
+            if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
+                    find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end())
+            {
+                cout << sss.str() << endl;
+                TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
+                if(atom_types_map.find(atom_type1) != atom_types_map.end() && atom_types_map.find(atom_type2) != atom_types_map.end())
+                {
+                    cout << "find1" << endl;
+                    ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
+                    ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
+                    double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
+                    double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
+                    double coefficient_a = epsilon * sigma * sigma;
+                    double coefficient_b = 2 * epsilon * sigma;
+                    topology_atom_pair->SetCoefficientA(coefficient_a);
+                    topology_atom_pair->SetCoefficientB(coefficient_b);
+                    topology_atom_pair->SetPairType(sss.str());
+                    topology_atom_pair->SetIndex(pair_count);
+                    pair_count++;
+                    inserted_pairs.push_back(sss.str());
+                    pairs[sss.str()] = topology_atom_pair;
+                }
+                else if(!ion_atom_types_map.empty() && ion_atom_types_map.find(atom_type1) != ion_atom_types_map.end() &&
+                        ion_atom_types_map.find(atom_type2) != ion_atom_types_map.end())
+                {
+                    cout << "find2" << endl;
+                    ParameterFileAtom* parameter_atom1 = ion_atom_types_map[atom_type1];
+                    ParameterFileAtom* parameter_atom2 = ion_atom_types_map[atom_type2];
+                    double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
+                    double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
+                    double coefficient_a = epsilon * sigma * sigma;
+                    double coefficient_b = 2 * epsilon * sigma;
+                    topology_atom_pair->SetCoefficientA(coefficient_a);
+                    topology_atom_pair->SetCoefficientB(coefficient_b);
+                    topology_atom_pair->SetPairType(sss.str());
+                    topology_atom_pair->SetIndex(pair_count);
+                    pair_count++;
+                    inserted_pairs.push_back(sss.str());
+                    pairs[sss.str()] = topology_atom_pair;
+                }
+                else if(atom_types_map.find(atom_type1) != atom_types_map.end() && !ion_atom_types_map.empty() &&
+                        ion_atom_types_map.find(atom_type2) != ion_atom_types_map.end())
+                {
+                    cout << "find3" << endl;
+                    ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
+                    ParameterFileAtom* parameter_atom2 = ion_atom_types_map[atom_type2];
+                    double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
+                    double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
+                    double coefficient_a = epsilon * sigma * sigma;
+                    double coefficient_b = 2 * epsilon * sigma;
+                    topology_atom_pair->SetCoefficientA(coefficient_a);
+                    topology_atom_pair->SetCoefficientB(coefficient_b);
+                    topology_atom_pair->SetPairType(sss.str());
+                    topology_atom_pair->SetIndex(pair_count);
+                    pair_count++;
+                    inserted_pairs.push_back(sss.str());
+                    pairs[sss.str()] = topology_atom_pair;
+                }
+                else if(!ion_atom_types_map.empty() && ion_atom_types_map.find(atom_type1) != ion_atom_types_map.end() &&
+                        atom_types_map.find(atom_type2) != atom_types_map.end())
+                {
+                    cout << "find4" << endl;
+                    ParameterFileAtom* parameter_atom1 = ion_atom_types_map[atom_type1];
+                    ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
+                    double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
+                    double sigma = pow(parameter_atom1->GetRadius() + parameter_atom2->GetRadius(), 6);
+                    double coefficient_a = epsilon * sigma * sigma;
+                    double coefficient_b = 2 * epsilon * sigma;
+                    topology_atom_pair->SetCoefficientA(coefficient_a);
+                    topology_atom_pair->SetCoefficientB(coefficient_b);
+                    topology_atom_pair->SetPairType(sss.str());
+                    topology_atom_pair->SetIndex(pair_count);
+                    pair_count++;
+                    inserted_pairs.push_back(sss.str());
+                    pairs[sss.str()] = topology_atom_pair;
+                }
+            }
+        }
     }
 
     topology_assembly->SetAssemblyName(ss.str());
@@ -3237,7 +3285,7 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
         stringstream ss;
         ss << all_atom_type_permutations.at(0).at(0) << "-" << all_atom_type_permutations.at(0).at(1) << "-" << all_atom_type_permutations.at(0).at(2) << "-"
            << all_atom_type_permutations.at(0).at(3) << " dihedral type (or any other permutation of it) does not exist in the parameter files";
-        cout << ss.str() << endl;
+//        cout << ss.str() << endl;
         gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
     }
 
@@ -3288,7 +3336,7 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
             ss << all_improper_dihedrals_atom_type_permutations.at(0).at(0) << "-" << all_improper_dihedrals_atom_type_permutations.at(0).at(1) << "-"
                << all_improper_dihedrals_atom_type_permutations.at(0).at(2) << "-" << all_improper_dihedrals_atom_type_permutations.at(0).at(3)
                << " improer dihedral type (or any other permutation of it) does not exist in the parameter files";
-            cout << ss.str() << endl;
+//            cout << ss.str() << endl;
             gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
         }
     }
@@ -3677,7 +3725,9 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
                 AtomVector atom_neighbours = atom_node->GetNodeNeighbors();
                 for(AtomVector::iterator it2 = atom_neighbours.begin(); it2 != atom_neighbours.end(); it2++)
                 {
-                    int bonded_atom_index = distance(assembly_residue_atoms.begin(), it2);
+                    Atom* atom = *it2;
+                    int bonded_atom_index = distance(assembly_residue_atoms.begin(), find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(),
+                                                                                          atom));
                     bonded_atom_indices.push_back(bonded_atom_index);
                 }
             }
@@ -9750,10 +9800,10 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
                         CoordinateVector atom_coordinates = CoordinateVector();
                         atom_coordinates.push_back(best_position);
                         Atom* ion_atom = new Atom(ion, lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetName(), atom_coordinates);
-                        ion_atom->MolecularDynamicAtom::SetAtomType(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetType());
-                        ion_atom->MolecularDynamicAtom::SetCharge(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetCharge());
-                        ion_atom->MolecularDynamicAtom::SetMass(ion_mass);
-                        ion_atom->MolecularDynamicAtom::SetRadius(ion_radius);
+                        ion_atom->SetAtomType(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetType());
+                        ion_atom->SetCharge(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetCharge());
+                        ion_atom->SetMass(ion_mass);
+                        ion_atom->SetRadius(ion_radius);
                         stringstream atom_id;
                         atom_id << ion_atom->GetName() << "_" << MAX_PDB_ATOM - i << "_" << residue_id.str();
                         ion_atom->SetId(atom_id.str());
@@ -9889,8 +9939,8 @@ double Assembly::GetTotalCharge()
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
         Atom* atom = *it;
-        if(atom->MolecularDynamicAtom::GetCharge() != dNotSet)
-            charge += atom->MolecularDynamicAtom::GetCharge();
+        if(atom->GetCharge() != dNotSet)
+            charge += atom->GetCharge();
 
     }
     return charge;
