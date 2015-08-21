@@ -387,9 +387,9 @@ namespace gmml
     }
 
     /*! \fn
-      * A function in order to look up the stereochemistry name of the sugar structure based on the given string chemical code structure
+      * A function in order to look up the stereochemistry name of the sugar structure based on the given string version of the chemical code structure
       * @param code The string chemical code structure
-      * @return SUGARNAMELOOKUP[0]
+      * @return SUGARNAMELOOKUP The matched row of the lookup table with the given code
       */
     inline Glycam::SugarName SugarStereoChemistryNameLookup(std::string code)
     {
@@ -401,6 +401,11 @@ namespace gmml
         return SUGARNAMELOOKUP[0];
     }
 
+    /*! \fn
+      * A function in order to look up the complex name of the sugar structure based on the given string version of the chemical code structure
+      * @param code The string complex chemical code structure
+      * @return COMPLEXSUGARNAMELOOKUP The matched row of the lookup table with the given code
+      */
     inline Glycam::SugarName ComplexSugarNameLookup(std::string code)
     {
         for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
@@ -411,6 +416,10 @@ namespace gmml
         return COMPLEXSUGARNAMELOOKUP[0];
     }
 
+    /*! \fn
+      * A function in order to initializing the common terminal residue map
+      * @return COMMON_TERMINAL_REDSIDUES The mapping between the terminal residue names and the terminal residue names
+      */
     inline ResidueNameMap InitializeCommonTerminalResidueMap()
     {
         ResidueNameMap COMMON_TERMINAL_REDSIDUES = ResidueNameMap();
@@ -420,6 +429,14 @@ namespace gmml
         return COMMON_TERMINAL_REDSIDUES;
     }
 
+    /*! \fn
+      * A function in order to write the information/warning/error messages produced by the program into a log file
+      * @param line The line number producing the message
+      * @param file_path The file path of the file which the message has been produced within in
+      * @param level The type of the produced message INF/WAR/ERR
+      * @param msg The message content that has been produced
+      * @param out_file_name The name of the output log file
+      */
     inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "log.log")
     {
         std::ofstream file;
@@ -445,7 +462,5 @@ namespace gmml
         file.close();
     }
 }
-
-
 
 #endif // UTILS_HPP
