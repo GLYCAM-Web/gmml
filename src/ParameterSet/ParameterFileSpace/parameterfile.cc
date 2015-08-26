@@ -38,6 +38,9 @@ ParameterFile::ParameterFile(std::string param_file, int file_type)
         case MODIFIED:
             ReadModifiedParameter(in_file);
             break;
+        case IONICMOD:
+            ReadIonicModifiedParameter(in_file);
+            break;
     }
     in_file.close();            /// Close the parameter files
 
@@ -415,6 +418,64 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     }
 }
 
+void ParameterFile::ReadIonicModifiedParameter(std::ifstream& in_file)
+{
+    string line;
+    int line_number = 0;
+
+    /// Unable to read file
+    if (!getline(in_file, line))
+    {
+        throw ParameterFileProcessingException("Error reading file");
+    }
+
+    /// Set the title of the parameter file
+    title_ = Trim(line);
+    line_number++;
+
+    /// Atom type section reading
+    getline(in_file, line);             /// Read the first line of the atom type section
+    line_number++;                      /// Increment line counter
+    if(Trim(line).find("MASS") != string::npos)
+    {
+        getline(in_file, line);             /// Read the first line of the atom type section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessAtomType(line);      /// Processing atom type line
+                getline(in_file,line);      /// Read the next line
+                line_number++;              /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing atom type");
+            }
+        }
+    }
+
+    /// Potential parameter section reading
+    getline(in_file, line);         /// Read the first line of the potential parameter section
+    line_number++;                  /// Increment line counter
+    if(Trim(line).find("NONB") != string::npos || Trim(line).find("NONBON") != string::npos)
+    {
+        getline(in_file, line);             /// Read the first line of the improper dihedral section
+        line_number++;                      /// Increment line counter
+        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        {
+            try
+            {
+                ProcessPotentialParameter(line);        /// Processing potential parameter line
+                getline(in_file, line);                 /// Read the next line
+                line_number++;                          /// Increment line counter
+            } catch(...)
+            {
+                throw ParameterFileProcessingException(line_number, "Error processing potential parameters");
+            }
+        }
+    }
+}
+
 /// Process the atom type lines of the parameter file
 void ParameterFile::ProcessAtomType(const std::string& line)
 {
@@ -422,9 +483,21 @@ void ParameterFile::ProcessAtomType(const std::string& line)
     string type, dscr;
 
     istringstream in(line);
-    in >> std::setw(3) >> type                          /// Extract type from the line
-       >> std::setw(10) >> mass                         /// Extract mass from the line
-       >> std::setw(10) >> polarizability;              /// Extract polarizability from the line
+    switch(this->file_type_)
+    {
+        case MAIN:
+        case MODIFIED:
+            in >> std::setw(2) >> type                          /// Extract type from the line
+               >> std::setw(10) >> mass                         /// Extract mass from the line
+               >> std::setw(10) >> polarizability;              /// Extract polarizability from the line
+            break;
+        case IONICMOD:
+            in >> std::setw(3) >> type                          /// Extract type from the line
+               >> std::setw(10) >> mass                         /// Extract mass from the line
+               >> std::setw(10) >> polarizability;              /// Extract polarizability from the line
+            break;
+    }
+
     if(polarizability == 0)
         polarizability = dNotSet;
     Trim(type);
@@ -844,6 +917,9 @@ void ParameterFile::Write(const string &parameter_file)
             case MODIFIED:
                 this->BuildModifiedParameterFile(out_file);
                 break;
+            case IONICMOD:
+                this->BuildIonicModifiedParameterFile(out_file);
+                break;
         }
 
     }
@@ -877,6 +953,14 @@ void ParameterFile::BuildModifiedParameterFile(ofstream& out_stream)
     ResolveImproperDihedralSection(out_stream);
     ResolvePotentialParameterSection(out_stream);
 }
+
+void ParameterFile::BuildIonicModifiedParameterFile(ofstream& out_stream)
+{
+    out_stream << GetTitle() << endl;
+    ResolveAtomTypeSection(out_stream);
+    ResolvePotentialParameterSection(out_stream);
+}
+
 void ParameterFile::ResolveAtomTypeSection(ofstream& stream)
 {
     switch(file_type_)
@@ -888,6 +972,19 @@ void ParameterFile::ResolveAtomTypeSection(ofstream& stream)
             {
                 ParameterFileAtom* atom = (*it).second;
                 stream << left << setw(2) << atom->GetType() << " " << right << setw(10) << fixed << setprecision(2) << atom->GetMass() << " " ;
+                if(atom->GetPolarizability() == dNotSet)
+                    stream << right << setw(10) << " ";
+                else
+                    stream << right << setw(10) << fixed << setprecision(2) << atom->GetPolarizability();
+                stream << " " << left << atom->GetDscr() << endl;
+            }
+            stream << endl;
+            break;
+        case IONICMOD:
+            for(AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
+            {
+                ParameterFileAtom* atom = (*it).second;
+                stream << left << setw(3) << atom->GetType() << " " << right << setw(10) << fixed << setprecision(2) << atom->GetMass() << " " ;
                 if(atom->GetPolarizability() == dNotSet)
                     stream << right << setw(10) << " ";
                 else
@@ -1073,9 +1170,21 @@ void ParameterFile::ResolvePotentialParameterSection(ofstream& stream)
         ParameterFileAtom* atom = (*it10).second;
         if(atom->GetRadius() != dNotSet || atom->GetWellDepth() != dNotSet)
         {
-            stream << left << setw(2) << " " << left << setw(2) << atom->GetType() << left << setw(6) << " " << left << setw(2) << " " << " "
-                   << right << setw(10) << fixed << setprecision(2) << atom->GetRadius() << " "
-                   << right << setw(10) << fixed << setprecision(2) << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
+            switch(this->file_type_)
+            {
+                case MAIN:
+                case MODIFIED:
+                    stream << left << setw(2) << " " << left << setw(2) << atom->GetType() << left << setw(6) << " " << left << setw(2) << " " << " "
+                           << right << setw(10) << fixed << setprecision(2) << atom->GetRadius() << " "
+                           << right << setw(10) << fixed << setprecision(2) << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
+                    break;
+                case IONICMOD:
+                    stream << left << setw(2) << " " << left << setw(3) << atom->GetType() << left << setw(6) << " " << left << setw(2) << " " << " "
+                           << right << setw(10) << fixed << setprecision(2) << atom->GetRadius() << " "
+                           << right << setw(10) << fixed << setprecision(2) << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
+                    break;
+            }
+
         }
     }
     stream << endl;

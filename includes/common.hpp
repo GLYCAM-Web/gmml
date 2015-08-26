@@ -513,7 +513,8 @@ namespace gmml
     enum ParameterFileType
     {
         MAIN = 0,           /*!< Main parameter file >*/
-        MODIFIED = 1        /*!< Force modified parameter file >*/
+        MODIFIED = 1,        /*!< Force modified parameter file >*/
+        IONICMOD = 2
     };
 
     /*! \enum
