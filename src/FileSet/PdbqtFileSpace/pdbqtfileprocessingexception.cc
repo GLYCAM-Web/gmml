@@ -24,7 +24,7 @@ PdbqtFileProcessingException::PdbqtFileProcessingException(int line_number, cons
 /// Exception handler for parameter file exceptions
 const char* PdbqtFileProcessingException::what() const throw()
 {
-    what_ = "PdbFile: " + message_;
+    what_ = "PdbqtFile: " + message_;
     if (line_number_ != dNotSet)
     {
         std::stringstream ss;
