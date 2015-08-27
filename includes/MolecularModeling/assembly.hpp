@@ -518,9 +518,10 @@ namespace MolecularModeling
             int CountNumberOfBonds();
             /*! \fn
               * A function that counts the number of bond types in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return type_list Number of bond types in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfBondTypes();
+            int CountNumberOfBondTypes(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of angles including hydrogen in all assemblies and residues of the assembly
               * @return counter Number of angles including hydrogen in all assemblies and residues in the current object of assembly
@@ -538,9 +539,10 @@ namespace MolecularModeling
             int CountNumberOfAngles();
             /*! \fn
               * A function that counts the number of angle types in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return type_list Number of angle types in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAngleTypes();
+            int CountNumberOfAngleTypes(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of dihedrals includig hydrogen in all assemblies and residues of the assembly
               * @param parameter_file_path The path of the parameter file
