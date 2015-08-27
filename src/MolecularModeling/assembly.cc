@@ -2759,7 +2759,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     ParameterFileSpace::ParameterFile::AtomTypeMap ion_atom_types_map = ParameterFile::AtomTypeMap();
     if(ion_parameter_file_path.compare("") != 0)
     {
-        ion_parameter_file = new ParameterFile(ion_parameter_file_path, gmml::MODIFIED);
+        ion_parameter_file = new ParameterFile(ion_parameter_file_path, gmml::IONICMOD);
         ion_atom_types_map = ion_parameter_file->GetAtomTypes();
     }
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
@@ -2910,11 +2910,9 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             if(find(inserted_pairs.begin(), inserted_pairs.end(), sss.str()) == inserted_pairs.end() &&
                     find(inserted_pairs.begin(), inserted_pairs.end(), reverse_sss.str()) == inserted_pairs.end())
             {
-                cout << sss.str() << endl;
                 TopologyAtomPair* topology_atom_pair = new TopologyAtomPair();
                 if(atom_types_map.find(atom_type1) != atom_types_map.end() && atom_types_map.find(atom_type2) != atom_types_map.end())
                 {
-                    cout << "find1" << endl;
                     ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
                     ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
                     double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
@@ -2932,7 +2930,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 else if(!ion_atom_types_map.empty() && ion_atom_types_map.find(atom_type1) != ion_atom_types_map.end() &&
                         ion_atom_types_map.find(atom_type2) != ion_atom_types_map.end())
                 {
-                    cout << "find2" << endl;
                     ParameterFileAtom* parameter_atom1 = ion_atom_types_map[atom_type1];
                     ParameterFileAtom* parameter_atom2 = ion_atom_types_map[atom_type2];
                     double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
@@ -2950,7 +2947,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 else if(atom_types_map.find(atom_type1) != atom_types_map.end() && !ion_atom_types_map.empty() &&
                         ion_atom_types_map.find(atom_type2) != ion_atom_types_map.end())
                 {
-                    cout << "find3" << endl;
                     ParameterFileAtom* parameter_atom1 = atom_types_map[atom_type1];
                     ParameterFileAtom* parameter_atom2 = ion_atom_types_map[atom_type2];
                     double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
@@ -2968,7 +2964,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                 else if(!ion_atom_types_map.empty() && ion_atom_types_map.find(atom_type1) != ion_atom_types_map.end() &&
                         atom_types_map.find(atom_type2) != atom_types_map.end())
                 {
-                    cout << "find4" << endl;
                     ParameterFileAtom* parameter_atom1 = ion_atom_types_map[atom_type1];
                     ParameterFileAtom* parameter_atom2 = atom_types_map[atom_type2];
                     double epsilon = sqrt(parameter_atom1->GetWellDepth() * parameter_atom2->GetWellDepth());
@@ -3593,12 +3588,12 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
 
                         if((assembly_atom->GetName().substr(0,1).compare("H") == 0 ||
                             (assembly_atom->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(assembly_atom->GetName().substr(0,1)))))
-                                || (neighbor->GetName().substr(0,1).compare("H") == 0 ||
-                                    (neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor->GetName().substr(0,1)))))
-                                ||(neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
-                                   (neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor->GetName().substr(0,1)))))
-                                ||(neighbor_of_neighbor_of_neighbor->GetName().substr(0,1).compare("H") == 0 ||
-                                   (neighbor_of_neighbor_of_neighbor->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_of_neighbor->GetName().substr(0,1))))))
+                                || (neighbor1->GetName().substr(0,1).compare("H") == 0 ||
+                                    (neighbor1->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor1->GetName().substr(0,1)))))
+                                ||(neighbor2->GetName().substr(0,1).compare("H") == 0 ||
+                                   (neighbor2->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor2->GetName().substr(0,1)))))
+                                ||(neighbor3->GetName().substr(0,1).compare("H") == 0 ||
+                                   (neighbor3->GetName().substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor3->GetName().substr(0,1))))))
                             topology_dihedral->SetIncludingHydrogen(true);
                         else
                             topology_dihedral->SetIncludingHydrogen(false);

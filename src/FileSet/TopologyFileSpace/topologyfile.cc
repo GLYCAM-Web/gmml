@@ -850,9 +850,10 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             getline(in_stream, line);
         }
     }
+
     // Bond types
     for(int i = 0; i < number_of_bond_types_; i++)
-    {
+    {        
         bond_types_[i] = new TopologyBondType(i, bond_force_constants.at(i), bond_equil_values.at(i));
     }
     // Angle types
@@ -1321,6 +1322,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             << dihedral->GetDihedralType()->GetIndex() << "_"
             << (dihedral->GetIsImproper() ? "IY" : "IN") << "_" << (dihedral->GetIgnoredGroupInteraction() ? "GY" : "GN");
         dihedrals_[key.str()] = dihedral;
+
 
     }
     // Dihedrals excluding hydrogen
