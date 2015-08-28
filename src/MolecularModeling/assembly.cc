@@ -4324,8 +4324,6 @@ int Assembly::CountNumberOfBondTypes(string parameter_file_path)
     ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
 
 
-    vector<string> atom_pair_type = vector<string>();
-    vector<string> reverse_atom_pair_type = vector<string>();
 
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
@@ -4350,6 +4348,8 @@ int Assembly::CountNumberOfBondTypes(string parameter_file_path)
                 {}
                 else
                 {                    
+                    vector<string> atom_pair_type = vector<string>();
+                    vector<string> reverse_atom_pair_type = vector<string>();
                     atom_pair_type.push_back(atom->GetAtomType());
                     atom_pair_type.push_back(node_neighbor->GetAtomType());
                     reverse_atom_pair_type.push_back(node_neighbor->GetAtomType());
@@ -4486,8 +4486,6 @@ int Assembly::CountNumberOfAngleTypes(string parameter_file_path)
 {
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
-    vector<string> angle_type = vector<string>();
-    vector<string> reverse_angle_type = vector<string>();
 
     AtomVector atoms = GetAllAtomsOfAssembly();
 
@@ -4523,6 +4521,8 @@ int Assembly::CountNumberOfAngleTypes(string parameter_file_path)
                         if(find(type_list.begin(), type_list.end(), ss2.str()) == type_list.end() &&
                                 find(type_list.begin(), type_list.end(), ss3.str()) == type_list.end())                            
                         {
+                            vector<string> angle_type = vector<string>();
+                            vector<string> reverse_angle_type = vector<string>();
                             angle_type.push_back(atom->GetAtomType());
                             angle_type.push_back(neighbor->GetAtomType());
                             angle_type.push_back(neighbor_of_neighbor->GetAtomType());

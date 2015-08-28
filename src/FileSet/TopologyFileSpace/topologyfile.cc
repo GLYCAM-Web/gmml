@@ -2044,7 +2044,10 @@ void TopologyFile::ResolveMassSection(ofstream& out)
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
             index++;
             stringstream ss;
-            ss << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetAtomMass();
+            if(atom->GetAtomMass() != dNotSet)
+                ss << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << atom->GetAtomMass();
+            else
+                ss << setw(ITEM_LENGTH) << right << scientific << setprecision(8) << 0;
             string sss = ss.str();
             std::transform(sss.begin(), sss.end(), sss.begin(), ::toupper);
             out << sss;
