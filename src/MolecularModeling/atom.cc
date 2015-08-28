@@ -26,6 +26,7 @@ Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
     coordinates_ = CoordinateVector();
     for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
         coordinates_.push_back(*it);
+    node_ = NULL;
 }
 
 //////////////////////////////////////////////////////////

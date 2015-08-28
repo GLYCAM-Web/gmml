@@ -492,12 +492,13 @@ void LibraryFile::Read(std::ifstream& in_file)
         if(line.find("velocities") != string::npos)
         {
             getline(in_file, line);                 /// Get the first line of the section
-            while(line[0] != '!' && !Trim(line).empty())                   /// Iterate until to the next section that indicates by ! at the begining of the read line
+            while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
                 try
                 {
                     /// Process velocities section -> This section doesn't have any useful information -> Ignore the section by reading the file until the next section
-                    getline(in_file,line);      /// Read the next line
+                    if(!getline(in_file,line))
+                        return;      /// Read the next line
                 } catch(...)
                 {
                     throw LibraryFileProcessingException(__LINE__, "Error processing velocities section");
@@ -651,9 +652,11 @@ void LibraryFile::ResolveConnectivitySection(ofstream& stream, LibraryFileResidu
     {
         LibraryFileAtom* atom = residue->GetAtomByOrder(i+1);
         vector<int> bonded_atoms_indices = atom->GetBondedAtomsIndices();
+//        cout << bonded_atoms_indices.size() << endl;
         for(vector<int>::iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
         {
             int bonded_atom_index = (*it);
+//            cout << bonded_atom_index << endl;
             if(bonded_atom_index > atom->GetAtomIndex())
             {
                 stream << atom->GetAtomIndex() << " " << bonded_atom_index << " " << "1" << endl;

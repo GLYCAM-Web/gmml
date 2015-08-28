@@ -217,14 +217,22 @@ namespace MolecularModeling
               * Imports data from pdb file data structure into central data structure
               * @param pdb_file_path Path to a pdb file
               */
-            void BuildAssemblyFromPdbFile(std::string pdb_file_path, std::string lib_file = "", std::string parameter_file = "");
+            void BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<std::string> amino_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> glycam_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> other_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> prep_files = std::vector<std::string>(),
+                                          std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
               * @param pdb_file Pdb file object
               */
             void BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile* pdb_file,
-                                          LibraryFileSpace::LibraryFile* lib_file = NULL, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+                                          std::vector<std::string> amino_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> glycam_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> other_lib_files = std::vector<std::string>(),
+                                          std::vector<std::string> prep_files = std::vector<std::string>(),
+                                          std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdbqt file
               * Imports data from pdbqt file data structure into central data structure
@@ -236,7 +244,7 @@ namespace MolecularModeling
               * Imports data from pdbqt file data structure into central data structure
               * @param pdbqt_file Pdbqt file object
               */
-            void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single topology file
               * Imports data from topology file data structure into central data structure
@@ -248,7 +256,7 @@ namespace MolecularModeling
               * Imports data from topology file data structure into central data structure
               * @param topology_file Topology file object
               */
-            void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single library file
               * Imports data from library file data structure into central data structure
@@ -260,7 +268,7 @@ namespace MolecularModeling
               * Imports data from library file data structure into central data structure
               * @param library_file Library file object
               */
-            void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a combination of a topology file and its corresponding coordinate file
               * Imports data from topology file data structure into central data structure and assign the atom coordinates based on the coordinate file
@@ -275,7 +283,7 @@ namespace MolecularModeling
               * @param coordinate_file Coordinate file object corresponding to the given topology file
               */
             void BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file, CoordinateFileSpace::CoordinateFile* coordinate_file,
-                                                         ParameterFileSpace::ParameterFile* parameter_file = NULL);
+                                                         std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
@@ -287,7 +295,7 @@ namespace MolecularModeling
               * Imports data from prep file data structure into central data structure
               * @param prep_file Prep file object
               */
-            void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, ParameterFileSpace::ParameterFile* parameter_file = NULL);
+            void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std::string parameter_file = "");
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
@@ -360,7 +368,7 @@ namespace MolecularModeling
               * A function to build a topology file structure from the current assembly object
               * Exports data from assembly data structure into topology file structure
               */
-            TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly(std::string parameter_file_path);
+            TopologyFileSpace::TopologyFile* BuildTopologyFileStructureFromAssembly(std::string parameter_file_path, std::string ion_parameter_file_path = "");
             /*! \fn
               * A function to build agnle types of topology file structure from the current assembly object
               * Exports data from assembly data structure to generate topology atom types
@@ -495,14 +503,16 @@ namespace MolecularModeling
             int CountNumberOfResidues();
             /*! \fn
               * A function that counts the number of bonds including hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of bonds including hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfBondsIncludingHydrogen();
+            int CountNumberOfBondsIncludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of bonds excluding hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of bonds excluding hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfBondsExcludingHydrogen();
+            int CountNumberOfBondsExcludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of bonds in all assemblies and residues of the assembly
               * @return counter Number of bonds in all assemblies and residues in the current object of assembly
@@ -510,19 +520,22 @@ namespace MolecularModeling
             int CountNumberOfBonds();
             /*! \fn
               * A function that counts the number of bond types in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return type_list Number of bond types in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfBondTypes();
+            int CountNumberOfBondTypes(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of angles including hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of angles including hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAnglesIncludingHydrogen();
+            int CountNumberOfAnglesIncludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of angles excluding hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of angles excluding hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAnglesExcludingHydrogen();
+            int CountNumberOfAnglesExcludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of angles in all assemblies and residues of the assembly
               * @return counter Number of angles in all assemblies and residues in the current object of assembly
@@ -530,9 +543,10 @@ namespace MolecularModeling
             int CountNumberOfAngles();
             /*! \fn
               * A function that counts the number of angle types in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return type_list Number of angle types in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAngleTypes();
+            int CountNumberOfAngleTypes(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of dihedrals includig hydrogen in all assemblies and residues of the assembly
               * @param parameter_file_path The path of the parameter file
@@ -592,42 +606,230 @@ namespace MolecularModeling
 
 //            CycleMap DetectCyclesByDFS(std::string cycle_size = "5|6");
 
+            /*! \fn
+              * A function in order to access to the list of all residue from lib files
+              * @param lib_files The list of paths to library files
+              * @return all_residues_
+              */
+            LibraryFileSpace::LibraryFile::ResidueMap GetAllResiduesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
+            /*! \fn
+              * A function in order to access to the list of all residue from prep files
+              * @param prep_files The list of paths to prep files
+              * @return all_residues_
+              */
+            PrepFileSpace::PrepFile::ResidueMap GetAllResiduesFromMultiplePrepFilesMap(std::vector<std::string> prep_files);
+
+            /*! \fn
+              * A function in order to extract all residue names existing in the given lib files
+              * @param lib_files The list of paths to library files
+              * @return all_residue_names
+              */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
-            void ExtractSugars(std::vector<std::string> amino_lib_files);
 
+            /*! \fn
+              * A function in order to extract all the saccharide structures
+              * @param amino_lib_files The list of paths to amino library files
+              */
+            void ExtractSugars(std::vector<std::string> amino_lib_files);
+            /*! \fn
+              * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
+              * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
+              */
             CycleMap DetectCyclesByExhaustiveRingPerception();
+            /*! \fn
+              * A function in order to prune the graph (recursively removing nodes with zero or 1 neighbors)
+              * @param all_atoms The list of atoms of the graph
+              */
             void PruneGraph(AtomVector& all_atoms);
+            /*! \fn
+              * A function in order to convert the graph into a path graph (creating list of edges between the nodes and a list of labels for those edges )
+              * @param path_graph_edges The list of edges between the nodes to be filled by the function
+              * @param path_graph_labels The list of edge labels to be filled by the function
+              * @param atoms The list of atoms of the graph
+              */
             void ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, std::vector<std::string>& path_graph_labels, AtomVector atoms);
+            /*! \fn
+              * A function in order to reduce the path graph such that if there is a path/walk a-b-c in the graph converting it to a-c and creating a new label
+                    for the new edge and checking if the new edge makes a cycle
+              * @param path_graph_edges The list of edges between the nodes
+              * @param path_graph_labels The list of edge labels
+              * @param reduced_path_graph_edges The list of edges of the (reduced) path graph
+              * @param reduced_path_graph_labels The list of edge labels of the (reduced) path graph
+              * @param common_atom The atom that needs to be checked if it is involved in a walk (a path like a-b-c)
+              * @param cycles The list of cycles to be filled by the function
+              */
             void ReducePathGraph(std::vector<std::string> path_graph_edges, std::vector<std::string> path_graph_labels,
                                  std::vector<std::string>& reduced_path_graph_edges, std::vector<std::string>& reduced_path_graph_labels, std::string common_atom, std::vector<std::string>& cycles);
 
+            /*! \fn
+              * A function in order to detect cycles in the molecular graph using depth first search algorithm
+              * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
+              */
             CycleMap DetectCyclesByDFS();
+            /*! \fn
+              * A function of depth first search algorithm in order to traverse the graph
+              * @param path_graph_edges The list of edges between the nodes to be filled by the function
+              * @param path_graph_labels The list of edge labels to be filled by the function
+              * @param atoms The list of atoms of the graph
+              */
             void DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom* atom, int& counter, AtomIdAtomMap& dest_srd_map);
+            /*! \fn
+              * A recursive function in order to back track a path from current atom to a source atom to return the atom objects using the information extracted by the DFS algorithm
+              * @param src_id The identifier of the source atom
+              * @param current_atom The current atom that the function has been called on
+              * @param atom_parent_map A map between atom identifier and its parent atom object
+              * @param cycle The list of atom objects involved in a cycle
+              * @param cycle_stream The cycle path that has been back traversed so far
+              */
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
+            /*! \fn
+              * A function in order to discard rings/cycles that are only made from carbons atoms
+              * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects
+              */
             void FilterAllCarbonCycles(CycleMap& cycles);
+            /*! \fn
+              * A function in order to discard cycles/rings that are sharing an edge (fused cycles)
+              * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects
+              */
             void RemoveFusedCycles(CycleMap& cycles);
+            /*! \fn
+              * A function in order to detect the anomeric carbon of the ring (the carbon which has two oxygon neighbors)
+              * @param anomeric_carbons_status The detection status of the anomeric carbon to be filled by the function
+              * @param cycle The list of cycle atoms
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @return o_neighbor The anomeric carbon which is the neighbor of oxygen
+              */
             Atom* FindAnomericCarbon(std::vector<std::string>& anomeric_carbons_status, AtomVector cycle, std::string cycle_atoms_str);
+            /*! \fn
+              * A function in order to sort atom objects of the cycle starting from the anomeric carbon of the ring (ring oxygen will be last atom)
+              * @param cycle The list of cycle atoms
+              * @param anomeric_atom The anomeric carbon of the ring
+              * @param sorted_cycle_stream The sorted atom of the cycle so far (to be filled with the fuction)
+              * @return sorted_cycle The sorted list of cycle atom objects
+              */
             AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
+            /*! \fn
+              * A function in order to extract the relative oriantation of the side atoms that are attached to ring atoms against the ring
+              * @param mono The monosaccharide object
+              * @param sorted_cycle_stream The sorted atom of the cycle so far (to be filled with the fuction)
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @return orientations The list of side atoms orinetations
+              */
             std::vector<std::string> GetSideGroupOrientations(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
+            /*! \fn
+              * A function in order to build a chemical code structure for the monosaccharide based on the side atom orientations
+              * @param orientations The list of side atoms orinetations
+              * @return code The chemical code of the monosaccharide structure
+              */
             Glycam::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
+            /*! \fn
+              * A function in order to extract additional side atoms of the saccharide (+2 and +3 positions)
+              * @param mono The monosaccharide object
+              * @return plus_sides The list of additional side atoms of the monosaccharide
+              */
             AtomVector ExtractAdditionalSideAtoms(Glycam::Monosaccharide* mono);
+            /*! \fn
+              * A function in order to extract the probable derivatives that are attached to the side atoms of the ring
+              * @param mono The monosaccharide object
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              */
             void ExtractDerivatives(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
+            /*! \fn
+              * A function in order to generate a complete name for the monosaccharide structure based on its derivatives
+              * @param mono The monosaccharide object
+              */
             void GenerateCompleteSugarName(Glycam::Monosaccharide* mono);
+            /*! \fn
+              * A function in order to update the chemical code structure of a complex monosaccharide (monosaccharide with side atoms at position +2 and +3)
+              * @param mono The monosaccharide object
+              */
             void UpdateComplexSugarChemicalCode(Glycam::Monosaccharide* mono);
+            /*! \fn
+              * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
+              * @param monos The list of extracted monosaccharide object
+              * @return oligosacchrides The list of extracted oligosacchrides
+              */
             std::vector<Glycam::Oligosaccharide*> ExtractOligosaccharides(std::vector<Glycam::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
                                                                           std::string& terminal_residue_name);
-            std::string CalculateRSOrientations(Atom* prev_atom, Atom* target, Atom* next_atom);
-            void BuildOligosaccharideTreeStructure(Glycam::Monosaccharide* key, std::vector<Glycam::Monosaccharide*> val, Glycam::Oligosaccharide* oligo,
-                                                                  std::vector<int>& visited_monos, std::map<Glycam::Monosaccharide*, std::vector<Glycam::Monosaccharide*> >,
-                                                                  std::map<Glycam::Monosaccharide*, std::vector<std::string> > monos_table_linkages, std::vector<std::string>& visited_linkages);
 
+            /*! \fn
+              * A function in order to calculate the orientation(S/R) of additional side atoms
+              * @param prev_atom The previous neighbor atom of the current atom
+              * @param target_atom The atom which the orientation of its oxygen neighbor is going to be calculated
+              * @param next_atom The next neighbor atom of the current atom
+              * @return orientation The relative orientation of the additional side atom's oxygen neighbor
+              */
+            std::string CalculateRSOrientations(Atom* prev_atom, Atom* target, Atom* next_atom);
+            /*! \fn
+              * A recursive function in order to build the tree like structure of the oligosacchrides (a directed graph made from the molecular graph structure of monosaccharides.
+                each monosaccharide is a node and their linkages are the edges)
+              * @param key The root monosacchride(node) of each oligosacchride
+              * @param value The monosaccharide attached to the key monosacharide
+              * @param oligo The oligosaccharide object to be constructed by the function
+              * @param visited_monos The monosacchride objects that have been visited by previous calls to the function
+              * @param monos_table A mapping between a monosacchride object and the list of monosacchrides attached to it
+              * @param monos_table_linkages A mapping between a monosacchride object and the list of atoms that are involved in the linkages with the monosacchrides attached to
+                the current monosacchride object
+              * @param visited_linkages The list of linkages(atoms involved in the linkages between monosacchrides) that have been visited so far by calls to the function
+              */
+            void BuildOligosaccharideTreeStructure(Glycam::Monosaccharide* key, std::vector<Glycam::Monosaccharide*> val, Glycam::Oligosaccharide* oligo,
+                                                                  std::vector<int>& visited_monos, std::map<Glycam::Monosaccharide*, std::vector<Glycam::Monosaccharide*> > monos_table,
+                                                                  std::map<Glycam::Monosaccharide*, std::vector<std::string> > monos_table_linkages, std::vector<std::string>& visited_linkages);
+            /*! \fn
+              * A function in order to check if the target atom is attached to a derivative with the pattern xCH-N
+              * @param target_atom The atom which will be checked for a derivative
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @return pattern The discovered pattern of the attached derivative
+              */
             std::string CheckxC_N(Atom* target, std::string cycle_atoms_str);
+            /*! \fn
+              * A function in order to check if the target atom is attached to a derivative with the pattern xC-O-C=OCH3 or xC-N-C=OCH3
+              * @param target_atom The atom which will be checked for a derivative
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @return pattern The discovered pattern of the attached derivative
+              */
             std::string CheckxC_NxO_CO_C(Atom* target, std::string cycle_atoms_str, char NxO);
+            /*! \fn
+              * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-C=OCH2OH or xC-O-C=OCH2OH
+              * @param target_atom The atom which will be checked for a derivative
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @return pattern The discovered pattern of the attached derivative
+              */
             std::string CheckxC_NxO_CO_CO(Atom* target, std::string cycle_atoms_str, char NxO);
+            /*! \fn
+              * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-SO3 or xC-O-SO3
+              * @param target_atom The atom which will be checked for a derivative
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @return pattern The discovered pattern of the attached derivative
+              */
             std::string CheckxC_NxO_SO3(Atom* target, std::string cycle_atoms_str, char NxO);
+            /*! \fn
+              * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-PO3 or xC-PO3
+              * @param target_atom The atom which will be checked for a derivative
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @return pattern The discovered pattern of the attached derivative
+              */
             std::string CheckxC_NxO_PO3(Atom* target, std::string cycle_atoms_str, char NxO);
+            /*! \fn
+              * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-CH3 or xC-O-CH3
+              * @param target_atom The atom which will be checked for a derivative
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @return pattern The discovered pattern of the attached derivative
+              */
             std::string CheckxC_NxO_C(Atom* target, std::string cycle_atoms_str, char NxO);
+            /*! \fn
+              * A function in order to check if the target atom is attached to a derivative with the pattern C-(O,O), C-(O.OH), rC-(O.O) and rC-(O.OH)
+              * @param target_atom The atom which will be checked for a derivative
+              * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @return pattern The discovered pattern of the attached derivative
+              */
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str);
 
             void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
