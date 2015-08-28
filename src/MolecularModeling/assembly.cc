@@ -2702,18 +2702,18 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
 
     topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
     topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
-    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen());
-    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen());
-    topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen());
-    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen());
+    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen(parameter_file_path));
     topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen(parameter_file_path));
     topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen(parameter_file_path));
     //    topology_file->SetNumberOfHydrogenParameters();
     //    topology_file->SetNumberOfParameters();
     topology_file->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());   // Does not match
     topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
-    topology_file->SetTotalNumberOfBonds(this->CountNumberOfBondsExcludingHydrogen());
-    topology_file->SetTotalNumberOfAngles(this->CountNumberOfAnglesExcludingHydrogen());
+    topology_file->SetTotalNumberOfBonds(this->CountNumberOfBondsExcludingHydrogen(parameter_file_path));
+    topology_file->SetTotalNumberOfAngles(this->CountNumberOfAnglesExcludingHydrogen(parameter_file_path));
     topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedralsExcludingHydrogen(parameter_file_path));
     topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes(parameter_file_path));
     topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes(parameter_file_path));
@@ -4228,8 +4228,10 @@ int Assembly::CountNumberOfResidues()
     return counter;
 }
 
-int Assembly::CountNumberOfBondsIncludingHydrogen()
+int Assembly::CountNumberOfBondsIncludingHydrogen(string parameter_file_path)
 {
+    ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
+    ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
@@ -4240,31 +4242,41 @@ int Assembly::CountNumberOfBondsIncludingHydrogen()
         if(atom_node != NULL)
         {
             AtomVector node_neighbors = atom_node->GetNodeNeighbors();
-            if((atom_name.substr(0,1).compare("H") == 0 ||
-                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
-            {
-                counter += node_neighbors.size();
-            }
-            else
-            {
+//            if((atom_name.substr(0,1).compare("H") == 0 ||
+//                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+//            {
+//                counter += node_neighbors.size();
+//            }
+//            else
+//            {
                 for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
                 {
                     Atom* node_neighbor = (*it1);
                     string node_neighbor_name = node_neighbor->GetName();
-                    if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
-                        (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                       (node_neighbor_name.substr(0,1).compare("H") == 0 || (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
                     {
-                        counter++;
+                        vector<string> atom_pair_type = vector<string>();
+                        vector<string> reverse_atom_pair_type = vector<string>();
+                        atom_pair_type.push_back(atom->GetAtomType());
+                        atom_pair_type.push_back(node_neighbor->GetAtomType());
+                        reverse_atom_pair_type.push_back(node_neighbor->GetAtomType());
+                        reverse_atom_pair_type.push_back(atom->GetAtomType());
+
+                        if(bonds.find(atom_pair_type) != bonds.end() || bonds.find(reverse_atom_pair_type) != bonds.end())
+                            counter++;
                     }
                 }
-            }
+//            }
         }
     }
     return counter/2;
 }
 
-int Assembly::CountNumberOfBondsExcludingHydrogen()
+int Assembly::CountNumberOfBondsExcludingHydrogen(string parameter_file_path)
 {
+    ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
+    ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
@@ -4276,24 +4288,32 @@ int Assembly::CountNumberOfBondsExcludingHydrogen()
         {
             AtomVector node_neighbors = atom_node->GetNodeNeighbors();
 
-            if((atom_name.substr(0,1).compare("H") == 0 ||
-                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
-            {}
-            else
-            {
+//            if((atom_name.substr(0,1).compare("H") == 0 ||
+//                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+//            {}
+//            else
+//            {
                 for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
                 {
                     Atom* node_neighbor = (*it1);
                     string node_neighbor_name = node_neighbor->GetName();
-                    if((node_neighbor_name.substr(0,1).compare("H") == 0 ||
-                        (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                       (node_neighbor_name.substr(0,1).compare("H") == 0 || (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
                     {}
                     else
                     {
-                        counter++;
+                        vector<string> atom_pair_type = vector<string>();
+                        vector<string> reverse_atom_pair_type = vector<string>();
+                        atom_pair_type.push_back(atom->GetAtomType());
+                        atom_pair_type.push_back(node_neighbor->GetAtomType());
+                        reverse_atom_pair_type.push_back(node_neighbor->GetAtomType());
+                        reverse_atom_pair_type.push_back(atom->GetAtomType());
+
+                        if(bonds.find(atom_pair_type) != bonds.end() || bonds.find(reverse_atom_pair_type) != bonds.end())
+                            counter++;
                     }
                 }
-            }
+//            }
         }
     }
     return counter/2;
@@ -4322,8 +4342,6 @@ int Assembly::CountNumberOfBondTypes(string parameter_file_path)
     vector<string> type_list = vector<string>();
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     ParameterFileSpace::ParameterFile::BondMap bonds = parameter_file->GetBonds();
-
-
 
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
@@ -4364,8 +4382,10 @@ int Assembly::CountNumberOfBondTypes(string parameter_file_path)
     return type_list.size();
 }
 
-int Assembly::CountNumberOfAnglesIncludingHydrogen()
+int Assembly::CountNumberOfAnglesIncludingHydrogen(string parameter_file_path)
 {
+    ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
+    ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
@@ -4396,7 +4416,16 @@ int Assembly::CountNumberOfAnglesIncludingHydrogen()
                                 (neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_name.substr(0,1))))) ||
                                 (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))))
                         {
-                            counter++;
+                            vector<string> angle_type = vector<string>();
+                            vector<string> reverse_angle_type = vector<string>();
+                            angle_type.push_back(atom->GetAtomType());
+                            angle_type.push_back(neighbor->GetAtomType());
+                            angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+                            reverse_angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+                            reverse_angle_type.push_back(neighbor->GetAtomType());
+                            reverse_angle_type.push_back(atom->GetAtomType());
+                            if(angles.find(angle_type) != angles.end() || angles.find(reverse_angle_type) != angles.end())
+                                counter++;
                         }
                     }
                 }
@@ -4406,8 +4435,10 @@ int Assembly::CountNumberOfAnglesIncludingHydrogen()
     return counter/2;
 }
 
-int Assembly::CountNumberOfAnglesExcludingHydrogen()
+int Assembly::CountNumberOfAnglesExcludingHydrogen(string parameter_file_path)
 {
+    ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
+    ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
     AtomVector atoms = GetAllAtomsOfAssembly();
     int counter = 0;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
@@ -4439,7 +4470,18 @@ int Assembly::CountNumberOfAnglesExcludingHydrogen()
                                 (neighbor_of_neighbor_name.substr(0,1).compare("H") == 0 || (neighbor_of_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(neighbor_of_neighbor_name.substr(0,1))))))
                         {}
                         else
-                            counter++;
+                        {
+                            vector<string> angle_type = vector<string>();
+                            vector<string> reverse_angle_type = vector<string>();
+                            angle_type.push_back(atom->GetAtomType());
+                            angle_type.push_back(neighbor->GetAtomType());
+                            angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+                            reverse_angle_type.push_back(neighbor_of_neighbor->GetAtomType());
+                            reverse_angle_type.push_back(neighbor->GetAtomType());
+                            reverse_angle_type.push_back(atom->GetAtomType());
+                            if(angles.find(angle_type) != angles.end() || angles.find(reverse_angle_type) != angles.end())
+                                counter++;
+                        }
                     }
                 }
             }
@@ -4486,7 +4528,6 @@ int Assembly::CountNumberOfAngleTypes(string parameter_file_path)
 {
     ParameterFile* parameter_file = new ParameterFile(parameter_file_path);
     ParameterFileSpace::ParameterFile::AngleMap angles = parameter_file->GetAngles();
-
     AtomVector atoms = GetAllAtomsOfAssembly();
 
     vector<string> type_list = vector<string>();

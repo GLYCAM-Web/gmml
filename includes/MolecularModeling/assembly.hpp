@@ -503,14 +503,16 @@ namespace MolecularModeling
             int CountNumberOfResidues();
             /*! \fn
               * A function that counts the number of bonds including hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of bonds including hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfBondsIncludingHydrogen();
+            int CountNumberOfBondsIncludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of bonds excluding hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of bonds excluding hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfBondsExcludingHydrogen();
+            int CountNumberOfBondsExcludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of bonds in all assemblies and residues of the assembly
               * @return counter Number of bonds in all assemblies and residues in the current object of assembly
@@ -524,14 +526,16 @@ namespace MolecularModeling
             int CountNumberOfBondTypes(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of angles including hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of angles including hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAnglesIncludingHydrogen();
+            int CountNumberOfAnglesIncludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of angles excluding hydrogen in all assemblies and residues of the assembly
+              * @param parameter_file_path The path of the parameter file
               * @return counter Number of angles excluding hydrogen in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAnglesExcludingHydrogen();
+            int CountNumberOfAnglesExcludingHydrogen(std::string parameter_file_path);
             /*! \fn
               * A function that counts the number of angles in all assemblies and residues of the assembly
               * @return counter Number of angles in all assemblies and residues in the current object of assembly
