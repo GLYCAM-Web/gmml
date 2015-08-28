@@ -41,11 +41,11 @@ PdbqtFile::PdbqtFile(const string &pdbqt_file)
     }
     else
     {
-        throw PdbqtFileProcessingException(__LINE__, "PDB file not found");
+        throw PdbqtFileProcessingException(__LINE__, "PDBQT file not found");
     }
     if(!Read(in_file))
     {
-        throw PdbqtFileProcessingException(__LINE__, "Reading PDB file exception");
+        throw PdbqtFileProcessingException(__LINE__, "Reading PDBQT file exception");
     }
     gmml::log(__LINE__, __FILE__,  gmml::INF,"End of file");
     cout << "End of file" << endl;

@@ -15,6 +15,11 @@ Residue::Residue(Assembly *assembly, string name)
     assembly_ = assembly;
     name_ = name;
     atoms_ = AtomVector();
+    head_atoms_ = AtomVector();
+    tail_atoms_ = AtomVector();
+    chemical_type_ = "";
+    description_ = "";
+    id_ = "";
 }
 
 //////////////////////////////////////////////////////////

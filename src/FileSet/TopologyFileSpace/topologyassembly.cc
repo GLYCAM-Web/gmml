@@ -74,7 +74,9 @@ void TopologyAssembly::SetResidues(TopologyResidueMap residues)
 }
 void TopologyAssembly::AddResidue(TopologyResidue *residue)
 {
-    residues_[residue->GetResidueName()] = residue;
+    stringstream ss;
+    ss << residue->GetResidueName() << "_" << residues_.size() + 1;
+    residues_[ss.str()] = residue;
 }
 
 //////////////////////////////////////////////////////////

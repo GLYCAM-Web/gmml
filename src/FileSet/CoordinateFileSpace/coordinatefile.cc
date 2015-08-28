@@ -193,6 +193,7 @@ void CoordinateFile::BuildCoordinateFile(ofstream &stream)
         if(i%2 == 1)
             stream << endl;
     }
+    stream << endl;
 }
 
 //////////////////////////////////////////////////////////

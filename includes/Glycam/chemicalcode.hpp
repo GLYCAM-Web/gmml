@@ -10,20 +10,24 @@
 namespace Glycam
 {
     struct ChemicalCode {
-            std::string base_;
-            std::vector<std::string> left_up_;
-            std::vector<MolecularModeling::Atom*> left_up_atoms_;
-            std::vector<std::string> left_down_;
-            std::vector<MolecularModeling::Atom*> left_down_atoms_;
-            std::vector<std::string> left_middle_;
-            std::vector<MolecularModeling::Atom*> left_middle_atoms_;
-            std::vector<std::string> right_middle_;
-            std::vector<MolecularModeling::Atom*> right_middle_atoms_;
-            std::vector<std::string> right_up_;
-            std::vector<MolecularModeling::Atom*> right_up_atoms_;
-            std::vector<std::string> right_down_;
-            std::vector<MolecularModeling::Atom*> right_down_atoms_;
+            std::string base_;                                              /*!< Base of the chemical code which can be P/F which represnets pyranose/furanose accordingly >*/
+            std::vector<std::string> left_up_;                              /*!< The list of ring indices of the atoms that are at the left side of the ring and their position is UP with respect to the ring >*/
+            std::vector<MolecularModeling::Atom*> left_up_atoms_;           /*!< The list of atoms that are at the left side of the ring and their position is UP with respect to the ring >*/
+            std::vector<std::string> left_down_;                            /*!< The list of ring indices of the atoms that are at the left side of the ring and their position is DOWN with respect to the ring >*/
+            std::vector<MolecularModeling::Atom*> left_down_atoms_;         /*!< The list of atoms that are at the left side of the ring and their position is DOWN with respect to the ring >*/
+            std::vector<std::string> left_middle_;                          /*!< The list of ring indices of the atoms that are at the left side of the ring and are deoxy >*/
+            std::vector<MolecularModeling::Atom*> left_middle_atoms_;       /*!< The list of atoms that are at the left side of the ring and are deoxy >*/
+            std::vector<std::string> right_middle_;                         /*!< The list of ring indices of the atoms that are at the right side of the ring and are deoxy >*/
+            std::vector<MolecularModeling::Atom*> right_middle_atoms_;      /*!< The list of atoms that are at the right side of the ring and are deoxy >*/
+            std::vector<std::string> right_up_;                             /*!< The list of ring indices of the atoms that are at the right side of the ring and their position is UP with respect to the ring >*/
+            std::vector<MolecularModeling::Atom*> right_up_atoms_;          /*!< The list of atoms that are at the right side of the ring and their position is UP with respect to the ring >*/
+            std::vector<std::string> right_down_;                           /*!< The list of ring indices of the atoms that are at the right side of the ring and their position is DOWN with respect to the ring >*/
+            std::vector<MolecularModeling::Atom*> right_down_atoms_;        /*!< The list of atoms that are at the right side of the ring and their position is DOWN with respect to the ring >*/
 
+            /*! \fn
+              * A function in order to convert the chemical code structure into the string version of it
+              * @return ss The string version of the chemical code structure
+              */
             std::string toString()
             {
                 std::stringstream ss;
@@ -55,6 +59,11 @@ namespace Glycam
                 return ss.str();
             }
 
+            /*! \fn
+              * A function to print out the chemical code in a structural format
+              * Print out the information in a defined structure
+              * @param out An output stream, the print result will be written in the given output stream
+              */
             void Print(std::ostream& out)
             {
                 out << std::setw(8) << std::right;

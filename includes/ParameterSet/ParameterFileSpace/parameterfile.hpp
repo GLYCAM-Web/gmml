@@ -120,6 +120,12 @@ namespace ParameterFileSpace
               */
             void ReadModifiedParameter(std::ifstream& in_file);
             /*! \fn
+              * A function to parse the contents of a given stream of a file
+              * Parse the given stream and set the attributes of the current object accordingly
+              * @param in_file A stream contains whole contents of a frcmod parameter file containing ions
+              */
+            void ReadIonicModifiedParameter(std::ifstream& in_file);
+            /*! \fn
               * A function that parses a line of atom type section of the current object
               * Process the atom type lines of the parameter file
               * @param line A line of the atom type section of the current parameter file
@@ -200,6 +206,11 @@ namespace ParameterFileSpace
               * @param out_stream Modified parameter file output stream
               */
             void BuildModifiedParameterFile(std::ofstream& out_stream);
+            /*! \fn
+              * A function that writes back a modified parameter file containing ions (mostly indicates as frcmod file) content into an output stream
+              * @param out_stream Modified parameter file output stream
+              */
+            void BuildIonicModifiedParameterFile(std::ofstream& out_stream);
             /*! \fn
               * A function that writes back atom type section of a parameter file into an output stream
               * @param stream Parameter file output stream
