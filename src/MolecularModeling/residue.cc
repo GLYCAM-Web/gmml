@@ -172,7 +172,7 @@ void Residue::PrettyPrintHet(ostream &out)
 //        out << " Chemical Type: " << atom->GetChemicalType() << endl;
 //        out << " Description: " << atom->GetDescription() << endl;
         out << " Mass: " << atom->GetMass() << endl;
-        Geometry::Coordinate* coords = atom->GetCoordinates().at(0);
+        GeometryTopology::Coordinate* coords = atom->GetCoordinates().at(0);
         out << " Coordinates" <<  " X: " << coords->GetX() << ", Y: " << coords->GetY() << ", Z: " << coords->GetZ() << endl;
         out << " Neighbors: ";
         AtomNode* node = atom->GetNode();
@@ -204,7 +204,7 @@ void Residue::PrintHetAtoms(ostream &out)
     {
         Atom* atom = *it;
         out << atom->GetId() << ";" << atom->GetName() << ";" << atom->GetAtomType() << ";" << atom->GetCharge() << ";" << atom->GetMass() << ";";
-        Geometry::Coordinate* coords = atom->GetCoordinates().at(0);
+        GeometryTopology::Coordinate* coords = atom->GetCoordinates().at(0);
         out << coords->GetX() << "," << coords->GetY() << "," << coords->GetZ() << ";";
 
         AtomNode* node = atom->GetNode();
@@ -238,7 +238,7 @@ void Residue::WriteHetAtoms(ofstream& out)
     {
         Atom* atom = *it;
         out << atom->GetId() << ";" << atom->GetName() << ";" << atom->GetAtomType() << ";" << atom->GetCharge() << ";" << atom->GetMass() << ";";
-        Geometry::Coordinate* coords = atom->GetCoordinates().at(0);
+        GeometryTopology::Coordinate* coords = atom->GetCoordinates().at(0);
         out << coords->GetX() << "," << coords->GetY() << "," << coords->GetZ() << ";";
 
         AtomNode* node = atom->GetNode();

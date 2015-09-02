@@ -6,37 +6,37 @@
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
 
-#include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologybond.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../includes/FileSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
+#include "../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbtitlecard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
@@ -51,8 +51,8 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/utils.hpp"
 #include "../../includes/common.hpp"
-#include "../../includes/Geometry/grid.hpp"
-#include "../../includes/Geometry/cell.hpp"
+#include "../../includes/GeometryTopology/grid.hpp"
+#include "../../includes/GeometryTopology/cell.hpp"
 
 //#include "raptor2/raptor.h"
 //#include "raptor2/raptor2.h"
@@ -67,10 +67,10 @@ using namespace PrepFileSpace;
 using namespace PdbFileSpace;
 using namespace PdbqtFileSpace;
 using namespace ParameterFileSpace;
-using namespace Geometry;
+using namespace GeometryTopology;
 using namespace LibraryFileSpace;
 using namespace gmml;
-using namespace Glycam;
+using namespace Glycan;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -584,7 +584,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                 PdbModelCard::PdbModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
                     if(card_index.at(0).compare("ATOM") == 0)
                     {
@@ -620,7 +620,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
 
                             if(key.compare(matching_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Atom;");
                             }
@@ -643,7 +643,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
 
                             if(key.compare(matching_heterogen_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Het;");
                             }
@@ -806,7 +806,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
                 PdbModelCard::PdbModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
                     if(card_index.at(0).compare("ATOM") == 0)
                     {
@@ -842,7 +842,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 
                             if(key.compare(matching_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Atom;");
                             }
@@ -865,7 +865,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 
                             if(key.compare(matching_heterogen_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Het;");
                             }
@@ -952,7 +952,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string paramet
                 PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     if(atom->GetType().compare("ATOM") == 0)
                     {
                         new_atom->SetDescription("Atom;");
@@ -983,7 +983,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string paramet
 
                         if(key.compare(matching_key) == 0)
                         {
-                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                             new_atom->AddCoordinate(coordinate);
                             if(atom->GetType().compare("ATOM") == 0)
                             {
@@ -1075,7 +1075,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
                 PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     if(atom->GetType().compare("ATOM") == 0)
                     {
                         new_atom->SetDescription("Atom;");
@@ -1106,7 +1106,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
 
                         if(key.compare(matching_key) == 0)
                         {
-                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                             new_atom->AddCoordinate(coordinate);
                             if(atom->GetType().compare("ATOM") == 0)
                             {
@@ -1509,7 +1509,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
             assembly_atom->SetName(topology_atom->GetAtomName());
 
             CoordinateFile* coordinate_file = new CoordinateFile(coordinate_file_path);
-            vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
             assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
@@ -1582,7 +1582,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(topology_atom->GetAtomName());
 
-            vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
             assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }

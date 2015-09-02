@@ -10,17 +10,17 @@
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp"
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbresidue.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbresidue.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 using namespace std;
@@ -2653,8 +2653,8 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<
                     double distance = INFINITY;
                     if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
                     {
-                        Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
-                        Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+                        GeometryTopology::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+                        GeometryTopology::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
                         distance = c_atom_coordinate.Distance(n_atom_coordinate);
                     }
                     if(distance > dCutOff + 1.0)
@@ -2814,8 +2814,8 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
                 double distance = INFINITY;
                 if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
                 {
-                    Geometry::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
-                    Geometry::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
+                    GeometryTopology::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
+                    GeometryTopology::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
                     distance = c_atom_coordinate.Distance(n_atom_coordinate);
                 }
                 if(distance > dCutOff + 1.0)
