@@ -6,8 +6,8 @@
 #include <math.h>
 #include <map>
 
-#include "Geometry/coordinate.hpp"
-#include "Glycam/sugarname.hpp"
+#include "GeometryTopology/coordinate.hpp"
+#include "Glycan/sugarname.hpp"
 
 namespace gmml
 {
@@ -15,7 +15,7 @@ namespace gmml
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef Geometry::Coordinate Vector;
+    typedef GeometryTopology::Coordinate Vector;
 
     //*******************************************
 
@@ -51,7 +51,7 @@ namespace gmml
     const double CRITICAL_RADIOUS = 1.0;
 
 
-    const Glycam::SugarName SUGARNAMELOOKUP[] = {
+    const Glycan::SugarName SUGARNAMELOOKUP[] = {
 
         {"", "", "", "", "", "", "", "", ""},
         ///Alpha D Aldohexapyranoses
@@ -324,7 +324,7 @@ namespace gmml
 
     const int SUGARNAMELOOKUPSIZE = (sizeof(SUGARNAMELOOKUP)/sizeof(SUGARNAMELOOKUP[0]));
 
-    const Glycam::SugarName COMPLEXSUGARNAMELOOKUP[] = {
+    const Glycan::SugarName COMPLEXSUGARNAMELOOKUP[] = {
 
         {"", "", "", "", "", "", "", "", ""},
         ///Alpha D aldohexafuranoses

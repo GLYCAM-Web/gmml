@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "../../Geometry/coordinate.hpp"
+#include "../../GeometryTopology/coordinate.hpp"
 
 namespace LibraryFileSpace
 {
@@ -41,7 +41,7 @@ namespace LibraryFileSpace
               * @param atom_order Order of the atom in which the atom information has been written in a library file
               */
             LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index, int atomic_number, double charge,
-                            Geometry::Coordinate coordinate, std::vector<int> bonded_atoms_indices, int atom_order);
+                            GeometryTopology::Coordinate coordinate, std::vector<int> bonded_atoms_indices, int atom_order);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -80,7 +80,7 @@ namespace LibraryFileSpace
               * An accessor function in order to access to coordinate of the current object
               * @return coordinate_ attribute of the current atom
               */
-            Geometry::Coordinate GetCoordinate();
+            GeometryTopology::Coordinate GetCoordinate();
             /*! \fn
               * An accessor function in order to access to the list of atom indices which are bonded to the current object
               * @return bonded_atom_indices attribute of the current atom
@@ -130,7 +130,7 @@ namespace LibraryFileSpace
               * Set the coordinate_ attribute of the current atom
               * @param coordinate The position of the current object in the cartesian coordinate
               */
-            void SetCoordinate(Geometry::Coordinate& coordinate);
+            void SetCoordinate(GeometryTopology::Coordinate& coordinate);
             /*! \fn
               * A mutator function in order to set the list of bonded atom indices of the current object
               * Set the bonded_atom_indices_ attribute of the current atom
@@ -172,7 +172,7 @@ namespace LibraryFileSpace
             int atom_index_;                /*!< Index of the atom in the belonging residue; Set by the 6th column of the atom section of a library file */
             int atomic_number_;             /*!< Atomic number of the atom; Set by the 7th column of the atom section of a library file */
             double charge_;                 /*!< Charge of the atom; Set by the 8th column of the atom section of a library file */
-            Geometry::Coordinate coordinate_;         /*!< Coordinate of the atom; Set by the corresponding line in the positions section of a library file */
+            GeometryTopology::Coordinate coordinate_;         /*!< Coordinate of the atom; Set by the corresponding line in the positions section of a library file */
             std::vector<int> bonded_atoms_indices_; /*!< List of atom indices that are bonded to the atom;
                                                             Set by the corresponding atom index in the connectivity section of a library file */
             int atom_order_;                /*!< Order of atoms of the residue in the atom section; Set by a line counter iterates on lines of the atom section of a library file */

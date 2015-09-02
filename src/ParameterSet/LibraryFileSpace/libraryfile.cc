@@ -12,7 +12,7 @@
 using namespace std;
 using namespace gmml;
 using namespace LibraryFileSpace;
-using namespace Geometry;
+using namespace GeometryTopology;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -681,7 +681,7 @@ void LibraryFile::ResolvePositionSection(ofstream& stream, LibraryFileResidue* r
     for(unsigned int i = 0; i < atoms.size(); i++)
     {
         LibraryFileAtom* atom = residue->GetAtomByOrder(i+1);
-        Geometry::Coordinate coordinate = atom->GetCoordinate();
+        GeometryTopology::Coordinate coordinate = atom->GetCoordinate();
         stream << fixed << coordinate.GetX() << " " << fixed << coordinate.GetY() << " " << fixed << coordinate.GetZ() << endl;
     }
 }

@@ -1,6 +1,6 @@
 #############################################################################
 # Makefile for building: libgmml.so.1.0.0
-# Project:  gmml.pro
+# Project:  gmml
 # Template: lib
 #############################################################################
 
@@ -10,7 +10,7 @@ CC            = gcc
 CXX           = g++
 CFLAGS        = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
 CXXFLAGS      = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
-INCPATH       = -I. -Iincludes -Iincludes/Geometry -Iincludes/Glycam -Iincludes/FileSet/CoordinateFileSpace -Iincludes/FileSet/PdbFileSpace -Iincludes/FileSet/TopologyFileSpace -Iincludes/Geometry/InternalCoordinate -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/Resolver/PdbPreprocessor -Iincludes/FileSet/PdbqtFileSpace -I.
+INCPATH       = -I. -Iincludes -Iincludes/GeometryTopology -Iincludes/Glycan -Iincludes/InputSet/CoordinateFileSpace -Iincludes/InputSet/PdbFileSpace -Iincludes/InputSet/PdbqtFileSpace -Iincludes/InputSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/GeometryTopology/InternalCoordinate -Iincludes/Resolver/PdbPreprocessor -I.
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1
 LIBS          = $(SUBLIBS)  -L/usr/lib/x86_64-linux-gnu -lpthread 
@@ -35,13 +35,14 @@ MKDIR         = mkdir -p
 
 ####### Output directory
 
-OBJECTS_DIR   = ./
+OBJECTS_DIR   = build/
 
 ####### Files
 
-SOURCES       = src/Geometry/cell.cc \
-		src/Geometry/coordinate.cc \
-		src/Geometry/plane.cc \
+SOURCES       = src/GeometryTopology/cell.cc \
+		src/GeometryTopology/coordinate.cc \
+		src/GeometryTopology/grid.cc \
+		src/GeometryTopology/plane.cc \
 		src/MolecularModeling/assembly.cc \
 		src/MolecularModeling/atom.cc \
 		src/MolecularModeling/atomnode.cc \
@@ -50,86 +51,88 @@ SOURCES       = src/Geometry/cell.cc \
 		src/MolecularModeling/moleculardynamicatom.cc \
 		src/MolecularModeling/quantommechanicatom.cc \
 		src/MolecularModeling/residue.cc \
-		src/FileSet/CoordinateFileSpace/coordinatefile.cc \
-		src/FileSet/CoordinateFileSpace/coordinatefileprocessingexception.cc \
-		src/FileSet/PdbFileSpace/pdbatom.cc \
-		src/FileSet/PdbFileSpace/pdbatomcard.cc \
-		src/FileSet/PdbFileSpace/pdbcompoundcard.cc \
-		src/FileSet/PdbFileSpace/pdbcompoundspecification.cc \
-		src/FileSet/PdbFileSpace/pdbconnectcard.cc \
-		src/FileSet/PdbFileSpace/pdbcrystallographiccard.cc \
-		src/FileSet/PdbFileSpace/pdbdisulfidebondcard.cc \
-		src/FileSet/PdbFileSpace/pdbdisulfideresidue.cc \
-		src/FileSet/PdbFileSpace/pdbdisulfideresiduebond.cc \
-		src/FileSet/PdbFileSpace/pdbfile.cc \
-		src/FileSet/PdbFileSpace/pdbfileprocessingexception.cc \
-		src/FileSet/PdbFileSpace/pdbformula.cc \
-		src/FileSet/PdbFileSpace/pdbformulacard.cc \
-		src/FileSet/PdbFileSpace/pdbheadercard.cc \
-		src/FileSet/PdbFileSpace/pdbhelix.cc \
-		src/FileSet/PdbFileSpace/pdbhelixcard.cc \
-		src/FileSet/PdbFileSpace/pdbhelixresidue.cc \
-		src/FileSet/PdbFileSpace/pdbheterogen.cc \
-		src/FileSet/PdbFileSpace/pdbheterogenatomcard.cc \
-		src/FileSet/PdbFileSpace/pdbheterogencard.cc \
-		src/FileSet/PdbFileSpace/pdbheterogenname.cc \
-		src/FileSet/PdbFileSpace/pdbheterogennamecard.cc \
-		src/FileSet/PdbFileSpace/pdbheterogensynonym.cc \
-		src/FileSet/PdbFileSpace/pdbheterogensynonymcard.cc \
-		src/FileSet/PdbFileSpace/pdblink.cc \
-		src/FileSet/PdbFileSpace/pdblinkcard.cc \
-		src/FileSet/PdbFileSpace/pdblinkresidue.cc \
-		src/FileSet/PdbFileSpace/pdbmatrixn.cc \
-		src/FileSet/PdbFileSpace/pdbmatrixncard.cc \
-		src/FileSet/PdbFileSpace/pdbmodel.cc \
-		src/FileSet/PdbFileSpace/pdbmodelcard.cc \
-		src/FileSet/PdbFileSpace/pdbmodelresidueset.cc \
-		src/FileSet/PdbFileSpace/pdbmodeltypecard.cc \
-		src/FileSet/PdbFileSpace/pdbnummodelcard.cc \
-		src/FileSet/PdbFileSpace/pdboriginxn.cc \
-		src/FileSet/PdbFileSpace/pdboriginxncard.cc \
-		src/FileSet/PdbFileSpace/pdbresidue.cc \
-		src/FileSet/PdbFileSpace/pdbresiduemodification.cc \
-		src/FileSet/PdbFileSpace/pdbresiduemodificationcard.cc \
-		src/FileSet/PdbFileSpace/pdbresiduesequence.cc \
-		src/FileSet/PdbFileSpace/pdbresiduesequencecard.cc \
-		src/FileSet/PdbFileSpace/pdbscalen.cc \
-		src/FileSet/PdbFileSpace/pdbscalencard.cc \
-		src/FileSet/PdbFileSpace/pdbsheet.cc \
-		src/FileSet/PdbFileSpace/pdbsheetcard.cc \
-		src/FileSet/PdbFileSpace/pdbsheetstrand.cc \
-		src/FileSet/PdbFileSpace/pdbsheetstrandresidue.cc \
-		src/FileSet/PdbFileSpace/pdbsite.cc \
-		src/FileSet/PdbFileSpace/pdbsitecard.cc \
-		src/FileSet/PdbFileSpace/pdbsiteresidue.cc \
-		src/FileSet/PdbFileSpace/pdbtitlecard.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtatom.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtatomcard.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtfile.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtmodel.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtmodelcard.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtremarkcard.cc \
-		src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc \
-		src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc \
-		src/FileSet/TopologyFileSpace/topologyangle.cc \
-		src/FileSet/TopologyFileSpace/topologyangletype.cc \
-		src/FileSet/TopologyFileSpace/topologyassembly.cc \
-		src/FileSet/TopologyFileSpace/topologyatom.cc \
-		src/FileSet/TopologyFileSpace/topologyatompair.cc \
-		src/FileSet/TopologyFileSpace/topologybond.cc \
-		src/FileSet/TopologyFileSpace/topologybondtype.cc \
-		src/FileSet/TopologyFileSpace/topologydihedral.cc \
-		src/FileSet/TopologyFileSpace/topologydihedraltype.cc \
-		src/FileSet/TopologyFileSpace/topologyfile.cc \
-		src/FileSet/TopologyFileSpace/topologyfileprocessingexception.cc \
-		src/FileSet/TopologyFileSpace/topologyresidue.cc \
-		src/Geometry/InternalCoordinate/angle.cc \
-		src/Geometry/InternalCoordinate/dihedral.cc \
-		src/Geometry/InternalCoordinate/distance.cc \
+		src/GeometryTopology/InternalCoordinate/angle.cc \
+		src/GeometryTopology/InternalCoordinate/dihedral.cc \
+		src/GeometryTopology/InternalCoordinate/distance.cc \
+		src/InputSet/CondensedSequenceSpace/condensedsequence.cc \
+		src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc \
+		src/InputSet/CoordinateFileSpace/coordinatefile.cc \
+		src/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.cc \
+		src/InputSet/PdbFileSpace/pdbatom.cc \
+		src/InputSet/PdbFileSpace/pdbatomcard.cc \
+		src/InputSet/PdbFileSpace/pdbcompoundcard.cc \
+		src/InputSet/PdbFileSpace/pdbcompoundspecification.cc \
+		src/InputSet/PdbFileSpace/pdbconnectcard.cc \
+		src/InputSet/PdbFileSpace/pdbcrystallographiccard.cc \
+		src/InputSet/PdbFileSpace/pdbdisulfidebondcard.cc \
+		src/InputSet/PdbFileSpace/pdbdisulfideresidue.cc \
+		src/InputSet/PdbFileSpace/pdbdisulfideresiduebond.cc \
+		src/InputSet/PdbFileSpace/pdbfile.cc \
+		src/InputSet/PdbFileSpace/pdbfileprocessingexception.cc \
+		src/InputSet/PdbFileSpace/pdbformula.cc \
+		src/InputSet/PdbFileSpace/pdbformulacard.cc \
+		src/InputSet/PdbFileSpace/pdbheadercard.cc \
+		src/InputSet/PdbFileSpace/pdbhelix.cc \
+		src/InputSet/PdbFileSpace/pdbhelixcard.cc \
+		src/InputSet/PdbFileSpace/pdbhelixresidue.cc \
+		src/InputSet/PdbFileSpace/pdbheterogen.cc \
+		src/InputSet/PdbFileSpace/pdbheterogenatomcard.cc \
+		src/InputSet/PdbFileSpace/pdbheterogencard.cc \
+		src/InputSet/PdbFileSpace/pdbheterogenname.cc \
+		src/InputSet/PdbFileSpace/pdbheterogennamecard.cc \
+		src/InputSet/PdbFileSpace/pdbheterogensynonym.cc \
+		src/InputSet/PdbFileSpace/pdbheterogensynonymcard.cc \
+		src/InputSet/PdbFileSpace/pdblink.cc \
+		src/InputSet/PdbFileSpace/pdblinkcard.cc \
+		src/InputSet/PdbFileSpace/pdblinkresidue.cc \
+		src/InputSet/PdbFileSpace/pdbmatrixn.cc \
+		src/InputSet/PdbFileSpace/pdbmatrixncard.cc \
+		src/InputSet/PdbFileSpace/pdbmodel.cc \
+		src/InputSet/PdbFileSpace/pdbmodelcard.cc \
+		src/InputSet/PdbFileSpace/pdbmodelresidueset.cc \
+		src/InputSet/PdbFileSpace/pdbmodeltypecard.cc \
+		src/InputSet/PdbFileSpace/pdbnummodelcard.cc \
+		src/InputSet/PdbFileSpace/pdboriginxn.cc \
+		src/InputSet/PdbFileSpace/pdboriginxncard.cc \
+		src/InputSet/PdbFileSpace/pdbresidue.cc \
+		src/InputSet/PdbFileSpace/pdbresiduemodification.cc \
+		src/InputSet/PdbFileSpace/pdbresiduemodificationcard.cc \
+		src/InputSet/PdbFileSpace/pdbresiduesequence.cc \
+		src/InputSet/PdbFileSpace/pdbresiduesequencecard.cc \
+		src/InputSet/PdbFileSpace/pdbscalen.cc \
+		src/InputSet/PdbFileSpace/pdbscalencard.cc \
+		src/InputSet/PdbFileSpace/pdbsheet.cc \
+		src/InputSet/PdbFileSpace/pdbsheetcard.cc \
+		src/InputSet/PdbFileSpace/pdbsheetstrand.cc \
+		src/InputSet/PdbFileSpace/pdbsheetstrandresidue.cc \
+		src/InputSet/PdbFileSpace/pdbsite.cc \
+		src/InputSet/PdbFileSpace/pdbsitecard.cc \
+		src/InputSet/PdbFileSpace/pdbsiteresidue.cc \
+		src/InputSet/PdbFileSpace/pdbtitlecard.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtatom.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtatomcard.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtbranchcard.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtcompoundcard.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtfile.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtmodel.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtmodelcard.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtremarkcard.cc \
+		src/InputSet/PdbqtFileSpace/pdbqtrootcard.cc \
+		src/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc \
+		src/InputSet/TopologyFileSpace/topologyangle.cc \
+		src/InputSet/TopologyFileSpace/topologyangletype.cc \
+		src/InputSet/TopologyFileSpace/topologyassembly.cc \
+		src/InputSet/TopologyFileSpace/topologyatom.cc \
+		src/InputSet/TopologyFileSpace/topologyatompair.cc \
+		src/InputSet/TopologyFileSpace/topologybond.cc \
+		src/InputSet/TopologyFileSpace/topologybondtype.cc \
+		src/InputSet/TopologyFileSpace/topologydihedral.cc \
+		src/InputSet/TopologyFileSpace/topologydihedraltype.cc \
+		src/InputSet/TopologyFileSpace/topologyfile.cc \
+		src/InputSet/TopologyFileSpace/topologyfileprocessingexception.cc \
+		src/InputSet/TopologyFileSpace/topologyresidue.cc \
 		src/ParameterSet/LibraryFileSpace/libraryfile.cc \
 		src/ParameterSet/LibraryFileSpace/libraryfileatom.cc \
 		src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc \
@@ -154,133 +157,132 @@ SOURCES       = src/Geometry/cell.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc \
-		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc \
-		src/Geometry/grid.cc
-OBJECTS       = cell.o \
-		coordinate.o \
-		plane.o \
-		assembly.o \
-		atom.o \
-		atomnode.o \
-		dockingatom.o \
-		element.o \
-		moleculardynamicatom.o \
-		quantommechanicatom.o \
-		residue.o \
-		coordinatefile.o \
-		coordinatefileprocessingexception.o \
-		pdbatom.o \
-		pdbatomcard.o \
-		pdbcompoundcard.o \
-		pdbcompoundspecification.o \
-		pdbconnectcard.o \
-		pdbcrystallographiccard.o \
-		pdbdisulfidebondcard.o \
-		pdbdisulfideresidue.o \
-		pdbdisulfideresiduebond.o \
-		pdbfile.o \
-		pdbfileprocessingexception.o \
-		pdbformula.o \
-		pdbformulacard.o \
-		pdbheadercard.o \
-		pdbhelix.o \
-		pdbhelixcard.o \
-		pdbhelixresidue.o \
-		pdbheterogen.o \
-		pdbheterogenatomcard.o \
-		pdbheterogencard.o \
-		pdbheterogenname.o \
-		pdbheterogennamecard.o \
-		pdbheterogensynonym.o \
-		pdbheterogensynonymcard.o \
-		pdblink.o \
-		pdblinkcard.o \
-		pdblinkresidue.o \
-		pdbmatrixn.o \
-		pdbmatrixncard.o \
-		pdbmodel.o \
-		pdbmodelcard.o \
-		pdbmodelresidueset.o \
-		pdbmodeltypecard.o \
-		pdbnummodelcard.o \
-		pdboriginxn.o \
-		pdboriginxncard.o \
-		pdbresidue.o \
-		pdbresiduemodification.o \
-		pdbresiduemodificationcard.o \
-		pdbresiduesequence.o \
-		pdbresiduesequencecard.o \
-		pdbscalen.o \
-		pdbscalencard.o \
-		pdbsheet.o \
-		pdbsheetcard.o \
-		pdbsheetstrand.o \
-		pdbsheetstrandresidue.o \
-		pdbsite.o \
-		pdbsitecard.o \
-		pdbsiteresidue.o \
-		pdbtitlecard.o \
-		pdbqtatom.o \
-		pdbqtatomcard.o \
-		pdbqtbranchcard.o \
-		pdbqtcompoundcard.o \
-		pdbqtfile.o \
-		pdbqtfileprocessingexception.o \
-		pdbqtmodel.o \
-		pdbqtmodelcard.o \
-		pdbqtmodelresidueset.o \
-		pdbqtremarkcard.o \
-		pdbqtrootcard.o \
-		pdbqttorsionaldofcard.o \
-		topologyangle.o \
-		topologyangletype.o \
-		topologyassembly.o \
-		topologyatom.o \
-		topologyatompair.o \
-		topologybond.o \
-		topologybondtype.o \
-		topologydihedral.o \
-		topologydihedraltype.o \
-		topologyfile.o \
-		topologyfileprocessingexception.o \
-		topologyresidue.o \
-		angle.o \
-		dihedral.o \
-		distance.o \
-		libraryfile.o \
-		libraryfileatom.o \
-		libraryfileprocessingexception.o \
-		libraryfileresidue.o \
-		parameterfile.o \
-		parameterfileangle.o \
-		parameterfileatom.o \
-		parameterfilebond.o \
-		parameterfiledihedral.o \
-		parameterfiledihedralterm.o \
-		parameterfileprocessingexception.o \
-		prepfile.o \
-		prepfileatom.o \
-		prepfileprocessingexception.o \
-		prepfileresidue.o \
-		pdbpreprocessor.o \
-		pdbpreprocessoralternateresidue.o \
-		pdbpreprocessorchaintermination.o \
-		pdbpreprocessordisulfidebond.o \
-		pdbpreprocessorhistidinemapping.o \
-		pdbpreprocessormissingresidue.o \
-		pdbpreprocessorreplacedhydrogen.o \
-		pdbpreprocessorresidueinfo.o \
-		pdbpreprocessorunrecognizedheavyatom.o \
-		pdbpreprocessorunrecognizedresidue.o \
-		grid.o
-QMAKE_TARGET  = gmml
-DESTDIR       = 
-TARGET        = libgmml.so.1.0.0
-TARGETA       = libgmml.a
-TARGETD       = libgmml.so.1.0.0
-TARGET0       = libgmml.so
-TARGET1       = libgmml.so.1
-TARGET2       = libgmml.so.1.0
+		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc 
+OBJECTS       = build/cell.o \
+		build/coordinate.o \
+		build/grid.o \
+		build/plane.o \
+		build/assembly.o \
+		build/atom.o \
+		build/atomnode.o \
+		build/dockingatom.o \
+		build/element.o \
+		build/moleculardynamicatom.o \
+		build/quantommechanicatom.o \
+		build/residue.o \
+		build/angle.o \
+		build/dihedral.o \
+		build/distance.o \
+		build/condensedsequence.o \
+		build/condensedsequenceresidue.o \
+		build/coordinatefile.o \
+		build/coordinatefileprocessingexception.o \
+		build/pdbatom.o \
+		build/pdbatomcard.o \
+		build/pdbcompoundcard.o \
+		build/pdbcompoundspecification.o \
+		build/pdbconnectcard.o \
+		build/pdbcrystallographiccard.o \
+		build/pdbdisulfidebondcard.o \
+		build/pdbdisulfideresidue.o \
+		build/pdbdisulfideresiduebond.o \
+		build/pdbfile.o \
+		build/pdbfileprocessingexception.o \
+		build/pdbformula.o \
+		build/pdbformulacard.o \
+		build/pdbheadercard.o \
+		build/pdbhelix.o \
+		build/pdbhelixcard.o \
+		build/pdbhelixresidue.o \
+		build/pdbheterogen.o \
+		build/pdbheterogenatomcard.o \
+		build/pdbheterogencard.o \
+		build/pdbheterogenname.o \
+		build/pdbheterogennamecard.o \
+		build/pdbheterogensynonym.o \
+		build/pdbheterogensynonymcard.o \
+		build/pdblink.o \
+		build/pdblinkcard.o \
+		build/pdblinkresidue.o \
+		build/pdbmatrixn.o \
+		build/pdbmatrixncard.o \
+		build/pdbmodel.o \
+		build/pdbmodelcard.o \
+		build/pdbmodelresidueset.o \
+		build/pdbmodeltypecard.o \
+		build/pdbnummodelcard.o \
+		build/pdboriginxn.o \
+		build/pdboriginxncard.o \
+		build/pdbresidue.o \
+		build/pdbresiduemodification.o \
+		build/pdbresiduemodificationcard.o \
+		build/pdbresiduesequence.o \
+		build/pdbresiduesequencecard.o \
+		build/pdbscalen.o \
+		build/pdbscalencard.o \
+		build/pdbsheet.o \
+		build/pdbsheetcard.o \
+		build/pdbsheetstrand.o \
+		build/pdbsheetstrandresidue.o \
+		build/pdbsite.o \
+		build/pdbsitecard.o \
+		build/pdbsiteresidue.o \
+		build/pdbtitlecard.o \
+		build/pdbqtatom.o \
+		build/pdbqtatomcard.o \
+		build/pdbqtbranchcard.o \
+		build/pdbqtcompoundcard.o \
+		build/pdbqtfile.o \
+		build/pdbqtfileprocessingexception.o \
+		build/pdbqtmodel.o \
+		build/pdbqtmodelcard.o \
+		build/pdbqtmodelresidueset.o \
+		build/pdbqtremarkcard.o \
+		build/pdbqtrootcard.o \
+		build/pdbqttorsionaldofcard.o \
+		build/topologyangle.o \
+		build/topologyangletype.o \
+		build/topologyassembly.o \
+		build/topologyatom.o \
+		build/topologyatompair.o \
+		build/topologybond.o \
+		build/topologybondtype.o \
+		build/topologydihedral.o \
+		build/topologydihedraltype.o \
+		build/topologyfile.o \
+		build/topologyfileprocessingexception.o \
+		build/topologyresidue.o \
+		build/libraryfile.o \
+		build/libraryfileatom.o \
+		build/libraryfileprocessingexception.o \
+		build/libraryfileresidue.o \
+		build/parameterfile.o \
+		build/parameterfileangle.o \
+		build/parameterfileatom.o \
+		build/parameterfilebond.o \
+		build/parameterfiledihedral.o \
+		build/parameterfiledihedralterm.o \
+		build/parameterfileprocessingexception.o \
+		build/prepfile.o \
+		build/prepfileatom.o \
+		build/prepfileprocessingexception.o \
+		build/prepfileresidue.o \
+		build/pdbpreprocessor.o \
+		build/pdbpreprocessoralternateresidue.o \
+		build/pdbpreprocessorchaintermination.o \
+		build/pdbpreprocessordisulfidebond.o \
+		build/pdbpreprocessorhistidinemapping.o \
+		build/pdbpreprocessormissingresidue.o \
+		build/pdbpreprocessorreplacedhydrogen.o \
+		build/pdbpreprocessorresidueinfo.o \
+		build/pdbpreprocessorunrecognizedheavyatom.o \
+		build/pdbpreprocessorunrecognizedresidue.o
+TARGET        = bin/libgmml.so.1.0.0
+TARGETA       = bin/libgmml.a
+TARGETD       = bin/libgmml.so.1.0.0
+TARGET0       = bin/libgmml.so
+TARGET1       = bin/libgmml.so.1
+TARGET2       = bin/libgmml.so.1.0
 
 first: all
 ####### Implicit rules
@@ -360,786 +362,862 @@ compiler_clean:
 
 ####### Compile
 
-cell.o: src/Geometry/cell.cc includes/Geometry/cell.hpp \
-		includes/Geometry/coordinate.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cell.o src/Geometry/cell.cc
-
-grid.o: src/Geometry/grid.cc includes/Geometry/grid.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Geometry/cell.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o grid.o src/Geometry/grid.cc
-
-coordinate.o: src/Geometry/coordinate.cc includes/Geometry/coordinate.hpp \
-		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coordinate.o src/Geometry/coordinate.cc
-
-plane.o: src/Geometry/plane.cc includes/Geometry/plane.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o plane.o src/Geometry/plane.cc
-
-assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/assembly.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Geometry/plane.hpp \
-		includes/common.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/Glycam/chemicalcode.hpp \
+build/cell.o: src/GeometryTopology/cell.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/GeometryTopology/cell.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/Glycan/chemicalcode.hpp \
 		includes/MolecularModeling/atom.hpp \
 		includes/MolecularModeling/moleculardynamicatom.hpp \
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
-		includes/Glycam/monosaccharide.hpp \
-		includes/FileSet/PdbFileSpace/pdbfile.hpp \
-		includes/FileSet/TopologyFileSpace/topologyfile.hpp \
-		includes/FileSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodelcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodel.hpp \
-		includes/Glycam/oligosaccharide.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/cell.o src/GeometryTopology/cell.cc
+
+build/coordinate.o: src/GeometryTopology/coordinate.cc includes/GeometryTopology/coordinate.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/coordinate.o src/GeometryTopology/coordinate.cc
+
+build/grid.o: src/GeometryTopology/grid.cc includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/cell.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/grid.o src/GeometryTopology/grid.cc
+
+build/plane.o: src/GeometryTopology/plane.cc includes/GeometryTopology/plane.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/plane.o src/GeometryTopology/plane.cc
+
+build/assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
 		includes/utils.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
-		includes/FileSet/TopologyFileSpace/topologyassembly.hpp \
-		includes/FileSet/TopologyFileSpace/topologyresidue.hpp \
-		includes/FileSet/TopologyFileSpace/topologyatom.hpp \
-		includes/FileSet/TopologyFileSpace/topologybond.hpp \
-		includes/FileSet/TopologyFileSpace/topologybondtype.hpp \
-		includes/FileSet/TopologyFileSpace/topologyangle.hpp \
-		includes/FileSet/TopologyFileSpace/topologyangletype.hpp \
-		includes/FileSet/TopologyFileSpace/topologydihedral.hpp \
-		includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp \
-		includes/FileSet/TopologyFileSpace/topologyatompair.hpp \
-		includes/FileSet/PdbFileSpace/pdbtitlecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbatom.hpp \
-		includes/FileSet/PdbFileSpace/pdbconnectcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
-		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o assembly.o src/MolecularModeling/assembly.cc
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/assembly.o src/MolecularModeling/assembly.cc
 
-atom.o: src/MolecularModeling/atom.cc includes/MolecularModeling/atom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/atom.o: src/MolecularModeling/atom.cc includes/MolecularModeling/atom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/MolecularModeling/moleculardynamicatom.hpp \
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/MolecularModeling/residue.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o atom.o src/MolecularModeling/atom.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/atom.o src/MolecularModeling/atom.cc
 
-atomnode.o: src/MolecularModeling/atomnode.cc includes/MolecularModeling/atomnode.hpp \
+build/atomnode.o: src/MolecularModeling/atomnode.cc includes/MolecularModeling/atomnode.hpp \
 		includes/MolecularModeling/atom.hpp \
-		includes/Geometry/coordinate.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/MolecularModeling/moleculardynamicatom.hpp \
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
 		includes/MolecularModeling/residue.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o atomnode.o src/MolecularModeling/atomnode.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/atomnode.o src/MolecularModeling/atomnode.cc
 
-dockingatom.o: src/MolecularModeling/dockingatom.cc includes/MolecularModeling/dockingatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dockingatom.o src/MolecularModeling/dockingatom.cc
+build/dockingatom.o: src/MolecularModeling/dockingatom.cc includes/MolecularModeling/dockingatom.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/dockingatom.o src/MolecularModeling/dockingatom.cc
 
-element.o: src/MolecularModeling/element.cc includes/MolecularModeling/element.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o element.o src/MolecularModeling/element.cc
+build/element.o: src/MolecularModeling/element.cc includes/MolecularModeling/element.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/element.o src/MolecularModeling/element.cc
 
-moleculardynamicatom.o: src/MolecularModeling/moleculardynamicatom.cc includes/MolecularModeling/moleculardynamicatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moleculardynamicatom.o src/MolecularModeling/moleculardynamicatom.cc
-
-quantommechanicatom.o: src/MolecularModeling/quantommechanicatom.cc includes/MolecularModeling/quantommechanicatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o quantommechanicatom.o src/MolecularModeling/quantommechanicatom.cc
-
-residue.o: src/MolecularModeling/residue.cc includes/MolecularModeling/residue.hpp \
-		includes/MolecularModeling/assembly.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Geometry/plane.hpp \
+build/moleculardynamicatom.o: src/MolecularModeling/moleculardynamicatom.cc includes/MolecularModeling/moleculardynamicatom.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/Glycam/chemicalcode.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/moleculardynamicatom.o src/MolecularModeling/moleculardynamicatom.cc
+
+build/quantommechanicatom.o: src/MolecularModeling/quantommechanicatom.cc includes/MolecularModeling/quantommechanicatom.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/quantommechanicatom.o src/MolecularModeling/quantommechanicatom.cc
+
+build/residue.o: src/MolecularModeling/residue.cc includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
 		includes/MolecularModeling/atom.hpp \
 		includes/MolecularModeling/moleculardynamicatom.hpp \
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
-		includes/Glycam/monosaccharide.hpp \
-		includes/FileSet/PdbFileSpace/pdbfile.hpp \
-		includes/FileSet/TopologyFileSpace/topologyfile.hpp \
-		includes/FileSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodelcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodel.hpp \
-		includes/Glycam/oligosaccharide.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
 		includes/utils.hpp \
 		includes/MolecularModeling/atomnode.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o residue.o src/MolecularModeling/residue.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/residue.o src/MolecularModeling/residue.cc
 
-coordinatefile.o: src/FileSet/CoordinateFileSpace/coordinatefile.cc includes/utils.hpp \
+build/angle.o: src/GeometryTopology/InternalCoordinate/angle.cc includes/GeometryTopology/InternalCoordinate/angle.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/angle.o src/GeometryTopology/InternalCoordinate/angle.cc
+
+build/dihedral.o: src/GeometryTopology/InternalCoordinate/dihedral.cc includes/GeometryTopology/InternalCoordinate/dihedral.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/dihedral.o src/GeometryTopology/InternalCoordinate/dihedral.cc
+
+build/distance.o: src/GeometryTopology/InternalCoordinate/distance.cc includes/GeometryTopology/InternalCoordinate/distance.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/distance.o src/GeometryTopology/InternalCoordinate/distance.cc
+
+build/condensedsequence.o: src/InputSet/CondensedSequenceSpace/condensedsequence.cc 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequence.o src/InputSet/CondensedSequenceSpace/condensedsequence.cc
+
+build/condensedsequenceresidue.o: src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequenceresidue.o src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc
+
+build/coordinatefile.o: src/InputSet/CoordinateFileSpace/coordinatefile.cc includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/FileSet/CoordinateFileSpace/coordinatefile.hpp \
-		includes/FileSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coordinatefile.o src/FileSet/CoordinateFileSpace/coordinatefile.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/coordinatefile.o src/InputSet/CoordinateFileSpace/coordinatefile.cc
 
-coordinatefileprocessingexception.o: src/FileSet/CoordinateFileSpace/coordinatefileprocessingexception.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/FileSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coordinatefileprocessingexception.o src/FileSet/CoordinateFileSpace/coordinatefileprocessingexception.cc
+build/coordinatefileprocessingexception.o: src/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/coordinatefileprocessingexception.o src/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.cc
 
-pdbatom.o: src/FileSet/PdbFileSpace/pdbatom.cc includes/FileSet/PdbFileSpace/pdbatom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbatom.o: src/InputSet/PdbFileSpace/pdbatom.cc includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbatom.o src/FileSet/PdbFileSpace/pdbatom.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbatom.o src/InputSet/PdbFileSpace/pdbatom.cc
 
-pdbatomcard.o: src/FileSet/PdbFileSpace/pdbatomcard.cc includes/FileSet/PdbFileSpace/pdbatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbatom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbatomcard.o: src/InputSet/PdbFileSpace/pdbatomcard.cc includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbatomcard.o src/FileSet/PdbFileSpace/pdbatomcard.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbatomcard.o src/InputSet/PdbFileSpace/pdbatomcard.cc
 
-pdbcompoundcard.o: src/FileSet/PdbFileSpace/pdbcompoundcard.cc includes/FileSet/PdbFileSpace/pdbcompoundcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp \
+build/pdbcompoundcard.o: src/InputSet/PdbFileSpace/pdbcompoundcard.cc includes/InputSet/PdbFileSpace/pdbcompoundcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbcompoundcard.o src/FileSet/PdbFileSpace/pdbcompoundcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbcompoundcard.o src/InputSet/PdbFileSpace/pdbcompoundcard.cc
 
-pdbcompoundspecification.o: src/FileSet/PdbFileSpace/pdbcompoundspecification.cc includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp \
+build/pdbcompoundspecification.o: src/InputSet/PdbFileSpace/pdbcompoundspecification.cc includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbcompoundspecification.o src/FileSet/PdbFileSpace/pdbcompoundspecification.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbcompoundspecification.o src/InputSet/PdbFileSpace/pdbcompoundspecification.cc
 
-pdbconnectcard.o: src/FileSet/PdbFileSpace/pdbconnectcard.cc includes/FileSet/PdbFileSpace/pdbconnectcard.hpp \
+build/pdbconnectcard.o: src/InputSet/PdbFileSpace/pdbconnectcard.cc includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbconnectcard.o src/FileSet/PdbFileSpace/pdbconnectcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbconnectcard.o src/InputSet/PdbFileSpace/pdbconnectcard.cc
 
-pdbcrystallographiccard.o: src/FileSet/PdbFileSpace/pdbcrystallographiccard.cc includes/FileSet/PdbFileSpace/pdbcrystallographiccard.hpp \
+build/pdbcrystallographiccard.o: src/InputSet/PdbFileSpace/pdbcrystallographiccard.cc includes/InputSet/PdbFileSpace/pdbcrystallographiccard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbcrystallographiccard.o src/FileSet/PdbFileSpace/pdbcrystallographiccard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbcrystallographiccard.o src/InputSet/PdbFileSpace/pdbcrystallographiccard.cc
 
-pdbdisulfidebondcard.o: src/FileSet/PdbFileSpace/pdbdisulfidebondcard.cc includes/FileSet/PdbFileSpace/pdbdisulfidebondcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbdisulfideresiduebond.hpp \
+build/pdbdisulfidebondcard.o: src/InputSet/PdbFileSpace/pdbdisulfidebondcard.cc includes/InputSet/PdbFileSpace/pdbdisulfidebondcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbdisulfideresiduebond.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbdisulfidebondcard.o src/FileSet/PdbFileSpace/pdbdisulfidebondcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbdisulfidebondcard.o src/InputSet/PdbFileSpace/pdbdisulfidebondcard.cc
 
-pdbdisulfideresidue.o: src/FileSet/PdbFileSpace/pdbdisulfideresidue.cc includes/FileSet/PdbFileSpace/pdbdisulfideresidue.hpp \
+build/pdbdisulfideresidue.o: src/InputSet/PdbFileSpace/pdbdisulfideresidue.cc includes/InputSet/PdbFileSpace/pdbdisulfideresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbdisulfideresidue.o src/FileSet/PdbFileSpace/pdbdisulfideresidue.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbdisulfideresidue.o src/InputSet/PdbFileSpace/pdbdisulfideresidue.cc
 
-pdbdisulfideresiduebond.o: src/FileSet/PdbFileSpace/pdbdisulfideresiduebond.cc includes/FileSet/PdbFileSpace/pdbdisulfideresiduebond.hpp \
-		includes/FileSet/PdbFileSpace/pdbdisulfideresidue.hpp \
+build/pdbdisulfideresiduebond.o: src/InputSet/PdbFileSpace/pdbdisulfideresiduebond.cc includes/InputSet/PdbFileSpace/pdbdisulfideresiduebond.hpp \
+		includes/InputSet/PdbFileSpace/pdbdisulfideresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbdisulfideresiduebond.o src/FileSet/PdbFileSpace/pdbdisulfideresiduebond.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbdisulfideresiduebond.o src/InputSet/PdbFileSpace/pdbdisulfideresiduebond.cc
 
-pdbfile.o: src/FileSet/PdbFileSpace/pdbfile.cc includes/FileSet/PdbFileSpace/pdbfile.hpp \
-		includes/FileSet/PdbFileSpace/pdbheadercard.hpp \
-		includes/FileSet/PdbFileSpace/pdbtitlecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbcompoundcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbcompoundspecification.hpp \
-		includes/FileSet/PdbFileSpace/pdbnummodelcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodeltypecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbresiduesequencecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbresiduesequence.hpp \
-		includes/FileSet/PdbFileSpace/pdbresiduemodificationcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbresiduemodification.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogencard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogen.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogennamecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogenname.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogensynonymcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogensynonym.hpp \
-		includes/FileSet/PdbFileSpace/pdbformulacard.hpp \
-		includes/FileSet/PdbFileSpace/pdbformula.hpp \
-		includes/FileSet/PdbFileSpace/pdbhelixcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbhelix.hpp \
-		includes/FileSet/PdbFileSpace/pdbhelixresidue.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheetcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheet.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheetstrand.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
-		includes/FileSet/PdbFileSpace/pdbdisulfidebondcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbdisulfideresiduebond.hpp \
-		includes/FileSet/PdbFileSpace/pdbdisulfideresidue.hpp \
-		includes/FileSet/PdbFileSpace/pdblinkcard.hpp \
-		includes/FileSet/PdbFileSpace/pdblink.hpp \
-		includes/FileSet/PdbFileSpace/pdblinkresidue.hpp \
-		includes/FileSet/PdbFileSpace/pdbsitecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbsite.hpp \
-		includes/FileSet/PdbFileSpace/pdbsiteresidue.hpp \
-		includes/FileSet/PdbFileSpace/pdbcrystallographiccard.hpp \
-		includes/FileSet/PdbFileSpace/pdboriginxncard.hpp \
-		includes/FileSet/PdbFileSpace/pdboriginxn.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/FileSet/PdbFileSpace/pdbscalencard.hpp \
-		includes/FileSet/PdbFileSpace/pdbscalen.hpp \
-		includes/FileSet/PdbFileSpace/pdbmatrixncard.hpp \
-		includes/FileSet/PdbFileSpace/pdbmatrixn.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodelcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodel.hpp \
-		includes/FileSet/PdbFileSpace/pdbatom.hpp \
-		includes/FileSet/PdbFileSpace/pdbatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbconnectcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp \
-		includes/FileSet/PdbFileSpace/pdbresidue.hpp \
+build/pdbfile.o: src/InputSet/PdbFileSpace/pdbfile.cc includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbFileSpace/pdbheadercard.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbcompoundcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp \
+		includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodeltypecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbresiduesequence.hpp \
+		includes/InputSet/PdbFileSpace/pdbresiduemodificationcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbresiduemodification.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogencard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogen.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogennamecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenname.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogensynonymcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogensynonym.hpp \
+		includes/InputSet/PdbFileSpace/pdbformulacard.hpp \
+		includes/InputSet/PdbFileSpace/pdbformula.hpp \
+		includes/InputSet/PdbFileSpace/pdbhelixcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbhelix.hpp \
+		includes/InputSet/PdbFileSpace/pdbhelixresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheetcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheet.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheetstrand.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbdisulfidebondcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbdisulfideresiduebond.hpp \
+		includes/InputSet/PdbFileSpace/pdbdisulfideresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbsitecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbsite.hpp \
+		includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbcrystallographiccard.hpp \
+		includes/InputSet/PdbFileSpace/pdboriginxncard.hpp \
+		includes/InputSet/PdbFileSpace/pdboriginxn.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/InputSet/PdbFileSpace/pdbscalencard.hpp \
+		includes/InputSet/PdbFileSpace/pdbscalen.hpp \
+		includes/InputSet/PdbFileSpace/pdbmatrixncard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmatrixn.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbFileSpace/pdbresidue.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbfile.o src/FileSet/PdbFileSpace/pdbfile.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbfile.o src/InputSet/PdbFileSpace/pdbfile.cc
 
-pdbfileprocessingexception.o: src/FileSet/PdbFileSpace/pdbfileprocessingexception.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbfileprocessingexception.o src/FileSet/PdbFileSpace/pdbfileprocessingexception.cc
+build/pdbfileprocessingexception.o: src/InputSet/PdbFileSpace/pdbfileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbfileprocessingexception.o src/InputSet/PdbFileSpace/pdbfileprocessingexception.cc
 
-pdbformula.o: src/FileSet/PdbFileSpace/pdbformula.cc includes/FileSet/PdbFileSpace/pdbformula.hpp \
+build/pdbformula.o: src/InputSet/PdbFileSpace/pdbformula.cc includes/InputSet/PdbFileSpace/pdbformula.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbformula.o src/FileSet/PdbFileSpace/pdbformula.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbformula.o src/InputSet/PdbFileSpace/pdbformula.cc
 
-pdbformulacard.o: src/FileSet/PdbFileSpace/pdbformulacard.cc includes/FileSet/PdbFileSpace/pdbformulacard.hpp \
-		includes/FileSet/PdbFileSpace/pdbformula.hpp \
+build/pdbformulacard.o: src/InputSet/PdbFileSpace/pdbformulacard.cc includes/InputSet/PdbFileSpace/pdbformulacard.hpp \
+		includes/InputSet/PdbFileSpace/pdbformula.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbformulacard.o src/FileSet/PdbFileSpace/pdbformulacard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbformulacard.o src/InputSet/PdbFileSpace/pdbformulacard.cc
 
-pdbheadercard.o: src/FileSet/PdbFileSpace/pdbheadercard.cc includes/FileSet/PdbFileSpace/pdbheadercard.hpp \
+build/pdbheadercard.o: src/InputSet/PdbFileSpace/pdbheadercard.cc includes/InputSet/PdbFileSpace/pdbheadercard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheadercard.o src/FileSet/PdbFileSpace/pdbheadercard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheadercard.o src/InputSet/PdbFileSpace/pdbheadercard.cc
 
-pdbhelix.o: src/FileSet/PdbFileSpace/pdbhelix.cc includes/FileSet/PdbFileSpace/pdbhelix.hpp \
-		includes/FileSet/PdbFileSpace/pdbhelixresidue.hpp \
+build/pdbhelix.o: src/InputSet/PdbFileSpace/pdbhelix.cc includes/InputSet/PdbFileSpace/pdbhelix.hpp \
+		includes/InputSet/PdbFileSpace/pdbhelixresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbhelix.o src/FileSet/PdbFileSpace/pdbhelix.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbhelix.o src/InputSet/PdbFileSpace/pdbhelix.cc
 
-pdbhelixcard.o: src/FileSet/PdbFileSpace/pdbhelixcard.cc includes/FileSet/PdbFileSpace/pdbhelixcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbhelix.hpp \
+build/pdbhelixcard.o: src/InputSet/PdbFileSpace/pdbhelixcard.cc includes/InputSet/PdbFileSpace/pdbhelixcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbhelix.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbhelixcard.o src/FileSet/PdbFileSpace/pdbhelixcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbhelixcard.o src/InputSet/PdbFileSpace/pdbhelixcard.cc
 
-pdbhelixresidue.o: src/FileSet/PdbFileSpace/pdbhelixresidue.cc includes/FileSet/PdbFileSpace/pdbhelixresidue.hpp \
+build/pdbhelixresidue.o: src/InputSet/PdbFileSpace/pdbhelixresidue.cc includes/InputSet/PdbFileSpace/pdbhelixresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbhelixresidue.o src/FileSet/PdbFileSpace/pdbhelixresidue.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbhelixresidue.o src/InputSet/PdbFileSpace/pdbhelixresidue.cc
 
-pdbheterogen.o: src/FileSet/PdbFileSpace/pdbheterogen.cc includes/FileSet/PdbFileSpace/pdbheterogen.hpp \
+build/pdbheterogen.o: src/InputSet/PdbFileSpace/pdbheterogen.cc includes/InputSet/PdbFileSpace/pdbheterogen.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheterogen.o src/FileSet/PdbFileSpace/pdbheterogen.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheterogen.o src/InputSet/PdbFileSpace/pdbheterogen.cc
 
-pdbheterogenatomcard.o: src/FileSet/PdbFileSpace/pdbheterogenatomcard.cc includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbatom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbheterogenatomcard.o: src/InputSet/PdbFileSpace/pdbheterogenatomcard.cc includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheterogenatomcard.o src/FileSet/PdbFileSpace/pdbheterogenatomcard.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheterogenatomcard.o src/InputSet/PdbFileSpace/pdbheterogenatomcard.cc
 
-pdbheterogencard.o: src/FileSet/PdbFileSpace/pdbheterogencard.cc includes/FileSet/PdbFileSpace/pdbheterogencard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogen.hpp \
+build/pdbheterogencard.o: src/InputSet/PdbFileSpace/pdbheterogencard.cc includes/InputSet/PdbFileSpace/pdbheterogencard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogen.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheterogencard.o src/FileSet/PdbFileSpace/pdbheterogencard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheterogencard.o src/InputSet/PdbFileSpace/pdbheterogencard.cc
 
-pdbheterogenname.o: src/FileSet/PdbFileSpace/pdbheterogenname.cc includes/FileSet/PdbFileSpace/pdbheterogenname.hpp \
+build/pdbheterogenname.o: src/InputSet/PdbFileSpace/pdbheterogenname.cc includes/InputSet/PdbFileSpace/pdbheterogenname.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheterogenname.o src/FileSet/PdbFileSpace/pdbheterogenname.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheterogenname.o src/InputSet/PdbFileSpace/pdbheterogenname.cc
 
-pdbheterogennamecard.o: src/FileSet/PdbFileSpace/pdbheterogennamecard.cc includes/FileSet/PdbFileSpace/pdbheterogennamecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogenname.hpp \
+build/pdbheterogennamecard.o: src/InputSet/PdbFileSpace/pdbheterogennamecard.cc includes/InputSet/PdbFileSpace/pdbheterogennamecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenname.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheterogennamecard.o src/FileSet/PdbFileSpace/pdbheterogennamecard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheterogennamecard.o src/InputSet/PdbFileSpace/pdbheterogennamecard.cc
 
-pdbheterogensynonym.o: src/FileSet/PdbFileSpace/pdbheterogensynonym.cc includes/FileSet/PdbFileSpace/pdbheterogensynonym.hpp \
+build/pdbheterogensynonym.o: src/InputSet/PdbFileSpace/pdbheterogensynonym.cc includes/InputSet/PdbFileSpace/pdbheterogensynonym.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheterogensynonym.o src/FileSet/PdbFileSpace/pdbheterogensynonym.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheterogensynonym.o src/InputSet/PdbFileSpace/pdbheterogensynonym.cc
 
-pdbheterogensynonymcard.o: src/FileSet/PdbFileSpace/pdbheterogensynonymcard.cc includes/FileSet/PdbFileSpace/pdbheterogensynonymcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogensynonym.hpp \
+build/pdbheterogensynonymcard.o: src/InputSet/PdbFileSpace/pdbheterogensynonymcard.cc includes/InputSet/PdbFileSpace/pdbheterogensynonymcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogensynonym.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbheterogensynonymcard.o src/FileSet/PdbFileSpace/pdbheterogensynonymcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbheterogensynonymcard.o src/InputSet/PdbFileSpace/pdbheterogensynonymcard.cc
 
-pdblink.o: src/FileSet/PdbFileSpace/pdblink.cc includes/FileSet/PdbFileSpace/pdblink.hpp \
-		includes/FileSet/PdbFileSpace/pdblinkresidue.hpp \
+build/pdblink.o: src/InputSet/PdbFileSpace/pdblink.cc includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdblink.o src/FileSet/PdbFileSpace/pdblink.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdblink.o src/InputSet/PdbFileSpace/pdblink.cc
 
-pdblinkcard.o: src/FileSet/PdbFileSpace/pdblinkcard.cc includes/FileSet/PdbFileSpace/pdblinkcard.hpp \
-		includes/FileSet/PdbFileSpace/pdblink.hpp \
+build/pdblinkcard.o: src/InputSet/PdbFileSpace/pdblinkcard.cc includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdblinkcard.o src/FileSet/PdbFileSpace/pdblinkcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdblinkcard.o src/InputSet/PdbFileSpace/pdblinkcard.cc
 
-pdblinkresidue.o: src/FileSet/PdbFileSpace/pdblinkresidue.cc includes/FileSet/PdbFileSpace/pdblinkresidue.hpp \
+build/pdblinkresidue.o: src/InputSet/PdbFileSpace/pdblinkresidue.cc includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdblinkresidue.o src/FileSet/PdbFileSpace/pdblinkresidue.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdblinkresidue.o src/InputSet/PdbFileSpace/pdblinkresidue.cc
 
-pdbmatrixn.o: src/FileSet/PdbFileSpace/pdbmatrixn.cc includes/FileSet/PdbFileSpace/pdbmatrixn.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbmatrixn.o: src/InputSet/PdbFileSpace/pdbmatrixn.cc includes/InputSet/PdbFileSpace/pdbmatrixn.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbmatrixn.o src/FileSet/PdbFileSpace/pdbmatrixn.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbmatrixn.o src/InputSet/PdbFileSpace/pdbmatrixn.cc
 
-pdbmatrixncard.o: src/FileSet/PdbFileSpace/pdbmatrixncard.cc includes/FileSet/PdbFileSpace/pdbmatrixn.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/FileSet/PdbFileSpace/pdbmatrixncard.hpp \
+build/pdbmatrixncard.o: src/InputSet/PdbFileSpace/pdbmatrixncard.cc includes/InputSet/PdbFileSpace/pdbmatrixn.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/InputSet/PdbFileSpace/pdbmatrixncard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbmatrixncard.o src/FileSet/PdbFileSpace/pdbmatrixncard.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbmatrixncard.o src/InputSet/PdbFileSpace/pdbmatrixncard.cc
 
-pdbmodel.o: src/FileSet/PdbFileSpace/pdbmodel.cc includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodel.hpp \
+build/pdbmodel.o: src/InputSet/PdbFileSpace/pdbmodel.cc includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbmodel.o src/FileSet/PdbFileSpace/pdbmodel.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbmodel.o src/InputSet/PdbFileSpace/pdbmodel.cc
 
-pdbmodelcard.o: src/FileSet/PdbFileSpace/pdbmodelcard.cc includes/FileSet/PdbFileSpace/pdbmodel.hpp \
-		includes/FileSet/PdbFileSpace/pdbmodelcard.hpp \
+build/pdbmodelcard.o: src/InputSet/PdbFileSpace/pdbmodelcard.cc includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbmodelcard.o src/FileSet/PdbFileSpace/pdbmodelcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbmodelcard.o src/InputSet/PdbFileSpace/pdbmodelcard.cc
 
-pdbmodelresidueset.o: src/FileSet/PdbFileSpace/pdbmodelresidueset.cc includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp \
-		includes/FileSet/PdbFileSpace/pdbatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+build/pdbmodelresidueset.o: src/InputSet/PdbFileSpace/pdbmodelresidueset.cc includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbmodelresidueset.o src/FileSet/PdbFileSpace/pdbmodelresidueset.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbmodelresidueset.o src/InputSet/PdbFileSpace/pdbmodelresidueset.cc
 
-pdbmodeltypecard.o: src/FileSet/PdbFileSpace/pdbmodeltypecard.cc includes/FileSet/PdbFileSpace/pdbmodeltypecard.hpp \
+build/pdbmodeltypecard.o: src/InputSet/PdbFileSpace/pdbmodeltypecard.cc includes/InputSet/PdbFileSpace/pdbmodeltypecard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbmodeltypecard.o src/FileSet/PdbFileSpace/pdbmodeltypecard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbmodeltypecard.o src/InputSet/PdbFileSpace/pdbmodeltypecard.cc
 
-pdbnummodelcard.o: src/FileSet/PdbFileSpace/pdbnummodelcard.cc includes/FileSet/PdbFileSpace/pdbnummodelcard.hpp \
+build/pdbnummodelcard.o: src/InputSet/PdbFileSpace/pdbnummodelcard.cc includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbnummodelcard.o src/FileSet/PdbFileSpace/pdbnummodelcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbnummodelcard.o src/InputSet/PdbFileSpace/pdbnummodelcard.cc
 
-pdboriginxn.o: src/FileSet/PdbFileSpace/pdboriginxn.cc includes/FileSet/PdbFileSpace/pdboriginxn.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdboriginxn.o: src/InputSet/PdbFileSpace/pdboriginxn.cc includes/InputSet/PdbFileSpace/pdboriginxn.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdboriginxn.o src/FileSet/PdbFileSpace/pdboriginxn.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdboriginxn.o src/InputSet/PdbFileSpace/pdboriginxn.cc
 
-pdboriginxncard.o: src/FileSet/PdbFileSpace/pdboriginxncard.cc includes/FileSet/PdbFileSpace/pdboriginxn.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/FileSet/PdbFileSpace/pdboriginxncard.hpp \
+build/pdboriginxncard.o: src/InputSet/PdbFileSpace/pdboriginxncard.cc includes/InputSet/PdbFileSpace/pdboriginxn.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/InputSet/PdbFileSpace/pdboriginxncard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdboriginxncard.o src/FileSet/PdbFileSpace/pdboriginxncard.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdboriginxncard.o src/InputSet/PdbFileSpace/pdboriginxncard.cc
 
-pdbresidue.o: src/FileSet/PdbFileSpace/pdbresidue.cc includes/FileSet/PdbFileSpace/pdbresidue.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbresidue.o src/FileSet/PdbFileSpace/pdbresidue.cc
+build/pdbresidue.o: src/InputSet/PdbFileSpace/pdbresidue.cc includes/InputSet/PdbFileSpace/pdbresidue.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbresidue.o src/InputSet/PdbFileSpace/pdbresidue.cc
 
-pdbresiduemodification.o: src/FileSet/PdbFileSpace/pdbresiduemodification.cc includes/FileSet/PdbFileSpace/pdbresiduemodification.hpp \
+build/pdbresiduemodification.o: src/InputSet/PdbFileSpace/pdbresiduemodification.cc includes/InputSet/PdbFileSpace/pdbresiduemodification.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbresiduemodification.o src/FileSet/PdbFileSpace/pdbresiduemodification.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbresiduemodification.o src/InputSet/PdbFileSpace/pdbresiduemodification.cc
 
-pdbresiduemodificationcard.o: src/FileSet/PdbFileSpace/pdbresiduemodificationcard.cc includes/FileSet/PdbFileSpace/pdbresiduemodificationcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbresiduemodification.hpp \
+build/pdbresiduemodificationcard.o: src/InputSet/PdbFileSpace/pdbresiduemodificationcard.cc includes/InputSet/PdbFileSpace/pdbresiduemodificationcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbresiduemodification.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbresiduemodificationcard.o src/FileSet/PdbFileSpace/pdbresiduemodificationcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbresiduemodificationcard.o src/InputSet/PdbFileSpace/pdbresiduemodificationcard.cc
 
-pdbresiduesequence.o: src/FileSet/PdbFileSpace/pdbresiduesequence.cc includes/FileSet/PdbFileSpace/pdbresiduesequence.hpp \
+build/pdbresiduesequence.o: src/InputSet/PdbFileSpace/pdbresiduesequence.cc includes/InputSet/PdbFileSpace/pdbresiduesequence.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbresiduesequence.o src/FileSet/PdbFileSpace/pdbresiduesequence.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbresiduesequence.o src/InputSet/PdbFileSpace/pdbresiduesequence.cc
 
-pdbresiduesequencecard.o: src/FileSet/PdbFileSpace/pdbresiduesequencecard.cc includes/FileSet/PdbFileSpace/pdbresiduesequencecard.hpp \
-		includes/FileSet/PdbFileSpace/pdbresiduesequence.hpp \
+build/pdbresiduesequencecard.o: src/InputSet/PdbFileSpace/pdbresiduesequencecard.cc includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbresiduesequence.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbresiduesequencecard.o src/FileSet/PdbFileSpace/pdbresiduesequencecard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbresiduesequencecard.o src/InputSet/PdbFileSpace/pdbresiduesequencecard.cc
 
-pdbscalen.o: src/FileSet/PdbFileSpace/pdbscalen.cc includes/FileSet/PdbFileSpace/pdbscalen.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbscalen.o: src/InputSet/PdbFileSpace/pdbscalen.cc includes/InputSet/PdbFileSpace/pdbscalen.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbscalen.o src/FileSet/PdbFileSpace/pdbscalen.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbscalen.o src/InputSet/PdbFileSpace/pdbscalen.cc
 
-pdbscalencard.o: src/FileSet/PdbFileSpace/pdbscalencard.cc includes/FileSet/PdbFileSpace/pdbscalen.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/FileSet/PdbFileSpace/pdbscalencard.hpp \
+build/pdbscalencard.o: src/InputSet/PdbFileSpace/pdbscalencard.cc includes/InputSet/PdbFileSpace/pdbscalen.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/InputSet/PdbFileSpace/pdbscalencard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbscalencard.o src/FileSet/PdbFileSpace/pdbscalencard.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbscalencard.o src/InputSet/PdbFileSpace/pdbscalencard.cc
 
-pdbsheet.o: src/FileSet/PdbFileSpace/pdbsheet.cc includes/FileSet/PdbFileSpace/pdbsheet.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheetstrand.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
+build/pdbsheet.o: src/InputSet/PdbFileSpace/pdbsheet.cc includes/InputSet/PdbFileSpace/pdbsheet.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheetstrand.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbsheet.o src/FileSet/PdbFileSpace/pdbsheet.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbsheet.o src/InputSet/PdbFileSpace/pdbsheet.cc
 
-pdbsheetcard.o: src/FileSet/PdbFileSpace/pdbsheetcard.cc includes/FileSet/PdbFileSpace/pdbsheetcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheet.hpp \
+build/pdbsheetcard.o: src/InputSet/PdbFileSpace/pdbsheetcard.cc includes/InputSet/PdbFileSpace/pdbsheetcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheet.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbsheetcard.o src/FileSet/PdbFileSpace/pdbsheetcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbsheetcard.o src/InputSet/PdbFileSpace/pdbsheetcard.cc
 
-pdbsheetstrand.o: src/FileSet/PdbFileSpace/pdbsheetstrand.cc includes/FileSet/PdbFileSpace/pdbsheetstrand.hpp \
-		includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
+build/pdbsheetstrand.o: src/InputSet/PdbFileSpace/pdbsheetstrand.cc includes/InputSet/PdbFileSpace/pdbsheetstrand.hpp \
+		includes/InputSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbsheetstrand.o src/FileSet/PdbFileSpace/pdbsheetstrand.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbsheetstrand.o src/InputSet/PdbFileSpace/pdbsheetstrand.cc
 
-pdbsheetstrandresidue.o: src/FileSet/PdbFileSpace/pdbsheetstrandresidue.cc includes/FileSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
+build/pdbsheetstrandresidue.o: src/InputSet/PdbFileSpace/pdbsheetstrandresidue.cc includes/InputSet/PdbFileSpace/pdbsheetstrandresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbsheetstrandresidue.o src/FileSet/PdbFileSpace/pdbsheetstrandresidue.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbsheetstrandresidue.o src/InputSet/PdbFileSpace/pdbsheetstrandresidue.cc
 
-pdbsite.o: src/FileSet/PdbFileSpace/pdbsite.cc includes/FileSet/PdbFileSpace/pdbsite.hpp \
-		includes/FileSet/PdbFileSpace/pdbsiteresidue.hpp \
+build/pdbsite.o: src/InputSet/PdbFileSpace/pdbsite.cc includes/InputSet/PdbFileSpace/pdbsite.hpp \
+		includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbsite.o src/FileSet/PdbFileSpace/pdbsite.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbsite.o src/InputSet/PdbFileSpace/pdbsite.cc
 
-pdbsitecard.o: src/FileSet/PdbFileSpace/pdbsitecard.cc includes/FileSet/PdbFileSpace/pdbsite.hpp \
-		includes/FileSet/PdbFileSpace/pdbsitecard.hpp \
+build/pdbsitecard.o: src/InputSet/PdbFileSpace/pdbsitecard.cc includes/InputSet/PdbFileSpace/pdbsite.hpp \
+		includes/InputSet/PdbFileSpace/pdbsitecard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbsitecard.o src/FileSet/PdbFileSpace/pdbsitecard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbsitecard.o src/InputSet/PdbFileSpace/pdbsitecard.cc
 
-pdbsiteresidue.o: src/FileSet/PdbFileSpace/pdbsiteresidue.cc includes/FileSet/PdbFileSpace/pdbsiteresidue.hpp \
+build/pdbsiteresidue.o: src/InputSet/PdbFileSpace/pdbsiteresidue.cc includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbsiteresidue.o src/FileSet/PdbFileSpace/pdbsiteresidue.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbsiteresidue.o src/InputSet/PdbFileSpace/pdbsiteresidue.cc
 
-pdbtitlecard.o: src/FileSet/PdbFileSpace/pdbtitlecard.cc includes/FileSet/PdbFileSpace/pdbtitlecard.hpp \
+build/pdbtitlecard.o: src/InputSet/PdbFileSpace/pdbtitlecard.cc includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbtitlecard.o src/FileSet/PdbFileSpace/pdbtitlecard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbtitlecard.o src/InputSet/PdbFileSpace/pdbtitlecard.cc
 
-pdbqtatom.o: src/FileSet/PdbqtFileSpace/pdbqtatom.cc includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbqtatom.o: src/InputSet/PdbqtFileSpace/pdbqtatom.cc includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtatom.o src/FileSet/PdbqtFileSpace/pdbqtatom.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtatom.o src/InputSet/PdbqtFileSpace/pdbqtatom.cc
 
-pdbqtatomcard.o: src/FileSet/PdbqtFileSpace/pdbqtatomcard.cc includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbqtatomcard.o: src/InputSet/PdbqtFileSpace/pdbqtatomcard.cc includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtatomcard.o src/FileSet/PdbqtFileSpace/pdbqtatomcard.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtatomcard.o src/InputSet/PdbqtFileSpace/pdbqtatomcard.cc
 
-pdbqtbranchcard.o: src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc includes/FileSet/PdbqtFileSpace/pdbqtbranchcard.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbqtbranchcard.o: src/InputSet/PdbqtFileSpace/pdbqtbranchcard.cc includes/InputSet/PdbqtFileSpace/pdbqtbranchcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtbranchcard.o src/FileSet/PdbqtFileSpace/pdbqtbranchcard.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtbranchcard.o src/InputSet/PdbqtFileSpace/pdbqtbranchcard.cc
 
-pdbqtcompoundcard.o: src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc includes/FileSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
+build/pdbqtcompoundcard.o: src/InputSet/PdbqtFileSpace/pdbqtcompoundcard.cc includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtcompoundcard.o src/FileSet/PdbqtFileSpace/pdbqtcompoundcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtcompoundcard.o src/InputSet/PdbqtFileSpace/pdbqtcompoundcard.cc
 
-pdbqtfile.o: src/FileSet/PdbqtFileSpace/pdbqtfile.cc includes/utils.hpp \
-                includes/common.hpp \
-                includes/Geometry/coordinate.hpp \
-                includes/Glycam/sugarname.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtfile.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtfile.o src/FileSet/PdbqtFileSpace/pdbqtfile.cc
+build/pdbqtfile.o: src/InputSet/PdbqtFileSpace/pdbqtfile.cc includes/utils.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtbranchcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtfile.o src/InputSet/PdbqtFileSpace/pdbqtfile.cc
 
-pdbqtfileprocessingexception.o: src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtfileprocessingexception.o src/FileSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc
+build/pdbqtfileprocessingexception.o: src/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtfileprocessingexception.o src/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.cc
 
-pdbqtmodel.o: src/FileSet/PdbqtFileSpace/pdbqtmodel.cc includes/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtremarkcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
-                includes/utils.hpp \
-                includes/common.hpp \
-                includes/Geometry/coordinate.hpp \
-                includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtmodel.o src/FileSet/PdbqtFileSpace/pdbqtmodel.cc
-
-pdbqtmodelcard.o: src/FileSet/PdbqtFileSpace/pdbqtmodelcard.cc includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp \
-		includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+build/pdbqtmodel.o: src/InputSet/PdbqtFileSpace/pdbqtmodel.cc includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtmodelcard.o src/FileSet/PdbqtFileSpace/pdbqtmodelcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtmodel.o src/InputSet/PdbqtFileSpace/pdbqtmodel.cc
 
-pdbqtmodelresidueset.o: src/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.cc includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtbranchcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtrootcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
-                includes/utils.hpp \
-                includes/common.hpp \
-                includes/Geometry/coordinate.hpp \
-                includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtmodelresidueset.o src/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.cc
-
-pdbqtremarkcard.o: src/FileSet/PdbqtFileSpace/pdbqtremarkcard.cc includes/FileSet/PdbqtFileSpace/pdbqtremarkcard.hpp \
+build/pdbqtmodelcard.o: src/InputSet/PdbqtFileSpace/pdbqtmodelcard.cc includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtremarkcard.o src/FileSet/PdbqtFileSpace/pdbqtremarkcard.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtmodelcard.o src/InputSet/PdbqtFileSpace/pdbqtmodelcard.cc
 
-pdbqtrootcard.o: src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc includes/FileSet/PdbqtFileSpace/pdbqtrootcard.hpp \
-                includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp \
-                includes/utils.hpp \
-                includes/common.hpp \
-                includes/Geometry/coordinate.hpp \
-                includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqtrootcard.o src/FileSet/PdbqtFileSpace/pdbqtrootcard.cc
-
-pdbqttorsionaldofcard.o: src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc includes/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp \
-                includes/utils.hpp \
-                includes/common.hpp \
-                includes/Geometry/coordinate.hpp \
-                includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbqttorsionaldofcard.o src/FileSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc
-
-topologyangle.o: src/FileSet/TopologyFileSpace/topologyangle.cc includes/FileSet/TopologyFileSpace/topologyangle.hpp \
-		includes/FileSet/TopologyFileSpace/topologyangletype.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyangle.o src/FileSet/TopologyFileSpace/topologyangle.cc
-
-topologyangletype.o: src/FileSet/TopologyFileSpace/topologyangletype.cc includes/FileSet/TopologyFileSpace/topologyangletype.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyangletype.o src/FileSet/TopologyFileSpace/topologyangletype.cc
-
-topologyassembly.o: src/FileSet/TopologyFileSpace/topologyassembly.cc includes/FileSet/TopologyFileSpace/topologyassembly.hpp \
-		includes/FileSet/TopologyFileSpace/topologyresidue.hpp \
-		includes/FileSet/TopologyFileSpace/topologyatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyassembly.o src/FileSet/TopologyFileSpace/topologyassembly.cc
-
-topologyatom.o: src/FileSet/TopologyFileSpace/topologyatom.cc includes/FileSet/TopologyFileSpace/topologyatom.hpp \
-		includes/FileSet/TopologyFileSpace/topologyatompair.hpp \
-		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyatom.o src/FileSet/TopologyFileSpace/topologyatom.cc
-
-topologyatompair.o: src/FileSet/TopologyFileSpace/topologyatompair.cc includes/FileSet/TopologyFileSpace/topologyatompair.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyatompair.o src/FileSet/TopologyFileSpace/topologyatompair.cc
-
-topologybond.o: src/FileSet/TopologyFileSpace/topologybond.cc includes/FileSet/TopologyFileSpace/topologybond.hpp \
-		includes/FileSet/TopologyFileSpace/topologybondtype.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologybond.o src/FileSet/TopologyFileSpace/topologybond.cc
-
-topologybondtype.o: src/FileSet/TopologyFileSpace/topologybondtype.cc includes/FileSet/TopologyFileSpace/topologybondtype.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologybondtype.o src/FileSet/TopologyFileSpace/topologybondtype.cc
-
-topologydihedral.o: src/FileSet/TopologyFileSpace/topologydihedral.cc includes/FileSet/TopologyFileSpace/topologydihedral.hpp \
-		includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologydihedral.o src/FileSet/TopologyFileSpace/topologydihedral.cc
-
-topologydihedraltype.o: src/FileSet/TopologyFileSpace/topologydihedraltype.cc includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologydihedraltype.o src/FileSet/TopologyFileSpace/topologydihedraltype.cc
-
-topologyfile.o: src/FileSet/TopologyFileSpace/topologyfile.cc includes/FileSet/TopologyFileSpace/topologyfile.hpp \
-		includes/FileSet/TopologyFileSpace/topologyatompair.hpp \
-		includes/FileSet/TopologyFileSpace/topologybondtype.hpp \
-		includes/FileSet/TopologyFileSpace/topologyangletype.hpp \
-		includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp \
-		includes/FileSet/TopologyFileSpace/topologyassembly.hpp \
-		includes/FileSet/TopologyFileSpace/topologyatom.hpp \
-		includes/FileSet/TopologyFileSpace/topologybond.hpp \
-		includes/FileSet/TopologyFileSpace/topologyangle.hpp \
-		includes/FileSet/TopologyFileSpace/topologydihedral.hpp \
-		includes/FileSet/TopologyFileSpace/topologyresidue.hpp \
-		includes/FileSet/TopologyFileSpace/topologyfileprocessingexception.hpp \
+build/pdbqtmodelresidueset.o: src/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.cc includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtbranchcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
 		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyfile.o src/FileSet/TopologyFileSpace/topologyfile.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtmodelresidueset.o src/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.cc
 
-topologyfileprocessingexception.o: src/FileSet/TopologyFileSpace/topologyfileprocessingexception.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
-		includes/FileSet/TopologyFileSpace/topologyfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyfileprocessingexception.o src/FileSet/TopologyFileSpace/topologyfileprocessingexception.cc
-
-topologyresidue.o: src/FileSet/TopologyFileSpace/topologyresidue.cc includes/FileSet/TopologyFileSpace/topologyresidue.hpp \
-		includes/FileSet/TopologyFileSpace/topologyatom.hpp \
+build/pdbqtremarkcard.o: src/InputSet/PdbqtFileSpace/pdbqtremarkcard.cc includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp \
+		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o topologyresidue.o src/FileSet/TopologyFileSpace/topologyresidue.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtremarkcard.o src/InputSet/PdbqtFileSpace/pdbqtremarkcard.cc
 
-angle.o: src/Geometry/InternalCoordinate/angle.cc includes/Geometry/InternalCoordinate/angle.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o angle.o src/Geometry/InternalCoordinate/angle.cc
-
-dihedral.o: src/Geometry/InternalCoordinate/dihedral.cc includes/Geometry/InternalCoordinate/dihedral.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dihedral.o src/Geometry/InternalCoordinate/dihedral.cc
-
-distance.o: src/Geometry/InternalCoordinate/distance.cc includes/Geometry/InternalCoordinate/distance.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o distance.o src/Geometry/InternalCoordinate/distance.cc
-
-libraryfile.o: src/ParameterSet/LibraryFileSpace/libraryfile.cc includes/utils.hpp \
+build/pdbqtrootcard.o: src/InputSet/PdbqtFileSpace/pdbqtrootcard.cc includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtrootcard.o src/InputSet/PdbqtFileSpace/pdbqtrootcard.cc
+
+build/pdbqttorsionaldofcard.o: src/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp \
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqttorsionaldofcard.o src/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.cc
+
+build/topologyangle.o: src/InputSet/TopologyFileSpace/topologyangle.cc includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyangle.o src/InputSet/TopologyFileSpace/topologyangle.cc
+
+build/topologyangletype.o: src/InputSet/TopologyFileSpace/topologyangletype.cc includes/InputSet/TopologyFileSpace/topologyangletype.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyangletype.o src/InputSet/TopologyFileSpace/topologyangletype.cc
+
+build/topologyassembly.o: src/InputSet/TopologyFileSpace/topologyassembly.cc includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyassembly.o src/InputSet/TopologyFileSpace/topologyassembly.cc
+
+build/topologyatom.o: src/InputSet/TopologyFileSpace/topologyatom.cc includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyatom.o src/InputSet/TopologyFileSpace/topologyatom.cc
+
+build/topologyatompair.o: src/InputSet/TopologyFileSpace/topologyatompair.cc includes/InputSet/TopologyFileSpace/topologyatompair.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyatompair.o src/InputSet/TopologyFileSpace/topologyatompair.cc
+
+build/topologybond.o: src/InputSet/TopologyFileSpace/topologybond.cc includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologybond.o src/InputSet/TopologyFileSpace/topologybond.cc
+
+build/topologybondtype.o: src/InputSet/TopologyFileSpace/topologybondtype.cc includes/InputSet/TopologyFileSpace/topologybondtype.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologybondtype.o src/InputSet/TopologyFileSpace/topologybondtype.cc
+
+build/topologydihedral.o: src/InputSet/TopologyFileSpace/topologydihedral.cc includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologydihedral.o src/InputSet/TopologyFileSpace/topologydihedral.cc
+
+build/topologydihedraltype.o: src/InputSet/TopologyFileSpace/topologydihedraltype.cc includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologydihedraltype.o src/InputSet/TopologyFileSpace/topologydihedraltype.cc
+
+build/topologyfile.o: src/InputSet/TopologyFileSpace/topologyfile.cc includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp \
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyfile.o src/InputSet/TopologyFileSpace/topologyfile.cc
+
+build/topologyfileprocessingexception.o: src/InputSet/TopologyFileSpace/topologyfileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyfileprocessingexception.o src/InputSet/TopologyFileSpace/topologyfileprocessingexception.cc
+
+build/topologyresidue.o: src/InputSet/TopologyFileSpace/topologyresidue.cc includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologyresidue.o src/InputSet/TopologyFileSpace/topologyresidue.cc
+
+build/libraryfile.o: src/ParameterSet/LibraryFileSpace/libraryfile.cc includes/utils.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libraryfile.o src/ParameterSet/LibraryFileSpace/libraryfile.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/libraryfile.o src/ParameterSet/LibraryFileSpace/libraryfile.cc
 
-libraryfileatom.o: src/ParameterSet/LibraryFileSpace/libraryfileatom.cc includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
-		includes/Geometry/coordinate.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libraryfileatom.o src/ParameterSet/LibraryFileSpace/libraryfileatom.cc
+build/libraryfileatom.o: src/ParameterSet/LibraryFileSpace/libraryfileatom.cc includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/GeometryTopology/coordinate.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/libraryfileatom.o src/ParameterSet/LibraryFileSpace/libraryfileatom.cc
 
-libraryfileprocessingexception.o: src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+build/libraryfileprocessingexception.o: src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libraryfileprocessingexception.o src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/libraryfileprocessingexception.o src/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.cc
 
-libraryfileresidue.o: src/ParameterSet/LibraryFileSpace/libraryfileresidue.cc includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+build/libraryfileresidue.o: src/ParameterSet/LibraryFileSpace/libraryfileresidue.cc includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
-		includes/Geometry/coordinate.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o libraryfileresidue.o src/ParameterSet/LibraryFileSpace/libraryfileresidue.cc
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/libraryfileresidue.o src/ParameterSet/LibraryFileSpace/libraryfileresidue.cc
 
-parameterfile.o: src/ParameterSet/ParameterFileSpace/parameterfile.cc includes/utils.hpp \
+build/parameterfile.o: src/ParameterSet/ParameterFileSpace/parameterfile.cc includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
@@ -1147,83 +1225,85 @@ parameterfile.o: src/ParameterSet/ParameterFileSpace/parameterfile.cc includes/u
 		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parameterfile.o src/ParameterSet/ParameterFileSpace/parameterfile.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/parameterfile.o src/ParameterSet/ParameterFileSpace/parameterfile.cc
 
-parameterfileangle.o: src/ParameterSet/ParameterFileSpace/parameterfileangle.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+build/parameterfileangle.o: src/ParameterSet/ParameterFileSpace/parameterfileangle.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parameterfileangle.o src/ParameterSet/ParameterFileSpace/parameterfileangle.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/parameterfileangle.o src/ParameterSet/ParameterFileSpace/parameterfileangle.cc
 
-parameterfileatom.o: src/ParameterSet/ParameterFileSpace/parameterfileatom.cc includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+build/parameterfileatom.o: src/ParameterSet/ParameterFileSpace/parameterfileatom.cc includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parameterfileatom.o src/ParameterSet/ParameterFileSpace/parameterfileatom.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/parameterfileatom.o src/ParameterSet/ParameterFileSpace/parameterfileatom.cc
 
-parameterfilebond.o: src/ParameterSet/ParameterFileSpace/parameterfilebond.cc includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+build/parameterfilebond.o: src/ParameterSet/ParameterFileSpace/parameterfilebond.cc includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parameterfilebond.o src/ParameterSet/ParameterFileSpace/parameterfilebond.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/parameterfilebond.o src/ParameterSet/ParameterFileSpace/parameterfilebond.cc
 
-parameterfiledihedral.o: src/ParameterSet/ParameterFileSpace/parameterfiledihedral.cc includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+build/parameterfiledihedral.o: src/ParameterSet/ParameterFileSpace/parameterfiledihedral.cc includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parameterfiledihedral.o src/ParameterSet/ParameterFileSpace/parameterfiledihedral.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/parameterfiledihedral.o src/ParameterSet/ParameterFileSpace/parameterfiledihedral.cc
 
-parameterfiledihedralterm.o: src/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+build/parameterfiledihedralterm.o: src/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parameterfiledihedralterm.o src/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/parameterfiledihedralterm.o src/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.cc
 
-parameterfileprocessingexception.o: src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+build/parameterfileprocessingexception.o: src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
 		includes/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o parameterfileprocessingexception.o src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/parameterfileprocessingexception.o src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc
 
-prepfile.o: src/ParameterSet/PrepFileSpace/prepfile.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+build/prepfile.o: src/ParameterSet/PrepFileSpace/prepfile.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/utils.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o prepfile.o src/ParameterSet/PrepFileSpace/prepfile.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/prepfile.o src/ParameterSet/PrepFileSpace/prepfile.cc
 
-prepfileatom.o: src/ParameterSet/PrepFileSpace/prepfileatom.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+build/prepfileatom.o: src/ParameterSet/PrepFileSpace/prepfileatom.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o prepfileatom.o src/ParameterSet/PrepFileSpace/prepfileatom.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/prepfileatom.o src/ParameterSet/PrepFileSpace/prepfileatom.cc
 
-prepfileprocessingexception.o: src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+build/prepfileprocessingexception.o: src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o prepfileprocessingexception.o src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/prepfileprocessingexception.o src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc
 
-prepfileresidue.o: src/ParameterSet/PrepFileSpace/prepfileresidue.cc includes/utils.hpp \
+build/prepfileresidue.o: src/ParameterSet/PrepFileSpace/prepfileresidue.cc includes/utils.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o prepfileresidue.o src/ParameterSet/PrepFileSpace/prepfileresidue.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/prepfileresidue.o src/ParameterSet/PrepFileSpace/prepfileresidue.cc
 
-pdbpreprocessor.o: src/Resolver/PdbPreprocessor/pdbpreprocessor.cc includes/Resolver/PdbPreprocessor/pdbpreprocessor.hpp \
-		includes/FileSet/PdbFileSpace/pdbresidue.hpp \
-		includes/FileSet/PdbFileSpace/pdbfile.hpp \
-		includes/FileSet/PdbFileSpace/pdbatom.hpp \
-		includes/Geometry/coordinate.hpp \
+build/pdbpreprocessor.o: src/Resolver/PdbPreprocessor/pdbpreprocessor.cc includes/Resolver/PdbPreprocessor/pdbpreprocessor.hpp \
+		includes/InputSet/PdbFileSpace/pdbresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
 		includes/common.hpp \
-		includes/Glycam/sugarname.hpp \
+		includes/Glycan/sugarname.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
 		includes/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.hpp \
 		includes/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.hpp \
@@ -1238,46 +1318,46 @@ pdbpreprocessor.o: src/Resolver/PdbPreprocessor/pdbpreprocessor.cc includes/Reso
 		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
-		includes/FileSet/PdbFileSpace/pdbatomcard.hpp \
-		includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
 		includes/utils.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessor.o src/Resolver/PdbPreprocessor/pdbpreprocessor.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessor.o src/Resolver/PdbPreprocessor/pdbpreprocessor.cc
 
-pdbpreprocessoralternateresidue.o: src/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.cc includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessoralternateresidue.o src/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.cc
+build/pdbpreprocessoralternateresidue.o: src/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.cc includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessoralternateresidue.o src/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.cc
 
-pdbpreprocessorchaintermination.o: src/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.hpp \
+build/pdbpreprocessorchaintermination.o: src/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessorchaintermination.o src/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessorchaintermination.o src/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.cc
 
-pdbpreprocessordisulfidebond.o: src/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.cc includes/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessordisulfidebond.o src/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.cc
+build/pdbpreprocessordisulfidebond.o: src/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.cc includes/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessordisulfidebond.o src/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.cc
 
-pdbpreprocessorhistidinemapping.o: src/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.hpp \
+build/pdbpreprocessorhistidinemapping.o: src/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessorhistidinemapping.o src/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessorhistidinemapping.o src/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.cc
 
-pdbpreprocessormissingresidue.o: src/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.cc includes/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.hpp \
+build/pdbpreprocessormissingresidue.o: src/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.cc includes/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.hpp \
 		includes/common.hpp \
-		includes/Geometry/coordinate.hpp \
-		includes/Glycam/sugarname.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessormissingresidue.o src/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.cc
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessormissingresidue.o src/Resolver/PdbPreprocessor/pdbpreprocessormissingresidue.cc
 
-pdbpreprocessorreplacedhydrogen.o: src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessorreplacedhydrogen.o src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc
+build/pdbpreprocessorreplacedhydrogen.o: src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessorreplacedhydrogen.o src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc
 
-pdbpreprocessorresidueinfo.o: src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessorresidueinfo.o src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc
+build/pdbpreprocessorresidueinfo.o: src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessorresidueinfo.o src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc
 
-pdbpreprocessorunrecognizedheavyatom.o: src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessorunrecognizedheavyatom.o src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc
+build/pdbpreprocessorunrecognizedheavyatom.o: src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessorunrecognizedheavyatom.o src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc
 
-pdbpreprocessorunrecognizedresidue.o: src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pdbpreprocessorunrecognizedresidue.o src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc
+build/pdbpreprocessorunrecognizedresidue.o: src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessorunrecognizedresidue.o src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc
 
 ####### Install
 
