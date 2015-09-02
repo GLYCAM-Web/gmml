@@ -54,10 +54,10 @@
 #include "../../includes/Geometry/grid.hpp"
 #include "../../includes/Geometry/cell.hpp"
 
-#include "raptor2/raptor.h"
-#include "raptor2/raptor2.h"
-#include "rasqal/rasqal.h"
-#include "redland.h"
+//#include "raptor2/raptor.h"
+//#include "raptor2/raptor2.h"
+//#include "rasqal/rasqal.h"
+//#include "redland.h"
 
 using namespace std;
 using namespace MolecularModeling;
