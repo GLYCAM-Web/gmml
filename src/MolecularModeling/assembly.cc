@@ -54,10 +54,10 @@
 #include "../../includes/Geometry/grid.hpp"
 #include "../../includes/Geometry/cell.hpp"
 
-//#include "raptor2/raptor.h"
-//#include "raptor2/raptor2.h"
-//#include "rasqal/rasqal.h"
-//#include "redland.h"
+#include "raptor2/raptor.h"
+#include "raptor2/raptor2.h"
+#include "rasqal/rasqal.h"
+#include "redland.h"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -9770,17 +9770,24 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 {
     if(ion_count == 0)
     {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Neutralizing .......");
         cout << "Neutralizing ......." << endl;
         LibraryFile* lib = new LibraryFile(lib_file);
         ParameterFile* param = new ParameterFile(parameter_file, gmml::IONICMOD);
         double charge = this->GetTotalCharge();
         if(fabs(charge) < CHARGE_TOLERANCE)
         {
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "The assembly has 0 charge and is neutral.");
             cout << "The assembly has 0 charge and is neutral." << endl;
             return;
         }
         else
-            cout << "Total charge of the assembly is " << charge << endl;
+        {
+            stringstream ss;
+            ss << "Total charge of the assembly is " << charge;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+            cout << ss.str() << endl;
+        }
         double ion_charge = 0;
         string ion_residue_name = "";
         vector<string> ion_list = lib->GetAllResidueNames();
@@ -9792,23 +9799,28 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
             if(ion_charge == 0)
             {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "The ion has 0 charge");
                 cout << "The ion has 0 charge" << endl;
                 return;
             }
             else if(ion_charge > 0 && charge > 0)
             {
-                cout << "The assembly and the given have positive charge, neutralizing process is aborted." << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "The assembly and the given ion have positive charges, neutralizing process is aborted.");
+                cout << "The assembly and the given ion have positive charges, neutralizing process is aborted." << endl;
                 return;
             }
             else if(ion_charge < 0 && charge < 0)
             {
-                cout << "The assembly and the given have negative charge, neutralizing process is aborted." << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "The assembly and the given ion have positive charges, neutralizing process is aborted.");
+                cout << "The assembly and the given ion have negative charges, neutralizing process is aborted." << endl;
                 return;
             }
             else
             {
                 int number_of_neutralizing_ion = (int)(fabs(charge) + gmml::CHARGE_TOLERANCE) / (int)(fabs(ion_charge) + gmml::CHARGE_TOLERANCE);
-                cout << "The assembly will be neutralized by " << number_of_neutralizing_ion << " ion(s)" << endl;
+                stringstream ss;
+                ss << "The assembly will be neutralized by " << number_of_neutralizing_ion << " ion(s)";
+                gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
 
                 ParameterFile::AtomTypeMap atom_type_map = param->GetAtomTypes();
                 double ion_radius = MINIMUM_RADIUS;
@@ -9837,6 +9849,7 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
                     if(best_positions.size() == 0)
                     {
+                        gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no optimum position to place the ion");
                         cout << "There is no optimum position to place the ion" << endl;
                         return;
                     }
@@ -9886,16 +9899,21 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::WAR, "The ion has not been found in the library file.");
             cout << "The ion has not been found in the library file." << endl;
         }
     }
     else if (ion_count > 0)
     {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Ionizing .......");
         cout << "Ionizing ......." << endl;
         LibraryFile* lib = new LibraryFile(lib_file);
         ParameterFile* param = new ParameterFile(parameter_file, gmml::IONICMOD);
         double charge = this->GetTotalCharge();
-        cout << "Total charge of the assembly is " << charge << endl;
+        stringstream ss;
+        ss << "Total charge of the assembly is " << charge;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+        cout << ss.str() << endl;
         double ion_charge = 0;
         string ion_residue_name = "";
         vector<string> ion_list = lib->GetAllResidueNames();
@@ -9907,12 +9925,16 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
             if(ion_charge == 0)
             {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "The ion has 0 charge");
                 cout << "The ion has 0 charge" << endl;
                 return;
             }
             else
             {
-                cout << "The assembly will be charged by " << ion_count << " ion(s)" << endl;
+                stringstream ss;
+                ss << "The assembly will be charged by " << ion_count << " ion(s)" ;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+                cout << ss.str() << endl;
 
                 ParameterFile::AtomTypeMap atom_type_map = param->GetAtomTypes();
                 double ion_radius = MINIMUM_RADIUS;
@@ -9941,6 +9963,7 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
                     if(best_positions.size() == 0)
                     {
+                        gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no optimum position to place the ion");
                         cout << "There is no optimum position to place the ion" << endl;
                         return;
                     }
@@ -9990,11 +10013,13 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "The ion has not been found in the library file.");
             cout << "The ion has not been found in the library file." << endl;
         }
     }
     else
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Please have a non-negative number as the number of ion(s) want to add");
         cout << "Please have a non-negative number as the number of ion(s) want to add" << endl;
     }
 }
@@ -10087,7 +10112,6 @@ void Assembly::GetCenterOfGeometry(Coordinate *center_of_geometry)
                                               center_of_geometry->GetZ() / all_atoms_of_assembly.size()));
 }
 
-
 void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper_right_front_corner)
 {
 //    lower_left_back_corner = new Coordinate(-INFINITY, -INFINITY, -INFINITY);
@@ -10104,9 +10128,13 @@ void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper
         Atom* atom = *it;
         if(atom->MolecularDynamicAtom::GetRadius() == dNotSet)
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no information of the atom type/radius/charge of the atoms in the given library/parameter file");
             cout << "There is no information of the atom type/radius/charge of the atoms in the given library/parameter file" << endl;
             atom->MolecularDynamicAtom::SetRadius(DEFAULT_RADIUS);
-            cout << "The default value has been set for " << atom->GetId() << endl;
+            stringstream ss;
+            ss << "The default value has been set for " << atom->GetId();
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
+            cout << ss.str() << endl;
 //            return;
         }
         double upper_right_front_x = atom->GetCoordinates().at(model_index_)->GetX() + atom->MolecularDynamicAtom::GetRadius();
