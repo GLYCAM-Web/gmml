@@ -566,6 +566,15 @@ namespace gmml
         ERR,
         WAR
     };
+    /*! \enum
+      * Condensed sequence token type
+      */
+    enum CondensedSequenceTokenType
+    {
+        LEFT_BRACKET,
+        RIGHT_BRACKET,
+        RESIDUE
+    };
 
 }
 
