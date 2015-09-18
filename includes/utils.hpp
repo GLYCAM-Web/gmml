@@ -414,7 +414,7 @@ namespace gmml
                 return COMPLEXSUGARNAMELOOKUP[i];
         }
         return COMPLEXSUGARNAMELOOKUP[0];
-    }
+    }    
 
     /*! \fn
       * A function in order to initializing the common terminal residue map
@@ -427,6 +427,26 @@ namespace gmml
         COMMON_TERMINAL_REDSIDUES["TBT"] = "TBT";
         COMMON_TERMINAL_REDSIDUES["OME"] = "OME";
         return COMMON_TERMINAL_REDSIDUES;
+    }
+
+    inline gmml::ResidueCodeName ResidueNameCodeLookup(std::string residue_name)
+    {
+        for(int i = 0; i < RESIDUENAMECODELOOKUPSIZE; i++)
+        {
+            if(residue_name.compare(RESIDUENAMECODELOOKUP[i].name_) == 0)
+                return RESIDUENAMECODELOOKUP[i];
+        }
+        return RESIDUENAMECODELOOKUP[0];
+    }
+
+    inline gmml::ResidueCodeName ResidueCodeNameLookup(std::string residue_code)
+    {
+        for(int i = 0; i < RESIDUENAMECODELOOKUPSIZE; i++)
+        {
+            if(residue_code.compare(RESIDUENAMECODELOOKUP[i].code_) == 0)
+                return RESIDUENAMECODELOOKUP[i];
+        }
+        return RESIDUENAMECODELOOKUP[0];
     }
 
     /*! \fn

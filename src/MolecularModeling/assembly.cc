@@ -5,7 +5,9 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
-
+#include "../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
 #include "../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -71,6 +73,7 @@ using namespace GeometryTopology;
 using namespace LibraryFileSpace;
 using namespace gmml;
 using namespace Glycan;
+using namespace CondensedSequenceSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -436,6 +439,176 @@ void Assembly::SetModelIndex(int model_index)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
+void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file)
+{
+    CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
+    CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+    PrepFile* prep = new PrepFile(prep_file);
+    PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
+    ParameterFile* parameter = NULL;
+    ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+    if(parameter_file.compare("") != 0)
+    {
+        parameter = new ParameterFile(parameter_file);
+        atom_type_map = parameter->GetAtomTypes();
+    }
+    int sequence_number = 0;
+    stringstream ss;
+    Coordinate* attach_coordinate = new Coordinate();
+    for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
+    {
+        Coordinate* parent_coordinate = new Coordinate();
+        CondensedSequenceAmberPrepResidue* amber_prep_residue = it->first;
+        string amber_prep_residue_name = amber_prep_residue->GetName();
+        string amber_prep_residue_anomeric_carbon = amber_prep_residue->GetAnomericCarbon();
+        string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
+
+        if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
+        {
+            PrepFileResidue* prep_residue = prep_residue_map[amber_prep_residue_name];
+
+            // Build residue from prep residue
+            sequence_number++;
+            CoordinateVector cartesian_coordinate_list = CoordinateVector();
+            int head_atom_index = INFINITY;
+            int tail_atom_index = -INFINITY;
+            Atom* head_atom = new Atom();
+            Atom* tail_atom = new Atom();
+
+            Residue* assembly_residue = new Residue();
+            assembly_residue->SetAssembly(this);
+            string prep_residue_name = prep_residue->GetName();
+            assembly_residue->SetName(prep_residue_name);
+            stringstream id;
+            id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+               << gmml::BLANK_SPACE << "_" << id_;
+            assembly_residue->SetId(id.str());
+            if(distance(amber_prep_residues.begin(), it) == (int)amber_prep_residues.size()-1)
+                ss << prep_residue_name;
+            else
+                ss << prep_residue_name << "-";
+
+            PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+            int serial_number = 0;
+            for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+            {
+                serial_number++;
+                Atom* assembly_atom = new Atom();
+                PrepFileAtom* prep_atom = (*it1);
+                assembly_atom->SetResidue(assembly_residue);
+                string atom_name = prep_atom->GetName();
+                assembly_atom->SetName(atom_name);
+                stringstream atom_id;
+                atom_id << atom_name << "_" << serial_number << "_" << id.str();
+                assembly_atom->SetId(atom_id.str());
+
+                assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
+                assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
+                if(parameter != NULL)
+                {
+                    if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
+                    {
+                        ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                        assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
+                        assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
+                    }
+                    else
+                    {
+                        assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
+                        assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    }
+                }
+                else
+                {
+                    assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                }
+
+                if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0 && prep_residue_name.compare("SO3") == 0)
+                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
+                else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
+                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() - 0.039);
+                else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
+                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.008);
+
+                if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
+                {
+                    vector<Coordinate*> coordinate_list = vector<Coordinate*>();
+                    int index = distance(prep_atoms.begin(), it1);
+                    if(index == 0)
+                    {
+                    }
+                    if(index == 1)
+                    {
+                        int parent_index = prep_atom->GetBondIndex() - 1;
+                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                        coordinate_list.push_back(parent_coordinate);
+                    }
+                    if(index == 2)
+                    {
+                        int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                        int parent_index = prep_atom->GetBondIndex() - 1;
+                        Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                        coordinate_list.push_back(grandparent_coordinate);
+                        coordinate_list.push_back(parent_coordinate);
+                    }
+                    if(index > 2)
+                    {
+                        int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
+                        int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                        int parent_index = prep_atom->GetBondIndex() - 1;
+
+                        Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
+                        Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                        coordinate_list.push_back(great_grandparent_coordinate);
+                        coordinate_list.push_back(grandparent_coordinate);
+                        coordinate_list.push_back(parent_coordinate);
+                    }
+                    Coordinate* coordinate = new Coordinate();
+                    coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                                                                                                 prep_atom->GetAngle(), prep_atom->GetDihedral());
+                    cartesian_coordinate_list.push_back(coordinate);
+
+                    coordinate->Translate(attach_coordinate->GetX(), attach_coordinate->GetY(), attach_coordinate->GetZ());
+                    if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0)
+                        parent_coordinate = coordinate;
+                    assembly_atom->AddCoordinate(coordinate);
+                }
+                else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
+                {
+                    assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+                }
+                if(prep_atom->GetTopologicalType() == kTopTypeM && prep_atom->GetType().compare(prep_residue->GetDummyAtomType()) != 0)
+                {
+                    if(head_atom_index > prep_atom->GetIndex())
+                    {
+                        head_atom_index = prep_atom->GetIndex();
+                        head_atom = assembly_atom;
+                    }
+                    if(tail_atom_index < prep_atom->GetIndex())
+                    {
+                        tail_atom_index = prep_atom->GetIndex();
+                        tail_atom = assembly_atom;
+                    }
+                }
+                if(assembly_atom->GetAtomType().compare("DU") != 0)
+                    assembly_residue->AddAtom(assembly_atom);
+            }
+            assembly_residue->AddHeadAtom(head_atom);
+            assembly_residue->AddTailAtom(tail_atom);
+            residues_.push_back(assembly_residue);
+        }
+        else
+        {
+            cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
+        }
+        attach_coordinate = new Coordinate(*parent_coordinate);
+    }
+    name_ = ss.str();
+}
+
 void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> amino_lib_files, vector<string> glycam_lib_files,
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
@@ -506,7 +679,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                         LibraryFileResidue* lib_residue = lib_residues[residue_name];
                         LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom_name);
                         if(lib_atom != NULL)
-                        {                            
+                        {
                             new_atom->MolecularDynamicAtom::SetAtomType(lib_atom->GetType());
                             new_atom->MolecularDynamicAtom::SetCharge(lib_atom->GetCharge());
 
@@ -575,7 +748,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                             new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
                         }
                     }
-                }                
+                }
                 new_atom->SetResidue(residue);
                 stringstream atom_key;
                 atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;

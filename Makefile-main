@@ -55,6 +55,8 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/GeometryTopology/InternalCoordinate/dihedral.cc \
 		src/GeometryTopology/InternalCoordinate/distance.cc \
 		src/InputSet/CondensedSequenceSpace/condensedsequence.cc \
+		src/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.cc \
+		src/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.cc \
 		src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc \
 		src/InputSet/CoordinateFileSpace/coordinatefile.cc \
 		src/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.cc \
@@ -174,6 +176,8 @@ OBJECTS       = build/cell.o \
 		build/dihedral.o \
 		build/distance.o \
 		build/condensedsequence.o \
+		build/condensedsequenceamberprepresidue.o \
+		build/condensedsequenceprocessingexception.o \
 		build/condensedsequenceresidue.o \
 		build/coordinatefile.o \
 		build/coordinatefileprocessingexception.o \
@@ -468,6 +472,9 @@ build/assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/a
 		includes/utils.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
 		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
 		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
 		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
@@ -572,15 +579,36 @@ build/distance.o: src/GeometryTopology/InternalCoordinate/distance.cc includes/G
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/distance.o src/GeometryTopology/InternalCoordinate/distance.cc
 
 build/condensedsequence.o: src/InputSet/CondensedSequenceSpace/condensedsequence.cc includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
-		includes/common.hpp \
-		includes/GeometryTopology/coordinate.hpp \
-		includes/Glycan/sugarname.hpp
+                includes/common.hpp \
+                includes/GeometryTopology/coordinate.hpp \
+                includes/Glycan/sugarname.hpp \
+                includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+                includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
+                includes/utils.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequence.o src/InputSet/CondensedSequenceSpace/condensedsequence.cc
 
+build/condensedsequenceamberprepresidue.o: src/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.cc includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
+                includes/common.hpp \
+                includes/GeometryTopology/coordinate.hpp \
+                includes/Glycan/sugarname.hpp \
+                includes/utils.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequenceamberprepresidue.o src/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.cc
+
+build/condensedsequenceprocessingexception.o: src/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.cc includes/common.hpp \
+                includes/GeometryTopology/coordinate.hpp \
+                includes/Glycan/sugarname.hpp \
+                includes/utils.hpp \
+                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequenceprocessingexception.o src/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.cc
+
 build/condensedsequenceresidue.o: src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
-		includes/common.hpp \
-		includes/GeometryTopology/coordinate.hpp \
-		includes/Glycan/sugarname.hpp
+                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
+                includes/common.hpp \
+                includes/GeometryTopology/coordinate.hpp \
+                includes/Glycan/sugarname.hpp \
+                includes/utils.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequenceresidue.o src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc
 
 build/coordinatefile.o: src/InputSet/CoordinateFileSpace/coordinatefile.cc includes/utils.hpp \

@@ -15,9 +15,14 @@ namespace gmml
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef GeometryTopology::Coordinate Vector;
+    typedef GeometryTopology::Coordinate Vector;    
 
     //*******************************************
+
+    struct ResidueCodeName{
+            std::string name_;
+            std::string code_;
+    };
 
     const double dNotSet = 123456789.0;
     const int iNotSet = -123456;
@@ -50,6 +55,44 @@ namespace gmml
     const double MARGIN = 0.0;//10.0;
     const double CRITICAL_RADIOUS = 1.0;
 
+
+    const ResidueCodeName RESIDUENAMECODELOOKUP[] = {
+        {"", ""},
+        {"All", "N"},
+        {"Alt", "E"},
+        {"Ara", "A"},
+        {"Bac", "BC"},
+        {"Fru", "C"},
+        {"Fuc", "F"},
+        {"Gal", "L"},
+        {"GalA", "O"},
+        {"GalNAc", "V"},
+        {"Glc", "G"},
+        {"GlcA", "Z"},
+        {"GlcNAc", "Y"},
+        {"Gul", "K"},
+        {"Ido", "I"},
+        {"IdoA", "U"},
+        {"Lyx", "D"},
+        {"Man", "M"},
+        {"ManNAc", "W"},
+        {"Neu", ""},
+        {"Neu5Ac", "S"},
+        {"Neu5Gc", "GL"},
+        {"NeuNAc", "S"},
+        {"NeuNGc", "GL"},
+        {"Psi", "P"},
+        {"Qui", "Q"},
+        {"Rha", "H"},
+        {"Rib", "R"},
+        {"Sor", "B"},
+        {"Tag", "J"},
+        {"Tal", "T"},
+        {"Tyv", "TV"},
+        {"Xyl", "X"}
+    };
+
+    const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));
 
     const Glycan::SugarName SUGARNAMELOOKUP[] = {
 
@@ -571,9 +614,9 @@ namespace gmml
       */
     enum CondensedSequenceTokenType
     {
-        LEFT_BRACKET,
-        RIGHT_BRACKET,
-        RESIDUE
+        CONDENSED_SEQUENCE_LEFT_BRACKET,
+        CONDENSED_SEQUENCE_RIGHT_BRACKET,
+        CONDENSED_SEQUENCE_RESIDUE
     };
 
 }

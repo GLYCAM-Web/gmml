@@ -212,7 +212,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
-            void BuildAssemblyFromCondensedSequence(std::string condensed_sequence);
+            void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file);
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
