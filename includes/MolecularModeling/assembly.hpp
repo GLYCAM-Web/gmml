@@ -5,26 +5,26 @@
 #include <iostream>
 #include <vector>
 
-#include "../Geometry/coordinate.hpp"
-#include "../Geometry/plane.hpp"
+#include "../GeometryTopology/coordinate.hpp"
+#include "../GeometryTopology/plane.hpp"
 #include "../common.hpp"
-#include "../Glycam/chemicalcode.hpp"
-#include "../Glycam/sugarname.hpp"
-#include "../Glycam/monosaccharide.hpp"
-#include "../FileSet/PdbFileSpace/pdbfile.hpp"
-#include "../FileSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../FileSet/TopologyFileSpace/topologyfile.hpp"
-#include "../FileSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "../Glycan/chemicalcode.hpp"
+#include "../Glycan/sugarname.hpp"
+#include "../Glycan/monosaccharide.hpp"
+#include "../InputSet/PdbFileSpace/pdbfile.hpp"
+#include "../InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "../InputSet/TopologyFileSpace/topologyfile.hpp"
+#include "../InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
-#include "../FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../FileSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../FileSet/PdbFileSpace/pdbmodel.hpp"
-#include "../Glycam/oligosaccharide.hpp"
+#include "../InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "../InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "../InputSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "../InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../Glycan/oligosaccharide.hpp"
 
 namespace MolecularModeling
 {
@@ -39,7 +39,7 @@ namespace MolecularModeling
             typedef std::vector<Assembly*> AssemblyVector;
             typedef std::vector<Residue*> ResidueVector;
             typedef std::vector<Atom*> AtomVector;
-            typedef std::vector<Geometry::Coordinate*> CoordinateVector;
+            typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
 //            typedef std::vector<AtomVector > AtomVectorVector;
@@ -212,6 +212,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
+            void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file);
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
@@ -716,41 +717,41 @@ namespace MolecularModeling
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @return orientations The list of side atoms orinetations
               */
-            std::vector<std::string> GetSideGroupOrientations(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
+            std::vector<std::string> GetSideGroupOrientations(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
             /*! \fn
               * A function in order to build a chemical code structure for the monosaccharide based on the side atom orientations
               * @param orientations The list of side atoms orinetations
               * @return code The chemical code of the monosaccharide structure
               */
-            Glycam::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
+            Glycan::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
             /*! \fn
               * A function in order to extract additional side atoms of the saccharide (+2 and +3 positions)
               * @param mono The monosaccharide object
               * @return plus_sides The list of additional side atoms of the monosaccharide
               */
-            AtomVector ExtractAdditionalSideAtoms(Glycam::Monosaccharide* mono);
+            AtomVector ExtractAdditionalSideAtoms(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to extract the probable derivatives that are attached to the side atoms of the ring
               * @param mono The monosaccharide object
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               */
-            void ExtractDerivatives(Glycam::Monosaccharide* mono, std::string cycle_atoms_str);
+            void ExtractDerivatives(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
             /*! \fn
               * A function in order to generate a complete name for the monosaccharide structure based on its derivatives
               * @param mono The monosaccharide object
               */
-            void GenerateCompleteSugarName(Glycam::Monosaccharide* mono);
+            void GenerateCompleteSugarName(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to update the chemical code structure of a complex monosaccharide (monosaccharide with side atoms at position +2 and +3)
               * @param mono The monosaccharide object
               */
-            void UpdateComplexSugarChemicalCode(Glycam::Monosaccharide* mono);
+            void UpdateComplexSugarChemicalCode(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
               * @param monos The list of extracted monosaccharide object
               * @return oligosacchrides The list of extracted oligosacchrides
               */
-            std::vector<Glycam::Oligosaccharide*> ExtractOligosaccharides(std::vector<Glycam::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
+            std::vector<Glycan::Oligosaccharide*> ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
                                                                           std::string& terminal_residue_name);
 
             /*! \fn
@@ -773,9 +774,9 @@ namespace MolecularModeling
                 the current monosacchride object
               * @param visited_linkages The list of linkages(atoms involved in the linkages between monosacchrides) that have been visited so far by calls to the function
               */
-            void BuildOligosaccharideTreeStructure(Glycam::Monosaccharide* key, std::vector<Glycam::Monosaccharide*> val, Glycam::Oligosaccharide* oligo,
-                                                                  std::vector<int>& visited_monos, std::map<Glycam::Monosaccharide*, std::vector<Glycam::Monosaccharide*> > monos_table,
-                                                                  std::map<Glycam::Monosaccharide*, std::vector<std::string> > monos_table_linkages, std::vector<std::string>& visited_linkages);
+            void BuildOligosaccharideTreeStructure(Glycan::Monosaccharide* key, std::vector<Glycan::Monosaccharide*> val, Glycan::Oligosaccharide* oligo,
+                                                                  std::vector<int>& visited_monos, std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> > monos_table,
+                                                                  std::map<Glycan::Monosaccharide*, std::vector<std::string> > monos_table_linkages, std::vector<std::string>& visited_linkages);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xCH-N
               * @param target_atom The atom which will be checked for a derivative
@@ -837,9 +838,9 @@ namespace MolecularModeling
             double GetTotalCharge();
             double GetRadius();
             double GetTotalMass();
-            void GetCenterOfMass(Geometry::Coordinate* center_of_mass);
-            void GetCenterOfGeometry(Geometry::Coordinate* center_of_geometry);
-            void GetBoundary(Geometry::Coordinate* lower_left_back_corner, Geometry::Coordinate* upper_right_front_corner);
+            void GetCenterOfMass(GeometryTopology::Coordinate* center_of_mass);
+            void GetCenterOfGeometry(GeometryTopology::Coordinate* center_of_geometry);
+            void GetBoundary(GeometryTopology::Coordinate* lower_left_back_corner, GeometryTopology::Coordinate* upper_right_front_corner);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

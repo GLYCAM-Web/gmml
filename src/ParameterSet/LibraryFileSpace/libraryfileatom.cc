@@ -1,8 +1,8 @@
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
-#include "../../../includes/Geometry/coordinate.hpp"
+#include "../../../includes/GeometryTopology/coordinate.hpp"
 #include <iostream>
 
-using namespace Geometry;
+using namespace GeometryTopology;
 using namespace LibraryFileSpace;
 using namespace std;
 

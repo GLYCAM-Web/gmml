@@ -6,8 +6,8 @@
 #include <math.h>
 #include <map>
 
-#include "Geometry/coordinate.hpp"
-#include "Glycam/sugarname.hpp"
+#include "GeometryTopology/coordinate.hpp"
+#include "Glycan/sugarname.hpp"
 
 namespace gmml
 {
@@ -15,9 +15,14 @@ namespace gmml
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef Geometry::Coordinate Vector;
+    typedef GeometryTopology::Coordinate Vector;    
 
     //*******************************************
+
+    struct ResidueCodeName{
+            std::string name_;
+            std::string code_;
+    };
 
     const double dNotSet = 123456789.0;
     const int iNotSet = -123456;
@@ -51,7 +56,45 @@ namespace gmml
     const double CRITICAL_RADIOUS = 1.0;
 
 
-    const Glycam::SugarName SUGARNAMELOOKUP[] = {
+    const ResidueCodeName RESIDUENAMECODELOOKUP[] = {
+        {"", ""},
+        {"All", "N"},
+        {"Alt", "E"},
+        {"Ara", "A"},
+        {"Bac", "BC"},
+        {"Fru", "C"},
+        {"Fuc", "F"},
+        {"Gal", "L"},
+        {"GalA", "O"},
+        {"GalNAc", "V"},
+        {"Glc", "G"},
+        {"GlcA", "Z"},
+        {"GlcNAc", "Y"},
+        {"Gul", "K"},
+        {"Ido", "I"},
+        {"IdoA", "U"},
+        {"Lyx", "D"},
+        {"Man", "M"},
+        {"ManNAc", "W"},
+        {"Neu", ""},
+        {"Neu5Ac", "S"},
+        {"Neu5Gc", "GL"},
+        {"NeuNAc", "S"},
+        {"NeuNGc", "GL"},
+        {"Psi", "P"},
+        {"Qui", "Q"},
+        {"Rha", "H"},
+        {"Rib", "R"},
+        {"Sor", "B"},
+        {"Tag", "J"},
+        {"Tal", "T"},
+        {"Tyv", "TV"},
+        {"Xyl", "X"}
+    };
+
+    const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));
+
+    const Glycan::SugarName SUGARNAMELOOKUP[] = {
 
         {"", "", "", "", "", "", "", "", ""},
         ///Alpha D Aldohexapyranoses
@@ -324,7 +367,7 @@ namespace gmml
 
     const int SUGARNAMELOOKUPSIZE = (sizeof(SUGARNAMELOOKUP)/sizeof(SUGARNAMELOOKUP[0]));
 
-    const Glycam::SugarName COMPLEXSUGARNAMELOOKUP[] = {
+    const Glycan::SugarName COMPLEXSUGARNAMELOOKUP[] = {
 
         {"", "", "", "", "", "", "", "", ""},
         ///Alpha D aldohexafuranoses
@@ -565,6 +608,15 @@ namespace gmml
         INF,
         ERR,
         WAR
+    };
+    /*! \enum
+      * Condensed sequence token type
+      */
+    enum CondensedSequenceTokenType
+    {
+        CONDENSED_SEQUENCE_LEFT_BRACKET,
+        CONDENSED_SEQUENCE_RIGHT_BRACKET,
+        CONDENSED_SEQUENCE_RESIDUE
     };
 
 }

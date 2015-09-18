@@ -84,7 +84,7 @@ void Atom::SetCoordinates(CoordinateVector coordinates)
         coordinates_.push_back(*it);
     }
 }
-void Atom::AddCoordinate(Geometry::Coordinate *coordinate)
+void Atom::AddCoordinate(GeometryTopology::Coordinate *coordinate)
 {
     coordinates_.push_back(coordinate);
 }
@@ -120,7 +120,7 @@ void Atom::Print(ostream &out)
     {
         for(CoordinateVector::iterator it = coordinates_.begin(); it != coordinates_.end(); it++)
         {
-            Geometry::Coordinate* coordinate = *it;
+            GeometryTopology::Coordinate* coordinate = *it;
             out << "\t";
             coordinate->Print(out);
             out << endl;

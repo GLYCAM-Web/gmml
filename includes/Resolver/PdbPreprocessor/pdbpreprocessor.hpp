@@ -5,9 +5,9 @@
 #include <iostream>
 #include <vector>
 
-#include "../../FileSet/PdbFileSpace/pdbresidue.hpp"
-#include "../../FileSet/PdbFileSpace/pdbfile.hpp"
-#include "../../FileSet/PdbFileSpace/pdbatom.hpp"
+#include "../../InputSet//PdbFileSpace/pdbresidue.hpp"
+#include "../../InputSet//PdbFileSpace/pdbfile.hpp"
+#include "../../InputSet//PdbFileSpace/pdbatom.hpp"
 #include "../../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../common.hpp"

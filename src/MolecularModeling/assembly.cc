@@ -5,38 +5,40 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
-
-#include "../../includes/FileSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyresidue.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologybond.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../includes/FileSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../includes/FileSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
+#include "../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbfile.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbtitlecard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbmodel.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbatom.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbconnectcard.hpp"
-#include "../../includes/FileSet/PdbFileSpace/pdbfileprocessingexception.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../includes/FileSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
@@ -51,8 +53,8 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/utils.hpp"
 #include "../../includes/common.hpp"
-#include "../../includes/Geometry/grid.hpp"
-#include "../../includes/Geometry/cell.hpp"
+#include "../../includes/GeometryTopology/grid.hpp"
+#include "../../includes/GeometryTopology/cell.hpp"
 
 //#include "raptor2/raptor.h"
 //#include "raptor2/raptor2.h"
@@ -67,10 +69,11 @@ using namespace PrepFileSpace;
 using namespace PdbFileSpace;
 using namespace PdbqtFileSpace;
 using namespace ParameterFileSpace;
-using namespace Geometry;
+using namespace GeometryTopology;
 using namespace LibraryFileSpace;
 using namespace gmml;
-using namespace Glycam;
+using namespace Glycan;
+using namespace CondensedSequenceSpace;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -436,6 +439,176 @@ void Assembly::SetModelIndex(int model_index)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
+void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file)
+{
+    CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
+    CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+    PrepFile* prep = new PrepFile(prep_file);
+    PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
+    ParameterFile* parameter = NULL;
+    ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+    if(parameter_file.compare("") != 0)
+    {
+        parameter = new ParameterFile(parameter_file);
+        atom_type_map = parameter->GetAtomTypes();
+    }
+    int sequence_number = 0;
+    stringstream ss;
+    Coordinate* attach_coordinate = new Coordinate();
+    for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
+    {
+        Coordinate* parent_coordinate = new Coordinate();
+        CondensedSequenceAmberPrepResidue* amber_prep_residue = it->first;
+        string amber_prep_residue_name = amber_prep_residue->GetName();
+        string amber_prep_residue_anomeric_carbon = amber_prep_residue->GetAnomericCarbon();
+        string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
+
+        if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
+        {
+            PrepFileResidue* prep_residue = prep_residue_map[amber_prep_residue_name];
+
+            // Build residue from prep residue
+            sequence_number++;
+            CoordinateVector cartesian_coordinate_list = CoordinateVector();
+            int head_atom_index = INFINITY;
+            int tail_atom_index = -INFINITY;
+            Atom* head_atom = new Atom();
+            Atom* tail_atom = new Atom();
+
+            Residue* assembly_residue = new Residue();
+            assembly_residue->SetAssembly(this);
+            string prep_residue_name = prep_residue->GetName();
+            assembly_residue->SetName(prep_residue_name);
+            stringstream id;
+            id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+               << gmml::BLANK_SPACE << "_" << id_;
+            assembly_residue->SetId(id.str());
+            if(distance(amber_prep_residues.begin(), it) == (int)amber_prep_residues.size()-1)
+                ss << prep_residue_name;
+            else
+                ss << prep_residue_name << "-";
+
+            PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+            int serial_number = 0;
+            for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+            {
+                serial_number++;
+                Atom* assembly_atom = new Atom();
+                PrepFileAtom* prep_atom = (*it1);
+                assembly_atom->SetResidue(assembly_residue);
+                string atom_name = prep_atom->GetName();
+                assembly_atom->SetName(atom_name);
+                stringstream atom_id;
+                atom_id << atom_name << "_" << serial_number << "_" << id.str();
+                assembly_atom->SetId(atom_id.str());
+
+                assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
+                assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
+                if(parameter != NULL)
+                {
+                    if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
+                    {
+                        ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                        assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
+                        assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
+                    }
+                    else
+                    {
+                        assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
+                        assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    }
+                }
+                else
+                {
+                    assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                }
+
+                if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0 && prep_residue_name.compare("SO3") == 0)
+                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
+                else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
+                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() - 0.039);
+                else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
+                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.008);
+
+                if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
+                {
+                    vector<Coordinate*> coordinate_list = vector<Coordinate*>();
+                    int index = distance(prep_atoms.begin(), it1);
+                    if(index == 0)
+                    {
+                    }
+                    if(index == 1)
+                    {
+                        int parent_index = prep_atom->GetBondIndex() - 1;
+                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                        coordinate_list.push_back(parent_coordinate);
+                    }
+                    if(index == 2)
+                    {
+                        int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                        int parent_index = prep_atom->GetBondIndex() - 1;
+                        Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                        coordinate_list.push_back(grandparent_coordinate);
+                        coordinate_list.push_back(parent_coordinate);
+                    }
+                    if(index > 2)
+                    {
+                        int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
+                        int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                        int parent_index = prep_atom->GetBondIndex() - 1;
+
+                        Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
+                        Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                        coordinate_list.push_back(great_grandparent_coordinate);
+                        coordinate_list.push_back(grandparent_coordinate);
+                        coordinate_list.push_back(parent_coordinate);
+                    }
+                    Coordinate* coordinate = new Coordinate();
+                    coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                                                                                                 prep_atom->GetAngle(), prep_atom->GetDihedral());
+                    cartesian_coordinate_list.push_back(coordinate);
+
+                    coordinate->Translate(attach_coordinate->GetX(), attach_coordinate->GetY(), attach_coordinate->GetZ());
+                    if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0)
+                        parent_coordinate = coordinate;
+                    assembly_atom->AddCoordinate(coordinate);
+                }
+                else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
+                {
+                    assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+                }
+                if(prep_atom->GetTopologicalType() == kTopTypeM && prep_atom->GetType().compare(prep_residue->GetDummyAtomType()) != 0)
+                {
+                    if(head_atom_index > prep_atom->GetIndex())
+                    {
+                        head_atom_index = prep_atom->GetIndex();
+                        head_atom = assembly_atom;
+                    }
+                    if(tail_atom_index < prep_atom->GetIndex())
+                    {
+                        tail_atom_index = prep_atom->GetIndex();
+                        tail_atom = assembly_atom;
+                    }
+                }
+                if(assembly_atom->GetAtomType().compare("DU") != 0)
+                    assembly_residue->AddAtom(assembly_atom);
+            }
+            assembly_residue->AddHeadAtom(head_atom);
+            assembly_residue->AddTailAtom(tail_atom);
+            residues_.push_back(assembly_residue);
+        }
+        else
+        {
+            cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
+        }
+        attach_coordinate = new Coordinate(*parent_coordinate);
+    }
+    name_ = ss.str();
+}
+
 void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> amino_lib_files, vector<string> glycam_lib_files,
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
@@ -506,7 +679,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                         LibraryFileResidue* lib_residue = lib_residues[residue_name];
                         LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom_name);
                         if(lib_atom != NULL)
-                        {                            
+                        {
                             new_atom->MolecularDynamicAtom::SetAtomType(lib_atom->GetType());
                             new_atom->MolecularDynamicAtom::SetCharge(lib_atom->GetCharge());
 
@@ -575,7 +748,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                             new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
                         }
                     }
-                }                
+                }
                 new_atom->SetResidue(residue);
                 stringstream atom_key;
                 atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
@@ -584,7 +757,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                 PdbModelCard::PdbModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
                     if(card_index.at(0).compare("ATOM") == 0)
                     {
@@ -620,7 +793,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
 
                             if(key.compare(matching_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Atom;");
                             }
@@ -643,7 +816,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
 
                             if(key.compare(matching_heterogen_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Het;");
                             }
@@ -806,7 +979,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
                 PdbModelCard::PdbModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
                     if(card_index.at(0).compare("ATOM") == 0)
                     {
@@ -842,7 +1015,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 
                             if(key.compare(matching_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Atom;");
                             }
@@ -865,7 +1038,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 
                             if(key.compare(matching_heterogen_key) == 0)
                             {
-                                Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
+                                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_heterogen_atom->GetAtomOrthogonalCoordinate());
                                 new_atom->AddCoordinate(coordinate);
                                 new_atom->SetDescription("Het;");
                             }
@@ -952,7 +1125,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string paramet
                 PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     if(atom->GetType().compare("ATOM") == 0)
                     {
                         new_atom->SetDescription("Atom;");
@@ -983,7 +1156,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string paramet
 
                         if(key.compare(matching_key) == 0)
                         {
-                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                             new_atom->AddCoordinate(coordinate);
                             if(atom->GetType().compare("ATOM") == 0)
                             {
@@ -1075,7 +1248,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
                 PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
-                    new_atom->AddCoordinate(new Geometry::Coordinate(atom->GetAtomOrthogonalCoordinate()));
+                    new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
                     if(atom->GetType().compare("ATOM") == 0)
                     {
                         new_atom->SetDescription("Atom;");
@@ -1106,7 +1279,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
 
                         if(key.compare(matching_key) == 0)
                         {
-                            Geometry::Coordinate* coordinate = new Geometry::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
+                            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matching_atom->GetAtomOrthogonalCoordinate());
                             new_atom->AddCoordinate(coordinate);
                             if(atom->GetType().compare("ATOM") == 0)
                             {
@@ -1509,7 +1682,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
             assembly_atom->SetName(topology_atom->GetAtomName());
 
             CoordinateFile* coordinate_file = new CoordinateFile(coordinate_file_path);
-            vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
             assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
@@ -1582,7 +1755,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(topology_atom->GetAtomName());
 
-            vector<Geometry::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
             assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
@@ -9770,17 +9943,24 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 {
     if(ion_count == 0)
     {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Neutralizing .......");
         cout << "Neutralizing ......." << endl;
         LibraryFile* lib = new LibraryFile(lib_file);
         ParameterFile* param = new ParameterFile(parameter_file, gmml::IONICMOD);
         double charge = this->GetTotalCharge();
         if(fabs(charge) < CHARGE_TOLERANCE)
         {
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "The assembly has 0 charge and is neutral.");
             cout << "The assembly has 0 charge and is neutral." << endl;
             return;
         }
         else
-            cout << "Total charge of the assembly is " << charge << endl;
+        {
+            stringstream ss;
+            ss << "Total charge of the assembly is " << charge;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+            cout << ss.str() << endl;
+        }
         double ion_charge = 0;
         string ion_residue_name = "";
         vector<string> ion_list = lib->GetAllResidueNames();
@@ -9792,23 +9972,28 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
             if(ion_charge == 0)
             {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "The ion has 0 charge");
                 cout << "The ion has 0 charge" << endl;
                 return;
             }
             else if(ion_charge > 0 && charge > 0)
             {
-                cout << "The assembly and the given have positive charge, neutralizing process is aborted." << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "The assembly and the given ion have positive charges, neutralizing process is aborted.");
+                cout << "The assembly and the given ion have positive charges, neutralizing process is aborted." << endl;
                 return;
             }
             else if(ion_charge < 0 && charge < 0)
             {
-                cout << "The assembly and the given have negative charge, neutralizing process is aborted." << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "The assembly and the given ion have positive charges, neutralizing process is aborted.");
+                cout << "The assembly and the given ion have negative charges, neutralizing process is aborted." << endl;
                 return;
             }
             else
             {
                 int number_of_neutralizing_ion = (int)(fabs(charge) + gmml::CHARGE_TOLERANCE) / (int)(fabs(ion_charge) + gmml::CHARGE_TOLERANCE);
-                cout << "The assembly will be neutralized by " << number_of_neutralizing_ion << " ion(s)" << endl;
+                stringstream ss;
+                ss << "The assembly will be neutralized by " << number_of_neutralizing_ion << " ion(s)";
+                gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
 
                 ParameterFile::AtomTypeMap atom_type_map = param->GetAtomTypes();
                 double ion_radius = MINIMUM_RADIUS;
@@ -9837,6 +10022,7 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
                     if(best_positions.size() == 0)
                     {
+                        gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no optimum position to place the ion");
                         cout << "There is no optimum position to place the ion" << endl;
                         return;
                     }
@@ -9886,16 +10072,21 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::WAR, "The ion has not been found in the library file.");
             cout << "The ion has not been found in the library file." << endl;
         }
     }
     else if (ion_count > 0)
     {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Ionizing .......");
         cout << "Ionizing ......." << endl;
         LibraryFile* lib = new LibraryFile(lib_file);
         ParameterFile* param = new ParameterFile(parameter_file, gmml::IONICMOD);
         double charge = this->GetTotalCharge();
-        cout << "Total charge of the assembly is " << charge << endl;
+        stringstream ss;
+        ss << "Total charge of the assembly is " << charge;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+        cout << ss.str() << endl;
         double ion_charge = 0;
         string ion_residue_name = "";
         vector<string> ion_list = lib->GetAllResidueNames();
@@ -9907,12 +10098,16 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
             if(ion_charge == 0)
             {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "The ion has 0 charge");
                 cout << "The ion has 0 charge" << endl;
                 return;
             }
             else
             {
-                cout << "The assembly will be charged by " << ion_count << " ion(s)" << endl;
+                stringstream ss;
+                ss << "The assembly will be charged by " << ion_count << " ion(s)" ;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+                cout << ss.str() << endl;
 
                 ParameterFile::AtomTypeMap atom_type_map = param->GetAtomTypes();
                 double ion_radius = MINIMUM_RADIUS;
@@ -9941,6 +10136,7 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 
                     if(best_positions.size() == 0)
                     {
+                        gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no optimum position to place the ion");
                         cout << "There is no optimum position to place the ion" << endl;
                         return;
                     }
@@ -9990,11 +10186,13 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
         }
         else
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "The ion has not been found in the library file.");
             cout << "The ion has not been found in the library file." << endl;
         }
     }
     else
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Please have a non-negative number as the number of ion(s) want to add");
         cout << "Please have a non-negative number as the number of ion(s) want to add" << endl;
     }
 }
@@ -10087,7 +10285,6 @@ void Assembly::GetCenterOfGeometry(Coordinate *center_of_geometry)
                                               center_of_geometry->GetZ() / all_atoms_of_assembly.size()));
 }
 
-
 void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper_right_front_corner)
 {
 //    lower_left_back_corner = new Coordinate(-INFINITY, -INFINITY, -INFINITY);
@@ -10104,9 +10301,13 @@ void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper
         Atom* atom = *it;
         if(atom->MolecularDynamicAtom::GetRadius() == dNotSet)
         {
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no information of the atom type/radius/charge of the atoms in the given library/parameter file");
             cout << "There is no information of the atom type/radius/charge of the atoms in the given library/parameter file" << endl;
             atom->MolecularDynamicAtom::SetRadius(DEFAULT_RADIUS);
-            cout << "The default value has been set for " << atom->GetId() << endl;
+            stringstream ss;
+            ss << "The default value has been set for " << atom->GetId();
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
+            cout << ss.str() << endl;
 //            return;
         }
         double upper_right_front_x = atom->GetCoordinates().at(model_index_)->GetX() + atom->MolecularDynamicAtom::GetRadius();

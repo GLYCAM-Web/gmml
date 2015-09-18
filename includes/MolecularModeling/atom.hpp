@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../Geometry/coordinate.hpp"
+#include "../GeometryTopology/coordinate.hpp"
 #include "moleculardynamicatom.hpp"
 #include "quantommechanicatom.hpp"
 #include "dockingatom.hpp"
@@ -23,7 +23,7 @@ namespace MolecularModeling
             /*! \typedef
               * List of coordinates
               */
-            typedef std::vector<Geometry::Coordinate*> CoordinateVector;
+            typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -104,7 +104,7 @@ namespace MolecularModeling
               * Set the coordinates_ attribute of the current atom
               * @param coordinate The coordinate of the current object
               */
-            void AddCoordinate(Geometry::Coordinate* coordinate);
+            void AddCoordinate(GeometryTopology::Coordinate* coordinate);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current atom

@@ -12,7 +12,7 @@
 #include "boost/tokenizer.hpp"
 #include "boost/foreach.hpp"
 #include "common.hpp"
-#include "Geometry/coordinate.hpp"
+#include "GeometryTopology/coordinate.hpp"
 
 #include <fstream>
 
@@ -254,21 +254,21 @@ namespace gmml
       * @param torsion Z value of the internal coordinate
       * @return Cartesian coordinate of the internal coordinate (distance, angle, torsion)
       */
-    inline Geometry::Coordinate* ConvertInternalCoordinate2CartesianCoordinate(std::vector<Geometry::Coordinate*> coordinate_list, double distance, double angle, double torsion)
+    inline GeometryTopology::Coordinate* ConvertInternalCoordinate2CartesianCoordinate(std::vector<GeometryTopology::Coordinate*> coordinate_list, double distance, double angle, double torsion)
     {
         if(coordinate_list.size() == 0)
         {
-            Geometry::Coordinate* coordinate = new Geometry::Coordinate();
+            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
             return coordinate;
         }
         if(coordinate_list.size() == 1)
         {
-            Geometry::Coordinate* coordinate = new Geometry::Coordinate(coordinate_list.at(0)->GetX() + distance, 0.0, 0.0);
+            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(coordinate_list.at(0)->GetX() + distance, 0.0, 0.0);
             return coordinate;
         }
         if(coordinate_list.size() == 2)
         {
-            Geometry::Coordinate* coordinate = new Geometry::Coordinate(coordinate_list.at(1)->GetX() - cos(gmml::ConvertDegree2Radian(angle) * distance),
+            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(coordinate_list.at(1)->GetX() - cos(gmml::ConvertDegree2Radian(angle) * distance),
                                                                         sin(gmml::ConvertDegree2Radian(angle)) * distance, 0.0);
             return coordinate;
         }
@@ -276,12 +276,12 @@ namespace gmml
         {
             torsion = gmml::PI_DEGREE - torsion;
 
-            Geometry::Coordinate great_grandparent_vector = Geometry::Coordinate(coordinate_list.at(0)->GetX(), coordinate_list.at(0)->GetY(), coordinate_list.at(0)->GetZ());
-            Geometry::Coordinate grandparent_vector = Geometry::Coordinate(coordinate_list.at(1)->GetX(), coordinate_list.at(1)->GetY(), coordinate_list.at(1)->GetZ());
-            Geometry::Coordinate parent_vector = Geometry::Coordinate(coordinate_list.at(2)->GetX(), coordinate_list.at(2)->GetY(), coordinate_list.at(2)->GetZ());
+            GeometryTopology::Coordinate great_grandparent_vector = GeometryTopology::Coordinate(coordinate_list.at(0)->GetX(), coordinate_list.at(0)->GetY(), coordinate_list.at(0)->GetZ());
+            GeometryTopology::Coordinate grandparent_vector = GeometryTopology::Coordinate(coordinate_list.at(1)->GetX(), coordinate_list.at(1)->GetY(), coordinate_list.at(1)->GetZ());
+            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(coordinate_list.at(2)->GetX(), coordinate_list.at(2)->GetY(), coordinate_list.at(2)->GetZ());
 
-            Geometry::Coordinate v1 = Geometry::Coordinate(grandparent_vector);
-            Geometry::Coordinate v2 = Geometry::Coordinate(parent_vector);
+            GeometryTopology::Coordinate v1 = GeometryTopology::Coordinate(grandparent_vector);
+            GeometryTopology::Coordinate v2 = GeometryTopology::Coordinate(parent_vector);
 
             v1.operator-(great_grandparent_vector);
             v2.operator-(grandparent_vector);
@@ -294,15 +294,15 @@ namespace gmml
                     abs(v1.GetZ() + v2.GetZ()) < gmml::EPSILON)
             {
                 great_grandparent_vector.Translate(1.0, -1.0, 2);
-                v1 = Geometry::Coordinate(grandparent_vector);
+                v1 = GeometryTopology::Coordinate(grandparent_vector);
                 v1.operator-(great_grandparent_vector);
             }
-            Geometry::Coordinate r = Geometry::Coordinate(v1);
+            GeometryTopology::Coordinate r = GeometryTopology::Coordinate(v1);
             r.CrossProduct(v2);
 
             r.Normalize();
 
-            Geometry::Coordinate p = Geometry::Coordinate(r);
+            GeometryTopology::Coordinate p = GeometryTopology::Coordinate(r);
             p.CrossProduct(v2);
 
             std::vector<double> v = std::vector<double>();
@@ -312,31 +312,31 @@ namespace gmml
             v.push_back(distance * cos(gmml::ConvertDegree2Radian(angle)));
             v.push_back(1.0);
 
-            Geometry::Coordinate* coordinate = new Geometry::Coordinate(p.GetX() * v.at(0) + r.GetX() * v.at(1) + v2.GetX() * v.at(2) + parent_vector.GetX() * v.at(3),
+            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(p.GetX() * v.at(0) + r.GetX() * v.at(1) + v2.GetX() * v.at(2) + parent_vector.GetX() * v.at(3),
                                                                         p.GetY() * v.at(0) + r.GetY() * v.at(1) + v2.GetY() * v.at(2) + parent_vector.GetY() * v.at(3),
                                                                         p.GetZ() * v.at(0) + r.GetZ() * v.at(1) + v2.GetZ() * v.at(2) + parent_vector.GetZ() * v.at(3));
             return coordinate;
         }
     }
 
-    inline Geometry::Coordinate* ConvertCartesianCoordinate2InternalCoordinate(Geometry::Coordinate* coordinate, std::vector<Geometry::Coordinate*> coordinate_list)
+    inline GeometryTopology::Coordinate* ConvertCartesianCoordinate2InternalCoordinate(GeometryTopology::Coordinate* coordinate, std::vector<GeometryTopology::Coordinate*> coordinate_list)
     {
         if(coordinate_list.size() == 0)
-            return new Geometry::Coordinate();
+            return new GeometryTopology::Coordinate();
         if(coordinate_list.size() == 1)
         {
-            Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(0));
+            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(*coordinate_list.at(0));
             double distance = coordinate->Distance(parent_vector);
-            return new Geometry::Coordinate(distance, 0.0, 0.0);
+            return new GeometryTopology::Coordinate(distance, 0.0, 0.0);
         }
         if(coordinate_list.size() == 2)
         {
-            Geometry::Coordinate grandparent_vector = Geometry::Coordinate(*coordinate_list.at(0));
-            Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(1));
+            GeometryTopology::Coordinate grandparent_vector = GeometryTopology::Coordinate(*coordinate_list.at(0));
+            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(*coordinate_list.at(1));
             double distance = coordinate->Distance(parent_vector);
 
-            Geometry::Coordinate dist_current_parent_vector = Geometry::Coordinate(*coordinate);
-            Geometry::Coordinate dist_grandparent_parent_vector = Geometry::Coordinate(grandparent_vector);
+            GeometryTopology::Coordinate dist_current_parent_vector = GeometryTopology::Coordinate(*coordinate);
+            GeometryTopology::Coordinate dist_grandparent_parent_vector = GeometryTopology::Coordinate(grandparent_vector);
             dist_current_parent_vector.operator -(parent_vector);
             dist_grandparent_parent_vector.operator -(parent_vector);
             double dist_current_parent = dist_current_parent_vector.length();
@@ -344,17 +344,17 @@ namespace gmml
             double dist_current_parent_dot_grandparent_parent = dist_current_parent_vector.DotProduct(dist_grandparent_parent_vector);
             double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_grandparent_parent/(dist_current_parent * dist_grandparent_parent)));
 
-            return new Geometry::Coordinate(distance, angle, 0.0);
+            return new GeometryTopology::Coordinate(distance, angle, 0.0);
         }
         else
         {
-            Geometry::Coordinate greatgrandparent_vector = Geometry::Coordinate(*coordinate_list.at(0));
-            Geometry::Coordinate grandparent_vector = Geometry::Coordinate(*coordinate_list.at(1));
-            Geometry::Coordinate parent_vector = Geometry::Coordinate(*coordinate_list.at(2));
+            GeometryTopology::Coordinate greatgrandparent_vector = GeometryTopology::Coordinate(*coordinate_list.at(0));
+            GeometryTopology::Coordinate grandparent_vector = GeometryTopology::Coordinate(*coordinate_list.at(1));
+            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(*coordinate_list.at(2));
             double distance = coordinate->Distance(parent_vector);
 
-            Geometry::Coordinate dist_current_parent_vector = Geometry::Coordinate(*coordinate);
-            Geometry::Coordinate dist_grandparent_parent_vector = Geometry::Coordinate(grandparent_vector);
+            GeometryTopology::Coordinate dist_current_parent_vector = GeometryTopology::Coordinate(*coordinate);
+            GeometryTopology::Coordinate dist_grandparent_parent_vector = GeometryTopology::Coordinate(grandparent_vector);
             dist_current_parent_vector.operator -(parent_vector);
             dist_grandparent_parent_vector.operator -(parent_vector);
             double dist_current_parent = dist_current_parent_vector.length();
@@ -362,18 +362,18 @@ namespace gmml
             double dist_current_parent_dot_grandparent_parent = dist_current_parent_vector.DotProduct(dist_grandparent_parent_vector);
             double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_grandparent_parent/(dist_current_parent * dist_grandparent_parent)));
 
-            Geometry::Coordinate dist_parent_current_vector = Geometry::Coordinate(parent_vector);
+            GeometryTopology::Coordinate dist_parent_current_vector = GeometryTopology::Coordinate(parent_vector);
             dist_parent_current_vector.operator -(*coordinate);
-            Geometry::Coordinate dist_grandparent_parent_vector_1 = Geometry::Coordinate(grandparent_vector);
+            GeometryTopology::Coordinate dist_grandparent_parent_vector_1 = GeometryTopology::Coordinate(grandparent_vector);
             dist_grandparent_parent_vector_1.operator -(parent_vector);
-            Geometry::Coordinate dist_greatgrandparent_grandparent_vector = Geometry::Coordinate(greatgrandparent_vector);
+            GeometryTopology::Coordinate dist_greatgrandparent_grandparent_vector = GeometryTopology::Coordinate(greatgrandparent_vector);
             dist_greatgrandparent_grandparent_vector.operator -(grandparent_vector);
-            Geometry::Coordinate dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector =
-                    Geometry::Coordinate(dist_grandparent_parent_vector);
+            GeometryTopology::Coordinate dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector =
+                    GeometryTopology::Coordinate(dist_grandparent_parent_vector);
             dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector.CrossProduct(dist_greatgrandparent_grandparent_vector);
-            Geometry::Coordinate dist_parent_current_cross_dist_grandparent_parent_vector = Geometry::Coordinate(dist_parent_current_vector);
+            GeometryTopology::Coordinate dist_parent_current_cross_dist_grandparent_parent_vector = GeometryTopology::Coordinate(dist_parent_current_vector);
             dist_parent_current_cross_dist_grandparent_parent_vector.CrossProduct(dist_grandparent_parent_vector_1);
-            Geometry::Coordinate dist_parent_current_multiply_dist_grandparent_parent_vector = Geometry::Coordinate(dist_parent_current_vector);
+            GeometryTopology::Coordinate dist_parent_current_multiply_dist_grandparent_parent_vector = GeometryTopology::Coordinate(dist_parent_current_vector);
             dist_parent_current_multiply_dist_grandparent_parent_vector.operator *(dist_grandparent_parent_vector.length());
 
             double torsion = ConvertRadian2Degree(
@@ -382,7 +382,7 @@ namespace gmml
                               dist_parent_current_cross_dist_grandparent_parent_vector.DotProduct(
                                   dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector)));
 
-            return new Geometry::Coordinate(distance, angle, torsion);
+            return new GeometryTopology::Coordinate(distance, angle, torsion);
         }
     }
 
@@ -391,7 +391,7 @@ namespace gmml
       * @param code The string chemical code structure
       * @return SUGARNAMELOOKUP The matched row of the lookup table with the given code
       */
-    inline Glycam::SugarName SugarStereoChemistryNameLookup(std::string code)
+    inline Glycan::SugarName SugarStereoChemistryNameLookup(std::string code)
     {
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
         {
@@ -406,7 +406,7 @@ namespace gmml
       * @param code The string complex chemical code structure
       * @return COMPLEXSUGARNAMELOOKUP The matched row of the lookup table with the given code
       */
-    inline Glycam::SugarName ComplexSugarNameLookup(std::string code)
+    inline Glycan::SugarName ComplexSugarNameLookup(std::string code)
     {
         for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
         {
@@ -414,7 +414,7 @@ namespace gmml
                 return COMPLEXSUGARNAMELOOKUP[i];
         }
         return COMPLEXSUGARNAMELOOKUP[0];
-    }
+    }    
 
     /*! \fn
       * A function in order to initializing the common terminal residue map
@@ -427,6 +427,26 @@ namespace gmml
         COMMON_TERMINAL_REDSIDUES["TBT"] = "TBT";
         COMMON_TERMINAL_REDSIDUES["OME"] = "OME";
         return COMMON_TERMINAL_REDSIDUES;
+    }
+
+    inline gmml::ResidueCodeName ResidueNameCodeLookup(std::string residue_name)
+    {
+        for(int i = 0; i < RESIDUENAMECODELOOKUPSIZE; i++)
+        {
+            if(residue_name.compare(RESIDUENAMECODELOOKUP[i].name_) == 0)
+                return RESIDUENAMECODELOOKUP[i];
+        }
+        return RESIDUENAMECODELOOKUP[0];
+    }
+
+    inline gmml::ResidueCodeName ResidueCodeNameLookup(std::string residue_code)
+    {
+        for(int i = 0; i < RESIDUENAMECODELOOKUPSIZE; i++)
+        {
+            if(residue_code.compare(RESIDUENAMECODELOOKUP[i].code_) == 0)
+                return RESIDUENAMECODELOOKUP[i];
+        }
+        return RESIDUENAMECODELOOKUP[0];
     }
 
     /*! \fn
