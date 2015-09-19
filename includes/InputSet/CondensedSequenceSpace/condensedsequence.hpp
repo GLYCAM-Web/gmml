@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include <bitset>
-#include "../common.hpp"
+#include "../../common.hpp"
 
 namespace CondensedSequenceSpace
 {
