@@ -8455,7 +8455,7 @@ ResidueNameMap Assembly::GetAllResidueNamesFromMultipleLibFilesMap(vector<string
     return all_residue_names;
 }
 
-vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
+void Assembly::ExtractSugars(vector<string> amino_lib_files)
 {
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
     /////////////////////////
@@ -8850,7 +8850,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
         (*it)->Print(terminal_residue_name, cout);
 
-    return oligosaccharides;
+//    return oligosaccharides;
 //        PopulateOligosaccharide(oligosaccharides);
     //    Oligosaccharide* oli = oligosaccharides.at(0);
     //    Monosaccharide* mon = oli->root_;
