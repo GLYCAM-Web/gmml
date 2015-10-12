@@ -20,6 +20,9 @@ CondensedSequence::CondensedSequence()
 
 CondensedSequence::CondensedSequence(string sequence)
 {
+    residues_ = CondensedSequenceResidueVector();
+    tokens_ = CondensedSequenceTokenTypeVector();
+    condensed_sequence_residue_tree_ = CondensedSequenceResidueTree();
     ParseCondensedSequence(sequence);
     BuildArrayTreeOfCondensedSequenceResidue();
     BuildArrayTreeOfCondensedSequenceAmberPrepResidue(this->condensed_sequence_residue_tree_);
@@ -80,22 +83,24 @@ int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenc
 {
     if(parent_node_id != -1 && parent_node_id >= condensed_sequence_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
-    condensed_sequence_residue_tree_.push_back(std::make_pair(condensed_residue, parent_node_id));
+//    condensed_sequence_residue_tree_.push_back(std::make_pair(condensed_residue, parent_node_id));
+    condensed_residue->SetParentId(parent_node_id);
+    condensed_sequence_residue_tree_.push_back(condensed_residue);
     return condensed_sequence_residue_tree_.size() - 1;
 }
 
-int CondensedSequence::InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue *condensed_tree_residue, int parent_node_id)
+int CondensedSequence::InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue *condensed_amber_prep_residue, int parent_node_id)
 {
     if(parent_node_id != -1 && parent_node_id >= condensed_sequence_amber_prep_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
-    condensed_sequence_amber_prep_residue_tree_.push_back(std::make_pair(condensed_tree_residue, parent_node_id));
+//    condensed_sequence_amber_prep_residue_tree_.push_back(std::make_pair(condensed_tree_residue, parent_node_id));
+    condensed_amber_prep_residue->SetParentId(parent_node_id);
+    condensed_sequence_amber_prep_residue_tree_.push_back(condensed_amber_prep_residue);
     return condensed_sequence_amber_prep_residue_tree_.size() - 1;
 }
 
 void CondensedSequence::ParseCondensedSequence(string sequence)
 {
-    residues_ = CondensedSequenceResidueVector();
-    tokens_ = CondensedSequenceTokenTypeVector();
     bool reading_residue = true;
     int start_index = 0;
     for(int i = 0; i < sequence.size(); i++)
@@ -162,19 +167,13 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
     CondensedSequenceTokenTypeVector::reverse_iterator current_token = tokens_.rbegin();
     CondensedSequenceResidueVector::reverse_iterator current_residue = residues_.rbegin();
 
-    condensed_sequence_residue_tree_ = CondensedSequenceResidueTree();
     if(residues_.size() == 0)
         return;
 
-    for(int i = 0; i < tokens_.size(); i++)
-        cout << tokens_[i] << " " << residues_[i]->GetName() << endl;
-    cout << "done" << endl;
-
     stack<int> residue_stack;
     residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue));
-    while(current_token != tokens_.rend())
+    while(++current_token != tokens_.rend())
     {
-        cout << (*current_token) << " " << (*current_residue)->GetName() << endl;
         switch(*current_token)
         {
             case CONDENSED_SEQUENCE_LEFT_BRACKET:
@@ -197,19 +196,17 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
             }
             case CONDENSED_SEQUENCE_RESIDUE:
             {
-                ++current_token;
+                current_residue++;
                 if(current_residue == residues_.rend())
                     throw CondensedSequenceProcessingException("Invalid sequence of residues");
                 if(residue_stack.empty())
                     throw CondensedSequenceProcessingException("Invalid sequence");
-                cout << (*current_residue)->GetName() << endl;
                 int parent = this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top());
                 residue_stack.pop();
                 residue_stack.push(parent);
                 break;
             }
         }
-        current_token++;
     }
 }
 
@@ -219,17 +216,16 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
     vector<vector<int> > open_valences = vector<vector<int> >(residue_tree.size());
     for(int i = 0; i < residue_tree.size(); i++)
     {
-        int parent = residue_tree.at(i).second;
-        CondensedSequenceResidue* residue = residue_tree.at(i).first;
+        int parent = residue_tree.at(i)->GetParentId();
+        CondensedSequenceResidue* residue = residue_tree.at(i);
         if(parent != -1)
         {
             int oxygen_position = residue->GetOxygenPosition();
             open_valences[parent].push_back(oxygen_position);
         }
-        cout << parent << " " << residue->GetName() << endl;
     }
 
-    string terminal = residue_tree.at(0).first->GetName();
+    string terminal = residue_tree.at(0)->GetName();
     this->InsertNodeInCondensedSequenceAmberPrepResidueTree(new CondensedSequenceAmberPrepResidue(this->GetAmberPrepTerminalResidueCodeOfTerminalResidue(terminal)));
 
     int current_derivative_count = 0;
@@ -237,11 +233,11 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
     for(int i = 1; i < residue_tree.size(); i++)
     {
         derivatives[i] = current_derivative_count;
-        CondensedSequenceResidue* condensed_residue = residue_tree.at(i).first;
-        int parent = residue_tree.at(i).second;
+        CondensedSequenceResidue* condensed_residue = residue_tree.at(i);
+        int parent = residue_tree.at(i)->GetParentId();
 
 
-        string parent_name = residue_tree.at(parent).first->GetName();
+        string parent_name = residue_tree.at(parent)->GetName();
         string anomeric_carbon = "C" + ConvertT<int>(condensed_residue->GetAnomericCarbon());
         string oxygen_position;
         (parent_name.compare("OME") == 0) ? oxygen_position = "O" : oxygen_position = "O" + ConvertT<int>(condensed_residue->GetOxygenPosition());
@@ -261,16 +257,15 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
             current_derivative_count++;
         }
     }
-    cout << "End building prep residue tree" << endl;
 }
 
 string CondensedSequence::GetAmberPrepTerminalResidueCodeOfTerminalResidue(string terminal_residue_name)
 {
-    if(terminal_residue_name.compare("OH") == 0)
+    if(terminal_residue_name.compare("OH") == 0 || terminal_residue_name.compare("ROH") == 0)
         return "ROH";
     else if(terminal_residue_name.compare("OME") == 0)
         return "OME";
-    else if(terminal_residue_name.compare("OtBu") == 0)
+    else if(terminal_residue_name.compare("OtBu") == 0 || terminal_residue_name.compare("TBT") == 0)
         return "TBT";
     throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
 }

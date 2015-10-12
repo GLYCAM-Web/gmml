@@ -76,6 +76,7 @@ CondensedSequenceResidue::CondensedSequenceResidue(string residue_string)
             }
         }
     }
+    parent_id_ = -1;
 }
 
 //////////////////////////////////////////////////////////
@@ -108,6 +109,10 @@ int CondensedSequenceResidue::GetOxygenPosition()
 CondensedSequenceResidue::DerivativeMap CondensedSequenceResidue::GetDerivatives()
 {
     return derivatives_;
+}
+int CondensedSequenceResidue::GetParentId()
+{
+    return parent_id_;
 }
 
 //////////////////////////////////////////////////////////
@@ -142,6 +147,10 @@ void CondensedSequenceResidue::SetDerivatives(DerivativeMap derivatives)
         string derivative = (*it).second;
         derivatives_[index] = derivative;
     }
+}
+void CondensedSequenceResidue::SetParentId(int parent_id)
+{
+    parent_id_ = parent_id;
 }
 
 //////////////////////////////////////////////////////////

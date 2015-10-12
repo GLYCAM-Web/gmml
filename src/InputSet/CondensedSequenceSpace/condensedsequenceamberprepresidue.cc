@@ -12,10 +12,10 @@ using namespace CondensedSequenceSpace;
 //////////////////////////////////////////////////////////
 CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(){}
 
-CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(string name) : name_(name), has_parent_(false){}
+CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(string name) : name_(name), parent_id_(-1) {} //has_parent_(false){}
 
 CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(string name, string anomeric_carbon, string parent_oxygen) :
-    name_(name), anomeric_carbon_(anomeric_carbon), parent_oxygen_(parent_oxygen), has_parent_(true) {}
+    name_(name), anomeric_carbon_(anomeric_carbon), parent_oxygen_(parent_oxygen), parent_id_(0) {} //has_parent_(true) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -35,9 +35,13 @@ string CondensedSequenceAmberPrepResidue::GetParentOxygen()
     return parent_oxygen_;
 }
 
-bool CondensedSequenceAmberPrepResidue::GetHasParent()
+//bool CondensedSequenceAmberPrepResidue::GetHasParent()
+//{
+//    return has_parent_;
+//}
+int CondensedSequenceAmberPrepResidue::GetParentId()
 {
-    return has_parent_;
+    return parent_id_;
 }
 
 //////////////////////////////////////////////////////////
@@ -58,9 +62,13 @@ void CondensedSequenceAmberPrepResidue::SetParentOxygen(string parent_oxygen)
     parent_oxygen_ = parent_oxygen;
 }
 
-void CondensedSequenceAmberPrepResidue::SetHasParent(bool has_parent)
+//void CondensedSequenceAmberPrepResidue::SetHasParent(bool has_parent)
+//{
+//    has_parent_ = has_parent;
+//}
+void CondensedSequenceAmberPrepResidue::SetParentId(int parent_id)
 {
-    has_parent_ = has_parent;
+    parent_id_ = parent_id;
 }
 
 //////////////////////////////////////////////////////////

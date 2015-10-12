@@ -439,8 +439,9 @@ void Assembly::SetModelIndex(int model_index)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file)
+void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file, bool structure)
 {
+    ResidueAttachmentMap attachment_map = ResidueAttachmentMap();
     CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
     CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
     PrepFile* prep = new PrepFile(prep_file);
@@ -454,13 +455,10 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
     }
     int sequence_number = 0;
     stringstream ss;
-    Coordinate* attach_coordinate = new Coordinate();
     for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
     {
-        Coordinate* parent_coordinate = new Coordinate();
-        CondensedSequenceAmberPrepResidue* amber_prep_residue = it->first;
+        CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
         string amber_prep_residue_name = amber_prep_residue->GetName();
-        string amber_prep_residue_anomeric_carbon = amber_prep_residue->GetAnomericCarbon();
         string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
 
         if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
@@ -571,9 +569,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                                                                                                  prep_atom->GetAngle(), prep_atom->GetDihedral());
                     cartesian_coordinate_list.push_back(coordinate);
 
-                    coordinate->Translate(attach_coordinate->GetX(), attach_coordinate->GetY(), attach_coordinate->GetZ());
-                    if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0)
-                        parent_coordinate = coordinate;
                     assembly_atom->AddCoordinate(coordinate);
                 }
                 else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
@@ -599,14 +594,277 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
             assembly_residue->AddHeadAtom(head_atom);
             assembly_residue->AddTailAtom(tail_atom);
             residues_.push_back(assembly_residue);
+            if(sequence_number > 1)
+            {
+                Residue* parent_residue = residues_.at(amber_prep_residue->GetParentId());
+                attachment_map[parent_residue].push_back(assembly_residue);
+            }
         }
         else
         {
             cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
         }
-        attach_coordinate = new Coordinate(*parent_coordinate);
     }
+
     name_ = ss.str();
+    this->SetSourceFile(prep_file);
+
+    if(structure)
+    {
+        this->BuildStructureByPrepFileInformation();
+        for(ResidueAttachmentMap::iterator it = attachment_map.begin(); it != attachment_map.end(); it++)
+        {
+            Residue* parent_residue = (*it).first;
+            ResidueVector branches = (*it).second;
+            for(ResidueVector::iterator it1 = branches.begin(); it1 != branches.end(); it1++)
+            {
+                Residue* assembly_residue = *it1;
+                this->AttachResidues(assembly_residue, parent_residue, parameter_file);
+            }
+        }
+    }
+}
+
+void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, string parameter_file)
+{
+    ParameterFile* parameter = new ParameterFile(parameter_file);
+    ParameterFile::BondMap parameter_bonds = parameter->GetBonds();
+    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(0);
+    AtomVector residue_head_atom_adjacent_atoms = AtomVector();
+    AtomVector parent_target_atom_adjacent_atoms = AtomVector();
+
+    double bond_length = BOND_LENGTH;
+    vector<string> bond = vector<string>();
+    bond.push_back(residue_head_atom->GetAtomType());
+    bond.push_back(parent_target_atom->GetAtomType());
+    vector<string> reverse_bond = vector<string>();
+    reverse_bond.push_back(parent_target_atom->GetAtomType());
+    reverse_bond.push_back(residue_head_atom->GetAtomType());
+    if(parameter_bonds.find(bond) != parameter_bonds.end())
+        bond_length = parameter_bonds[bond]->GetLength();
+    else if(parameter_bonds.find(reverse_bond) != parameter_bonds.end())
+        bond_length = parameter_bonds[reverse_bond]->GetLength();
+
+    residue_head_atom->GetNode()->AddNodeNeighbor(parent_target_atom);
+    parent_target_atom->GetNode()->AddNodeNeighbor(residue_head_atom);
+    residue_head_atom_adjacent_atoms = residue_head_atom->GetNode()->GetNodeNeighbors();
+    parent_target_atom_adjacent_atoms = parent_target_atom->GetNode()->GetNodeNeighbors();
+
+    Coordinate* residue_direction = new Coordinate();
+    for(AtomVector::iterator it = residue_head_atom_adjacent_atoms.begin(); it != residue_head_atom_adjacent_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetId().compare(parent_target_atom->GetId()) != 0)
+        {
+            Coordinate* dist = new Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
+            dist->operator -(*atom->GetCoordinates().at(model_index_));
+            dist->Normalize();
+            residue_direction->operator +(*dist);
+            residue_direction->Normalize();
+        }
+    }
+
+    residue_direction->Normalize();
+    residue_direction->operator *(bond_length);
+
+    residue_direction->operator +(*residue_head_atom->GetCoordinates().at(model_index_));
+//    residue_direction->operator +(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    Coordinate* oxygen_position = new Coordinate(residue_direction->GetX(), residue_direction->GetY(), residue_direction->GetZ());
+    Coordinate* offset = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+    offset->operator -(*oxygen_position);
+
+    AtomVector all_atoms_of_attached_residue = residue->GetAtoms();
+    for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+        (*it)->GetCoordinates().at(model_index_)->Translate(offset->GetX(), offset->GetY(), offset->GetZ());
+    /**/
+    Coordinate* carbon_direction = new Coordinate();
+    for(AtomVector::iterator it = parent_target_atom_adjacent_atoms.begin(); it != parent_target_atom_adjacent_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetId().compare(residue_head_atom->GetId()) != 0)
+        {
+            Coordinate* dist = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+            dist->operator -(*atom->GetCoordinates().at(model_index_));
+            dist->Normalize();
+            carbon_direction->operator +(*dist);
+            carbon_direction->Normalize();
+        }
+    }
+
+    carbon_direction->Normalize();
+    carbon_direction->operator *(bond_length);
+    carbon_direction->operator +(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    Coordinate* carbon_position = new Coordinate(*carbon_direction);
+
+    Coordinate* carbon_target = new Coordinate(*carbon_position);
+    carbon_target->operator -(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    Coordinate* head_target = new Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
+    head_target->operator -(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    double angle = acos((carbon_target->DotProduct(*head_target)) / (carbon_target->length() * head_target->length()));
+    double rotation_angle = ConvertDegree2Radian(PI_DEGREE - ROTATION_ANGLE) - angle;
+
+    double rotation_matrix[3][4];
+    Coordinate* direction = new Coordinate(*carbon_target);
+    direction->CrossProduct(*head_target);
+    direction->Normalize();
+    double u = direction->GetX();
+    double v = direction->GetY();
+    double w = direction->GetZ();
+
+    double a = parent_target_atom->GetCoordinates().at(model_index_)->GetX();
+    double b = parent_target_atom->GetCoordinates().at(model_index_)->GetY();
+    double c = parent_target_atom->GetCoordinates().at(model_index_)->GetZ();
+
+    double u2 = u*u;
+    double v2 = v*v;
+    double w2 = w*w;
+    double cos_rotation_angle = cos(rotation_angle);
+    double sin_rotation_angle = sin(rotation_angle);
+
+    rotation_matrix[0][3] = a * (v2 + w2) - u * (b * v + c * w) + (u * (b * v + c * w) - a * (v2 + w2)) * cos_rotation_angle + (b * w - c * v) * sin_rotation_angle;
+    rotation_matrix[1][3] = b * (u2 + w2) - v * (a * u + c * w) + (v * (a * u + c * w) - b * (u2 + w2)) * cos_rotation_angle + (c * u - a * w) * sin_rotation_angle;
+    rotation_matrix[2][3] = c * (u2 + v2) - w * (a * u + b * v) + (w * (a * u + b * v) - c * (u2 + v2)) * cos_rotation_angle + (a * v - b * u) * sin_rotation_angle;
+
+    rotation_matrix[0][0] = u2 + (v2 + w2) * cos_rotation_angle;
+    rotation_matrix[0][1] = u * v * (1 - cos_rotation_angle) - w * sin_rotation_angle;
+    rotation_matrix[0][2] = u * w * (1 - cos_rotation_angle) + v * sin_rotation_angle;
+
+    rotation_matrix[1][0] = u * v * (1 - cos_rotation_angle) + w * sin_rotation_angle;
+    rotation_matrix[1][1] = v2 + (u2 + w2) * cos_rotation_angle;
+    rotation_matrix[1][2] = v * w * (1 - cos_rotation_angle) - u * sin_rotation_angle;
+
+    rotation_matrix[2][0] = u * w * (1 - cos_rotation_angle) - v * sin_rotation_angle;
+    rotation_matrix[2][1] = v * w * (1 - cos_rotation_angle) + u * sin_rotation_angle;
+    rotation_matrix[2][2] = w2 + (u2 + v2) * cos_rotation_angle;
+
+    all_atoms_of_attached_residue = residue->GetAtoms();
+    for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+    {
+        Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+        Coordinate* result = new Coordinate();
+        result->SetX(rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
+                     rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3]);
+        result->SetY(rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
+                     rotation_matrix[1][2] * atom_coordinate->GetZ() + rotation_matrix[1][3]);
+        result->SetZ(rotation_matrix[2][0] * atom_coordinate->GetX() + rotation_matrix[2][1] * atom_coordinate->GetY() +
+                     rotation_matrix[2][2] * atom_coordinate->GetZ() + rotation_matrix[2][3]);
+
+        (*it)->GetCoordinates().at(model_index_)->SetX(result->GetX());
+        (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
+        (*it)->GetCoordinates().at(model_index_)->SetZ(result->GetZ());
+    }
+
+
+    Atom* carbon = NULL;
+    for(AtomVector::iterator it = parent_target_atom_adjacent_atoms.begin(); it != parent_target_atom_adjacent_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetId().compare(residue_head_atom->GetId()) != 0)
+        {
+            if(atom->GetName()[0] == 'C')
+            {
+                carbon = atom;
+                break;
+            }
+        }
+    }
+    if(carbon != NULL)
+    {
+        Atom* oxygen = NULL;
+        for(AtomVector::iterator it = residue_head_atom_adjacent_atoms.begin(); it != residue_head_atom_adjacent_atoms.end(); it++)
+        {
+            Atom* atom = *it;
+            if(atom->GetId().compare(parent_target_atom->GetId()) != 0)
+            {
+                if(atom->GetName()[0] == 'O')
+                {
+                    oxygen = atom;
+                    break;
+                }
+            }
+        }
+        if(oxygen != NULL)
+        {
+            Coordinate* oxygen_coordinate = oxygen->GetCoordinates().at(model_index_);
+
+            Coordinate* oxygen_head = new Coordinate(*oxygen_coordinate);
+            oxygen_head->operator -(*residue_head_atom->GetCoordinates().at(model_index_));
+
+            Coordinate* target_carbon = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+            target_carbon->operator -(*carbon_position);
+
+            Coordinate* head_target_x_oxygen_head = new Coordinate(*head_target);
+            head_target_x_oxygen_head->CrossProduct(*oxygen_head);
+
+            Coordinate* target_carbon_x_head_target = new Coordinate(*target_carbon);
+            target_carbon_x_head_target->CrossProduct(*head_target);
+
+            Coordinate* target_carbon_mul_head_target = new Coordinate(*target_carbon);
+            target_carbon_mul_head_target->operator *(head_target->length());
+
+            double torsion = atan2(target_carbon_mul_head_target->DotProduct(*head_target_x_oxygen_head),
+                                   target_carbon_x_head_target->DotProduct(*head_target_x_oxygen_head));
+
+            double rotation_torsion = ConvertDegree2Radian(191.6) - torsion;
+            cout << torsion << " " << rotation_torsion << endl;
+
+            double torsion_matrix[3][4];
+            Coordinate* torsion_direction = new Coordinate(*head_target);
+            torsion_direction->Normalize();
+            double u1 = direction->GetX();
+            double v1 = direction->GetY();
+            double w1 = direction->GetZ();
+
+            double a1 = parent_target_atom->GetCoordinates().at(model_index_)->GetX();
+            double b1 = parent_target_atom->GetCoordinates().at(model_index_)->GetY();
+            double c1 = parent_target_atom->GetCoordinates().at(model_index_)->GetZ();
+
+            double u12 = u1*u1;
+            double v12 = v1*v1;
+            double w12 = w1*w1;
+            double cos_torsion_angle = cos(rotation_torsion);
+            double sin_torsion_angle = sin(rotation_torsion);
+
+            torsion_matrix[0][3] = a1 * (v12 + w12) - u1 * (b1 * v1 + c1 * w1) + (u1 * (b1 * v1 + c1 * w1) - a1 * (v12 + w12)) * cos_torsion_angle + (b1 * w1 - c1 * v1) * sin_torsion_angle;
+            torsion_matrix[1][3] = b1 * (u12 + w12) - v1 * (a1 * u1 + c1 * w1) + (v1 * (a1 * u1 + c1 * w1) - b1 * (u12 + w12)) * cos_torsion_angle + (c1 * u1 - a1 * w1) * sin_torsion_angle;
+            torsion_matrix[2][3] = c1 * (u12 + v12) - w1 * (a1 * u1 + b1 * v1) + (w1 * (a1 * u1 + b1 * v1) - c1 * (u12 + v12)) * cos_torsion_angle + (a1 * v1 - b1 * u1) * sin_torsion_angle;
+
+            torsion_matrix[0][0] = u12 + (v12 + w12) * cos_torsion_angle;
+            torsion_matrix[0][1] = u1 * v1 * (1 - cos_torsion_angle) - w1 * sin_torsion_angle;
+            torsion_matrix[0][2] = u1 * w1 * (1 - cos_torsion_angle) + v1 * sin_torsion_angle;
+
+            torsion_matrix[1][0] = u1 * v1 * (1 - cos_torsion_angle) + w1 * sin_torsion_angle;
+            torsion_matrix[1][1] = v12 + (u12 + w12) * cos_torsion_angle;
+            torsion_matrix[1][2] = v1 * w1 * (1 - cos_torsion_angle) - u1 * sin_torsion_angle;
+
+            torsion_matrix[2][0] = u1 * w1 * (1 - cos_torsion_angle) - v1 * sin_torsion_angle;
+            torsion_matrix[2][1] = v1 * w1 * (1 - cos_torsion_angle) + u1 * sin_torsion_angle;
+            torsion_matrix[2][2] = w12 + (u12 + v12) * cos_torsion_angle;
+
+            all_atoms_of_attached_residue = residue->GetAtoms();
+            for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+            {
+                Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+                Coordinate* result = new Coordinate();
+                result->SetX(torsion_matrix[0][0] * atom_coordinate->GetX() + torsion_matrix[0][1] * atom_coordinate->GetY() +
+                             torsion_matrix[0][2] * atom_coordinate->GetZ() + torsion_matrix[0][3]);
+                result->SetY(torsion_matrix[1][0] * atom_coordinate->GetX() + torsion_matrix[1][1] * atom_coordinate->GetY() +
+                             torsion_matrix[1][2] * atom_coordinate->GetZ() + torsion_matrix[1][3]);
+                result->SetZ(torsion_matrix[2][0] * atom_coordinate->GetX() + torsion_matrix[2][1] * atom_coordinate->GetY() +
+                             torsion_matrix[2][2] * atom_coordinate->GetZ() + torsion_matrix[2][3]);
+
+                (*it)->GetCoordinates().at(model_index_)->SetX(result->GetX());
+                (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
+                (*it)->GetCoordinates().at(model_index_)->SetZ(result->GetZ());
+            }
+        }
+    }
+    /**/
 }
 
 void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> amino_lib_files, vector<string> glycam_lib_files,
@@ -7836,7 +8094,7 @@ ResidueNameMap Assembly::GetAllResidueNamesFromMultipleLibFilesMap(vector<string
     return all_residue_names;
 }
 
-void Assembly::ExtractSugars(vector<string> amino_lib_files)
+vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
 {
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
 
@@ -8204,6 +8462,8 @@ void Assembly::ExtractSugars(vector<string> amino_lib_files)
     vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names, terminal_residue_name);
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
         (*it)->Print(terminal_residue_name, cout);
+
+    return oligosaccharides;
 }
 
 //////////populate ontology

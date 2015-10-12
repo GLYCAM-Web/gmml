@@ -26,8 +26,11 @@ namespace CondensedSequenceSpace
               * List of condensed sequence residues
               */
             typedef std::vector<gmml::CondensedSequenceTokenType> CondensedSequenceTokenTypeVector;
-            typedef std::vector<std::pair<CondensedSequenceResidue*, int> > CondensedSequenceResidueTree;
-            typedef std::vector<std::pair<CondensedSequenceAmberPrepResidue*, int> > CondensedSequenceAmberPrepResidueTree;
+//            typedef std::vector<std::pair<CondensedSequenceResidue*, int> > CondensedSequenceResidueTree;
+//            typedef std::vector<std::pair<CondensedSequenceAmberPrepResidue*, int> > CondensedSequenceAmberPrepResidueTree;
+
+            typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueTree;
+            typedef std::vector<CondensedSequenceAmberPrepResidue*> CondensedSequenceAmberPrepResidueTree;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -58,7 +61,7 @@ namespace CondensedSequenceSpace
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
             int InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue* condensed_residue, int parent_node_id = -1);
-            int InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue* condensed_tree_residue, int parent_node_id = -1);
+            int InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue* condensed_amber_prep_residue, int parent_node_id = -1);
             void ParseCondensedSequence(std::string sequence);
             void BuildArrayTreeOfCondensedSequenceResidue();
             void BuildArrayTreeOfCondensedSequenceAmberPrepResidue(CondensedSequenceResidueTree residue_tree);

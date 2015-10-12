@@ -34,6 +34,7 @@ namespace CondensedSequenceSpace
             int GetAnomericCarbon();
             int GetOxygenPosition();
             DerivativeMap GetDerivatives();
+            int GetParentId();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -45,6 +46,7 @@ namespace CondensedSequenceSpace
             void SetAnomericCarbon(int anomeric_carbon);
             void SetOxygenPosition(int oxygen_position);
             void SetDerivatives(DerivativeMap derivatives);
+            void SetParentId(int parent_id);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -71,6 +73,7 @@ namespace CondensedSequenceSpace
             int anomeric_carbon_;
             int oxygen_position_;
             DerivativeMap derivatives_;
+            int parent_id_;
     };
 }
 

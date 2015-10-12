@@ -46,6 +46,7 @@ namespace MolecularModeling
             typedef std::map<std::string, AtomVector> CycleMap;
             typedef std::map<std::string, std::map<std::string, std::vector<std::string> > > SelectPatternMap;
             typedef std::map<std::string, ResidueVector> HierarchicalContainmentMap;
+            typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -212,7 +213,8 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
-            void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file);
+            void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
+            void AttachResidues(Residue* residue, Residue* parent_residue, std::string parameter_file);
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
@@ -297,6 +299,7 @@ namespace MolecularModeling
               * @param prep_file Prep file object
               */
             void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std::string parameter_file = "");
+//            PdbFileSpace::PdbFile* BuildPdbFileStructureFromCondensedSequence
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
@@ -632,7 +635,7 @@ namespace MolecularModeling
               * A function in order to extract all the saccharide structures
               * @param amino_lib_files The list of paths to amino library files
               */
-            void ExtractSugars(std::vector<std::string> amino_lib_files);
+            std::vector<Glycan::Oligosaccharide*> ExtractSugars(std::vector<std::string> amino_lib_files);
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
               * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
