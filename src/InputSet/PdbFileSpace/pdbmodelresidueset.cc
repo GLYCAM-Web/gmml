@@ -32,7 +32,7 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
             getline(residue_set_block, line);
             temp = line;
         }
-        if(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos || line.find("TER") != string::npos)
+        if(line.find("ATOM") != string::npos || line.find("TER") != string::npos)
         {
             atom_block << head_exceptional_atom_block.str();
         }
@@ -76,6 +76,7 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
         {
             heterogen_atom_block << tail_exceptional_atom_block.str();
         }
+
         /// End of an ATOM section in the given residue set block
         if(line.find("TER") != string::npos || Trim(temp).empty())
         {
@@ -98,7 +99,7 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
             }
         }
         /// Extract HETATM section of the given residue set block
-        while(line.find("HETATM") != string::npos  || line.find("ANISOU") != string::npos)
+        while(line.find("HETATM") != string::npos || line.find("ANISOU") != string::npos)
         {
             heterogen_atom_block << line << endl;       /// Append all lines of HETATM section to create a block of stream of each heterogen atom set
             getline(residue_set_block, line);           /// Read next line
