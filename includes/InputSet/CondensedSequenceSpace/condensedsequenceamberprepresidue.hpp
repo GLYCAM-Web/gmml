@@ -30,7 +30,8 @@ namespace CondensedSequenceSpace
             std::string GetName();
             std::string GetAnomericCarbon();
             std::string GetParentOxygen();
-            bool GetHasParent();
+//            bool GetHasParent();
+            int GetParentId();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -38,7 +39,8 @@ namespace CondensedSequenceSpace
             void SetName(std::string name);
             void SetAnomericCarbon(std::string anomeric_carbon);
             void SetParentOxygen(std::string parent_oxygen);
-            void SetHasParent(bool has_parent);
+//            void SetHasParent(bool has_parent);
+            void SetParentId(int parent_id);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -61,7 +63,8 @@ namespace CondensedSequenceSpace
             std::string name_;
             std::string anomeric_carbon_;
             std::string parent_oxygen_;
-            bool has_parent_;
+//            bool has_parent_;
+            int parent_id_;
     };
 }
 

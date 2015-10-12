@@ -29,7 +29,7 @@
 namespace MolecularModeling
 {
     class Residue;
-    class Atom;
+    class Atom;    
     class Assembly
     {
         public:
@@ -46,6 +46,7 @@ namespace MolecularModeling
             typedef std::map<std::string, AtomVector> CycleMap;
             typedef std::map<std::string, std::map<std::string, std::vector<std::string> > > SelectPatternMap;
             typedef std::map<std::string, ResidueVector> HierarchicalContainmentMap;
+            typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -71,6 +72,8 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+           void ODBC();
+
             /*! \fn
               * An accessor function in order to access to the name
               * @return name_ attribute of the current object of this class
@@ -212,7 +215,8 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
-            void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file);
+            void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
+            void AttachResidues(Residue* residue, Residue* parent_residue, std::string parameter_file);
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
@@ -297,6 +301,7 @@ namespace MolecularModeling
               * @param prep_file Prep file object
               */
             void BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std::string parameter_file = "");
+//            PdbFileSpace::PdbFile* BuildPdbFileStructureFromCondensedSequence
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
@@ -455,7 +460,7 @@ namespace MolecularModeling
               * @param cutoff Threshold of closeness of the atoms to be considered as bonded
               * @param model_index In the case that the structure has multiple model (multiple coordinates for atoms, such as pdb) this arguments indicates the desired model index
               */
-            void BuildStructureByDistance(double cutoff = gmml::dCutOff, int model_index = 0);
+            void BuildStructureByDistance(int number_of_threads = 1, double cutoff = gmml::dCutOff, int model_index = 0);
             /*! \fn
               * A function to build a graph structure for the current object of central data structure based on the bonding information provided in the original file
               */
@@ -632,7 +637,10 @@ namespace MolecularModeling
               * A function in order to extract all the saccharide structures
               * @param amino_lib_files The list of paths to amino library files
               */
-            void ExtractSugars(std::vector<std::string> amino_lib_files);
+            std::vector<Glycan::Oligosaccharide*> ExtractSugars(std::vector<std::string> amino_lib_files);
+
+            void PopulateOligosaccharide(std::vector<Glycan::Oligosaccharide*> oligos);
+
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
               * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
@@ -872,6 +880,31 @@ namespace MolecularModeling
             std::string source_file_;                       /*!< File name that the current assembly has been built upon >*/
             gmml::InputFileType source_file_type_;          /*!< Type of the file that the current assembly has been built upon >*/
             int model_index_;                               /*!< In case that there are more than one models for an assembly, this attribute indicated which model is the target model >*/
+    };
+
+    struct DistanceCalculationThreadArgument{
+            int thread_index;
+            int number_of_threads;
+            int model_index;
+            double cutoff;
+            Assembly* a;
+            DistanceCalculationThreadArgument()
+            {
+                thread_index = 0;
+                number_of_threads = 1;
+                model_index = 0;
+                cutoff = gmml::dCutOff;
+                a = NULL;
+            }
+
+            DistanceCalculationThreadArgument(int ti, int tn, int mi, double c, Assembly* assembly)
+            {
+                thread_index = ti;
+                number_of_threads = tn;
+                model_index = mi;
+                cutoff = c;
+                a = assembly;
+            }
     };
 }
 

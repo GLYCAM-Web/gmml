@@ -1,5 +1,7 @@
 #include <math.h>
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
@@ -60,6 +62,61 @@
 //#include "raptor2/raptor2.h"
 //#include "rasqal/rasqal.h"
 //#include "redland.h"
+
+
+#include <stdio.h>
+#include <string.h>
+
+#ifdef WIN32
+# include <windows.h>
+#endif
+
+#include <sql.h>
+#include <sqlext.h>
+
+#if defined (HAVE_IODBC)
+#include <iodbcext.h>
+#endif
+
+#if !defined (SQL_DESC_COL_DV_TYPE)
+
+# define SQL_DESC_COL_DV_TYPE               1057L
+# define SQL_DESC_COL_DT_DT_TYPE            1058L
+# define SQL_DESC_COL_LITERAL_ATTR          1059L
+# define SQL_DESC_COL_BOX_FLAGS             1060L
+# define SQL_DESC_COL_LITERAL_LANG          1061L
+# define SQL_DESC_COL_LITERAL_TYPE          1062L
+
+# define VIRTUOSO_DV_DATE                   129
+# define VIRTUOSO_DV_DATETIME               211
+# define VIRTUOSO_DV_DOUBLE_FLOAT           191
+# define VIRTUOSO_DV_IRI_ID                 243
+# define VIRTUOSO_DV_LONG_INT               189
+# define VIRTUOSO_DV_NUMERIC                219
+# define VIRTUOSO_DV_RDF                    246
+# define VIRTUOSO_DV_SINGLE_FLOAT           190
+# define VIRTUOSO_DV_STRING                 182
+# define VIRTUOSO_DV_TIME                   210
+# define VIRTUOSO_DV_TIMESTAMP              128
+# define VIRTUOSO_DV_TIMESTAMP_OBJ          208
+
+# define VIRTUOSO_DT_TYPE_DATETIME          1
+# define VIRTUOSO_DT_TYPE_DATE              2
+# define VIRTUOSO_DT_TYPE_TIME              3
+
+#define VIRTUOSO_BF_IRI			0x1
+#define VIRTUOSO_BF_UTF8                    0x2
+#define VIRTUOSO_BF_DEFAULT_ENC             0x4
+
+#endif
+
+SQLHANDLE henv = SQL_NULL_HANDLE;
+SQLHANDLE hdbc = SQL_NULL_HANDLE;
+SQLHANDLE hstmt = SQL_NULL_HANDLE;
+
+#define MAXCOLS                             25
+
+
 
 using namespace std;
 using namespace MolecularModeling;
@@ -171,6 +228,256 @@ Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileTyp
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
+
+//extern "C"
+//{
+
+//int
+//ODBC_Errors (char *where)
+//{
+//    unsigned char buf[250];
+//    unsigned char sqlstate[15];
+
+//    while (SQLError (henv, hdbc, hstmt, sqlstate, NULL, buf, sizeof (buf), NULL) == SQL_SUCCESS)
+//    {
+//        fprintf (stdout, "STMT: %s || %s, SQLSTATE=%s\n", where, buf, sqlstate);
+//    }
+
+//    while (SQLError (henv, hdbc, SQL_NULL_HSTMT, sqlstate, NULL, buf, sizeof (buf), NULL) == SQL_SUCCESS)
+//    {
+//        fprintf (stdout, "CONN:%s || %s, SQLSTATE=%s\n", where, buf, sqlstate);
+//    }
+
+//    while (SQLError (henv, SQL_NULL_HDBC, SQL_NULL_HSTMT, sqlstate, NULL, buf, sizeof (buf), NULL) == SQL_SUCCESS)
+//    {
+//        fprintf (stdout, "ENV:%s || %s, SQLSTATE=%s\n", where, buf, sqlstate);
+//    }
+
+//    return -1;
+//}
+
+//int
+//ODBC_Disconnect (void)
+//{
+//    if (hstmt)
+//        SQLFreeHandle (SQL_HANDLE_STMT, hstmt);
+//    hstmt = SQL_NULL_HANDLE;
+//    if (hdbc)
+//        SQLDisconnect (hdbc);
+//    if (hdbc)
+//        SQLFreeHandle (SQL_HANDLE_DBC, hdbc);
+//    hdbc = SQL_NULL_HANDLE;
+//    if (henv)
+//        SQLFreeHandle (SQL_HANDLE_ENV, henv);
+//    henv = SQL_NULL_HANDLE;
+//    return 0;
+//}
+
+//int
+//ODBC_Connect (char *dsn, char *usr, char *pwd)
+//{
+//    SQLRETURN rc;
+
+//    rc = SQLAllocHandle (SQL_HANDLE_ENV, SQL_NULL_HANDLE, &henv);
+//    if (!SQL_SUCCEEDED (rc))
+//        goto error;
+
+//    rc = SQLSetEnvAttr (henv, SQL_ATTR_ODBC_VERSION, (void *) SQL_OV_ODBC3, 0);
+//    if (!SQL_SUCCEEDED (rc))
+//        goto error;
+
+//    rc = SQLAllocHandle (SQL_HANDLE_DBC, henv, &hdbc);
+//    if (!SQL_SUCCEEDED (rc))
+//        goto error;
+
+//    rc = SQLConnect (hdbc, (SQLCHAR *) dsn, SQL_NTS, (SQLCHAR *) usr, SQL_NTS, (SQLCHAR *) pwd, SQL_NTS);
+//    if (!SQL_SUCCEEDED (rc))
+//        goto error;
+
+//    rc = SQLAllocHandle (SQL_HANDLE_STMT, hdbc, &hstmt);
+//    if (!SQL_SUCCEEDED (rc))
+//        goto error;
+//    return 0;
+
+//error:
+//    ODBC_Errors ("ODBC_Connect");
+//    ODBC_Disconnect ();
+//    return -1;
+//}
+
+//int
+//ODBC_PrintResult ()
+//{
+//    char fetchBuffer[1000];
+//    short numCols = 0;
+//    short colNum;
+////    SDWORD colIndicator;
+//    SQLLEN colIndicator;
+//    UDWORD totalRows;
+//    UDWORD totalSets;
+//    SQLHANDLE hdesc = SQL_NULL_HANDLE;
+//    SQLRETURN rc;
+
+//    totalSets = 0;
+//    do
+//    {
+//        rc = SQLNumResultCols (hstmt, &numCols);
+//        if (!SQL_SUCCEEDED (rc))
+//        {
+//            ODBC_Errors ("SQLNumResultCols");
+//            goto endCursor;
+//        }
+//        if (numCols == 0)
+//        {
+//            printf ("Statement executed.\n");
+//            goto endCursor;
+//        }
+//        if (numCols > MAXCOLS)
+//            numCols = MAXCOLS;
+
+//        totalRows = 0;
+//        while (1)
+//        {
+//            rc = SQLFetch (hstmt);
+//            if (rc == SQL_NO_DATA_FOUND)
+//                break;
+//            if (!SQL_SUCCEEDED (rc))
+//            {
+//                ODBC_Errors ("Fetch");
+//                break;
+//            }
+
+//            for (colNum = 1; colNum <= numCols; colNum++)
+//            {
+//                char buf[1000];
+//                SQLINTEGER len;
+//                int flag, dvtype;
+
+//                rc = SQLGetData (hstmt, colNum, SQL_C_CHAR, fetchBuffer, sizeof (fetchBuffer), &colIndicator);
+//                if (!SQL_SUCCEEDED (rc))
+//                {
+//                    ODBC_Errors ("SQLGetData");
+//                    goto endCursor;
+//                }
+
+//                rc = SQLGetStmtAttr (hstmt, SQL_ATTR_IMP_ROW_DESC, &hdesc, SQL_IS_POINTER, NULL);
+//                if (!SQL_SUCCEEDED (rc))
+//                {
+//                    ODBC_Errors ("SQLGetStmtAttr");
+//                    goto endCursor;
+//                }
+
+//                rc = SQLGetDescField (hdesc, colNum, SQL_DESC_COL_DV_TYPE, &dvtype, SQL_IS_INTEGER, NULL);
+//                if (!SQL_SUCCEEDED (rc))
+//                {
+//                    ODBC_Errors ("SQLGetDescField");
+//                    goto endCursor;
+//                }
+
+//                rc = SQLGetDescField (hdesc, colNum, SQL_DESC_COL_BOX_FLAGS, &flag, SQL_IS_INTEGER, NULL);
+//                if (!SQL_SUCCEEDED (rc))
+//                {
+//                    ODBC_Errors ("SQLGetDescField");
+//                    goto endCursor;
+//                }
+
+//                if (colIndicator == SQL_NULL_DATA)
+//                {
+//                    printf ("NULL");
+//                }
+//                else
+//                {
+//                    if (flag & VIRTUOSO_BF_IRI)
+//                        printf ("<%s>", fetchBuffer); /* IRI */
+//                    else if (dvtype == VIRTUOSO_DV_STRING || dvtype == VIRTUOSO_DV_RDF)
+//                        printf ("\"%s\"", fetchBuffer); /* literal string */
+//                    else
+//                        printf ("%s", fetchBuffer); /* value */
+
+//                    if (dvtype == VIRTUOSO_DV_RDF)
+//                    {
+//                        rc = SQLGetDescField (hdesc, colNum, SQL_DESC_COL_LITERAL_LANG, buf, sizeof (buf), &len);
+//                        if (!SQL_SUCCEEDED (rc))
+//                        {
+//                            ODBC_Errors ("SQLGetDescField");
+//                            goto endCursor;
+//                        }
+//                        if (len)
+//                            printf ("@%.*s", (int) len, buf);
+
+//                        rc = SQLGetDescField (hdesc, colNum, SQL_DESC_COL_LITERAL_TYPE, buf, sizeof (buf), &len);
+//                        if (!SQL_SUCCEEDED (rc))
+//                        {
+//                            ODBC_Errors ("SQLGetDescField");
+//                            goto endCursor;
+//                        }
+//                        if (len)
+//                            printf ("^^<%.*s>", (int) len, buf);
+//                    }
+
+//                    if (colNum < numCols)
+//                        putchar (' ');
+//                }
+//            }
+//            printf (" .\n");
+//            totalRows++;
+//        }
+
+//        printf ("\n\nStatement returned %lu rows.\n", totalRows);
+//        totalSets++;
+//    }
+//    while (SQLMoreResults (hstmt) == SQL_SUCCESS);
+
+//endCursor:
+//    SQLCloseCursor (hstmt);
+
+//    return 0;
+//}
+
+//int
+//ODBC_Execute (char *qr)
+//{
+//    int rc;
+//    SQLCHAR *Statement = (SQLCHAR *) qr;
+
+//    if ((rc = SQLExecDirect (hstmt, Statement, SQL_NTS)) != SQL_SUCCESS)
+//    {
+//        ODBC_Errors ("ODBC_Execute");
+//        if (rc != SQL_SUCCESS_WITH_INFO)
+//            return -1;
+//    }
+//    return 0;
+//}
+
+//char dsn[] = "Local Virtuoso";
+//char uid[] = "dba";
+//char pwd[] = "dba";
+//char txt[] = "sparql SELECT ?a where { ?a rdf:type owl:Class}";
+//    //    system("curl -g -H \"Accept: application/json\" \"http://192.168.1.52:8890/sparql\" --data-urlencode \"query=SELECT ?a where { ?a rdf:type owl:Class}\"");
+
+//int
+////testODBC (int argc, char *argv[])
+//testODBC ()
+//{
+//    if (ODBC_Connect (dsn, uid, pwd))
+//        exit (1);
+
+//    if (ODBC_Execute (txt) == 0)
+//        ODBC_PrintResult ();
+
+//    ODBC_Disconnect ();
+
+//    exit (0);
+//}
+//}
+
+void Assembly::ODBC()
+{
+//    testODBC();
+}
+
+
+
 string Assembly::GetName()
 {
     return name_;
@@ -439,8 +746,9 @@ void Assembly::SetModelIndex(int model_index)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file)
+void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file, bool structure)
 {
+    ResidueAttachmentMap attachment_map = ResidueAttachmentMap();
     CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
     CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
     PrepFile* prep = new PrepFile(prep_file);
@@ -454,13 +762,10 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
     }
     int sequence_number = 0;
     stringstream ss;
-    Coordinate* attach_coordinate = new Coordinate();
     for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
     {
-        Coordinate* parent_coordinate = new Coordinate();
-        CondensedSequenceAmberPrepResidue* amber_prep_residue = it->first;
+        CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
         string amber_prep_residue_name = amber_prep_residue->GetName();
-        string amber_prep_residue_anomeric_carbon = amber_prep_residue->GetAnomericCarbon();
         string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
 
         if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
@@ -525,7 +830,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 }
 
                 if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0 && prep_residue_name.compare("SO3") == 0)
-                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
+                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
                 else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
                     assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() - 0.039);
                 else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
@@ -568,12 +873,9 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     }
                     Coordinate* coordinate = new Coordinate();
                     coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                                 prep_atom->GetAngle(), prep_atom->GetDihedral());
+                                                                                     prep_atom->GetAngle(), prep_atom->GetDihedral());
                     cartesian_coordinate_list.push_back(coordinate);
 
-                    coordinate->Translate(attach_coordinate->GetX(), attach_coordinate->GetY(), attach_coordinate->GetZ());
-                    if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0)
-                        parent_coordinate = coordinate;
                     assembly_atom->AddCoordinate(coordinate);
                 }
                 else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
@@ -599,14 +901,277 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
             assembly_residue->AddHeadAtom(head_atom);
             assembly_residue->AddTailAtom(tail_atom);
             residues_.push_back(assembly_residue);
+            if(sequence_number > 1)
+            {
+                Residue* parent_residue = residues_.at(amber_prep_residue->GetParentId());
+                attachment_map[parent_residue].push_back(assembly_residue);
+            }
         }
         else
         {
             cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
         }
-        attach_coordinate = new Coordinate(*parent_coordinate);
     }
+
     name_ = ss.str();
+    this->SetSourceFile(prep_file);
+
+    if(structure)
+    {
+        this->BuildStructureByPrepFileInformation();
+        for(ResidueAttachmentMap::iterator it = attachment_map.begin(); it != attachment_map.end(); it++)
+        {
+            Residue* parent_residue = (*it).first;
+            ResidueVector branches = (*it).second;
+            for(ResidueVector::iterator it1 = branches.begin(); it1 != branches.end(); it1++)
+            {
+                Residue* assembly_residue = *it1;
+                this->AttachResidues(assembly_residue, parent_residue, parameter_file);
+            }
+        }
+    }
+}
+
+void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, string parameter_file)
+{
+    ParameterFile* parameter = new ParameterFile(parameter_file);
+    ParameterFile::BondMap parameter_bonds = parameter->GetBonds();
+    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(0);
+    AtomVector residue_head_atom_adjacent_atoms = AtomVector();
+    AtomVector parent_target_atom_adjacent_atoms = AtomVector();
+
+    double bond_length = BOND_LENGTH;
+    vector<string> bond = vector<string>();
+    bond.push_back(residue_head_atom->GetAtomType());
+    bond.push_back(parent_target_atom->GetAtomType());
+    vector<string> reverse_bond = vector<string>();
+    reverse_bond.push_back(parent_target_atom->GetAtomType());
+    reverse_bond.push_back(residue_head_atom->GetAtomType());
+    if(parameter_bonds.find(bond) != parameter_bonds.end())
+        bond_length = parameter_bonds[bond]->GetLength();
+    else if(parameter_bonds.find(reverse_bond) != parameter_bonds.end())
+        bond_length = parameter_bonds[reverse_bond]->GetLength();
+
+    residue_head_atom->GetNode()->AddNodeNeighbor(parent_target_atom);
+    parent_target_atom->GetNode()->AddNodeNeighbor(residue_head_atom);
+    residue_head_atom_adjacent_atoms = residue_head_atom->GetNode()->GetNodeNeighbors();
+    parent_target_atom_adjacent_atoms = parent_target_atom->GetNode()->GetNodeNeighbors();
+
+    Coordinate* residue_direction = new Coordinate();
+    for(AtomVector::iterator it = residue_head_atom_adjacent_atoms.begin(); it != residue_head_atom_adjacent_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetId().compare(parent_target_atom->GetId()) != 0)
+        {
+            Coordinate* dist = new Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
+            dist->operator -(*atom->GetCoordinates().at(model_index_));
+            dist->Normalize();
+            residue_direction->operator +(*dist);
+            residue_direction->Normalize();
+        }
+    }
+
+    residue_direction->Normalize();
+    residue_direction->operator *(bond_length);
+
+    residue_direction->operator +(*residue_head_atom->GetCoordinates().at(model_index_));
+//    residue_direction->operator +(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    Coordinate* oxygen_position = new Coordinate(residue_direction->GetX(), residue_direction->GetY(), residue_direction->GetZ());
+    Coordinate* offset = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+    offset->operator -(*oxygen_position);
+
+    AtomVector all_atoms_of_attached_residue = residue->GetAtoms();
+    for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+        (*it)->GetCoordinates().at(model_index_)->Translate(offset->GetX(), offset->GetY(), offset->GetZ());
+    /**/
+    Coordinate* carbon_direction = new Coordinate();
+    for(AtomVector::iterator it = parent_target_atom_adjacent_atoms.begin(); it != parent_target_atom_adjacent_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetId().compare(residue_head_atom->GetId()) != 0)
+        {
+            Coordinate* dist = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+            dist->operator -(*atom->GetCoordinates().at(model_index_));
+            dist->Normalize();
+            carbon_direction->operator +(*dist);
+            carbon_direction->Normalize();
+        }
+    }
+
+    carbon_direction->Normalize();
+    carbon_direction->operator *(bond_length);
+    carbon_direction->operator +(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    Coordinate* carbon_position = new Coordinate(*carbon_direction);
+
+    Coordinate* carbon_target = new Coordinate(*carbon_position);
+    carbon_target->operator -(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    Coordinate* head_target = new Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
+    head_target->operator -(*parent_target_atom->GetCoordinates().at(model_index_));
+
+    double angle = acos((carbon_target->DotProduct(*head_target)) / (carbon_target->length() * head_target->length()));
+    double rotation_angle = ConvertDegree2Radian(PI_DEGREE - ROTATION_ANGLE) - angle;
+
+    double rotation_matrix[3][4];
+    Coordinate* direction = new Coordinate(*carbon_target);
+    direction->CrossProduct(*head_target);
+    direction->Normalize();
+    double u = direction->GetX();
+    double v = direction->GetY();
+    double w = direction->GetZ();
+
+    double a = parent_target_atom->GetCoordinates().at(model_index_)->GetX();
+    double b = parent_target_atom->GetCoordinates().at(model_index_)->GetY();
+    double c = parent_target_atom->GetCoordinates().at(model_index_)->GetZ();
+
+    double u2 = u*u;
+    double v2 = v*v;
+    double w2 = w*w;
+    double cos_rotation_angle = cos(rotation_angle);
+    double sin_rotation_angle = sin(rotation_angle);
+
+    rotation_matrix[0][3] = a * (v2 + w2) - u * (b * v + c * w) + (u * (b * v + c * w) - a * (v2 + w2)) * cos_rotation_angle + (b * w - c * v) * sin_rotation_angle;
+    rotation_matrix[1][3] = b * (u2 + w2) - v * (a * u + c * w) + (v * (a * u + c * w) - b * (u2 + w2)) * cos_rotation_angle + (c * u - a * w) * sin_rotation_angle;
+    rotation_matrix[2][3] = c * (u2 + v2) - w * (a * u + b * v) + (w * (a * u + b * v) - c * (u2 + v2)) * cos_rotation_angle + (a * v - b * u) * sin_rotation_angle;
+
+    rotation_matrix[0][0] = u2 + (v2 + w2) * cos_rotation_angle;
+    rotation_matrix[0][1] = u * v * (1 - cos_rotation_angle) - w * sin_rotation_angle;
+    rotation_matrix[0][2] = u * w * (1 - cos_rotation_angle) + v * sin_rotation_angle;
+
+    rotation_matrix[1][0] = u * v * (1 - cos_rotation_angle) + w * sin_rotation_angle;
+    rotation_matrix[1][1] = v2 + (u2 + w2) * cos_rotation_angle;
+    rotation_matrix[1][2] = v * w * (1 - cos_rotation_angle) - u * sin_rotation_angle;
+
+    rotation_matrix[2][0] = u * w * (1 - cos_rotation_angle) - v * sin_rotation_angle;
+    rotation_matrix[2][1] = v * w * (1 - cos_rotation_angle) + u * sin_rotation_angle;
+    rotation_matrix[2][2] = w2 + (u2 + v2) * cos_rotation_angle;
+
+    all_atoms_of_attached_residue = residue->GetAtoms();
+    for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+    {
+        Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+        Coordinate* result = new Coordinate();
+        result->SetX(rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
+                     rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3]);
+        result->SetY(rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
+                     rotation_matrix[1][2] * atom_coordinate->GetZ() + rotation_matrix[1][3]);
+        result->SetZ(rotation_matrix[2][0] * atom_coordinate->GetX() + rotation_matrix[2][1] * atom_coordinate->GetY() +
+                     rotation_matrix[2][2] * atom_coordinate->GetZ() + rotation_matrix[2][3]);
+
+        (*it)->GetCoordinates().at(model_index_)->SetX(result->GetX());
+        (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
+        (*it)->GetCoordinates().at(model_index_)->SetZ(result->GetZ());
+    }
+
+
+    Atom* carbon = NULL;
+    for(AtomVector::iterator it = parent_target_atom_adjacent_atoms.begin(); it != parent_target_atom_adjacent_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetId().compare(residue_head_atom->GetId()) != 0)
+        {
+            if(atom->GetName()[0] == 'C')
+            {
+                carbon = atom;
+                break;
+            }
+        }
+    }
+    if(carbon != NULL)
+    {
+        Atom* oxygen = NULL;
+        for(AtomVector::iterator it = residue_head_atom_adjacent_atoms.begin(); it != residue_head_atom_adjacent_atoms.end(); it++)
+        {
+            Atom* atom = *it;
+            if(atom->GetId().compare(parent_target_atom->GetId()) != 0)
+            {
+                if(atom->GetName()[0] == 'O')
+                {
+                    oxygen = atom;
+                    break;
+                }
+            }
+        }
+        if(oxygen != NULL)
+        {
+            Coordinate* oxygen_coordinate = oxygen->GetCoordinates().at(model_index_);
+
+            Coordinate* oxygen_head = new Coordinate(*oxygen_coordinate);
+            oxygen_head->operator -(*residue_head_atom->GetCoordinates().at(model_index_));
+
+            Coordinate* target_carbon = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+            target_carbon->operator -(*carbon_position);
+
+            Coordinate* head_target_x_oxygen_head = new Coordinate(*head_target);
+            head_target_x_oxygen_head->CrossProduct(*oxygen_head);
+
+            Coordinate* target_carbon_x_head_target = new Coordinate(*target_carbon);
+            target_carbon_x_head_target->CrossProduct(*head_target);
+
+            Coordinate* target_carbon_mul_head_target = new Coordinate(*target_carbon);
+            target_carbon_mul_head_target->operator *(head_target->length());
+
+            double torsion = atan2(target_carbon_mul_head_target->DotProduct(*head_target_x_oxygen_head),
+                                   target_carbon_x_head_target->DotProduct(*head_target_x_oxygen_head));
+
+            double rotation_torsion = ConvertDegree2Radian(191.6) - torsion;
+            cout << torsion << " " << rotation_torsion << endl;
+
+            double torsion_matrix[3][4];
+            Coordinate* torsion_direction = new Coordinate(*head_target);
+            torsion_direction->Normalize();
+            double u1 = direction->GetX();
+            double v1 = direction->GetY();
+            double w1 = direction->GetZ();
+
+            double a1 = parent_target_atom->GetCoordinates().at(model_index_)->GetX();
+            double b1 = parent_target_atom->GetCoordinates().at(model_index_)->GetY();
+            double c1 = parent_target_atom->GetCoordinates().at(model_index_)->GetZ();
+
+            double u12 = u1*u1;
+            double v12 = v1*v1;
+            double w12 = w1*w1;
+            double cos_torsion_angle = cos(rotation_torsion);
+            double sin_torsion_angle = sin(rotation_torsion);
+
+            torsion_matrix[0][3] = a1 * (v12 + w12) - u1 * (b1 * v1 + c1 * w1) + (u1 * (b1 * v1 + c1 * w1) - a1 * (v12 + w12)) * cos_torsion_angle + (b1 * w1 - c1 * v1) * sin_torsion_angle;
+            torsion_matrix[1][3] = b1 * (u12 + w12) - v1 * (a1 * u1 + c1 * w1) + (v1 * (a1 * u1 + c1 * w1) - b1 * (u12 + w12)) * cos_torsion_angle + (c1 * u1 - a1 * w1) * sin_torsion_angle;
+            torsion_matrix[2][3] = c1 * (u12 + v12) - w1 * (a1 * u1 + b1 * v1) + (w1 * (a1 * u1 + b1 * v1) - c1 * (u12 + v12)) * cos_torsion_angle + (a1 * v1 - b1 * u1) * sin_torsion_angle;
+
+            torsion_matrix[0][0] = u12 + (v12 + w12) * cos_torsion_angle;
+            torsion_matrix[0][1] = u1 * v1 * (1 - cos_torsion_angle) - w1 * sin_torsion_angle;
+            torsion_matrix[0][2] = u1 * w1 * (1 - cos_torsion_angle) + v1 * sin_torsion_angle;
+
+            torsion_matrix[1][0] = u1 * v1 * (1 - cos_torsion_angle) + w1 * sin_torsion_angle;
+            torsion_matrix[1][1] = v12 + (u12 + w12) * cos_torsion_angle;
+            torsion_matrix[1][2] = v1 * w1 * (1 - cos_torsion_angle) - u1 * sin_torsion_angle;
+
+            torsion_matrix[2][0] = u1 * w1 * (1 - cos_torsion_angle) - v1 * sin_torsion_angle;
+            torsion_matrix[2][1] = v1 * w1 * (1 - cos_torsion_angle) + u1 * sin_torsion_angle;
+            torsion_matrix[2][2] = w12 + (u12 + v12) * cos_torsion_angle;
+
+            all_atoms_of_attached_residue = residue->GetAtoms();
+            for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+            {
+                Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+                Coordinate* result = new Coordinate();
+                result->SetX(torsion_matrix[0][0] * atom_coordinate->GetX() + torsion_matrix[0][1] * atom_coordinate->GetY() +
+                             torsion_matrix[0][2] * atom_coordinate->GetZ() + torsion_matrix[0][3]);
+                result->SetY(torsion_matrix[1][0] * atom_coordinate->GetX() + torsion_matrix[1][1] * atom_coordinate->GetY() +
+                             torsion_matrix[1][2] * atom_coordinate->GetZ() + torsion_matrix[1][3]);
+                result->SetZ(torsion_matrix[2][0] * atom_coordinate->GetX() + torsion_matrix[2][1] * atom_coordinate->GetY() +
+                             torsion_matrix[2][2] * atom_coordinate->GetZ() + torsion_matrix[2][3]);
+
+                (*it)->GetCoordinates().at(model_index_)->SetX(result->GetX());
+                (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
+                (*it)->GetCoordinates().at(model_index_)->SetZ(result->GetZ());
+            }
+        }
+    }
+    /**/
 }
 
 void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> amino_lib_files, vector<string> glycam_lib_files,
@@ -615,7 +1180,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
     cout << "Building assembly from pdb file ..." << endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     try
-    {                
+    {
         this->ClearAssembly();
         PdbFile* pdb_file = new PdbFile(pdb_file_path);
         ParameterFile* parameter = NULL;
@@ -624,7 +1189,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
         {
             parameter = new ParameterFile(parameter_file);
             atom_type_map = parameter->GetAtomTypes();
-        }       
+        }
 
         LibraryFile::ResidueMap lib_residues = LibraryFile::ResidueMap();
         PrepFile::ResidueMap prep_residues = PrepFile::ResidueMap();
@@ -1876,7 +2441,7 @@ void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter
                 }
                 Coordinate* coordinate = new Coordinate();
                 coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                             prep_atom->GetAngle(), prep_atom->GetDihedral());
+                                                                                 prep_atom->GetAngle(), prep_atom->GetDihedral());
                 cartesian_coordinate_list.push_back(coordinate);
 
                 assembly_atom->AddCoordinate(coordinate);
@@ -2128,8 +2693,8 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
             {
                 Atom* atom = (*it2);
                 vector<string> dscr = Split(atom->GetDescription(), ";");
-//                stringstream ss;
-//                ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
+                //                stringstream ss;
+                //                ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
                 PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
                                                 *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
                 if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
@@ -2168,8 +2733,8 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
         {
             Atom* atom = (*it2);
             vector<string> dscr = Split(atom->GetDescription(), ";");
-//            stringstream ss;
-//            ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
+            //            stringstream ss;
+            //            ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
             PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
                                             *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
 
@@ -2261,7 +2826,7 @@ void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_s
             if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
             {
                 PdbqtAtom* pdb_atom = new PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->MolecularDynamicAtom::GetCharge(),
+                                                    *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->MolecularDynamicAtom::GetCharge(),
                                                     atom->GetAtomType(), "ATOM");
                 atom_map[serial_number] = pdb_atom;
                 serial_number++;
@@ -2269,7 +2834,7 @@ void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_s
             else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
             {
                 PdbqtAtom* pdb_atom = new PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->MolecularDynamicAtom::GetCharge(),
+                                                    *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->MolecularDynamicAtom::GetCharge(),
                                                     atom->GetAtomType(), "HETATOM");
                 atom_map[serial_number] = pdb_atom;
                 serial_number++;
@@ -2277,7 +2842,7 @@ void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_s
             else
             {
                 PdbqtAtom* pdb_atom = new PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->MolecularDynamicAtom::GetCharge(),
+                                                    *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->MolecularDynamicAtom::GetCharge(),
                                                     atom->GetAtomType(), "ATOM");
                 atom_map[serial_number] = pdb_atom;
                 serial_number++;
@@ -2371,7 +2936,7 @@ PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_pat
             // Call coordinate conversion function
             prep_atom->SetBondIndex(bond_index.at(atom_index - 1));
             prep_atom->SetAngleIndex(bond_index.at(bond_index.at(atom_index - 1) - 1));
-            prep_atom->SetDihedralIndex(bond_index.at(bond_index.at(bond_index.at(atom_index - 1) - 1) - 1));           
+            prep_atom->SetDihedralIndex(bond_index.at(bond_index.at(bond_index.at(atom_index - 1) - 1) - 1));
             prep_atom->SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge());
             prep_atom->SetName(assembly_atom->GetName());
             prep_atom->SetTopologicalType(residue_topological_types.at(atom_index - DEFAULT_DUMMY_ATOMS - 1));
@@ -2735,7 +3300,7 @@ vector<TopologicalType> Assembly::GetAllTopologicalTypesOfAtomsOfResidue(AtomVec
                 }
                 if(stack_neighbor_index == -1)
                 {
-//                    cout << "EMPTY" << endl;
+                    //                    cout << "EMPTY" << endl;
                     topological_types.at(index) = kTopTypeM;
                     visited.at(index) = true;
                     bond_index.at(index + dummy_atoms) = dummy_atoms;
@@ -2891,7 +3456,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes(parameter_file_path));
     topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes(parameter_file_path));
     topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes(parameter_file_path));
-//        topology_file->SetNumberOfAtomTypesInParameterFile();
+    //        topology_file->SetNumberOfAtomTypesInParameterFile();
     //    topology_file->SetNumberOfDistinctHydrogenBonds();
     //    topology_file->SetPerturbationOption();
     //    topology_file->SetNumberOfBondsPerturbed();
@@ -2952,7 +3517,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         vector<int> bond_index = vector<int>();
         int atom_index = 1;
 
-        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);        
+        vector<TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index, 0);
 
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
@@ -2973,7 +3538,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             topology_atom->SetTreeChainClasification(gmml::ConvertTopologicalType2String(residue_topological_types.at(atom_index - 1)));
             topology_residue->AddAtom(topology_atom);
             atom_counter++;
-            atom_index++;          
+            atom_index++;
 
             ///Bond Types, Bonds
             AtomNode* atom_node = assembly_atom->GetNode();
@@ -3453,7 +4018,7 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
         stringstream ss;
         ss << all_atom_type_permutations.at(0).at(0) << "-" << all_atom_type_permutations.at(0).at(1) << "-" << all_atom_type_permutations.at(0).at(2) << "-"
            << all_atom_type_permutations.at(0).at(3) << " dihedral type (or any other permutation of it) does not exist in the parameter files";
-//        cout << ss.str() << endl;
+        //        cout << ss.str() << endl;
         gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
     }
 
@@ -3504,7 +4069,7 @@ void Assembly::ExtractTopologyDihedralTypesFromAssembly(Atom *assembly_atom, Ato
             ss << all_improper_dihedrals_atom_type_permutations.at(0).at(0) << "-" << all_improper_dihedrals_atom_type_permutations.at(0).at(1) << "-"
                << all_improper_dihedrals_atom_type_permutations.at(0).at(2) << "-" << all_improper_dihedrals_atom_type_permutations.at(0).at(3)
                << " improer dihedral type (or any other permutation of it) does not exist in the parameter files";
-//            cout << ss.str() << endl;
+            //            cout << ss.str() << endl;
             gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
         }
     }
@@ -3864,7 +4429,7 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
     for(ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
     {
         Residue* assembly_residue = *it;
-//        cout << assembly_residue->GetId() << endl;
+        //        cout << assembly_residue->GetId() << endl;
         int residue_index = distance(residues_of_assembly.begin(), it) + 1;
         AtomVector assembly_residue_atoms = assembly_residue->GetAtoms();
         LibraryFileResidue* library_residue = new LibraryFileResidue();
@@ -3994,49 +4559,103 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
             break;
     }
 }
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
+void* BuildStructureByDistanceThread(void* args){
 
-void Assembly::BuildStructureByDistance(double cutoff, int model_index)
-{
-    cout << "Building structure by distance ..." << endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
-    model_index_ = model_index;
-    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
-    int i = 0;
-    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() - 1; it++)
+    DistanceCalculationThreadArgument* arg = (DistanceCalculationThreadArgument*)args;
+    double cutoff = arg->cutoff;
+    int model_index = arg->model_index;
+    int ti = arg->thread_index;
+    int t = arg->number_of_threads;
+
+    //    cout << "Thread" << ti << " start" << endl;
+    Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
+    int atoms_size = all_atoms_of_assembly.size();
+    int i = ti * (atoms_size/t);
+
+    for(Assembly::AtomVector::iterator it = all_atoms_of_assembly.begin() + ti * (atoms_size/t); ; it++)
     {
+        if(ti + 1 < t)
+        {
+            if(it == all_atoms_of_assembly.begin() + (ti+1) * (atoms_size/t))
+                break;
+        }
+        else
+        {
+            if(it == all_atoms_of_assembly.end() - 1)
+                break;
+        }
         Atom* atom = (*it);
         AtomNode* atom_node;
+        pthread_mutex_lock(&mutex1);
         if(atom->GetNode() == NULL)
         {
             atom_node = new AtomNode();
             atom_node->SetAtom(atom);
+            atom->SetNode(atom_node);
         }
         else
             atom_node = atom->GetNode();
         atom_node->SetId(i);
+        //        cout << "Thread" << ti << " atom id " << i << endl;
         i++;
-        for(AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+        pthread_mutex_unlock(&mutex1);
+        for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
-//            if(it != it1)
+            Atom* neighbor_atom = (*it1);
+            // X distance
+            if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
             {
-                Atom* neighbor_atom = (*it1);
-                if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
+                // Y distance
+                if(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY() < cutoff)
                 {
-                    AtomNode* neighbor_node;
-                    if (neighbor_atom->GetNode() == NULL)
+                    // Z distance
+                    if(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ() < cutoff)
                     {
-                        neighbor_node = new AtomNode();
-                        neighbor_node->SetAtom(neighbor_atom);
+                        if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
+                        {
+                            AtomNode* neighbor_node;
+                            pthread_mutex_lock(&mutex1);
+                            if (neighbor_atom->GetNode() == NULL)
+                            {
+                                neighbor_node = new AtomNode();
+                                neighbor_node->SetAtom(neighbor_atom);
+                            }
+                            else
+                                neighbor_node = neighbor_atom->GetNode();
+                            atom_node->AddNodeNeighbor(neighbor_atom);
+                            neighbor_node->AddNodeNeighbor(atom);
+                            neighbor_atom->SetNode(neighbor_node);
+                            pthread_mutex_unlock(&mutex1);
+                        }
                     }
-                    else
-                        neighbor_node = neighbor_atom->GetNode();
-                    atom_node->AddNodeNeighbor(neighbor_atom);
-                    neighbor_node->AddNodeNeighbor(atom);
-                    neighbor_atom->SetNode(neighbor_node);
                 }
             }
         }
         atom->SetNode(atom_node);
+    }
+
+    //    cout << "Thread" << ti << " END" << endl;
+    pthread_exit((void*) ti);
+}
+
+void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
+{
+    cout << "Building structure by distance ..." << endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
+    model_index_ = model_index;
+
+    pthread_t threads[number_of_threads];
+    DistanceCalculationThreadArgument arg[number_of_threads];
+    for(int i = 0; i < number_of_threads; i++)
+    {
+        arg[i] = DistanceCalculationThreadArgument(i, number_of_threads, model_index, cutoff, this);
+        pthread_create(&threads[i], NULL, &BuildStructureByDistanceThread, &arg[i]);
+    }
+    for(int i = 0; i < number_of_threads; i++)
+    {
+        pthread_join(threads[i], NULL);
     }
 }
 
@@ -4237,7 +4856,7 @@ void Assembly::BuildStructureByPrepFileInformation()
         atom_node->SetId(i);
         i++;
         Residue* assembly_residue = atom->GetResidue();
-//        cout << assembly_residue->GetName() << endl;
+        //        cout << assembly_residue->GetName() << endl;
         PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
         if(prep_residue != NULL)
         {
@@ -4415,32 +5034,32 @@ int Assembly::CountNumberOfBondsIncludingHydrogen(string parameter_file_path)
         if(atom_node != NULL)
         {
             AtomVector node_neighbors = atom_node->GetNodeNeighbors();
-//            if((atom_name.substr(0,1).compare("H") == 0 ||
-//                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
-//            {
-//                counter += node_neighbors.size();
-//            }
-//            else
-//            {
-                for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            //            if((atom_name.substr(0,1).compare("H") == 0 ||
+            //                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+            //            {
+            //                counter += node_neighbors.size();
+            //            }
+            //            else
+            //            {
+            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            {
+                Atom* node_neighbor = (*it1);
+                string node_neighbor_name = node_neighbor->GetName();
+                if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                        (node_neighbor_name.substr(0,1).compare("H") == 0 || (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
                 {
-                    Atom* node_neighbor = (*it1);
-                    string node_neighbor_name = node_neighbor->GetName();
-                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                       (node_neighbor_name.substr(0,1).compare("H") == 0 || (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
-                    {
-                        vector<string> atom_pair_type = vector<string>();
-                        vector<string> reverse_atom_pair_type = vector<string>();
-                        atom_pair_type.push_back(atom->GetAtomType());
-                        atom_pair_type.push_back(node_neighbor->GetAtomType());
-                        reverse_atom_pair_type.push_back(node_neighbor->GetAtomType());
-                        reverse_atom_pair_type.push_back(atom->GetAtomType());
+                    vector<string> atom_pair_type = vector<string>();
+                    vector<string> reverse_atom_pair_type = vector<string>();
+                    atom_pair_type.push_back(atom->GetAtomType());
+                    atom_pair_type.push_back(node_neighbor->GetAtomType());
+                    reverse_atom_pair_type.push_back(node_neighbor->GetAtomType());
+                    reverse_atom_pair_type.push_back(atom->GetAtomType());
 
-                        if(bonds.find(atom_pair_type) != bonds.end() || bonds.find(reverse_atom_pair_type) != bonds.end())
-                            counter++;
-                    }
+                    if(bonds.find(atom_pair_type) != bonds.end() || bonds.find(reverse_atom_pair_type) != bonds.end())
+                        counter++;
                 }
-//            }
+            }
+            //            }
         }
     }
     return counter/2;
@@ -4461,32 +5080,32 @@ int Assembly::CountNumberOfBondsExcludingHydrogen(string parameter_file_path)
         {
             AtomVector node_neighbors = atom_node->GetNodeNeighbors();
 
-//            if((atom_name.substr(0,1).compare("H") == 0 ||
-//                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
-//            {}
-//            else
-//            {
-                for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            //            if((atom_name.substr(0,1).compare("H") == 0 ||
+            //                (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))))
+            //            {}
+            //            else
+            //            {
+            for(AtomVector::iterator it1 = node_neighbors.begin(); it1 != node_neighbors.end(); it1++)
+            {
+                Atom* node_neighbor = (*it1);
+                string node_neighbor_name = node_neighbor->GetName();
+                if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
+                        (node_neighbor_name.substr(0,1).compare("H") == 0 || (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
+                {}
+                else
                 {
-                    Atom* node_neighbor = (*it1);
-                    string node_neighbor_name = node_neighbor->GetName();
-                    if((atom_name.substr(0,1).compare("H") == 0 || (atom_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(atom_name.substr(0,1))))) ||
-                       (node_neighbor_name.substr(0,1).compare("H") == 0 || (node_neighbor_name.substr(1,1).compare("H") == 0 && isdigit(ConvertString<char>(node_neighbor_name.substr(0,1))))))
-                    {}
-                    else
-                    {
-                        vector<string> atom_pair_type = vector<string>();
-                        vector<string> reverse_atom_pair_type = vector<string>();
-                        atom_pair_type.push_back(atom->GetAtomType());
-                        atom_pair_type.push_back(node_neighbor->GetAtomType());
-                        reverse_atom_pair_type.push_back(node_neighbor->GetAtomType());
-                        reverse_atom_pair_type.push_back(atom->GetAtomType());
+                    vector<string> atom_pair_type = vector<string>();
+                    vector<string> reverse_atom_pair_type = vector<string>();
+                    atom_pair_type.push_back(atom->GetAtomType());
+                    atom_pair_type.push_back(node_neighbor->GetAtomType());
+                    reverse_atom_pair_type.push_back(node_neighbor->GetAtomType());
+                    reverse_atom_pair_type.push_back(atom->GetAtomType());
 
-                        if(bonds.find(atom_pair_type) != bonds.end() || bonds.find(reverse_atom_pair_type) != bonds.end())
-                            counter++;
-                    }
+                    if(bonds.find(atom_pair_type) != bonds.end() || bonds.find(reverse_atom_pair_type) != bonds.end())
+                        counter++;
                 }
-//            }
+            }
+            //            }
         }
     }
     return counter/2;
@@ -4538,7 +5157,7 @@ int Assembly::CountNumberOfBondTypes(string parameter_file_path)
                         find(type_list.begin(), type_list.end(), key1 ) != type_list.end())
                 {}
                 else
-                {                    
+                {
                     vector<string> atom_pair_type = vector<string>();
                     vector<string> reverse_atom_pair_type = vector<string>();
                     atom_pair_type.push_back(atom->GetAtomType());
@@ -4733,7 +5352,7 @@ int Assembly::CountNumberOfAngleTypes(string parameter_file_path)
                         stringstream ss3;
                         ss3 << type3 << "_" << type2 << "_" << type1;
                         if(find(type_list.begin(), type_list.end(), ss2.str()) == type_list.end() &&
-                                find(type_list.begin(), type_list.end(), ss3.str()) == type_list.end())                            
+                                find(type_list.begin(), type_list.end(), ss3.str()) == type_list.end())
                         {
                             vector<string> angle_type = vector<string>();
                             vector<string> reverse_angle_type = vector<string>();
@@ -5608,20 +6227,20 @@ Assembly::AtomVector Assembly::Select(string pattern)
 
     SelectPatternMap select_pattern_map = ParsePatternString(pattern);
 
-//    for(SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
-//    {
-//        cout << "================================= " << (*it).first << " ================================" << endl;
-//        map<string, vector<string> > value = (*it).second;
-//        for(map<string, vector<string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
-//        {
-//            cout << "-------------------------------- " << (*it1).first << " --------------------------" << endl;
-//            vector<string> atom_names = (*it1).second;
-//            for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-//            {
-//                cout << (*it3) << endl;
-//            }
-//        }
-//    }
+    //    for(SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
+    //    {
+    //        cout << "================================= " << (*it).first << " ================================" << endl;
+    //        map<string, vector<string> > value = (*it).second;
+    //        for(map<string, vector<string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+    //        {
+    //            cout << "-------------------------------- " << (*it1).first << " --------------------------" << endl;
+    //            vector<string> atom_names = (*it1).second;
+    //            for(vector<string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+    //            {
+    //                cout << (*it3) << endl;
+    //            }
+    //        }
+    //    }
 
     for(SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
     {
@@ -6200,9 +6819,9 @@ Assembly::AtomVector Assembly::Select(string pattern)
                                                     selection.push_back(atom);
                                                 }
                                             }
-                                        break;
+                                            break;
+                                        }
                                     }
-                                }
                                 }
                                 break;
                             }
@@ -6897,9 +7516,9 @@ Assembly::AtomVector Assembly::Select(string pattern)
                                                             selection.push_back(atom);
                                                         }
                                                     }
-                                                break;
+                                                    break;
+                                                }
                                             }
-                                        }
                                         }
                                         break;
                                     }
@@ -7595,9 +8214,9 @@ Assembly::AtomVector Assembly::Select(string pattern)
                                                                 selection.push_back(atom);
                                                             }
                                                         }
-                                                    break;
+                                                        break;
+                                                    }
                                                 }
-                                            }
                                             }
                                             break;
                                         }
@@ -7836,10 +8455,35 @@ ResidueNameMap Assembly::GetAllResidueNamesFromMultipleLibFilesMap(vector<string
     return all_residue_names;
 }
 
-void Assembly::ExtractSugars(vector<string> amino_lib_files)
+vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
 {
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
-
+    /////////////////////////
+    //    ResidueVector residuess = GetAllResiduesOfAssembly();
+    //    for(ResidueVector::iterator tt = residuess.begin(); tt != residuess.end(); tt++)
+    //    {
+    //        Residue* res = (*tt);
+    //        cout << "RESIDUE: " << res->GetId() << endl;
+    //        AtomVector all_atoms_test = res->GetAtoms();
+    //        for(AtomVector::iterator test = all_atoms_test.begin(); test != all_atoms_test.end(); test++)
+    //        {
+    //            Atom* atom = (*test);
+    //            cout << "ATOM " << atom->GetId() << endl;
+    //            AtomNode* node = atom->GetNode();
+    //            if(node != NULL)
+    //            {
+    //                AtomVector neighbors = node->GetNodeNeighbors();
+    //                cout << "NEIGHBORS: " ;
+    //                for(AtomVector::iterator t2 = neighbors.begin(); t2 != neighbors.end(); t2++)
+    //                {
+    //                    Atom* neighbor = (*t2);
+    //                    cout << neighbor->GetId() << ", ";
+    //                }
+    //                cout << endl;
+    //            }
+    //        }
+    //    }
+    /////////////////////////
     CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
     //    CycleMap cycles = DetectCyclesByDFS();
@@ -8067,7 +8711,7 @@ void Assembly::ExtractSugars(vector<string> amino_lib_files)
                     }
                     else if(sides.at(1) != NULL)
                     {
-                        int cycle_atom_index = distance(mono->side_atoms_.begin(), it1);                        
+                        int cycle_atom_index = distance(mono->side_atoms_.begin(), it1);
                         complex_structure_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at(1)->GetId();
                         cout << complex_structure_side.str() << endl;
                         gmml::log(__LINE__, __FILE__,  gmml::INF, complex_structure_side.str());
@@ -8202,11 +8846,81 @@ void Assembly::ExtractSugars(vector<string> amino_lib_files)
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Oligosaccharides:");
     string terminal_residue_name = "";
     vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names, terminal_residue_name);
+    //    cout << "EXTRACTED" << endl;
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
         (*it)->Print(terminal_residue_name, cout);
+
+    return oligosaccharides;
+//        PopulateOligosaccharide(oligosaccharides);
+    //    Oligosaccharide* oli = oligosaccharides.at(0);
+    //    Monosaccharide* mon = oli->root_;
+    //    cout << "CHEMICAL CODE STR: " << mon->sugar_name_.chemical_code_string_ << endl;
+
+
+    //    system("curl -g -H \"Accept: application/json\" \"http://192.168.1.52:8890/sparql\" --data-urlencode \"query=SELECT ?a where { ?a rdf:type owl:Class}\"");
+    //    cout << endl;
 }
 
-//////////populate ontology
+void Assembly::PopulateOligosaccharide(vector<Oligosaccharide*> oligos)
+{
+    if(oligos.size() != NULL)
+        for(vector<Oligosaccharide*>::iterator it = oligos.begin(); it != oligos.end(); it++)
+        {
+            Oligosaccharide* oligo = (*it);
+            vector<AtomVector> sidess = oligo->root_->side_atoms_;
+            cout << "CYCLE ATOMS: " << oligo->root_->cycle_atoms_str_ << endl;
+
+            int i = 0;
+            for(vector<AtomVector>::iterator it1 = sidess.begin(); it1 != sidess.end(); it1++)
+            {
+                AtomVector sides = (*it1);
+                cout << "SDIE" << i << " ATOMS: " << endl;
+                for(AtomVector::iterator it1 = sides.begin(); it1 != sides.end(); it1++)
+                {
+                    Atom* side = (*it1);
+                    if(side != NULL)
+                    {
+                        cout << side->GetId() << ", ";
+                    }
+                }
+                cout << endl;
+                i++;
+            }
+            vector<Oligosaccharide*> child_oligos = oligo->child_oligos_;
+            PopulateOligosaccharide(child_oligos);
+        }
+}
+
+
+//void Assembly::PopulateOligosaccharide(vector<Oligosaccharide*> oligos)
+//{
+//    if(oligos.size() != NULL)
+//        for(vector<Oligosaccharide*>::iterator it = oligos.begin(); it != oligos.end(); it++)
+//        {
+//            Oligosaccharide* oli = (*it);
+//            vector<AtomVector> sidess = oli->root_->side_atoms_;
+//            cout << "CYCLE ATOMS: " << oli->root_->cycle_atoms_str_ << endl;
+
+//            int i = 0;
+//            for(vector<AtomVector>::iterator it1 = sidess.begin(); it1 != sidess.end(); it1++)
+//            {
+//                AtomVector sides = (*it1);
+//                cout << "SDIE" << i << " ATOMS: " << endl;
+//                for(AtomVector::iterator it1 = sides.begin(); it1 != sides.end(); it1++)
+//                {
+//                    Atom* side = (*it1);
+//                    if(side != NULL)
+//                    {
+//                        cout << side->GetId() << ", ";
+//                    }
+//                }
+//                cout << endl;
+//                i++;
+//            }
+//            vector<Oligosaccharide*> child_oligos = oli->child_oligos_;
+//            PopulateOligosaccharide(child_oligos);
+//        }
+//}
 
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
@@ -8218,6 +8932,7 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     {
         Atom* atom = (*it);
         IdAtom[atom->GetId()] = atom;
+        cout << atom->GetId() << endl;
     }
     ///Pruning the graph (filter out atoms with less than 2 neighbors)
     PruneGraph(atoms);
@@ -8676,7 +9391,7 @@ Atom* Assembly::FindAnomericCarbon(vector<string>& anomeric_carbons_status, Atom
                     //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
                 {
                     anomeric_carbon = o_neighbor1;
-//                    cout << "Anomeric carbon is: " << anomeric_carbon->GetId() << endl;
+                    //                    cout << "Anomeric carbon is: " << anomeric_carbon->GetId() << endl;
                     anomeric_carbons_status.push_back("Anomeric carbon: ");
                     return anomeric_carbon;
                 }
@@ -8694,7 +9409,7 @@ Atom* Assembly::FindAnomericCarbon(vector<string>& anomeric_carbons_status, Atom
                     //                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
                 {
                     anomeric_carbon = o_neighbor2;
-//                    cout << "Anomeric carbon is: " << anomeric_carbon->GetId() << endl;
+                    //                    cout << "Anomeric carbon is: " << anomeric_carbon->GetId() << endl;
                     anomeric_carbons_status.push_back("Anomeric carbon: ");
                     return anomeric_carbon;
                 }
@@ -8715,13 +9430,13 @@ Atom* Assembly::FindAnomericCarbon(vector<string>& anomeric_carbons_status, Atom
             }
             if(ConvertString<int>(ss1.str()) < ConvertString<int>(ss2.str()))
             {
-//                cout << "Anomeric carbon probably is: " << o_neighbor1->GetId() << endl;
+                //                cout << "Anomeric carbon probably is: " << o_neighbor1->GetId() << endl;
                 anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
                 return o_neighbor1;
             }
             if(ConvertString<int>(ss2.str()) < ConvertString<int>(ss1.str()))
             {
-//                cout << "Anomeric carbon probably is: " << o_neighbor2->GetId() << endl;
+                //                cout << "Anomeric carbon probably is: " << o_neighbor2->GetId() << endl;
                 anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
                 return o_neighbor2;
             }
@@ -8750,18 +9465,18 @@ Atom* Assembly::FindAnomericCarbon(vector<string>& anomeric_carbons_status, Atom
             }
             if(!neighbor1_is_anomeric)
             {
-//                cout << "Anomeric carbon probably is: " << o_neighbor2->GetId() << endl;
+                //                cout << "Anomeric carbon probably is: " << o_neighbor2->GetId() << endl;
                 anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
                 return o_neighbor2;
             }
             else if(!neighbor2_is_anomeric)
             {
-//                cout << "Anomeric carbon probably is: " << o_neighbor1->GetName() << endl;
+                //                cout << "Anomeric carbon probably is: " << o_neighbor1->GetName() << endl;
                 anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
                 return o_neighbor1;
             }
 
-//            cout << "Not enough information to detect the anomeric carbon, it has been chosen randomely: " << o_neighbor1->GetId() << endl;
+            //            cout << "Not enough information to detect the anomeric carbon, it has been chosen randomely: " << o_neighbor1->GetId() << endl;
             anomeric_carbons_status.push_back("Not enough information to detect the anomeric carbon, it has been chosen randomely: ");
             return o_neighbor1;
         }
@@ -9493,7 +10208,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
             }
         }
     }
-//        cout << "CheckxC_NxO_CO_C:" << pattern.str() << endl;
+    //        cout << "CheckxC_NxO_CO_C:" << pattern.str() << endl;
     if(NxO == 'N')
     {
         if(pattern.str().compare("xCH-NH-CO-CHHH") == 0 || pattern.str().compare("xC-N-CO-C") == 0 || pattern.str().compare("xCHH-NH-CO-CHHH") == 0 )
@@ -9873,7 +10588,7 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
             }
         }
     }
-//        cout << "CheckxC_NxO_C: " << pattern.str() << endl;
+    //        cout << "CheckxC_NxO_C: " << pattern.str() << endl;
     if(NxO == 'N')
     {///xCH-N-CHHH??
         if(pattern.str().compare("xCH-N-CHHH") == 0 || pattern.str().compare("xCH-NH-CHHH") == 0 || pattern.str().compare("xCHH-NH-CHHH") == 0 || pattern.str().compare("xC-N-C") == 0 )
@@ -10254,7 +10969,7 @@ double Assembly::GetTotalMass()
 
 void Assembly::GetCenterOfMass(Coordinate *center_of_mass)
 {
-//    center_of_mass = new Coordinate();
+    //    center_of_mass = new Coordinate();
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
@@ -10271,14 +10986,14 @@ void Assembly::GetCenterOfMass(Coordinate *center_of_mass)
 
 void Assembly::GetCenterOfGeometry(Coordinate *center_of_geometry)
 {
-//    center_of_geometry = new Coordinate();
+    //    center_of_geometry = new Coordinate();
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
         Atom* atom = *it;
         center_of_geometry->Translate(atom->GetCoordinates().at(model_index_)->GetX(),
-                                    atom->GetCoordinates().at(model_index_)->GetY(),
-                                    atom->GetCoordinates().at(model_index_)->GetZ());
+                                      atom->GetCoordinates().at(model_index_)->GetY(),
+                                      atom->GetCoordinates().at(model_index_)->GetZ());
     }
     center_of_geometry->operator /(Coordinate(center_of_geometry->GetX() / all_atoms_of_assembly.size(),
                                               center_of_geometry->GetY() / all_atoms_of_assembly.size(),
@@ -10287,8 +11002,8 @@ void Assembly::GetCenterOfGeometry(Coordinate *center_of_geometry)
 
 void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper_right_front_corner)
 {
-//    lower_left_back_corner = new Coordinate(-INFINITY, -INFINITY, -INFINITY);
-//    upper_right_front_corner = new Coordinate(INFINITY, INFINITY, INFINITY);
+    //    lower_left_back_corner = new Coordinate(-INFINITY, -INFINITY, -INFINITY);
+    //    upper_right_front_corner = new Coordinate(INFINITY, INFINITY, INFINITY);
     lower_left_back_corner->SetX(INFINITY);
     lower_left_back_corner->SetY(INFINITY);
     lower_left_back_corner->SetZ(INFINITY);
@@ -10308,7 +11023,7 @@ void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper
             ss << "The default value has been set for " << atom->GetId();
             gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
             cout << ss.str() << endl;
-//            return;
+            //            return;
         }
         double upper_right_front_x = atom->GetCoordinates().at(model_index_)->GetX() + atom->MolecularDynamicAtom::GetRadius();
         double lower_left_back_x = atom->GetCoordinates().at(model_index_)->GetX() - atom->MolecularDynamicAtom::GetRadius();
@@ -11084,20 +11799,20 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
         Monosaccharide* key = (*it).first;
         vector<Monosaccharide*> values = (*it).second;
 
-//        cout << endl << key->mono_id << " >>> " ;
-//        for(vector<Monosaccharide*>::iterator it1 = values.begin(); it1 != values.end(); it1++)
-//        {
-//            Monosaccharide* mono_val = (*it1);
-//            cout << mono_val->mono_id << ", ";
-//        }
-//        cout << endl;
-//        vector<string> link = monos_table_linkages[key];
-//        for(vector<string>::iterator it1 = link.begin(); it1 != link.end(); it1++)
-//        {
-//            string l = (*it1);
-//            cout << l << ", ";
-//        }
-//        cout << endl;
+        //        cout << endl << key->mono_id << " >>> " ;
+        //        for(vector<Monosaccharide*>::iterator it1 = values.begin(); it1 != values.end(); it1++)
+        //        {
+        //            Monosaccharide* mono_val = (*it1);
+        //            cout << mono_val->mono_id << ", ";
+        //        }
+        //        cout << endl;
+        //        vector<string> link = monos_table_linkages[key];
+        //        for(vector<string>::iterator it1 = link.begin(); it1 != link.end(); it1++)
+        //        {
+        //            string l = (*it1);
+        //            cout << l << ", ";
+        //        }
+        //        cout << endl;
 
         vector<string> visited_linkages = vector<string>();
         if(find(visited_monos.begin(), visited_monos.end(), key->mono_id) == visited_monos.end())///if the mono is not visited
@@ -11205,8 +11920,8 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
 }
 
 void Assembly::BuildOligosaccharideTreeStructure(Monosaccharide *key, vector<Monosaccharide*> values, Oligosaccharide *oligo,
-                                                           vector<int>& visited_monos, map<Monosaccharide*, vector<Monosaccharide*> > monos_table,
-                                                           map<Monosaccharide*, vector<string> > monos_table_linkages, vector<string>& visited_linkages)
+                                                 vector<int>& visited_monos, map<Monosaccharide*, vector<Monosaccharide*> > monos_table,
+                                                 map<Monosaccharide*, vector<string> > monos_table_linkages, vector<string>& visited_linkages)
 {
     oligo->root_ = key;
     if(values.size() == 0)
@@ -11231,11 +11946,11 @@ void Assembly::BuildOligosaccharideTreeStructure(Monosaccharide *key, vector<Mon
                 if(find(visited_linkages.begin(), visited_linkages.end(), link) == visited_linkages.end() &&
                         find(visited_linkages.begin(), visited_linkages.end(), reverse_link.str()) == visited_linkages.end())
                 {
-//                    cout << "key id " << key->mono_id  << ", value id " << value_mono->mono_id << endl;
+                    //                    cout << "key id " << key->mono_id  << ", value id " << value_mono->mono_id << endl;
                     Oligosaccharide* child_oligo = new Oligosaccharide();
                     vector<Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
-//                    cout << "call " << value_mono->mono_id << endl;
+                    //                    cout << "call " << value_mono->mono_id << endl;
                     BuildOligosaccharideTreeStructure(value_mono, value_mono_values, child_oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                     oligo->child_oligos_.push_back(child_oligo);
                     oligo->child_oligos_linkages_.push_back(link);

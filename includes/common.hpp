@@ -32,6 +32,9 @@ namespace gmml
     const double PI_DEGREE = 180.0;
     const double EPSILON = 0.001;
     const double dCutOff = 1.65;
+    const double BOND_LENGTH = 1.64;
+    const double ROTATION_ANGLE = 119.6;
+    const double ROTATION_TORSION = 177.3;
     const int PdbResidueThreshold = 500;
     const int DEFAULT_DUMMY_ATOMS = 3;
     const char BLANK_SPACE = '?';

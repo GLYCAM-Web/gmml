@@ -873,7 +873,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     }
 
     // Lennard Jones coefficients for atom pairs
-    if(atom_type_indexes.size() != number_of_types_ * number_of_types_)
+    if(nonbonded_parm_indexes.size() != number_of_types_ * number_of_types_)
     {
         cout << "Lennard Jones coefficients section of the file is not written properly. This section will be ignored!" << endl;
         gmml::log(__LINE__, __FILE__, gmml::INF, "Lennard Jones coefficients section of the file is not written properly. This section will be ignored!");
@@ -1751,6 +1751,7 @@ void TopologyFile::Write(const string &top_file)
 
 void TopologyFile::ResolveSections(ofstream &out_stream)
 {
+    out_stream << endl;
     this->ResolveTitleSection(out_stream);
     this->ResolvePointersSection(out_stream);
     this->ResolveAtomNameSection(out_stream);

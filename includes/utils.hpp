@@ -280,11 +280,11 @@ namespace gmml
             GeometryTopology::Coordinate grandparent_vector = GeometryTopology::Coordinate(coordinate_list.at(1)->GetX(), coordinate_list.at(1)->GetY(), coordinate_list.at(1)->GetZ());
             GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(coordinate_list.at(2)->GetX(), coordinate_list.at(2)->GetY(), coordinate_list.at(2)->GetZ());
 
-            GeometryTopology::Coordinate v1 = GeometryTopology::Coordinate(grandparent_vector);
-            GeometryTopology::Coordinate v2 = GeometryTopology::Coordinate(parent_vector);
+            GeometryTopology::Coordinate v1 = GeometryTopology::Coordinate(great_grandparent_vector);
+            GeometryTopology::Coordinate v2 = GeometryTopology::Coordinate(grandparent_vector);
 
-            v1.operator-(great_grandparent_vector);
-            v2.operator-(grandparent_vector);
+            v1.operator-(grandparent_vector);
+            v2.operator-(parent_vector);
 
             v1.Normalize();
             v2.Normalize();
@@ -293,28 +293,41 @@ namespace gmml
                     abs(v1.GetY() + v2.GetY()) < gmml::EPSILON &&
                     abs(v1.GetZ() + v2.GetZ()) < gmml::EPSILON)
             {
-                great_grandparent_vector.Translate(1.0, -1.0, 2);
+                great_grandparent_vector.Translate(10.0, -1.0, 3);
                 v1 = GeometryTopology::Coordinate(grandparent_vector);
                 v1.operator-(great_grandparent_vector);
             }
-            GeometryTopology::Coordinate r = GeometryTopology::Coordinate(v1);
-            r.CrossProduct(v2);
 
-            r.Normalize();
+            GeometryTopology::Coordinate v1_cross_v2 = GeometryTopology::Coordinate(v1);
+            v1_cross_v2.CrossProduct(v2);
+            v1_cross_v2.Normalize();
+            double matrix[3][4];
+            matrix[0][1] = v1_cross_v2.GetX();
+            matrix[1][1] = v1_cross_v2.GetY();
+            matrix[2][1] = v1_cross_v2.GetZ();
 
-            GeometryTopology::Coordinate p = GeometryTopology::Coordinate(r);
-            p.CrossProduct(v2);
+            matrix[0][2] = v2.GetX();
+            matrix[1][2] = v2.GetY();
+            matrix[2][2] = v2.GetZ();
 
-            std::vector<double> v = std::vector<double>();
+            GeometryTopology::Coordinate v1_cross_v2_cross_v2 = GeometryTopology::Coordinate(v1_cross_v2);
+            v1_cross_v2_cross_v2.CrossProduct(v2);
 
-            v.push_back(distance * sin(gmml::ConvertDegree2Radian(angle)) * cos(gmml::ConvertDegree2Radian(torsion)));
-            v.push_back(distance * sin(gmml::ConvertDegree2Radian(angle)) * sin(gmml::ConvertDegree2Radian(torsion)));
-            v.push_back(distance * cos(gmml::ConvertDegree2Radian(angle)));
-            v.push_back(1.0);
+            matrix[0][0] = v1_cross_v2_cross_v2.GetX();
+            matrix[1][0] = v1_cross_v2_cross_v2.GetY();
+            matrix[2][0] = v1_cross_v2_cross_v2.GetZ();
 
-            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(p.GetX() * v.at(0) + r.GetX() * v.at(1) + v2.GetX() * v.at(2) + parent_vector.GetX() * v.at(3),
-                                                                        p.GetY() * v.at(0) + r.GetY() * v.at(1) + v2.GetY() * v.at(2) + parent_vector.GetY() * v.at(3),
-                                                                        p.GetZ() * v.at(0) + r.GetZ() * v.at(1) + v2.GetZ() * v.at(2) + parent_vector.GetZ() * v.at(3));
+            matrix[0][3] = parent_vector.GetX();
+            matrix[1][3] = parent_vector.GetY();
+            matrix[2][3] = parent_vector.GetZ();
+
+            GeometryTopology::Coordinate v = GeometryTopology::Coordinate(distance * sin(ConvertDegree2Radian(angle)) * cos(ConvertDegree2Radian(torsion)),
+                                                                          distance * sin(ConvertDegree2Radian(angle)) * sin(ConvertDegree2Radian(torsion)),
+                                                                          distance * cos(ConvertDegree2Radian(angle)));
+
+            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matrix[0][0] * v.GetX() + matrix[0][1] * v.GetY() + matrix[0][2] * v.GetZ() + matrix[0][3],
+                                                                                        matrix[1][0] * v.GetX() + matrix[1][1] * v.GetY() + matrix[1][2] * v.GetZ() + matrix[1][3],
+                                                                                        matrix[2][0] * v.GetX() + matrix[2][1] * v.GetY() + matrix[2][2] * v.GetZ() + matrix[2][3]);
             return coordinate;
         }
     }
