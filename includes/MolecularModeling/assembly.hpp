@@ -637,7 +637,7 @@ namespace MolecularModeling
               * A function in order to extract all the saccharide structures
               * @param amino_lib_files The list of paths to amino library files
               */
-            std::vector<Glycan::Oligosaccharide*> ExtractSugars(std::vector<std::string> amino_lib_files);
+            void ExtractSugars(std::vector<std::string> amino_lib_files);
 
             void PopulateOligosaccharide(std::vector<Glycan::Oligosaccharide*> oligos);
 
