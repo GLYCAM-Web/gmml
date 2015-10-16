@@ -56,7 +56,7 @@ namespace gmml
     const double CHARGE_TOLERANCE = 0.001;//0.0001;
     const double GRID_OFFSET = 1.0;
     const double MARGIN = 0.0;//10.0;
-    const double CRITICAL_RADIOUS = 1.0;
+    const double CRITICAL_RADIOUS = 1.0;    
 
 
     const ResidueCodeName RESIDUENAMECODELOOKUP[] = {

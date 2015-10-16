@@ -11,6 +11,7 @@
 #include "../Glycan/chemicalcode.hpp"
 #include "../Glycan/sugarname.hpp"
 #include "../Glycan/monosaccharide.hpp"
+#include "../Glycan/ontologyvocabulary.hpp"
 #include "../InputSet/PdbFileSpace/pdbfile.hpp"
 #include "../InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../InputSet/TopologyFileSpace/topologyfile.hpp"
@@ -639,7 +640,11 @@ namespace MolecularModeling
               */
             void ExtractSugars(std::vector<std::string> amino_lib_files);
 
-            void PopulateOligosaccharide(std::vector<Glycan::Oligosaccharide*> oligos);
+            void PopulateOntology(std::ofstream& out_file, std::vector<Glycan::Oligosaccharide*> oligosaccharides);
+            void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::string pdb_subject, std::string id_prefix, int& oligo_id, std::vector<Glycan::Oligosaccharide*> oligos);
+            void PopulateMonosaccharide(std::stringstream& pdb_stream, std::string id_prefix, int mono_id, Glycan::Monosaccharide* mono);
+            void PopulateSugarName(std::stringstream& mono_stream, std::string mono_subject, std::string id_prefix, int mono_id, Glycan::SugarName sugar_name);
+            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
 
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm

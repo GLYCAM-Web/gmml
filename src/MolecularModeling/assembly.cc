@@ -63,7 +63,7 @@
 //#include "rasqal/rasqal.h"
 //#include "redland.h"
 
-
+/*
 #include <stdio.h>
 #include <string.h>
 
@@ -115,7 +115,7 @@ SQLHANDLE hdbc = SQL_NULL_HANDLE;
 SQLHANDLE hstmt = SQL_NULL_HANDLE;
 
 #define MAXCOLS                             25
-
+*/
 
 
 using namespace std;
@@ -389,10 +389,15 @@ Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileTyp
 //                {
 //                    if (flag & VIRTUOSO_BF_IRI)
 //                        printf ("<%s>", fetchBuffer); /* IRI */
+
+
 //                    else if (dvtype == VIRTUOSO_DV_STRING || dvtype == VIRTUOSO_DV_RDF)
 //                        printf ("\"%s\"", fetchBuffer); /* literal string */
+
+
 //                    else
 //                        printf ("%s", fetchBuffer); /* value */
+
 
 //                    if (dvtype == VIRTUOSO_DV_RDF)
 //                    {
@@ -473,7 +478,7 @@ Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileTyp
 
 void Assembly::ODBC()
 {
-//    testODBC();
+  //  testODBC();
 }
 
 
@@ -8851,46 +8856,186 @@ void Assembly::ExtractSugars(vector<string> amino_lib_files)
         (*it)->Print(terminal_residue_name, cout);
 
 //    return oligosaccharides;
-//        PopulateOligosaccharide(oligosaccharides);
-    //    Oligosaccharide* oli = oligosaccharides.at(0);
-    //    Monosaccharide* mon = oli->root_;
-    //    cout << "CHEMICAL CODE STR: " << mon->sugar_name_.chemical_code_string_ << endl;
 
+
+//    std::ofstream out_file;
+//    string ontTest = "ontTest.ttl";
+//    try
+//    {
+//        out_file.open(ontTest.c_str());
+//    }
+//    catch(...)
+//    {
+////        throw PrepFileProcessingException(__LINE__,"File could not be created");
+//    }
+//    try
+//    {
+//        this->PopulateOntology(out_file, oligosaccharides);
+//    }
+//    catch(...)
+//    {
+//        out_file.close();
+//    }
 
     //    system("curl -g -H \"Accept: application/json\" \"http://192.168.1.52:8890/sparql\" --data-urlencode \"query=SELECT ?a where { ?a rdf:type owl:Class}\"");
-    //    cout << endl;
 }
-
-void Assembly::PopulateOligosaccharide(vector<Oligosaccharide*> oligos)
+void Assembly::PopulateOntology(ofstream& main_stream, vector<Glycan::Oligosaccharide*> oligos)
 {
+
+    stringstream pdb_stream;
+//    string pdb = Split(this->GetSourceFile(), "/").at(0);
+    string pdb = Split(this->GetSourceFile().substr(this->GetSourceFile().find_last_of('/') + 1), ".").at(0);
+    stringstream ss;
+    ss << pdb << "_";
+    string id_prefix = ss.str();
+    pdb_stream << Ontology::ENTITY_COMMENT << pdb << endl;
+
+    stringstream subject;
+    stringstream object;
+    subject << ":" << pdb;
+    string pdb_subject = subject.str();
+    AddTriple(pdb_subject, Ontology::TYPE, Ontology::PDB, pdb_stream);
+    AddTriple(pdb_subject, Ontology::NAMED_INDIVIDUAL, Ontology::PDB, pdb_stream);
+    AddTriple(pdb_subject, Ontology::id, pdb, pdb_stream);
+
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        Residue* residue = (*it);
+        object.str(string());
+        object << Ontology::ONT_DOMAIN << id_prefix << residue->GetId() << ">";
+        AddTriple(pdb_subject, Ontology::hasResidue, object.str(), pdb_stream);
+    }
+
+    int oligo_id = 1;
+    stringstream oligo_stream;
+    stringstream mono_stream;
+    PopulateOligosaccharide(pdb_stream, oligo_stream, mono_stream, pdb_subject, id_prefix, oligo_id, oligos);
+
+    main_stream << pdb_stream.str() << endl;
+}
+void Assembly::PopulateOligosaccharide(stringstream& pdb_stream, stringstream& oligo_stream, stringstream& mono_stream, string pdb_subject, string id_prefix, int& oligo_id, vector<Glycan::Oligosaccharide*> oligos)
+{
+    stringstream object;
     if(oligos.size() != NULL)
+    {
         for(vector<Oligosaccharide*>::iterator it = oligos.begin(); it != oligos.end(); it++)
         {
             Oligosaccharide* oligo = (*it);
-            vector<AtomVector> sidess = oligo->root_->side_atoms_;
-            cout << "CYCLE ATOMS: " << oligo->root_->cycle_atoms_str_ << endl;
 
-            int i = 0;
-            for(vector<AtomVector>::iterator it1 = sidess.begin(); it1 != sidess.end(); it1++)
-            {
-                AtomVector sides = (*it1);
-                cout << "SDIE" << i << " ATOMS: " << endl;
-                for(AtomVector::iterator it1 = sides.begin(); it1 != sides.end(); it1++)
-                {
-                    Atom* side = (*it1);
-                    if(side != NULL)
-                    {
-                        cout << side->GetId() << ", ";
-                    }
-                }
-                cout << endl;
-                i++;
-            }
+            object.str(string());
+            object << id_prefix << "oligo" << oligo_id;
+            AddTriple(pdb_subject, Ontology::hasOligo, object.str(), pdb_stream);
+
+            oligo_stream << Ontology::ENTITY_COMMENT << object << ">";
+
+            Monosaccharide* mono = oligo->root_;
+
+
+            PopulateMonosaccharide(mono_stream, id_prefix, oligo_id, mono);
+//            oligo_stream << mono_stream.str();
+            oligo_id++;
+
+//            vector<AtomVector> sidess = oligo->root_->side_atoms_;
+////            cout << "CYCLE ATOMS: " << oligo->root_->cycle_atoms_str_ << endl;
+
+//            int i = 0;
+//            for(vector<AtomVector>::iterator it1 = sidess.begin(); it1 != sidess.end(); it1++)
+//            {
+//                AtomVector sides = (*it1);
+//                cout << "SDIE" << i << " ATOMS: " << endl;
+//                for(AtomVector::iterator it1 = sides.begin(); it1 != sides.end(); it1++)
+//                {
+//                    Atom* side = (*it1);
+//                    if(side != NULL)
+//                    {
+//                        cout << side->GetId() << ", ";
+//                    }
+//                }
+//                cout << endl;
+//                i++;
+//            }
             vector<Oligosaccharide*> child_oligos = oligo->child_oligos_;
-            PopulateOligosaccharide(child_oligos);
+            PopulateOligosaccharide(pdb_stream, oligo_stream, mono_stream, pdb_subject, id_prefix, oligo_id, child_oligos);
         }
+        pdb_stream << endl << mono_stream.str();
+    }
 }
+void Assembly::PopulateMonosaccharide(stringstream& mono_stream, string id_prefix, int mono_id, Monosaccharide* mono)
+{
+    stringstream subject;
+//    stringstream mono_stream;
+    stringstream object;
 
+    subject << ":" << id_prefix << "mono" << mono_id;
+    object << id_prefix << "mono" << mono_id;
+    string mono_subject = subject.str();
+
+    mono_stream << Ontology::ENTITY_COMMENT << object.str() << endl;
+    AddTriple(mono_subject, Ontology::TYPE, Ontology::Monosaccharide, mono_stream);
+    AddTriple(mono_subject, Ontology::TYPE, Ontology::NAMED_INDIVIDUAL, mono_stream);
+    AddTriple(mono_subject, Ontology::id, object.str(), mono_stream);
+
+    vector<string> cycle_str_tokens = Split(mono->cycle_atoms_str_, "-");
+    object.str(string());
+    for(int i = 0; i < cycle_str_tokens.size(); i++)
+    {
+        stringstream ring_object;
+        ring_object << Ontology::ONT_DOMAIN << id_prefix << cycle_str_tokens.at(i) << ">";
+        AddTriple(mono_subject, Ontology::RingAtom, ring_object.str(), mono_stream);
+        if(i == cycle_str_tokens.size() - 1)
+            object << id_prefix << cycle_str_tokens.at(i);
+        else
+            object << id_prefix << cycle_str_tokens.at(i) << "-";
+    }
+    AddTriple(mono_subject, Ontology::cycle_atom_str, object.str(), mono_stream);
+
+    object.str(string());
+    object << mono->anomeric_status_ << " " << id_prefix << mono->cycle_atoms_.at(0)->GetId();
+    AddTriple(mono_subject, Ontology::anomeric_status, object.str(), mono_stream);
+
+    AddTriple(mono_subject, Ontology::cycle_atom_str, mono->sugar_name_.chemical_code_string_, mono_stream);
+
+    SugarName sugar_name = mono->sugar_name_;
+
+    PopulateSugarName(mono_stream, id_prefix, mono_subject, mono_id, sugar_name);
+
+}
+void Assembly::PopulateSugarName(stringstream& mono_stream, string id_prefix, string mono_subject, int mono_id, SugarName sugar_name)
+{
+    stringstream sugar_name_stream;
+    stringstream subject;
+    stringstream object;
+
+    object << id_prefix << "mono" << mono_id << "_sn";
+    AddTriple(mono_subject, Ontology::hasSugarName, object.str(), mono_stream);
+
+    subject << ":" << object.str();
+    string sugar_name_subject = subject.str();
+
+    sugar_name_stream << Ontology::ENTITY_COMMENT << object.str() << endl;
+    AddTriple(sugar_name_subject, Ontology::TYPE, Ontology::SugarName, sugar_name_stream);
+    AddTriple(sugar_name_subject, Ontology::TYPE, Ontology::NAMED_INDIVIDUAL, sugar_name_stream);
+    AddTriple(sugar_name_subject, Ontology::id, object.str(), sugar_name_stream);
+
+    AddTriple(sugar_name_subject, Ontology::mono_stereo_name, sugar_name.monosaccharide_stereochemistry_name_, sugar_name_stream);
+    AddTriple(sugar_name_subject, Ontology::mono_stereo_short_name, sugar_name.monosaccharide_stereochemistry_short_name_, sugar_name_stream);
+    AddTriple(sugar_name_subject, Ontology::mono_name, sugar_name.monosaccharide_name_, sugar_name_stream);
+    AddTriple(sugar_name_subject, Ontology::mono_short_name, sugar_name.monosaccharide_short_name_, sugar_name_stream);
+    AddTriple(sugar_name_subject, Ontology::isomer, sugar_name.isomer_, sugar_name_stream);
+    if(sugar_name.configuration_.compare("a") == 0)
+        AddTriple(sugar_name_subject, Ontology::configuration, "alpha", sugar_name_stream);
+    else if(sugar_name.configuration_.compare("b") == 0)
+        AddTriple(sugar_name_subject, Ontology::configuration, "beta", sugar_name_stream);
+    if(sugar_name.ring_type_.compare("") != 0)
+        AddTriple(sugar_name_subject, Ontology::ring_type, sugar_name.ring_type_, sugar_name_stream);
+
+    mono_stream << endl << sugar_name_stream.str();
+}
+void Assembly::AddTriple(string s, string p, string o, stringstream& stream)
+{
+    stream << s << " " << p << " " << o << "." << endl;
+}
 
 //void Assembly::PopulateOligosaccharide(vector<Oligosaccharide*> oligos)
 //{
@@ -8932,7 +9077,6 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     {
         Atom* atom = (*it);
         IdAtom[atom->GetId()] = atom;
-        cout << atom->GetId() << endl;
     }
     ///Pruning the graph (filter out atoms with less than 2 neighbors)
     PruneGraph(atoms);
@@ -9560,7 +9704,10 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                     {
                         Atom* atom_before = (*it2);
                         sorted_cycle.push_back(atom_before);
-                        sorted_cycle_stream << atom_before->GetId() << "-";
+                        if(it2 == it - 1)
+                            sorted_cycle_stream << atom_before->GetId();
+                        else
+                            sorted_cycle_stream << atom_before->GetId() << "-";
                     }
                 }
             }
