@@ -17,6 +17,7 @@ namespace Glycan
             std::vector<std::string> child_oligos_linkages_;    /*!< The linkages between the current oligosaccharide and oligosacchrides that are attached to it >*/
             std::string oligosaccharide_name_;                  /*!< The complete name sequence of the oligosacchride >*/
             std::string oligosaccharide_linkages_;              /*!< The complete sequence of the linkages of the oligosacchride >*/
+            std::string terminal_;
 
             /*! \fn
               * A function to print out the oligosacchride name and the linkages between its monosacchrides
@@ -26,6 +27,7 @@ namespace Glycan
               */
             void Print(std::string terminal = "", std::ostream& out = std::cout)
             {
+                terminal_ = terminal;
                 oligosaccharide_name_ = "";
                 oligosaccharide_linkages_ = "";
                 int linkage_index = 0;

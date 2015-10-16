@@ -25,6 +25,7 @@
 #include "../InputSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../InputSet/PdbFileSpace/pdbmodel.hpp"
 #include "../Glycan/oligosaccharide.hpp"
+#include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 
 namespace MolecularModeling
 {
@@ -637,8 +638,12 @@ namespace MolecularModeling
               * A function in order to extract all the saccharide structures
               * @param amino_lib_files The list of paths to amino library files
               */
-            void ExtractSugars(std::vector<std::string> amino_lib_files);
-
+            std::vector<Glycan::Oligosaccharide*> ExtractSugars(std::vector<std::string> amino_lib_files);
+            gmml::ResidueNameMap ExtractResidueGlycamNamingMap(std::vector<Glycan::Oligosaccharide*> oligosaccharides);
+            void ExtractOligosaccharideNamingMap(gmml::ResidueNameMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
+                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
+                                                 int& index);
+            void UpdateResidueName2GlycamName(gmml::ResidueNameMap residue_glycam_map);
             void PopulateOligosaccharide(std::vector<Glycan::Oligosaccharide*> oligos);
 
             /*! \fn
