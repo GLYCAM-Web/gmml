@@ -68,7 +68,7 @@ namespace Glycan
             {
                 out << std::setw(8) << std::right;
                 std::stringstream lu;
-                for(int i = 0; i < this->left_up_.size(); i++)
+                for(unsigned int i = 0; i < this->left_up_.size(); i++)
                 {
                     lu << this->left_up_.at(i) << " ";
                 }
@@ -76,7 +76,7 @@ namespace Glycan
 
                 out << std::setw(8) << std::right;
                 std::stringstream ru;
-                for(int i = 0; i < this->right_up_.size(); i++)
+                for(unsigned int i = 0; i < this->right_up_.size(); i++)
                 {
                     ru << this->right_up_.at(i) << " ";
                 }
@@ -85,7 +85,7 @@ namespace Glycan
 
                 out << std::setw(6) << std::right;
                 std::stringstream lm;
-                for(int i = 0; i < this->left_middle_.size(); i++)
+                for(unsigned int i = 0; i < this->left_middle_.size(); i++)
                 {
                     lm << this->left_middle_.at(i) << " ";
                 }
@@ -95,7 +95,7 @@ namespace Glycan
 
                 out << std::setw(6) << std::right;
                 std::stringstream rm;
-                for(int i = 0; i < this->right_middle_.size(); i++)
+                for(unsigned int i = 0; i < this->right_middle_.size(); i++)
                 {
                     rm << this->right_middle_.at(i) << " ";
                 }
@@ -104,7 +104,7 @@ namespace Glycan
 
                 out << std::setw(8) << std::right;
                 std::stringstream ld;
-                for(int i = 0; i < this->left_down_.size(); i++)
+                for(unsigned int i = 0; i < this->left_down_.size(); i++)
                 {
                     ld << this->left_down_.at(i) << " ";
                 }
@@ -112,7 +112,7 @@ namespace Glycan
 
                 out << std::setw(8) << std::right;
                 std::stringstream rd;
-                for(int i = 0; i < this->right_down_.size(); i++)
+                for(unsigned int i = 0; i < this->right_down_.size(); i++)
                 {
                     rd << this->right_down_.at(i) << " ";
                 }
