@@ -8905,8 +8905,8 @@ void Assembly::PopulateOntology(ofstream& main_stream, vector<Glycan::Oligosacch
         object << Ontology::ONT_DOMAIN << id_prefix << residue->GetId() << ">";
         AddTriple(pdb_subject, Ontology::hasResidue, object.str(), pdb_stream);
     }
+}
 
-<<<<<<< HEAD
 ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> oligosaccharides)
 {
     ResidueNameMap pdb_glycam_residue_map = ResidueNameMap();
