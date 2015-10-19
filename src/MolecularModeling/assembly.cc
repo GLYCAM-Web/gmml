@@ -8965,7 +8965,7 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
         }
     }
 }
-
+////
 void Assembly::PopulateOligosaccharide(stringstream& pdb_stream, stringstream& oligo_stream, stringstream& mono_stream, string pdb_subject, string id_prefix, int& oligo_id, vector<Glycan::Oligosaccharide*> oligos)
 {
     stringstream object;
