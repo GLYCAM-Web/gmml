@@ -31,7 +31,7 @@
 namespace MolecularModeling
 {
     class Residue;
-    class Atom;    
+    class Atom;
     class Assembly
     {
         public:
@@ -101,7 +101,7 @@ namespace MolecularModeling
               * @return sequence_number_ attribute of the current object of this class
               */
             int GetSequenceNumber();
-            std::string GetId();            
+            std::string GetId();
             /*! \fn
               * An accessor function in order to access to the center of description
               * @return description_ attribute of the current object of this class
@@ -141,7 +141,7 @@ namespace MolecularModeling
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
-            CoordinateVector GetAllCoordinates();            
+            CoordinateVector GetAllCoordinates();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -189,7 +189,7 @@ namespace MolecularModeling
               * @param sequence_number The sequence number attribute of the current object
               */
             void SetSequenceNumber(int sequence_number);
-            void SetId(std::string id);            
+            void SetId(std::string id);
             /*! \fn
               * A mutator function in order to set the description of the current object
               * Set the description_ attribute of the current assembly
@@ -493,12 +493,12 @@ namespace MolecularModeling
               * @param types List of types of the database files
               * @param file_paths List of the database file paths
               */
-            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);                       
+            void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
             /*! \fn
               * A function that counts the number of atoms in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAtoms();            
+            int CountNumberOfAtoms();
             /*! \fn
               * A function that counts the number of atoms types in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
@@ -648,8 +648,9 @@ namespace MolecularModeling
 
             void PopulateOntology(std::ofstream& out_file, std::vector<Glycan::Oligosaccharide*> oligosaccharides);
             void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::string pdb_subject, std::string id_prefix, int& oligo_id, std::vector<Glycan::Oligosaccharide*> oligos);
-            void PopulateMonosaccharide(std::stringstream& pdb_stream, std::string id_prefix, int mono_id, Glycan::Monosaccharide* mono);
+            void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_subject, std::string id_prefix, int mono_id, Glycan::Monosaccharide* mono);
             void PopulateSugarName(std::stringstream& mono_stream, std::string mono_subject, std::string id_prefix, int mono_id, Glycan::SugarName sugar_name);
+            void PopulateResidue(std::stringstream& pdb_stream, std::stringstream& residue_stream, std::string pdb_subject, std::string id_prefix, ResidueVector residues);
             void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
 
             /*! \fn
@@ -886,7 +887,7 @@ namespace MolecularModeling
             ResidueVector residues_;                        /*!< List of residues involved in the current object of assembly >*/
             std::string chemical_type_;                     /*!< A descriptor for the chemical type of the current object of assembly >*/
             int sequence_number_;                           /*!< An integer number to indicates sequence of importing the current assembly >*/
-            std::string id_;            
+            std::string id_;
             std::string description_;                       /*!< Short description for the current assembly >*/
             std::string source_file_;                       /*!< File name that the current assembly has been built upon >*/
             gmml::InputFileType source_file_type_;          /*!< Type of the file that the current assembly has been built upon >*/
