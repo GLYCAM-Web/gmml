@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53" title="Return an atom belonging to the residue by a given order number." alt="" coords="391,5,732,35"/>
-<area shape="rect" id="node5" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="411,59,712,88"/>
-<area shape="rect" id="node7" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a7e9c6c60e6ad1f823adb560254ea8889" title="Return position of the atom." alt="" coords="407,112,716,141"/>
-<area shape="rect" id="node9" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="412,165,711,195"/>
-<area shape="rect" id="node11" href="$d2/d2b/classGeometry_1_1Coordinate.html#a55e182a5e7770b43f714ae369a162305" title="Geometry::Coordinate::GetX" alt="" coords="468,219,655,248"/>
-<area shape="rect" id="node13" href="$d2/d2b/classGeometry_1_1Coordinate.html#ac05b81bef24e96883627abcf1935b12a" title="Geometry::Coordinate::GetY" alt="" coords="468,272,655,301"/>
-<area shape="rect" id="node15" href="$d2/d2b/classGeometry_1_1Coordinate.html#a34c71a037166bb286c489780b31895be" title="Geometry::Coordinate::GetZ" alt="" coords="468,325,655,355"/>
-</map>

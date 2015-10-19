@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#aaa1c19c3969ab7651fc1ee07e8c80ac5" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractAminoAcidChains" alt="" coords="419,5,840,35"/>
-<area shape="rect" id="node5" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#af2263fb745af303e49bb1a54d50f0769" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractCYSResidues" alt="" coords="429,59,829,88"/>
-<area shape="rect" id="node7" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#a69ff1f7594511abcdf662bf566ec37f3" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractGapsInAminoAcidChains" alt="" coords="399,112,860,141"/>
-<area shape="rect" id="node9" href="$d7/d63/classPdbPreprocessorSpace_1_1PdbPreprocessor.html#ae2540749c23d00aa7f43f3dfa086c77f" title="PdbPreprocessorSpace::PdbPreprocessor::ExtractHISResidues" alt="" coords="432,165,827,195"/>
-</map>

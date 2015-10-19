@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d8/dc0/classPdbFileSpace_1_1PdbFormula.html#a651d1e49f9749d876880c63c3348b92b" title="PdbFileSpace::PdbFormula::GetChemicalFormula" alt="" coords="347,5,659,35"/>
-<area shape="rect" id="node5" href="$d8/dc0/classPdbFileSpace_1_1PdbFormula.html#ad64cbfcf742ec41239d32a94d808f9ac" title="PdbFileSpace::PdbFormula::GetComponentNumber" alt="" coords="341,59,664,88"/>
-<area shape="rect" id="node7" href="$d8/dc0/classPdbFileSpace_1_1PdbFormula.html#a9016c76edbdbccedf77f1d65f84b5fb4" title="PdbFileSpace::PdbFormula::GetHeterogenIdentifier" alt="" coords="343,112,663,141"/>
-</map>

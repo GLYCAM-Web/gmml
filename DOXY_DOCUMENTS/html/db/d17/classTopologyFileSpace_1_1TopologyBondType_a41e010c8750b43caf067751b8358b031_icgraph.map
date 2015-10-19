@@ -1,5 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a838cea96813fbd98f2a06f0fc8062043" title="TopologyFileSpace::TopologyFile::GetBondTypeByIndex" alt="" coords="420,5,769,35"/>
-<area shape="rect" id="node5" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a1fac53937bbf09ec5387e2d81ac55b14" title="TopologyFileSpace::TopologyFile::ResolveBondsIncHydrogenSection" alt="" coords="381,59,808,88"/>
-<area shape="rect" id="node7" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4f1b06098a1187c79e36f5b26a58a19a" title="TopologyFileSpace::TopologyFile::ResolveBondsWithoutHydrogenSection" alt="" coords="368,112,821,141"/>
-</map>

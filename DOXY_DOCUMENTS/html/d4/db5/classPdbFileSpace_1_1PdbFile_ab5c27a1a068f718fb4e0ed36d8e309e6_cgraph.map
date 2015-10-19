@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d9/d2f/classPdbFileSpace_1_1PdbHeterogen.html#aeb9e24eef8256286a279c0e284913c3d" title="PdbFileSpace::PdbHeterogen::GetChainId" alt="" coords="409,5,676,35"/>
-<area shape="rect" id="node5" href="$d9/d2f/classPdbFileSpace_1_1PdbHeterogen.html#a021dbd3f8920e2c829bb54fb8e23e817" title="PdbFileSpace::PdbHeterogen::GetDscr" alt="" coords="417,59,668,88"/>
-<area shape="rect" id="node7" href="$d9/d2f/classPdbFileSpace_1_1PdbHeterogen.html#ac38a9a833b059bac472531d9c6eb76cf" title="PdbFileSpace::PdbHeterogen::GetHeterogenId" alt="" coords="396,112,689,141"/>
-<area shape="rect" id="node9" href="$d9/d2f/classPdbFileSpace_1_1PdbHeterogen.html#ab211f756805db4b53917a2d7ca89a25e" title="PdbFileSpace::PdbHeterogen::GetInsertionCode" alt="" coords="391,165,695,195"/>
-<area shape="rect" id="node11" href="$d9/d2f/classPdbFileSpace_1_1PdbHeterogen.html#a675e2b295b4dc3f7a9d144f8901956a1" title="PdbFileSpace::PdbHeterogen::GetNumberOfHeterogenAtoms" alt="" coords="352,219,733,248"/>
-<area shape="rect" id="node13" href="$d9/d2f/classPdbFileSpace_1_1PdbHeterogen.html#a709e8676d3cc7485484afb9674ba8733" title="PdbFileSpace::PdbHeterogen::GetSequenceNumber" alt="" coords="380,272,705,301"/>
-</map>

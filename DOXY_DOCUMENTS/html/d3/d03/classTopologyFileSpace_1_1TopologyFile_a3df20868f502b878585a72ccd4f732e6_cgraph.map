@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#a0bdab41c208480780b9ff6c26deb9a8a" title="TopologyFileSpace::TopologyResidue::GetAtomByIndex" alt="" coords="484,5,833,35"/>
-<area shape="rect" id="node7" href="$d9/d8f/classTopologyFileSpace_1_1TopologyResidue.html#abbb6719b22d6537dc36b8d4d84131a13" title="TopologyFileSpace::TopologyResidue::GetAtoms" alt="" coords="504,59,813,88"/>
-<area shape="rect" id="node9" href="$d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a3c52b9e77d02f34a58b5a5b09107cbb8" title="TopologyFileSpace::TopologyAtom::GetExcludedAtoms" alt="" coords="485,112,832,141"/>
-<area shape="rect" id="node11" href="$d0/ddd/namespacegmml.html#ab28bcbd71e857a37c5d650261aa38128" title="gmml::Split" alt="" coords="615,165,703,195"/>
-<area shape="rect" id="node5" href="$d9/d0d/classTopologyFileSpace_1_1TopologyAtom.html#a64bd3c53f42187ebed8c734585e5b906" title="TopologyFileSpace::TopologyAtom::GetIndex" alt="" coords="884,5,1169,35"/>
-</map>

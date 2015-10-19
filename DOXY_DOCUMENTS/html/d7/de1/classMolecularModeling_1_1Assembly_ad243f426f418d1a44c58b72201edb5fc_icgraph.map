@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1335,57,1620,86"/>
-<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#afeec8f1d438f3bd8a78959708131ba31" title="MolecularModeling::Assembly::BuildStructureByLIBFileInformation" alt="" coords="345,55,753,85"/>
-<area shape="rect" id="node10" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a85910fffc9a818c16b19cb00d80cce84" title="MolecularModeling::Assembly::BuildStructureByPDBFileInformation" alt="" coords="341,109,757,138"/>
-<area shape="rect" id="node13" href="$d7/de1/classMolecularModeling_1_1Assembly.html#a05f7aa45323b1ab5542c9d812febb68c" title="MolecularModeling::Assembly::BuildStructureByPrepFileInformation" alt="" coords="343,162,756,191"/>
-<area shape="rect" id="node16" href="$d7/de1/classMolecularModeling_1_1Assembly.html#aee785d978f23420bd1d26f735f1a849b" title="MolecularModeling::Assembly::BuildStructureByTOPFileInformation" alt="" coords="343,215,756,245"/>
-<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="807,109,1284,138"/>
-</map>

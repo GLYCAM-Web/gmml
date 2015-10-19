@@ -138,6 +138,10 @@ void CondensedSequenceResidue::SetAnomericCarbon(int anomeric_carbon)
 {
     anomeric_carbon_ = anomeric_carbon;
 }
+void CondensedSequenceResidue::SetOxygenPosition(int oxygen_position)
+{
+    oxygen_position_ = oxygen_position;
+}
 void CondensedSequenceResidue::SetDerivatives(DerivativeMap derivatives)
 {
     derivatives_.clear();

@@ -1,8 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d2/d2b/classGeometry_1_1Coordinate.html#a55e182a5e7770b43f714ae369a162305" title="Geometry::Coordinate::GetX" alt="" coords="364,5,551,35"/>
-<area shape="rect" id="node5" href="$d2/d2b/classGeometry_1_1Coordinate.html#ac05b81bef24e96883627abcf1935b12a" title="Geometry::Coordinate::GetY" alt="" coords="364,59,551,88"/>
-<area shape="rect" id="node7" href="$d2/d2b/classGeometry_1_1Coordinate.html#a34c71a037166bb286c489780b31895be" title="Geometry::Coordinate::GetZ" alt="" coords="364,112,551,141"/>
-<area shape="rect" id="node9" href="$d2/d2b/classGeometry_1_1Coordinate.html#af098c557f0ffe6f2057bcb58a2106b74" title="Geometry::Coordinate::SetX" alt="" coords="364,165,551,195"/>
-<area shape="rect" id="node11" href="$d2/d2b/classGeometry_1_1Coordinate.html#a48f83d62d022dc011987083cdd531171" title="Geometry::Coordinate::SetY" alt="" coords="364,219,551,248"/>
-<area shape="rect" id="node13" href="$d2/d2b/classGeometry_1_1Coordinate.html#af0597a02ab74957ea671ea6a29cf9c0a" title="Geometry::Coordinate::SetZ" alt="" coords="364,272,551,301"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d7/de1/classMolecularModeling_1_1Assembly.html#aee785d978f23420bd1d26f735f1a849b" title="MolecularModeling::Assembly::BuildStructureByTOPFileInformation" alt="" coords="364,5,777,35"/>
-<area shape="rect" id="node9" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a1fac53937bbf09ec5387e2d81ac55b14" title="TopologyFileSpace::TopologyFile::ResolveBondsIncHydrogenSection" alt="" coords="357,59,784,88"/>
-<area shape="rect" id="node11" href="$d3/d03/classTopologyFileSpace_1_1TopologyFile.html#a4f1b06098a1187c79e36f5b26a58a19a" title="TopologyFileSpace::TopologyFile::ResolveBondsWithoutHydrogenSection" alt="" coords="344,112,797,141"/>
-<area shape="rect" id="node5" href="$d7/de1/classMolecularModeling_1_1Assembly.html#abce3df6f759f2ddd9c79ae7780ca6775" title="MolecularModeling::Assembly::BuildStructureByOriginalFileBondingInformation" alt="" coords="847,5,1324,35"/>
-<area shape="rect" id="node7" href="$d7/de1/classMolecularModeling_1_1Assembly.html#ad181ebba564877ae128de677bdcdd15a" title="MolecularModeling::Assembly::BuildStructure" alt="" coords="1375,5,1660,35"/>
-</map>

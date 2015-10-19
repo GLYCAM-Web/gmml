@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a6117e6eaf44af00149f743439c39f8f2" title="Return the box angle of the residue." alt="" coords="404,5,724,35"/>
-<area shape="rect" id="node5" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a39250c7aae5809fb88667a6d1dc554ad" title="Return the box hight of the residue." alt="" coords="401,59,727,88"/>
-<area shape="rect" id="node7" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ab101a9f528beee33403889e40451a887" title="Return the box length of the residue." alt="" coords="401,112,727,141"/>
-<area shape="rect" id="node9" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#add51d869b0522850b2e79cd3e81ce128" title="Return the box width of the residue." alt="" coords="404,165,724,195"/>
-<area shape="rect" id="node11" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="415,219,713,248"/>
-</map>

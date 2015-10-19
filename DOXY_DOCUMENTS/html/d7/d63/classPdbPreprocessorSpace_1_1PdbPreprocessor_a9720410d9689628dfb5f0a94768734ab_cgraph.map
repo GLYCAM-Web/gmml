@@ -1,6 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#a6056f8116b2dc97a12b7bb40c2c4de21" title="LibraryFileSpace::LibraryFile::GetAllAtomNamesOfResidue" alt="" coords="623,32,988,61"/>
-<area shape="rect" id="node9" href="$d4/d6c/classLibraryFileSpace_1_1LibraryFile.html#abf3ebb1ef0bb81d9a1299d6f10cba153" title="LibraryFileSpace::LibraryFile::GetAllResidueNames" alt="" coords="645,85,965,115"/>
-<area shape="rect" id="node5" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="1039,5,1340,35"/>
-<area shape="rect" id="node7" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acf25d1d9d956e68770eb48af9274b68e" title="Return atom name." alt="" coords="1048,59,1331,88"/>
-</map>

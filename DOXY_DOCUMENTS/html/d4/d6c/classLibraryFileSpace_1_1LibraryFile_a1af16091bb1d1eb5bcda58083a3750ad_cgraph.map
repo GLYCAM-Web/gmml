@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" id="node3" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#aacd443c81971209b0f6b951f1661ad53" title="Return an atom belonging to the residue by a given order number." alt="" coords="428,5,769,35"/>
-<area shape="rect" id="node5" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#a4938c8946f796de976222bf3939f4408" title="return atom index in the belonging residue" alt="" coords="444,59,753,88"/>
-<area shape="rect" id="node7" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#ae6554661c088810e4f20c6204064711d" title="Return a map of all atoms belonging to the residue mapped to their order of insertion into the residu..." alt="" coords="448,112,749,141"/>
-<area shape="rect" id="node9" href="$d8/d6a/classLibraryFileSpace_1_1LibraryFileAtom.html#acc845febfadcb32eb170c61851e7d7ad" title="Return all bonded atom indices of the atom." alt="" coords="413,165,784,195"/>
-<area shape="rect" id="node11" href="$dc/d80/classLibraryFileSpace_1_1LibraryFileResidue.html#a492e4d6a094e78d1b1ef9e22e0ce4902" title="LibraryFileSpace::LibraryFileResidue::GetName" alt="" coords="449,219,748,248"/>
-</map>
