@@ -391,6 +391,8 @@ string CondensedSequence::GetSecondLetterOfAmberPrepResidueCode(string residue_n
 
 string CondensedSequence::GetThirdLetterOfAmberPrepResidueCode(string configuration, string ring_type)
 {
+    if(configuration.compare("X") == 0)
+        return "?";
     if(ring_type.compare("P") == 0)
         return (configuration.compare("A") == 0) ? "A" : "B";
     else

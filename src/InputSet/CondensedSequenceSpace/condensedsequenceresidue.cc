@@ -43,6 +43,8 @@ CondensedSequenceResidue::CondensedSequenceResidue(string residue_string)
             this->configuration_ = 'A';
         else if(configuration_letter == 'B' || configuration_letter == 'b')
             this->configuration_ = 'B';
+        else if(configuration_letter == 'X' || configuration_letter == 'x')
+            this->configuration_ = 'X';
         else
             throw CondensedSequenceProcessingException("Invalid configuration in residue " + residue_string);
 
