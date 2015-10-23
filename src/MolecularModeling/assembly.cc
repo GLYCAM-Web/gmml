@@ -8931,7 +8931,9 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
 void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
                                                CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
 {
-    pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetName()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+    string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
+    if(name.at(name.size() - 1) != '?')
+        pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = name;
     index++;
     for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
     {
@@ -8948,10 +8950,11 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
     {
         Residue* residue = *it2;
         string residue_name = residue->GetName();
-        if(residue_glycam_map.find(residue_name) != residue_glycam_map.end())
+        string residue_id = residue->GetId();
+        if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
         {
             int residue_name_size = residue_name.size();
-            string glycam_name = residue_glycam_map[residue->GetName()];
+            string glycam_name = residue_glycam_map[residue->GetId()];
 
             AtomVector atoms = residue->GetAtoms();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
@@ -8961,7 +8964,6 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
                 if(index >= 0)
                     (*it1)->SetId(atom_id.replace(index, index + residue_name_size, glycam_name));
             }
-            string residue_id = residue->GetId();
             int i = residue_id.find(residue_name);
             if(i >= 0)
                 (*it2)->SetId(residue_id.replace(i, i + residue_name_size, glycam_name));
