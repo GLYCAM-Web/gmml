@@ -187,10 +187,9 @@ void PrepFile::BuildPrepFile(ofstream &stream)
             for(PrepFileResidue::DihedralVector::iterator it2 = dihedrals.begin(); it2 != dihedrals.end(); it2++)
             {
                 PrepFileResidue::Dihedral dihedral = (*it2);
-                stream << left << setw(4) << dihedral.at(0) << left << setw(4) << dihedral.at(1) << left << setw(4) << dihedral.at(2) << left << setw(4) << dihedral.at(3) << endl
-                       << endl;
-
+                stream << left << setw(4) << dihedral.at(0) << left << setw(4) << dihedral.at(1) << left << setw(4) << dihedral.at(2) << left << setw(4) << dihedral.at(3) << endl;
             }
+            stream << endl;
         }
         PrepFileResidue::Loop loops = residue->GetLoops();
         if(loops.size() != 0)
