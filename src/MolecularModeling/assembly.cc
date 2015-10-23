@@ -8915,9 +8915,13 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
     {
         int index = 0;
         Oligosaccharide* oligo = *it;
-        CondensedSequence* condensed_sequence = new CondensedSequence(oligo->oligosaccharide_name_);
+        string oligo_name = oligo->oligosaccharide_name_;
+        if(oligo->terminal_.compare("") == 0)
+            oligo_name = oligo_name + "1-OH";
+        CondensedSequence* condensed_sequence = new CondensedSequence(oligo_name);
         CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
-        pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+        if(oligo->terminal_.compare("") != 0)
+            pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
     }
@@ -8965,7 +8969,7 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
         }
     }
 }
-
+////
 void Assembly::PopulateOligosaccharide(stringstream& pdb_stream, stringstream& oligo_stream, stringstream& mono_stream, string pdb_subject, string id_prefix, int& oligo_id, vector<Glycan::Oligosaccharide*> oligos)
 {
     stringstream object;

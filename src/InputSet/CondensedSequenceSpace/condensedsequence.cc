@@ -71,7 +71,7 @@ void CondensedSequence::SetTokens(CondensedSequenceTokenTypeVector tokens)
         tokens_.push_back(*it);
     }
 }
-void CondensedSequence::AddToken(gmml::CondensedSequenceTokenType token)
+void CondensedSequence::AddToken(CondensedSequenceTokenType token)
 {
     tokens_.push_back(token);
 }
