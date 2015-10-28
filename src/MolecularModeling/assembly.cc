@@ -8932,7 +8932,7 @@ void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, O
                                                CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
 {
     string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
-    if(name.at(name.size() - 1) != '?')
+//    if(name.at(name.size() - 1) != 'X')
         pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = name;
     index++;
     for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
