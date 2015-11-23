@@ -49,6 +49,7 @@ namespace MolecularModeling
             typedef std::map<std::string, std::map<std::string, std::vector<std::string> > > SelectPatternMap;
             typedef std::map<std::string, ResidueVector> HierarchicalContainmentMap;
             typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
+            typedef std::vector<Glycan::Oligosaccharide*> OligosaccharideVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -634,24 +635,39 @@ namespace MolecularModeling
               */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
-            gmml::ResidueNameMap ExtractResidueGlycamNamingMap(std::vector<Glycan::Oligosaccharide*> oligosaccharides);
+            gmml::ResidueNameMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
             void ExtractOligosaccharideNamingMap(gmml::ResidueNameMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
-                                                 int& index);
+                                                int& index);
             void UpdateResidueName2GlycamName(gmml::ResidueNameMap residue_glycam_map);
-
 
             /*! \fn
               * A function in order to extract all the saccharide structures
               * @param amino_lib_files The list of paths to amino library files
               */
-            std::vector<Glycan::Oligosaccharide*> ExtractSugars(std::vector<std::string> amino_lib_files);            
-            void PopulateOntology(std::ofstream& out_file, std::vector<Glycan::Oligosaccharide*> oligosaccharides);
-            void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::string pdb_subject, std::string id_prefix, int& oligo_id, std::vector<Glycan::Oligosaccharide*> oligos);
-            void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_subject, std::string id_prefix, int mono_id, Glycan::Monosaccharide* mono);
-            void PopulateSugarName(std::stringstream& mono_stream, std::string mono_subject, std::string id_prefix, int mono_id, Glycan::SugarName sugar_name);
-            void PopulateResidue(std::stringstream& pdb_stream, std::stringstream& residue_stream, std::string pdb_subject, std::string id_prefix, ResidueVector residues);
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files);
+
+            void PopulateOntology(std::ofstream& out_file, OligosaccharideVector oligosaccharides);
+            void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::stringstream& linkage_stream, std::string pdb_uri,
+                                         std::string id_prefix, int& link_id, OligosaccharideVector oligos, std::vector<std::string>& side_or_ring_atoms,
+                                         std::vector<int>& visited_oligos);
+            void PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligosaccharide* oligo, std::string oligo_uri, std::string id_prefix, int& link_id,
+                                 std::vector<int>& visited_oligos);
+            void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix,
+                                        Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+            void PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, int ring_index, Atom* ring_atom,
+                                  Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+            void PopulateSideAtom(std::stringstream& side_atom_stream, std::string id_prefix, std::string side_uri, std::string side_resource, int ring_index, int side_index, Atom* side_atom,
+                                  Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+            void PopulateSugarName(std::stringstream& mono_stream, std::string mono_uri, std::string id_prefix, int mono_id, Glycan::SugarName sugar_name);
+            void PopulateResidue(std::stringstream& pdb_stream, std::stringstream& residue_stream, std::string pdb_uri, std::string id_prefix, ResidueVector residues,
+                                 std::vector<std::string> side_or_ring_atoms);
+            void PopulateAtom(std::stringstream& atom_stream, std::string atom_uri, std::string atom_resource, std::string id_prefix, Atom* atom);
+            void CreateTitle(std::string pdb_resource, std::stringstream& pdb_stream);
             void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
+            void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
+            std::string CreateURIResource(gmml::URIType resource, int number, std::string id_prefix, std::string id);
+            std::string CreateURI(std::string uri_resource);
 
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
@@ -771,7 +787,7 @@ namespace MolecularModeling
               * @param monos The list of extracted monosaccharide object
               * @return oligosacchrides The list of extracted oligosacchrides
               */
-            std::vector<Glycan::Oligosaccharide*> ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
+            OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
                                                                           std::string& terminal_residue_name);
 
             /*! \fn
@@ -918,6 +934,34 @@ namespace MolecularModeling
                 a = assembly;
             }
     };
+
+    struct DistanceCalculationByMatrixThreadArgument{
+            int thread_index;
+            int model_index;
+            double cutoff;
+            std::vector<Atom*>* first_chunk;
+            std::vector<Atom*>* second_chunk;
+
+            DistanceCalculationByMatrixThreadArgument()
+            {
+                thread_index = 0;
+                model_index = 0;
+                cutoff = gmml::dCutOff;
+                first_chunk = new std::vector<Atom*>();
+                second_chunk = new std::vector<Atom*>();
+            }
+
+            DistanceCalculationByMatrixThreadArgument(int ti, int mi, double c, std::vector<Atom*>* fc, std::vector<Atom*>* sc)
+            {
+                thread_index = ti;
+                model_index = mi;
+                cutoff = c;
+                first_chunk = fc;
+                second_chunk = sc;
+            }
+    };
+
+
 }
 
 #endif // ASSEMBLY_HPP

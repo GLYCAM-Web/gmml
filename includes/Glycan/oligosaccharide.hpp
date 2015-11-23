@@ -14,7 +14,7 @@ namespace Glycan
     {
             Monosaccharide* root_;                              /*!< The root sacchride of the oligosacchride >*/
             std::vector<Oligosaccharide*> child_oligos_;        /*!< The oligosacchrides that are attached to the current oligosaccharide >*/
-            std::vector<std::string> child_oligos_linkages_;    /*!< The linkages between the current oligosaccharide and oligosacchrides that are attached to it >*/
+            std::vector<std::string> child_oligos_linkages_;    /*!< The linkages between the current oligosaccharide and oligosacchrides that are attached to it. i.e. C4_13_4GB_?_2_?_?_1-O4_23_4GB_?_2_?_?_1-C1_24_0MA_?_3_?_?_1 >*/
             std::string oligosaccharide_name_;                  /*!< The complete name sequence of the oligosacchride >*/
             std::string oligosaccharide_linkages_;              /*!< The complete sequence of the linkages of the oligosacchride >*/
             std::string terminal_;
