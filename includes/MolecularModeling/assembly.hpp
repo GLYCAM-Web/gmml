@@ -634,18 +634,18 @@ namespace MolecularModeling
               */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
-
-            /*! \fn
-              * A function in order to extract all the saccharide structures
-              * @param amino_lib_files The list of paths to amino library files
-              */
-            std::vector<Glycan::Oligosaccharide*> ExtractSugars(std::vector<std::string> amino_lib_files);
             gmml::ResidueNameMap ExtractResidueGlycamNamingMap(std::vector<Glycan::Oligosaccharide*> oligosaccharides);
             void ExtractOligosaccharideNamingMap(gmml::ResidueNameMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
                                                  int& index);
             void UpdateResidueName2GlycamName(gmml::ResidueNameMap residue_glycam_map);
 
+
+            /*! \fn
+              * A function in order to extract all the saccharide structures
+              * @param amino_lib_files The list of paths to amino library files
+              */
+            std::vector<Glycan::Oligosaccharide*> ExtractSugars(std::vector<std::string> amino_lib_files);            
             void PopulateOntology(std::ofstream& out_file, std::vector<Glycan::Oligosaccharide*> oligosaccharides);
             void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::string pdb_subject, std::string id_prefix, int& oligo_id, std::vector<Glycan::Oligosaccharide*> oligos);
             void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_subject, std::string id_prefix, int mono_id, Glycan::Monosaccharide* mono);
