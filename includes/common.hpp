@@ -622,6 +622,20 @@ namespace gmml
         CONDENSED_SEQUENCE_RESIDUE
     };
 
+    /*! \enum
+      * Enumerator to possible resource type URIs for ontology
+      */
+    enum URIType
+    {
+        OntPDB,
+        OntResidue,
+        OntOligosaccharide,
+        OntLinkage,
+        OntMonosaccharide,
+        OntSugarName,
+        OntAtom
+    };
+
 }
 
 #endif // COMMON_HPP
