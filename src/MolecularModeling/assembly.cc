@@ -1886,12 +1886,12 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string p
     }
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
-    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
-    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        TopologyResidue* topology_residue = (*it).second;
+        TopologyResidue* topology_residue = (*it);
         string residue_name = topology_residue->GetResidueName();
         assembly_residue->SetName(residue_name);
         stringstream id;
@@ -1899,18 +1899,18 @@ void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string p
            << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
-        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
         int serial_number = 0;
-        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        for(TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            string atom_name = (*it1).first;
+            string atom_name = (*it1)->GetAtomName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
             atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
-            TopologyAtom* topology_atom = (*it1).second;
+            TopologyAtom* topology_atom = (*it1);
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / CHARGE_DIVIDER);
             assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
@@ -1953,12 +1953,12 @@ void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string
     }
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
-    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
-    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        TopologyResidue* topology_residue = (*it).second;
+        TopologyResidue* topology_residue = (*it);
         string residue_name = topology_residue->GetResidueName();
         assembly_residue->SetName(residue_name);
         stringstream id;
@@ -1966,18 +1966,18 @@ void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string
            << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
-        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
         int serial_number = 0;
-        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        for(TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            string atom_name = (*it1).first;
+            string atom_name = (*it1)->GetAtomName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
             atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
-            TopologyAtom* topology_atom = (*it1).second;
+            TopologyAtom* topology_atom = (*it1);
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / CHARGE_DIVIDER);
             assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
@@ -2200,12 +2200,12 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
     }
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
-    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
-    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        TopologyResidue* topology_residue = (*it).second;
+        TopologyResidue* topology_residue = (*it);
         string residue_name = topology_residue->GetResidueName();
         assembly_residue->SetName(residue_name);
         stringstream id;
@@ -2213,18 +2213,18 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path
            << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
-        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
         int serial_number = 0;
-        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        for(TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            string atom_name = (*it1).first;
+            string atom_name = (*it1)->GetAtomName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
             atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
-            TopologyAtom* topology_atom = (*it1).second;
+            TopologyAtom* topology_atom = (*it1);
 
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / CHARGE_DIVIDER);
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
@@ -2274,12 +2274,12 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
 
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
-    TopologyAssembly::TopologyResidueMap topology_residues = topology_file->GetAssembly()->GetResidues();
-    for(TopologyAssembly::TopologyResidueMap::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        TopologyResidue* topology_residue = (*it).second;
+        TopologyResidue* topology_residue = (*it);
         string residue_name = topology_residue->GetResidueName();
         assembly_residue->SetName(residue_name);
         stringstream id;
@@ -2287,18 +2287,18 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
            << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
-        TopologyResidue::TopologyAtomMap topology_atoms = topology_residue->GetAtoms();
+        TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
         int serial_number = 0;
-        for(TopologyResidue::TopologyAtomMap::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        for(TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            string atom_name = (*it1).first;
+            string atom_name = (*it1)->GetAtomName();
             assembly_atom->SetName(atom_name);
             stringstream atom_id;
             atom_id << atom_name << "_" << serial_number << id.str();
             assembly_atom->SetId(atom_id.str());
-            TopologyAtom* topology_atom = (*it1).second;
+            TopologyAtom* topology_atom = (*it1);
 
             assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / CHARGE_DIVIDER);
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
@@ -3443,40 +3443,9 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating topology file ...");
     TopologyFile* topology_file = new TopologyFile();
 
-    topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
-    topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
-    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen(parameter_file_path));
-    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen(parameter_file_path));
-    topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen(parameter_file_path));
-    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen(parameter_file_path));
-    topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen(parameter_file_path));
-    topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen(parameter_file_path));
-    //    topology_file->SetNumberOfHydrogenParameters();
-    //    topology_file->SetNumberOfParameters();
-    topology_file->SetNumberOfExcludedAtoms(this->CountNumberOfExcludedAtoms());   // Does not match
-    topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
-    topology_file->SetTotalNumberOfBonds(this->CountNumberOfBondsExcludingHydrogen(parameter_file_path));
-    topology_file->SetTotalNumberOfAngles(this->CountNumberOfAnglesExcludingHydrogen(parameter_file_path));
-    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedralsExcludingHydrogen(parameter_file_path));
-    topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes(parameter_file_path));
-    topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes(parameter_file_path));
-    topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes(parameter_file_path));
-    //        topology_file->SetNumberOfAtomTypesInParameterFile();
-    //    topology_file->SetNumberOfDistinctHydrogenBonds();
-    //    topology_file->SetPerturbationOption();
-    //    topology_file->SetNumberOfBondsPerturbed();
-    //    topology_file->SetNumberOfAnglesPerturbed();
-    //    topology_file->SetNumberOfDihedralsPerturbed();
-    //    topology_file->SetNumberOfBondsGroupPerturbed();
-    //    topology_file->SetNumberOfAnglesGroupPerturbed();
-    //    topology_file->SetNumberOfDihedralsGroupPerturbed();
-    //    topology_file->SetStandardPeriodicBoxOption();
-    topology_file->SetNumberOfAtomsInLargestResidue(this->CountMaxNumberOfAtomsInLargestResidue());
-    //    topology_file->SetCapOption();
-    //    topology_file->SetNumberOfExtraPoints();
-    //    topology_file->SetNumberOfBeads();
     TopologyAssembly* topology_assembly = new TopologyAssembly();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
+    int number_of_excluded_atoms = 0;
     int residue_counter = 0;
     int atom_counter = 1;
     stringstream ss;
@@ -3629,6 +3598,8 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
                     }
                 }
             }
+            topology_atom->GetExcludedAtoms().size() == 0 ? number_of_excluded_atoms++ :
+                                                            number_of_excluded_atoms += topology_atom->GetExcludedAtoms().size();
         }
         topology_assembly->AddResidue(topology_residue);
     }
@@ -3728,6 +3699,25 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     topology_assembly->SetAssemblyName(ss.str());
     topology_file->SetAtomPairs(pairs);
     topology_file->SetAssembly(topology_assembly);
+
+    // Set headers
+    topology_file->SetNumberOfAtoms(this->CountNumberOfAtoms());
+    topology_file->SetNumberOfTypes(this->CountNumberOfAtomTypes());
+    topology_file->SetNumberOfBondsIncludingHydrogen(this->CountNumberOfBondsIncludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfBondsExcludingHydrogen(this->CountNumberOfBondsExcludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfAnglesIncludingHydrogen(this->CountNumberOfAnglesIncludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfAnglesExcludingHydrogen(this->CountNumberOfAnglesExcludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfDihedralsIncludingHydrogen(this->CountNumberOfDihedralsIncludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfDihedralsExcludingHydrogen(this->CountNumberOfDihedralsExcludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfExcludedAtoms(number_of_excluded_atoms);
+    topology_file->SetNumberOfResidues(this->CountNumberOfResidues());
+    topology_file->SetTotalNumberOfBonds(this->CountNumberOfBondsExcludingHydrogen(parameter_file_path));
+    topology_file->SetTotalNumberOfAngles(this->CountNumberOfAnglesExcludingHydrogen(parameter_file_path));
+    topology_file->SetTotalNumberOfDihedrals(this->CountNumberOfDihedralsExcludingHydrogen(parameter_file_path));
+    topology_file->SetNumberOfBondTypes(this->CountNumberOfBondTypes(parameter_file_path));
+    topology_file->SetNumberOfAngleTypes(this->CountNumberOfAngleTypes(parameter_file_path));
+    topology_file->SetNumberOfDihedralTypes(this->CountNumberOfDihedralTypes(parameter_file_path));
+    topology_file->SetNumberOfAtomsInLargestResidue(this->CountMaxNumberOfAtomsInLargestResidue());
 
     return topology_file;
 }
@@ -6134,14 +6124,16 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors()
 
 int Assembly::CountNumberOfExcludedAtoms()
 {
-    AtomVector atoms = GetAllAtomsOfAssembly();
+    AtomVector atoms = GetAllAtomsOfAssembly();    
     vector<string> excluded_atom_list = vector<string>();
+    map<string, vector<string> > excluded_atom_list_map = map<string, vector<string> >();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         stringstream ss;
         ss << atom->GetId();
         AtomNode* node = atom->GetNode();
+        excluded_atom_list_map[atom->GetId()] = vector<string>();
         if(node != NULL)
         {
             AtomVector neighbors = node->GetNodeNeighbors();
@@ -6156,7 +6148,10 @@ int Assembly::CountNumberOfExcludedAtoms()
                 reverse_first_order_interaction << ss1.str() << "-" << ss.str();
                 if(find(excluded_atom_list.begin(), excluded_atom_list.end(), first_order_interaction.str()) == excluded_atom_list.end() &&
                         find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_first_order_interaction.str()) == excluded_atom_list.end())
+                {
                     excluded_atom_list.push_back(first_order_interaction.str());
+                    excluded_atom_list_map[atom->GetId()].push_back(neighbor->GetId());
+                }
                 AtomNode* neighbor_node = neighbor->GetNode();
                 AtomVector neighbor_of_neighbors = neighbor_node->GetNodeNeighbors();
                 for(AtomVector::iterator it2 = neighbor_of_neighbors.begin(); it2 != neighbor_of_neighbors.end(); it2++)
@@ -6172,7 +6167,10 @@ int Assembly::CountNumberOfExcludedAtoms()
                         reverse_second_order_interaction << ss2.str() << "-" << ss.str();
                         if(find(excluded_atom_list.begin(), excluded_atom_list.end(), second_order_interaction.str()) == excluded_atom_list.end() &&
                                 find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_second_order_interaction.str()) == excluded_atom_list.end())
+                        {
                             excluded_atom_list.push_back(second_order_interaction.str());
+                            excluded_atom_list_map[atom->GetId()].push_back(neighbor_of_neighbor->GetId());
+                        }
                         AtomNode* neighbor_of_neighbor_node = neighbor_of_neighbor->GetNode();
                         AtomVector neighbor_of_neighbor_of_neighbors = neighbor_of_neighbor_node->GetNodeNeighbors();
                         for(AtomVector::iterator it3 = neighbor_of_neighbor_of_neighbors.begin(); it3 != neighbor_of_neighbor_of_neighbors.end(); it3++)
@@ -6188,7 +6186,10 @@ int Assembly::CountNumberOfExcludedAtoms()
                                 reverse_third_order_interaction << ss3.str() << "-" << ss.str();
                                 if(find(excluded_atom_list.begin(), excluded_atom_list.end(), third_order_interaction.str()) == excluded_atom_list.end() &&
                                         find(excluded_atom_list.begin(), excluded_atom_list.end(), reverse_third_order_interaction.str()) == excluded_atom_list.end())
+                                {
                                     excluded_atom_list.push_back(third_order_interaction.str());
+                                    excluded_atom_list_map[atom->GetId()].push_back(neighbor_of_neighbor_of_neighbor->GetId());
+                                }
                             }
                         }
                     }
@@ -6196,7 +6197,10 @@ int Assembly::CountNumberOfExcludedAtoms()
             }
         }
     }
-    return excluded_atom_list.size();
+    int number_of_excluded_atoms = 0;
+    for(map<string, vector<string> >::iterator it = excluded_atom_list_map.begin(); it != excluded_atom_list_map.end(); it++)
+        (*it).second.size() == 0 ? number_of_excluded_atoms++ : number_of_excluded_atoms += (*it).second.size();
+    return number_of_excluded_atoms;
 }
 
 int Assembly::CountMaxNumberOfAtomsInLargestResidue()
@@ -8933,7 +8937,7 @@ void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, O
 {
     string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
 //    if(name.at(name.size() - 1) != 'X')
-        pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = name;
+    pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = name;
     index++;
     for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
     {

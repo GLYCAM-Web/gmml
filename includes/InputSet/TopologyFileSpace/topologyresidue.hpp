@@ -16,7 +16,7 @@ namespace TopologyFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::map<std::string, TopologyAtom*> TopologyAtomMap;
+            typedef std::vector<TopologyAtom*> TopologyAtomVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -31,7 +31,7 @@ namespace TopologyFileSpace
               * @param atoms Atoms belonging to the current residue
               * @param starting_atom_index Index of the first atom that belongs to the residue among all atoms in a topology file
               */
-            TopologyResidue(std::string residue_name, TopologyAtomMap atoms, int index, int starting_atom_index);
+            TopologyResidue(std::string residue_name, TopologyAtomVector atoms, int index, int starting_atom_index);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -45,7 +45,7 @@ namespace TopologyFileSpace
               * An accessor function in order to access to the atoms
               * @return atoms_ attribute of the current object of this class
               */
-            TopologyAtomMap GetAtoms();
+            TopologyAtomVector GetAtoms();
             /*! \fn
               * An accessor function in order to access to an atom of the current object using index
               * @param index Index of the desired atom
@@ -110,7 +110,7 @@ namespace TopologyFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::string residue_name_;              /*!< Residue name >*/
-            TopologyAtomMap atoms_;                 /*!< List of atoms those belong to this residue >*/
+            TopologyAtomVector atoms_;                 /*!< List of atoms those belong to this residue >*/
             int index_;                             /*!< Index of this residue among the others in a topology file >*/
             int starting_atom_index_;               /*!< Index of the first atom belongs to this residue among all other atoms in a topology file >*/
 

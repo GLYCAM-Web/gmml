@@ -20,7 +20,7 @@ namespace TopologyFileSpace
             /*! \typedef
               * A mapping between a residue name and the residue itself
               */
-            typedef std::map<std::string, TopologyResidue*> TopologyResidueMap;
+            typedef std::vector<TopologyResidue*> TopologyResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -42,7 +42,7 @@ namespace TopologyFileSpace
               * An accessor function in order to access to the residues
               * @return residues_ Attribute of the current object of this class
               */
-            TopologyResidueMap GetResidues();
+            TopologyResidueVector GetResidues();
             /*! \fn
               * An accessor function in order to access to a residue of the current object using the index
               * @param index The index of the desired resiude
@@ -70,7 +70,7 @@ namespace TopologyFileSpace
               * Set the residues_ attribute of the current topology assembly
               * @param residues The residues attribute of the current object
               */
-            void SetResidues(TopologyResidueMap residues);
+            void SetResidues(TopologyResidueVector residues);
             void AddResidue(TopologyResidue* residue);
 
             //////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ namespace TopologyFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::string assembly_name_;             /*!< Name of the assembly made by the all residue involving in the assembly >*/
-            TopologyResidueMap residues_;           /*!< Vector of residues that are involving in an assembly >*/
+            TopologyResidueVector residues_;           /*!< Vector of residues that are involving in an assembly >*/
 
     };
 }
