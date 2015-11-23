@@ -635,6 +635,11 @@ namespace MolecularModeling
               */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
+            gmml::ResidueNameMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
+            void ExtractOligosaccharideNamingMap(gmml::ResidueNameMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
+                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
+                                                int& index);
+            void UpdateResidueName2GlycamName(gmml::ResidueNameMap residue_glycam_map);
 
             /*! \fn
               * A function in order to extract all the saccharide structures
@@ -664,11 +669,6 @@ namespace MolecularModeling
             std::string CreateURIResource(gmml::URIType resource, int number, std::string id_prefix, std::string id);
             std::string CreateURI(std::string uri_resource);
 
-            gmml::ResidueNameMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
-            void ExtractOligosaccharideNamingMap(gmml::ResidueNameMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
-                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
-                                                int& index);
-            void UpdateResidueName2GlycamName(gmml::ResidueNameMap residue_glycam_map);
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
               * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects

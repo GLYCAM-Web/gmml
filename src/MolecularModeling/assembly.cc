@@ -8913,6 +8913,62 @@ ResidueNameMap Assembly::GetAllResidueNamesFromMultipleLibFilesMap(vector<string
     return all_residue_names;
 }
 
+ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> oligosaccharides)
+{
+    ResidueNameMap pdb_glycam_residue_map = ResidueNameMap();
+    for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
+    {
+        int index = 0;
+        Oligosaccharide* oligo = *it;
+        CondensedSequence* condensed_sequence = new CondensedSequence(oligo->oligosaccharide_name_);
+        CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+        index++;
+        this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
+    }
+    return pdb_glycam_residue_map;
+}
+void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
+                                               CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
+{
+    pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetName()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+    index++;
+    for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
+    {
+        this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_amber_residue_tree, index);
+    }
+}
+void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
+{
+    for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
+        (*it)->UpdateResidueName2GlycamName(residue_glycam_map);
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it2 = residues.begin(); it2 != residues.end(); it2++)
+    {
+        Residue* residue = *it2;
+        string residue_name = residue->GetName();
+        if(residue_glycam_map.find(residue_name) != residue_glycam_map.end())
+        {
+            int residue_name_size = residue_name.size();
+            string glycam_name = residue_glycam_map[residue->GetName()];
+
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+            {
+                string atom_id = (*it1)->GetId();
+                int index = atom_id.find(residue_name);
+                if(index >= 0)
+                    (*it1)->SetId(atom_id.replace(index, index + residue_name_size, glycam_name));
+            }
+            string residue_id = residue->GetId();
+            int i = residue_id.find(residue_name);
+            if(i >= 0)
+                (*it2)->SetId(residue_id.replace(i, i + residue_name_size, glycam_name));
+            (*it2)->SetName(glycam_name);
+        }
+    }
+}
+
 vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
 {
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
@@ -9847,63 +9903,6 @@ string Assembly::CreateURIResource(gmml::URIType resource , int number, string i
     }
     return uri_resource.str();
 }
-
-ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> oligosaccharides)
-{
-    ResidueNameMap pdb_glycam_residue_map = ResidueNameMap();
-    for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
-    {
-        int index = 0;
-        Oligosaccharide* oligo = *it;
-        CondensedSequence* condensed_sequence = new CondensedSequence(oligo->oligosaccharide_name_);
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
-        pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
-        index++;
-        this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
-    }
-    return pdb_glycam_residue_map;
-}
-void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
-                                               CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
-{
-    pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetName()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
-    index++;
-    for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
-    {
-        this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_amber_residue_tree, index);
-    }
-}
-void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
-{
-    for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
-        (*it)->UpdateResidueName2GlycamName(residue_glycam_map);
-    ResidueVector residues = this->GetResidues();
-    for(ResidueVector::iterator it2 = residues.begin(); it2 != residues.end(); it2++)
-    {
-        Residue* residue = *it2;
-        string residue_name = residue->GetName();
-        if(residue_glycam_map.find(residue_name) != residue_glycam_map.end())
-        {
-            int residue_name_size = residue_name.size();
-            string glycam_name = residue_glycam_map[residue->GetName()];
-
-            AtomVector atoms = residue->GetAtoms();
-            for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
-            {
-                string atom_id = (*it1)->GetId();
-                int index = atom_id.find(residue_name);
-                if(index >= 0)
-                    (*it1)->SetId(atom_id.replace(index, index + residue_name_size, glycam_name));
-            }
-            string residue_id = residue->GetId();
-            int i = residue_id.find(residue_name);
-            if(i >= 0)
-                (*it2)->SetId(residue_id.replace(i, i + residue_name_size, glycam_name));
-            (*it2)->SetName(glycam_name);
-        }
-    }
-}
-
 //void Assembly::PopulateOligosaccharide(vector<Oligosaccharide*> oligos)
 //{
 //    if(oligos.size() != NULL)
