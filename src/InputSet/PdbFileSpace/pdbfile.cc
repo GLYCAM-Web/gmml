@@ -150,7 +150,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
             temp = line.substr(0,6);
             temp = Trim(temp);
             if(temp.find("END") != string::npos || temp.compare("END") == 0)
-                break;            
+                break;
             else if(!line.empty())
                 ss << line << endl;
         }
@@ -334,7 +334,7 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, "S");
                 if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
-                        residue_names.push_back(pair_residue_position);
+                    residue_names.push_back(pair_residue_position);
             }
             else if(dist == atoms.size() - 1)
             {
@@ -386,7 +386,7 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNamesFromAtomCa
             {
                 pair<string, string> pair_residue_position = make_pair(atom_residue_name, "S");
                 if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
-                        residue_names.push_back(pair_residue_position);
+                    residue_names.push_back(pair_residue_position);
             }
             else if(dist == atoms.size() - 1)
             {
@@ -2928,7 +2928,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     if(record_name.compare("KEYWDS") == 0)
     {
         if(!ParseKeywordCard(in_stream, line))
-                return false;
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -3082,7 +3082,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     if(record_name.compare("SITE") == 0)
     {
         if(!ParseSiteCard(in_stream, line))
-           return false;
+            return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
@@ -3217,9 +3217,9 @@ bool PdbFile::ParseObsoleteCard(std::ifstream& stream, string& line)
         stream_block << line << endl;
         if(getline(stream, line))
         {
-        line = ExpandLine(line, iPdbLineLength);
-        record_name = line.substr(0,6);
-        record_name = Trim(record_name);
+            line = ExpandLine(line, iPdbLineLength);
+            record_name = line.substr(0,6);
+            record_name = Trim(record_name);
         }
         else
         {
@@ -4473,7 +4473,7 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
 
     while(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("ANISOU") == 0
           || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0)
-//          || record_name.find("TER") != string::npos || record_name.find("ENDMDL") != string::npos)
+        //          || record_name.find("TER") != string::npos || record_name.find("ENDMDL") != string::npos)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -4493,7 +4493,7 @@ bool PdbFile::ParseModelCard(std::ifstream& stream, string& line)
     }
     
     // Model card
-//    gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str();
+    //    gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str();
     models_ = new PdbModelCard(stream_block);
     return true;
 }
@@ -5991,28 +5991,47 @@ void PdbFile::ResolveLinkCard(std::ofstream& stream)
         PdbLink::LinkResidueVector link_residues = link->GetResidues();
         stream << left << setw(6) << links_->GetRecordName()
                << left << setw(6) << " "
-               << left << setw(4) << link_residues.at(0)->GetAtomName()
-               << right << setw(1) << link_residues.at(0)->GetAlternateLocationIndicator()
-               << right << setw(3) << link_residues.at(0)->GetResidueName()
-               << left << setw(1) << " "
-               << right << setw(1) << link_residues.at(0)->GetResidueChainId();
+               << left << setw(4) << link_residues.at(0)->GetAtomName();
+        if(link_residues.at(0)->GetAlternateLocationIndicator() != BLANK_SPACE)
+            stream << right << setw(1) << link_residues.at(0)->GetAlternateLocationIndicator();
+        else
+            stream << right << setw(1) << " ";
+        stream << right << setw(3) << link_residues.at(0)->GetResidueName()
+               << left << setw(1) << " ";
+        if(link_residues.at(0)->GetResidueChainId() != BLANK_SPACE)
+            stream << right << setw(1) << link_residues.at(0)->GetResidueChainId();
+        else
+            stream << right << setw(1) << " ";
         if(link_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
             stream << right << setw(4) << link_residues.at(0)->GetResidueSequenceNumber();
         else
             stream << right << setw(4) << " ";
-        stream << right << setw(1) << link_residues.at(0)->GetResidueInsertionCode()
-               << left << setw(15) << " "
-               << left << setw(4) << link_residues.at(1)->GetAtomName()
-               << right << setw(1) << link_residues.at(1)->GetAlternateLocationIndicator()
-               << right << setw(3) << link_residues.at(1)->GetResidueName()
-               << left << setw(1) << " "
-               << right << setw(1) << link_residues.at(1)->GetResidueChainId();
+        if(link_residues.at(0)->GetResidueInsertionCode() != BLANK_SPACE)
+            stream << right << setw(1) << link_residues.at(0)->GetResidueInsertionCode();
+        else
+            stream << right << setw(1) << " ";
+
+        stream << left << setw(15) << " "
+               << left << setw(4) << link_residues.at(1)->GetAtomName();
+        if(link_residues.at(1)->GetAlternateLocationIndicator() != BLANK_SPACE)
+            stream << right << setw(1) << link_residues.at(1)->GetAlternateLocationIndicator();
+        else
+            stream << right << setw(1) << " ";
+        stream << right << setw(3) << link_residues.at(1)->GetResidueName()
+               << left << setw(1) << " ";
+        if(link_residues.at(1)->GetResidueChainId() != BLANK_SPACE)
+            stream << right << setw(1) << link_residues.at(1)->GetResidueChainId();
+        else
+            stream << right << setw(1) << " ";
         if(link_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
             stream << right << setw(4) << link_residues.at(1)->GetResidueSequenceNumber();
         else
             stream << right << setw(4) << " ";
-        stream << right << setw(1) << link_residues.at(1)->GetResidueInsertionCode()
-               << left << setw(2) << " ";
+        if(link_residues.at(1)->GetResidueInsertionCode() != BLANK_SPACE)
+            stream << right << setw(1) << link_residues.at(1)->GetResidueInsertionCode();
+        else
+            stream << right << setw(1) << " ";
+        stream << left << setw(2) << " ";
         if(link_residues.at(0)->GetSymmetryOperator() != iNotSet)
             stream << right << setw(6) << link_residues.at(0)->GetSymmetryOperator();
         else
