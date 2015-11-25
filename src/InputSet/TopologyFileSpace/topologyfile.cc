@@ -1452,11 +1452,11 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     }
     // Residues in topology file
     int start_index = 0;
-    TopologyAssembly::TopologyResidueMap residues;
+    TopologyAssembly::TopologyResidueVector residues;
     for(vector<string>::iterator it = residue_labels.begin(); it != residue_labels.end(); it++)
     {
         string residue_name = *it;
-        TopologyResidue::TopologyAtomMap atoms;
+        TopologyResidue::TopologyAtomVector atoms;
         int residue_index = distance(residue_labels.begin(), it) + 1;
         int starting_atom_index = residue_pointers.at(residue_index - 1);
         int ending_atom_index;
@@ -1498,12 +1498,12 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                 }
                 excluded_atoms.push_back(excluded_atom_residue_name + ":" + atom_names.at(index));
             }
-            atoms[atom_names.at(i)] = new TopologyAtom(i + 1, atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
-                                                       number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i), residue_name);
+            atoms.push_back(new TopologyAtom(i + 1, atom_names.at(i), amber_atom_types.at(i), charges.at(i), atomic_numbers.at(i), masses.at(i), excluded_atoms,
+                                                       number_excluded_atoms.at(i), radiis.at(i), screens.at(i), tree_chain_classifications.at(i), residue_name));
         }
         stringstream residue_key;
         residue_key << residue_name << "_" << residue_index;
-        residues[residue_key.str()] = new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index);
+        residues.push_back(new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index));
     }
 
     assembly_ = new TopologyAssembly();
@@ -3015,6 +3015,17 @@ void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);
             index++;
             vector<string> excluded_atoms = atom->GetExcludedAtoms();
+            if(excluded_atoms.size() == 0)
+            {
+                out << setw(ITEM_LENGTH) << right << 0;
+                count++;
+                total_count++;
+                if(count == MAX_IN_LINE)
+                {
+                    count = 0;
+                    out << endl;
+                }
+            }
             for(vector<string>::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
             {
                 string atom_id = (*it);
