@@ -9032,11 +9032,11 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
                 string atom_id = (*it1)->GetId();
                 int index = atom_id.find(residue_name);
                 if(index >= 0)
-                    (*it1)->SetId(atom_id.replace(index, index + residue_name_size, glycam_name));
+                    (*it1)->SetId(atom_id.replace(index, residue_name_size, glycam_name));
             }
             int i = residue_id.find(residue_name);
             if(i >= 0)
-                (*it2)->SetId(residue_id.replace(i, i + residue_name_size, glycam_name));
+                (*it2)->SetId(residue_id.replace(i, residue_name_size, glycam_name));
             (*it2)->SetName(glycam_name);
         }
     }
