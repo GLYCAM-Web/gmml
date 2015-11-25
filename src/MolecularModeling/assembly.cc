@@ -8987,8 +8987,13 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
     {
         int index = 0;
         Oligosaccharide* oligo = *it;
-        CondensedSequence* condensed_sequence = new CondensedSequence(oligo->oligosaccharide_name_);
+	string oligo_name = oligo->oligosaccharide_name_;
+	if(oligo->terminal_.compare("") == 0)
+	    oligo_name = oligo_name + "1-OH";
+        CondensedSequence* condensed_sequence = new CondensedSequence(oligo_name);
         CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+	if(oligo->terminal_.compare("") != 0)
+	    pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
         pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
@@ -8998,7 +9003,8 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
 void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
                                                CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
 {
-    pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetName()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+    string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
+    pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = name;
     index++;
     for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
     {
@@ -9014,10 +9020,11 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
     {
         Residue* residue = *it2;
         string residue_name = residue->GetName();
-        if(residue_glycam_map.find(residue_name) != residue_glycam_map.end())
+	string residue_id = residue->GetId();
+	if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
         {
             int residue_name_size = residue_name.size();
-            string glycam_name = residue_glycam_map[residue->GetName()];
+            string glycam_name = residue_glycam_map[residue->GetId()];
 
             AtomVector atoms = residue->GetAtoms();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
@@ -9025,12 +9032,11 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
                 string atom_id = (*it1)->GetId();
                 int index = atom_id.find(residue_name);
                 if(index >= 0)
-                    (*it1)->SetId(atom_id.replace(index, index + residue_name_size, glycam_name));
+                    (*it1)->SetId(atom_id.replace(index, residue_name_size, glycam_name));
             }
-            string residue_id = residue->GetId();
             int i = residue_id.find(residue_name);
             if(i >= 0)
-                (*it2)->SetId(residue_id.replace(i, i + residue_name_size, glycam_name));
+                (*it2)->SetId(residue_id.replace(i, residue_name_size, glycam_name));
             (*it2)->SetName(glycam_name);
         }
     }
