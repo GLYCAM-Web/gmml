@@ -11,7 +11,7 @@ using namespace gmml;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbLinkResidue::PdbLinkResidue() : atom_name_(""), alternate_location_indicator_(' '), residue_name_(""), residue_chain_id_(' '),
-    residue_sequence_number_(dNotSet), residue_insertion_code_(' '), symmetry_operator_(dNotSet) {}
+    residue_sequence_number_(iNotSet), residue_insertion_code_(' '), symmetry_operator_(iNotSet) {}
 
 PdbLinkResidue::PdbLinkResidue(const string &atom_name, char alternate_location_indicator, const string &residue_name,
                                char residue_chain_id, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
