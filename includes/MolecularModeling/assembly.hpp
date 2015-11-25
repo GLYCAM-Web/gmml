@@ -318,6 +318,7 @@ namespace MolecularModeling
 
             void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
             void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
+            void ExtractPdbLinkCardFromAssembly(PdbFileSpace::PdbLinkCard* link_card, int model_index);
             /*! \fn
               * A function to extract bonds from the current assembly object
               * @param inserted_bond_types Bond types that have been already detected in the assembly structure
