@@ -3789,8 +3789,8 @@ void Assembly::ExtractTopologyBondsFromAssembly(vector<vector<string> > &inserte
     residue_names.push_back(neighbor->GetResidue()->GetName());
     reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
     reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
-    vector<string> bond = vector<string>();;
-    vector<string> reverse_bond = vector<string>();;
+    vector<string> bond = vector<string>();
+    vector<string> reverse_bond = vector<string>();
     stringstream ss;
     ss << residue_names.at(0) << ":" << atom_pair_name.at(0);
     stringstream ss1;

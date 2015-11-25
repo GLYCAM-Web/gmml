@@ -472,27 +472,27 @@ namespace gmml
       */
     inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "log.log")
     {
-        std::ofstream file;
-        file.open(out_file_name.c_str(), std::ios_base::app);
+//        std::ofstream file;
+//        file.open(out_file_name.c_str(), std::ios_base::app);
 
-        time_t t = time(0);
-        std::string time_str = std::asctime(std::localtime(&t));
-        file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>>";
-        switch(level)
-        {
-            case INF:
-                file << " [INFO]: ";
-                break;
-            case ERR:
-                file << " [ERROR]: ";
-                break;
-            case WAR:
-                file << " [WARNING]: ";
-                break;
-        }
-        file << msg << std::endl;
+//        time_t t = time(0);
+//        std::string time_str = std::asctime(std::localtime(&t));
+//        file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>>";
+//        switch(level)
+//        {
+//            case INF:
+//                file << " [INFO]: ";
+//                break;
+//            case ERR:
+//                file << " [ERROR]: ";
+//                break;
+//            case WAR:
+//                file << " [WARNING]: ";
+//                break;
+//        }
+//        file << msg << std::endl;
 
-        file.close();
+//        file.close();
     }
 }
 
