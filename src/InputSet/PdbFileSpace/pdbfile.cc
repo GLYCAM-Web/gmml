@@ -324,10 +324,10 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomCard* atom_card = (*it1);
-        PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-        for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        PdbAtomCard::PdbAtomOrderVector atoms = atom_card->GetOrderedAtoms();
+        for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             int dist = distance(atoms.begin(), it2);
             string atom_residue_name = atom->GetAtomResidueName();
             if(dist == 0)
@@ -351,10 +351,10 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
     for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
     {
         PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-        PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
-        for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+        PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
+        for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string atom_residue_name = atom->GetAtomResidueName();
             pair<string, string> pair_residue_position = make_pair(atom_residue_name, " ");
             if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
@@ -376,10 +376,10 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNamesFromAtomCa
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomCard* atom_card = (*it1);
-        PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-        for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        PdbAtomCard::PdbAtomOrderVector atoms = atom_card->GetOrderedAtoms();
+        for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             int dist = distance(atoms.begin(), it2);
             string atom_residue_name = atom->GetAtomResidueName();
             if(dist == 0)
@@ -417,10 +417,10 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomCard* atom_card = (*it1);
-        PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-        for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        PdbAtomCard::PdbAtomOrderVector atoms = atom_card->GetOrderedAtoms();
+        for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -441,10 +441,10 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
     for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
     {
         PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-        PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
-        for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+        PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
+        for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -475,10 +475,10 @@ PdbFile::PdbResidueVector PdbFile::GetAllResiduesFromAtomCard()
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomCard* atom_card = (*it1);
-        PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-        for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        PdbAtomCard::PdbAtomOrderVector atoms = atom_card->GetOrderedAtoms();
+        for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -517,10 +517,10 @@ PdbFile::PdbAtomVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomCard* atom_card = (*it1);
-        PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-        for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        PdbAtomCard::PdbAtomOrderVector atoms = atom_card->GetOrderedAtoms();
+        for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -539,10 +539,10 @@ PdbFile::PdbAtomVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
     for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
     {
         PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-        PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
-        for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+        PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
+        for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -571,10 +571,10 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomCard* atom_card = (*it1);
-        PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-        for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        PdbAtomCard::PdbAtomOrderVector atoms = atom_card->GetOrderedAtoms();
+        for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -596,10 +596,10 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
     for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
     {
         PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-        PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
-        for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+        PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
+        for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -630,10 +630,10 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(vector<string>& key_orde
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomCard* atom_card = (*it1);
-        PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-        for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        PdbAtomCard::PdbAtomOrderVector atoms = atom_card->GetOrderedAtoms();
+        for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -656,10 +656,10 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(vector<string>& key_orde
     for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
     {
         PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-        PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
-        for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+        PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
+        for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtom* atom = (*it2).second;
+            PdbAtom* atom = (*it2);
             string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -983,12 +983,13 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms = PdbAtomCard::PdbAtomMap();
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
             
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1002,6 +1003,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back((atom));
                     serial_number++;
                 }
                 else
@@ -1012,7 +1014,9 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                     }
                 }
             }
+
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1022,11 +1026,12 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1040,6 +1045,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1051,6 +1057,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1090,12 +1097,13 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms = PdbAtomCard::PdbAtomMap();
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1109,6 +1117,7 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1120,6 +1129,7 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1129,11 +1139,12 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1147,6 +1158,7 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1158,6 +1170,7 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1191,12 +1204,13 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms = PdbAtomCard::PdbAtomMap();
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1210,6 +1224,7 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1221,6 +1236,7 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1230,11 +1246,12 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1248,6 +1265,7 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1259,6 +1277,7 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1299,12 +1318,13 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms = PdbAtomCard::PdbAtomMap();
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1318,6 +1338,7 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1329,6 +1350,7 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1338,11 +1360,12 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1356,6 +1379,7 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1367,6 +1391,7 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1402,12 +1427,13 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
             
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1421,6 +1447,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1431,6 +1458,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_atoms[serial_number] = atom;
+                        updated_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1443,6 +1471,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1452,11 +1481,12 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1470,6 +1500,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1480,6 +1511,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_heterogen_atoms[serial_number] = atom;
+                        updated_heterogen_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1492,6 +1524,7 @@ void PdbFile::DeleteAtom(PdbAtom* target_atom)
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1532,12 +1565,13 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1551,6 +1585,7 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1562,6 +1597,7 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_atoms[serial_number] = atom;
+                        updated_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1574,6 +1610,7 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1583,11 +1620,12 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1601,6 +1639,7 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1612,6 +1651,7 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_heterogen_atoms[serial_number] = atom;
+                        updated_heterogen_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1624,6 +1664,7 @@ void PdbFile::DeleteAtoms(PdbAtomVector target_atoms)
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1658,12 +1699,13 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1677,6 +1719,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1687,6 +1730,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_atoms[serial_number] = atom;
+                        updated_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1699,6 +1743,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1708,11 +1753,12 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1726,6 +1772,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1736,6 +1783,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_heterogen_atoms[serial_number] = atom;
+                        updated_heterogen_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1748,6 +1796,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtom* target_atom, int model_
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1788,12 +1837,13 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1807,6 +1857,7 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_atoms[serial_number] = atom;
+                    updated_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1818,6 +1869,7 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_atoms[serial_number] = atom;
+                        updated_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1830,6 +1882,7 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
             serial_number++;
         }
@@ -1839,11 +1892,12 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1857,6 +1911,7 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                     atom->SetAtomSerialNumber(serial_number);
                     updated_heterogen_atoms[serial_number] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                     serial_number++;
                 }
                 else
@@ -1868,6 +1923,7 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
                         atom->SetAtomSerialNumber(serial_number);
                         updated_heterogen_atoms[serial_number] = atom;
+                        updated_heterogen_atoms_vector.push_back(atom);
                         serial_number++;
                     }
                     else
@@ -1880,6 +1936,7 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomVector target_atoms, int
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -1912,12 +1969,13 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
             
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1930,13 +1988,16 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
                 {
                     atom->SetAtomResidueName(updated_residue_name);
                     updated_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_atoms_vector.push_back(atom);
                 }
                 else
                 {
                     updated_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_atoms_vector.push_back(atom);
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
         }
         residue_set->SetAtoms(updated_atom_cards);
@@ -1945,11 +2006,12 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -1962,13 +2024,16 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
                 {
                     atom->SetAtomResidueName(updated_residue_name);
                     updated_heterogen_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                 }
                 else
                 {
                     updated_heterogen_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -2000,12 +2065,13 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomCard* atom_card = (*it1);
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -2018,13 +2084,16 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
                 {
                     atom->SetAtomResidueName(updated_residue_name);
                     updated_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_atoms_vector.push_back(atom);
                 }
                 else
                 {
                     updated_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_atoms_vector.push_back(atom);
                 }
             }
             atom_card->SetAtoms(updated_atoms);
+            atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(atom_card);
         }
         residue_set->SetAtoms(updated_atom_cards);
@@ -2033,11 +2102,12 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
         for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
         {
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
@@ -2050,13 +2120,16 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
                 {
                     atom->SetAtomResidueName(updated_residue_name);
                     updated_heterogen_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                 }
                 else
                 {
                     updated_heterogen_atoms[atom->GetAtomSerialNumber()] = atom;
+                    updated_heterogen_atoms_vector.push_back(atom);
                 }
             }
             heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(heterogen_atom_card);
         }
         residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
@@ -2087,25 +2160,26 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
             PdbAtomCard* atom_card = (*it1);
             PdbAtomCard* updated_atom_card = new PdbAtomCard();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
             int sequence_number = 1;
             bool located = true;
 
-            PdbAtomCard::PdbAtomMap atoms_of_residue = residue->GetAtoms();
-            PdbAtom* first_atom_in_residue = (*(atoms_of_residue.begin())).second;
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_of_residue = residue->GetOrderedAtoms();
+            PdbAtom* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
-                    if(it2 != atoms.begin())
+                    if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtom* previous_atom = (*(--it2)).second;
+                        PdbAtom* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2120,15 +2194,16 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                         sequence_number = atom->GetAtomResidueSequenceNumber();
                     if(located)
                     {
-                        for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtom* atom_of_residue = (*it3).second;
+                            PdbAtom* atom_of_residue = (*it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
+                            updated_atoms_vector.push_back(new_atom);
                             serial_number++;
                         }
                         sequence_number_mapping_[sequence_number] = iNotSet;
@@ -2141,6 +2216,7 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
+                        updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
                         if(sequence_number != atom->GetAtomResidueSequenceNumber())
                             sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
@@ -2148,10 +2224,10 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                 }
                 else
                 {
-                    if(it2 != atoms.begin())
+                    if(it2 != ordered_atoms.begin())
                     {
 
-                        PdbAtom* previous_atom = (*(--it2)).second;
+                        PdbAtom* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2168,12 +2244,14 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
+                    updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
                     if(sequence_number != atom->GetAtomResidueSequenceNumber())
                         sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                 }
             }
             updated_atom_card->SetAtoms(updated_atoms);
+            updated_atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(updated_atom_card);
             serial_number++;
         }
@@ -2184,20 +2262,23 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
             PdbHeterogenAtomCard* updated_heterogen_atom_card = new PdbHeterogenAtomCard();
             updated_heterogen_atom_card->SetRecordName(heterogen_atom_card->GetRecordName());
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* heterogen_atom = (*it2).second;
+                PdbAtom* heterogen_atom = (*it2);
                 PdbAtom* updated_heterogen_atom = new PdbAtom(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
                                                               heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
+                updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
             }
             updated_heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            updated_heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(updated_heterogen_atom_card);
         }
         updated_residue_set->SetAtoms(updated_atom_cards);
@@ -2227,25 +2308,26 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
             PdbAtomCard* atom_card = (*it1);
             PdbAtomCard* updated_atom_card = new PdbAtomCard();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
             int sequence_number = 1;
             bool located = true;
 
-            PdbAtomCard::PdbAtomMap atoms_of_residue = residue->GetAtoms();
-            PdbAtom* first_atom_in_residue = (*(atoms_of_residue.begin())).second;
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_of_residue = residue->GetOrderedAtoms();
+            PdbAtom* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
-                    if(it2 != atoms.begin())
+                    if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtom* previous_atom = (*(--it2)).second;
+                        PdbAtom* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2260,15 +2342,16 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                         sequence_number = atom->GetAtomResidueSequenceNumber();
                     if(located)
                     {
-                        for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtom* atom_of_residue = (*it3).second;
+                            PdbAtom* atom_of_residue = (*it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
+                            updated_atoms_vector.push_back(new_atom);
                             serial_number++;
                         }
                         sequence_number_mapping_[sequence_number] = iNotSet;
@@ -2281,6 +2364,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
+                        updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
                         if(sequence_number != atom->GetAtomResidueSequenceNumber())
                             sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
@@ -2288,10 +2372,10 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                 }
                 else
                 {
-                    if(it2 != atoms.begin())
+                    if(it2 != ordered_atoms.begin())
                     {
 
-                        PdbAtom* previous_atom = (*(--it2)).second;
+                        PdbAtom* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2308,12 +2392,14 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
+                    updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
                     if(sequence_number != atom->GetAtomResidueSequenceNumber())
                         sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                 }
             }
             updated_atom_card->SetAtoms(updated_atoms);
+            updated_atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(updated_atom_card);
             serial_number++;
         }
@@ -2324,20 +2410,23 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
             PdbHeterogenAtomCard* updated_heterogen_atom_card = new PdbHeterogenAtomCard();
             updated_heterogen_atom_card->SetRecordName(heterogen_atom_card->GetRecordName());
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector  updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* heterogen_atom = (*it2).second;
+                PdbAtom* heterogen_atom = (*it2);
                 PdbAtom* updated_heterogen_atom = new PdbAtom(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
                                                               heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
+                updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
             }
             updated_heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            updated_heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(updated_heterogen_atom_card);
         }
         updated_residue_set->SetAtoms(updated_atom_cards);
@@ -2368,25 +2457,26 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
             PdbAtomCard* atom_card = (*it1);
             PdbAtomCard* updated_atom_card = new PdbAtomCard();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
             int sequence_number = 1;
             bool located = false;
             
-            PdbAtomCard::PdbAtomMap atoms_of_residue = residue->GetAtoms();
-            PdbAtom* first_atom_in_residue = (*(atoms_of_residue.begin())).second;
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_of_residue = residue->GetOrderedAtoms();
+            PdbAtom* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
             
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
-                    if(it2 != atoms.begin())
+                    if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtom* previous_atom = (*(--it2)).second;
+                        PdbAtom* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2405,6 +2495,7 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
+                    updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
                     if(sequence_number != atom->GetAtomResidueSequenceNumber())
                         sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
@@ -2415,15 +2506,16 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                     if(located)
                     {
                         sequence_number++;
-                        for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtom* atom_of_residue = (*it3).second;
+                            PdbAtom* atom_of_residue = (*it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
+                            updated_atoms_vector.push_back(new_atom);
                             serial_number++;
                         }
                         sequence_number_mapping_[sequence_number] = iNotSet;
@@ -2431,9 +2523,9 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                     }
                     if(!located)
                     {
-                        if(it2 != atoms.begin())
+                        if(it2 != ordered_atoms.begin())
                         {
-                            PdbAtom* previous_atom = (*(--it2)).second;
+                            PdbAtom* previous_atom = (*(--it2));
                             it2++;
                             if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                             {
@@ -2452,23 +2544,25 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
+                        updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
                         if(sequence_number != atom->GetAtomResidueSequenceNumber())
                             sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     }
                 }
-                if(it2 == --atoms.end() && located)
+                if(it2 == --ordered_atoms.end() && located)
                 {
                     sequence_number++;
-                    for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
+                    for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                     {
-                        PdbAtom* atom_of_residue = (*it3).second;
+                        PdbAtom* atom_of_residue = (*it3);
                         PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                         atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                         atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                         updated_atoms[serial_number] = new_atom;
+                        updated_atoms_vector.push_back(new_atom);
                         serial_number++;
                     }
                     sequence_number_mapping_[sequence_number] = iNotSet;
@@ -2477,6 +2571,7 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                 }
             }
             updated_atom_card->SetAtoms(updated_atoms);
+            updated_atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(updated_atom_card);
             serial_number++;
         }
@@ -2487,20 +2582,23 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
             PdbHeterogenAtomCard* updated_heterogen_atom_card = new PdbHeterogenAtomCard();
             updated_heterogen_atom_card->SetRecordName(heterogen_atom_card->GetRecordName());
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* heterogen_atom = (*it2).second;
+                PdbAtom* heterogen_atom = (*it2);
                 PdbAtom* updated_heterogen_atom = new PdbAtom(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
                                                               heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
+                updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
             }
             updated_heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            updated_heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(updated_heterogen_atom_card);
         }
         updated_residue_set->SetAtoms(updated_atom_cards);
@@ -2530,25 +2628,26 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
             PdbAtomCard* atom_card = (*it1);
             PdbAtomCard* updated_atom_card = new PdbAtomCard();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap updated_atoms;
+            PdbAtomCard::PdbAtomOrderVector updated_atoms_vector = PdbAtomCard::PdbAtomOrderVector();
             int sequence_number = 1;
             bool located = false;
 
-            PdbAtomCard::PdbAtomMap atoms_of_residue = residue->GetAtoms();
-            PdbAtom* first_atom_in_residue = (*(atoms_of_residue.begin())).second;
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_of_residue = residue->GetOrderedAtoms();
+            PdbAtom* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
 
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
-                    if(it2 != atoms.begin())
+                    if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtom* previous_atom = (*(--it2)).second;
+                        PdbAtom* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2567,6 +2666,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
+                    updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
                     if(sequence_number != atom->GetAtomResidueSequenceNumber())
                         sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
@@ -2577,24 +2677,25 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                     if(located)
                     {
                         sequence_number++;
-                        for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtom* atom_of_residue = (*it3).second;
+                            PdbAtom* atom_of_residue = (*it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
+                            updated_atoms_vector.push_back(new_atom);
                             serial_number++;
                         }
                         located = false;
                     }
                     if(!located)
                     {
-                        if(it2 != atoms.begin())
+                        if(it2 != ordered_atoms.begin())
                         {
-                            PdbAtom* previous_atom = (*(--it2)).second;
+                            PdbAtom* previous_atom = (*(--it2));
                             it2++;
                             if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                             {
@@ -2613,23 +2714,25 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
+                        updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
                         if(sequence_number != atom->GetAtomResidueSequenceNumber())
                             sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
                     }
                 }
-                if(it2 == --atoms.end() && located)
+                if(it2 == --ordered_atoms.end() && located)
                 {
                     sequence_number++;
-                    for(PdbAtomCard::PdbAtomMap::iterator it3 = atoms_of_residue.begin(); it3 != atoms_of_residue.end(); it3++)
+                    for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                     {
-                        PdbAtom* atom_of_residue = (*it3).second;
+                        PdbAtom* atom_of_residue = (*it3);
                         PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                         atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                         atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                         updated_atoms[serial_number] = new_atom;
+                        updated_atoms_vector.push_back(new_atom);
                         serial_number++;
                     }
                     sequence_number_mapping_[sequence_number] = iNotSet;
@@ -2638,6 +2741,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                 }
             }
             updated_atom_card->SetAtoms(updated_atoms);
+            updated_atom_card->SetOrderedAtoms(updated_atoms_vector);
             updated_atom_cards.push_back(updated_atom_card);
             serial_number++;
         }
@@ -2648,20 +2752,23 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
             PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
             PdbHeterogenAtomCard* updated_heterogen_atom_card = new PdbHeterogenAtomCard();
             updated_heterogen_atom_card->SetRecordName(heterogen_atom_card->GetRecordName());
-            PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
             PdbHeterogenAtomCard::PdbHeterogenAtomMap updated_heterogen_atoms;
-            for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+            PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector();
+            for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtom* heterogen_atom = (*it2).second;
+                PdbAtom* heterogen_atom = (*it2);
                 PdbAtom* updated_heterogen_atom = new PdbAtom(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
                                                               heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
+                updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
             }
             updated_heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+            updated_heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
             updated_heterogen_atom_cards.push_back(updated_heterogen_atom_card);
         }
         updated_residue_set->SetAtoms(updated_atom_cards);
@@ -2692,14 +2799,16 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
             PdbAtomCard* updated_atom_card_second_part = new PdbAtomCard();
             updated_atom_card_first_part->SetRecordName(atom_card->GetRecordName());
             updated_atom_card_second_part->SetRecordName(atom_card->GetRecordName());
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap atoms_first_part;
             PdbAtomCard::PdbAtomMap atoms_second_part;
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_first_part = PdbAtomCard::PdbAtomOrderVector();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_second_part = PdbAtomCard::PdbAtomOrderVector();
             
             bool located = false;
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 char residue_chain_id = atom->GetAtomChainId();
                 int residue_sequence_number = atom->GetAtomResidueSequenceNumber();
                 
@@ -2714,6 +2823,7 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_second_part[serial_number] = updated_atom;
+                    ordered_atoms_second_part.push_back(updated_atom);
                 }
                 if(!located)
                 {
@@ -2721,17 +2831,20 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_first_part[serial_number] = updated_atom;
+                    ordered_atoms_first_part.push_back(updated_atom);
                     serial_number++;
                 }
             }
             updated_atom_card_first_part->SetAtoms(atoms_first_part);
+            updated_atom_card_first_part->SetOrderedAtoms(ordered_atoms_first_part);
             updated_atom_card_second_part->SetAtoms(atoms_second_part);
-            if(atoms_first_part.size() > 0)
+            updated_atom_card_second_part->SetOrderedAtoms(ordered_atoms_second_part);
+            if(ordered_atoms_first_part.size() > 0)
             {
                 updated_atom_cards.push_back(updated_atom_card_first_part);
                 serial_number++;
             }
-            if(atoms_second_part.size() > 0)
+            if(ordered_atoms_second_part.size() > 0)
             {
                 updated_atom_cards.push_back(updated_atom_card_second_part);
                 serial_number++;
@@ -2768,14 +2881,16 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
             PdbAtomCard* updated_atom_card_second_part = new PdbAtomCard();
             updated_atom_card_first_part->SetRecordName(atom_card->GetRecordName());
             updated_atom_card_second_part->SetRecordName(atom_card->GetRecordName());
-            PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
             PdbAtomCard::PdbAtomMap atoms_first_part;
             PdbAtomCard::PdbAtomMap atoms_second_part;
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_first_part = PdbAtomCard::PdbAtomOrderVector();
+            PdbAtomCard::PdbAtomOrderVector ordered_atoms_second_part = PdbAtomCard::PdbAtomOrderVector();
 
             bool located = false;
-            for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtom* atom = (*it2).second;
+                PdbAtom* atom = (*it2);
                 char residue_chain_id = atom->GetAtomChainId();
                 int residue_sequence_number = atom->GetAtomResidueSequenceNumber();
 
@@ -2790,6 +2905,7 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_second_part[serial_number] = updated_atom;
+                    ordered_atoms_second_part.push_back(updated_atom);
                 }
                 if(!located)
                 {
@@ -2797,17 +2913,20 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_first_part[serial_number] = updated_atom;
+                    ordered_atoms_first_part.push_back(updated_atom);
                     serial_number++;
                 }
             }
             updated_atom_card_first_part->SetAtoms(atoms_first_part);
+            updated_atom_card_first_part->SetOrderedAtoms(ordered_atoms_first_part);
             updated_atom_card_second_part->SetAtoms(atoms_second_part);
-            if(atoms_first_part.size() > 0)
+            updated_atom_card_second_part->SetOrderedAtoms(ordered_atoms_second_part);
+            if(ordered_atoms_first_part.size() > 0)
             {
                 updated_atom_cards.push_back(updated_atom_card_first_part);
                 serial_number++;
             }
-            if(atoms_second_part.size() > 0)
+            if(ordered_atoms_second_part.size() > 0)
             {
                 updated_atom_cards.push_back(updated_atom_card_second_part);
                 serial_number++;
@@ -6346,11 +6465,11 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 char chain_id = ' ';
                 int residue_sequence_number = 0;
                 char insertion_code = ' ';
-                PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-                int atoms_size = atoms.size();
-                for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
+                int atoms_size = ordered_atoms.size();
+                for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
                 {
-                    PdbAtom* atom = (*it2).second;
+                    PdbAtom* atom = (*it2);
                     stream << left << setw(6) << atom_card->GetRecordName();
                     if(atom->GetAtomSerialNumber() != iNotSet)
                         stream << right << setw(5) << atom->GetAtomSerialNumber();
@@ -6433,10 +6552,10 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
             for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
             {
                 PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-                PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
-                for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+                PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
+                for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
                 {
-                    PdbAtom* heterogen_atom = (*it2).second;
+                    PdbAtom* heterogen_atom = (*it2);
                     stream << left << setw(6) << heterogen_atom_card->GetRecordName();
                     if(heterogen_atom->GetAtomSerialNumber() != iNotSet)
                         stream << right << setw(5) << heterogen_atom->GetAtomSerialNumber();
@@ -6514,11 +6633,11 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
                 char chain_id = ' ';
                 int residue_sequence_number = 0;
                 char insertion_code = ' ';
-                PdbAtomCard::PdbAtomMap atoms = atom_card->GetAtoms();
-                int atoms_size = atoms.size();
-                for(PdbAtomCard::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                PdbAtomCard::PdbAtomOrderVector ordered_atoms = atom_card->GetOrderedAtoms();
+                int atoms_size = ordered_atoms.size();
+                for(PdbAtomCard::PdbAtomOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
                 {
-                    PdbAtom* atom = (*it2).second;
+                    PdbAtom* atom = (*it2);
                     stream << left << setw(6) << atom_card->GetRecordName();
                     if(atom->GetAtomSerialNumber() != iNotSet)
                         stream << right << setw(5) << atom->GetAtomSerialNumber();
@@ -6597,10 +6716,10 @@ void PdbFile::ResolveModelCard(std::ofstream& stream)
             for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
             {
                 PdbHeterogenAtomCard* heterogen_atom_card = (*it1);
-                PdbHeterogenAtomCard::PdbHeterogenAtomMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtoms();
-                for(PdbHeterogenAtomCard::PdbHeterogenAtomMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
+                PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtoms();
+                for(PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
                 {
-                    PdbAtom* heterogen_atom = (*it2).second;
+                    PdbAtom* heterogen_atom = (*it2);
                     stream << left << setw(6) << heterogen_atom_card->GetRecordName();
                     if(heterogen_atom->GetAtomSerialNumber() != iNotSet)
                         stream << right << setw(5) << heterogen_atom->GetAtomSerialNumber();

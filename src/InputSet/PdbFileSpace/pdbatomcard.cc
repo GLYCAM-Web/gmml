@@ -16,6 +16,7 @@ PdbAtomCard::PdbAtomCard() : record_name_("ATOM") {}
 PdbAtomCard::PdbAtomCard(stringstream &stream_block, string index)
 {
     atoms_ = PdbAtomMap();
+    ordered_atoms_ = PdbAtomOrderVector();
     string line;
     bool is_record_name_set = false;
 //    cout << stream_block.str() << endl;
@@ -31,8 +32,9 @@ PdbAtomCard::PdbAtomCard(stringstream &stream_block, string index)
         }
 
         PdbAtom* atom = new PdbAtom(line);
-        atom->SetAtomCardIndexInResidueSet(index);        
+        atom->SetAtomCardIndexInResidueSet(index);
         atoms_[atom->GetAtomSerialNumber()] = atom;
+        ordered_atoms_.push_back(atom);
 
         getline(stream_block, line);
         temp = line;
@@ -46,13 +48,14 @@ string PdbAtomCard::GetRecordName()
 {
     return record_name_;
 }
-
 PdbAtomCard::PdbAtomMap PdbAtomCard::GetAtoms()
 {
     return atoms_;
 }
-
-
+PdbAtomCard::PdbAtomOrderVector PdbAtomCard::GetOrderedAtoms()
+{
+    return ordered_atoms_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -70,6 +73,15 @@ void PdbAtomCard::SetAtoms(PdbAtomMap atoms)
         PdbAtom* atom = (*it).second;
         int serial_number = (*it).first;
         atoms_[serial_number] = atom;
+    }
+}
+void PdbAtomCard::SetOrderedAtoms(PdbAtomOrderVector ordered_atoms)
+{
+    ordered_atoms_.clear();
+    for(PdbAtomOrderVector::iterator it = ordered_atoms.begin(); it != ordered_atoms.end(); it++)
+    {
+        PdbAtom* atom = (*it);
+        ordered_atoms_.push_back(atom);
     }
 }
 

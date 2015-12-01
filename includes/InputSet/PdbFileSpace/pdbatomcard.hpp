@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <vector>
 #include <iostream>
 
 namespace PdbFileSpace
@@ -22,6 +23,10 @@ namespace PdbFileSpace
               * A mapping between atom serial number and its its belonging factors and information in a model in a pdb file
               */
             typedef std::map<int, PdbAtom*> PdbAtomMap;
+            /*! \typedef
+              * A list of pdb atoms in the order of input pdb file
+              */
+            typedef std::vector<PdbAtom*> PdbAtomOrderVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -50,6 +55,11 @@ namespace PdbFileSpace
               * @return atoms_ attribute of the current object of this class
               */
             PdbAtomMap GetAtoms();
+            /*! \fn
+              * An accessor function in order to access to the atoms in the atom card in the order of the original pdb file
+              * @return ordered_atoms_ attribute of the current object of this class
+              */
+            PdbAtomOrderVector GetOrderedAtoms();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -66,6 +76,12 @@ namespace PdbFileSpace
               * @param atoms Atom attribute of the current object
               */
             void SetAtoms(PdbAtomMap atoms);
+            /*! \fn
+              * A mutator function in order to set the atoms of the current object in the order of the original pdb file
+              * Set the ordered_atoms_ attribute of the current atom card
+              * @param ordered_atoms attribute of the current object
+              */
+            void SetOrderedAtoms(PdbAtomOrderVector ordered_atoms);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -87,6 +103,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             std::string record_name_;           /*!< Record name of atom card: "ATOM" */
             PdbAtomMap atoms_;                  /*!< Map of all atoms informatin that belong to a specific model in a pdb file by their serial numbers */
+            PdbAtomOrderVector ordered_atoms_;  /*!< A list of atoms in order of the input pdb file */
 
     };
 }
