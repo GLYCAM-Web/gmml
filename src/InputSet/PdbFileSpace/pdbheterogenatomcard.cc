@@ -14,6 +14,8 @@ PdbHeterogenAtomCard::PdbHeterogenAtomCard() : record_name_("HETATM") {}
 
 PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block, string index)
 {
+    heterogen_atoms_ = PdbHeterogenAtomMap();
+    ordered_heterogen_atoms_ = PdbHeterogenAtomOrderVector();
     string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
@@ -30,6 +32,7 @@ PdbHeterogenAtomCard::PdbHeterogenAtomCard(stringstream &stream_block, string in
         PdbAtom* atom = new PdbAtom(line);
         atom->SetAtomCardIndexInResidueSet(index);
         heterogen_atoms_[atom->GetAtomSerialNumber()] = atom;
+        ordered_heterogen_atoms_.push_back(atom);
 
         getline(stream_block, line);
         temp = line;
@@ -47,6 +50,11 @@ string PdbHeterogenAtomCard::GetRecordName()
 PdbHeterogenAtomCard::PdbHeterogenAtomMap PdbHeterogenAtomCard::GetHeterogenAtoms()
 {
     return heterogen_atoms_;
+}
+
+PdbHeterogenAtomCard::PdbHeterogenAtomOrderVector PdbHeterogenAtomCard::GetOrderedHeterogenAtoms()
+{
+    return ordered_heterogen_atoms_;
 }
 
 //////////////////////////////////////////////////////////
@@ -68,6 +76,15 @@ void PdbHeterogenAtomCard::SetHeterogenAtoms(PdbHeterogenAtomMap heterogen_atoms
     }
 }
 
+void PdbHeterogenAtomCard::SetOrderedHeterogenAtoms(PdbHeterogenAtomOrderVector ordered_heterogen_atoms)
+{
+    ordered_heterogen_atoms_.clear();
+    for(PdbHeterogenAtomOrderVector::iterator it = ordered_heterogen_atoms.begin(); it != ordered_heterogen_atoms.end(); it++)
+    {
+        PdbAtom* atom = (*it);
+        ordered_heterogen_atoms_.push_back(atom);
+    }
+}
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
