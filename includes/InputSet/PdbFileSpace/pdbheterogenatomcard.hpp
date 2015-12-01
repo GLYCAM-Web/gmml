@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <vector>
 
 namespace PdbFileSpace
 {
@@ -26,6 +27,10 @@ namespace PdbFileSpace
               * Mapping between heterogen atom serial number and heterogen atom itself
               */
             typedef std::map<int, PdbHeterogenAtom*> PdbHeterogenAtomMap;            
+            /*! \typedef
+              * A list of pdb heterogen atoms in the order of input pdb file
+              */
+            typedef std::vector<PdbHeterogenAtom*> PdbHeterogenAtomOrderVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -54,6 +59,11 @@ namespace PdbFileSpace
               * @return heterogen_atoms_ attribute of the current object of this class
               */
             PdbHeterogenAtomMap GetHeterogenAtoms();
+            /*! \fn
+              * An accessor function in order to access to the heterogen atoms in the heterogen atom card in the order of the original pdb file
+              * @return ordered_heterogen_atoms_ attribute of the current object of this class
+              */
+            PdbHeterogenAtomOrderVector GetOrderedHeterogenAtoms();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -71,7 +81,12 @@ namespace PdbFileSpace
               * @param heterogen_atoms Heterogen atoms attribute of the current object
               */
             void SetHeterogenAtoms(PdbHeterogenAtomMap heterogen_atoms);
-
+            /*! \fn
+              * A mutator function in order to set the heterogen atoms of the current object in the order of the original pdb file
+              * Set the ordered_heterogen_atoms_ attribute of the current heterogen atom card
+              * @param ordered_heterogen_atoms attribute of the current object
+              */
+            void SetOrderedHeterogenAtoms(PdbHeterogenAtomOrderVector ordered_heterogen_atoms);
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
@@ -92,6 +107,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             std::string record_name_;               /*!< Record name of heterogen atom card in a pdb file >*/
             PdbHeterogenAtomMap heterogen_atoms_;   /*!< Heterogen atom map >*/
+            PdbHeterogenAtomOrderVector ordered_heterogen_atoms_; /*!< Ordered heterogen atom vector >*/
 
     };
 }
