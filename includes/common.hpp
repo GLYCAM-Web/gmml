@@ -76,6 +76,9 @@ namespace gmml
         {"Gul", "K"},
         {"Ido", "I"},
         {"IdoA", "U"},
+        {"IdoA(1C4)", "U1"},
+        {"IdoA(2SO)", "U2"},
+        {"IdoA(4C1)", "U3"},
         {"Lyx", "D"},
         {"Man", "M"},
         {"ManNAc", "W"},
@@ -92,7 +95,10 @@ namespace gmml
         {"Tag", "J"},
         {"Tal", "T"},
         {"Tyv", "TV"},
-        {"Xyl", "X"}
+        {"Xyl", "X"},
+        {"GlcNS", "Y"},
+        {"U", "045"},
+        {"S", "245"},
     };
 
     const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));
