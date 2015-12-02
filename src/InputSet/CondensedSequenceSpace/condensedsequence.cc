@@ -359,8 +359,6 @@ string CondensedSequence::GetFirstLetterOfAmberPrepResidueCode(bitset<10> open_v
             return "Y";
         if (open_valences_check_temp[2] && open_valences_check_temp[3])
             return "Z";
-        if (open_valences_check_temp[3] && open_valences_check_temp[5])
-            return "w";
     }
     else if (open_valences_check_temp.count() == 1)
     {
