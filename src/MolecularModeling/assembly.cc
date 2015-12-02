@@ -12953,14 +12953,31 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                 mono2_anomeric_linkage << values.at(0)->cycle_atoms_.at(0)->GetId() << "-";///atom id on the left side of the linkage c-o-c
 
                 Atom* anomeric_o = NULL;
-                if(key->side_atoms_.at(0).at(1) != NULL)
+                Atom* o_neighbor_1 = NULL;
+                Atom* o_neighbor_2 = NULL;
+                AtomVector o_neighbors = AtomVector();
+                if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxigen's neighbors is needed for choosing the root
+                {
                     anomeric_o = key->side_atoms_.at(0).at(1);
+                    o_neighbors = anomeric_o->GetNode()->GetNodeNeighbors();
+                    if(o_neighbors.size() > 1)
+                    {
+                        o_neighbor_1 = o_neighbors.at(0);
+                        o_neighbor_2 = o_neighbors.at(1);
+                    }
+                }
 
-                if(anomeric_o == NULL)
-                    isRoot = true;
+                if(anomeric_o == NULL) ///anomeric oxygen doesn't exist
+                    isRoot == true;
                 else
                 {
-                    if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
+                    if(o_neighbors.size() == 1) ///anomeric oxygen is not attached to anything else except the carbon of the ring
+                        isRoot = true;
+                    else if(o_neighbors.size() == 2 && (((o_neighbor_1->GetDescription().find("Het;") != string::npos) && (o_neighbor_2->GetDescription().find("Het;") == string::npos)) ||
+                                                        ((o_neighbor_2->GetDescription().find("Het;") != string::npos) && (o_neighbor_1->GetDescription().find("Het;") == string::npos))) )
+                        ///anomeric oxygen is attached to protein
+                        isRoot = true;
+                    else if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
                             common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
                     {
                         terminal_residue_name = anomeric_o->GetResidue()->GetName();
@@ -12975,14 +12992,31 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
             else if (values.size() > 1)
             {
                 Atom* anomeric_o = NULL;
-                if(key->side_atoms_.at(0).at(1) != NULL)
+                Atom* o_neighbor_1 = NULL;
+                Atom* o_neighbor_2 = NULL;
+                AtomVector o_neighbors = AtomVector();
+                if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxigen's neighbors is needed for choosing the root
+                {
                     anomeric_o = key->side_atoms_.at(0).at(1);
+                    o_neighbors = anomeric_o->GetNode()->GetNodeNeighbors();
+                    if(o_neighbors.size() > 1)
+                    {
+                        o_neighbor_1 = o_neighbors.at(0);
+                        o_neighbor_2 = o_neighbors.at(1);
+                    }
+                }
 
-                if(anomeric_o == NULL)
-                    isRoot = true;
+                if(anomeric_o == NULL) ///anomeric oxygen doesn't exist
+                    isRoot == true;
                 else
                 {
-                    if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
+                    if(o_neighbors.size() == 1) ///anomeric oxygen is not attached to anything else except the carbon of the ring
+                        isRoot = true;
+                    else if(o_neighbors.size() == 2 && (((o_neighbor_1->GetDescription().find("Het;") != string::npos) && (o_neighbor_2->GetDescription().find("Het;") == string::npos)) ||
+                                                        ((o_neighbor_2->GetDescription().find("Het;") != string::npos) && (o_neighbor_1->GetDescription().find("Het;") == string::npos))) )
+                        ///anomeric oxygen is attached to protein
+                        isRoot = true;
+                    else if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
                             common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
                     {
                         terminal_residue_name = anomeric_o->GetResidue()->GetName();
