@@ -2815,6 +2815,9 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
                 PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
                                                 *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
                 vector<string> atom_id_tokens = Split(atom->GetId(), "_");
+                pdb_atom->SetAtomChainId(ConvertString<char>(atom_id_tokens.at(3)));
+                pdb_atom->SetAtomInsertionCode(ConvertString<char>(atom_id_tokens.at(5)));
+                pdb_atom->SetAtomAlternateLocation(ConvertString<char>(atom_id_tokens.at(6)));
                 assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
                 if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
                 {
@@ -2863,6 +2866,9 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
             PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
                                             *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
             vector<string> atom_id_tokens = Split(atom->GetId(), "_");
+            pdb_atom->SetAtomChainId(ConvertString<char>(atom_id_tokens.at(3)));
+            pdb_atom->SetAtomInsertionCode(ConvertString<char>(atom_id_tokens.at(5)));
+            pdb_atom->SetAtomAlternateLocation(ConvertString<char>(atom_id_tokens.at(6)));
             assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
             if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
             {
