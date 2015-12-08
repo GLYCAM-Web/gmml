@@ -2650,10 +2650,11 @@ void TopologyFile::ResolveBondsIncHydrogenSection(ofstream& out)
     {
         TopologyBond* bond = (*it).second;
         vector<string> atom_names = bond->GetBonds();
+        vector<string> residue_names = bond->GetResidueNames();
         if(bond->GetIncludingHydrogen())
         {
-            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
-            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0), ConvertString<int>(Split(residue_names.at(0), "()").at(1)));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1), ConvertString<int>(Split(residue_names.at(1), "()").at(1)));
             int bond_type_index = bond->GetBondType()->GetIndex();
             out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
             count++;
@@ -2699,10 +2700,11 @@ void TopologyFile::ResolveBondsWithoutHydrogenSection(ofstream& out)
     {
         TopologyBond* bond = (*it).second;
         vector<string> atom_names = bond->GetBonds();
+        vector<string> residue_names = bond->GetResidueNames();
         if(!bond->GetIncludingHydrogen())
         {
-            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
-            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0), ConvertString<int>(Split(residue_names.at(0), "()").at(1)));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1), ConvertString<int>(Split(residue_names.at(1), "()").at(1)));
             int bond_type_index = bond->GetBondType()->GetIndex();
             out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
             count++;
@@ -2748,11 +2750,12 @@ void TopologyFile::ResolveAnglesIncHydrogenSection(ofstream& out)
     {
         TopologyAngle* angle = (*it).second;
         vector<string> atom_names = angle->GetAngles();
+        vector<string> residue_names = angle->GetResidueNames();
         if(angle->GetIncludingHydrogen())
         {
-            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
-            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
-            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0), ConvertString<int>(Split(residue_names.at(0), "()").at(1)));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1), ConvertString<int>(Split(residue_names.at(1), "()").at(1)));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2), ConvertString<int>(Split(residue_names.at(2), "()").at(1)));
             int angle_type_index = angle->GetAngleType()->GetIndex();
             out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
             count++;
@@ -2806,11 +2809,12 @@ void TopologyFile::ResolveAnglesWithoutHydrogenSection(ofstream& out)
     {
         TopologyAngle* angle = (*it).second;
         vector<string> atom_names = angle->GetAngles();
+        vector<string> residue_names = angle->GetResidueNames();
         if(!angle->GetIncludingHydrogen())
         {
-            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
-            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
-            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0), ConvertString<int>(Split(residue_names.at(0), "()").at(1)));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1), ConvertString<int>(Split(residue_names.at(1), "()").at(1)));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2), ConvertString<int>(Split(residue_names.at(2), "()").at(1)));
             int angle_type_index = angle->GetAngleType()->GetIndex();
             out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
             count++;
@@ -2864,12 +2868,13 @@ void TopologyFile::ResolveDihedralsIncHydrogenSection(ofstream& out)
     {
         TopologyDihedral* dihedral = (*it).second;
         vector<string> atom_names = dihedral->GetDihedrals();
+        vector<string> residue_names = dihedral->GetResidueNames();
         if(dihedral->GetIncludingHydrogen())
         {
-            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
-            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
-            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
-            int atom_index_4 = this->assembly_->GetAtomIndexByName(atom_names.at(3));
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0), ConvertString<int>(Split(residue_names.at(0), "()").at(1)));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1), ConvertString<int>(Split(residue_names.at(1), "()").at(1)));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2), ConvertString<int>(Split(residue_names.at(2), "()").at(1)));
+            int atom_index_4 = this->assembly_->GetAtomIndexByName(atom_names.at(3), ConvertString<int>(Split(residue_names.at(3), "()").at(1)));
             int dihedral_type_index = dihedral->GetDihedralType()->GetIndex();
             out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
             count++;
@@ -2937,12 +2942,13 @@ void TopologyFile::ResolveDihedralsWithoutHydrogenSection(ofstream& out)
     {
         TopologyDihedral* dihedral = (*it).second;
         vector<string> atom_names = dihedral->GetDihedrals();
+        vector<string> residue_names = dihedral->GetResidueNames();
         if(!dihedral->GetIncludingHydrogen())
         {
-            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0));
-            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1));
-            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2));
-            int atom_index_4 = this->assembly_->GetAtomIndexByName(atom_names.at(3));
+            int atom_index_1 = this->assembly_->GetAtomIndexByName(atom_names.at(0), ConvertString<int>(Split(residue_names.at(0), "()").at(1)));
+            int atom_index_2 = this->assembly_->GetAtomIndexByName(atom_names.at(1), ConvertString<int>(Split(residue_names.at(1), "()").at(1)));
+            int atom_index_3 = this->assembly_->GetAtomIndexByName(atom_names.at(2), ConvertString<int>(Split(residue_names.at(2), "()").at(1)));
+            int atom_index_4 = this->assembly_->GetAtomIndexByName(atom_names.at(3), ConvertString<int>(Split(residue_names.at(3), "()").at(1)));
             int dihedral_type_index = dihedral->GetDihedralType()->GetIndex();
             out << setw(ITEM_LENGTH) << right << (atom_index_1-1)*3;
             count++;
@@ -3029,7 +3035,7 @@ void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
             for(vector<string>::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
             {
                 string atom_id = (*it);
-                int index = this->assembly_->GetAtomIndexByName(Split(atom_id, "_").at(0));
+                int index = this->assembly_->GetAtomIndexByName(Split(atom_id, "_").at(0), i+1);
                 out << setw(ITEM_LENGTH) << right << index;
                 count++;
                 total_count++;
