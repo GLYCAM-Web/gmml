@@ -9437,7 +9437,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
             mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
             mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
             mono->sugar_name_.monosaccharide_name_ = "Unknown";
-            mono->sugar_name_.monosaccharide_short_name_ = "Unkown";
+            mono->sugar_name_.monosaccharide_short_name_ = "Unknown";
         }
         stringstream stereo;
         stereo << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_;
