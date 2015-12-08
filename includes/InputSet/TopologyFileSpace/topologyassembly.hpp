@@ -54,7 +54,7 @@ namespace TopologyFileSpace
               * @param atom_name The atom name of the desired atom index
               * @return index_ The index of the given atom name
               */
-            int GetAtomIndexByName(std::string atom_name);
+            int GetAtomIndexByName(std::string atom_name, int residue_index);
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //

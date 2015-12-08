@@ -3972,10 +3972,10 @@ void Assembly::ExtractTopologyBondsFromAssembly(vector<vector<string> > &inserte
     reverse_atom_pair_name.push_back(assembly_atom->GetName());
     vector<string> residue_names = vector<string>();;
     vector<string> reverse_residue_names = vector<string>();;
-    residue_names.push_back(assembly_atom->GetResidue()->GetName());
-    residue_names.push_back(neighbor->GetResidue()->GetName());
-    reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
-    reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
+    residue_names.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+    residue_names.push_back(neighbor->GetResidue()->GetName()+"("+Split(neighbor->GetResidue()->GetId(),"_").at(2)+")");
+    reverse_residue_names.push_back(neighbor->GetResidue()->GetName()+"("+Split(neighbor->GetResidue()->GetId(),"_").at(2)+")");
+    reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
     vector<string> bond = vector<string>();
     vector<string> reverse_bond = vector<string>();
     stringstream ss;
@@ -4096,12 +4096,12 @@ void Assembly::ExtractTopologyAnglesFromAssembly(Atom* assembly_atom, Atom* neig
 
     vector<string> residue_names = vector<string>();
     vector<string> reverse_residue_names = vector<string>();
-    residue_names.push_back(assembly_atom->GetResidue()->GetName());
-    residue_names.push_back(neighbor->GetResidue()->GetName());
-    residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-    reverse_residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-    reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
-    reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
+    residue_names.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+    residue_names.push_back(neighbor->GetResidue()->GetName()+"("+Split(neighbor->GetResidue()->GetId(),"_").at(2)+")");
+    residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName()+"("+Split(neighbor_of_neighbor->GetResidue()->GetId(),"_").at(2)+")");
+    reverse_residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName()+"("+Split(neighbor_of_neighbor->GetResidue()->GetId(),"_").at(2)+")");
+    reverse_residue_names.push_back(neighbor->GetResidue()->GetName()+"("+Split(neighbor->GetResidue()->GetId(),"_").at(2)+")");
+    reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
     vector<string> angle = vector<string>();
     vector<string> reverse_angle = vector<string>();
     stringstream ss;
@@ -4283,14 +4283,14 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
 
             vector<string> residue_names = vector<string>();
             vector<string> reverse_residue_names = vector<string>();
-            residue_names.push_back(assembly_atom->GetResidue()->GetName());
-            residue_names.push_back(neighbor->GetResidue()->GetName());
-            residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-            residue_names.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
-            reverse_residue_names.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName());
-            reverse_residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName());
-            reverse_residue_names.push_back(neighbor->GetResidue()->GetName());
-            reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName());
+            residue_names.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+            residue_names.push_back(neighbor->GetResidue()->GetName()+"("+Split(neighbor->GetResidue()->GetId(),"_").at(2)+")");
+            residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName()+"("+Split(neighbor_of_neighbor->GetResidue()->GetId(),"_").at(2)+")");
+            residue_names.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName()+"("+Split(neighbor_of_neighbor_of_neighbor->GetResidue()->GetId(),"_").at(2)+")");
+            reverse_residue_names.push_back(neighbor_of_neighbor_of_neighbor->GetResidue()->GetName()+"("+Split(neighbor_of_neighbor_of_neighbor->GetResidue()->GetId(),"_").at(2)+")");
+            reverse_residue_names.push_back(neighbor_of_neighbor->GetResidue()->GetName()+"("+Split(neighbor_of_neighbor->GetResidue()->GetId(),"_").at(2)+")");
+            reverse_residue_names.push_back(neighbor->GetResidue()->GetName()+"("+Split(neighbor->GetResidue()->GetId(),"_").at(2)+")");
+            reverse_residue_names.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
 
             vector<string> dihedral = vector<string>();
             vector<string> reverse_dihedral = vector<string>();
@@ -4417,36 +4417,36 @@ void Assembly::ExtractTopologyDihedralsFromAssembly(Atom *assembly_atom, Atom *n
                 reverse_dihedral_atom_names3.push_back(neighbor1->GetName());
 
                 vector<string> residue_names1 = vector<string>();
-                residue_names1.push_back(neighbor1->GetResidue()->GetName());
-                residue_names1.push_back(neighbor2->GetResidue()->GetName());
-                residue_names1.push_back(assembly_atom->GetResidue()->GetName());
-                residue_names1.push_back(neighbor3->GetResidue()->GetName());
+                residue_names1.push_back(neighbor1->GetResidue()->GetName()+"("+Split(neighbor1->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names1.push_back(neighbor2->GetResidue()->GetName()+"("+Split(neighbor2->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names1.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names1.push_back(neighbor3->GetResidue()->GetName()+"("+Split(neighbor3->GetResidue()->GetId(),"_").at(2)+")");
                 vector<string> residue_names2 = vector<string>();
-                residue_names2.push_back(neighbor1->GetName());
-                residue_names2.push_back(assembly_atom->GetResidue()->GetName());
-                residue_names2.push_back(neighbor3->GetResidue()->GetName());
-                residue_names2.push_back(neighbor2->GetResidue()->GetName());
+                residue_names2.push_back(neighbor1->GetName()+"("+Split(neighbor1->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names2.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names2.push_back(neighbor3->GetResidue()->GetName()+"("+Split(neighbor3->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names2.push_back(neighbor2->GetResidue()->GetName()+"("+Split(neighbor2->GetResidue()->GetId(),"_").at(2)+")");
                 vector<string> residue_names3 = vector<string>();
-                residue_names3.push_back(neighbor1->GetResidue()->GetName());
-                residue_names3.push_back(neighbor3->GetResidue()->GetName());
-                residue_names3.push_back(assembly_atom->GetResidue()->GetName());
-                residue_names3.push_back(neighbor2->GetResidue()->GetName());
+                residue_names3.push_back(neighbor1->GetResidue()->GetName()+"("+Split(neighbor1->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names3.push_back(neighbor3->GetResidue()->GetName()+"("+Split(neighbor3->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names3.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+                residue_names3.push_back(neighbor2->GetResidue()->GetName()+"("+Split(neighbor2->GetResidue()->GetId(),"_").at(2)+")");
 
                 vector<string> reverse_residue_names1 = vector<string>();
-                reverse_residue_names1.push_back(neighbor3->GetResidue()->GetName());
-                reverse_residue_names1.push_back(assembly_atom->GetResidue()->GetName());
-                reverse_residue_names1.push_back(neighbor2->GetResidue()->GetName());
-                reverse_residue_names1.push_back(neighbor1->GetResidue()->GetName());
+                reverse_residue_names1.push_back(neighbor3->GetResidue()->GetName()+"("+Split(neighbor3->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names1.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names1.push_back(neighbor2->GetResidue()->GetName()+"("+Split(neighbor2->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names1.push_back(neighbor1->GetResidue()->GetName()+"("+Split(neighbor1->GetResidue()->GetId(),"_").at(2)+")");
                 vector<string> reverse_residue_names2 = vector<string>();
-                reverse_residue_names2.push_back(neighbor2->GetResidue()->GetName());
-                reverse_residue_names2.push_back(neighbor3->GetResidue()->GetName());
-                reverse_residue_names2.push_back(assembly_atom->GetResidue()->GetName());
-                reverse_residue_names2.push_back(neighbor1->GetName());
+                reverse_residue_names2.push_back(neighbor2->GetResidue()->GetName()+"("+Split(neighbor2->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names2.push_back(neighbor3->GetResidue()->GetName()+"("+Split(neighbor3->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names2.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names2.push_back(neighbor1->GetName()+"("+Split(neighbor1->GetResidue()->GetId(),"_").at(2)+")");
                 vector<string> reverse_residue_names3 = vector<string>();
-                reverse_residue_names3.push_back(neighbor2->GetResidue()->GetName());
-                reverse_residue_names3.push_back(assembly_atom->GetResidue()->GetName());
-                reverse_residue_names3.push_back(neighbor3->GetResidue()->GetName());
-                reverse_residue_names3.push_back(neighbor1->GetResidue()->GetName());
+                reverse_residue_names3.push_back(neighbor2->GetResidue()->GetName()+"("+Split(neighbor2->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names3.push_back(assembly_atom->GetResidue()->GetName()+"("+Split(assembly_atom->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names3.push_back(neighbor3->GetResidue()->GetName()+"("+Split(neighbor3->GetResidue()->GetId(),"_").at(2)+")");
+                reverse_residue_names3.push_back(neighbor1->GetResidue()->GetName()+"("+Split(neighbor1->GetResidue()->GetId(),"_").at(2)+")");
 
                 vector<string> dihedral1 = vector<string>();
                 vector<string> dihedral2 = vector<string>();
@@ -9487,7 +9487,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         }
         try
         {
-            this->PopulateOntology(out_file, oligosaccharides);
+//            this->PopulateOntology(out_file, oligosaccharides);
         }
         catch(...)
         {

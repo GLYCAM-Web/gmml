@@ -36,19 +36,22 @@ TopologyResidue* TopologyAssembly::GetResidueByIndex(int index)
     }
     return NULL;
 }
-int TopologyAssembly::GetAtomIndexByName(string atom_name)
-{
+int TopologyAssembly::GetAtomIndexByName(string atom_name, int residue_index)
+{    
     for(TopologyResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
-    {
+    {        
         TopologyResidue* residue = (*it);
-        TopologyResidue::TopologyAtomVector atoms = residue->GetAtoms();
-        for(TopologyResidue::TopologyAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        if(residue->GetIndex() == residue_index)
         {
-            TopologyAtom* atom = (*it1);
-            string name = atom->GetAtomName();
-            if(name.compare(atom_name) == 0)
+            TopologyResidue::TopologyAtomVector atoms = residue->GetAtoms();
+            for(TopologyResidue::TopologyAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
             {
-                return atom->GetIndex();
+                TopologyAtom* atom = (*it1);
+                string name = atom->GetAtomName();
+                if(name.compare(atom_name) == 0)
+                {
+                    return atom->GetIndex();
+                }
             }
         }
     }
