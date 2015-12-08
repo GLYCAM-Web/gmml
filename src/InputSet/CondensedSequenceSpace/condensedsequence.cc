@@ -272,6 +272,8 @@ string CondensedSequence::GetAmberPrepTerminalResidueCodeOfTerminalResidue(strin
 
 string CondensedSequence::GetAmberPrepResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, vector<int> open_valences, string parent_name)
 {
+    if(condensed_residue->GetName().compare("UNK") == 0)
+        return "UNK";
     vector<int> new_valences_list = open_valences;
     CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
     for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
@@ -298,6 +300,7 @@ string CondensedSequence::GetAmberPrepResidueCodeOfCondensedResidue(CondensedSeq
             throw CondensedSequenceProcessingException("Invalid open valence");
         open_valences_check.set(open_valences[i]);
     }
+
     string residue_code = this->GetFirstLetterOfAmberPrepResidueCode(open_valences_check) + this->GetSecondLetterOfAmberPrepResidueCode(residue_name, isomer);
     if(residue_code.size() < 3)
         residue_code += this->GetThirdLetterOfAmberPrepResidueCode(configuration, ring_type);
