@@ -44,7 +44,7 @@ namespace Ontology
     const std::string chemical_code_str = "gmmo:stringChemicalCode";
     const std::string configuration = "gmmo:configuration";
     const std::string cycle_atom_str = "gmmo:cycleAtomsString";
-    const std::string derivative = "gmmo:Derivative";
+    const std::string derivative = "gmmo:derivative";
     const std::string glycosidic_linkage_str = "gmmo:glycosidicLinkageString";
     const std::string group_name = "gmmo:group_name"; ///remove?
     const std::string id = "gmmo:identifier";

@@ -415,6 +415,22 @@ namespace gmml
     }
 
     /*! \fn
+      * A function in order to search the stereochemistry lookup table and identify the closest match for the sugar structure based on the given string version of the chemical code structure
+      * @param code The string chemical code structure
+      * @return SUGARNAMELOOKUP The closest row of the lookup table which matches th emost with the given code
+      */
+    inline Glycan::SugarName ClosestMatchSugarStereoChemistryNameLookup(std::string code)
+    {
+        std::string target_code = "";
+        for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
+        {
+            target_code = SUGARNAMELOOKUP[i].chemical_code_string_;
+
+        }
+
+    }
+
+    /*! \fn
       * A function in order to look up the complex name of the sugar structure based on the given string version of the chemical code structure
       * @param code The string complex chemical code structure
       * @return COMPLEXSUGARNAMELOOKUP The matched row of the lookup table with the given code
