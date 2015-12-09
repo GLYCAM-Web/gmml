@@ -9346,7 +9346,6 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
                 mono->chemical_code_->Print(cout);
                 //lookup in complex map
                 mono->sugar_name_ = ComplexSugarNameLookup(mono->chemical_code_->toString());
-
             }
             else if(plus_sides.size() == 2)
             {
@@ -9434,10 +9433,20 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << endl;
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
         {
-            mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
-            mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
-            mono->sugar_name_.monosaccharide_name_ = "Unknown";
-            mono->sugar_name_.monosaccharide_short_name_ = "Unknown";
+            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
+
+            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0)
+            {
+                mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
+                mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
+                mono->sugar_name_.monosaccharide_name_ = "Unknown";
+                mono->sugar_name_.monosaccharide_short_name_ = "Unkown";
+            }
+            else
+            {
+                cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "No exact match found for the chemical code, the following information comes from one of the closest matches:");
+            }
         }
         stringstream stereo;
         stereo << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_;
@@ -9717,7 +9726,7 @@ void Assembly::PopulateRingAtom(stringstream& ring_atom_stream, string id_prefix
     }
 
     stringstream side_atom_stream;
-    if((ring_atom->GetName().substr(0,1).compare("O") != 0 )) ///We don't keep side atoms for the oxygen of the ring
+    if((ring_atom->GetName().substr(0,1).compare("O") != 0 )) ///We don't keep any side atoms for the oxygen of the ring
     {
         vector<AtomVector> all_sides = mono->side_atoms_;
         AtomVector sides = all_sides.at(ring_index - 1);
@@ -9751,6 +9760,14 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
 
     side_or_ring_atoms.push_back(side_atom->GetId());
 
+    for(map<string, string>::iterator it = mono->derivatives_map_.begin(); it != mono->derivatives_map_.end(); it++)
+    {
+        string side_index = (*it).first;
+        string derivative = (*it).second;
+        cout << "SIDE INDEX: " << side_index << " derivative: " << derivative << endl;
+    }
+
+
     string chemical_code_str = mono->sugar_name_.chemical_code_string_;
     if(mono->sugar_name_.ring_type_.compare("P") == 0 && ring_index == 5)
     {
@@ -9770,6 +9787,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
             AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
         }
         AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
+        if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+            AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
     }
     else if(mono->sugar_name_.ring_type_.compare("F") == 0 && ring_index == 4)
     {
@@ -9791,6 +9810,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
                 AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
             }
             AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
+            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
         }
     }
     else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") != 0))
@@ -9813,6 +9834,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
             }
         }
         AddLiteral(side_uri, Ontology::side_index, "1", side_atom_stream);
+        if(mono->derivatives_map_.find("a") != mono->derivatives_map_.end())
+            AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_["a"], side_atom_stream);
     }
     else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") == 0 ))
     {
@@ -9833,6 +9856,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
                 AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
             }
             AddLiteral(side_uri, Ontology::side_index, "-1", side_atom_stream);
+            if(mono->derivatives_map_.find("-1") != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_["-1"], side_atom_stream);
         }
     }
     else
@@ -9855,6 +9880,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
                 AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
             }
             AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
+            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
         }
     }
 
