@@ -22,14 +22,12 @@ CondensedSequenceResidue::CondensedSequenceResidue(string residue_string)
         this->name_ = residue_string;
         this->is_terminal_ = true;
     }
-    else if(residue_string.find("Unknown") != string::npos)
-    {
-        this->name_ = "UNK";
-    }
     else
     {
         if(residue_string.empty())
             throw CondensedSequenceProcessingException("Invalid residue in sequence");
+        if(residue_string.find("Unknown") != string::npos)
+            this->name_ = "UNK";
 
         char isomer_letter = residue_string[0];
         if(isomer_letter == 'D' || isomer_letter == 'd')
