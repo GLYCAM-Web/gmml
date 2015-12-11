@@ -421,12 +421,57 @@ namespace gmml
       */
     inline Glycan::SugarName ClosestMatchSugarStereoChemistryNameLookup(std::string code)
     {
-        std::string target_code = "";
+        std::string vocab[] = {"2", "3", "4", "a", "+1", "+2", "+3", "-1"};
+        int vocab_size = (sizeof(vocab)/sizeof(vocab[0]));
+        std::string pos = "^_";
+        std::string stat = "d";
+        int min_diff_score = -INFINITY;
+        std::map<int, std::vector<Glycan::SugarName> > score_map = std::map<int, std::vector<Glycan::SugarName> >();
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
         {
-            target_code = SUGARNAMELOOKUP[i].chemical_code_string_;
-
+            int diff_score = 0;
+            std::string target_code = SUGARNAMELOOKUP[i].chemical_code_string_;
+            if((target_code.find("P") != std::string::npos && code.find("P") != std::string::npos) ||
+                    (target_code.find("F") != std::string::npos && code.find("F") != std::string::npos))
+            {
+                for(int j = 0; j < vocab_size; j++)
+                {
+                    int target_index = target_code.find(vocab[j]);
+                    int code_index = code.find(vocab[j]);
+                    if(target_index != std::string::npos)
+                    {
+                        //target code and the key code both contain the vocab[j]
+                        if(code_index != std::string::npos)
+                        {
+                            if(pos.find(code[code_index-1]) != std::string::npos || pos.find(target_code[target_index-1]) != std::string::npos)
+                                if(code[code_index-1] != target_code[target_index-1])
+                                    diff_score--;
+                            if(code_index != code.size()-1 && target_index != target_code.size()-1)
+                                if(stat.find(code[code_index+1]) != std::string::npos || stat.find(target_code[target_index+1]) != std::string::npos)
+                                    if(code[code_index+1] != target_code[target_index+1])
+                                        diff_score--;
+                        }
+                        //target code contains the vocab[j] but the key code does not
+                        else
+                            diff_score--;
+                    }
+                    else
+                    {
+                        //the key code contains the vocab[j] but the target code does not
+                        if(code_index != std::string::npos)
+                            diff_score--;
+                        //target code and the key code both do not contain the vocab[j]
+                        else
+                        {
+                        }
+                    }
+                }
+                if(diff_score > min_diff_score)
+                    min_diff_score = diff_score;
+                score_map[diff_score].push_back(SUGARNAMELOOKUP[i]);
+            }
         }
+        return score_map[min_diff_score].at(0);
 
     }
 
