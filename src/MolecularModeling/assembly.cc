@@ -13202,7 +13202,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                         if((other_mono_linkage.at(0).find(other_mono_anomeric_linkage.str()) != string::npos)) ///the other mono is attached to this mono through anomeric
                         {
                             isRoot = true;
-//                            terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                            terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
                             break;
                         }
                     }
@@ -13487,12 +13487,17 @@ string Assembly::CheckTBTTerminal(Atom *target, AtomVector& terminal_atoms)
 }
 string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
 {
-    if(CheckROHTerminal(target, terminal_atoms).compare("") != 0)
-        return "ROH";
-    else if(CheckOMETerminal(target, terminal_atoms).compare("") != 0)
-        return "OME";
-    else if(CheckTBTTerminal(target, terminal_atoms).compare("") != 0)
-        return "TBT";
+    if(target != NULL)
+    {
+        if(CheckROHTerminal(target, terminal_atoms).compare("") != 0)
+            return "ROH";
+        else if(CheckOMETerminal(target, terminal_atoms).compare("") != 0)
+            return "OME";
+        else if(CheckTBTTerminal(target, terminal_atoms).compare("") != 0)
+            return "TBT";
+        else
+            return "";
+    }
     else
         return "";
 }
