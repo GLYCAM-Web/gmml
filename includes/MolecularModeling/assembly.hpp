@@ -792,6 +792,30 @@ namespace MolecularModeling
               */
             OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
                                                                           std::string& terminal_residue_name);
+            /*! \fn
+              * A function in order to check if the target atom is attached to OME terminal
+              * @param target_atom The atom which will be checked for a terminal
+              * @return pattern The discovered pattern attached to the target atom
+              */
+            std::string CheckOMETerminal(Atom* target, AtomVector& terminal_atoms);
+            /*! \fn
+              * A function in order to check if the target atom is attached to ROH terminal
+              * @param target_atom The atom which will be checked for a terminal
+              * @return pattern The discovered pattern attached to the target atom
+              */
+            std::string CheckROHTerminal(Atom* target, AtomVector& terminal_atoms);
+            /*! \fn
+              * A function in order to check if the target atom is attached to TBT terminal
+              * @param target_atom The atom which will be checked for a terminal
+              * @return pattern The discovered pattern attached to the target atom
+              */
+            std::string CheckTBTTerminal(Atom* target, AtomVector& terminal_atoms);
+            /*! \fn
+              * A function in order to check if the target atom is attached to TBT, ROH or OME patterns when the residue name is different from the terminal residue names
+              * @param target_atom The atom which will be checked for a terminal
+              * @return pattern The discovered pattern attached to the target atom
+              */
+            std::string CheckTerminals(Atom* target, AtomVector& terminal_atoms);
 
             /*! \fn
               * A function in order to calculate the orientation(S/R) of additional side atoms

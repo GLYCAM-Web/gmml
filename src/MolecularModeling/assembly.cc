@@ -9023,19 +9023,47 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
     {
         int index = 0;
         Oligosaccharide* oligo = *it;
-	string oligo_name = oligo->oligosaccharide_name_;
-	if(oligo->terminal_.compare("") == 0)
-	    oligo_name = oligo_name + "1-OH";
+        string oligo_name = oligo->oligosaccharide_name_;
+        if(oligo->terminal_.compare("") == 0)
+            oligo_name = oligo_name + "1-OH";
         CondensedSequence* condensed_sequence = new CondensedSequence(oligo_name);
         CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
-	if(oligo->terminal_.compare("") != 0)
-	    pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
-        pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+        if(oligo->terminal_.compare("") != 0)
+        {
+            Atom* anomeric_o = NULL;
+            Atom* anomeric_c = NULL;
+            if(oligo->root_->cycle_atoms_.at(0) != NULL)
+                anomeric_c = oligo->root_->cycle_atoms_.at(0);
+            if(oligo->root_->side_atoms_.at(0).at(1) != NULL)
+                anomeric_o = oligo->root_->side_atoms_.at(0).at(1);
+            if(anomeric_o != NULL && anomeric_c != NULL)
+            {
+                if(anomeric_o->GetResidue()->GetName().compare(anomeric_c->GetResidue()->GetName()) == 0) // Terminal and mono residue have same naming
+                {
+                    AtomVector terminal_atoms = AtomVector();
+                    string terminal = CheckTerminals(anomeric_o, terminal_atoms);
+                    if(terminal.compare("") != 0)
+                    {
+                        for(AtomVector::iterator it1 = terminal_atoms.begin(); it1 != terminal_atoms.end(); it1++)
+                        {
+                            Atom* terminal_atom = *it1;
+                            pdb_glycam_residue_map[terminal_atom->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+                        }
+                    }
+                }
+                else // Terminal and mono have different names
+                {
+                    cout << oligo->terminal_ << " " << condensed_sequence_amber_residue_tree.at(index)->GetName() << endl;
+                    pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+                }
+            }
+        }
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
     }
     return pdb_glycam_residue_map;
 }
+
 void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
                                                CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
 {
@@ -9047,35 +9075,74 @@ void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, O
         this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_amber_residue_tree, index);
     }
 }
+
 void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
 {
     for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
         (*it)->UpdateResidueName2GlycamName(residue_glycam_map);
     ResidueVector residues = this->GetResidues();
+    Residue* terminal_residue = new Residue(this, "");
+    bool terminal = false;
+    ResidueVector updated_residues = ResidueVector();
     for(ResidueVector::iterator it2 = residues.begin(); it2 != residues.end(); it2++)
     {
         Residue* residue = *it2;
         string residue_name = residue->GetName();
-	string residue_id = residue->GetId();
-	if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
+        string residue_id = residue->GetId();
+        updated_residues.push_back(residue);
+        if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
         {
             int residue_name_size = residue_name.size();
-            string glycam_name = residue_glycam_map[residue->GetId()];
+            string glycam_name = residue_glycam_map[residue_id];
+            string temp = glycam_name;
 
             AtomVector atoms = residue->GetAtoms();
+            AtomVector updated_atoms = AtomVector();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
             {
-                string atom_id = (*it1)->GetId();
-                int index = atom_id.find(residue_name);
-                if(index >= 0)
-                    (*it1)->SetId(atom_id.replace(index, residue_name_size, glycam_name));
+                Atom* atom = *it1;
+                string atom_id = atom->GetId();
+                if(residue_glycam_map.find(atom_id) != residue_glycam_map.end())
+                {
+                    glycam_name = residue_glycam_map[atom_id];
+                    terminal_residue->SetName(glycam_name);
+                    terminal_residue->AddAtom(atom);
+                    vector<string> residue_id_tokens = Split(residue_id, "_");
+                    int residue_sequence_number = -1;
+                    string terminal_residue_id = residue_id_tokens.at(0) + "_" + residue_id_tokens.at(1) + "_" + ConvertT<int>(residue_sequence_number) + "_"
+                            + residue_id_tokens.at(3) + "_" + residue_id_tokens.at(4);
+                    terminal_residue->SetId(terminal_residue_id);
+                    atom->SetResidue(terminal_residue);
+                    if(!terminal)
+                    {
+                        updated_residues.push_back(terminal_residue);
+                        terminal = true;
+                    }
+                    int index = atom_id.find(residue_name);
+                    if(index >= 0)
+                        atom->SetId(atom_id.replace(index, residue_name_size, glycam_name));
+                    vector<string> atom_id_tokens = Split(atom->GetId(), "_");
+                    string atom_id_new = atom_id_tokens.at(0) + "_" + atom_id_tokens.at(1) + "_" + atom_id_tokens.at(2) + "_" + atom_id_tokens.at(3) + "_" +
+                            ConvertT<int>(residue_sequence_number) + "_" + atom_id_tokens.at(5) + "_" + atom_id_tokens.at(6);
+                    atom->SetId(atom_id_new);
+                }
+                else
+                {
+                    int index = atom_id.find(residue_name);
+                    if(index >= 0)
+                        atom->SetId(atom_id.replace(index, residue_name_size, glycam_name));
+                    updated_atoms.push_back(atom);
+                }
+                glycam_name = temp;
             }
+            residue->SetAtoms(updated_atoms);
             int i = residue_id.find(residue_name);
             if(i >= 0)
-                (*it2)->SetId(residue_id.replace(i, residue_name_size, glycam_name));
-            (*it2)->SetName(glycam_name);
+                residue->SetId(residue_id.replace(i, residue_name_size, glycam_name));
+            residue->SetName(glycam_name);
         }
     }
+    this->SetResidues(updated_residues);
 }
 
 vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
@@ -9346,7 +9413,6 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
                 mono->chemical_code_->Print(cout);
                 //lookup in complex map
                 mono->sugar_name_ = ComplexSugarNameLookup(mono->chemical_code_->toString());
-
             }
             else if(plus_sides.size() == 2)
             {
@@ -9434,10 +9500,20 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << endl;
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
         {
-            mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
-            mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
-            mono->sugar_name_.monosaccharide_name_ = "Unknown";
-            mono->sugar_name_.monosaccharide_short_name_ = "Unkown";
+//            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
+
+            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0)
+            {
+                mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
+                mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
+                mono->sugar_name_.monosaccharide_name_ = "Unknown";
+                mono->sugar_name_.monosaccharide_short_name_ = "Unknown";
+            }
+            else
+            {
+                cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << endl;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "No exact match found for the chemical code, the following information comes from one of the closest matches:");
+            }
         }
         stringstream stereo;
         stereo << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_;
@@ -9717,7 +9793,7 @@ void Assembly::PopulateRingAtom(stringstream& ring_atom_stream, string id_prefix
     }
 
     stringstream side_atom_stream;
-    if((ring_atom->GetName().substr(0,1).compare("O") != 0 )) ///We don't keep side atoms for the oxygen of the ring
+    if((ring_atom->GetName().substr(0,1).compare("O") != 0 )) ///We don't keep any side atoms for the oxygen of the ring
     {
         vector<AtomVector> all_sides = mono->side_atoms_;
         AtomVector sides = all_sides.at(ring_index - 1);
@@ -9751,6 +9827,14 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
 
     side_or_ring_atoms.push_back(side_atom->GetId());
 
+    for(map<string, string>::iterator it = mono->derivatives_map_.begin(); it != mono->derivatives_map_.end(); it++)
+    {
+        string side_index = (*it).first;
+        string derivative = (*it).second;
+        cout << "SIDE INDEX: " << side_index << " derivative: " << derivative << endl;
+    }
+
+
     string chemical_code_str = mono->sugar_name_.chemical_code_string_;
     if(mono->sugar_name_.ring_type_.compare("P") == 0 && ring_index == 5)
     {
@@ -9770,6 +9854,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
             AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
         }
         AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
+        if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+            AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
     }
     else if(mono->sugar_name_.ring_type_.compare("F") == 0 && ring_index == 4)
     {
@@ -9791,6 +9877,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
                 AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
             }
             AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
+            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
         }
     }
     else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") != 0))
@@ -9813,6 +9901,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
             }
         }
         AddLiteral(side_uri, Ontology::side_index, "1", side_atom_stream);
+        if(mono->derivatives_map_.find("a") != mono->derivatives_map_.end())
+            AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_["a"], side_atom_stream);
     }
     else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") == 0 ))
     {
@@ -9833,6 +9923,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
                 AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
             }
             AddLiteral(side_uri, Ontology::side_index, "-1", side_atom_stream);
+            if(mono->derivatives_map_.find("-1") != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_["-1"], side_atom_stream);
         }
     }
     else
@@ -9855,6 +9947,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
                 AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
             }
             AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
+            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
         }
     }
 
@@ -12212,11 +12306,11 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
             else
             {
                 if(key.compare("-1") == 0)
-                    in_bracket << "0N, ";
+                    in_bracket << "0N,";
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "N, ";
+                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "N,";
                 else
-                    in_bracket << key << "N, ";
+                    in_bracket << key << "N,";
             }
         }
 
@@ -12260,11 +12354,11 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
             else
             {
                 if(key.compare("-1") == 0)
-                    in_bracket << "0NAc, ";
+                    in_bracket << "0NAc,";
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NAc, ";
+                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NAc,";
                 else
-                    in_bracket << key << "NAc, ";
+                    in_bracket << key << "NAc,";
             }
         }
         if(value.compare("xC-N-C=OCH2OH") == 0)
@@ -12307,11 +12401,11 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
             else
             {
                 if(key.compare("-1") == 0)
-                    in_bracket << "0NGc, ";
+                    in_bracket << "0NGc,";
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NGc, ";
+                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NGc,";
                 else
-                    in_bracket << key << "NGc, ";
+                    in_bracket << key << "NGc,";
             }
         }
         if(value.compare("xC-N-SO3") == 0)
@@ -12353,11 +12447,11 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
             else
             {
                 if(key.compare("-1") == 0)
-                    in_bracket << "0NS, ";
+                    in_bracket << "0NS,";
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NS, ";
+                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NS,";
                 else
-                    in_bracket << key << "NS, ";
+                    in_bracket << key << "NS,";
             }
         }
         if(value.compare("xC-N-PO3") == 0)
@@ -12400,11 +12494,11 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
             else
             {
                 if(key.compare("-1") == 0)
-                    in_bracket << "0NP, ";
+                    in_bracket << "0NP,";
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NP, ";
+                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NP,";
                 else
-                    in_bracket << key << "NP, ";
+                    in_bracket << key << "NP,";
             }
         }
         if(value.compare("xC-N-CH3") == 0)
@@ -12447,11 +12541,11 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
             else
             {
                 if(key.compare("-1") == 0)
-                    in_bracket << "0NMe, ";
+                    in_bracket << "0NMe,";
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NMe, ";
+                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "NMe,";
                 else
-                    in_bracket << key << "NMe, ";
+                    in_bracket << key << "NMe,";
             }
         }
 
@@ -12484,13 +12578,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 else
                 {
                     if(key.compare("-1") == 0)
-                        in_bracket << "0Ac, ";
+                        in_bracket << "0Ac,";
                     else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "Ac, ";
+                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "Ac,";
                     else if(key.compare("a") == 0)
-                        in_bracket << "1Ac, ";
+                        in_bracket << "1Ac,";
                     else
-                        in_bracket << key << "Ac, ";
+                        in_bracket << key << "Ac,";
                 }
             }
         }
@@ -12521,13 +12615,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 else
                 {
                     if(key.compare("-1") == 0)
-                        in_bracket << "0Gc, ";
+                        in_bracket << "0Gc,";
                     else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "Gc, ";
+                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "Gc,";
                     else if(key.compare("a") == 0)
-                        in_bracket << "1Gc, ";
+                        in_bracket << "1Gc,";
                     else
-                        in_bracket << key << "Gc, ";
+                        in_bracket << key << "Gc,";
                 }
             }
         }
@@ -12558,13 +12652,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 else
                 {
                     if(key.compare("-1") == 0)
-                        in_bracket << "0S, ";
+                        in_bracket << "0S,";
                     else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "S, ";
+                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "S,";
                     else if(key.compare("a") == 0)
-                        in_bracket << "1S, ";
+                        in_bracket << "1S,";
                     else
-                        in_bracket << key << "S, ";
+                        in_bracket << key << "S,";
                 }
             }
         }
@@ -12595,13 +12689,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 else
                 {
                     if(key.compare("-1") == 0)
-                        in_bracket << "0P, ";
+                        in_bracket << "0P,";
                     else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "P, ";
+                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "P,";
                     else if(key.compare("a") == 0)
-                        in_bracket << "1P, ";
+                        in_bracket << "1P,";
                     else
-                        in_bracket << key << "P, ";
+                        in_bracket << key << "P,";
                 }
             }
         }
@@ -12632,13 +12726,13 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 else
                 {
                     if(key.compare("-1") == 0)
-                        in_bracket << "0Me, ";
+                        in_bracket << "0Me,";
                     else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "Me, ";
+                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "Me,";
                     else if(key.compare("a") == 0)
-                        in_bracket << "1Me, ";
+                        in_bracket << "1Me,";
                     else
-                        in_bracket << key << "Me, ";
+                        in_bracket << key << "Me,";
                 }
             }
         }
@@ -12655,9 +12749,9 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
                     if(key.compare("-1") == 0)
-                        in_bracket << "0AH, ";
+                        in_bracket << "0AH,";
                     else if( key.compare("+2") == 0 || key.compare("+3") == 0)
-                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "AH, ";
+                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "AH,";
                 }
             }
             else if(key.compare("+1") == 0 && mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
@@ -12696,9 +12790,9 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
                 if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
                 {
                     if(key.compare("-1") == 0)
-                        in_bracket << "0A, ";
+                        in_bracket << "0A,";
                     else if( key.compare("+2") == 0 || key.compare("+3") == 0)
-                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "A, ";
+                        in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "A,";
                 }
             }
             else if(key.compare("+1") == 0 && mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
@@ -12728,10 +12822,19 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
     if(in_bracket.str().size() != 0)
     {
         stringstream short_name;
+        string sn;
         if(mono->sugar_name_.monosaccharide_short_name_.compare("") != 0)
-            short_name << mono->sugar_name_.monosaccharide_short_name_ << "[" << in_bracket.str().substr(0, in_bracket.str().size() - 2) << "]";
+            sn = mono->sugar_name_.monosaccharide_short_name_;
         else
-            short_name << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "[" << in_bracket.str().substr(0, in_bracket.str().size() - 2) << "]";
+            sn = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+
+            ///moving a, b or x to after the bracket: short-name + [...] + a/b/x and removing ", " from the end of bracket stream
+            int condensed_name_size = sn.size();
+            string condensed_name = sn;
+            string new_name_part1 = condensed_name.substr(0, (condensed_name_size - 1));///short_name
+            char new_name_part2 = condensed_name.at(condensed_name_size - 1);///a/b/x
+            short_name << new_name_part1 << "[" << in_bracket.str().substr(0, in_bracket.str().size() - 1) << "]" << new_name_part2;
+
         mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
     }
     else if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0 && mono->sugar_name_.monosaccharide_short_name_.compare("") == 0)
@@ -12935,12 +13038,13 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
             bool isRoot = false;
             stringstream anomeric_linkage;
             anomeric_linkage << key->cycle_atoms_.at(0)->GetId() << "-";
+            vector<string> mono_linkages = monos_table_linkages[key];
+            AtomVector terminal_atoms = AtomVector();
             if(values.size() == 0) ///mono is not attached to any other mono
             {
                 Atom* anomeric_o = NULL;
                 if(key->side_atoms_.at(0).at(1) != NULL)
                     anomeric_o = key->side_atoms_.at(0).at(1);
-
                 if(anomeric_o != NULL)
                 {
                     if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
@@ -12948,15 +13052,18 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                     {
                         terminal_residue_name = anomeric_o->GetResidue()->GetName();
                     }
+                    else
+                    {
+                        terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                    }
                 }
                 isRoot = true;
             }
-            else if (values.size() == 1)///mono is attached to one other mono
-            {
-                vector<string> mono_linkage = monos_table_linkages[key];
-                vector<string> mono2_linkage = monos_table_linkages[values.at(0)];
-                stringstream mono2_anomeric_linkage;
-                mono2_anomeric_linkage << values.at(0)->cycle_atoms_.at(0)->GetId() << "-";///atom id on the left side of the linkage c-o-c
+            else if (values.size() == 1 && ///mono is attached to one other mono
+                     (monos_table_linkages[values.at(0)].size() == 1))///the other mono is only attached to this mono
+            {                
+                stringstream other_mono_anomeric_linkage_as_right_side;
+                other_mono_anomeric_linkage_as_right_side << "-" << values.at(0)->cycle_atoms_.at(0)->GetId();///atom id on the right side of the linkage c-o-c
 
                 Atom* anomeric_o = NULL;
                 Atom* o_neighbor_1 = NULL;
@@ -12972,30 +13079,49 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                         o_neighbor_2 = o_neighbors.at(1);
                     }
                 }
-
-                if(anomeric_o == NULL) ///anomeric oxygen doesn't exist
-                    isRoot == true;
-                else
+                if(anomeric_o != NULL)
                 {
-                    if(o_neighbors.size() == 1) ///anomeric oxygen is not attached to anything else except the carbon of the ring
+                    ///RULE1: anomeric to anomeric linkage
+                    if(((mono_linkages.at(0)).find(anomeric_linkage.str()) != string::npos) && ///this mono is attached to other mono through anomeric
+                            (mono_linkages.at(0).find(other_mono_anomeric_linkage_as_right_side.str()) != string::npos))///the other mono is only attached to this mono through anomeric
                         isRoot = true;
+                    ///RULE2: Directed graph
+                    else if(((mono_linkages.at(0)).find(anomeric_linkage.str()) == string::npos) && ///this mono is not attached to other mono through anomeric
+                            (mono_linkages.at(0).find(other_mono_anomeric_linkage_as_right_side.str()) != string::npos)) ///the other mono is attached to this mono through anomeric
+                    {
+                        isRoot = true;
+                        terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                    }
+                    ///RULE3: Terminal
+                    else if(o_neighbors.size() == 1) ///anomeric oxygen is not attached to anything else except the carbon of the ring
+                    {
+                        isRoot = true;
+                        terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                    }
                     else if(o_neighbors.size() == 2 && (((o_neighbor_1->GetDescription().find("Het;") != string::npos) && (o_neighbor_2->GetDescription().find("Het;") == string::npos)) ||
                                                         ((o_neighbor_2->GetDescription().find("Het;") != string::npos) && (o_neighbor_1->GetDescription().find("Het;") == string::npos))) )
+                     {
                         ///anomeric oxygen is attached to protein
                         isRoot = true;
+                        terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                    }
                     else if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
                             common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
                     {
                         terminal_residue_name = anomeric_o->GetResidue()->GetName();
                         isRoot = true;
                     }
-                    else if((mono_linkage.at(0)).find(anomeric_linkage.str()) == string::npos)///mono is not attached to other mono through anomeric
+                    else if((terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms)).compare("") != 0)
                         isRoot = true;
-                    else if((monos_table_linkages[values.at(0)].size() == 1) && (mono2_linkage.at(0).find(mono2_anomeric_linkage.str()) != string::npos))///mono is attached to other mono through anomeric, the other mono is only attached to this mono through anomeric
-                        isRoot = true;
+                }
+                ///RULE2: Directed graph
+                else if((mono_linkages.at(0).find(other_mono_anomeric_linkage_as_right_side.str()) != string::npos)) ///this mono doesn't have anomeric oxygen and the other mono is attached to this mono through anomeric
+                {
+                    isRoot == true;
+                    terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
                 }
             }
-            else if (values.size() > 1)
+            else
             {
                 Atom* anomeric_o = NULL;
                 Atom* o_neighbor_1 = NULL;
@@ -13011,22 +13137,74 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                         o_neighbor_2 = o_neighbors.at(1);
                     }
                 }
-
-                if(anomeric_o == NULL) ///anomeric oxygen doesn't exist
-                    isRoot == true;
-                else
+                if(anomeric_o != NULL)
                 {
-                    if(o_neighbors.size() == 1) ///anomeric oxygen is not attached to anything else except the carbon of the ring
-                        isRoot = true;
-                    else if(o_neighbors.size() == 2 && (((o_neighbor_1->GetDescription().find("Het;") != string::npos) && (o_neighbor_2->GetDescription().find("Het;") == string::npos)) ||
-                                                        ((o_neighbor_2->GetDescription().find("Het;") != string::npos) && (o_neighbor_1->GetDescription().find("Het;") == string::npos))) )
-                        ///anomeric oxygen is attached to protein
-                        isRoot = true;
-                    else if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
-                            common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
+                    //RULE1: anomeric to anomeric linkage
+                    for(int i = 0; i < values.size(); i++)
                     {
-                        terminal_residue_name = anomeric_o->GetResidue()->GetName();
-                        isRoot = true;
+                        stringstream other_mono_anomeric_linkage_as_right_side;
+                        other_mono_anomeric_linkage_as_right_side << "-" << values.at(i)->cycle_atoms_.at(0)->GetId();///atom id on the right side of the linkage c-o-c
+
+                        if(((mono_linkages.at(i)).find(anomeric_linkage.str()) != string::npos) && ///this mono is attached to another mono through anomeric
+                                (mono_linkages.at(i).find(other_mono_anomeric_linkage_as_right_side.str()) != string::npos))///the other mono is attached to this mono through anomeric
+                        {
+                            isRoot = true;
+                            break;
+                        }
+                    }
+                    if(!isRoot) ///RULE2: Directed graph
+                    {
+                        for(int i = 0; i < values.size(); i++)
+                        {
+                            stringstream other_mono_anomeric_linkage_as_right_side;
+                            other_mono_anomeric_linkage_as_right_side << "-" << values.at(i)->cycle_atoms_.at(0)->GetId();///atom id on the right side of the linkage c-o-c
+                            if(((mono_linkages.at(i)).find(anomeric_linkage.str()) != string::npos)) ///this mono is attached to other mono through anomeric
+                            {
+                                isRoot = false;
+                                break;
+                            }
+                            else if((mono_linkages.at(i).find(other_mono_anomeric_linkage_as_right_side.str()) != string::npos)) ///the other mono is attached to this mono through anomeric)
+                            {
+                                isRoot = true;
+                                terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                            }
+                        }
+                    }
+                    else if(!isRoot)///RULE3: Terminal
+                    {
+                        if(o_neighbors.size() == 1) ///anomeric oxygen is not attached to anything else except the carbon of the ring
+                        {
+                            isRoot = true;
+                            terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                        }
+                        else if(o_neighbors.size() == 2 && (((o_neighbor_1->GetDescription().find("Het;") != string::npos) && (o_neighbor_2->GetDescription().find("Het;") == string::npos)) ||
+                                                            ((o_neighbor_2->GetDescription().find("Het;") != string::npos) && (o_neighbor_1->GetDescription().find("Het;") == string::npos))) )
+                            ///anomeric oxygen is attached to protein
+                            isRoot = true;
+                        else if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
+                                common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
+                        {
+                            terminal_residue_name = anomeric_o->GetResidue()->GetName();
+                            isRoot = true;
+                        }
+                        else if((terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms)).compare("") != 0)
+                            isRoot = true;
+                    }
+                }
+                //this mono doesn't have anomeric oxygen
+                else ///RULE2: Directed graph
+                {
+                    for(int i = 0; i < values.size(); i++)
+                    {
+                        vector<string> other_mono_linkage = monos_table_linkages[values.at(i)];
+                        stringstream other_mono_anomeric_linkage;
+                        other_mono_anomeric_linkage << values.at(i)->cycle_atoms_.at(0)->GetId() << "-";///atom id on the left side of the linkage c-o-c
+                        if((other_mono_linkage.at(0).find(other_mono_anomeric_linkage.str()) != string::npos)) ///the other mono is attached to this mono through anomeric
+                        {
+                            isRoot = true;
+                            terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                            break;
+                        }
                     }
                 }
             }
@@ -13066,6 +13244,257 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
         }
     }
     return oligosaccharides;
+}
+
+string Assembly::CheckOMETerminal(Atom* target, AtomVector& terminal_atoms)
+{
+    terminal_atoms = AtomVector();
+    AtomVector atoms_1 = AtomVector();
+    AtomVector atoms_2 = AtomVector();
+    stringstream pattern;
+    pattern << "O";
+    atoms_1.push_back(target);
+    atoms_2.push_back(target);
+    Atom* C1 = NULL;
+    Atom* C2 = NULL;
+    AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
+    {
+        Atom* o_neighbor = (*it);
+
+        if(o_neighbor->GetName().at(0) == 'C' && C1 == NULL && C2 == NULL)
+            C1 = o_neighbor;
+        else if(o_neighbor->GetName().at(0) == 'C' && C1 != NULL && C2 == NULL)
+            C2 = o_neighbor;
+    }
+    stringstream temp;
+    if(C1 != NULL)
+    {
+        temp << pattern.str() << "-C";
+        atoms_1.push_back(C1);
+        AtomVector c1_neighbors = C1->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = c1_neighbors.begin(); it != c1_neighbors.end(); it++)
+        {
+            Atom* c1_neighbor = (*it);
+            if(c1_neighbor->GetId().compare(target->GetId()) != 0)
+            {
+                temp << c1_neighbor->GetName().at(0);
+                atoms_1.push_back(c1_neighbor);
+            }
+        }
+    }
+    if(temp.str().compare("O-C") == 0 || temp.str().compare("O-CHHH") == 0)
+    {
+        terminal_atoms = atoms_1;
+        return "OME";
+    }
+    if(C2 != NULL)
+    {
+        pattern << "-C";
+        atoms_2.push_back(C2);
+        AtomVector c2_neighbors = C2->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = c2_neighbors.begin(); it != c2_neighbors.end(); it++)
+        {
+            Atom* c2_neighbor = (*it);
+            if(c2_neighbor->GetId().compare(target->GetId()) != 0)
+            {
+                pattern << c2_neighbor->GetName().at(0);
+                atoms_2.push_back(c2_neighbor);
+            }
+        }
+        if(pattern.str().compare("O-C") == 0 || pattern.str().compare("O-CHHH") == 0)
+        {
+            terminal_atoms = atoms_2;
+            return "OME";
+        }
+    }
+    else return "";
+}
+string Assembly::CheckROHTerminal(Atom* target, AtomVector& terminal_atoms)
+{
+    terminal_atoms = AtomVector();
+    AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+    if(o_neighbors.size() == 1)
+    {
+        terminal_atoms.push_back(target);
+        return "ROH";
+    }
+    else if (o_neighbors.size() > 1)
+    {
+        if((o_neighbors.at(0)->GetName().at(0) == 'H' && o_neighbors.at(1)->GetName().at(0) != 'H'))
+        {
+            terminal_atoms.push_back(target);
+            terminal_atoms.push_back(o_neighbors.at(0));
+            return "ROH";
+        }
+        else if(o_neighbors.at(1)->GetName().at(0) == 'H' && o_neighbors.at(0)->GetName().at(0) != 'H')
+        {
+            terminal_atoms.push_back(target);
+            terminal_atoms.push_back(o_neighbors.at(1));
+            return "ROH";
+        }
+    }
+    return "";
+}
+string Assembly::CheckTBTTerminal(Atom *target, AtomVector& terminal_atoms)
+{
+    terminal_atoms = AtomVector();
+    AtomVector atoms_1 = AtomVector();
+    AtomVector atoms_2 = AtomVector();
+    stringstream pattern;
+    pattern << "O";
+    atoms_1.push_back(target);
+    atoms_2.push_back(target);
+    Atom* C1 = NULL;
+    Atom* C2 = NULL;
+    AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
+    {
+        Atom* o_neighbor = (*it);
+        if(o_neighbor->GetName().at(0) == 'C' && C1 == NULL && C2 == NULL)
+            C1 = o_neighbor;
+        else if(o_neighbor->GetName().at(0) == 'C' && C1 != NULL && C2 == NULL)
+            C2 = o_neighbor;
+    }
+    stringstream temp;
+    if(C1 != NULL)
+    {
+        Atom* C1C1 = NULL;
+        Atom* C1C2 = NULL;
+        Atom* C1C3 = NULL;
+        temp << pattern.str() << "-" << "C";
+        atoms_1.push_back(C1);
+        AtomVector c1_neighbors = C1->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = c1_neighbors.begin(); it != c1_neighbors.end(); it++)
+        {
+            Atom* c1_neighbor = (*it);
+            if(c1_neighbor->GetId().compare(target->GetId()) != 0 && c1_neighbor->GetName().at(0) == 'C' && C1C1 == NULL)
+                C1C1 = c1_neighbor;
+            else if(c1_neighbor->GetId().compare(target->GetId()) != 0 && c1_neighbor->GetName().at(0) == 'C' && C1C1 != NULL && C1C2 == NULL)
+                C1C2 = c1_neighbor;
+            else if(c1_neighbor->GetId().compare(target->GetId()) != 0 && c1_neighbor->GetName().at(0) == 'C' && C1C1 != NULL && C1C2 != NULL && C1C3 == NULL)
+                C1C3 = c1_neighbor;
+        }
+        if(C1C1 != NULL && C1C2 != NULL && C1C3 != NULL)
+        {
+            temp << "C";
+            atoms_1.push_back(C1C1);
+            AtomVector c1c1_neighbors = C1C1->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c1c1_neighbors.begin(); it != c1c1_neighbors.end(); it++)
+            {
+                Atom* c1c1_neighbor = (*it);
+                if(c1c1_neighbor->GetId().compare(C1->GetId()) != 0)
+                {
+                    temp << c1c1_neighbor->GetName().at(0);
+                    atoms_1.push_back(c1c1_neighbor);
+                }
+            }
+            temp << "C";
+            atoms_1.push_back(C1C2);
+            AtomVector c1c2_neighbors = C1C2->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c1c2_neighbors.begin(); it != c1c2_neighbors.end(); it++)
+            {
+                Atom* c1c2_neighbor = (*it);
+                if(c1c2_neighbor->GetId().compare(C1->GetId()) != 0)
+                {
+                    temp << c1c2_neighbor->GetName().at(0);
+                    atoms_1.push_back(c1c2_neighbor);
+                }
+            }
+            temp << "C";
+            atoms_1.push_back(C1C3);
+            AtomVector c1c3_neighbors = C1C3->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c1c3_neighbors.begin(); it != c1c3_neighbors.end(); it++)
+            {
+                Atom* c1c3_neighbor = (*it);
+                if(c1c3_neighbor->GetId().compare(C1->GetId()) != 0)
+                {
+                    temp << c1c3_neighbor->GetName().at(0);
+                    atoms_1.push_back(c1c3_neighbor);
+                }
+            }
+        }
+        if(temp.str().compare("O-CCCC") == 0 || temp.str().compare("O-CCHHHCHHHCHHH") == 0 )
+        {
+            terminal_atoms = atoms_1;
+            return "TBT";
+        }
+    }
+    if(C2 != NULL)
+    {
+        Atom* C2C1 = NULL;
+        Atom* C2C2 = NULL;
+        Atom* C2C3 = NULL;
+        pattern << "-" << "C";
+        atoms_2.push_back(C2);
+        AtomVector c2_neighbors = C2->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = c2_neighbors.begin(); it != c2_neighbors.end(); it++)
+        {
+            Atom* c2_neighbor = (*it);
+            if(c2_neighbor->GetId().compare(target->GetId()) != 0 && c2_neighbor->GetName().at(0) == 'C' && C2C1 == NULL)
+                C2C1 = c2_neighbor;
+            else if(c2_neighbor->GetId().compare(target->GetId()) != 0 && c2_neighbor->GetName().at(0) == 'C' && C2C1 != NULL && C2C2 == NULL)
+                C2C2 = c2_neighbor;
+            else if(c2_neighbor->GetId().compare(target->GetId()) != 0 && c2_neighbor->GetName().at(0) == 'C' && C2C1 != NULL && C2C2 != NULL && C2C3 == NULL)
+                C2C3 = c2_neighbor;
+        }
+        if(C2C1 != NULL && C2C2 != NULL && C2C3 != NULL)
+        {
+            pattern << "C";
+            atoms_2.push_back(C2C1);
+            AtomVector c2c1_neighbors = C2C1->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c2c1_neighbors.begin(); it != c2c1_neighbors.end(); it++)
+            {
+                Atom* c2c1_neighbor = (*it);
+                if(c2c1_neighbor->GetId().compare(C2->GetId()) != 0)
+                {
+                    pattern << c2c1_neighbor->GetName().at(0);
+                    atoms_2.push_back(c2c1_neighbor);
+                }
+            }
+            pattern << "C";
+            atoms_2.push_back(C2C2);
+            AtomVector c2c2_neighbors = C2C2->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c2c2_neighbors.begin(); it != c2c2_neighbors.end(); it++)
+            {
+                Atom* c2c2_neighbor = (*it);
+                if(c2c2_neighbor->GetId().compare(C2->GetId()) != 0)
+                {
+                    pattern << c2c2_neighbor->GetName().at(0);
+                    atoms_2.push_back(c2c2_neighbor);
+                }
+            }
+            pattern << "C";
+            atoms_2.push_back(C2C3);
+            AtomVector c2c3_neighbors = C2C3->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = c2c3_neighbors.begin(); it != c2c3_neighbors.end(); it++)
+            {
+                Atom* c2c3_neighbor = (*it);
+                if(c2c3_neighbor->GetId().compare(C2->GetId()) != 0)
+                {
+                    pattern << c2c3_neighbor->GetName().at(0);
+                    atoms_2.push_back(c2c3_neighbor);
+                }
+            }
+        }
+        if(pattern.str().compare("O-CCCC") == 0 || pattern.str().compare("O-CCHHHCHHHCHHH") == 0 )
+        {
+            terminal_atoms = atoms_2;
+            return "TBT";
+        }
+    }
+    return "";
+}
+string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
+{
+    if(CheckROHTerminal(target, terminal_atoms).compare("") != 0)
+        return "ROH";
+    else if(CheckOMETerminal(target, terminal_atoms).compare("") != 0)
+        return "OME";
+    else if(CheckTBTTerminal(target, terminal_atoms).compare("") != 0)
+        return "TBT";
+    else
+        return "";
 }
 
 void Assembly::BuildOligosaccharideTreeStructure(Monosaccharide *key, vector<Monosaccharide*> values, Oligosaccharide *oligo,
