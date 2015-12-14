@@ -28,55 +28,57 @@ CondensedSequenceResidue::CondensedSequenceResidue(string residue_string)
             throw CondensedSequenceProcessingException("Invalid residue in sequence");
         if(residue_string.find("Unknown") != string::npos)
             this->name_ = "UNK";
-
-        char isomer_letter = residue_string[0];
-        if(isomer_letter == 'D' || isomer_letter == 'd')
-            this->isomer_ = "D";
-        else if(isomer_letter == 'L' || isomer_letter == 'l')
-            this->isomer_ = "L";
         else
-            throw CondensedSequenceProcessingException("Invalid isomer in residue " + residue_string);
-
-        if(dash_index <= 2)
-            throw CondensedSequenceProcessingException("Invalid residue in sequence");
-
-        char configuration_letter = residue_string[dash_index - 2];
-        if(configuration_letter == 'A' || configuration_letter == 'a')
-            this->configuration_ = 'A';
-        else if(configuration_letter == 'B' || configuration_letter == 'b')
-            this->configuration_ = 'B';
-        else if(configuration_letter == 'X' || configuration_letter == 'x')
-            this->configuration_ = 'X';
-        else
-            throw CondensedSequenceProcessingException("Invalid configuration in residue " + residue_string);
-
-        if(!std::isdigit(residue_string[dash_index - 1]))
-            throw CondensedSequenceProcessingException("Invalid residue in sequence");
-
-        this->anomeric_carbon_ = gmml::ConvertString<int>(gmml::ConvertT<char>(residue_string[dash_index - 1]));
-        if(dash_index != residue_string.size() - 1)
         {
-            if(!std::isdigit(residue_string[dash_index + 1]))
+            char isomer_letter = residue_string[0];
+            if(isomer_letter == 'D' || isomer_letter == 'd')
+                this->isomer_ = "D";
+            else if(isomer_letter == 'L' || isomer_letter == 'l')
+                this->isomer_ = "L";
+            else
+                throw CondensedSequenceProcessingException("Invalid isomer in residue " + residue_string);
+
+            if(dash_index <= 2)
                 throw CondensedSequenceProcessingException("Invalid residue in sequence");
-            this->oxygen_position_ = gmml::ConvertString<int>(gmml::ConvertT<char>(residue_string[dash_index + 1]));
-        }
-        else
-            this->oxygen_position_ = 1;
 
-        int left_bracket = residue_string.find('[');
-        int right_bracket = residue_string.find(']');
-        if(left_bracket == string::npos || right_bracket == string::npos)
-            this->name_ = residue_string.substr(1, dash_index - 3);
-        else
-        {
-            this->name_ = residue_string.substr(1, left_bracket - 1);
-            string derivatives = residue_string.substr(left_bracket + 1, right_bracket - left_bracket - 1);
-            vector<string> derivatives_tokens = gmml::Split(derivatives, ",");
-            for(vector<string>::iterator it = derivatives_tokens.begin(); it != derivatives_tokens.end(); ++it)
+            char configuration_letter = residue_string[dash_index - 2];
+            if(configuration_letter == 'A' || configuration_letter == 'a')
+                this->configuration_ = 'A';
+            else if(configuration_letter == 'B' || configuration_letter == 'b')
+                this->configuration_ = 'B';
+            else if(configuration_letter == 'X' || configuration_letter == 'x')
+                this->configuration_ = 'X';
+            else
+                throw CondensedSequenceProcessingException("Invalid configuration in residue " + residue_string);
+
+            if(!std::isdigit(residue_string[dash_index - 1]))
+                throw CondensedSequenceProcessingException("Invalid residue in sequence");
+
+            this->anomeric_carbon_ = gmml::ConvertString<int>(gmml::ConvertT<char>(residue_string[dash_index - 1]));
+            if(dash_index != residue_string.size() - 1)
             {
-                if(!std::isdigit(it->at(0)))
-                    throw CondensedSequenceProcessingException("Invalid derivative position in sequence");
-                this->derivatives_[ConvertString<int>(ConvertT<char>(it->at(0)))] = it->substr(1);
+                if(!std::isdigit(residue_string[dash_index + 1]))
+                    throw CondensedSequenceProcessingException("Invalid residue in sequence");
+                this->oxygen_position_ = gmml::ConvertString<int>(gmml::ConvertT<char>(residue_string[dash_index + 1]));
+            }
+            else
+                this->oxygen_position_ = 1;
+
+            int left_bracket = residue_string.find('[');
+            int right_bracket = residue_string.find(']');
+            if(left_bracket == string::npos || right_bracket == string::npos)
+                this->name_ = residue_string.substr(1, dash_index - 3);
+            else
+            {
+                this->name_ = residue_string.substr(1, left_bracket - 1);
+                string derivatives = residue_string.substr(left_bracket + 1, right_bracket - left_bracket - 1);
+                vector<string> derivatives_tokens = gmml::Split(derivatives, ",");
+                for(vector<string>::iterator it = derivatives_tokens.begin(); it != derivatives_tokens.end(); ++it)
+                {
+                    if(!std::isdigit(it->at(0)))
+                        throw CondensedSequenceProcessingException("Invalid derivative position in sequence");
+                    this->derivatives_[ConvertString<int>(ConvertT<char>(it->at(0)))] = it->substr(1);
+                }
             }
         }
     }
