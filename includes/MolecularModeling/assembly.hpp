@@ -797,25 +797,25 @@ namespace MolecularModeling
               * @param target_atom The atom which will be checked for a terminal
               * @return pattern The discovered pattern attached to the target atom
               */
-            std::string CheckOMETerminal(Atom* target);
+            std::string CheckOMETerminal(Atom* target, AtomVector& terminal_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to ROH terminal
               * @param target_atom The atom which will be checked for a terminal
               * @return pattern The discovered pattern attached to the target atom
               */
-            std::string CheckROHTerminal(Atom* target);
+            std::string CheckROHTerminal(Atom* target, AtomVector& terminal_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to TBT terminal
               * @param target_atom The atom which will be checked for a terminal
               * @return pattern The discovered pattern attached to the target atom
               */
-            std::string CheckTBTTerminal(Atom* target);
+            std::string CheckTBTTerminal(Atom* target, AtomVector& terminal_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to TBT, ROH or OME patterns when the residue name is different from the terminal residue names
               * @param target_atom The atom which will be checked for a terminal
               * @return pattern The discovered pattern attached to the target atom
               */
-            std::string CheckTerminals(Atom* target);
+            std::string CheckTerminals(Atom* target, AtomVector& terminal_atoms);
 
             /*! \fn
               * A function in order to calculate the orientation(S/R) of additional side atoms

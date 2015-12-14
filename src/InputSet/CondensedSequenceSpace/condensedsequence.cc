@@ -272,7 +272,7 @@ string CondensedSequence::GetAmberPrepTerminalResidueCodeOfTerminalResidue(strin
 
 string CondensedSequence::GetAmberPrepResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, vector<int> open_valences, string parent_name)
 {
-    if(condensed_residue->GetName().compare("UNK") == 0)
+    if(condensed_residue->GetName().compare("UNK") == 0 || condensed_residue->GetName().compare("Unknown") == 0)
         return "UNK";
     vector<int> new_valences_list = open_valences;
     CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
