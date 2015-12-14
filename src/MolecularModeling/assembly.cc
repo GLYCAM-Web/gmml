@@ -13202,7 +13202,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                         if((other_mono_linkage.at(0).find(other_mono_anomeric_linkage.str()) != string::npos)) ///the other mono is attached to this mono through anomeric
                         {
                             isRoot = true;
-                            terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+//                            terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
                             break;
                         }
                     }
