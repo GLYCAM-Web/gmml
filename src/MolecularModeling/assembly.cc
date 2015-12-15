@@ -9081,9 +9081,9 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
     for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
         (*it)->UpdateResidueName2GlycamName(residue_glycam_map);
     ResidueVector residues = this->GetResidues();
-    Residue* terminal_residue = new Residue(this, "");
-    bool terminal = false;
     ResidueVector updated_residues = ResidueVector();
+    int residue_sequence_number = 0;
+    ResidueVector terminal_residues = ResidueVector();
     for(ResidueVector::iterator it2 = residues.begin(); it2 != residues.end(); it2++)
     {
         Residue* residue = *it2;
@@ -9092,6 +9092,9 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
         updated_residues.push_back(residue);
         if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
         {
+            terminal_residues.push_back(new Residue(this, ""));
+            residue_sequence_number--;
+            bool terminal = false;
             int residue_name_size = residue_name.size();
             string glycam_name = residue_glycam_map[residue_id];
             string temp = glycam_name;
@@ -9104,18 +9107,18 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
                 string atom_id = atom->GetId();
                 if(residue_glycam_map.find(atom_id) != residue_glycam_map.end())
                 {
+                    terminal_residues.at(terminal_residues.size() - 1)->SetAssembly(this);
                     glycam_name = residue_glycam_map[atom_id];
-                    terminal_residue->SetName(glycam_name);
-                    terminal_residue->AddAtom(atom);
+                    terminal_residues.at(terminal_residues.size() - 1)->SetName(glycam_name);
+                    terminal_residues.at(terminal_residues.size() - 1)->AddAtom(atom);
                     vector<string> residue_id_tokens = Split(residue_id, "_");
-                    int residue_sequence_number = -1;
                     string terminal_residue_id = residue_id_tokens.at(0) + "_" + residue_id_tokens.at(1) + "_" + ConvertT<int>(residue_sequence_number) + "_"
                             + residue_id_tokens.at(3) + "_" + residue_id_tokens.at(4);
-                    terminal_residue->SetId(terminal_residue_id);
-                    atom->SetResidue(terminal_residue);
+                    terminal_residues.at(terminal_residues.size() - 1)->SetId(terminal_residue_id);
+                    atom->SetResidue(terminal_residues.at(terminal_residues.size() - 1));
                     if(!terminal)
                     {
-                        updated_residues.push_back(terminal_residue);
+                        updated_residues.push_back(terminal_residues.at(terminal_residues.size() - 1));
                         terminal = true;
                     }
                     int index = atom_id.find(residue_name);
@@ -9474,7 +9477,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << endl;
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
         {
-//            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
+            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
 
             if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0)
             {
