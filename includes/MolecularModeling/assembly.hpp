@@ -793,10 +793,10 @@ namespace MolecularModeling
             /*! \fn
               * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
               * @param monos The list of extracted monosaccharide object
+              * @param dataset_residue_names List of known terminal residue names
               * @return oligosacchrides The list of extracted oligosacchrides
               */
-            OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
-                                                                          std::string& terminal_residue_name);
+            OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names);
             /*! \fn
               * A function in order to check if the target atom is attached to OME terminal
               * @param target_atom The atom which will be checked for a terminal

@@ -21,19 +21,17 @@ namespace Glycan
 
             /*! \fn
               * A function to print out the oligosacchride name and the linkages between its monosacchrides
-              * Print out the information in a defined structure
-              * @param terminal The terminal which the oligosacchride might be attached to
+              * Print out the information in a defined structure              
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::string terminal = "", std::ostream& out = std::cout)
+            void Print(std::ostream& out = std::cout)
             {
-                terminal_ = terminal;
                 oligosaccharide_name_ = "";
                 oligosaccharide_linkages_ = "";
                 int linkage_index = 0;
                 std::stringstream ss;
-                if(terminal.compare("") != 0)
-                    ss << "1-" << terminal;
+                if(terminal_.compare("") != 0)
+                    ss << "1-" << terminal_;
                 oligosaccharide_name_ = ss.str();
 //                std::cout << root_->mono_id << std::endl;
                 bool is_cycle = false;
