@@ -9148,32 +9148,6 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
 vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
 {
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
-    /////////////////////////
-    //    ResidueVector residuess = GetAllResiduesOfAssembly();
-    //    for(ResidueVector::iterator tt = residuess.begin(); tt != residuess.end(); tt++)
-    //    {
-    //        Residue* res = (*tt);
-    //        cout << "RESIDUE: " << res->GetId() << endl;
-    //        AtomVector all_atoms_test = res->GetAtoms();
-    //        for(AtomVector::iterator test = all_atoms_test.begin(); test != all_atoms_test.end(); test++)
-    //        {
-    //            Atom* atom = (*test);
-    //            cout << "ATOM " << atom->GetId() << endl;
-    //            AtomNode* node = atom->GetNode();
-    //            if(node != NULL)
-    //            {
-    //                AtomVector neighbors = node->GetNodeNeighbors();
-    //                cout << "NEIGHBORS: " ;
-    //                for(AtomVector::iterator t2 = neighbors.begin(); t2 != neighbors.end(); t2++)
-    //                {
-    //                    Atom* neighbor = (*t2);
-    //                    cout << neighbor->GetId() << ", ";
-    //                }
-    //                cout << endl;
-    //            }
-    //        }
-    //    }
-    /////////////////////////
     CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
     //    CycleMap cycles = DetectCyclesByDFS();
@@ -9500,7 +9474,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << endl;
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
         {
-            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
+//            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
 
             if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0)
             {
@@ -9543,11 +9517,10 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
     }
     cout << endl << "Oligosaccharides:" << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Oligosaccharides:");
-    string terminal_residue_name = "";
-    vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names, terminal_residue_name);
+    vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names);
 //        cout << "EXTRACTED" << endl;
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
-        (*it)->Print(terminal_residue_name, cout);
+        (*it)->Print(cout);
 
 
     if(oligosaccharides.size() > 0)
@@ -12975,8 +12948,9 @@ void Assembly::UpdateComplexSugarChemicalCode(Monosaccharide *mono)
     }
 }
 
-vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide*> monos, ResidueNameMap dataset_residue_names, string& terminal_residue_name)
+vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide*> monos, ResidueNameMap dataset_residue_names)
 {
+    string terminal_residue_name = "";
     ResidueNameMap common_terminal_residues = gmml::InitializeCommonTerminalResidueMap();
     map<Monosaccharide*, vector<Monosaccharide*> > monos_table = map<Monosaccharide*, vector<Monosaccharide*> >();
     map<Monosaccharide*, vector<string> > monos_table_linkages = map<Monosaccharide*, vector<string> >();
@@ -13175,7 +13149,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                 ///RULE2: Directed graph
                 else if((mono_linkages.at(0).find(other_mono_anomeric_linkage_as_right_side.str()) != string::npos)) ///this mono doesn't have anomeric oxygen and the other mono is attached to this mono through anomeric
                 {
-                    isRoot == true;
+                    isRoot = true;
                     terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
                 }
             }
@@ -13270,6 +13244,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
             {
                 Oligosaccharide* oligo = new Oligosaccharide();
                 BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
+                oligo->terminal_ = terminal_residue_name;
                 oligosaccharides.push_back(oligo);
             }
         }
