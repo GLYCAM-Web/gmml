@@ -15,7 +15,7 @@ namespace gmml
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef GeometryTopology::Coordinate Vector;    
+    typedef GeometryTopology::Coordinate Vector;
 
     //*******************************************
 

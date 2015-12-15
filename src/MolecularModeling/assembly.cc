@@ -9081,9 +9081,9 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
     for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
         (*it)->UpdateResidueName2GlycamName(residue_glycam_map);
     ResidueVector residues = this->GetResidues();
-    Residue* terminal_residue = new Residue(this, "");
-    bool terminal = false;
     ResidueVector updated_residues = ResidueVector();
+    int residue_sequence_number = 0;
+    ResidueVector terminal_residues = ResidueVector();
     for(ResidueVector::iterator it2 = residues.begin(); it2 != residues.end(); it2++)
     {
         Residue* residue = *it2;
@@ -9092,6 +9092,9 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
         updated_residues.push_back(residue);
         if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
         {
+            terminal_residues.push_back(new Residue(this, ""));
+            residue_sequence_number--;
+            bool terminal = false;
             int residue_name_size = residue_name.size();
             string glycam_name = residue_glycam_map[residue_id];
             string temp = glycam_name;
@@ -9104,18 +9107,18 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
                 string atom_id = atom->GetId();
                 if(residue_glycam_map.find(atom_id) != residue_glycam_map.end())
                 {
+                    terminal_residues.at(terminal_residues.size() - 1)->SetAssembly(this);
                     glycam_name = residue_glycam_map[atom_id];
-                    terminal_residue->SetName(glycam_name);
-                    terminal_residue->AddAtom(atom);
+                    terminal_residues.at(terminal_residues.size() - 1)->SetName(glycam_name);
+                    terminal_residues.at(terminal_residues.size() - 1)->AddAtom(atom);
                     vector<string> residue_id_tokens = Split(residue_id, "_");
-                    int residue_sequence_number = -1;
                     string terminal_residue_id = residue_id_tokens.at(0) + "_" + residue_id_tokens.at(1) + "_" + ConvertT<int>(residue_sequence_number) + "_"
                             + residue_id_tokens.at(3) + "_" + residue_id_tokens.at(4);
-                    terminal_residue->SetId(terminal_residue_id);
-                    atom->SetResidue(terminal_residue);
+                    terminal_residues.at(terminal_residues.size() - 1)->SetId(terminal_residue_id);
+                    atom->SetResidue(terminal_residues.at(terminal_residues.size() - 1));
                     if(!terminal)
                     {
-                        updated_residues.push_back(terminal_residue);
+                        updated_residues.push_back(terminal_residues.at(terminal_residues.size() - 1));
                         terminal = true;
                     }
                     int index = atom_id.find(residue_name);
@@ -9148,32 +9151,6 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
 vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
 {
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
-    /////////////////////////
-    //    ResidueVector residuess = GetAllResiduesOfAssembly();
-    //    for(ResidueVector::iterator tt = residuess.begin(); tt != residuess.end(); tt++)
-    //    {
-    //        Residue* res = (*tt);
-    //        cout << "RESIDUE: " << res->GetId() << endl;
-    //        AtomVector all_atoms_test = res->GetAtoms();
-    //        for(AtomVector::iterator test = all_atoms_test.begin(); test != all_atoms_test.end(); test++)
-    //        {
-    //            Atom* atom = (*test);
-    //            cout << "ATOM " << atom->GetId() << endl;
-    //            AtomNode* node = atom->GetNode();
-    //            if(node != NULL)
-    //            {
-    //                AtomVector neighbors = node->GetNodeNeighbors();
-    //                cout << "NEIGHBORS: " ;
-    //                for(AtomVector::iterator t2 = neighbors.begin(); t2 != neighbors.end(); t2++)
-    //                {
-    //                    Atom* neighbor = (*t2);
-    //                    cout << neighbor->GetId() << ", ";
-    //                }
-    //                cout << endl;
-    //            }
-    //        }
-    //    }
-    /////////////////////////
     CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
     //    CycleMap cycles = DetectCyclesByDFS();
@@ -9500,7 +9477,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << endl;
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
         {
-//            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
+            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
 
             if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0)
             {
@@ -9543,11 +9520,10 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
     }
     cout << endl << "Oligosaccharides:" << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Oligosaccharides:");
-    string terminal_residue_name = "";
-    vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names, terminal_residue_name);
-    //    cout << "EXTRACTED" << endl;
+    vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names);
+//        cout << "EXTRACTED" << endl;
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
-        (*it)->Print(terminal_residue_name, cout);
+        (*it)->Print(cout);
 
 
     if(oligosaccharides.size() > 0)
@@ -10106,35 +10082,108 @@ string Assembly::CreateURIResource(gmml::URIType resource , int number, string i
     }
     return uri_resource.str();
 }
-//void Assembly::PopulateOligosaccharide(vector<Oligosaccharide*> oligos)
-//{
-//    if(oligos.size() != NULL)
-//        for(vector<Oligosaccharide*>::iterator it = oligos.begin(); it != oligos.end(); it++)
-//        {
-//            Oligosaccharide* oli = (*it);
-//            vector<AtomVector> sidess = oli->root_->side_atoms_;
-//            cout << "CYCLE ATOMS: " << oli->root_->cycle_atoms_str_ << endl;
+string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string stereo_short_name, string name, string short_name)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name" << Ontology::WHERE_CLAUSE;
+    query << "?pdb      :hasOligo   ?oligo.\n";
+    query << "?oligo    :hasRoot    ?mono.\n";
+    query << "?mono     :hasSugarName   ?sugarName.\n";
+    if(stereo_name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideStereochemName   \"" << stereo_name << "\").\n";
+        query << "?sugarName    :monosaccharideStereochemName   ?stereo_name.\n";
+    }
+    if(stereo_short_name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideStereochemShortName   \"" << stereo_short_name << "\").\n";
+        query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_short_name.\n";
+    }
+    if(name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideName   \"" << name << "\").\n";
+        query << "?sugarName    :monosaccharideName   ?name.\n";
+    }
+    if(short_name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideShortName   \"" << short_name << "\").\n";
+        query << "?sugarName    :monosaccharideShortName   ?short_name.\n";
+    }
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring_type, string configuration)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name" << Ontology::WHERE_CLAUSE;
+    query << "?pdb      :hasOligo   ?oligo.\n";
+    query << "?oligo    :hasRoot    ?mono.\n";
+    query << "?mono     :hasSugarName   ?sugarName.\n";
+    if(isomer.compare("") != 0)
+        query << "?sugarName    :isomer   " << isomer << ".\n";
+    if(ring_type.compare("") != 0)
+        query << "?sugarName    :ringType   " << ring_type << ".\n";
+    if(configuration.compare("") != 0)
+        query << "?sugarName    :configuration   " << configuration << ".\n";
+    query << "?sugarName    :monosaccharideStereochemName   ?stereo_name.\n";
+    query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_short_name.\n";
+    query << "?sugarName    :monosaccharideName   ?name.\n";
+    query << "?sugarName    :monosaccharideShortName   ?short_name.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?o_name ?linkage_str ?glycosidic_linkage ?anomeric_statud" << Ontology::WHERE_CLAUSE;
+    query <<  ":" << pdb_id << " :hasOligo   ?oligo.\n";
+    query << "?oligo 	:oligoName 	?o_name.\n";
+    query << "?linkage 	:hasParent 	?oligo.\n";
+    query << "?linkage	:linkageString	?linkage_str.\n";
+    query << "?linkage	:glycosidicLinkageString    ?glycosidic_linkage.\n";
+    query << "?oligo	:hasRoot	?mono.\n";
+    query << "?mono     :anomericStatus    ?anomeric_status.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?name ?short_name ?stereo_name ?stereo_short_name" << Ontology::WHERE_CLAUSE;
+    query << "?mono     :stringChemicalCode	?code.\n";
+    query << "FILTER(str(?code) = \"" << chemical_code << "\")\n";
+    query << "?pdb      :hasOligo	?oligo.\n";
+    query << "?oligo	:hasRoot	?mono.\n";
+    query << "?mono     :hasSugarName	?sn.\n";
+    query << "?sn       :monosaccharideName 	?name.\n";
+    query << "?sn       :monosaccharideShortName 	?short_name.\n";
+    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_name)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
 
-//            int i = 0;
-//            for(vector<AtomVector>::iterator it1 = sidess.begin(); it1 != sidess.end(); it1++)
-//            {
-//                AtomVector sides = (*it1);
-//                cout << "SDIE" << i << " ATOMS: " << endl;
-//                for(AtomVector::iterator it1 = sides.begin(); it1 != sides.end(); it1++)
-//                {
-//                    Atom* side = (*it1);
-//                    if(side != NULL)
-//                    {
-//                        cout << side->GetId() << ", ";
-//                    }
-//                }
-//                cout << endl;
-//                i++;
-//            }
-//            vector<Oligosaccharide*> child_oligos = oli->child_oligos_;
-//            PopulateOligosaccharide(child_oligos);
-//        }
-//}
+    query << "?pdb      :hasOligo	?oligo.\n";
+    query << "?oligo	:oligoName	\"" << oligo_name << "\")\n";
+
+    ///how to represent linkages that are involved in this oligo, if there is any.???
+    ///meaning that how to iteratively go through :hasRoot and linkage of the mono
+    ///writing code to manipulate the argument of the function and based on that finding linkages?
+
+//    query << "?oligo	:hasRoot	?mono.\n";
+//    query << "?mono     :hasSugarName	?sn.\n";
+//    query << "?sn       :monosaccharideName 	?name.\n";
+//    query << "?sn       :monosaccharideShortName 	?short_name.\n";
+//    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+//    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
+//    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+
 
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
@@ -12902,8 +12951,9 @@ void Assembly::UpdateComplexSugarChemicalCode(Monosaccharide *mono)
     }
 }
 
-vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide*> monos, ResidueNameMap dataset_residue_names, string& terminal_residue_name)
+vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide*> monos, ResidueNameMap dataset_residue_names)
 {
+    string terminal_residue_name = "";
     ResidueNameMap common_terminal_residues = gmml::InitializeCommonTerminalResidueMap();
     map<Monosaccharide*, vector<Monosaccharide*> > monos_table = map<Monosaccharide*, vector<Monosaccharide*> >();
     map<Monosaccharide*, vector<string> > monos_table_linkages = map<Monosaccharide*, vector<string> >();
@@ -13017,21 +13067,6 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
         Monosaccharide* key = (*it).first;
         vector<Monosaccharide*> values = (*it).second;
 
-        //        cout << endl << key->mono_id << " >>> " ;
-        //        for(vector<Monosaccharide*>::iterator it1 = values.begin(); it1 != values.end(); it1++)
-        //        {
-        //            Monosaccharide* mono_val = (*it1);
-        //            cout << mono_val->mono_id << ", ";
-        //        }
-        //        cout << endl;
-        //        vector<string> link = monos_table_linkages[key];
-        //        for(vector<string>::iterator it1 = link.begin(); it1 != link.end(); it1++)
-        //        {
-        //            string l = (*it1);
-        //            cout << l << ", ";
-        //        }
-        //        cout << endl;
-
         vector<string> visited_linkages = vector<string>();
         if(find(visited_monos.begin(), visited_monos.end(), key->mono_id) == visited_monos.end())///if the mono is not visited
         {
@@ -13061,7 +13096,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
             }
             else if (values.size() == 1 && ///mono is attached to one other mono
                      (monos_table_linkages[values.at(0)].size() == 1))///the other mono is only attached to this mono
-            {                
+            {
                 stringstream other_mono_anomeric_linkage_as_right_side;
                 other_mono_anomeric_linkage_as_right_side << "-" << values.at(0)->cycle_atoms_.at(0)->GetId();///atom id on the right side of the linkage c-o-c
 
@@ -13117,7 +13152,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                 ///RULE2: Directed graph
                 else if((mono_linkages.at(0).find(other_mono_anomeric_linkage_as_right_side.str()) != string::npos)) ///this mono doesn't have anomeric oxygen and the other mono is attached to this mono through anomeric
                 {
-                    isRoot == true;
+                    isRoot = true;
                     terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
                 }
             }
@@ -13212,6 +13247,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
             {
                 Oligosaccharide* oligo = new Oligosaccharide();
                 BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
+                oligo->terminal_ = terminal_residue_name;
                 oligosaccharides.push_back(oligo);
             }
         }

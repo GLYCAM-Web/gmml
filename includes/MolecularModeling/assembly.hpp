@@ -671,6 +671,11 @@ namespace MolecularModeling
             void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
             std::string CreateURIResource(gmml::URIType resource, int number, std::string id_prefix, std::string id);
             std::string CreateURI(std::string uri_resource);
+            std::string ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_short_name, std::string name, std::string short_name);
+            std::string ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration);
+            std::string ExtractOntologyInfoByPDBID(std::string pdb_id);
+            std::string ExtractOntologyInfoByStringChemicalCode(std::string chemical_code);
+            std::string ExtractOntologyInfoByOligosaccharideNameSequence(std::string oligo_name);
 
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
@@ -788,10 +793,10 @@ namespace MolecularModeling
             /*! \fn
               * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
               * @param monos The list of extracted monosaccharide object
+              * @param dataset_residue_names List of known terminal residue names
               * @return oligosacchrides The list of extracted oligosacchrides
               */
-            OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
-                                                                          std::string& terminal_residue_name);
+            OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names);
             /*! \fn
               * A function in order to check if the target atom is attached to OME terminal
               * @param target_atom The atom which will be checked for a terminal
