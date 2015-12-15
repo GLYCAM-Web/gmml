@@ -671,6 +671,11 @@ namespace MolecularModeling
             void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
             std::string CreateURIResource(gmml::URIType resource, int number, std::string id_prefix, std::string id);
             std::string CreateURI(std::string uri_resource);
+            std::string ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_short_name, std::string name, std::string short_name);
+            std::string ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration);
+            std::string ExtractOntologyInfoByPDBID(std::string pdb_id);
+            std::string ExtractOntologyInfoByStringChemicalCode(std::string chemical_code);
+            std::string ExtractOntologyInfoByOligosaccharideNameSequence(std::string oligo_name);
 
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm

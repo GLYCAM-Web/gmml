@@ -9433,7 +9433,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << endl;
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
         {
-            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
+//            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString());
 
             if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0)
             {
@@ -9478,7 +9478,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Oligosaccharides:");
     string terminal_residue_name = "";
     vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names, terminal_residue_name);
-    //    cout << "EXTRACTED" << endl;
+//        cout << "EXTRACTED" << endl;
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
         (*it)->Print(terminal_residue_name, cout);
 
@@ -10039,35 +10039,108 @@ string Assembly::CreateURIResource(gmml::URIType resource , int number, string i
     }
     return uri_resource.str();
 }
-//void Assembly::PopulateOligosaccharide(vector<Oligosaccharide*> oligos)
-//{
-//    if(oligos.size() != NULL)
-//        for(vector<Oligosaccharide*>::iterator it = oligos.begin(); it != oligos.end(); it++)
-//        {
-//            Oligosaccharide* oli = (*it);
-//            vector<AtomVector> sidess = oli->root_->side_atoms_;
-//            cout << "CYCLE ATOMS: " << oli->root_->cycle_atoms_str_ << endl;
+string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string stereo_short_name, string name, string short_name)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name" << Ontology::WHERE_CLAUSE;
+    query << "?pdb      :hasOligo   ?oligo.\n";
+    query << "?oligo    :hasRoot    ?mono.\n";
+    query << "?mono     :hasSugarName   ?sugarName.\n";
+    if(stereo_name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideStereochemName   \"" << stereo_name << "\").\n";
+        query << "?sugarName    :monosaccharideStereochemName   ?stereo_name.\n";
+    }
+    if(stereo_short_name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideStereochemShortName   \"" << stereo_short_name << "\").\n";
+        query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_short_name.\n";
+    }
+    if(name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideName   \"" << name << "\").\n";
+        query << "?sugarName    :monosaccharideName   ?name.\n";
+    }
+    if(short_name.compare("") != 0)
+    {
+        query << "?sugarName    :monosaccharideShortName   \"" << short_name << "\").\n";
+        query << "?sugarName    :monosaccharideShortName   ?short_name.\n";
+    }
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring_type, string configuration)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name" << Ontology::WHERE_CLAUSE;
+    query << "?pdb      :hasOligo   ?oligo.\n";
+    query << "?oligo    :hasRoot    ?mono.\n";
+    query << "?mono     :hasSugarName   ?sugarName.\n";
+    if(isomer.compare("") != 0)
+        query << "?sugarName    :isomer   " << isomer << ".\n";
+    if(ring_type.compare("") != 0)
+        query << "?sugarName    :ringType   " << ring_type << ".\n";
+    if(configuration.compare("") != 0)
+        query << "?sugarName    :configuration   " << configuration << ".\n";
+    query << "?sugarName    :monosaccharideStereochemName   ?stereo_name.\n";
+    query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_short_name.\n";
+    query << "?sugarName    :monosaccharideName   ?name.\n";
+    query << "?sugarName    :monosaccharideShortName   ?short_name.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?o_name ?linkage_str ?glycosidic_linkage ?anomeric_statud" << Ontology::WHERE_CLAUSE;
+    query <<  ":" << pdb_id << " :hasOligo   ?oligo.\n";
+    query << "?oligo 	:oligoName 	?o_name.\n";
+    query << "?linkage 	:hasParent 	?oligo.\n";
+    query << "?linkage	:linkageString	?linkage_str.\n";
+    query << "?linkage	:glycosidicLinkageString    ?glycosidic_linkage.\n";
+    query << "?oligo	:hasRoot	?mono.\n";
+    query << "?mono     :anomericStatus    ?anomeric_status.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?name ?short_name ?stereo_name ?stereo_short_name" << Ontology::WHERE_CLAUSE;
+    query << "?mono     :stringChemicalCode	?code.\n";
+    query << "FILTER(str(?code) = \"" << chemical_code << "\")\n";
+    query << "?pdb      :hasOligo	?oligo.\n";
+    query << "?oligo	:hasRoot	?mono.\n";
+    query << "?mono     :hasSugarName	?sn.\n";
+    query << "?sn       :monosaccharideName 	?name.\n";
+    query << "?sn       :monosaccharideShortName 	?short_name.\n";
+    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_name)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
 
-//            int i = 0;
-//            for(vector<AtomVector>::iterator it1 = sidess.begin(); it1 != sidess.end(); it1++)
-//            {
-//                AtomVector sides = (*it1);
-//                cout << "SDIE" << i << " ATOMS: " << endl;
-//                for(AtomVector::iterator it1 = sides.begin(); it1 != sides.end(); it1++)
-//                {
-//                    Atom* side = (*it1);
-//                    if(side != NULL)
-//                    {
-//                        cout << side->GetId() << ", ";
-//                    }
-//                }
-//                cout << endl;
-//                i++;
-//            }
-//            vector<Oligosaccharide*> child_oligos = oli->child_oligos_;
-//            PopulateOligosaccharide(child_oligos);
-//        }
-//}
+    query << "?pdb      :hasOligo	?oligo.\n";
+    query << "?oligo	:oligoName	\"" << oligo_name << "\")\n";
+
+    ///how to represent linkages that are involved in this oligo, if there is any.???
+    ///meaning that how to iteratively go through :hasRoot and linkage of the mono
+    ///writing code to manipulate the argument of the function and based on that finding linkages?
+
+//    query << "?oligo	:hasRoot	?mono.\n";
+//    query << "?mono     :hasSugarName	?sn.\n";
+//    query << "?sn       :monosaccharideName 	?name.\n";
+//    query << "?sn       :monosaccharideShortName 	?short_name.\n";
+//    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+//    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
+//    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+
 
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
@@ -12950,21 +13023,6 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
         Monosaccharide* key = (*it).first;
         vector<Monosaccharide*> values = (*it).second;
 
-        //        cout << endl << key->mono_id << " >>> " ;
-        //        for(vector<Monosaccharide*>::iterator it1 = values.begin(); it1 != values.end(); it1++)
-        //        {
-        //            Monosaccharide* mono_val = (*it1);
-        //            cout << mono_val->mono_id << ", ";
-        //        }
-        //        cout << endl;
-        //        vector<string> link = monos_table_linkages[key];
-        //        for(vector<string>::iterator it1 = link.begin(); it1 != link.end(); it1++)
-        //        {
-        //            string l = (*it1);
-        //            cout << l << ", ";
-        //        }
-        //        cout << endl;
-
         vector<string> visited_linkages = vector<string>();
         if(find(visited_monos.begin(), visited_monos.end(), key->mono_id) == visited_monos.end())///if the mono is not visited
         {
@@ -12991,7 +13049,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
             }
             else if (values.size() == 1 && ///mono is attached to one other mono
                      (monos_table_linkages[values.at(0)].size() == 1))///the other mono is only attached to this mono
-            {                
+            {
                 stringstream other_mono_anomeric_linkage_as_right_side;
                 other_mono_anomeric_linkage_as_right_side << "-" << values.at(0)->cycle_atoms_.at(0)->GetId();///atom id on the right side of the linkage c-o-c
 
