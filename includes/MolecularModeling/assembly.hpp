@@ -676,6 +676,9 @@ namespace MolecularModeling
             std::string ExtractOntologyInfoByPDBID(std::string pdb_id);
             std::string ExtractOntologyInfoByStringChemicalCode(std::string chemical_code);
             std::string ExtractOntologyInfoByOligosaccharideNameSequence(std::string oligo_name);
+            std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::string oligo_name_pattern);
+            std::string ExtractOntologyInfoByByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation,
+                                                               std::string index_three_orientation, std::string index_four_orientation = "", std::string plus_one_orientation = "");
 
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm

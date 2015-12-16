@@ -10165,7 +10165,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
 
     query << "?pdb      :hasOligo	?oligo.\n";
-    query << "?oligo	:oligoName	\"" << oligo_name << "\")\n";
+    query << "?oligo	:oligoName	\"" << oligo_name << "\"\n";
 
     ///how to represent linkages that are involved in this oligo, if there is any.???
     ///meaning that how to iteratively go through :hasRoot and linkage of the mono
@@ -10177,10 +10177,51 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
 //    query << "?sn       :monosaccharideShortName 	?short_name.\n";
 //    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
 //    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
-//    query << Ontology::END_WHERE_CLAUSE;
+    query << Ontology::END_WHERE_CLAUSE;
     return query.str();
 }
+string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string oligo_name_pattern)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
+    query << "?pdb      :hasOligo	?oligo.\n";
+    query << "?oligo	:oligoName	?o_name).\n";
 
+    ///string manipulation
+    ///if stars are only at the end/beginning so something(1 filter)
+    ///else (more than 1 filter)
+
+        query << "?oligo	:hasRoot	?mono.\n";
+        query << "?mono     :hasSugarName	?sn.\n";
+        query << "?sn       :monosaccharideName 	?name.\n";
+        query << "?sn       :monosaccharideShortName 	?short_name.\n";
+        query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+        query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::ExtractOntologyInfoByByGlycanStructure(string ring_type, string anomeric_orientation, string minus_one_orientation, string index_two_orientation, string index_three_orientation,
+                                                        string index_four_orientation, string plus_one_orientation)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
+    query << "?pdb      :hasOligo       ?oligo.\n";
+    query << "?oligo	:hasRoot        ?mono.\n";
+
+    if(anomeric_orientation.compare("") != 0)
+    {
+        query << "?mono     :hasRingAtom	?anomeric.\n";
+        query << "?anomeric	:ringIndex  	\"1\".\n";
+        query << "?anomeric	:hasSideAtom    ?a_side.\n";
+        query << "?a_side	:sideIndex      \"1\".\n";
+        query << "?a_side	:orientation	\"" << anomeric_orientation << "\".\n";
+    }
+
+//	?oligo1 	:oligoName ?o_name
+
+      query << Ontology::END_WHERE_CLAUSE;
+      return query.str();
+ }
 
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
@@ -13341,7 +13382,7 @@ string Assembly::CheckOMETerminal(Atom* target, AtomVector& terminal_atoms)
             return "OME";
         }
     }
-    else return "";
+    return "";
 }
 string Assembly::CheckROHTerminal(Atom* target, AtomVector& terminal_atoms)
 {
@@ -13447,6 +13488,7 @@ string Assembly::CheckTBTTerminal(Atom *target, AtomVector& terminal_atoms)
                 }
             }
         }
+        cout << "temp" << temp.str() << endl;
         if(temp.str().compare("O-CCCC") == 0 || temp.str().compare("O-CCHHHCHHHCHHH") == 0 )
         {
             terminal_atoms = atoms_1;
@@ -13510,6 +13552,7 @@ string Assembly::CheckTBTTerminal(Atom *target, AtomVector& terminal_atoms)
                 }
             }
         }
+        cout << "pattern" << pattern.str() << endl;
         if(pattern.str().compare("O-CCCC") == 0 || pattern.str().compare("O-CCHHHCHHHCHHH") == 0 )
         {
             terminal_atoms = atoms_2;
