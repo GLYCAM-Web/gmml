@@ -9053,7 +9053,6 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
                 }
                 else // Terminal and mono have different names
                 {
-                    cout << oligo->terminal_ << " " << condensed_sequence_amber_residue_tree.at(index)->GetName() << endl;
                     pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                 }
             }
@@ -13491,7 +13490,6 @@ string Assembly::CheckTBTTerminal(Atom *target, AtomVector& terminal_atoms)
                 }
             }
         }
-        cout << "temp" << temp.str() << endl;
         if(temp.str().compare("O-CCCC") == 0 || temp.str().compare("O-CCHHHCHHHCHHH") == 0 )
         {
             terminal_atoms = atoms_1;
@@ -13555,7 +13553,6 @@ string Assembly::CheckTBTTerminal(Atom *target, AtomVector& terminal_atoms)
                 }
             }
         }
-        cout << "pattern" << pattern.str() << endl;
         if(pattern.str().compare("O-CCCC") == 0 || pattern.str().compare("O-CCHHHCHHHCHHH") == 0 )
         {
             terminal_atoms = atoms_2;
