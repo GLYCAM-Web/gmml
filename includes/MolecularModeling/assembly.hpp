@@ -51,6 +51,7 @@ namespace MolecularModeling
             typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
             typedef std::vector<Glycan::Oligosaccharide*> OligosaccharideVector;
             typedef std::map<int, int> AssemblytoPdbSequenceNumberMap;
+            typedef std::map<int, int> AssemblytoPdbSerialNumberMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -309,8 +310,9 @@ namespace MolecularModeling
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
+              * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly();
+            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1);
             /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
@@ -318,9 +320,12 @@ namespace MolecularModeling
             PdbqtFileSpace::PdbqtFile* BuildPdbqtFileStructureFromAssembly();
 
             void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
-                                                 AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map);
+                                                 AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map, AssemblytoPdbSerialNumberMap& assembly_to_pdb_serial_number_map);
             void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
-            void ExtractPdbLinkCardFromAssembly(PdbFileSpace::PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number);
+            void ExtractPdbLinkCardFromAssembly(PdbFileSpace::PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
+                                                int link_card_direction = -1);
+            void ExtractPdbConnectCardFromAssembly(PdbFileSpace::PdbConnectCard* connect_card,
+                                                   AssemblytoPdbSerialNumberMap assembly_to_pdb_serial_number);
             /*! \fn
               * A function to extract bonds from the current assembly object
               * @param inserted_bond_types Bond types that have been already detected in the assembly structure
@@ -778,16 +783,57 @@ namespace MolecularModeling
               */
             AtomVector ExtractAdditionalSideAtoms(Glycan::Monosaccharide* mono);
             /*! \fn
-              * A function in order to extract the probable derivatives that are attached to the side atoms of the ring
+              * A function in order to extract the probable derivatives that are attached to the side atoms of the ring and sets the derivative_map attribute of the monosaccharide
+              * Entry examples for the derivative map: [-1, derivative pattern] [a, derivative pattern] [2, derivative pattern] ... [+1, derivative pattern] [+2, derivative pattern]
               * @param mono The monosaccharide object
-              * @param cycle_atom_str The string version of atom identifiers of the cycle
               */
-            void ExtractDerivatives(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
+            void ExtractDerivatives(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to generate a complete name for the monosaccharide structure based on its derivatives
               * @param mono The monosaccharide object
               */
             void GenerateCompleteSugarName(Glycan::Monosaccharide* mono);
+            /*! \fn
+              * A function in order to add the modification info to the name of the sugar based on the first group of rules (No Bracket -> 2(r:6&!-1), Warning position -> a, Error Position -> 5(r6),4(r5) )
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern The long name pattern of the modification pattern which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param tail The stream that will be added to the end of monosaccharide name and will be updated by this function
+              * @param head The stream that will be added to the beginning of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */
+            void AddModificationRuleOneInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, std::string cond_name_pattern,
+                                            std::stringstream& head, std::stringstream& tail, bool minus_one, std::stringstream& in_bracket);
+            /*! \fn
+              * A function in order to add the modification info to the name of the sugar based on the first group of rules (No Bracket -> 2(r:6&!-1), Warning position -> a, Error Position -> 5(r6),4(r5) )
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern_at_minus_one The long name modification pattern for non-ring carbon attached to anomeric carbon which should be added to the sugar's long name
+              * @param long_name_pattern_at_minus_one The long name modification pattern for non-ring carbon attached to last ring carbon which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param tail The stream that will be added to the end of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */
+            void AddModificationRuleTwoInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern_at_minus_one, std::string long_name_pattern_at_plus_one,
+                                            std::string cond_name_pattern, std::stringstream& tail, bool minus_one, std::stringstream& in_bracket);
+            /*! \fn
+              * A function in order to add the derivative info to the name of the sugar based on the first group of rules (Error Position -> 5(r6),4(r5) )
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern The long name pattern of the modification pattern which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param head The stream that will be added to the beginning of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */
+            void AddDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, std::string cond_name_pattern,
+                                            std::stringstream& head, bool minus_one, std::stringstream& in_bracket);
             /*! \fn
               * A function in order to update the chemical code structure of a complex monosaccharide (monosaccharide with side atoms at position +2 and +3)
               * @param mono The monosaccharide object
