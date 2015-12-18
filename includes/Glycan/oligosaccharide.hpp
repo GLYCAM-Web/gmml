@@ -31,7 +31,12 @@ namespace Glycan
                 int linkage_index = 0;
                 std::stringstream ss;
                 if(terminal_.compare("") != 0)
-                    ss << "1-" << terminal_;
+                {
+                    if(root_->derivatives_map_.find("-1") == root_->derivatives_map_.end())
+                        ss << "1-" << terminal_;
+                    else
+                        ss << "2-" << terminal_;
+                }
                 oligosaccharide_name_ = ss.str();
 //                std::cout << root_->mono_id << std::endl;
                 bool is_cycle = false;
