@@ -29,9 +29,12 @@ namespace PdbPreprocessorSpace
               * @param residue_indersion_code_2 Insertion code of the second CYS residue involved in a disulfide bond
               * @param residue_alternate_location_1 Alternate location of the first CYS residue involved in a disulfide bond
               * @param resiude_alternate_location_2 Alternate location of the second CYS residue involved in a disulfide bond
+              * @param sulfur_atom_serial_number_1 Sulfur atom serial number of the first CYS residue involved in the disulfide bond
+              * @param sulfur_atom_serial_number_2 Sulfur atom serial number of the second CYS residue involved in the disulfide bond
               */
             PdbPreprocessorDisulfideBond(char chain_id_1, char chain_id_2, int residue_sequence_number_1, int residue_sequence_number_2, double distance, bool is_bonded,
-                                         char residue_insertion_code_1, char residue_insertion_code_2, char residue_alternate_location_1, char residue_alternate_location_2);
+                                         char residue_insertion_code_1, char residue_insertion_code_2, char residue_alternate_location_1, char residue_alternate_location_2,
+                                         int sulfur_atom_serial_number_1, int sulfur_atom_serial_number_2);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -86,7 +89,16 @@ namespace PdbPreprocessorSpace
               * @return residue_alternate_location_2_ attribute of the current object of this class
               */
             char GetResidueAlternateLocation2();
-
+            /*! \fn
+              * An accessor function in order to access to the sulfur atom serial number attribute of the first residue
+              * @return sulfur_atom_serial_number_1_ attribute of the current object of this class
+              */
+            int GetSulfurAtomSerialNumber1();
+            /*! \fn
+              * An accessor function in order to access to the sulfur atom serial number attribute of the second residue
+              * @return sulfur_atom_serial_number_2_ attribute of the current object of this class
+              */
+            int GetSulfurAtomSerialNumber2();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -151,7 +163,18 @@ namespace PdbPreprocessorSpace
               * @param residue_alternate_location_2 The residue alternate location 2 attribute of the current object
               */
             void SetResidueAlternateLocation2(char residue_alternate_location_2);
-
+            /*! \fn
+              * A mutator function in order to set the first sulfur atom serial number of the current object
+              * Set the sulfur_atom_serial_number_1_ attribute of the current pdb preprocessor disulfide bond
+              * @param sulfur_atom_serial_number_1 The first sulfur atom serial number attribute of the current object
+              */
+            void SetSulfurAtomSerialNumber1(int sulfur_atom_serial_number_1);
+            /*! \fn
+              * A mutator function in order to set the second sulfur atom serial number of the current object
+              * Set the sulfur_atom_serial_number_2_ attribute of the current pdb preprocessor disulfide bond
+              * @param sulfur_atom_serial_number_2 The second sulfur atom serial number attribute of the current object
+              */
+            void SetSulfurAtomSerialNumber2(int sulfur_atom_serial_number_2);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -176,6 +199,8 @@ namespace PdbPreprocessorSpace
             char residue_insertion_code_2_;             /*!< Insertion code of the second CYS residue involved in the disulfide bond >*/
             char residue_alternate_location_1_;         /*!< Alternate location of the first CYS residue involved in the disulfide bond >*/
             char residue_alternate_location_2_;         /*!< Alternate location of the second CYS residue involved in the disulfide bond >*/
+            int sulfur_atom_serial_number_1_;           /*!< Sulfur atom serial number of the first CYS residue involved in the disulfide bond >*/
+            int sulfur_atom_serial_number_2_;           /*!< Sulfur atom serial number of the second CYS residue involved in the disulfide bond >*/
 
     };
 }

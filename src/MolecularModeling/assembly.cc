@@ -2726,7 +2726,7 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
     name_ = ss.str();
 }
 
-PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
+PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction)
 {
     cout << "Creating PDB file" << endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDB file ...");
@@ -2748,9 +2748,11 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly()
     ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number, model_index_, assembly_to_sequence_number_map);
 
     PdbLinkCard* link_card = new PdbLinkCard();
-    ExtractPdbLinkCardFromAssembly(link_card, model_index_, assembly_to_sequence_number_map);
+    ExtractPdbLinkCardFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
     link_card->SetRecordName("LINK");
     pdb_file->SetLinks(link_card);
+
+    PdbConnectCard* connect_card = new PdbConnectCard();
 
     model->SetModelResidueSet(residue_set);
     models[1] = model;
@@ -2991,7 +2993,8 @@ void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtModelResidueSet* residue_s
     residue_set->SetAtoms(atom_card);
 }
 
-void Assembly::ExtractPdbLinkCardFromAssembly(PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number)
+void Assembly::ExtractPdbLinkCardFromAssembly(PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
+                                              int link_card_direction)
 {
     PdbLinkCard::LinkVector link_vector = PdbLinkCard::LinkVector();
     vector<string> visited_links = vector<string>();
@@ -3001,8 +3004,12 @@ void Assembly::ExtractPdbLinkCardFromAssembly(PdbLinkCard* link_card, int model_
         Atom* atom = (*it);
         Residue* residue = atom->GetResidue();
         AtomNode* node = atom->GetNode();
-        AtomVector neighbors = node->GetNodeNeighbors();
-        if((atom->GetName().find("C") != string::npos) && (find(visited_links.begin(), visited_links.end(), atom->GetId()) == visited_links.end()))
+        AtomVector neighbors = node->GetNodeNeighbors();        
+
+        if((link_card_direction == 1 && (atom->GetName().find("C") != string::npos) &&
+                (find(visited_links.begin(), visited_links.end(), atom->GetId()) == visited_links.end())) ||
+                (link_card_direction == -1 && (atom->GetName().find("O") != string::npos) &&
+                                (find(visited_links.begin(), visited_links.end(), atom->GetId()) == visited_links.end())))
         {
             for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {

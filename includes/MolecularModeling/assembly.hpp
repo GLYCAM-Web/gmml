@@ -309,8 +309,9 @@ namespace MolecularModeling
             /*! \fn
               * A function to build a pdb file structure from the current assembly object
               * Exports data from assembly data structure into pdb file structure
+              * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly();
+            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1);
             /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
@@ -320,7 +321,8 @@ namespace MolecularModeling
             void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
                                                  AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map);
             void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
-            void ExtractPdbLinkCardFromAssembly(PdbFileSpace::PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number);
+            void ExtractPdbLinkCardFromAssembly(PdbFileSpace::PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
+                                                int link_card_direction = -1);
             /*! \fn
               * A function to extract bonds from the current assembly object
               * @param inserted_bond_types Bond types that have been already detected in the assembly structure

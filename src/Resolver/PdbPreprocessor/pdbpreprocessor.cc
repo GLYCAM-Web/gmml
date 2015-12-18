@@ -12,6 +12,7 @@
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
@@ -913,11 +914,15 @@ PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetAllCYSResidues(PdbFi
     return all_cys_residues;
 }
 
-double PdbPreprocessor::GetDistanceofCYS(PdbResidue* first_residue, PdbResidue* second_residue, PdbFile* pdb_file, PdbFile::PdbResidueAtomsMap residue_atom_map)
+double PdbPreprocessor::GetDistanceofCYS(PdbResidue *first_residue, PdbResidue *second_residue, PdbFile *pdb_file,
+                                         PdbFile::PdbResidueAtomsMap residue_atom_map, int &first_sulfur_atom_serial_number,
+                                         int &second_sulfur_atom_serial_number)
 {
     double distance = 0.0;
     PdbAtom* first_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(first_residue, "SG", residue_atom_map);
     PdbAtom* second_residue_sulfur_atom = pdb_file->GetAtomOfResidueByName(second_residue, "SG", residue_atom_map);
+    first_sulfur_atom_serial_number = first_residue_sulfur_atom->GetAtomSerialNumber();
+    second_sulfur_atom_serial_number = second_residue_sulfur_atom->GetAtomSerialNumber();
     if(first_residue_sulfur_atom != NULL && second_residue_sulfur_atom != NULL)
         distance = first_residue_sulfur_atom->GetAtomOrthogonalCoordinate().Distance(second_residue_sulfur_atom->GetAtomOrthogonalCoordinate());
     return distance;
@@ -937,14 +942,18 @@ bool PdbPreprocessor::ExtractCYSResidues(string pdb_file_path)
             for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = it+1 ; it1 != cys_residues.end(); it1++)
             {
                 PdbResidue* second_residue = (*it1);
-                double distance = GetDistanceofCYS(first_residue, second_residue, pdb_file, residue_atom_map);
+                int first_sulfur_atom_serial_number;
+                int second_sulfur_atom_serial_number;
+                double distance = GetDistanceofCYS(first_residue, second_residue, pdb_file, residue_atom_map, first_sulfur_atom_serial_number,
+                                                   second_sulfur_atom_serial_number);
                 if (distance < dSulfurCutoff)
                 {
                     PdbPreprocessorDisulfideBond* disulfide_bond =
                             new PdbPreprocessorDisulfideBond(first_residue->GetResidueChainId(), second_residue->GetResidueChainId(),
                                                              first_residue->GetResidueSequenceNumber(), second_residue->GetResidueSequenceNumber(),
                                                              distance, true, first_residue->GetResidueInsertionCode(), second_residue->GetResidueInsertionCode(),
-                                                             first_residue->GetResidueAlternateLocation(), second_residue->GetResidueAlternateLocation() );
+                                                             first_residue->GetResidueAlternateLocation(), second_residue->GetResidueAlternateLocation(),
+                                                             first_sulfur_atom_serial_number, second_sulfur_atom_serial_number);
                     disulfide_bonds_.push_back(disulfide_bond);
                 }
             }
@@ -966,14 +975,18 @@ bool PdbPreprocessor::ExtractCYSResidues(PdbFile* pdb_file)
         for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = it+1 ; it1 != cys_residues.end(); it1++)
         {
             PdbResidue* second_residue = (*it1);
-            double distance = GetDistanceofCYS(first_residue, second_residue, pdb_file, residue_atom_map);
+            int first_sulfur_atom_serial_number;
+            int second_sulfur_atom_serial_number;
+            double distance = GetDistanceofCYS(first_residue, second_residue, pdb_file, residue_atom_map, first_sulfur_atom_serial_number,
+                                               second_sulfur_atom_serial_number);
             if (distance < dSulfurCutoff)
             {
                 PdbPreprocessorDisulfideBond* disulfide_bond =
                         new PdbPreprocessorDisulfideBond(first_residue->GetResidueChainId(), second_residue->GetResidueChainId(),
                                                          first_residue->GetResidueSequenceNumber(), second_residue->GetResidueSequenceNumber(),
                                                          distance, true, first_residue->GetResidueInsertionCode(), second_residue->GetResidueInsertionCode(),
-                                                         first_residue->GetResidueAlternateLocation(), second_residue->GetResidueAlternateLocation() );
+                                                         first_residue->GetResidueAlternateLocation(), second_residue->GetResidueAlternateLocation(),
+                                                         first_sulfur_atom_serial_number, second_sulfur_atom_serial_number);
                 disulfide_bonds_.push_back(disulfide_bond);
             }
         }
@@ -1029,7 +1042,32 @@ void PdbPreprocessor::UpdateCYSResidues(PdbFile *pdb_file, PdbPreprocessorDisulf
                     }
                 }
             }
-
+            PdbConnectCard* pdb_connect_card;
+            if(pdb_file->GetConnectivities() == NULL)
+            {
+                pdb_connect_card = new PdbConnectCard();
+            }
+            else
+            {
+                pdb_connect_card = pdb_file->GetConnectivities();
+            }
+            PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_serial_numbers_map = pdb_connect_card->GetBondedAtomsSerialNumbers();
+            if(bonded_atoms_serial_numbers_map.find(disulfide_bond->GetSulfurAtomSerialNumber1()) != bonded_atoms_serial_numbers_map.end())
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber1()].push_back(disulfide_bond->GetSulfurAtomSerialNumber2());
+            else
+            {
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber1()] = vector<int>();
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber1()].push_back(disulfide_bond->GetSulfurAtomSerialNumber2());
+            }
+            if(bonded_atoms_serial_numbers_map.find(disulfide_bond->GetSulfurAtomSerialNumber2()) != bonded_atoms_serial_numbers_map.end())
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber2()].push_back(disulfide_bond->GetSulfurAtomSerialNumber1());
+            else
+            {
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber2()] = vector<int>();
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber2()].push_back(disulfide_bond->GetSulfurAtomSerialNumber1());
+            }
+            pdb_connect_card->SetBondedAtomsSerialNumbers(bonded_atoms_serial_numbers_map);
+            pdb_file->SetConnectivities(pdb_connect_card);
         }
     }
     DeleteAllToBeDeletedEntities(pdb_file);
@@ -1084,7 +1122,33 @@ void PdbPreprocessor::UpdateCYSResiduesWithTheGivenModelNumber(PdbFile *pdb_file
                     }
                 }
             }
+            PdbConnectCard* pdb_connect_card;
+            if(pdb_file->GetConnectivities() == NULL)
+            {
+                pdb_connect_card = new PdbConnectCard();
+            }
+            else
+            {
+                pdb_connect_card = pdb_file->GetConnectivities();
+            }
+            PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_serial_numbers_map = pdb_connect_card->GetBondedAtomsSerialNumbers();
+            if(bonded_atoms_serial_numbers_map.find(disulfide_bond->GetSulfurAtomSerialNumber1()) != bonded_atoms_serial_numbers_map.end())
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber1()].push_back(disulfide_bond->GetSulfurAtomSerialNumber2());
+            else
+            {
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber1()] = vector<int>();
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber1()].push_back(disulfide_bond->GetSulfurAtomSerialNumber2());
+            }
+            if(bonded_atoms_serial_numbers_map.find(disulfide_bond->GetSulfurAtomSerialNumber2()) != bonded_atoms_serial_numbers_map.end())
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber2()].push_back(disulfide_bond->GetSulfurAtomSerialNumber1());
+            else
+            {
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber2()] = vector<int>();
+                bonded_atoms_serial_numbers_map[disulfide_bond->GetSulfurAtomSerialNumber2()].push_back(disulfide_bond->GetSulfurAtomSerialNumber1());
+            }
 
+            pdb_connect_card->SetBondedAtomsSerialNumbers(bonded_atoms_serial_numbers_map);
+            pdb_file->SetConnectivities(pdb_connect_card);
         }
     }
     DeleteAllToBeDeletedEntitiesWithTheGivenModelNumber(pdb_file, model_number);
@@ -3713,7 +3777,7 @@ void PdbPreprocessor::Preprocess(PdbFile* pdb_file, vector<string> amino_lib_fil
         gmml::log(__LINE__, __FILE__,  gmml::INF, model_charge.str() );
         stringstream model_done;
         model_done << time_str.substr(0, time_str.size() - 1) << "Model charge calculation: done" ;
-        cout << model_done << endl;
+        cout << model_done.str() << endl;
         gmml::log(__LINE__, __FILE__,  gmml::INF, model_done.str() );
         t = time(0);
         time_str = std::asctime(std::localtime(&t));

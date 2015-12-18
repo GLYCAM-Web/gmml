@@ -436,9 +436,13 @@ namespace PdbPreprocessorSpace
               * @param second_residue The second residue of CYS pair
               * @param pdb_file Pdb file object
               * @param residue_atom_map A map between a residue and its atoms
+              * @param first_sulfur_atom_serial_number Serial number of the sulfur atom in the first residue
+              * @param second_sulfur_atom_serial_number Serial number of the sulfur atom in the second residue
               * @return distance
               */
-            double GetDistanceofCYS(PdbFileSpace::PdbResidue* first_residue, PdbFileSpace::PdbResidue* second_residue, PdbFileSpace::PdbFile* pdb_file, PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atom_map);
+            double GetDistanceofCYS(PdbFileSpace::PdbResidue* first_residue, PdbFileSpace::PdbResidue* second_residue,
+                                    PdbFileSpace::PdbFile* pdb_file, PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atom_map,
+                                    int& first_sulfur_atom_serial_number, int& second_sulfur_atom_serial_number);
             /*! \fn
               * A function in order to extract the CYS residues of a pdb file
               * @param pdb_file_path The path to the pdb file
