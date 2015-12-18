@@ -51,6 +51,7 @@ namespace MolecularModeling
             typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
             typedef std::vector<Glycan::Oligosaccharide*> OligosaccharideVector;
             typedef std::map<int, int> AssemblytoPdbSequenceNumberMap;
+            typedef std::map<int, int> AssemblytoPdbSerialNumberMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -319,10 +320,12 @@ namespace MolecularModeling
             PdbqtFileSpace::PdbqtFile* BuildPdbqtFileStructureFromAssembly();
 
             void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
-                                                 AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map);
+                                                 AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map, AssemblytoPdbSerialNumberMap& assembly_to_pdb_serial_number_map);
             void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
             void ExtractPdbLinkCardFromAssembly(PdbFileSpace::PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
                                                 int link_card_direction = -1);
+            void ExtractPdbConnectCardFromAssembly(PdbFileSpace::PdbConnectCard* connect_card,
+                                                   AssemblytoPdbSerialNumberMap assembly_to_pdb_serial_number);
             /*! \fn
               * A function to extract bonds from the current assembly object
               * @param inserted_bond_types Bond types that have been already detected in the assembly structure

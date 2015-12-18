@@ -2745,7 +2745,9 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction)
     int sequence_number = 1;
 
     AssemblytoPdbSequenceNumberMap assembly_to_sequence_number_map = AssemblytoPdbSequenceNumberMap();
-    ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number, model_index_, assembly_to_sequence_number_map);
+    AssemblytoPdbSerialNumberMap assembly_to_serial_number_map = AssemblytoPdbSerialNumberMap();
+    ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number, model_index_, assembly_to_sequence_number_map,
+                                    assembly_to_serial_number_map);
 
     PdbLinkCard* link_card = new PdbLinkCard();
     ExtractPdbLinkCardFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
@@ -2753,6 +2755,8 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction)
     pdb_file->SetLinks(link_card);
 
     PdbConnectCard* connect_card = new PdbConnectCard();
+    ExtractPdbConnectCardFromAssembly(connect_card, assembly_to_serial_number_map);
+    pdb_file->SetConnectivities(connect_card);
 
     model->SetModelResidueSet(residue_set);
     models[1] = model;
@@ -2787,7 +2791,8 @@ PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
 }
 
 void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
-                                               AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map)
+                                               AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map,
+                                               AssemblytoPdbSerialNumberMap& assembly_to_pdb_serial_number_map)
 {
     for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
     {
@@ -2795,7 +2800,8 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
         AssemblyVector assemblies = assembly->GetAssemblies();
         for(AssemblyVector::iterator it1 = assemblies.begin(); it1 != assemblies.end(); it1++)
         {
-            ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number, model_number, assembly_to_pdb_sequence_number_map);
+            ExtractPdbModelCardFromAssembly(residue_set, serial_number, sequence_number, model_number, assembly_to_pdb_sequence_number_map,
+                                            assembly_to_pdb_serial_number_map);
         }
         PdbAtomCard* atom_card = new PdbAtomCard();
         PdbHeterogenAtomCard* het_atom_card = new PdbHeterogenAtomCard();
@@ -2821,6 +2827,7 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
                 pdb_atom->SetAtomInsertionCode(ConvertString<char>(atom_id_tokens.at(5)));
                 pdb_atom->SetAtomAlternateLocation(ConvertString<char>(atom_id_tokens.at(6)));
                 assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
+                assembly_to_pdb_serial_number_map[ConvertString<int>(atom_id_tokens.at(1))] = serial_number;
                 if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
                 {
                     atom_map[serial_number] = pdb_atom;
@@ -2872,6 +2879,7 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
             pdb_atom->SetAtomInsertionCode(ConvertString<char>(atom_id_tokens.at(5)));
             pdb_atom->SetAtomAlternateLocation(ConvertString<char>(atom_id_tokens.at(6)));
             assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
+            assembly_to_pdb_serial_number_map[ConvertString<int>(atom_id_tokens.at(1))] = serial_number;
             if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
             {
 
@@ -3004,53 +3012,81 @@ void Assembly::ExtractPdbLinkCardFromAssembly(PdbLinkCard* link_card, int model_
         Atom* atom = (*it);
         Residue* residue = atom->GetResidue();
         AtomNode* node = atom->GetNode();
-        AtomVector neighbors = node->GetNodeNeighbors();        
-
-        if((link_card_direction == 1 && (atom->GetName().find("C") != string::npos) &&
-                (find(visited_links.begin(), visited_links.end(), atom->GetId()) == visited_links.end())) ||
-                (link_card_direction == -1 && (atom->GetName().find("O") != string::npos) &&
-                                (find(visited_links.begin(), visited_links.end(), atom->GetId()) == visited_links.end())))
+        if(node != NULL)
         {
-            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+            AtomVector neighbors = node->GetNodeNeighbors();
+
+            if((link_card_direction == 1 && (atom->GetName().find("C") != string::npos) &&
+                (find(visited_links.begin(), visited_links.end(), atom->GetId()) == visited_links.end())) ||
+                    (link_card_direction == -1 && (atom->GetName().find("O") != string::npos) &&
+                     (find(visited_links.begin(), visited_links.end(), atom->GetId()) == visited_links.end())))
             {
-                Atom* neighbor = (*it1);
-                Residue* neighbor_residue = neighbor->GetResidue();
-                if(find(visited_links.begin(), visited_links.end(), neighbor->GetId()) == visited_links.end())
+                for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
                 {
-                    if(residue->GetId().compare(neighbor_residue->GetId()) != 0)
+                    Atom* neighbor = (*it1);
+                    Residue* neighbor_residue = neighbor->GetResidue();
+                    if(find(visited_links.begin(), visited_links.end(), neighbor->GetId()) == visited_links.end())
                     {
-                        visited_links.push_back(atom->GetId());
-                        visited_links.push_back(neighbor->GetId());
-                        PdbLinkResidue* link_residue1 = new PdbLinkResidue();
-                        vector<string> atom_id_tokens = Split(atom->GetId(), "_");
-                        link_residue1->SetAtomName(atom->GetName());
-                        link_residue1->SetResidueChainId(ConvertString<char>(atom_id_tokens.at(3)));
-                        link_residue1->SetResidueSequenceNumber(assembly_to_pdb_sequence_number[ConvertString<int>(atom_id_tokens.at(4))]);
-                        link_residue1->SetResidueInsertionCode(ConvertString<char>(atom_id_tokens.at(5)));
-                        link_residue1->SetAlternateLocationIndicator(ConvertString<char>(atom_id_tokens.at(6)));
-                        link_residue1->SetResidueName(residue->GetName());
-                        PdbLinkResidue* link_residue2 = new PdbLinkResidue();
-                        vector<string> neighbor_id_tokens = Split(neighbor->GetId(), "_");
-                        link_residue2->SetAtomName(neighbor->GetName());
-                        link_residue2->SetResidueChainId(ConvertString<char>(neighbor_id_tokens.at(3)));
-                        link_residue2->SetResidueSequenceNumber(assembly_to_pdb_sequence_number[ConvertString<int>(neighbor_id_tokens.at(4))]);
-                        link_residue2->SetResidueInsertionCode(ConvertString<char>(neighbor_id_tokens.at(5)));
-                        link_residue2->SetAlternateLocationIndicator(ConvertString<char>(neighbor_id_tokens.at(6)));
-                        link_residue2->SetResidueName(neighbor_residue->GetName());
+                        if(residue->GetId().compare(neighbor_residue->GetId()) != 0)
+                        {
+                            visited_links.push_back(atom->GetId());
+                            visited_links.push_back(neighbor->GetId());
+                            PdbLinkResidue* link_residue1 = new PdbLinkResidue();
+                            vector<string> atom_id_tokens = Split(atom->GetId(), "_");
+                            link_residue1->SetAtomName(atom->GetName());
+                            link_residue1->SetResidueChainId(ConvertString<char>(atom_id_tokens.at(3)));
+                            link_residue1->SetResidueSequenceNumber(assembly_to_pdb_sequence_number[ConvertString<int>(atom_id_tokens.at(4))]);
+                            link_residue1->SetResidueInsertionCode(ConvertString<char>(atom_id_tokens.at(5)));
+                            link_residue1->SetAlternateLocationIndicator(ConvertString<char>(atom_id_tokens.at(6)));
+                            link_residue1->SetResidueName(residue->GetName());
+                            PdbLinkResidue* link_residue2 = new PdbLinkResidue();
+                            vector<string> neighbor_id_tokens = Split(neighbor->GetId(), "_");
+                            link_residue2->SetAtomName(neighbor->GetName());
+                            link_residue2->SetResidueChainId(ConvertString<char>(neighbor_id_tokens.at(3)));
+                            link_residue2->SetResidueSequenceNumber(assembly_to_pdb_sequence_number[ConvertString<int>(neighbor_id_tokens.at(4))]);
+                            link_residue2->SetResidueInsertionCode(ConvertString<char>(neighbor_id_tokens.at(5)));
+                            link_residue2->SetAlternateLocationIndicator(ConvertString<char>(neighbor_id_tokens.at(6)));
+                            link_residue2->SetResidueName(neighbor_residue->GetName());
 
-                        PdbLink* pdb_link = new PdbLink();
-                        pdb_link->AddResidue(link_residue1);
-                        pdb_link->AddResidue(link_residue2);
-                        double distance = atom->GetCoordinates().at(model_index)->Distance(*(neighbor->GetCoordinates().at(model_index)));
-                        pdb_link->SetLinkLength(distance);
+                            PdbLink* pdb_link = new PdbLink();
+                            pdb_link->AddResidue(link_residue1);
+                            pdb_link->AddResidue(link_residue2);
+                            double distance = atom->GetCoordinates().at(model_index)->Distance(*(neighbor->GetCoordinates().at(model_index)));
+                            pdb_link->SetLinkLength(distance);
 
-                        link_vector.push_back(pdb_link);
+                            link_vector.push_back(pdb_link);
+                        }
                     }
                 }
             }
         }
     }
     link_card->SetResidueLinks(link_vector);
+}
+
+void Assembly::ExtractPdbConnectCardFromAssembly(PdbConnectCard *connect_card, AssemblytoPdbSerialNumberMap assembly_to_pdb_serial_number)
+{
+    PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_serial_number_map = PdbConnectCard::BondedAtomsSerialNumbersMap();
+    AtomVector all_atoms = this->GetAllAtomsOfAssembly();
+    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    {
+        Atom* atom = *it;
+        AtomNode* node = atom->GetNode();
+        if(node != NULL)
+        {
+            AtomVector neighbors = node->GetNodeNeighbors();
+            vector<string> atom_id_tokens = Split(atom->GetId(), "_");
+            int atom_serial_number = assembly_to_pdb_serial_number[ConvertString<int>(atom_id_tokens.at(1))];
+            bonded_atoms_serial_number_map[atom_serial_number] = vector<int>();
+            for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+            {
+                Atom* neighbor = *it1;
+                vector<string> neighbor_id_tokens = Split(neighbor->GetId(), "_");
+                bonded_atoms_serial_number_map[atom_serial_number].push_back(assembly_to_pdb_serial_number[ConvertString<int>(neighbor_id_tokens.at(1))]);
+            }
+        }
+    }
+    connect_card->SetBondedAtomsSerialNumbers(bonded_atoms_serial_number_map);
 }
 
 PrepFile* Assembly::BuildPrepFileStructureFromAssembly(string parameter_file_path)
