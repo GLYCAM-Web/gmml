@@ -11365,8 +11365,9 @@ string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str)
                 pattern << n_neighbor->GetName().at(0);
         }
     }
-    //    cout << "CheckxC_N:" << pattern.str() << endl;
-    if(pattern.str().compare("xCH-NHH") == 0 || pattern.str().compare("xC-N") == 0 || pattern.str().compare("xCHH-NHH") == 0 )
+//        cout << "CheckxC_N:" << pattern.str() << endl;
+    if(pattern.str().compare("xCH-NHH") == 0 || pattern.str().compare("xC-N") == 0 || pattern.str().compare("xCHH-NHH") == 0 || pattern.str().compare("xCH-N") == 0  ||
+            pattern.str().compare("xCHH-N") == 0 || pattern.str().compare("xC-NHH") == 0)
         return "xCH-N";
     else
         return "";
@@ -11450,17 +11451,21 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
             }
         }
     }
-    //        cout << "CheckxC_NxO_CO_C:" << pattern.str() << endl;
+//            cout << "CheckxC_NxO_CO_C:" << pattern.str() << endl;
     if(NxO == 'N')
     {
-        if(pattern.str().compare("xCH-NH-CO-CHHH") == 0 || pattern.str().compare("xC-N-CO-C") == 0 || pattern.str().compare("xCHH-NH-CO-CHHH") == 0 )
+        if(pattern.str().compare("xCH-NH-CO-CHHH") == 0 || pattern.str().compare("xC-N-CO-C") == 0 || pattern.str().compare("xCHH-NH-CO-CHHH") == 0 || pattern.str().compare("xC-NH-CO-CHHH") == 0 ||
+                pattern.str().compare("xC-N-CO-CHHH") == 0 || pattern.str().compare("xC-NH-CO-C") == 0 || pattern.str().compare("xCHH-N-CO-CHHH") == 0 || pattern.str().compare("xCHH-NH-CO-C") == 0 ||
+                pattern.str().compare("xCHH-N-CO-C") == 0 || pattern.str().compare("xCH-N-CO-CHHH") == 0 || pattern.str().compare("xCH-NH-CO-C") == 0 || pattern.str().compare("xCH-N-CO-C") == 0 )
             return "xC-N-C=OCH3";
         else
             return "";
     }
     else if(NxO == 'O')
     {
-        if(pattern.str().compare("xCH-OH-CO-CHHH") == 0 || pattern.str().compare("xC-O-CO-C") == 0 || pattern.str().compare("xCHH-OH-CO-CHHH") == 0 )
+        if(pattern.str().compare("xCH-OH-CO-CHHH") == 0 || pattern.str().compare("xC-O-CO-C") == 0 || pattern.str().compare("xCHH-OH-CO-CHHH") == 0 || pattern.str().compare("xC-OH-CO-CHHH") == 0 ||
+                pattern.str().compare("xC-O-CO-CHHH") == 0 || pattern.str().compare("xC-OH-CO-C") == 0 || pattern.str().compare("xCHH-O-CO-CHHH") == 0 || pattern.str().compare("xCHH-OH-CO-C") == 0 ||
+                pattern.str().compare("xCHH-O-CO-C") == 0 || pattern.str().compare("xCH-O-CO-CHHH") == 0 || pattern.str().compare("xCH-OH-CO-C") == 0 || pattern.str().compare("xCH-O-CO-C") == 0)
             return "xC-O-C=OCH3";
         else
             return "";
@@ -11563,17 +11568,32 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
             }
         }
     }
-    //    cout << "CheckxC_NxO_CO_CO: " << pattern.str() << endl;
+//        cout << "CheckxC_NxO_CO_CO: " << pattern.str() << endl;
     if(NxO == 'N')
     {
-        if(pattern.str().compare("xCH-NH-CO-CHH-OH") == 0 || pattern.str().compare("xC-N-CO-C-O") == 0 || pattern.str().compare("xCHH-NH-CO-CHH-OH") == 0 )
+        if(pattern.str().compare("xCH-NH-CO-CHH-OH") == 0 || pattern.str().compare("xCH-N-CO-CHH-OH") == 0 || pattern.str().compare("xCH-NH-CO-C-OH") == 0 ||
+                pattern.str().compare("xCH-NH-CO-CHH-O") == 0 || pattern.str().compare("xCH-N-CO-C-OH") == 0 || pattern.str().compare("xCH-N-CO-CHH-O") == 0 ||
+                pattern.str().compare("xCH-NH-CO-C-OH") == 0 || pattern.str().compare("xCH-N-CO-C-O") == 0 || pattern.str().compare("xC-N-CO-C-O") == 0 ||
+                pattern.str().compare("xC-NH-CO-C-O") == 0 || pattern.str().compare("xC-NH-CO-C-OH") == 0 || pattern.str().compare("xC-NH-CO-CHH-O") == 0 ||
+                pattern.str().compare("xC-N-CO-CHH-O") == 0 || pattern.str().compare("xC-N-CO-C-OH") == 0 || pattern.str().compare("xC-NH-CO-CHH-OH") == 0 ||
+                pattern.str().compare("xC-N-CO-CHH-OH") == 0 || pattern.str().compare("xCHH-NH-CO-CHH-OH") == 0 || pattern.str().compare("xCHH-N-CO-C-O") == 0 ||
+                pattern.str().compare("xCHH-N-CO-CHH-OH") == 0 || pattern.str().compare("xCHH-N-CO-CHH-O") == 0 || pattern.str().compare("xCHH-N-CO-C-OH") == 0 ||
+                pattern.str().compare("xCHH-NH-CO-C-OH") == 0 || pattern.str().compare("xCHH-NH-CO-CHH-O") == 0 || pattern.str().compare("xCHH-NH-CO-C-O") == 0 )
             return "xC-N-C=OCH2OH";
         else
             return "";
     }
     else if(NxO == 'O')
     {
-        if(pattern.str().compare("xCH-OH-CO-CHH-OH") == 0 || pattern.str().compare("xC-O-CO-C-O") == 0 || pattern.str().compare("xCHH-OH-CO-CHH-OH") == 0 )
+        if(pattern.str().compare("xCH-OH-CO-CHH-OH") == 0 || pattern.str().compare("xCH-O-CO-CHH-OH") == 0 || pattern.str().compare("xCH-OH-CO-C-OH") == 0 ||
+                pattern.str().compare("xCH-OH-CO-CHH-O") == 0 || pattern.str().compare("xCH-O-CO-C-OH") == 0 || pattern.str().compare("xCH-O-CO-CHH-O") == 0 ||
+                pattern.str().compare("xCH-OH-CO-C-OH") == 0 || pattern.str().compare("xCH-O-CO-C-O") == 0 || pattern.str().compare("xC-O-CO-C-O") == 0 ||
+                pattern.str().compare("xC-OH-CO-C-O") == 0 || pattern.str().compare("xC-OH-CO-C-OH") == 0 || pattern.str().compare("xC-OH-CO-CHH-O") == 0 ||
+                pattern.str().compare("xC-O-CO-CHH-O") == 0 || pattern.str().compare("xC-O-CO-C-OH") == 0 || pattern.str().compare("xC-OH-CO-CHH-OH") == 0 ||
+                pattern.str().compare("xC-O-CO-CHH-OH") == 0 || pattern.str().compare("xCHH-OH-CO-CHH-OH") == 0 || pattern.str().compare("xCHH-O-CO-C-O") == 0 ||
+                pattern.str().compare("xCHH-O-CO-CHH-OH") == 0 || pattern.str().compare("xCHH-O-CO-CHH-O") == 0 || pattern.str().compare("xCHH-O-CO-C-OH") == 0 ||
+                pattern.str().compare("xCHH-OH-CO-C-OH") == 0 || pattern.str().compare("xCHH-OH-CO-CHH-O") == 0 || pattern.str().compare("xCHH-OH-CO-C-O") == 0 )
+
             return "xC-O-C=OCH2OH";
         else
             return "";
@@ -11662,20 +11682,21 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
             }
         }
     }
-    //    cout << "CheckxC_NxO_SO3: " << pattern.str() << endl;
+//        cout << "CheckxC_NxO_SO3: " << pattern.str() << endl;
     if(NxO == 'N')
     {
-        if(pattern.str().compare("xCH-NH-SOOOH") == 0 || pattern.str().compare("xCHH-NH-SOOOH") == 0 || pattern.str().compare("xC-N-SOOO") == 0 ||
-                pattern.str().compare("xCH-NH-SOOO") == 0 || pattern.str().compare("xCHH-NH-SOOO") == 0)
+        if(pattern.str().compare("xCH-NH-SOOOH") == 0 || pattern.str().compare("xCH-N-SOOOH") == 0 || pattern.str().compare("xCH-NH-SOOO") == 0 || pattern.str().compare("xCH-N-SOOO") == 0 ||
+                pattern.str().compare("xCHH-NH-SOOOH") == 0 || pattern.str().compare("xCHH-NH-SOOO") == 0 || pattern.str().compare("xCHH-N-SOOOH") == 0 || pattern.str().compare("xCHH-N-SOOO") == 0 ||
+                pattern.str().compare("xC-N-SOOO") == 0 || pattern.str().compare("xC-NH-SOOOH") == 0 || pattern.str().compare("xC-N-SOOOH") == 0 || pattern.str().compare("xC-NH-SOOO") == 0 )
             return "xC-N-SO3";
         else
             return "";
     }
     else if(NxO == 'O')
     {
-        if(pattern.str().compare("xCH-O-SOOOH") == 0 || pattern.str().compare("xCHH-O-SOOOH") == 0 || pattern.str().compare("xC-O-SOOO") == 0 ||
-                pattern.str().compare("xCH-O-SOOO") == 0 || pattern.str().compare("xCHH-O-SOOO") == 0)
-            return "xC-O-SO3";
+        if(pattern.str().compare("xCH-OH-SOOOH") == 0 || pattern.str().compare("xCH-O-SOOOH") == 0 || pattern.str().compare("xCH-OH-SOOO") == 0 || pattern.str().compare("xCH-O-SOOO") == 0 ||
+                pattern.str().compare("xCHH-OH-SOOOH") == 0 || pattern.str().compare("xCHH-OH-SOOO") == 0 || pattern.str().compare("xCHH-O-SOOOH") == 0 || pattern.str().compare("xCHH-O-SOOO") == 0 ||
+                pattern.str().compare("xC-O-SOOO") == 0 || pattern.str().compare("xC-OH-SOOOH") == 0 || pattern.str().compare("xC-O-SOOOH") == 0 || pattern.str().compare("xC-OH-SOOO") == 0 )            return "xC-O-SO3";
         else
             return "";
     }
@@ -11763,20 +11784,21 @@ string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
             }
         }
     }
-    //    cout << "CheckxC_NxO_PO3: " << pattern.str() << endl;
+//        cout << "CheckxC_NxO_PO3: " << pattern.str() << endl;
     if(NxO == 'N')
     {
-        if(pattern.str().compare("xCH-NH-POOOH") == 0 || pattern.str().compare("xCHH-NH-POOOH") == 0  || pattern.str().compare("xC-N-POOO") == 0 ||
-                pattern.str().compare("xCH-NH-POOO") == 0 || pattern.str().compare("xCHH-NH-POOO") == 0)
+        if(pattern.str().compare("xCH-NH-POOOH") == 0 || pattern.str().compare("xCH-N-POOOH") == 0 || pattern.str().compare("xCH-NH-POOO") == 0 || pattern.str().compare("xCH-N-POOO") == 0 ||
+                pattern.str().compare("xCHH-NH-POOOH") == 0 || pattern.str().compare("xCHH-NH-POOO") == 0 || pattern.str().compare("xCHH-N-POOOH") == 0 || pattern.str().compare("xCHH-N-POOO") == 0 ||
+                pattern.str().compare("xC-N-POOO") == 0 || pattern.str().compare("xC-NH-POOOH") == 0 || pattern.str().compare("xC-N-POOOH") == 0 || pattern.str().compare("xC-NH-POOO") == 0 )
             return "xC-N-PO3";
         else
             return "";
     }
     else if(NxO = 'O')
     {
-        if(pattern.str().compare("xCH-O-POOOH") == 0 || pattern.str().compare("xCHH-O-POOOH") == 0  || pattern.str().compare("xC-O-POOO") == 0 ||
-                pattern.str().compare("xCH-O-POOO") == 0 || pattern.str().compare("xCHH-O-POOO") == 0)
-            return "xC-O-PO3";
+        if(pattern.str().compare("xCH-OH-POOOH") == 0 || pattern.str().compare("xCH-O-POOOH") == 0 || pattern.str().compare("xCH-OH-POOO") == 0 || pattern.str().compare("xCH-O-POOO") == 0 ||
+                pattern.str().compare("xCHH-OH-POOOH") == 0 || pattern.str().compare("xCHH-OH-POOO") == 0 || pattern.str().compare("xCHH-O-POOOH") == 0 || pattern.str().compare("xCHH-O-POOO") == 0 ||
+                pattern.str().compare("xC-O-POOO") == 0 || pattern.str().compare("xC-OH-POOOH") == 0 || pattern.str().compare("xC-O-POOOH") == 0 || pattern.str().compare("xC-OH-POOO") == 0 )            return "xC-O-PO3";
         else
             return "";
     }
@@ -11830,17 +11852,21 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
             }
         }
     }
-    //        cout << "CheckxC_NxO_C: " << pattern.str() << endl;
+//            cout << "CheckxC_NxO_C: " << pattern.str() << endl;
     if(NxO == 'N')
-    {///xCH-N-CHHH??
-        if(pattern.str().compare("xCH-N-CHHH") == 0 || pattern.str().compare("xCH-NH-CHHH") == 0 || pattern.str().compare("xCHH-NH-CHHH") == 0 || pattern.str().compare("xC-N-C") == 0 )
+    {
+        if(pattern.str().compare("xCH-N-CHHH") == 0 ||  pattern.str().compare("xCH-NH-CHHH") == 0 || pattern.str().compare("xCH-NH-C") == 0 || pattern.str().compare("xCH-N-C") == 0 ||
+                pattern.str().compare("xCHH-N-CHHH") == 0 || pattern.str().compare("xCHH-NH-CHHH") == 0 || pattern.str().compare("xCHH-NH-C") == 0 || pattern.str().compare("xCHH-N-C") == 0 ||
+                pattern.str().compare("xC-NH-CHHH") == 0 || pattern.str().compare("xC-NH-C") == 0 || pattern.str().compare("xC-N-CHHH") == 0 || pattern.str().compare("xC-N-C") == 0)
             return "xC-N-CH3";
         else
             return "";
     }
     else if(NxO == 'O')
-    {///xCH-O-CHHH??
-        if(pattern.str().compare("xCH-O-CHHH") == 0 || pattern.str().compare("xCH-OH-CHHH") == 0 || pattern.str().compare("xCHH-OH-CHHH") == 0 || pattern.str().compare("xC-O-C") == 0 )
+    {
+        if(pattern.str().compare("xCH-O-CHHH") == 0 ||  pattern.str().compare("xCH-OH-CHHH") == 0 || pattern.str().compare("xCH-OH-C") == 0 || pattern.str().compare("xCH-O-C") == 0 ||
+                pattern.str().compare("xCHH-O-CHHH") == 0 || pattern.str().compare("xCHH-OH-CHHH") == 0 || pattern.str().compare("xCHH-OH-C") == 0 || pattern.str().compare("xCHH-O-C") == 0 ||
+                pattern.str().compare("xC-OH-CHHH") == 0 || pattern.str().compare("xC-OH-C") == 0 || pattern.str().compare("xC-O-CHHH") == 0 || pattern.str().compare("xC-O-C") == 0)
             return "xC-O-CH3";
         else
             return "";
@@ -11887,7 +11913,7 @@ string Assembly::CheckxCOO(Atom *target, string cycle_atoms_str)
                 pattern << o2_neighbor->GetName().at(0);
         }
     }
-    //    cout << "CheckxCOO: " << pattern.str() << endl;
+//        cout << "CheckxCOO: " << pattern.str() << endl;
     if(pattern.str().compare("xCOO") == 0 || pattern.str().compare("xCHOO") == 0)
         return "xC-(O,O)";
     else if(pattern.str().compare("xCOOH") == 0 || pattern.str().compare("xCHOOH") == 0)
