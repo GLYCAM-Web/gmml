@@ -9,7 +9,10 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbConnectCard::PdbConnectCard() {}
+PdbConnectCard::PdbConnectCard() : record_name_("CONECT")
+{
+    bonded_atom_serial_numbers_ = BondedAtomsSerialNumbersMap();
+}
 
 PdbConnectCard::PdbConnectCard(stringstream &stream_block)
 {

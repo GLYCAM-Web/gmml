@@ -425,7 +425,7 @@ namespace gmml
         int vocab_size = (sizeof(vocab)/sizeof(vocab[0]));
         std::string pos = "^_";
         std::string stat = "d";
-        int min_diff_score = -INFINITY;
+        int min_diff_score = -1000;
         std::map<int, std::vector<Glycan::SugarName> > score_map = std::map<int, std::vector<Glycan::SugarName> >();
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
         {
