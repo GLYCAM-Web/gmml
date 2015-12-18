@@ -780,16 +780,57 @@ namespace MolecularModeling
               */
             AtomVector ExtractAdditionalSideAtoms(Glycan::Monosaccharide* mono);
             /*! \fn
-              * A function in order to extract the probable derivatives that are attached to the side atoms of the ring
+              * A function in order to extract the probable derivatives that are attached to the side atoms of the ring and sets the derivative_map attribute of the monosaccharide
+              * Entry examples for the derivative map: [-1, derivative pattern] [a, derivative pattern] [2, derivative pattern] ... [+1, derivative pattern] [+2, derivative pattern]
               * @param mono The monosaccharide object
-              * @param cycle_atom_str The string version of atom identifiers of the cycle
               */
-            void ExtractDerivatives(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
+            void ExtractDerivatives(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to generate a complete name for the monosaccharide structure based on its derivatives
               * @param mono The monosaccharide object
               */
             void GenerateCompleteSugarName(Glycan::Monosaccharide* mono);
+            /*! \fn
+              * A function in order to add the modification info to the name of the sugar based on the first group of rules (No Bracket -> 2(r:6&!-1), Warning position -> a, Error Position -> 5(r6),4(r5) )
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern The long name pattern of the modification pattern which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param tail The stream that will be added to the end of monosaccharide name and will be updated by this function
+              * @param head The stream that will be added to the beginning of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */
+            void AddModificationRuleOneInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, std::string cond_name_pattern,
+                                            std::stringstream& head, std::stringstream& tail, bool minus_one, std::stringstream& in_bracket);
+            /*! \fn
+              * A function in order to add the modification info to the name of the sugar based on the first group of rules (No Bracket -> 2(r:6&!-1), Warning position -> a, Error Position -> 5(r6),4(r5) )
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern_at_minus_one The long name modification pattern for non-ring carbon attached to anomeric carbon which should be added to the sugar's long name
+              * @param long_name_pattern_at_minus_one The long name modification pattern for non-ring carbon attached to last ring carbon which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param tail The stream that will be added to the end of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */
+            void AddModificationRuleTwoInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern_at_minus_one, std::string long_name_pattern_at_plus_one,
+                                            std::string cond_name_pattern, std::stringstream& tail, bool minus_one, std::stringstream& in_bracket);
+            /*! \fn
+              * A function in order to add the derivative info to the name of the sugar based on the first group of rules (Error Position -> 5(r6),4(r5) )
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern The long name pattern of the modification pattern which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param head The stream that will be added to the beginning of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */
+            void AddDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, std::string cond_name_pattern,
+                                            std::stringstream& head, bool minus_one, std::stringstream& in_bracket);
             /*! \fn
               * A function in order to update the chemical code structure of a complex monosaccharide (monosaccharide with side atoms at position +2 and +3)
               * @param mono The monosaccharide object
