@@ -2924,7 +2924,7 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
     name_ = ss.str();
 }
 
-PdbFile* Assembly::BuildPdbFileStructureFromAssembly(bool sequence, int link_card_direction)
+PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction)
 {
     cout << "Creating PDB file" << endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDB file ...");
@@ -2952,12 +2952,9 @@ PdbFile* Assembly::BuildPdbFileStructureFromAssembly(bool sequence, int link_car
     link_card->SetRecordName("LINK");
     pdb_file->SetLinks(link_card);
 
-    if(!sequence)
-    {
-        PdbConnectCard* connect_card = new PdbConnectCard();
-        ExtractPdbConnectCardFromAssembly(connect_card, assembly_to_serial_number_map);
-        pdb_file->SetConnectivities(connect_card);
-    }
+    PdbConnectCard* connect_card = new PdbConnectCard();
+    ExtractPdbConnectCardFromAssembly(connect_card, assembly_to_serial_number_map);
+    pdb_file->SetConnectivities(connect_card);
 
     model->SetModelResidueSet(residue_set);
     models[1] = model;
@@ -10591,7 +10588,7 @@ string Assembly::GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStr
 //vector<structure> OR
 //vector<map> <"+1" -> "UP" ... >, <"2" -> "Down"> OR
 //vector<vector<string> > <"Up", "Down" ... > , <"Up", "Up" ... > ?
-
+/*
     stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " " << Ontology::WHERE_CLAUSE;
     for(AttachedGlycanStructuresVector::iterator it = attached_structures.begin(); it != attached_structures.end(); it++)
@@ -10722,7 +10719,7 @@ string Assembly::GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStr
             query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
         }
     }
-
+*/
 //           ?mono1		:hasRingAtom	?m1_anomeric.
 //       ?m1_anomeric	:ringIndex      "1".
 //       ?m1_anomeric	:hasSideAtom	?m1a_side.
