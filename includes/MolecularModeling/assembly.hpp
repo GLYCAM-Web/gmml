@@ -221,7 +221,11 @@ namespace MolecularModeling
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
-            void AttachResidues(Residue* residue, Residue* parent_residue, std::string parameter_file);
+            void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
+            void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
+            void SetAttachedResidueAngle(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
+            void SetAttachedResidueTorsion(Residue* residue, Residue* parent_residue, int branch_index);
+            void SetDihedral(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4, double torsion);
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
@@ -312,7 +316,7 @@ namespace MolecularModeling
               * Exports data from assembly data structure into pdb file structure
               * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1);
+            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(bool sequence = false, int link_card_direction = -1);
             /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
