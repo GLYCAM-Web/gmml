@@ -687,7 +687,9 @@ namespace MolecularModeling
             std::string ExtractOntologyInfoByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation,
                                                                std::string index_three_orientation, std::string index_four_orientation = "", std::string plus_one_orientation = "");
             std::string ExtractOntologyInfoByDerivativeModificationMap(std::string ring_type, DerivativeModificationMap derivative_modification_map);
-            std::string GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStructuresVector attached_structures);
+            std::string ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures);
+
+            void TestQueries();
 
             /*! \fn
               * A function in order to extract and print out all saccharides ring atoms information

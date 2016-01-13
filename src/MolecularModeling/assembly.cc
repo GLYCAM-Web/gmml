@@ -10383,18 +10383,20 @@ string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type
     query << Ontology::END_WHERE_CLAUSE;
     return query.str();
 }
-string Assembly::GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStructuresVector attached_structures)
+string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures)
 {
 //vector<structure> OR
 //vector<map> <"+1" -> "UP" ... >, <"2" -> "Down"> OR
 //vector<vector<string> > <"Up", "Down" ... > , <"Up", "Up" ... > ?
 
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb "<< Ontology::WHERE_CLAUSE;
+    int i = 0;
+    vector<string> oligos = vector<string>();
     for(AttachedGlycanStructuresVector::iterator it = attached_structures.begin(); it != attached_structures.end(); it++)
     {
         vector<string> structure = (*it);
-        if(structure.size() < 6)
+        if(structure.size() < 7)
         {
             cout << "Missing arguments! All should be set even as an empty value" << endl;
             return "";
@@ -10410,142 +10412,113 @@ string Assembly::GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStr
         oligo << "?mono" << i;
         query << oligo.str() << "		:hasRoot	" << mono.str() << ".\n";
 
-        for(int i = 0; i < 6; i++)
+        for(int j = 1; j < 7; j++)
         {
-
-            if(i == 0 || i == 1 || i == 5)///anomeric, -1 and +1 are special cases
+            if(structure.at(j).compare("") != 0)
             {
-                switch (i)
+                stringstream ring_atom;
+                stringstream side_atom;
+                switch (j)///anomeric, -1 and +1 are special cases
                 {
-                    case 0:
-                        if(structure.at(i).compare("") != 0)
+                    case 1:///anomeric
+                        ring_atom << "?" << mono.str() << "_anomeric";
+                        side_atom << "?" << mono.str() << "anomeric_side_atom";
+                        query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
+                        query << ring_atom.str() << "  	:ringIndex  	"<< j << ".\n";
+                        query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
+                        query << side_atom.str() << "	:sideIndex      " << j << ".\n";
+                        query << side_atom.str() << "	:orientation	\"" << structure.at(j) << "\".\n";
+                        break;
+                    case 2:///minus one
+                        ring_atom << "?" << mono.str() << "_anomeric";
+                        side_atom << "?" << mono.str() << "_anomeric_minus_one_side_atom";
+                        if(structure.at(1).compare("") == 0)///anomeric has not been set
                         {
-                            stringstream ring_atom;
-                            ring_atom << "?" << mono.str() << "_ring_atom" << i + 1;
-                            stringstream side_atom;
-                            ring_atom << "?" << mono.str << "_side_atom" << i + 1;
                             query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
-                            query << ring_atom.str() << "  	:ringIndex  	"<< i + 1 << ".\n";
-                            query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
-                            query << side_atom.str() << "	:sideIndex      " << i + 1 << ".\n";
-                            query << side_atom.str() << "	:orientation	\"" << structure.at(i) << "\".\n";
+                            query << ring_atom.str() << "  	:ringIndex  	"<< j - 1 << ".\n";
                         }
-
+                        query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
+                        query << ring_atom.str() << "	:sideIndex     \"-1\".\n";
+                        query << side_atom.str() << "	:orientation	\"" << structure.at(j) << "\".\n";
                         break;
-                    case 1:
-                        key = "+2";
+                    case 6:///plus one
+                        ring_atom << "?" << mono.str() << "_last_c";
+                        side_atom << "?" << mono.str() << "_last_c_side_atom";
+                        query << mono.str() << "         :hasRingAtom	" << ring_atom.str() << ".\n";
+                        if(structure.at(0).compare("P") == 0 )
+                            query << ring_atom.str() << "       :ringIndex  	" << j - 1 << ".\n";
+                        else
+                            query << ring_atom.str() << "       :ringIndex  	" << j - 2 << ".\n";
+                        query << ring_atom.str() << "         :hasSideAtom    " << side_atom.str() << ".\n";
+                        query << side_atom.str() << "       :sideIndex      \"+1\".\n";
+                        query << side_atom.str() << "    	  :orientation	\"" << structure.at(j) << "\".\n";
                         break;
-                    case 5:
-                        key = "+3";
-                        break;
+                    default:
+                        ring_atom << "?" << mono.str() << "_ring_atom" << j - 1;
+                        ring_atom << "?" << mono.str() << "_side_atom" << j - 1;
+                        query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
+                        query << ring_atom.str() << "  	:ringIndex  	"<< j - 1 << ".\n";
+                        query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
+                        query << side_atom.str() << "	:sideIndex      " << j - 1 << ".\n";
+                        query << side_atom.str() << "	:orientation	\"" << structure.at(j) << "\".\n";
                 }
             }
-            else
-            {
-                if(structure.at(i).compare("") != 0)
-                {
-                    stringstream ring_atom;
-                    ring_atom << "?" << mono.str() << "_ring_atom" << i;
-                    stringstream side_atom;
-                    ring_atom << "?" << mono.str << "_side_atom" << i;
-                    query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
-                    query << ring_atom.str() << "  	:ringIndex  	"<< i << ".\n";
-                    query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
-                    query << side_atom.str() << "	:sideIndex      " << i << ".\n";
-                    query << side_atom.str() << "	:orientation	\"" << structure.at(i) << "\".\n";
-                }
-            }
         }
-
-
-
-
-
-        if(structure.at(i).compare("") != 0)
+        oligos.push_back(oligo.str());
+    }
+    for(i = 0; i < oligos.size(); i++)
+    {
+        if(i + 1 < oligos.size())
         {
-            query << "?mono     :hasRingAtom	?anomeric.\n";
-            query << "?anomeric	:ringIndex  	\"1\".\n";
-            query << "?anomeric	:hasSideAtom    ?a_side.\n";
-            query << "?a_side	:sideIndex      \"1\".\n";
-            query << "?a_side	:orientation	\"" << anomeric_orientation << "\".\n";
-        }
-        if(anomeric_orientation.compare("") != 0 && minus_one_orientation.compare("") != 0)
-        {
-            query << "?anomeric     :hasSideAtom    ?a_minus_side.\n";
-            query << "?a_minus_side	:sideIndex      \"-1\".\n";
-            query << "?a_side	:orientation	\"" << anomeric_orientation << "\".\n";
-        }
-        else if(minus_one_orientation.compare("") != 0)
-        {
-            query << "?mono         :hasRingAtom	?anomeric.\n";
-            query << "?anomeric     :ringIndex  	\"1\".\n";
-            query << "?anomeric     :hasSideAtom    ?a_minus_side.\n";
-            query << "?a_minus_side	:sideIndex      \"-1\".\n";
-            query << "?a_minus_side	:orientation	\"" << minus_one_orientation << "\".\n";
-        }
-        if(index_two_orientation.compare("") != 0)
-        {
-            query << "?mono     :hasRingAtom	?two.\n";
-            query << "?two  	:ringIndex  	\"2\".\n";
-            query << "?two      :hasSideAtom    ?two_side.\n";
-            query << "?two_side	:sideIndex      \"2\".\n";
-            query << "?two_side	:orientation	\"" << index_two_orientation << "\".\n";
-        }
-        if(index_three_orientation.compare("") != 0)
-        {
-            query << "?mono         :hasRingAtom	?three.\n";
-            query << "?three        :ringIndex  	\"3\".\n";
-            query << "?three        :hasSideAtom    ?three_side.\n";
-            query << "?three_side	:sideIndex      \"3\".\n";
-            query << "?three_side	:orientation	\"" << index_three_orientation << "\".\n";
-        }
-        if(index_four_orientation.compare("") != 0)
-        {
-            query << "?mono         :hasRingAtom	?four.\n";
-            query << "?four         :ringIndex  	\"4\".\n";
-            query << "?four         :hasSideAtom    ?four_side.\n";
-            query << "?four_side    :sideIndex      \"4\".\n";
-            query << "?four_side	:orientation	\"" << index_four_orientation << "\".\n";
-        }
-        if(plus_one_orientation.compare("") != 0)
-        {
-            query << "?mono         :hasRingAtom	?last_c.\n";
-            if(ring_type.compare("P") == 0 )
-                query << "?last_c       :ringIndex  	\"5\".\n";
-            else
-                query << "?last_c       :ringIndex  	\"4\".\n";
-            query << "?last_c         :hasSideAtom    ?plus_one.\n";
-            query << "?plus_one       :sideIndex      \"+1\".\n";
-            query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
+            query << "{\n";
+            query << "?linkage :hasParent " << oligos.at(i) << ".\n";
+            query << "?linkage :hasParent " << oligos.at(i + 1) << ".\n";
+            query << "} UNION {\n";
+            query << "?linkage :hasParent " << oligos.at(i + 1) << ".\n";
+            query << "?linkage :hasParent " << oligos.at(i) << ".\n";
+            query << "}\n";
         }
     }
+    for(i = 0; i < oligos.size(); i++)
+    {
+        query << "?pdb            :hasOligo       " << oligos.at(i) << ".\n";
+    }
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+void Assembly::TestQueries()
+{
+    cout << "Query1 " << endl << ExtractOntologyInfoByNameOfGlycan("", "", "", "DGlcpNAcb");
+    cout << "Query2 " << endl << ExtractOntologyInfoByNamePartsOfGlycan("L",  "F", "alpha") << endl << endl;
+    cout << "Query3 " << endl << ExtractOntologyInfoByPDBID("4A2G") << endl << endl;
+    cout << "Query4 " << endl << ExtractOntologyInfoByStringChemicalCode("_4^2^3P^a^+1") << endl << endl;
+    cout << "Query5 " << endl << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << endl << endl;
+//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex( oligo_name_pattern) << endl << endl;
+    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("p", "Up", "", "Up","Up", "Down", "Up") << endl << endl;
+    map<string, string> derivative_modification_map;
+    derivative_modification_map["2"] = "xC-N-C=OCH3";
+    cout << "Query8 " << endl << ExtractOntologyInfoByDerivativeModificationMap("P", derivative_modification_map) << endl << endl;
+    AttachedGlycanStructuresVector structures = AttachedGlycanStructuresVector();
+    vector<string> v1 = vector<string>();
+    vector<string> v2 = vector<string>();
+    v1.push_back("p");
+    v1.push_back("Up");
+    v1.push_back("");
+    v1.push_back("Down");
+    v1.push_back("Up");
+    v1.push_back("Down");
+    v1.push_back("Up");
 
-//           ?mono1		:hasRingAtom	?m1_anomeric.
-//       ?m1_anomeric	:ringIndex      "1".
-//       ?m1_anomeric	:hasSideAtom	?m1a_side.
-//       ?m1a_side	:sideIndex	"1".
-//       ?m1a_side	:orientation	"Up".
-
-//           ?oligo2		:hasRoot	?mono2.
-//           ?mono2		:hasRingAtom	?m2_anomeric.
-//       ?m2_anomeric	:ringIndex      "1".
-//       ?m2_anomeric	:hasSideAtom	?m2a_side.
-//       ?m2a_side	:sideIndex	"1".
-//       ?m2a_side	:orientation	"Up".
-//           ?mono2		:hasRingAtom	?m2_plus1.
-//       ?m2_plus1	:ringIndex	"5".
-//       ?m2_plus1	:hasSideAtom	?m2p1_side.
-//       ?m2p1_side	:sideIndex	"+1".
-//       ?m2p1_side	:orientation	"Down".
-//           {
-//            ?linkage :hasParent ?oligo1 .
-//            ?linkage :hasChild ?oligo2 .
-//           } UNION {
-//            ?linkage :hasParent ?oligo2 .
-//            ?linkage :hasChild ?oligo1 .
-//           }
-//           ?pdb            :hasOligo       ?oligo1.
-//           ?pdb            :hasOligo       ?oligo2.
+    v2.push_back("p");
+    v2.push_back("Up");
+    v2.push_back("");
+    v2.push_back("Down");
+    v2.push_back("Up");
+    v2.push_back("Down");
+    v2.push_back("Up");
+    structures.push_back(v1);
+    structures.push_back(v2);
+    cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
 }
 
 void Assembly::ExtractRingAtomsInformation()
