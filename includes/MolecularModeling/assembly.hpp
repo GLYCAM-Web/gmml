@@ -52,6 +52,8 @@ namespace MolecularModeling
             typedef std::vector<Glycan::Oligosaccharide*> OligosaccharideVector;
             typedef std::map<int, int> AssemblytoPdbSequenceNumberMap;
             typedef std::map<int, int> AssemblytoPdbSerialNumberMap;
+            typedef std::map<std::string, std::string> DerivativeModificationMap;
+            typedef std::vector<std::vector<std::string> > AttachedGlycanStructuresVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -682,9 +684,15 @@ namespace MolecularModeling
             std::string ExtractOntologyInfoByStringChemicalCode(std::string chemical_code);
             std::string ExtractOntologyInfoByOligosaccharideNameSequence(std::string oligo_name);
             std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::string oligo_name_pattern);
-            std::string ExtractOntologyInfoByByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation,
+            std::string ExtractOntologyInfoByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation,
                                                                std::string index_three_orientation, std::string index_four_orientation = "", std::string plus_one_orientation = "");
+            std::string ExtractOntologyInfoByDerivativeModificationMap(std::string ring_type, DerivativeModificationMap derivative_modification_map);
+            std::string GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStructuresVector attached_structures);
 
+            /*! \fn
+              * A function in order to extract and print out all saccharides ring atoms information
+              */
+            void ExtractRingAtomsInformation();
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
               * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
