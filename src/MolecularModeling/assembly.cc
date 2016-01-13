@@ -9281,23 +9281,24 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
                 anomeric_o = oligo->root_->side_atoms_.at(0).at(1);
             if(anomeric_o != NULL && anomeric_c != NULL)
             {
-                if(anomeric_o->GetResidue()->GetName().compare(anomeric_c->GetResidue()->GetName()) == 0) // Terminal and mono residue have same naming
-                {
+//                if(anomeric_o->GetResidue()->GetName().compare(anomeric_c->GetResidue()->GetName()) == 0) // Terminal and mono residue have same naming
+//                {
                     AtomVector terminal_atoms = AtomVector();
                     string terminal = CheckTerminals(anomeric_o, terminal_atoms);
                     if(terminal.compare("") != 0)
                     {
+                        cout << terminal << endl;
                         for(AtomVector::iterator it1 = terminal_atoms.begin(); it1 != terminal_atoms.end(); it1++)
                         {
                             Atom* terminal_atom = *it1;
                             pdb_glycam_residue_map[terminal_atom->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                         }
                     }
-                }
-                else // Terminal and mono have different names
-                {
-                    pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
-                }
+//                }
+//                else // Terminal and mono have different names
+//                {
+//                    pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+//                }
             }
         }
         index++;
@@ -9322,6 +9323,7 @@ void Assembly::UpdateResidueName2GlycamName(ResidueNameMap residue_glycam_map)
 {
     for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
         (*it)->UpdateResidueName2GlycamName(residue_glycam_map);
+
     ResidueVector residues = this->GetResidues();
     ResidueVector updated_residues = ResidueVector();
     int residue_sequence_number = 0;
@@ -13888,13 +13890,26 @@ string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
              else if(o_neighbors.at(0)->GetDescription().find("Het;") == string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != string::npos)
                 target_o_neighbor = o_neighbors.at(0);
             if(target_o_neighbor->GetResidue()->GetName().compare("ASN") == 0)
-                return "NLN";
+                return "ASN";
             if(target_o_neighbor->GetResidue()->GetName().compare("SER") == 0)
-                return "OLS";
+                return "SER";
             if(target_o_neighbor->GetResidue()->GetName().compare("THR") == 0)
-                return "OLT";
+                return "THR";
             else
                 return target_o_neighbor->GetResidue()->GetName();
+            ResidueVector residues = this->GetAllResiduesOfAssembly();
+            Residue* target_residue = NULL;
+            for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+            {
+                Residue* residue = *it;
+                if(residue->GetId().compare(target_o_neighbor->GetResidue()->GetId()) == 0)
+                {
+                    target_residue = residue;
+                    break;
+                }
+            }
+            if(target_residue != NULL)
+                terminal_atoms = target_residue->GetAtoms();
         }
         else
             return "";
