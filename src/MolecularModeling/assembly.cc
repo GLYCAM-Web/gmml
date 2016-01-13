@@ -10141,7 +10141,7 @@ string Assembly::CreateURIResource(gmml::URIType resource , int number, string i
 string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string stereo_short_name, string name, string short_name)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name" << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name " << Ontology::WHERE_CLAUSE;
     query << "?pdb      :hasOligo   ?oligo.\n";
     query << "?oligo    :hasRoot    ?mono.\n";
     query << "?mono     :hasSugarName   ?sugarName.\n";
@@ -10171,7 +10171,7 @@ string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string st
 string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring_type, string configuration)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name" << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name " << Ontology::WHERE_CLAUSE;
     query << "?pdb      :hasOligo   ?oligo.\n";
     query << "?oligo    :hasRoot    ?mono.\n";
     query << "?mono     :hasSugarName   ?sugarName.\n";
@@ -10191,7 +10191,7 @@ string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ri
 string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?o_name ?linkage_str ?glycosidic_linkage ?anomeric_statud" << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?o_name ?linkage_str ?glycosidic_linkage ?anomeric_status " << Ontology::WHERE_CLAUSE;
     query <<  ":" << pdb_id << " :hasOligo   ?oligo.\n";
     query << "?oligo 	:oligoName 	?o_name.\n";
     query << "?linkage 	:hasParent 	?oligo.\n";
@@ -10205,7 +10205,7 @@ string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
 string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?name ?short_name ?stereo_name ?stereo_short_name" << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?name ?short_name ?stereo_name ?stereo_short_name " << Ontology::WHERE_CLAUSE;
     query << "?mono     :stringChemicalCode	?code.\n";
     query << "FILTER(str(?code) = \"" << chemical_code << "\")\n";
     query << "?pdb      :hasOligo	?oligo.\n";
@@ -10242,7 +10242,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string oligo_name_pattern)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here " << Ontology::WHERE_CLAUSE;
     query << "?pdb      :hasOligo	?oligo.\n";
     query << "?oligo	:oligoName	?o_name).\n";
 
@@ -10259,11 +10259,16 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string 
     query << Ontology::END_WHERE_CLAUSE;
     return query.str();
 }
-string Assembly::ExtractOntologyInfoByByGlycanStructure(string ring_type, string anomeric_orientation, string minus_one_orientation, string index_two_orientation, string index_three_orientation,
+string Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string anomeric_orientation, string minus_one_orientation, string index_two_orientation, string index_three_orientation,
                                                         string index_four_orientation, string plus_one_orientation)
 {
+    if(ring_type.compare("") == 0)
+    {
+        cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << endl;
+        return "";
+    }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?stereo_name ?stereo_condensed_name ?condensed_name ?name ?oligo_sequence " << Ontology::WHERE_CLAUSE;
     query << "?pdb      :hasOligo       ?oligo.\n";
     query << "?oligo	:hasRoot        ?mono.\n";
 
@@ -10275,12 +10280,330 @@ string Assembly::ExtractOntologyInfoByByGlycanStructure(string ring_type, string
         query << "?a_side	:sideIndex      \"1\".\n";
         query << "?a_side	:orientation	\"" << anomeric_orientation << "\".\n";
     }
-
-//	?oligo1 	:oligoName ?o_name
-
-      query << Ontology::END_WHERE_CLAUSE;
-      return query.str();
+    if(anomeric_orientation.compare("") != 0 && minus_one_orientation.compare("") != 0)
+    {
+        query << "?anomeric     :hasSideAtom    ?a_minus_side.\n";
+        query << "?a_minus_side	:sideIndex      \"-1\".\n";
+        query << "?a_side	:orientation	\"" << anomeric_orientation << "\".\n";
+    }
+    else if(minus_one_orientation.compare("") != 0)
+    {
+        query << "?mono         :hasRingAtom	?anomeric.\n";
+        query << "?anomeric     :ringIndex  	\"1\".\n";
+        query << "?anomeric     :hasSideAtom    ?a_minus_side.\n";
+        query << "?a_minus_side	:sideIndex      \"-1\".\n";
+        query << "?a_minus_side	:orientation	\"" << minus_one_orientation << "\".\n";
+    }
+    if(index_two_orientation.compare("") != 0)
+    {
+        query << "?mono     :hasRingAtom	?two.\n";
+        query << "?two  	:ringIndex  	\"2\".\n";
+        query << "?two      :hasSideAtom    ?two_side.\n";
+        query << "?two_side	:sideIndex      \"2\".\n";
+        query << "?two_side	:orientation	\"" << index_two_orientation << "\".\n";
+    }
+    if(index_three_orientation.compare("") != 0)
+    {
+        query << "?mono         :hasRingAtom	?three.\n";
+        query << "?three        :ringIndex  	\"3\".\n";
+        query << "?three        :hasSideAtom    ?three_side.\n";
+        query << "?three_side	:sideIndex      \"3\".\n";
+        query << "?three_side	:orientation	\"" << index_three_orientation << "\".\n";
+    }
+    if(index_four_orientation.compare("") != 0)
+    {
+        query << "?mono         :hasRingAtom	?four.\n";
+        query << "?four         :ringIndex  	\"4\".\n";
+        query << "?four         :hasSideAtom    ?four_side.\n";
+        query << "?four_side    :sideIndex      \"4\".\n";
+        query << "?four_side	:orientation	\"" << index_four_orientation << "\".\n";
+    }
+    if(plus_one_orientation.compare("") != 0)
+    {
+        query << "?mono         :hasRingAtom	?last_c.\n";
+        if(ring_type.compare("P") == 0 )
+            query << "?last_c       :ringIndex  	\"5\".\n";
+        else
+            query << "?last_c       :ringIndex  	\"4\".\n";
+        query << "?last_c         :hasSideAtom    ?plus_one.\n";
+        query << "?plus_one       :sideIndex      \"+1\".\n";
+        query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
+    }
+    query << "?oligo         :hasRoot    ?mono.\n";
+    query << "?oligo         :oligoName  ?oligo_sequence.\n";
+    query << "?mono     :hasSugarName	?sn.\n";
+    query << "?sn       :monosaccharideName 	?name.\n";
+    query << "?sn       :monosaccharideShortName 	?condensed_name.\n";
+    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+    query << "?sn       :monosaccharideStereochemShortName 	?stereo_condensed_name.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
  }
+string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type, DerivativeModificationMap derivative_modification_map)
+{
+    if(ring_type.compare("") == 0)
+    {
+        cout << "Please specify the ring type as the first argument of the function as either \"P\" or \"F\" " << endl;
+        return "";
+    }
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?stereo_name ?stereo_condensed_name ?condensed_name " << Ontology::WHERE_CLAUSE;
+    for(DerivativeModificationMap::iterator it = derivative_modification_map.begin(); it != derivative_modification_map.end(); it++)
+    {
+        string index = (*it).first;
+        string pattern = (*it).second;
+        query << "?mono	       :hasRingAtom    ?ring_atom.\n";
+        if(index.compare("-1") != 0 && index.compare("+1") != 0)
+        {
+            query << "?ring_atom   :ringIndex      \"" << index << "\".\n";
+            query << "?ring_atom   :hasSideAtom    ?side.\n";
+        }
+        else if(index.compare("-1") == 0 )
+        {
+            query << "?ring_atom   :ringIndex      \"1\".\n";
+            query << "?ring_atom   :hasSideAtom    ?side.\n";
+        }
+        else if(index.compare("+1") == 0 )
+        {
+            query << "?mono         :hasRingAtom	?ring_atom.\n";
+            if(ring_type.compare("P") == 0 )
+                query << "?ring_atom       :ringIndex  	\"5\".\n";
+            else
+                query << "?ring_atom       :ringIndex  	\"4\".\n";
+            query << "?ring_atom         :hasSideAtom    ?side.\n";
+        }
+        query << "?side        :sideIndex      \"" << index << "\".\n";
+        query << "?side	       :derivative     \"" << pattern << "\".\n";
+        query << "?sn       :monosaccharideName 	?name.\n";
+        query << "?sn       :monosaccharideShortName 	?condensed_name.\n";
+        query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+        query << "?sn       :monosaccharideStereochemShortName 	?stereo_condensed_name.\n";
+
+    }
+    query << Ontology::END_WHERE_CLAUSE;
+    return query.str();
+}
+string Assembly::GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStructuresVector attached_structures)
+{
+//vector<structure> OR
+//vector<map> <"+1" -> "UP" ... >, <"2" -> "Down"> OR
+//vector<vector<string> > <"Up", "Down" ... > , <"Up", "Up" ... > ?
+
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " " << Ontology::WHERE_CLAUSE;
+    for(AttachedGlycanStructuresVector::iterator it = attached_structures.begin(); it != attached_structures.end(); it++)
+    {
+        vector<string> structure = (*it);
+        if(structure.size() < 6)
+        {
+            cout << "Missing arguments! All should be set even as an empty value" << endl;
+            return "";
+        }
+        if(structure.at(i).compare("") == 0)
+        {
+            cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << endl;
+            return "";
+        }
+        stringstream oligo;
+        oligo << "?oligo" << i;
+        stringstream mono;
+        oligo << "?mono" << i;
+        query << oligo.str() << "		:hasRoot	" << mono.str() << ".\n";
+
+        for(int i = 0; i < 6; i++)
+        {
+
+            if(i == 0 || i == 1 || i == 5)///anomeric, -1 and +1 are special cases
+            {
+                switch (i)
+                {
+                    case 0:
+                        if(structure.at(i).compare("") != 0)
+                        {
+                            stringstream ring_atom;
+                            ring_atom << "?" << mono.str() << "_ring_atom" << i + 1;
+                            stringstream side_atom;
+                            ring_atom << "?" << mono.str << "_side_atom" << i + 1;
+                            query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
+                            query << ring_atom.str() << "  	:ringIndex  	"<< i + 1 << ".\n";
+                            query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
+                            query << side_atom.str() << "	:sideIndex      " << i + 1 << ".\n";
+                            query << side_atom.str() << "	:orientation	\"" << structure.at(i) << "\".\n";
+                        }
+
+                        break;
+                    case 1:
+                        key = "+2";
+                        break;
+                    case 5:
+                        key = "+3";
+                        break;
+                }
+            }
+            else
+            {
+                if(structure.at(i).compare("") != 0)
+                {
+                    stringstream ring_atom;
+                    ring_atom << "?" << mono.str() << "_ring_atom" << i;
+                    stringstream side_atom;
+                    ring_atom << "?" << mono.str << "_side_atom" << i;
+                    query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
+                    query << ring_atom.str() << "  	:ringIndex  	"<< i << ".\n";
+                    query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
+                    query << side_atom.str() << "	:sideIndex      " << i << ".\n";
+                    query << side_atom.str() << "	:orientation	\"" << structure.at(i) << "\".\n";
+                }
+            }
+        }
+
+
+
+
+
+        if(structure.at(i).compare("") != 0)
+        {
+            query << "?mono     :hasRingAtom	?anomeric.\n";
+            query << "?anomeric	:ringIndex  	\"1\".\n";
+            query << "?anomeric	:hasSideAtom    ?a_side.\n";
+            query << "?a_side	:sideIndex      \"1\".\n";
+            query << "?a_side	:orientation	\"" << anomeric_orientation << "\".\n";
+        }
+        if(anomeric_orientation.compare("") != 0 && minus_one_orientation.compare("") != 0)
+        {
+            query << "?anomeric     :hasSideAtom    ?a_minus_side.\n";
+            query << "?a_minus_side	:sideIndex      \"-1\".\n";
+            query << "?a_side	:orientation	\"" << anomeric_orientation << "\".\n";
+        }
+        else if(minus_one_orientation.compare("") != 0)
+        {
+            query << "?mono         :hasRingAtom	?anomeric.\n";
+            query << "?anomeric     :ringIndex  	\"1\".\n";
+            query << "?anomeric     :hasSideAtom    ?a_minus_side.\n";
+            query << "?a_minus_side	:sideIndex      \"-1\".\n";
+            query << "?a_minus_side	:orientation	\"" << minus_one_orientation << "\".\n";
+        }
+        if(index_two_orientation.compare("") != 0)
+        {
+            query << "?mono     :hasRingAtom	?two.\n";
+            query << "?two  	:ringIndex  	\"2\".\n";
+            query << "?two      :hasSideAtom    ?two_side.\n";
+            query << "?two_side	:sideIndex      \"2\".\n";
+            query << "?two_side	:orientation	\"" << index_two_orientation << "\".\n";
+        }
+        if(index_three_orientation.compare("") != 0)
+        {
+            query << "?mono         :hasRingAtom	?three.\n";
+            query << "?three        :ringIndex  	\"3\".\n";
+            query << "?three        :hasSideAtom    ?three_side.\n";
+            query << "?three_side	:sideIndex      \"3\".\n";
+            query << "?three_side	:orientation	\"" << index_three_orientation << "\".\n";
+        }
+        if(index_four_orientation.compare("") != 0)
+        {
+            query << "?mono         :hasRingAtom	?four.\n";
+            query << "?four         :ringIndex  	\"4\".\n";
+            query << "?four         :hasSideAtom    ?four_side.\n";
+            query << "?four_side    :sideIndex      \"4\".\n";
+            query << "?four_side	:orientation	\"" << index_four_orientation << "\".\n";
+        }
+        if(plus_one_orientation.compare("") != 0)
+        {
+            query << "?mono         :hasRingAtom	?last_c.\n";
+            if(ring_type.compare("P") == 0 )
+                query << "?last_c       :ringIndex  	\"5\".\n";
+            else
+                query << "?last_c       :ringIndex  	\"4\".\n";
+            query << "?last_c         :hasSideAtom    ?plus_one.\n";
+            query << "?plus_one       :sideIndex      \"+1\".\n";
+            query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
+        }
+    }
+
+//           ?mono1		:hasRingAtom	?m1_anomeric.
+//       ?m1_anomeric	:ringIndex      "1".
+//       ?m1_anomeric	:hasSideAtom	?m1a_side.
+//       ?m1a_side	:sideIndex	"1".
+//       ?m1a_side	:orientation	"Up".
+
+//           ?oligo2		:hasRoot	?mono2.
+//           ?mono2		:hasRingAtom	?m2_anomeric.
+//       ?m2_anomeric	:ringIndex      "1".
+//       ?m2_anomeric	:hasSideAtom	?m2a_side.
+//       ?m2a_side	:sideIndex	"1".
+//       ?m2a_side	:orientation	"Up".
+//           ?mono2		:hasRingAtom	?m2_plus1.
+//       ?m2_plus1	:ringIndex	"5".
+//       ?m2_plus1	:hasSideAtom	?m2p1_side.
+//       ?m2p1_side	:sideIndex	"+1".
+//       ?m2p1_side	:orientation	"Down".
+//           {
+//            ?linkage :hasParent ?oligo1 .
+//            ?linkage :hasChild ?oligo2 .
+//           } UNION {
+//            ?linkage :hasParent ?oligo2 .
+//            ?linkage :hasChild ?oligo1 .
+//           }
+//           ?pdb            :hasOligo       ?oligo1.
+//           ?pdb            :hasOligo       ?oligo2.
+}
+
+void Assembly::ExtractRingAtomsInformation()
+{
+    ///CYCLE DETECTION
+    CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
+    ///FILTERING OUT FUSED CYCLES
+    RemoveFusedCycles(cycles);
+    ///FILTERING OUT OXYGENLESS CYCLES
+    FilterAllCarbonCycles(cycles);
+    CycleMap sorted_cycles = CycleMap();
+    vector<string> anomeric_carbons_status = vector<string>();
+    ///ANOMERIC DETECTION and SORTING
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        string cycle_atoms_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        Atom* anomeric = FindAnomericCarbon(anomeric_carbons_status, cycle_atoms, cycle_atoms_str);
+        if(anomeric != NULL)
+        {
+            AtomVector sorted_cycle_atoms = AtomVector();
+            stringstream sorted_cycle_stream;
+            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
+            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+        }
+    }
+    cycles = sorted_cycles;
+    cout << endl << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << endl;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Detailed information of sorted cycles after discarding fused or oxygenless rings: ");
+
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        Monosaccharide* mono = new Monosaccharide();
+        int status_index = distance(cycles.begin(), it);
+        mono->anomeric_status_ = anomeric_carbons_status.at(status_index);
+        string cycle_atoms_str = (*it).first;
+        AtomVector cycle = (*it).second;
+
+        stringstream ring_atoms;
+        ring_atoms << "Ring atoms: " << cycle_atoms_str;
+        cout << ring_atoms.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, ring_atoms.str());
+
+        stringstream ring_atom_names;
+        ring_atom_names << "Ring atom names: " ;
+        for(AtomVector::iterator it1 = cycle.begin(); it1 != cycle.end(); it1++)
+        {
+            Atom* atom = (*it1);
+            vector<string> atom_tokens = Split(atom->GetId(), "_");
+            if(it1 == cycle.end() - 1)
+                ring_atom_names << atom_tokens.at(0);
+            else
+                ring_atom_names << atom_tokens.at(0) << ",";
+        }
+        cout << ring_atom_names.str() << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::INF, ring_atom_names.str());
+    }
+}
 
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
@@ -10442,7 +10765,7 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                 if(new_edge_atoms.at(0).compare(new_edge_atoms.at(1)) == 0) ///edge is a,a
                 {
                     cycles.push_back(new_label.str());
-                    cout << new_label.str() << endl;
+                    //cout << new_label.str() << endl;
                 }
                 ///adding the newly-formed edge (a,c) and label(a-b-c)
                 else if(find(reduced_path_graph_labels.begin(), reduced_path_graph_labels.end(), new_label.str()) == reduced_path_graph_labels.end())
@@ -10867,7 +11190,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                     {
                         Atom* a = (*it1);
                         sorted_cycle.push_back(a);
-                        if(it1 == it -1)
+                        if(it1 == it - 1)
                             sorted_cycle_stream << a->GetId();
                         else
                             sorted_cycle_stream << a->GetId() << "-";
@@ -10879,7 +11202,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                 Atom* next_atom = cycle.at(index + 1);
                 if(next_atom->GetName().substr(0,1).compare("O") == 0)///next atom is oxygen so the vector is in reverse order
                 {
-                    for(AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom to down to beginning of the vector
+                    for(AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom down to beginning of the vector
                     {
                         Atom* a_before = (*it1);
                         sorted_cycle.push_back(a_before);
@@ -10903,7 +11226,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                     {
                         Atom* atom_after = (*it1);
                         sorted_cycle.push_back(atom_after);
-                        if(it1 == cycle.end())
+                        if(it1 == cycle.end() - 1)
                             sorted_cycle_stream << atom_after->GetId();
                         else
                             sorted_cycle_stream << atom_after->GetId() << "-";
@@ -12616,7 +12939,7 @@ void Assembly::AddDerivativeRuleInfo(string key, string pattern, Monosaccharide 
             if(!minus_one)
             {
                 if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << "Ac,";
+                    in_bracket << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << cond_name_pattern << ",";
 //                else if(key.compare("a") == 0)
 //                    in_bracket << "2" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
@@ -12627,7 +12950,7 @@ void Assembly::AddDerivativeRuleInfo(string key, string pattern, Monosaccharide 
                 if(key.compare("-1") == 0)
                     in_bracket << "1" << cond_name_pattern << ",";
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() + ConvertString<int>(key) << "Ac,";
+                    in_bracket << mono->cycle_atoms_.size() + ConvertString<int>(key) << cond_name_pattern << ",";
 //                else if(key.compare("a") == 0)
 //                    in_bracket << "2" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
@@ -12945,6 +13268,14 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                         ///anomeric oxygen is attached to protein
                         isRoot = true;
                         terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                        if(terminal_residue_name.compare("NLN") != 0 && terminal_residue_name.compare("OLS") != 0 && terminal_residue_name.compare("OLT") != 0)
+                        {
+                            stringstream ss;
+                            ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
+                            gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+                            cout << ss.str() << endl;
+                            terminal_residue_name = "";
+                        }
                     }
                     else if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
                             common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
@@ -13020,8 +13351,19 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                         }
                         else if(o_neighbors.size() == 2 && (((o_neighbor_1->GetDescription().find("Het;") != string::npos) && (o_neighbor_2->GetDescription().find("Het;") == string::npos)) ||
                                                             ((o_neighbor_2->GetDescription().find("Het;") != string::npos) && (o_neighbor_1->GetDescription().find("Het;") == string::npos))) )
+                        {
                             ///anomeric oxygen is attached to protein
                             isRoot = true;
+                            terminal_residue_name = CheckTerminals(anomeric_o, terminal_atoms);
+                            if(terminal_residue_name.compare("NLN") != 0 && terminal_residue_name.compare("OLS") != 0 && terminal_residue_name.compare("OLT") != 0)
+                            {
+                                stringstream ss;
+                                ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
+                                gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+                                cout << ss.str() << endl;
+                                terminal_residue_name = "";
+                            }
+                        }
                         else if(dataset_residue_names.find(anomeric_o->GetResidue()->GetName()) != dataset_residue_names.end() ||
                                 common_terminal_residues.find(anomeric_o->GetResidue()->GetName()) != common_terminal_residues.end())///mono is attached to a terminal through anomeric oxygen
                         {
@@ -13330,13 +13672,30 @@ string Assembly::CheckTBTTerminal(Atom *target, AtomVector& terminal_atoms)
 string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
 {
     if(target != NULL)
-    {
+    {        
+        AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
         if(CheckROHTerminal(target, terminal_atoms).compare("") != 0)
             return "ROH";
         else if(CheckOMETerminal(target, terminal_atoms).compare("") != 0)
             return "OME";
         else if(CheckTBTTerminal(target, terminal_atoms).compare("") != 0)
             return "TBT";
+        else if(o_neighbors.size() == 2)
+        {
+            Atom* target_o_neighbor = NULL;
+            if(o_neighbors.at(0)->GetDescription().find("Het;") != string::npos && o_neighbors.at(1)->GetDescription().find("Het;") == string::npos)
+                target_o_neighbor = o_neighbors.at(1);
+             else if(o_neighbors.at(0)->GetDescription().find("Het;") == string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != string::npos)
+                target_o_neighbor = o_neighbors.at(0);
+            if(target_o_neighbor->GetResidue()->GetName().compare("ASN") == 0)
+                return "NLN";
+            if(target_o_neighbor->GetResidue()->GetName().compare("SER") == 0)
+                return "OLS";
+            if(target_o_neighbor->GetResidue()->GetName().compare("THR") == 0)
+                return "OLT";
+            else
+                return target_o_neighbor->GetResidue()->GetName();
+        }
         else
             return "";
     }
