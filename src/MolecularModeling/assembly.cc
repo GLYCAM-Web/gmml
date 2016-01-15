@@ -10586,7 +10586,6 @@ string Assembly::GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStr
 //vector<structure> OR
 //vector<map> <"+1" -> "UP" ... >, <"2" -> "Down"> OR
 //vector<vector<string> > <"Up", "Down" ... > , <"Up", "Up" ... > ?
-/*
     stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " " << Ontology::WHERE_CLAUSE;
     for(AttachedGlycanStructuresVector::iterator it = attached_structures.begin(); it != attached_structures.end(); it++)
@@ -10717,7 +10716,6 @@ string Assembly::GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStr
             query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
         }
     }
-*/
 //           ?mono1		:hasRingAtom	?m1_anomeric.
 //       ?m1_anomeric	:ringIndex      "1".
 //       ?m1_anomeric	:hasSideAtom	?m1a_side.
