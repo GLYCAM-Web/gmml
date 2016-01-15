@@ -44,11 +44,11 @@ namespace MolecularModeling
             typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
-//            typedef std::vector<AtomVector > AtomVectorVector;
+//            typedef std::vector<AtomVector> AtomVectorVector;
             typedef std::map<std::string, AtomVector> CycleMap;
             typedef std::map<std::string, std::map<std::string, std::vector<std::string> > > SelectPatternMap;
             typedef std::map<std::string, ResidueVector> HierarchicalContainmentMap;
-            typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
+//            typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
             typedef std::vector<Glycan::Oligosaccharide*> OligosaccharideVector;
             typedef std::map<int, int> AssemblytoPdbSequenceNumberMap;
             typedef std::map<int, int> AssemblytoPdbSerialNumberMap;

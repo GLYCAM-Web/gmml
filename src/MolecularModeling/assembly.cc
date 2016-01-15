@@ -844,7 +844,9 @@ void Assembly::SetModelIndex(int model_index)
 //////////////////////////////////////////////////////////
 void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file, bool structure)
 {
-    ResidueAttachmentMap attachment_map = ResidueAttachmentMap();
+    ResidueVector parent_residues = ResidueVector();
+    ResidueVector branch_residues = ResidueVector();
+
     CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
     CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
     PrepFile* prep = new PrepFile(prep_file);
@@ -979,6 +981,16 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 if(atom_name.compare(amber_prep_residue->GetAnomericCarbon()) == 0)
                     assembly_residue->AddHeadAtom(assembly_atom);
             }
+
+            if(structure)
+            {
+                Assembly* temp_assembly = new Assembly();
+                ResidueVector temp_assembly_residues = ResidueVector();
+                temp_assembly_residues.push_back(assembly_residue);
+                temp_assembly->SetResidues(temp_assembly_residues);
+                temp_assembly->SetSourceFile(prep_file);
+                temp_assembly->BuildStructureByPrepFileInformation();
+            }
             residues_.push_back(assembly_residue);
             if(amber_prep_residue->GetParentId() != -1)
             {
@@ -990,7 +1002,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     if(parent_atom->GetName().compare(amber_prep_residue->GetParentOxygen()) == 0)
                         parent_residue->AddTailAtom(parent_atom);
                 }
-                attachment_map[parent_residue].push_back(assembly_residue);
+                parent_residues.push_back(parent_residue);
+                branch_residues.push_back(assembly_residue);
             }
         }
         else
@@ -1004,29 +1017,19 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
 
     if(structure)
     {
-        ResidueVector residues = this->GetResidues();
-        for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+        map<Residue*, int> parent_branch_map = map<Residue*, int>();
+        for(ResidueVector::iterator it = parent_residues.begin(); it != parent_residues.end(); it++)
         {
-            Residue* assembly_residue = *it;
-            Assembly* temp_assembly = new Assembly();
-            ResidueVector temp_assembly_residues = ResidueVector();
-            temp_assembly_residues.push_back(assembly_residue);
-            temp_assembly->SetResidues(temp_assembly_residues);
-            temp_assembly->SetSourceFile(prep_file);
-            temp_assembly->BuildStructureByPrepFileInformation();
-        }
-        for(ResidueAttachmentMap::iterator it = attachment_map.begin(); it != attachment_map.end(); it++)
-        {
-            Residue* parent_residue = (*it).first;
-            ResidueVector branches = (*it).second;
+            Residue* parent_residue = (*it);
+            int parent_index = distance(parent_residues.begin(), it);
+            if(parent_branch_map.find(parent_residue) == parent_branch_map.end())
+                parent_branch_map[parent_residue] = 0;
+            else
+                parent_branch_map[parent_residue]++;
+            Residue* assembly_residue = branch_residues.at(parent_index);
 
-            for(ResidueVector::iterator it1 = branches.begin(); it1 != branches.end(); it1++)
-            {
-                Residue* assembly_residue = *it1;
-                int branch_index = distance(branches.begin(), it1);
-                cout << branch_index << " " << parent_residue->GetTailAtoms().at(branch_index) << " " << assembly_residue->GetHeadAtoms().at(0) << endl;
-                this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
-            }
+            int branch_index = parent_branch_map[parent_residue];
+            this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
         }
     }
 }
@@ -1037,10 +1040,10 @@ void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, int bra
     this->SetAttachedResidueBond(residue, parent_residue, branch_index, parameter_file);
 
     ///Rotate all atoms of the attached residue to set the proper bond angle between the attached residue and the parent residue
-//    this->SetAttachedResidueAngle(residue, parent_residue, branch_index, parameter_file);
+    this->SetAttachedResidueAngle(residue, parent_residue, branch_index, parameter_file);
 
     ///Rotate all atoms of the attached residue to set the proper Phi, Psi and Omega torsion angles
-//    this->SetAttachedResidueTorsion(residue, parent_residue, branch_index);
+    this->SetAttachedResidueTorsion(residue, parent_residue, branch_index);
 }
 
 void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue, int branch_index, string parameter_file)
@@ -1091,12 +1094,11 @@ void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue,
     Coordinate* offset = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
     offset->operator -(*oxygen_position);
 
-    offset->Print();
-    cout << endl;
-
     AtomVector all_atoms_of_attached_residue = residue->GetAtoms();
     for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+    {
         (*it)->GetCoordinates().at(model_index_)->Translate(offset->GetX(), offset->GetY(), offset->GetZ());
+    }
 }
 
 void Assembly::SetAttachedResidueAngle(Residue *residue, Residue *parent_residue, int branch_index, string parameter_file)
@@ -9281,29 +9283,23 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
                 anomeric_o = oligo->root_->side_atoms_.at(0).at(1);
             if(anomeric_o != NULL && anomeric_c != NULL)
             {
-//                if(anomeric_o->GetResidue()->GetName().compare(anomeric_c->GetResidue()->GetName()) == 0) // Terminal and mono residue have same naming
-//                {
-                    AtomVector terminal_atoms = AtomVector();
-                    string terminal = CheckTerminals(anomeric_o, terminal_atoms);
-                    if(terminal.compare("") != 0)
+                AtomVector terminal_atoms = AtomVector();
+                string terminal = CheckTerminals(anomeric_o, terminal_atoms);
+                if(terminal.compare("") != 0)
+                {
+                    for(AtomVector::iterator it1 = terminal_atoms.begin(); it1 != terminal_atoms.end(); it1++)
                     {
-                        cout << terminal << endl;
-                        for(AtomVector::iterator it1 = terminal_atoms.begin(); it1 != terminal_atoms.end(); it1++)
-                        {
-                            Atom* terminal_atom = *it1;
-                            pdb_glycam_residue_map[terminal_atom->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
-                        }
+                        Atom* terminal_atom = *it1;
+                        pdb_glycam_residue_map[terminal_atom->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
+                        pdb_glycam_residue_map[terminal_atom->GetResidue()->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                     }
-//                }
-//                else // Terminal and mono have different names
-//                {
-//                    pdb_glycam_residue_map[oligo->terminal_] = condensed_sequence_amber_residue_tree.at(index)->GetName();
-//                }
+                }
             }
         }
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
     }
+
     return pdb_glycam_residue_map;
 }
 
@@ -10590,7 +10586,6 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
 //vector<structure> OR
 //vector<map> <"+1" -> "UP" ... >, <"2" -> "Down"> OR
 //vector<vector<string> > <"Up", "Down" ... > , <"Up", "Up" ... > ?
-
     stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb "<< Ontology::WHERE_CLAUSE;
     int i = 0;
@@ -10721,6 +10716,44 @@ void Assembly::TestQueries()
     structures.push_back(v1);
     structures.push_back(v2);
     cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
+        if(plus_one_orientation.compare("") != 0)
+        {
+            query << "?mono         :hasRingAtom	?last_c.\n";
+            if(ring_type.compare("P") == 0 )
+                query << "?last_c       :ringIndex  	\"5\".\n";
+            else
+                query << "?last_c       :ringIndex  	\"4\".\n";
+            query << "?last_c         :hasSideAtom    ?plus_one.\n";
+            query << "?plus_one       :sideIndex      \"+1\".\n";
+            query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
+        }
+    }
+//           ?mono1		:hasRingAtom	?m1_anomeric.
+//       ?m1_anomeric	:ringIndex      "1".
+//       ?m1_anomeric	:hasSideAtom	?m1a_side.
+//       ?m1a_side	:sideIndex	"1".
+//       ?m1a_side	:orientation	"Up".
+
+//           ?oligo2		:hasRoot	?mono2.
+//           ?mono2		:hasRingAtom	?m2_anomeric.
+//       ?m2_anomeric	:ringIndex      "1".
+//       ?m2_anomeric	:hasSideAtom	?m2a_side.
+//       ?m2a_side	:sideIndex	"1".
+//       ?m2a_side	:orientation	"Up".
+//           ?mono2		:hasRingAtom	?m2_plus1.
+//       ?m2_plus1	:ringIndex	"5".
+//       ?m2_plus1	:hasSideAtom	?m2p1_side.
+//       ?m2p1_side	:sideIndex	"+1".
+//       ?m2p1_side	:orientation	"Down".
+//           {
+//            ?linkage :hasParent ?oligo1 .
+//            ?linkage :hasChild ?oligo2 .
+//           } UNION {
+//            ?linkage :hasParent ?oligo2 .
+//            ?linkage :hasChild ?oligo1 .
+//           }
+//           ?pdb            :hasOligo       ?oligo1.
+//           ?pdb            :hasOligo       ?oligo2.
 }
 
 void Assembly::ExtractRingAtomsInformation()
@@ -13862,14 +13895,6 @@ string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
                 target_o_neighbor = o_neighbors.at(1);
              else if(o_neighbors.at(0)->GetDescription().find("Het;") == string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != string::npos)
                 target_o_neighbor = o_neighbors.at(0);
-            if(target_o_neighbor->GetResidue()->GetName().compare("ASN") == 0)
-                return "ASN";
-            if(target_o_neighbor->GetResidue()->GetName().compare("SER") == 0)
-                return "SER";
-            if(target_o_neighbor->GetResidue()->GetName().compare("THR") == 0)
-                return "THR";
-            else
-                return target_o_neighbor->GetResidue()->GetName();
             ResidueVector residues = this->GetAllResiduesOfAssembly();
             Residue* target_residue = NULL;
             for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
@@ -13883,6 +13908,13 @@ string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
             }
             if(target_residue != NULL)
                 terminal_atoms = target_residue->GetAtoms();
+
+            AmberGlycamMap amber_glycam = AmberGlycamLookup(target_o_neighbor->GetResidue()->GetName());
+
+            if(amber_glycam.amber_name_.compare("") != 0)
+                return amber_glycam.amber_name_;
+            else
+                return target_o_neighbor->GetResidue()->GetName();
         }
         else
             return "";

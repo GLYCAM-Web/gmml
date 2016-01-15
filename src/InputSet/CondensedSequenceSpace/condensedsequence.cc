@@ -267,12 +267,9 @@ string CondensedSequence::GetAmberPrepTerminalResidueCodeOfTerminalResidue(strin
         return "OME";
     else if(terminal_residue_name.compare("OtBu") == 0 || terminal_residue_name.compare("TBT") == 0)
         return "TBT";
-    else if(terminal_residue_name.compare("ASN") == 0 || terminal_residue_name.compare("NLN") == 0)
-        return "NLN";
-    else if(terminal_residue_name.compare("SER") == 0 || terminal_residue_name.compare("OLS") == 0)
-        return "OLS";
-    else if(terminal_residue_name.compare("THR") == 0 || terminal_residue_name.compare("OLT") == 0)
-        return "OLT";
+    else if(AmberGlycamLookup(terminal_residue_name).amber_name_.compare("") != 0 ||
+            AmberGlycamLookup(terminal_residue_name).glycam_name_.compare("") != 0)
+        return AmberGlycamLookup(terminal_residue_name).glycam_name_;
     throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
 }
 
