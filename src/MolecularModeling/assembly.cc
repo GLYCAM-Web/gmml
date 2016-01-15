@@ -10340,62 +10340,70 @@ string Assembly::CreateURIResource(gmml::URIType resource , int number, string i
     }
     return uri_resource.str();
 }
-string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string stereo_short_name, string name, string short_name)
+string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string stereo_condensed_name, string name, string condensed_name)
 {
+    if(stereo_name.compare("") == 0 && stereo_condensed_name.compare("") == 0 && name.compare("") == 0 && condensed_name.compare("") == 0)
+    {
+        cout << "Please specify at least one of the arguments and set the others as \"\" " << endl;
+        return "";
+    }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name " << Ontology::WHERE_CLAUSE;
-    query << "?pdb      :hasOligo   ?oligo.\n";
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?stereo_name ?stereo_condensed_name ?name ?condensed_name " << Ontology::WHERE_CLAUSE;
+    query << "?pdb_file      :hasOligo   ?oligo.\n";
     query << "?oligo    :hasRoot    ?mono.\n";
     query << "?mono     :hasSugarName   ?sugarName.\n";
     if(stereo_name.compare("") != 0)
-    {
-        query << "?sugarName    :monosaccharideStereochemName   \"" << stereo_name << "\").\n";
-        query << "?sugarName    :monosaccharideStereochemName   ?stereo_name.\n";
-    }
-    if(stereo_short_name.compare("") != 0)
-    {
-        query << "?sugarName    :monosaccharideStereochemShortName   \"" << stereo_short_name << "\").\n";
-        query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_short_name.\n";
-    }
+        query << "?sugarName    :monosaccharideStereochemName   \"" << stereo_name << "\".\n";
+    if(stereo_condensed_name.compare("") != 0)
+        query << "?sugarName    :monosaccharideStereochemShortName   \"" << stereo_condensed_name << "\".\n";
     if(name.compare("") != 0)
-    {
-        query << "?sugarName    :monosaccharideName   \"" << name << "\").\n";
-        query << "?sugarName    :monosaccharideName   ?name.\n";
-    }
-    if(short_name.compare("") != 0)
-    {
-        query << "?sugarName    :monosaccharideShortName   \"" << short_name << "\").\n";
-        query << "?sugarName    :monosaccharideShortName   ?short_name.\n";
-    }
+        query << "?sugarName    :monosaccharideName   \"" << name << "\".\n";
+    if(condensed_name.compare("") != 0)
+        query << "?sugarName    :monosaccharideShortName   \"" << condensed_name << "\".\n";
+    query << "?sugarName    :monosaccharideStereochemName   ?stereo_name.\n";
+    query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_condensed_name.\n";
+    query << "?sugarName    :monosaccharideName   ?name.\n";
+    query << "?sugarName    :monosaccharideShortName   ?condensed_name.\n";
+    query << "?pdb_file      :identifier   ?pdb.\n";
     query << Ontology::END_WHERE_CLAUSE;
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring_type, string configuration)
 {
+    if(isomer.compare("") == 0 && ring_type.compare("") == 0 && configuration.compare("") == 0)
+    {
+        cout << "Please specify at least one of the arguments and set the others as \"\" " << endl;
+        return "";
+    }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_short_name ?name ?short_name " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?stereo_name ?stereo_condensed_name ?name ?condensed_name " << Ontology::WHERE_CLAUSE;
     query << "?pdb      :hasOligo   ?oligo.\n";
     query << "?oligo    :hasRoot    ?mono.\n";
     query << "?mono     :hasSugarName   ?sugarName.\n";
     if(isomer.compare("") != 0)
-        query << "?sugarName    :isomer   " << isomer << ".\n";
+        query << "?sugarName    :isomer   \"" << isomer << "\".\n";
     if(ring_type.compare("") != 0)
-        query << "?sugarName    :ringType   " << ring_type << ".\n";
+        query << "?sugarName    :ringType   \"" << ring_type << "\".\n";
     if(configuration.compare("") != 0)
-        query << "?sugarName    :configuration   " << configuration << ".\n";
+        query << "?sugarName    :configuration   \"" << configuration << "\".\n";
     query << "?sugarName    :monosaccharideStereochemName   ?stereo_name.\n";
-    query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_short_name.\n";
+    query << "?sugarName    :monosaccharideStereochemShortName   ?stereo_condensed_name.\n";
     query << "?sugarName    :monosaccharideName   ?name.\n";
-    query << "?sugarName    :monosaccharideShortName   ?short_name.\n";
+    query << "?sugarName    :monosaccharideShortName   ?condensed_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
 {
+    if(pdb_id.compare("") == 0)
+    {
+        cout << "Please specify the input argument." << endl;
+        return "";
+    }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?o_name ?linkage_str ?glycosidic_linkage ?anomeric_status " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?oligo_sequence ?linkage_str ?glycosidic_linkage ?anomeric_status " << Ontology::WHERE_CLAUSE;
     query <<  ":" << pdb_id << " :hasOligo   ?oligo.\n";
-    query << "?oligo 	:oligoName 	?o_name.\n";
+    query << "?oligo 	:oligoName 	?oligo_sequence.\n";
     query << "?linkage 	:hasParent 	?oligo.\n";
     query << "?linkage	:linkageString	?linkage_str.\n";
     query << "?linkage	:glycosidicLinkageString    ?glycosidic_linkage.\n";
@@ -10406,10 +10414,14 @@ string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
 }
 string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
 {
+    if(chemical_code.compare("") == 0)
+    {
+        cout << "Please specify the input argument." << endl;
+        return "";
+    }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?name ?short_name ?stereo_name ?stereo_short_name " << Ontology::WHERE_CLAUSE;
-    query << "?mono     :stringChemicalCode	?code.\n";
-    query << "FILTER(str(?code) = \"" << chemical_code << "\")\n";
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?name ?short_name ?stereo_name ?stereo_short_name " << Ontology::WHERE_CLAUSE;
+    query << "?mono     :stringChemicalCode	   \"" << chemical_code << "\".\n";
     query << "?pdb      :hasOligo	?oligo.\n";
     query << "?oligo	:hasRoot	?mono.\n";
     query << "?mono     :hasSugarName	?sn.\n";
@@ -10423,7 +10435,7 @@ string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_name)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here" << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb " << Ontology::WHERE_CLAUSE;
 
     query << "?pdb      :hasOligo	?oligo.\n";
     query << "?oligo	:oligoName	\"" << oligo_name << "\"\n";
@@ -10443,21 +10455,48 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
 }
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string oligo_name_pattern)
 {
+    if(oligo_name_pattern.compare("") == 0)
+    {
+        cout << "Please specify the input argument. (you can use up to rwo * in the name pattern)" << endl;
+        return "";
+    }
+    if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') > 2)
+    {
+        cout << "Wrong name pattern format. Please use up tp two * in the input argument." << endl;
+        return "";
+    }
+
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "put output options here " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?oligo_sequence " << Ontology::WHERE_CLAUSE;
     query << "?pdb      :hasOligo	?oligo.\n";
-    query << "?oligo	:oligoName	?o_name).\n";
+    query << "?oligo	:oligoName	?oligo_sequence.\n";
+
+    size_t first = oligo_name_pattern.find_first_of("*");
+    size_t last = oligo_name_pattern.find_last_of("*");
+    if( (count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 2 && oligo_name_pattern.at(first) == oligo_name_pattern.at(0) && oligo_name_pattern.at(last) == oligo_name_pattern.at(oligo_name_pattern.size() - 1))
+            || ( count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 1 && (oligo_name_pattern.at(first) == oligo_name_pattern.at(0) || oligo_name_pattern.at(first) == oligo_name_pattern.at(oligo_name_pattern.size() - 1))))
+    {///if star(*) are only at the end/beginning
+        oligo_name_pattern.erase(remove(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*'), oligo_name_pattern.end());
+        query << "FILTER regex(?oligo_sequence, \"" << oligo_name_pattern << "\", \"i\")\n";
+    }
+    else
+    {
+        string filter1 = oligo_name_pattern.substr(0, first);
+        query << "FILTER regex(?oligo_sequence, \"" << filter1 << "\", \"i\")\n";
+        string filter2 = oligo_name_pattern.substr(first + 1, oligo_name_pattern.size() - 1);
+        query << "FILTER regex(?oligo_sequence, \"" << filter2 << "\", \"i\")\n";
+    }
 
     ///string manipulation
     ///if stars are only at the end/beginning so something(1 filter)
     ///else (more than 1 filter)
 
-        query << "?oligo	:hasRoot	?mono.\n";
-        query << "?mono     :hasSugarName	?sn.\n";
-        query << "?sn       :monosaccharideName 	?name.\n";
-        query << "?sn       :monosaccharideShortName 	?short_name.\n";
-        query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
-        query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
+//        query << "?oligo	:hasRoot	?mono.\n";
+//        query << "?mono     :hasSugarName	?sn.\n";
+//        query << "?sn       :monosaccharideName 	?name.\n";
+//        query << "?sn       :monosaccharideShortName 	?short_name.\n";
+//        query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+//        query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
     return query.str();
 }
@@ -10470,7 +10509,7 @@ string Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string a
         return "";
     }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?stereo_name ?stereo_condensed_name ?condensed_name ?name ?oligo_sequence " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?stereo_name ?stereo_condensed_name ?condensed_name ?name ?oligo_sequence " << Ontology::WHERE_CLAUSE;
     query << "?pdb      :hasOligo       ?oligo.\n";
     query << "?oligo	:hasRoot        ?mono.\n";
 
@@ -10611,7 +10650,7 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
         stringstream oligo;
         oligo << "?oligo" << i;
         stringstream mono;
-        oligo << "?mono" << i;
+        mono << "?mono" << i;
         query << oligo.str() << "		:hasRoot	" << mono.str() << ".\n";
 
         for(int j = 1; j < 7; j++)
@@ -10623,49 +10662,50 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
                 switch (j)///anomeric, -1 and +1 are special cases
                 {
                     case 1:///anomeric
-                        ring_atom << "?" << mono.str() << "_anomeric";
-                        side_atom << "?" << mono.str() << "anomeric_side_atom";
+                        ring_atom << mono.str() << "_anomeric";
+                        side_atom << mono.str() << "anomeric_side_atom";
                         query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
-                        query << ring_atom.str() << "  	:ringIndex  	"<< j << ".\n";
+                        query << ring_atom.str() << "  	:ringIndex  	\"" << j << "\".\n";
                         query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
-                        query << side_atom.str() << "	:sideIndex      " << j << ".\n";
+                        query << side_atom.str() << "	:sideIndex      \"" << j << "\".\n";
                         query << side_atom.str() << "	:orientation	\"" << structure.at(j) << "\".\n";
                         break;
                     case 2:///minus one
-                        ring_atom << "?" << mono.str() << "_anomeric";
-                        side_atom << "?" << mono.str() << "_anomeric_minus_one_side_atom";
+                        ring_atom << mono.str() << "_anomeric";
+                        side_atom << mono.str() << "_anomeric_minus_one_side_atom";
                         if(structure.at(1).compare("") == 0)///anomeric has not been set
                         {
                             query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
-                            query << ring_atom.str() << "  	:ringIndex  	"<< j - 1 << ".\n";
+                            query << ring_atom.str() << "  	:ringIndex  	\""<< j - 1 << "\".\n";
                         }
                         query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
                         query << ring_atom.str() << "	:sideIndex     \"-1\".\n";
                         query << side_atom.str() << "	:orientation	\"" << structure.at(j) << "\".\n";
                         break;
                     case 6:///plus one
-                        ring_atom << "?" << mono.str() << "_last_c";
-                        side_atom << "?" << mono.str() << "_last_c_side_atom";
+                        ring_atom << mono.str() << "_last_c";
+                        side_atom << mono.str() << "_last_c_side_atom";
                         query << mono.str() << "         :hasRingAtom	" << ring_atom.str() << ".\n";
                         if(structure.at(0).compare("P") == 0 )
-                            query << ring_atom.str() << "       :ringIndex  	" << j - 1 << ".\n";
+                            query << ring_atom.str() << "       :ringIndex  	\"" << j - 1 << "\".\n";
                         else
-                            query << ring_atom.str() << "       :ringIndex  	" << j - 2 << ".\n";
+                            query << ring_atom.str() << "       :ringIndex  	\"" << j - 2 << "\".\n";
                         query << ring_atom.str() << "         :hasSideAtom    " << side_atom.str() << ".\n";
                         query << side_atom.str() << "       :sideIndex      \"+1\".\n";
                         query << side_atom.str() << "    	  :orientation	\"" << structure.at(j) << "\".\n";
                         break;
                     default:
-                        ring_atom << "?" << mono.str() << "_ring_atom" << j - 1;
-                        ring_atom << "?" << mono.str() << "_side_atom" << j - 1;
+                        ring_atom << mono.str() << "_ring_atom" << j - 1;
+                        side_atom << mono.str() << "_side_atom" << j - 1;
                         query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
-                        query << ring_atom.str() << "  	:ringIndex  	"<< j - 1 << ".\n";
+                        query << ring_atom.str() << "  	:ringIndex  	\"" << j - 1 << "\".\n";
                         query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
-                        query << side_atom.str() << "	:sideIndex      " << j - 1 << ".\n";
+                        query << side_atom.str() << "	:sideIndex      \"" << j - 1 << "\".\n";
                         query << side_atom.str() << "	:orientation	\"" << structure.at(j) << "\".\n";
                 }
             }
         }
+        i++;
         oligos.push_back(oligo.str());
     }
     for(i = 0; i < oligos.size(); i++)
@@ -10674,16 +10714,18 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
         {
             query << "{\n";
             query << "?linkage :hasParent " << oligos.at(i) << ".\n";
-            query << "?linkage :hasParent " << oligos.at(i + 1) << ".\n";
+            query << "?linkage :hasChild " << oligos.at(i + 1) << ".\n";
             query << "} UNION {\n";
             query << "?linkage :hasParent " << oligos.at(i + 1) << ".\n";
-            query << "?linkage :hasParent " << oligos.at(i) << ".\n";
+            query << "?linkage :hasChild " << oligos.at(i) << ".\n";
             query << "}\n";
         }
     }
     for(i = 0; i < oligos.size(); i++)
     {
         query << "?pdb            :hasOligo       " << oligos.at(i) << ".\n";
+        ///optional {?oligo0    :oligoName ?oligoName0.}???
+        ///optional {?oligo1    :oligoName ?oligoName1.}??? only one of these should be matched
     }
     query << Ontology::END_WHERE_CLAUSE;
     return query.str();
@@ -10695,15 +10737,24 @@ void Assembly::TestQueries()
     cout << "Query3 " << endl << ExtractOntologyInfoByPDBID("4A2G") << endl << endl;
     cout << "Query4 " << endl << ExtractOntologyInfoByStringChemicalCode("_4^2^3P^a^+1") << endl << endl;
     cout << "Query5 " << endl << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << endl << endl;
-//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex( oligo_name_pattern) << endl << endl;
-    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("p", "Up", "", "Up","Up", "Down", "Up") << endl << endl;
+
+//    cout << "*b1-4L*" << endl;
+    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*b1-4L*") << endl << endl;
+//    cout << "*DGlcpNAcb1-4DGlc*" << endl;
+//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb1-4DGlc*") << endl << endl;
+//    cout << "*GlcpNAcb1-4DGlcpNAcb" << endl;
+//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*GlcpNAcb1-4DGlcpNAcb") << endl << endl;
+//    cout << "DGlcpNAcb*DGlcpNAca" << endl;
+//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb*4DGlcpNAca") << endl << endl;
+
+    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("P", "Up", "", "Up","Up", "Down", "Up") << endl << endl;
     map<string, string> derivative_modification_map;
     derivative_modification_map["2"] = "xC-N-C=OCH3";
     cout << "Query8 " << endl << ExtractOntologyInfoByDerivativeModificationMap("P", derivative_modification_map) << endl << endl;
     AttachedGlycanStructuresVector structures = AttachedGlycanStructuresVector();
     vector<string> v1 = vector<string>();
     vector<string> v2 = vector<string>();
-    v1.push_back("p");
+    v1.push_back("P");
     v1.push_back("Up");
     v1.push_back("");
     v1.push_back("Down");
@@ -10711,7 +10762,7 @@ void Assembly::TestQueries()
     v1.push_back("Down");
     v1.push_back("Up");
 
-    v2.push_back("p");
+    v2.push_back("P");
     v2.push_back("Up");
     v2.push_back("");
     v2.push_back("Down");
@@ -10721,6 +10772,16 @@ void Assembly::TestQueries()
     structures.push_back(v1);
     structures.push_back(v2);
     cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << "\'";
+    string tmp = ss.str();
+    cout << "Automated query result handled by GMML:(Query5) " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
 }
 
 void Assembly::ExtractRingAtomsInformation()
