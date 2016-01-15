@@ -523,6 +523,16 @@ namespace gmml
         return RESIDUENAMECODELOOKUP[0];
     }
 
+    inline gmml::AmberGlycamMap AmberGlycamLookup(std::string amber_residue_name)
+    {
+        for(int i = 0; i < AMBERGLYCAMLOOKUPSIZE; i++)
+        {
+            if(amber_residue_name.compare(AMBERGLYCAMLOOKUP[i].amber_name_) == 0)
+                return AMBERGLYCAMLOOKUP[i];
+        }
+        return AMBERGLYCAMLOOKUP[0];
+    }
+
     /*! \fn
       * A function in order to write the information/warning/error messages produced by the program into a log file
       * @param line The line number producing the message
