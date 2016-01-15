@@ -10586,6 +10586,7 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
 //vector<structure> OR
 //vector<map> <"+1" -> "UP" ... >, <"2" -> "Down"> OR
 //vector<vector<string> > <"Up", "Down" ... > , <"Up", "Up" ... > ?
+/*
     stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb "<< Ontology::WHERE_CLAUSE;
     int i = 0;
@@ -10728,6 +10729,7 @@ void Assembly::TestQueries()
             query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
         }
     }
+*/
 //           ?mono1		:hasRingAtom	?m1_anomeric.
 //       ?m1_anomeric	:ringIndex      "1".
 //       ?m1_anomeric	:hasSideAtom	?m1a_side.
