@@ -13919,26 +13919,33 @@ string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
                 target_o_neighbor = o_neighbors.at(1);
              else if(o_neighbors.at(0)->GetDescription().find("Het;") == string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != string::npos)
                 target_o_neighbor = o_neighbors.at(0);
-            ResidueVector residues = this->GetAllResiduesOfAssembly();
-            Residue* target_residue = NULL;
-            for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+
+            if(target_o_neighbor != NULL)
             {
-                Residue* residue = *it;
-                if(residue->GetId().compare(target_o_neighbor->GetResidue()->GetId()) == 0)
+                ResidueVector residues = this->GetAllResiduesOfAssembly();
+                Residue* target_residue = NULL;
+                for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
                 {
-                    target_residue = residue;
-                    break;
+                    Residue* residue = *it;
+                    if(residue->GetId().compare(target_o_neighbor->GetResidue()->GetId()) == 0)
+                    {
+                        target_residue = residue;
+                        break;
+                    }
                 }
+                if(target_residue != NULL)
+                    terminal_atoms = target_residue->GetAtoms();
+
+
+                AmberGlycamMap amber_glycam = AmberGlycamLookup(target_o_neighbor->GetResidue()->GetName());
+
+                if(amber_glycam.amber_name_.compare("") != 0)
+                    return amber_glycam.amber_name_;
+                else
+                    return target_o_neighbor->GetResidue()->GetName();
             }
-            if(target_residue != NULL)
-                terminal_atoms = target_residue->GetAtoms();
-
-            AmberGlycamMap amber_glycam = AmberGlycamLookup(target_o_neighbor->GetResidue()->GetName());
-
-            if(amber_glycam.amber_name_.compare("") != 0)
-                return amber_glycam.amber_name_;
             else
-                return target_o_neighbor->GetResidue()->GetName();
+                return "";
         }
         else
             return "";
