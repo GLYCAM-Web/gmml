@@ -44,11 +44,11 @@ namespace MolecularModeling
             typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
-//            typedef std::vector<AtomVector > AtomVectorVector;
+//            typedef std::vector<AtomVector> AtomVectorVector;
             typedef std::map<std::string, AtomVector> CycleMap;
             typedef std::map<std::string, std::map<std::string, std::vector<std::string> > > SelectPatternMap;
             typedef std::map<std::string, ResidueVector> HierarchicalContainmentMap;
-            typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
+//            typedef std::map<Residue*, ResidueVector> ResidueAttachmentMap;
             typedef std::vector<Glycan::Oligosaccharide*> OligosaccharideVector;
             typedef std::map<int, int> AssemblytoPdbSequenceNumberMap;
             typedef std::map<int, int> AssemblytoPdbSerialNumberMap;
@@ -682,7 +682,7 @@ namespace MolecularModeling
             void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
             std::string CreateURIResource(gmml::URIType resource, int number, std::string id_prefix, std::string id);
             std::string CreateURI(std::string uri_resource);
-            std::string ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_short_name, std::string name, std::string short_name);
+            std::string ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_condensed_name, std::string name, std::string condensed_name);
             std::string ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration);
             std::string ExtractOntologyInfoByPDBID(std::string pdb_id);
             std::string ExtractOntologyInfoByStringChemicalCode(std::string chemical_code);
@@ -691,7 +691,9 @@ namespace MolecularModeling
             std::string ExtractOntologyInfoByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation,
                                                                std::string index_three_orientation, std::string index_four_orientation = "", std::string plus_one_orientation = "");
             std::string ExtractOntologyInfoByDerivativeModificationMap(std::string ring_type, DerivativeModificationMap derivative_modification_map);
-            std::string GetOntologyInfoByAttachedSaccharidesStructure(AttachedGlycanStructuresVector attached_structures);
+            std::string ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures);
+
+            void TestQueries();
 
             /*! \fn
               * A function in order to extract and print out all saccharides ring atoms information

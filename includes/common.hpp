@@ -24,6 +24,11 @@ namespace gmml
             std::string code_;
     };
 
+    struct AmberGlycamMap{
+            std::string amber_name_;
+            std::string glycam_name_;
+    };
+
     const double dNotSet = 123456789.0;
     const int iNotSet = -123456;
     const int iPdbLineLength = 80;
@@ -101,6 +106,15 @@ namespace gmml
     };
 
     const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));
+
+    const AmberGlycamMap AMBERGLYCAMLOOKUP[] = {
+        {"", ""},
+        {"ASN", "NLN"},
+        {"THR", "OLT"},
+        {"SER", "OLS"}
+    };
+
+    const int AMBERGLYCAMLOOKUPSIZE = (sizeof(AMBERGLYCAMLOOKUP)/sizeof(AMBERGLYCAMLOOKUP[0]));
 
     const Glycan::SugarName SUGARNAMELOOKUP[] = {
 
