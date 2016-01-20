@@ -65,9 +65,9 @@ namespace Ontology
     const std::string z = "gmmo:zCoordinate";
 
     /* SPARQL Query */
-    const std::string PREFIX = "PREFIX : <http://gmmo.uga.edu/#>\n PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n PREFIX owl: <http://www.w3.org/2002/07/owl#>\n PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n";
+    const std::string PREFIX = "PREFIX : <http://gmmo.uga.edu/#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n";
     const std::string SELECT_CLAUSE = "SELECT";
-    const std::string WHERE_CLAUSE = "WHERE {";
+    const std::string WHERE_CLAUSE = "WHERE {\n";
     const std::string END_WHERE_CLAUSE = "}\n";
 }
 
