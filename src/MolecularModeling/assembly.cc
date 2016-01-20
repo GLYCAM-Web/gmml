@@ -10625,7 +10625,7 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
 //vector<structure> OR
 //vector<map> <"+1" -> "UP" ... >, <"2" -> "Down"> OR
 //vector<vector<string> > <"Up", "Down" ... > , <"Up", "Up" ... > ?
-/*
+
     stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb "<< Ontology::WHERE_CLAUSE;
     int i = 0;
@@ -10768,47 +10768,6 @@ void Assembly::TestQueries()
     structures.push_back(v1);
     structures.push_back(v2);
     cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
-<<<<<<< HEAD
-        if(plus_one_orientation.compare("") != 0)
-        {
-            query << "?mono         :hasRingAtom	?last_c.\n";
-            if(ring_type.compare("P") == 0 )
-                query << "?last_c       :ringIndex  	\"5\".\n";
-            else
-                query << "?last_c       :ringIndex  	\"4\".\n";
-            query << "?last_c         :hasSideAtom    ?plus_one.\n";
-            query << "?plus_one       :sideIndex      \"+1\".\n";
-            query << "?plus_one    	  :orientation	\"" << plus_one_orientation << "\".\n";
-        }
-    }
-*/
-//           ?mono1		:hasRingAtom	?m1_anomeric.
-//       ?m1_anomeric	:ringIndex      "1".
-//       ?m1_anomeric	:hasSideAtom	?m1a_side.
-//       ?m1a_side	:sideIndex	"1".
-//       ?m1a_side	:orientation	"Up".
-
-//           ?oligo2		:hasRoot	?mono2.
-//           ?mono2		:hasRingAtom	?m2_anomeric.
-//       ?m2_anomeric	:ringIndex      "1".
-//       ?m2_anomeric	:hasSideAtom	?m2a_side.
-//       ?m2a_side	:sideIndex	"1".
-//       ?m2a_side	:orientation	"Up".
-//           ?mono2		:hasRingAtom	?m2_plus1.
-//       ?m2_plus1	:ringIndex	"5".
-//       ?m2_plus1	:hasSideAtom	?m2p1_side.
-//       ?m2p1_side	:sideIndex	"+1".
-//       ?m2p1_side	:orientation	"Down".
-//           {
-//            ?linkage :hasParent ?oligo1 .
-//            ?linkage :hasChild ?oligo2 .
-//           } UNION {
-//            ?linkage :hasParent ?oligo2 .
-//            ?linkage :hasChild ?oligo1 .
-//           }
-//           ?pdb            :hasOligo       ?oligo1.
-//           ?pdb            :hasOligo       ?oligo2.
-=======
 
     stringstream ss;
     ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
@@ -10819,7 +10778,6 @@ void Assembly::TestQueries()
     system(cstr);
     cout << endl;
 
->>>>>>> d4e716cd47e8bf09019b004f41afebc9e69e796a
 }
 
 void Assembly::ExtractRingAtomsInformation()
