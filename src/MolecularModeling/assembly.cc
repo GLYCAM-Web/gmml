@@ -10397,7 +10397,7 @@ string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
         return "";
     }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?oligo_sequence ?linkage_str ?glycosidic_linkage ?anomeric_status " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?oligo_sequence ?linkage_str ?glycosidic_linkage ?anomeric_status " << Ontology::WHERE_CLAUSE;
     query <<  ":" << pdb_id << " :hasOligo   ?oligo.\n";
     query << "?oligo 	:oligoName 	?oligo_sequence.\n";
     query << "?linkage 	:hasParent 	?oligo.\n";
@@ -10584,7 +10584,7 @@ string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type
         return "";
     }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?stereo_name ?stereo_condensed_name ?condensed_name " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?stereo_name ?stereo_condensed_name ?condensed_name " << Ontology::WHERE_CLAUSE;
     for(DerivativeModificationMap::iterator it = derivative_modification_map.begin(); it != derivative_modification_map.end(); it++)
     {
         string index = (*it).first;
@@ -13465,7 +13465,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                 Atom* o_neighbor_1 = NULL;
                 Atom* o_neighbor_2 = NULL;
                 AtomVector o_neighbors = AtomVector();
-                if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxigen's neighbors is needed for choosing the root
+                if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxygen's neighbors is needed for choosing the root
                 {
                     anomeric_o = key->side_atoms_.at(0).at(1);
                     o_neighbors = anomeric_o->GetNode()->GetNodeNeighbors();
@@ -13531,7 +13531,7 @@ vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide
                 Atom* o_neighbor_1 = NULL;
                 Atom* o_neighbor_2 = NULL;
                 AtomVector o_neighbors = AtomVector();
-                if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxigen's neighbors is needed for choosing the root
+                if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxygen's neighbors is needed for choosing the root
                 {
                     anomeric_o = key->side_atoms_.at(0).at(1);
                     o_neighbors = anomeric_o->GetNode()->GetNodeNeighbors();
