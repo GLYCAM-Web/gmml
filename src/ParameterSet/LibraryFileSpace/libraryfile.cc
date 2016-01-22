@@ -116,7 +116,6 @@ void LibraryFile::Read(std::ifstream& in_file)
     {
         throw LibraryFileProcessingException("Error reading file");
     }
-
     /// Skip blank lines at the begining of the file
     while(line[0] != '!')
     {

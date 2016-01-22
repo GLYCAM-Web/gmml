@@ -3020,7 +3020,10 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
                 vector<string> dscr = Split(atom->GetDescription(), ";");
                 //                stringstream ss;
                 //                ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
-                PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                string residue_name = atom->GetResidue()->GetName();
+                if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
+                    residue_name = "HOH";
+                PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', residue_name, ' ', sequence_number, ' ',
                                                 *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
                 vector<string> atom_id_tokens = Split(atom->GetId(), "_");
                 pdb_atom->SetAtomChainId(ConvertString<char>(atom_id_tokens.at(3)));
@@ -3073,7 +3076,10 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
             vector<string> dscr = Split(atom->GetDescription(), ";");
             //            stringstream ss;
             //            ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
-            PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+            string residue_name = atom->GetResidue()->GetName();
+            if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
+                residue_name = "HOH";
+            PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', residue_name, ' ', sequence_number, ' ',
                                             *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
             vector<string> atom_id_tokens = Split(atom->GetId(), "_");
             pdb_atom->SetAtomChainId(ConvertString<char>(atom_id_tokens.at(3)));
@@ -12785,9 +12791,12 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     solvent_component->SetSourceFile(lib_file);
     solvent_component->BuildStructureByLIBFileInformation();
     solvent_component->GetBoundary(solvent_component_min_boundary, solvent_component_max_boundary);
-    double solvent_length = solvent_component_max_boundary->GetX() - solvent_component_min_boundary->GetX();
-    double solvent_width = solvent_component_max_boundary->GetY() - solvent_component_min_boundary->GetY();
-    double solvent_height = solvent_component_max_boundary->GetZ() - solvent_component_min_boundary->GetZ();
+    LibraryFile* lib = new LibraryFile(lib_file);
+    LibraryFile::ResidueMap lib_residues = lib->GetResidues();
+    LibraryFileResidue* lib_residue  = lib_residues.begin()->second;
+    double solvent_length = solvent_component_max_boundary->GetX() - solvent_component_min_boundary->GetX();//lib_residue->GetBoxLength()
+    double solvent_width = solvent_component_max_boundary->GetY() - solvent_component_min_boundary->GetY();//lib_residue->GetBoxWidth();
+    double solvent_height = solvent_component_max_boundary->GetZ() - solvent_component_min_boundary->GetZ();//lib_residue->GetBoxHeight();
 
     Coordinate* solute_min_boundary = new Coordinate();
     Coordinate* solute_max_boundary = new Coordinate();
@@ -12805,13 +12814,8 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
         solvent_box_dimension = solute_height;
     solvent_box_dimension += extension;
 
-    cout << "Box dimension: " << solvent_box_dimension << endl;
-
     Coordinate* center_of_box = new Coordinate(solute_min_boundary->GetX() + solute_length/2, solute_min_boundary->GetY() + solute_width/2,
                                                solute_min_boundary->GetZ() + solute_height/2);
-    cout << "Center: " << endl;
-    center_of_box->Print();
-    cout << endl;
 
     Coordinate* solvent_box_min_boundary = new Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
     solvent_box_min_boundary->operator +(-solvent_box_dimension);
@@ -12821,12 +12825,6 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     double solvent_box_width = solvent_box_max_boundary->GetY() - solvent_box_min_boundary->GetY();
     double solvent_box_height = solvent_box_max_boundary->GetZ() - solvent_box_min_boundary->GetZ();
 
-    cout << "Solvent box: " << endl;
-    solvent_box_min_boundary->Print();
-    cout << endl;
-    solvent_box_max_boundary->Print();
-    cout << endl;
-
     double x_copy = solvent_box_length/solvent_length + 1;
     double y_copy = solvent_box_width/solvent_width + 1;
     double z_copy = solvent_box_height/solvent_height + 1;
@@ -12835,9 +12833,9 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     double y_to_trim = solvent_width * y_copy - solvent_box_width;
     double z_to_trim = solvent_height * z_copy - solvent_box_height;
 
-    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX();
-    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY();
-    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ();
+    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX() - solvent_length/2;
+    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY() - solvent_width/2;
+    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ() - solvent_height/2;
 
     for(int i = 0; i < x_copy; i ++)
     {
@@ -12860,8 +12858,11 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
                     tip_box->BuildStructureByLIBFileInformation();
                     AtomVector all_atoms_of_tip = tip_box->GetAllAtomsOfAssembly();
                     for(AtomVector::iterator it = all_atoms_of_tip.begin(); it != all_atoms_of_tip.end(); it++)
+                    {
                         (*it)->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
                                                                             shift_y + j * solvent_width, shift_z + k * solvent_height);
+                        (*it)->SetDescription("Het;");
+                    }
                     ResidueVector residues = tip_box->GetResidues();
                     for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
                         solvent->AddResidue(*it);
