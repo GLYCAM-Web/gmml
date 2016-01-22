@@ -21,6 +21,7 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             Grid();
             Grid(MolecularModeling::Assembly* assembly, Coordinate* min, Coordinate* max, double ion_radius, double ion_charge);
+            Grid(MolecularModeling::Assembly* assembly, Coordinate* min, Coordinate* max, double cell_length, double cell_width, double cell_height);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -41,6 +42,7 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+            void UpdateGrid(double lenght, double width, double height);
             void UpdateGrid(double ion_charge);
             void CalculateCellsCharge();
             void CalculateCellsPotentialEnergy(double ion_radius);
