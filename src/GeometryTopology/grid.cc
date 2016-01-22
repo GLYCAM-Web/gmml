@@ -27,6 +27,14 @@ Grid::Grid(Assembly *assembly, Coordinate *min, Coordinate *max, double ion_radi
     this->UpdateGrid(ion_charge);
 }
 
+Grid::Grid(Assembly *assembly, Coordinate *min, Coordinate *max, double cell_length, double cell_width, double cell_height)
+{
+    min_corner_ = new Coordinate(min->GetX(), min->GetY(), min->GetZ());
+    max_corner_ = new Coordinate(max->GetX(), max->GetY(), max->GetZ());
+    cells_ = CellVector();
+    assembly_ = assembly;
+    this->UpdateGrid(cell_length, cell_width, cell_height);
+}
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -80,6 +88,99 @@ void Grid::SetAssembly(Assembly *assembly)
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
+void Grid::UpdateGrid(double length, double width, double height)
+{
+    double min_x = this->GetMinCorner()->GetX();
+    double min_y = this->GetMinCorner()->GetY();
+    double min_z = this->GetMinCorner()->GetZ();
+    double max_x = this->GetMaxCorner()->GetX();
+    double max_y = this->GetMaxCorner()->GetY();
+    double max_z = this->GetMaxCorner()->GetZ();
+
+    Grid::CellVector grid_cells = Grid::CellVector();
+    for(double i = min_x; i <= max_x; i += length)
+    {
+        for(double j = min_y; j <= max_y; j += width)
+        {
+            for(double k = min_z; k <= max_z; k += height)
+            {
+                if(i + length <= max_x)
+                {
+                    if(j + width <= max_y)
+                    {
+                        if(k + height <= max_z)
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k),
+                                                      new Coordinate(i + length, j + width, k + height));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+                        }
+                        else
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + length, j + width, max_z));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+                        }
+                    }
+                    else
+                    {
+                        if(k + height <= max_z)
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + length, max_y, k + height));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+                        }
+                        else
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + length, max_y, max_z));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+                        }
+                    }
+                }
+                else
+                {
+                    if(j + width <= max_y)
+                    {
+                        if(k + height <= max_z)
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + width, k + height));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+                        }
+                        else
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + width, max_z));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+                        }
+                    }
+                    else
+                    {
+                        if(k + height <= max_z)
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, k + height));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+
+                        }
+                        else
+                        {
+                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, max_z));
+                            new_cell->SetGrid(this);
+                            grid_cells.push_back(new_cell);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+    this->SetCells(grid_cells);
+    return;
+
+}
+
 void Grid::UpdateGrid(double ion_charge)
 {
     double min_x = this->GetMinCorner()->GetX();
@@ -109,10 +210,10 @@ void Grid::UpdateGrid(double ion_charge)
                             if(k + DEFAULT_GRID_HEIGHT <= max_z)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k),
-                                                         new Coordinate(i + DEFAULT_GRID_LENGTH, j + DEFAULT_GRID_WIDTH, k + DEFAULT_GRID_HEIGHT));
+                                                          new Coordinate(i + DEFAULT_GRID_LENGTH, j + DEFAULT_GRID_WIDTH, k + DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -122,8 +223,8 @@ void Grid::UpdateGrid(double ion_charge)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + DEFAULT_GRID_LENGTH, j + DEFAULT_GRID_WIDTH, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -136,8 +237,8 @@ void Grid::UpdateGrid(double ion_charge)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + DEFAULT_GRID_LENGTH, max_y, k + DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -147,8 +248,8 @@ void Grid::UpdateGrid(double ion_charge)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + DEFAULT_GRID_LENGTH, max_y, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -164,8 +265,8 @@ void Grid::UpdateGrid(double ion_charge)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + DEFAULT_GRID_WIDTH, k + DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -175,8 +276,8 @@ void Grid::UpdateGrid(double ion_charge)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + DEFAULT_GRID_WIDTH, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -189,8 +290,8 @@ void Grid::UpdateGrid(double ion_charge)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, k + DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -201,8 +302,8 @@ void Grid::UpdateGrid(double ion_charge)
                             {
                                 Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
-                                        new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
-                                        new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
+                                     new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
+                                     new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
                                 {
                                     new_cell->SetGrid(this);
                                     grid_cells.push_back(new_cell);
@@ -230,67 +331,67 @@ void Grid::UpdateGrid(double ion_charge)
         double max_z = temp_grid->GetMaxCorner()->GetZ();
         Grid::CellVector grid_cells = Grid::CellVector();
         grid_cells.push_back(new Cell(temp_grid,
-                                 temp_grid->GetMinCorner(),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
+                                      temp_grid->GetMinCorner(),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                 new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
-                                            temp_grid->GetMinCorner()->GetY(),
-                                            temp_grid->GetMinCorner()->GetZ()),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_x),
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
+                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                                     temp_grid->GetMinCorner()->GetY(),
+                                                     temp_grid->GetMinCorner()->GetZ()),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_x),
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                 new Coordinate(temp_grid->GetMinCorner()->GetX(),
-                                            temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                            temp_grid->GetMinCorner()->GetZ()),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
+                                      new Coordinate(temp_grid->GetMinCorner()->GetX(),
+                                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                                     temp_grid->GetMinCorner()->GetZ()),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                 new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
-                                            temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                            temp_grid->GetMinCorner()->GetZ()),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
+                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                                     temp_grid->GetMinCorner()->GetZ()),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                 new Coordinate(temp_grid->GetMinCorner()->GetX(),
-                                            temp_grid->GetMinCorner()->GetY(),
-                                            temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_y) / 2,
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
+                                      new Coordinate(temp_grid->GetMinCorner()->GetX(),
+                                                     temp_grid->GetMinCorner()->GetY(),
+                                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_y) / 2,
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
         grid_cells.push_back(new Cell(temp_grid,
-                                 new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
-                                            temp_grid->GetMinCorner()->GetY(),
-                                            temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
+                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                                     temp_grid->GetMinCorner()->GetY(),
+                                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
         grid_cells.push_back(new Cell(temp_grid,
-                                 new Coordinate(temp_grid->GetMinCorner()->GetX(),
-                                            temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                            temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
+                                      new Coordinate(temp_grid->GetMinCorner()->GetX(),
+                                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
         grid_cells.push_back(new Cell(temp_grid,
-                                 new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
-                                            temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
-                                            temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                 new Coordinate(
-                                     temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
-                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
-                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
+                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                                     temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
+                                                     temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
+                                      new Coordinate(
+                                          temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
+                                          temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
+                                          temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
 
 
 
