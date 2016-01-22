@@ -75,6 +75,7 @@ namespace MolecularModeling
               * @param types Set of inoput file types of the inputs which are selected from InputFileType enumerator
               */
             Assembly(std::vector<std::vector<std::string> > file_paths, std::vector<gmml::InputFileType> types);
+            Assembly(Assembly* assembly);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

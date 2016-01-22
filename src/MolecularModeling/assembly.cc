@@ -284,6 +284,20 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
     }
 }
 
+Assembly::Assembly(Assembly *assembly) : description_(""), model_index_(0), sequence_number_(1), id_("1")
+{
+    source_file_ = assembly->GetSourceFile();
+    assemblies_ = AssemblyVector();
+    AssemblyVector assemblies = assembly->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+        assemblies_.push_back(new Assembly(*it));
+
+    residues_ = ResidueVector();
+    ResidueVector residues = assembly->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+        residues_.push_back(*it);
+}
+
 Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileType> types)
 {
     stringstream name;
@@ -12794,10 +12808,11 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     solvent_component->GetBoundary(solvent_component_min_boundary, solvent_component_max_boundary);
     LibraryFile* lib = new LibraryFile(lib_file);
     LibraryFile::ResidueMap lib_residues = lib->GetResidues();
-    LibraryFileResidue* lib_residue  = lib_residues.begin()->second;
-    double solvent_length = solvent_component_max_boundary->GetX() - solvent_component_min_boundary->GetX();//lib_residue->GetBoxLength()
-    double solvent_width = solvent_component_max_boundary->GetY() - solvent_component_min_boundary->GetY();//lib_residue->GetBoxWidth();
-    double solvent_height = solvent_component_max_boundary->GetZ() - solvent_component_min_boundary->GetZ();//lib_residue->GetBoxHeight();
+    LibraryFileResidue* lib_residue  = lib_residues.begin()->second;    
+
+    double solvent_length = lib_residue->GetBoxLength();
+    double solvent_width = lib_residue->GetBoxWidth();
+    double solvent_height = lib_residue->GetBoxHeight();
 
     Coordinate* solute_min_boundary = new Coordinate();
     Coordinate* solute_max_boundary = new Coordinate();
@@ -12834,25 +12849,25 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     double y_to_trim = solvent_width * y_copy - solvent_box_width;
     double z_to_trim = solvent_height * z_copy - solvent_box_height;
 
-    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX() - solvent_length/2;
-    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY() - solvent_width/2;
-    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ() - solvent_height/2;
+    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX() - solvent_length;
+    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY() - solvent_width;
+    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ() - solvent_height;
 
     for(int i = 0; i < x_copy; i ++)
     {
-        bool trim_x = (i == x_copy - 1);
+//        bool trim_x = (i == x_copy - 1);
         for(int j = 0; j < y_copy; j ++)
         {
-            bool trim_y = (j == y_copy - 1);
+//            bool trim_y = (j == y_copy - 1);
             for(int k = 0; k < z_copy; k++)
             {
-                bool trim_z = (k == z_copy - 1);
-                if(trim_x || trim_y || trim_z)
-                {
-                    // trim the tip box
-                }
-                else
-                {
+//                bool trim_z = (k == z_copy - 1);
+//                if(trim_x || trim_y || trim_z)
+//                {
+//                    // trim the tip box
+//                }
+//                else
+//                {
                     Assembly* tip_box = new Assembly();
                     tip_box->BuildAssemblyFromLibraryFile(lib_file);
                     tip_box->SetSourceFile(lib_file);
@@ -12867,7 +12882,7 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
                     ResidueVector residues = tip_box->GetResidues();
                     for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
                         solvent->AddResidue(*it);
-                }
+//                }
             }
         }
     }

@@ -29,6 +29,19 @@ Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
     node_ = NULL;
 }
 
+Atom::Atom(Atom *atom)
+{
+    residue_ = new Residue(atom->GetResidue());
+    name_ = atom->GetName();
+    coordinates_ = CoordinateVector();
+    CoordinateVector coordinates = atom->GetCoordinates();
+    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+        coordinates_.push_back(new GeometryTopology::Coordinate(*it));
+
+    AtomNode node = atom->GetNode();
+    node_ = new AtomNode(node);
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

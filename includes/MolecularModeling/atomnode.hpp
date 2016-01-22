@@ -25,6 +25,7 @@ namespace MolecularModeling
               * Default constructor
               */
             AtomNode();
+            AtomNode(AtomNode* node);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

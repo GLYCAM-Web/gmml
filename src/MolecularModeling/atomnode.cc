@@ -9,6 +9,15 @@ using namespace MolecularModeling;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 AtomNode::AtomNode() {}
+AtomNode::AtomNode(AtomNode *node)
+{
+    atom_ = new Atom(new Atom(node->GetAtom()));
+    node_neighbors_ = AtomVector();
+    AtomVector node_neighbors = node->GetNodeNeighbors();
+    for(AtomVector::iterator it = node_neighbors.begin(); it != node_neighbors.end(); it++)
+        node_neighbors_.push_back(new Atom(*it));
+    id_ = node->GetId();
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
