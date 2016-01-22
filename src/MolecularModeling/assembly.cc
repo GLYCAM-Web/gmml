@@ -10749,7 +10749,7 @@ void Assembly::TestQueries()
 //    cout << "DGlcpNAcb*DGlcpNAca" << endl;
 //    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb*4DGlcpNAca") << endl << endl;
 
-    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("P", "Up", "", "Up","Up", "Down", "Up") << endl << endl;
+    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("P", "Up", "", "Up","Up", "Down", "Down") << endl << endl;
     map<string, string> derivative_modification_map;
     derivative_modification_map["2"] = "xC-N-C=OCH3";
     cout << "Query8 " << endl << ExtractOntologyInfoByDerivativeModificationMap("P", derivative_modification_map) << endl << endl;
@@ -10776,10 +10776,11 @@ void Assembly::TestQueries()
     cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
 
     stringstream ss;
-    ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
-    ss << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << "\'";
+//    ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << ExtractOntologyInfoByPDBID("4A2G") << "\'";
     string tmp = ss.str();
-    cout << "Automated query result handled by GMML:(Query5) " << endl;
+    cout << "Automated query result handled by GMML:(Query3) " << endl;
     const char* cstr = tmp.c_str();
     system(cstr);
     cout << endl;
