@@ -965,6 +965,7 @@ namespace MolecularModeling
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str);
 
             void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
+            Assembly* Solvation(double extension, double closeness, std::string lib_file);
 
             double GetTotalCharge();
             double GetRadius();

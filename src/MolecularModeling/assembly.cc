@@ -12771,6 +12771,108 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
     }
 }
 
+Assembly* Assembly::Solvation(double extension, double closeness, string lib_file)
+{
+    Assembly* solvated_assembly = new Assembly();
+    solvated_assembly->AddAssembly(this);
+    Assembly* solvent = new Assembly();
+    solvated_assembly->AddAssembly(solvent);
+
+    Coordinate* solvent_component_min_boundary = new Coordinate();
+    Coordinate* solvent_component_max_boundary = new Coordinate();
+    Assembly* solvent_component = new Assembly();
+    solvent_component->BuildAssemblyFromLibraryFile(lib_file);
+    solvent_component->SetSourceFile(lib_file);
+    solvent_component->BuildStructureByLIBFileInformation();
+    solvent_component->GetBoundary(solvent_component_min_boundary, solvent_component_max_boundary);
+    double solvent_length = solvent_component_max_boundary->GetX() - solvent_component_min_boundary->GetX();
+    double solvent_width = solvent_component_max_boundary->GetY() - solvent_component_min_boundary->GetY();
+    double solvent_height = solvent_component_max_boundary->GetZ() - solvent_component_min_boundary->GetZ();
+
+    Coordinate* solute_min_boundary = new Coordinate();
+    Coordinate* solute_max_boundary = new Coordinate();
+    this->GetBoundary(solute_min_boundary, solute_max_boundary);
+    double solute_length = solute_max_boundary->GetX() - solute_min_boundary->GetX();
+    double solute_width = solute_max_boundary->GetY() - solute_min_boundary->GetY();
+    double solute_height = solute_max_boundary->GetZ() - solute_min_boundary->GetZ();
+
+    double solvent_box_dimension = 0;
+    if(solute_length > solvent_box_dimension)
+        solvent_box_dimension = solute_length;
+    if(solute_width > solvent_box_dimension)
+        solvent_box_dimension = solute_width;
+    if(solute_height > solvent_box_dimension)
+        solvent_box_dimension = solute_height;
+    solvent_box_dimension += extension;
+
+    cout << "Box dimension: " << solvent_box_dimension << endl;
+
+    Coordinate* center_of_box = new Coordinate(solute_min_boundary->GetX() + solute_length/2, solute_min_boundary->GetY() + solute_width/2,
+                                               solute_min_boundary->GetZ() + solute_height/2);
+    cout << "Center: " << endl;
+    center_of_box->Print();
+    cout << endl;
+
+    Coordinate* solvent_box_min_boundary = new Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
+    solvent_box_min_boundary->operator +(-solvent_box_dimension);
+    Coordinate* solvent_box_max_boundary = new Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
+    solvent_box_max_boundary->operator +(solvent_box_dimension);
+    double solvent_box_length = solvent_box_max_boundary->GetX() - solvent_box_min_boundary->GetX();
+    double solvent_box_width = solvent_box_max_boundary->GetY() - solvent_box_min_boundary->GetY();
+    double solvent_box_height = solvent_box_max_boundary->GetZ() - solvent_box_min_boundary->GetZ();
+
+    cout << "Solvent box: " << endl;
+    solvent_box_min_boundary->Print();
+    cout << endl;
+    solvent_box_max_boundary->Print();
+    cout << endl;
+
+    double x_copy = solvent_box_length/solvent_length + 1;
+    double y_copy = solvent_box_width/solvent_width + 1;
+    double z_copy = solvent_box_height/solvent_height + 1;
+
+    double x_to_trim = solvent_length * x_copy - solvent_box_length;
+    double y_to_trim = solvent_width * y_copy - solvent_box_width;
+    double z_to_trim = solvent_height * z_copy - solvent_box_height;
+
+    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX();
+    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY();
+    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ();
+
+    for(int i = 0; i < x_copy; i ++)
+    {
+        bool trim_x = (i == x_copy - 1);
+        for(int j = 0; j < y_copy; j ++)
+        {
+            bool trim_y = (j == y_copy - 1);
+            for(int k = 0; k < z_copy; k++)
+            {
+                bool trim_z = (k == z_copy - 1);
+                if(trim_x || trim_y || trim_z)
+                {
+                    // trim the tip box
+                }
+                else
+                {
+                    Assembly* tip_box = new Assembly();
+                    tip_box->BuildAssemblyFromLibraryFile(lib_file);
+                    tip_box->SetSourceFile(lib_file);
+                    tip_box->BuildStructureByLIBFileInformation();
+                    AtomVector all_atoms_of_tip = tip_box->GetAllAtomsOfAssembly();
+                    for(AtomVector::iterator it = all_atoms_of_tip.begin(); it != all_atoms_of_tip.end(); it++)
+                        (*it)->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
+                                                                            shift_y + j * solvent_width, shift_z + k * solvent_height);
+                    ResidueVector residues = tip_box->GetResidues();
+                    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+                        solvent->AddResidue(*it);
+                }
+            }
+        }
+    }
+
+    return solvated_assembly;
+}
+
 double Assembly::GetTotalCharge()
 {
     double charge = 0;
@@ -13938,9 +14040,12 @@ string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
 
 
                 AmberGlycamMap amber_glycam = AmberGlycamLookup(target_o_neighbor->GetResidue()->GetName());
+                AmberGlycamMap glycam_amber = GlycamAmberLookup(target_o_neighbor->GetResidue()->GetName());
 
                 if(amber_glycam.amber_name_.compare("") != 0)
                     return amber_glycam.amber_name_;
+                else if(glycam_amber.glycam_name_.compare("") != 0)
+                    return glycam_amber.amber_name_;
                 else
                     return target_o_neighbor->GetResidue()->GetName();
             }
