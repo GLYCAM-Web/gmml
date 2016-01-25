@@ -12868,20 +12868,46 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
 //                }
 //                else
 //                {
+                //solute_min/max_with_extension = solute_min/max_boundary + closeness
+                //check coordinate of each atom to see if it's between solute_min/max_with_extension
+                //if so, check distance with all solutes atoms (this)
+                //if < closeness remove else add to to_be_added_atoms vector
+                Coordinate* solute_min_boundary_with_extension = new Coordinate();
+                Coordinate* solute_max_boundary_with_extension = new Coordinate();
+                solute_min_boundary_with_extension->SetX(solute_min_boundary->GetX() + closeness);
+                solute_min_boundary_with_extension->SetY(solute_min_boundary->GetY() + closeness);
+                solute_min_boundary_with_extension->SetZ(solute_min_boundary->GetZ() + closeness);
+                solute_max_boundary_with_extension->SetX(solute_max_boundary->GetX() + closeness);
+                solute_max_boundary_with_extension->SetY(solute_max_boundary->GetY() + closeness);
+                solute_max_boundary_with_extension->SetZ(solute_max_boundary->GetZ() + closeness);
                     Assembly* tip_box = new Assembly();
                     tip_box->BuildAssemblyFromLibraryFile(lib_file);
                     tip_box->SetSourceFile(lib_file);
                     tip_box->BuildStructureByLIBFileInformation();
                     AtomVector all_atoms_of_tip = tip_box->GetAllAtomsOfAssembly();
+                    Residue* tip_residue = new Residue();
                     for(AtomVector::iterator it = all_atoms_of_tip.begin(); it != all_atoms_of_tip.end(); it++)
                     {
-                        (*it)->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
+                        Atom* tip_atom = (*it);
+                        tip_atom->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
                                                                             shift_y + j * solvent_width, shift_z + k * solvent_height);
-                        (*it)->SetDescription("Het;");
+                        GeometryTopology::Coordinate* tip_atom_coords = tip_atom->GetCoordinates().at(model_index_);
+                        if(solute_min_boundary_with_extension->GetX() < tip_atom_coords->GetX() < solute_max_boundary_with_extension->GetX() &&
+                                solute_min_boundary_with_extension->GetY() < tip_atom_coords->GetY() < solute_max_boundary_with_extension->GetY() &&
+                                solute_min_boundary_with_extension->GetZ() < tip_atom_coords->GetZ() < solute_max_boundary_with_extension->GetZ() )
+                        {
+                            AtomVector all_atoms_of_solute = this->GetAllAtomsOfAssembly();
+                            for(AtomVector::iterator it1 = all_atoms_of_solute.begin(); it1 != all_atoms_of_solute.end(); it1++)
+                            {
+                                Atom* solute_atom = (*it1);
+                                if((tip_atom->GetCoordinates().at(model_index_)->Distance(*(solute_atom->GetCoordinates().at(model_index_)))) < closeness)
+                                    break;
+                            }
+                            tip_atom->SetDescription("Het;");
+                            tip_residue->AddAtom(tip_atom);
+                        }
                     }
-                    ResidueVector residues = tip_box->GetResidues();
-                    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-                        solvent->AddResidue(*it);
+                    solvent->AddResidue(tip_residue);
 //                }
             }
         }
