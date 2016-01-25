@@ -9314,6 +9314,10 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
                         pdb_glycam_residue_map[terminal_atom->GetResidue()->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                     }
                 }
+                if(condensed_sequence_amber_residue_tree.at(index)->GetIsDerivative())
+                {
+
+                }
             }
         }
         index++;
@@ -12819,7 +12823,7 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     this->GetBoundary(solute_min_boundary, solute_max_boundary);
     double solute_length = solute_max_boundary->GetX() - solute_min_boundary->GetX();
     double solute_width = solute_max_boundary->GetY() - solute_min_boundary->GetY();
-    double solute_height = solute_max_boundary->GetZ() - solute_min_boundary->GetZ();
+    double solute_height = solute_max_boundary->GetZ() - solute_min_boundary->GetZ();    
 
     double solvent_box_dimension = 0;
     if(solute_length > solvent_box_dimension)
