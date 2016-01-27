@@ -4150,7 +4150,6 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             }
         }
     }
-    cout << "HERE" << endl;
 
     topology_assembly->SetAssemblyName(ss.str());
     topology_file->SetAtomPairs(pairs);
@@ -9317,13 +9316,10 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
                         pdb_glycam_residue_map[terminal_atom->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                         pdb_glycam_residue_map[terminal_atom->GetResidue()->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                     }
-                }
-                if(condensed_sequence_amber_residue_tree.at(index)->GetIsDerivative())
-                {
-
-                }
+                }                
             }
         }
+
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
     }
@@ -9333,10 +9329,90 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
 
 void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
                                                CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
-{
+{   
     string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
     pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = name;
     index++;
+    while(index < condensed_sequence_amber_residue_tree.size() && condensed_sequence_amber_residue_tree.at(index)->GetIsDerivative())
+    {
+        int parent_index = condensed_sequence_amber_residue_tree.at(index)->GetParentId();
+        int carbon_index = ConvertString<int>(condensed_sequence_amber_residue_tree.at(index)->GetAnomericCarbon().substr(1));
+        Atom* carbon_atom = NULL;
+        if(oligosaccharide->root_->derivatives_map_.find("-1") == oligosaccharide->root_->derivatives_map_.end())
+        {
+            if((carbon_index == 6 || carbon_index == 7 || carbon_index == 8) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("P") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-6);
+            if((carbon_index == 5 || carbon_index == 6 || carbon_index == 7) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("F") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-5);
+            if(carbon_atom == NULL)
+                carbon_atom = oligosaccharide->root_->side_atoms_.at(carbon_index).at(0);
+        }
+        else
+        {
+            if((carbon_index == 7 || carbon_index == 8 || carbon_index == 9) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("P") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-7);
+            if((carbon_index == 6 || carbon_index == 7 || carbon_index == 8) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("F") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-6);
+            if(carbon_atom == NULL)
+                carbon_atom = oligosaccharide->root_->side_atoms_.at(carbon_index-1).at(0);
+        }
+        if(carbon_atom != NULL)
+        {
+            AtomVector n_linkage_derivative_atoms = AtomVector();
+            string n_linkage_derivative_string = CheckxC_NxO_SO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'N', n_linkage_derivative_atoms);
+            if(n_linkage_derivative_string.compare("xC-N-SO3") == 0)
+            {
+                for(AtomVector::iterator it = n_linkage_derivative_atoms.begin(); it != n_linkage_derivative_atoms.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "SO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+            AtomVector o_linkage_derivative_atoms = AtomVector();
+            string o_linkage_derivative_string = CheckxC_NxO_SO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'O', o_linkage_derivative_atoms);
+            if(o_linkage_derivative_string.compare("xC-O-SO3") == 0)
+            {
+                for(AtomVector::iterator it = o_linkage_derivative_atoms.begin(); it != o_linkage_derivative_atoms.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "SO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+            AtomVector n_linkage_derivative_atoms_1 = AtomVector();
+            string n_linkage_derivative_string_1 = CheckxC_NxO_PO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'N', n_linkage_derivative_atoms_1);
+            if(n_linkage_derivative_string_1.compare("xC-N-PO3") == 0)
+            {
+                for(AtomVector::iterator it = n_linkage_derivative_atoms_1.begin(); it != n_linkage_derivative_atoms_1.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "PO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+            AtomVector o_linkage_derivative_atoms_1 = AtomVector();
+            string o_linkage_derivative_string_1 = CheckxC_NxO_PO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'O', o_linkage_derivative_atoms_1);
+            if(o_linkage_derivative_string_1.compare("xC-O-PO3") == 0)
+            {
+                for(AtomVector::iterator it = o_linkage_derivative_atoms_1.begin(); it != o_linkage_derivative_atoms_1.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "PO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+        }
+        index++;
+    }
     for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
     {
         this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_amber_residue_tree, index);
@@ -12411,7 +12487,8 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO,
     {
         if(pattern.str().compare("xCH-OH-SOOOH") == 0 || pattern.str().compare("xCH-O-SOOOH") == 0 || pattern.str().compare("xCH-OH-SOOO") == 0 || pattern.str().compare("xCH-O-SOOO") == 0 ||
                 pattern.str().compare("xCHH-OH-SOOOH") == 0 || pattern.str().compare("xCHH-OH-SOOO") == 0 || pattern.str().compare("xCHH-O-SOOOH") == 0 || pattern.str().compare("xCHH-O-SOOO") == 0 ||
-                pattern.str().compare("xC-O-SOOO") == 0 || pattern.str().compare("xC-OH-SOOOH") == 0 || pattern.str().compare("xC-O-SOOOH") == 0 || pattern.str().compare("xC-OH-SOOO") == 0 )            return "xC-O-SO3";
+                pattern.str().compare("xC-O-SOOO") == 0 || pattern.str().compare("xC-OH-SOOOH") == 0 || pattern.str().compare("xC-O-SOOOH") == 0 || pattern.str().compare("xC-OH-SOOO") == 0 )
+            return "xC-O-SO3";
         else
             return "";
     }
@@ -12961,6 +13038,7 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY() - solvent_width/2;
     double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ() - solvent_height/2;
 
+    int sequence_number = 1;
     for(int i = 0; i < x_copy; i ++)
     {
 //        bool trim_x = (i == x_copy - 1);
@@ -13023,8 +13101,11 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
                                 continue;
                         }
                         tip_residue->AddAtom(tip_atom);
+                        tip_residue->SetName("HOH");
+                        tip_residue->SetId("HOH_" + sequence_number);
                     }
                     solvent->AddResidue(tip_residue);
+                    sequence_number++;
 //                }
             }
         }
