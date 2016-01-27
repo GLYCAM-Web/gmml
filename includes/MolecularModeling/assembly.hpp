@@ -913,57 +913,64 @@ namespace MolecularModeling
               * A function in order to check if the target atom is attached to a derivative with the pattern xCH-N
               * @param target_atom The atom which will be checked for a derivative
               * @param cycle_atom_str The string version of atom identifiers of the cycle
+              * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxC_N(Atom* target, std::string cycle_atoms_str);
+            std::string CheckxC_N(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xC-O-C=OCH3 or xC-N-C=OCH3
               * @param target_atom The atom which will be checked for a derivative
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxC_NxO_CO_C(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_CO_C(Atom* target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-C=OCH2OH or xC-O-C=OCH2OH
               * @param target_atom The atom which will be checked for a derivative
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxC_NxO_CO_CO(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_CO_CO(Atom* target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-SO3 or xC-O-SO3
               * @param target_atom The atom which will be checked for a derivative
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxC_NxO_SO3(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_SO3(Atom* target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-PO3 or xC-PO3
               * @param target_atom The atom which will be checked for a derivative
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxC_NxO_PO3(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_PO3(Atom* target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xC-N-CH3 or xC-O-CH3
               * @param target_atom The atom which will be checked for a derivative
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxC_NxO_C(Atom* target, std::string cycle_atoms_str, char NxO);
+            std::string CheckxC_NxO_C(Atom* target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern C-(O,O), C-(O.OH), rC-(O.O) and rC-(O.OH)
               * @param target_atom The atom which will be checked for a derivative
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @param NxO The option for checking the pattern with oxygen or nitrogen
+              * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxCOO(Atom* target, std::string cycle_atoms_str);
+            std::string CheckxCOO(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
 
             void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
             Assembly* Solvation(double extension, double closeness, std::string lib_file);
