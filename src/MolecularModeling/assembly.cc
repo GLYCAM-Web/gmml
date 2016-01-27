@@ -3932,7 +3932,10 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         TopologyResidue* topology_residue = new TopologyResidue();
         residue_counter++;
         topology_residue->SetIndex(residue_counter);
-        topology_residue->SetResidueName(assembly_residue->GetName());
+        string residue_name = assembly_residue->GetName();
+        if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
+            residue_name = "HOH";
+        topology_residue->SetResidueName(residue_name);
         if(distance(assembly_residues.begin(), it) == (int)assembly_residues.size()-1)
             ss << assembly_residue->GetName();
         else
@@ -4147,6 +4150,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             }
         }
     }
+    cout << "HERE" << endl;
 
     topology_assembly->SetAssemblyName(ss.str());
     topology_file->SetAtomPairs(pairs);
@@ -12826,12 +12830,12 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     double solute_height = solute_max_boundary->GetZ() - solute_min_boundary->GetZ();    
 
     double solvent_box_dimension = 0;
-    if(solute_length > solvent_box_dimension)
-        solvent_box_dimension = solute_length;
-    if(solute_width > solvent_box_dimension)
-        solvent_box_dimension = solute_width;
-    if(solute_height > solvent_box_dimension)
-        solvent_box_dimension = solute_height;
+    if(solute_length/2 > solvent_box_dimension)
+        solvent_box_dimension = solute_length/2;
+    if(solute_width/2 > solvent_box_dimension)
+        solvent_box_dimension = solute_width/2;
+    if(solute_height/2 > solvent_box_dimension)
+        solvent_box_dimension = solute_height/2;
     solvent_box_dimension += extension;
 
     Coordinate* center_of_box = new Coordinate(solute_min_boundary->GetX() + solute_length/2, solute_min_boundary->GetY() + solute_width/2,
@@ -12845,17 +12849,17 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     double solvent_box_width = solvent_box_max_boundary->GetY() - solvent_box_min_boundary->GetY();
     double solvent_box_height = solvent_box_max_boundary->GetZ() - solvent_box_min_boundary->GetZ();
 
-    double x_copy = solvent_box_length/solvent_length + 1;
-    double y_copy = solvent_box_width/solvent_width + 1;
-    double z_copy = solvent_box_height/solvent_height + 1;
+    int x_copy = solvent_box_length/solvent_length + 1;
+    int y_copy = solvent_box_width/solvent_width + 1;
+    int z_copy = solvent_box_height/solvent_height + 1;
 
     double x_to_trim = solvent_length * x_copy - solvent_box_length;
     double y_to_trim = solvent_width * y_copy - solvent_box_width;
     double z_to_trim = solvent_height * z_copy - solvent_box_height;
 
-    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX() - solvent_length;
-    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY() - solvent_width;
-    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ() - solvent_height;
+    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX() - solvent_length/2;
+    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY() - solvent_width/2;
+    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ() - solvent_height/2;
 
     for(int i = 0; i < x_copy; i ++)
     {
@@ -12878,9 +12882,9 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
                 //if < closeness remove else add to to_be_added_atoms vector
                 Coordinate* solute_min_boundary_with_extension = new Coordinate();
                 Coordinate* solute_max_boundary_with_extension = new Coordinate();
-                solute_min_boundary_with_extension->SetX(solute_min_boundary->GetX() + closeness);
-                solute_min_boundary_with_extension->SetY(solute_min_boundary->GetY() + closeness);
-                solute_min_boundary_with_extension->SetZ(solute_min_boundary->GetZ() + closeness);
+                solute_min_boundary_with_extension->SetX(solute_min_boundary->GetX() - closeness);
+                solute_min_boundary_with_extension->SetY(solute_min_boundary->GetY() - closeness);
+                solute_min_boundary_with_extension->SetZ(solute_min_boundary->GetZ() - closeness);
                 solute_max_boundary_with_extension->SetX(solute_max_boundary->GetX() + closeness);
                 solute_max_boundary_with_extension->SetY(solute_max_boundary->GetY() + closeness);
                 solute_max_boundary_with_extension->SetZ(solute_max_boundary->GetZ() + closeness);
@@ -12896,20 +12900,29 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
                         tip_atom->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
                                                                             shift_y + j * solvent_width, shift_z + k * solvent_height);
                         GeometryTopology::Coordinate* tip_atom_coords = tip_atom->GetCoordinates().at(model_index_);
-                        if(solute_min_boundary_with_extension->GetX() < tip_atom_coords->GetX() < solute_max_boundary_with_extension->GetX() &&
-                                solute_min_boundary_with_extension->GetY() < tip_atom_coords->GetY() < solute_max_boundary_with_extension->GetY() &&
-                                solute_min_boundary_with_extension->GetZ() < tip_atom_coords->GetZ() < solute_max_boundary_with_extension->GetZ() )
+                        if(solute_min_boundary_with_extension->GetX() <= tip_atom_coords->GetX() &&
+                                tip_atom_coords->GetX() <= solute_max_boundary_with_extension->GetX() &&
+                                solute_min_boundary_with_extension->GetY() <= tip_atom_coords->GetY() &&
+                                tip_atom_coords->GetY() < solute_max_boundary_with_extension->GetY() &&
+                                solute_min_boundary_with_extension->GetZ() <= tip_atom_coords->GetZ() &&
+                                tip_atom_coords->GetZ() <= solute_max_boundary_with_extension->GetZ() )
                         {
                             AtomVector all_atoms_of_solute = this->GetAllAtomsOfAssembly();
+                            bool flag = false;
                             for(AtomVector::iterator it1 = all_atoms_of_solute.begin(); it1 != all_atoms_of_solute.end(); it1++)
                             {
                                 Atom* solute_atom = (*it1);
                                 if((tip_atom->GetCoordinates().at(model_index_)->Distance(*(solute_atom->GetCoordinates().at(model_index_)))) < closeness)
+                                {
+                                    flag = true;
                                     break;
+                                }
                             }
                             tip_atom->SetDescription("Het;");
-                            tip_residue->AddAtom(tip_atom);
+                            if(flag)
+                                continue;
                         }
+                        tip_residue->AddAtom(tip_atom);
                     }
                     solvent->AddResidue(tip_residue);
 //                }
