@@ -29,6 +29,7 @@ namespace GeometryTopology
               * @param coordinate A coordinate to be copied to another instance
               */
             Coordinate(const Coordinate& coordinate);            
+            Coordinate(Coordinate* coordinate);
 
 
             //////////////////////////////////////////////////////////

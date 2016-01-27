@@ -22,6 +22,27 @@ Residue::Residue(Assembly *assembly, string name)
     id_ = "";
 }
 
+Residue::Residue(Residue *residue)
+{
+    assembly_ = new Assembly(residue->GetAssembly());
+    name_ = residue->GetName();
+    atoms_ = AtomVector();
+    AtomVector atoms = residue->GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+        atoms_.push_back(new Atom(*it));
+    head_atoms_ = AtomVector();
+    AtomVector head_atoms = residue->GetHeadAtoms();
+    for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
+        head_atoms_.push_back(new Atom(*it));
+    tail_atoms_ = AtomVector();
+    AtomVector tail_atoms = residue->GetTailAtoms();
+    for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
+        tail_atoms_.push_back(new Atom(*it));
+    chemical_type_ = residue->GetChemicalType();
+    description_ = residue->GetDescription();
+    id_ = residue->GetId();
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

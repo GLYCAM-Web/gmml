@@ -116,7 +116,6 @@ void LibraryFile::Read(std::ifstream& in_file)
     {
         throw LibraryFileProcessingException("Error reading file");
     }
-
     /// Skip blank lines at the begining of the file
     while(line[0] != '!')
     {
@@ -195,7 +194,7 @@ void LibraryFile::Read(std::ifstream& in_file)
         /// Process the boundbox section of the file for the corresponding residue
 
         if(line.find("boundbox") != string::npos)
-        {
+        {            
             getline(in_file, line);                 /// Get the first line of the section
             while(line[0] != '!')                   /// Iterate until to the next section that indicates by ! at the begining of the read line
             {
@@ -203,8 +202,8 @@ void LibraryFile::Read(std::ifstream& in_file)
                 {
                     /// Process boundbox section
                     double is_box_set;
-                    istringstream ss(line);
-                    ss >> is_box_set;
+                    stringstream ss(line);
+                    is_box_set = ConvertString<double>(ss.str());
                     if(is_box_set < 0)              /// If the number written in the first line of the section is negative then boundbox attributes have not been defined in the file
                     {
                         getline(in_file, line);
@@ -221,23 +220,27 @@ void LibraryFile::Read(std::ifstream& in_file)
                         getline(in_file, line);
                         double val;
 
-                        ss.str(line);
-                        ss >> val;
+                        line = Trim(line);
+                        stringstream angle(line);
+                        angle >> val;
                         it->second->SetBoxAngle(val);
                         getline(in_file, line);
 
-                        ss.str(line);
-                        ss >> val;
+                        line = Trim(line);
+                        stringstream length(line);
+                        length >> val;
                         it->second->SetBoxLength(val);
                         getline(in_file, line);
 
-                        ss.str(line);
-                        ss >> val;
+                        line = Trim(line);
+                        stringstream width(line);
+                        width >> val;
                         it->second->SetBoxWidth(val);
                         getline(in_file, line);
 
-                        ss.str(line);
-                        ss >> val;
+                        line = Trim(line);
+                        stringstream height(line);
+                        height >> val;
                         it->second->SetBoxHeight(val);
                     }
                     getline(in_file,line);      /// Read the next line
@@ -283,13 +286,13 @@ void LibraryFile::Read(std::ifstream& in_file)
                 {
                     /// Process connect section
                     int head_index;
-                    istringstream ss(line);
-                    ss >> head_index;
+                    stringstream ss(line);
+                    head_index = ConvertString<int>(ss.str());
                     getline(in_file,line);
 
                     int tail_index;
-                    istringstream sss(line);
-                    sss >> tail_index;
+                    stringstream sss(line);
+                    tail_index = ConvertString<int>(sss.str());
                     getline(in_file,line);
 
                     it->second->SetHeadAtomIndex(head_index);
@@ -315,7 +318,7 @@ void LibraryFile::Read(std::ifstream& in_file)
                 try
                 {
                     /// Process connectivity section
-                    istringstream ss(line);
+                    stringstream ss(line);
                     int from;
                     int to;
                     int t_int;
@@ -387,7 +390,7 @@ void LibraryFile::Read(std::ifstream& in_file)
                 {
                     /// Process positions section
                     order ++;
-                    istringstream ss(line);
+                    stringstream ss(line);
                     double x, y, z;
                     ss >> x >> y >> z;
                     Coordinate crd(x, y, z);
@@ -523,7 +526,7 @@ LibraryFileAtom* LibraryFile::ProcessAtom(string &line)
     double charge;
     int int_t;
 
-    istringstream ss(line);             /// Create a stream from the given line
+    stringstream ss(line);             /// Create a stream from the given line
     ss >> name >> type >> int_t >> residue_index >> int_t >> atom_index >> atomic_number >> charge;     /// Split the line by space to extract attributes of the atom
 
     RemoveQuotes(name);

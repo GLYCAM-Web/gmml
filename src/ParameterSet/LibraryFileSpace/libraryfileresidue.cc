@@ -14,8 +14,11 @@ using namespace gmml;
 LibraryFileResidue::LibraryFileResidue() : name_(""), atoms_(), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
     head_atom_index_(-1), tail_atom_index_(-1) {}
 
-LibraryFileResidue::LibraryFileResidue(string &name) : name_(name), atoms_(), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
-    head_atom_index_(-1), tail_atom_index_(-1) {}
+LibraryFileResidue::LibraryFileResidue(string &name) : name_(name), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
+    head_atom_index_(-1), tail_atom_index_(-1)
+{
+    atoms_ = AtomMap();
+}
 
 LibraryFileResidue::LibraryFileResidue(string &name, vector<LibraryFileAtom*> &atoms, int head_atom_index, int tail_atom_index, double box_angle, double box_length,
                                        double box_width, double box_height) :

@@ -284,6 +284,20 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
     }
 }
 
+Assembly::Assembly(Assembly *assembly) : description_(""), model_index_(0), sequence_number_(1), id_("1")
+{
+    source_file_ = assembly->GetSourceFile();
+    assemblies_ = AssemblyVector();
+    AssemblyVector assemblies = assembly->GetAssemblies();
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+        assemblies_.push_back(new Assembly(*it));
+
+    residues_ = ResidueVector();
+    ResidueVector residues = assembly->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+        residues_.push_back(*it);
+}
+
 Assembly::Assembly(vector<vector<string> > file_paths, vector<gmml::InputFileType> types)
 {
     stringstream name;
@@ -3020,7 +3034,10 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
                 vector<string> dscr = Split(atom->GetDescription(), ";");
                 //                stringstream ss;
                 //                ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
-                PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                string residue_name = atom->GetResidue()->GetName();
+                if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
+                    residue_name = "HOH";
+                PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', residue_name, ' ', sequence_number, ' ',
                                                 *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
                 vector<string> atom_id_tokens = Split(atom->GetId(), "_");
                 pdb_atom->SetAtomChainId(ConvertString<char>(atom_id_tokens.at(3)));
@@ -3073,7 +3090,10 @@ void Assembly::ExtractPdbModelCardFromAssembly(PdbModelResidueSet* residue_set, 
             vector<string> dscr = Split(atom->GetDescription(), ";");
             //            stringstream ss;
             //            ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
-            PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+            string residue_name = atom->GetResidue()->GetName();
+            if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
+                residue_name = "HOH";
+            PdbAtom* pdb_atom = new PdbAtom(serial_number, atom->GetName(), ' ', residue_name, ' ', sequence_number, ' ',
                                             *((atom->GetCoordinates()).at(model_number)), dNotSet, dNotSet, atom->GetElementSymbol(), "");//ss.str());
             vector<string> atom_id_tokens = Split(atom->GetId(), "_");
             pdb_atom->SetAtomChainId(ConvertString<char>(atom_id_tokens.at(3)));
@@ -3912,7 +3932,10 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
         TopologyResidue* topology_residue = new TopologyResidue();
         residue_counter++;
         topology_residue->SetIndex(residue_counter);
-        topology_residue->SetResidueName(assembly_residue->GetName());
+        string residue_name = assembly_residue->GetName();
+        if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
+            residue_name = "HOH";
+        topology_residue->SetResidueName(residue_name);
         if(distance(assembly_residues.begin(), it) == (int)assembly_residues.size()-1)
             ss << assembly_residue->GetName();
         else
@@ -9293,9 +9316,10 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
                         pdb_glycam_residue_map[terminal_atom->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                         pdb_glycam_residue_map[terminal_atom->GetResidue()->GetId()] = condensed_sequence_amber_residue_tree.at(index)->GetName();
                     }
-                }
+                }                
             }
         }
+
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
     }
@@ -9305,10 +9329,90 @@ ResidueNameMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosaccharide*> 
 
 void Assembly::ExtractOligosaccharideNamingMap(ResidueNameMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
                                                CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
-{
+{   
     string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
     pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = name;
     index++;
+    while(index < condensed_sequence_amber_residue_tree.size() && condensed_sequence_amber_residue_tree.at(index)->GetIsDerivative())
+    {
+        int parent_index = condensed_sequence_amber_residue_tree.at(index)->GetParentId();
+        int carbon_index = ConvertString<int>(condensed_sequence_amber_residue_tree.at(index)->GetAnomericCarbon().substr(1));
+        Atom* carbon_atom = NULL;
+        if(oligosaccharide->root_->derivatives_map_.find("-1") == oligosaccharide->root_->derivatives_map_.end())
+        {
+            if((carbon_index == 6 || carbon_index == 7 || carbon_index == 8) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("P") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-6);
+            if((carbon_index == 5 || carbon_index == 6 || carbon_index == 7) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("F") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-5);
+            if(carbon_atom == NULL)
+                carbon_atom = oligosaccharide->root_->side_atoms_.at(carbon_index).at(0);
+        }
+        else
+        {
+            if((carbon_index == 7 || carbon_index == 8 || carbon_index == 9) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("P") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-7);
+            if((carbon_index == 6 || carbon_index == 7 || carbon_index == 8) && carbon_atom == NULL)
+                if(oligosaccharide->root_->sugar_name_.ring_type_.compare("F") == 0)
+                    carbon_atom = oligosaccharide->root_->side_atoms_.at(oligosaccharide->root_->side_atoms_.size()-1).at(carbon_index-6);
+            if(carbon_atom == NULL)
+                carbon_atom = oligosaccharide->root_->side_atoms_.at(carbon_index-1).at(0);
+        }
+        if(carbon_atom != NULL)
+        {
+            AtomVector n_linkage_derivative_atoms = AtomVector();
+            string n_linkage_derivative_string = CheckxC_NxO_SO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'N', n_linkage_derivative_atoms);
+            if(n_linkage_derivative_string.compare("xC-N-SO3") == 0)
+            {
+                for(AtomVector::iterator it = n_linkage_derivative_atoms.begin(); it != n_linkage_derivative_atoms.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "SO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+            AtomVector o_linkage_derivative_atoms = AtomVector();
+            string o_linkage_derivative_string = CheckxC_NxO_SO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'O', o_linkage_derivative_atoms);
+            if(o_linkage_derivative_string.compare("xC-O-SO3") == 0)
+            {
+                for(AtomVector::iterator it = o_linkage_derivative_atoms.begin(); it != o_linkage_derivative_atoms.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "SO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+            AtomVector n_linkage_derivative_atoms_1 = AtomVector();
+            string n_linkage_derivative_string_1 = CheckxC_NxO_PO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'N', n_linkage_derivative_atoms_1);
+            if(n_linkage_derivative_string_1.compare("xC-N-PO3") == 0)
+            {
+                for(AtomVector::iterator it = n_linkage_derivative_atoms_1.begin(); it != n_linkage_derivative_atoms_1.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "PO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+            AtomVector o_linkage_derivative_atoms_1 = AtomVector();
+            string o_linkage_derivative_string_1 = CheckxC_NxO_PO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'O', o_linkage_derivative_atoms_1);
+            if(o_linkage_derivative_string_1.compare("xC-O-PO3") == 0)
+            {
+                for(AtomVector::iterator it = o_linkage_derivative_atoms_1.begin(); it != o_linkage_derivative_atoms_1.end(); it++)
+                {
+                    Atom* atom = *it;
+                    pdb_glycam_map[atom->GetId()] = "PO3";
+                }
+                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                pdb_glycam_map[oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId()] = ConvertT<int>(carbon_index) + new_name.substr(1);
+            }
+        }
+        index++;
+    }
     for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
     {
         this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_amber_residue_tree, index);
@@ -10362,6 +10466,18 @@ string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string st
     query << "?sugarName    :monosaccharideShortName   ?condensed_name.\n";
     query << "?pdb_file      :identifier   ?pdb.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring_type, string configuration)
@@ -10387,6 +10503,18 @@ string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ri
     query << "?sugarName    :monosaccharideName   ?name.\n";
     query << "?sugarName    :monosaccharideShortName   ?condensed_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
@@ -10406,6 +10534,18 @@ string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
     query << "?oligo	:hasRoot	?mono.\n";
     query << "?mono     :anomericStatus    ?anomeric_status.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
@@ -10426,6 +10566,18 @@ string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
     query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
     query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_name)
@@ -10447,6 +10599,18 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
 //    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
 //    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string oligo_name_pattern)
@@ -10482,18 +10646,20 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string 
         string filter2 = oligo_name_pattern.substr(first + 1, oligo_name_pattern.size() - 1);
         query << "FILTER regex(?oligo_sequence, \"" << filter2 << "\", \"i\")\n";
     }
-
-    ///string manipulation
-    ///if stars are only at the end/beginning so something(1 filter)
-    ///else (more than 1 filter)
-
-//        query << "?oligo	:hasRoot	?mono.\n";
-//        query << "?mono     :hasSugarName	?sn.\n";
-//        query << "?sn       :monosaccharideName 	?name.\n";
-//        query << "?sn       :monosaccharideShortName 	?short_name.\n";
-//        query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
-//        query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string anomeric_orientation, string minus_one_orientation, string index_two_orientation, string index_three_orientation,
@@ -10574,6 +10740,18 @@ string Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string a
     query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
     query << "?sn       :monosaccharideStereochemShortName 	?stereo_condensed_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
  }
 string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type, DerivativeModificationMap derivative_modification_map)
@@ -10618,6 +10796,18 @@ string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type
 
     }
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures)
@@ -10724,59 +10914,72 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
         ///optional {?oligo1    :oligoName ?oligoName1.}??? only one of these should be matched
     }
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 void Assembly::TestQueries()
 {
-    cout << "Query1 " << endl << ExtractOntologyInfoByNameOfGlycan("", "", "", "DGlcpNAcb");
-    cout << "Query2 " << endl << ExtractOntologyInfoByNamePartsOfGlycan("L",  "F", "alpha") << endl << endl;
-    cout << "Query3 " << endl << ExtractOntologyInfoByPDBID("4A2G") << endl << endl;
-    cout << "Query4 " << endl << ExtractOntologyInfoByStringChemicalCode("_4^2^3P^a^+1") << endl << endl;
-    cout << "Query5 " << endl << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << endl << endl;
+//    cout << "Query1 " << endl << ExtractOntologyInfoByNameOfGlycan("", "", "", "DGlcpNAcb");
+//    cout << "Query2 " << endl << ExtractOntologyInfoByNamePartsOfGlycan("L",  "F", "alpha") << endl << endl;
+//    cout << "Query3 " << endl << ExtractOntologyInfoByPDBID("4A2G") << endl << endl;
+//    cout << "Query4 " << endl << ExtractOntologyInfoByStringChemicalCode("_4^2^3P^a^+1") << endl << endl;
+//    cout << "Query5 " << endl << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << endl << endl;
 
-//    cout << "*b1-4L*" << endl;
+    cout << "*b1-4L*" << endl;
     cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*b1-4L*") << endl << endl;
-//    cout << "*DGlcpNAcb1-4DGlc*" << endl;
-//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb1-4DGlc*") << endl << endl;
-//    cout << "*GlcpNAcb1-4DGlcpNAcb" << endl;
-//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*GlcpNAcb1-4DGlcpNAcb") << endl << endl;
-//    cout << "DGlcpNAcb*DGlcpNAca" << endl;
-//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb*4DGlcpNAca") << endl << endl;
+    cout << "*DGlcpNAcb1-4DGlc*" << endl;
+    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb1-4DGlc*") << endl << endl;
+    cout << "*GlcpNAcb1-4DGlcpNAcb" << endl;
+    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*GlcpNAcb1-4DGlcpNAcb") << endl << endl;
+    cout << "DGlcpNAcb*DGlcpNAca" << endl;
+    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb*4DGlcpNAca") << endl << endl;
 
-    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("P", "Up", "", "Up","Up", "Down", "Up") << endl << endl;
-    map<string, string> derivative_modification_map;
-    derivative_modification_map["2"] = "xC-N-C=OCH3";
-    cout << "Query8 " << endl << ExtractOntologyInfoByDerivativeModificationMap("P", derivative_modification_map) << endl << endl;
-    AttachedGlycanStructuresVector structures = AttachedGlycanStructuresVector();
-    vector<string> v1 = vector<string>();
-    vector<string> v2 = vector<string>();
-    v1.push_back("P");
-    v1.push_back("Up");
-    v1.push_back("");
-    v1.push_back("Down");
-    v1.push_back("Up");
-    v1.push_back("Down");
-    v1.push_back("Up");
+//    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("P", "Up", "", "Up","Up", "Down", "Down") << endl << endl;
+//    map<string, string> derivative_modification_map;
+//    derivative_modification_map["2"] = "xC-N-C=OCH3";
+//    cout << "Query8 " << endl << ExtractOntologyInfoByDerivativeModificationMap("P", derivative_modification_map) << endl << endl;
+//    AttachedGlycanStructuresVector structures = AttachedGlycanStructuresVector();
+//    vector<string> v1 = vector<string>();
+//    vector<string> v2 = vector<string>();
+//    v1.push_back("P");
+//    v1.push_back("Up");
+//    v1.push_back("");
+//    v1.push_back("Down");
+//    v1.push_back("Up");
+//    v1.push_back("Down");
+//    v1.push_back("Up");
 
-    v2.push_back("P");
-    v2.push_back("Up");
-    v2.push_back("");
-    v2.push_back("Down");
-    v2.push_back("Up");
-    v2.push_back("Down");
-    v2.push_back("Up");
-    structures.push_back(v1);
-    structures.push_back(v2);
-    cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
+//    v2.push_back("P");
+//    v2.push_back("Up");
+//    v2.push_back("");
+//    v2.push_back("Down");
+//    v2.push_back("Up");
+//    v2.push_back("Down");
+//    v2.push_back("Up");
+//    structures.push_back(v1);
+//    structures.push_back(v2);
+//    cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
 
-    stringstream ss;
-    ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
-    ss << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << "\'";
-    string tmp = ss.str();
-    cout << "Automated query result handled by GMML:(Query5) " << endl;
-    const char* cstr = tmp.c_str();
-    system(cstr);
-    cout << endl;
+//    stringstream ss;
+////    ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+//    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+//    ss << ExtractOntologyInfoByPDBID("4A2G") << "\'";
+//    string tmp = ss.str();
+//    cout << "Automated query result handled by GMML:(Query3) " << endl;
+//    const char* cstr = tmp.c_str();
+//    system(cstr);
+//    cout << endl;
 
 }
 
@@ -11801,35 +12004,36 @@ void Assembly::ExtractDerivatives(Monosaccharide * mono)
         AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
         for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
         {
+            AtomVector pattern_atoms = AtomVector();
             Atom* t_neighbor = (*it1);
             if(t_neighbor->GetName().at(0) == 'N' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with nitrogen
             {
-                if((value = CheckxC_N(target, mono->cycle_atoms_str_)).compare("") != 0)///xCH-N
+                if((value = CheckxC_N(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xCH-N
                     break;
-                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH3
+                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH3
                     break;
-                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH2OH
+                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH2OH
                     break;
-                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-SO3
+                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-SO3
                     break;
-                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-PO3
+                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-PO3
                     break;
-                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-CH3
+                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-CH3
                     break;
             }
             if(t_neighbor->GetName().at(0) == 'O' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with oxygen
             {
-                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH3
+                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH3
                     break;
-                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH2OH
+                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH2OH
                     break;
-                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-SO3
+                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-SO3
                     break;
-                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-PO3
+                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-PO3
                     break;
-                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-CH3
+                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-CH3
                     break;
-                if((value = CheckxCOO(target, mono->cycle_atoms_str_)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
+                if((value = CheckxCOO(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
                     break;
             }
         }
@@ -11868,35 +12072,36 @@ void Assembly::ExtractDerivatives(Monosaccharide * mono)
             AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
             {
+                AtomVector pattern_atoms = AtomVector();
                 Atom* t_neighbor = (*it1);
                 if(t_neighbor->GetName().at(0) == 'N' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with nitrogen
                 {
-                    if((value = CheckxC_N(target, mono->cycle_atoms_str_)).compare("") != 0)///xCH-N
+                    if((value = CheckxC_N(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xCH-N
                         break;
-                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH3
+                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH3
                         break;
-                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH2OH
+                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH2OH
                         break;
-                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-SO3
+                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-SO3
                         break;
-                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-PO3
+                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-PO3
                         break;
-                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-CH3
+                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-CH3
                         break;
                 }
                 if(t_neighbor->GetName().at(0) == 'O' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with oxygen
                 {
-                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH3
+                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH3
                         break;
-                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH2OH
+                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH2OH
                         break;
-                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-SO3
+                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-SO3
                         break;
-                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-PO3
+                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-PO3
                         break;
-                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-CH3
+                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-CH3
                         break;
-                    if((value = CheckxCOO(target, mono->cycle_atoms_str_)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
+                    if((value = CheckxCOO(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
                         break;
                 }
             }
@@ -11926,7 +12131,7 @@ void Assembly::ExtractDerivatives(Monosaccharide * mono)
     }
 }
 
-string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str)
+string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -11964,7 +12169,7 @@ string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str)
         return "";
 }
 
-string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12000,6 +12205,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
         }
         if(C != NULL)
         {
+            pattern_atoms.push_back(C);
             Atom* CC = NULL;
             Atom* CO = NULL;
             pattern << "-C";
@@ -12020,6 +12226,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
             }
             if(CO != NULL)
             {
+                pattern_atoms.push_back(CO);
                 pattern << "O";
                 AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
@@ -12031,6 +12238,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
             }
             if(CC != NULL)
             {
+                pattern_atoms.push_back(CC);
                 pattern << "-C";
                 AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
@@ -12065,7 +12273,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
         return "";
 }
 
-string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12101,6 +12309,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
         }
         if(C != NULL)
         {
+            pattern_atoms.push_back(C);
             Atom* CC = NULL;
             Atom* CO = NULL;
             pattern << "-C";
@@ -12121,6 +12330,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
             }
             if(CO != NULL)
             {
+                pattern_atoms.push_back(CO);
                 pattern << "O";
                 AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
@@ -12132,6 +12342,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
             }
             if(CC != NULL)
             {
+                pattern_atoms.push_back(CC);
                 Atom* O = NULL;
                 pattern << "-C";
                 AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
@@ -12147,6 +12358,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
                 }
                 if(O != NULL)
                 {
+                    pattern_atoms.push_back(O);
                     pattern << "-O";
                     AtomVector o_neighbors = O->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
@@ -12193,7 +12405,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
         return "";
 }
 
-string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12229,6 +12441,7 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
         }
         if(S != NULL)
         {
+            pattern_atoms.push_back(S);
             Atom* O1 = NULL;
             Atom* O2 = NULL;
             Atom* O3 = NULL;
@@ -12248,6 +12461,9 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
             }
             if(O1 != NULL && O2 != NULL && O3 != NULL)
             {
+                pattern_atoms.push_back(O1);
+                pattern_atoms.push_back(O2);
+                pattern_atoms.push_back(O3);
                 pattern << "OOO";
                 AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
@@ -12287,7 +12503,8 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
     {
         if(pattern.str().compare("xCH-OH-SOOOH") == 0 || pattern.str().compare("xCH-O-SOOOH") == 0 || pattern.str().compare("xCH-OH-SOOO") == 0 || pattern.str().compare("xCH-O-SOOO") == 0 ||
                 pattern.str().compare("xCHH-OH-SOOOH") == 0 || pattern.str().compare("xCHH-OH-SOOO") == 0 || pattern.str().compare("xCHH-O-SOOOH") == 0 || pattern.str().compare("xCHH-O-SOOO") == 0 ||
-                pattern.str().compare("xC-O-SOOO") == 0 || pattern.str().compare("xC-OH-SOOOH") == 0 || pattern.str().compare("xC-O-SOOOH") == 0 || pattern.str().compare("xC-OH-SOOO") == 0 )            return "xC-O-SO3";
+                pattern.str().compare("xC-O-SOOO") == 0 || pattern.str().compare("xC-OH-SOOOH") == 0 || pattern.str().compare("xC-O-SOOOH") == 0 || pattern.str().compare("xC-OH-SOOO") == 0 )
+            return "xC-O-SO3";
         else
             return "";
     }
@@ -12295,7 +12512,7 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
         return "";
 }
 
-string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12331,6 +12548,7 @@ string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
         }
         if(P != NULL)
         {
+            pattern_atoms.push_back(P);
             Atom* O1 = NULL;
             Atom* O2 = NULL;
             Atom* O3 = NULL;
@@ -12350,6 +12568,9 @@ string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
             }
             if(O1 != NULL && O2 != NULL && O3 != NULL)
             {
+                pattern_atoms.push_back(O1);
+                pattern_atoms.push_back(O2);
+                pattern_atoms.push_back(O3);
                 pattern << "OOO";
                 AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
@@ -12397,7 +12618,7 @@ string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
         return "";
 }
 
-string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12433,6 +12654,7 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
         }
         if(C != NULL)
         {
+            pattern_atoms.push_back(C);
             pattern << "-C";
             AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
@@ -12466,7 +12688,7 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
         return "";
 }
 
-string Assembly::CheckxCOO(Atom *target, string cycle_atoms_str)
+string Assembly::CheckxCOO(Atom *target, string cycle_atoms_str, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12785,33 +13007,32 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     solvent_component->SetSourceFile(lib_file);
     solvent_component->BuildStructureByLIBFileInformation();
     solvent_component->GetBoundary(solvent_component_min_boundary, solvent_component_max_boundary);
-    double solvent_length = solvent_component_max_boundary->GetX() - solvent_component_min_boundary->GetX();
-    double solvent_width = solvent_component_max_boundary->GetY() - solvent_component_min_boundary->GetY();
-    double solvent_height = solvent_component_max_boundary->GetZ() - solvent_component_min_boundary->GetZ();
+    LibraryFile* lib = new LibraryFile(lib_file);
+    LibraryFile::ResidueMap lib_residues = lib->GetResidues();
+    LibraryFileResidue* lib_residue  = lib_residues.begin()->second;    
+
+    double solvent_length = lib_residue->GetBoxLength();
+    double solvent_width = lib_residue->GetBoxWidth();
+    double solvent_height = lib_residue->GetBoxHeight();
 
     Coordinate* solute_min_boundary = new Coordinate();
     Coordinate* solute_max_boundary = new Coordinate();
     this->GetBoundary(solute_min_boundary, solute_max_boundary);
     double solute_length = solute_max_boundary->GetX() - solute_min_boundary->GetX();
     double solute_width = solute_max_boundary->GetY() - solute_min_boundary->GetY();
-    double solute_height = solute_max_boundary->GetZ() - solute_min_boundary->GetZ();
+    double solute_height = solute_max_boundary->GetZ() - solute_min_boundary->GetZ();    
 
     double solvent_box_dimension = 0;
-    if(solute_length > solvent_box_dimension)
-        solvent_box_dimension = solute_length;
-    if(solute_width > solvent_box_dimension)
-        solvent_box_dimension = solute_width;
-    if(solute_height > solvent_box_dimension)
-        solvent_box_dimension = solute_height;
+    if(solute_length/2 > solvent_box_dimension)
+        solvent_box_dimension = solute_length/2;
+    if(solute_width/2 > solvent_box_dimension)
+        solvent_box_dimension = solute_width/2;
+    if(solute_height/2 > solvent_box_dimension)
+        solvent_box_dimension = solute_height/2;
     solvent_box_dimension += extension;
-
-    cout << "Box dimension: " << solvent_box_dimension << endl;
 
     Coordinate* center_of_box = new Coordinate(solute_min_boundary->GetX() + solute_length/2, solute_min_boundary->GetY() + solute_width/2,
                                                solute_min_boundary->GetZ() + solute_height/2);
-    cout << "Center: " << endl;
-    center_of_box->Print();
-    cout << endl;
 
     Coordinate* solvent_box_min_boundary = new Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
     solvent_box_min_boundary->operator +(-solvent_box_dimension);
@@ -12821,51 +13042,87 @@ Assembly* Assembly::Solvation(double extension, double closeness, string lib_fil
     double solvent_box_width = solvent_box_max_boundary->GetY() - solvent_box_min_boundary->GetY();
     double solvent_box_height = solvent_box_max_boundary->GetZ() - solvent_box_min_boundary->GetZ();
 
-    cout << "Solvent box: " << endl;
-    solvent_box_min_boundary->Print();
-    cout << endl;
-    solvent_box_max_boundary->Print();
-    cout << endl;
-
-    double x_copy = solvent_box_length/solvent_length + 1;
-    double y_copy = solvent_box_width/solvent_width + 1;
-    double z_copy = solvent_box_height/solvent_height + 1;
+    int x_copy = solvent_box_length/solvent_length + 1;
+    int y_copy = solvent_box_width/solvent_width + 1;
+    int z_copy = solvent_box_height/solvent_height + 1;
 
     double x_to_trim = solvent_length * x_copy - solvent_box_length;
     double y_to_trim = solvent_width * y_copy - solvent_box_width;
     double z_to_trim = solvent_height * z_copy - solvent_box_height;
 
-    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX();
-    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY();
-    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ();
+    double shift_x = solvent_box_min_boundary->GetX() - solvent_component_min_boundary->GetX() - solvent_length/2;
+    double shift_y = solvent_box_min_boundary->GetY() - solvent_component_min_boundary->GetY() - solvent_width/2;
+    double shift_z = solvent_box_min_boundary->GetZ() - solvent_component_min_boundary->GetZ() - solvent_height/2;
 
+    int sequence_number = 1;
     for(int i = 0; i < x_copy; i ++)
     {
-        bool trim_x = (i == x_copy - 1);
+//        bool trim_x = (i == x_copy - 1);
         for(int j = 0; j < y_copy; j ++)
         {
-            bool trim_y = (j == y_copy - 1);
+//            bool trim_y = (j == y_copy - 1);
             for(int k = 0; k < z_copy; k++)
             {
-                bool trim_z = (k == z_copy - 1);
-                if(trim_x || trim_y || trim_z)
-                {
-                    // trim the tip box
-                }
-                else
-                {
+//                bool trim_z = (k == z_copy - 1);
+//                if(trim_x || trim_y || trim_z)
+//                {
+//                    // trim the tip box
+//                }
+//                else
+//                {
+                //solute_min/max_with_extension = solute_min/max_boundary + closeness
+                //check coordinate of each atom to see if it's between solute_min/max_with_extension
+                //if so, check distance with all solutes atoms (this)
+                //if < closeness remove else add to to_be_added_atoms vector
+                Coordinate* solute_min_boundary_with_extension = new Coordinate();
+                Coordinate* solute_max_boundary_with_extension = new Coordinate();
+                solute_min_boundary_with_extension->SetX(solute_min_boundary->GetX() - closeness);
+                solute_min_boundary_with_extension->SetY(solute_min_boundary->GetY() - closeness);
+                solute_min_boundary_with_extension->SetZ(solute_min_boundary->GetZ() - closeness);
+                solute_max_boundary_with_extension->SetX(solute_max_boundary->GetX() + closeness);
+                solute_max_boundary_with_extension->SetY(solute_max_boundary->GetY() + closeness);
+                solute_max_boundary_with_extension->SetZ(solute_max_boundary->GetZ() + closeness);
                     Assembly* tip_box = new Assembly();
                     tip_box->BuildAssemblyFromLibraryFile(lib_file);
                     tip_box->SetSourceFile(lib_file);
                     tip_box->BuildStructureByLIBFileInformation();
                     AtomVector all_atoms_of_tip = tip_box->GetAllAtomsOfAssembly();
+                    Residue* tip_residue = new Residue();
                     for(AtomVector::iterator it = all_atoms_of_tip.begin(); it != all_atoms_of_tip.end(); it++)
-                        (*it)->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
+                    {
+                        Atom* tip_atom = (*it);
+                        tip_atom->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
                                                                             shift_y + j * solvent_width, shift_z + k * solvent_height);
-                    ResidueVector residues = tip_box->GetResidues();
-                    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-                        solvent->AddResidue(*it);
-                }
+                        GeometryTopology::Coordinate* tip_atom_coords = tip_atom->GetCoordinates().at(model_index_);
+                        if(solute_min_boundary_with_extension->GetX() <= tip_atom_coords->GetX() &&
+                                tip_atom_coords->GetX() <= solute_max_boundary_with_extension->GetX() &&
+                                solute_min_boundary_with_extension->GetY() <= tip_atom_coords->GetY() &&
+                                tip_atom_coords->GetY() < solute_max_boundary_with_extension->GetY() &&
+                                solute_min_boundary_with_extension->GetZ() <= tip_atom_coords->GetZ() &&
+                                tip_atom_coords->GetZ() <= solute_max_boundary_with_extension->GetZ() )
+                        {
+                            AtomVector all_atoms_of_solute = this->GetAllAtomsOfAssembly();
+                            bool flag = false;
+                            for(AtomVector::iterator it1 = all_atoms_of_solute.begin(); it1 != all_atoms_of_solute.end(); it1++)
+                            {
+                                Atom* solute_atom = (*it1);
+                                if((tip_atom->GetCoordinates().at(model_index_)->Distance(*(solute_atom->GetCoordinates().at(model_index_)))) < closeness)
+                                {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            tip_atom->SetDescription("Het;");
+                            if(flag)
+                                continue;
+                        }
+                        tip_residue->AddAtom(tip_atom);
+                        tip_residue->SetName("HOH");
+                        tip_residue->SetId("HOH_" + sequence_number);
+                    }
+                    solvent->AddResidue(tip_residue);
+                    sequence_number++;
+//                }
             }
         }
     }

@@ -242,19 +242,31 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
         string oxygen_position;
         (parent_name.compare("OME") == 0) ? oxygen_position = "O" : oxygen_position = "O" + ConvertT<int>(condensed_residue->GetOxygenPosition());
 
-        CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(this->GetAmberPrepResidueCodeOfCondensedResidue(
-                                                                                          condensed_residue, open_valences[i], parent_name)
-                                                                                      , anomeric_carbon, oxygen_position);
-
-        int residue_index = this->InsertNodeInCondensedSequenceAmberPrepResidueTree(tree_residue, parent + derivatives[parent]);
-
-        CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
-        for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
+        try
         {
-            string derivative_name = it->second;
-            int derivative_index = it->first;
-            this->InsertNodeInCondensedSequenceAmberPrepResidueTree(this->GetCondensedSequenceDerivativeAmberPrepResidue(derivative_name, derivative_index), residue_index);
-            current_derivative_count++;
+            CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(this->GetAmberPrepResidueCodeOfCondensedResidue(
+                                                                                                        condensed_residue, open_valences[i], parent_name)
+                                                                                                    , anomeric_carbon, oxygen_position);
+
+            int residue_index = this->InsertNodeInCondensedSequenceAmberPrepResidueTree(tree_residue, parent + derivatives[parent]);
+
+            CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
+            for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
+            {
+                string derivative_name = it->second;
+                int derivative_index = it->first;
+                this->InsertNodeInCondensedSequenceAmberPrepResidueTree(this->GetCondensedSequenceDerivativeAmberPrepResidue(derivative_name, derivative_index), residue_index);
+                current_derivative_count++;
+            }
+        }
+        catch(exception ex)
+        {
+            CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(condensed_residue->GetName().substr(0,3)
+                                                                                                    , anomeric_carbon, oxygen_position);
+
+            this->InsertNodeInCondensedSequenceAmberPrepResidueTree(tree_residue, parent + derivatives[parent]);
+
+            cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << endl;
         }
     }
 }
@@ -406,12 +418,13 @@ string CondensedSequence::GetThirdLetterOfAmberPrepResidueCode(string configurat
 CondensedSequenceAmberPrepResidue* CondensedSequence::GetCondensedSequenceDerivativeAmberPrepResidue(string derivative_name, int derivative_index)
 {
     string oxygen_name = "O" + ConvertT<int>(derivative_index);
+    string carbon_name = "C" + ConvertT<int>(derivative_index);;
     if(derivative_name.compare("S") == 0)
-        return new CondensedSequenceAmberPrepResidue("SO3", "S1", oxygen_name);
+        return new CondensedSequenceAmberPrepResidue("SO3", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("Me") == 0)
-        return new CondensedSequenceAmberPrepResidue("MEX", "CH3", oxygen_name);
+        return new CondensedSequenceAmberPrepResidue("MEX", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("A") == 0)
-        return new CondensedSequenceAmberPrepResidue("ACX", "C1A", oxygen_name);
+        return new CondensedSequenceAmberPrepResidue("ACX", carbon_name, oxygen_name, true);
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
 }
 
