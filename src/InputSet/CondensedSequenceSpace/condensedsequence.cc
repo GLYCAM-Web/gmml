@@ -418,12 +418,13 @@ string CondensedSequence::GetThirdLetterOfAmberPrepResidueCode(string configurat
 CondensedSequenceAmberPrepResidue* CondensedSequence::GetCondensedSequenceDerivativeAmberPrepResidue(string derivative_name, int derivative_index)
 {
     string oxygen_name = "O" + ConvertT<int>(derivative_index);
+    string carbon_name = "C" + ConvertT<int>(derivative_index);;
     if(derivative_name.compare("S") == 0)
-        return new CondensedSequenceAmberPrepResidue("SO3", "S1", oxygen_name, true);
+        return new CondensedSequenceAmberPrepResidue("SO3", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("Me") == 0)
-        return new CondensedSequenceAmberPrepResidue("MEX", "CH3", oxygen_name, true);
+        return new CondensedSequenceAmberPrepResidue("MEX", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("A") == 0)
-        return new CondensedSequenceAmberPrepResidue("ACX", "C1A", oxygen_name, true);
+        return new CondensedSequenceAmberPrepResidue("ACX", carbon_name, oxygen_name, true);
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
 }
 

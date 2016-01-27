@@ -12,7 +12,7 @@ using namespace CondensedSequenceSpace;
 //////////////////////////////////////////////////////////
 CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(){}
 
-CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(string name) : name_(name), parent_id_(-1) {} //has_parent_(false){}
+CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(string name) : name_(name), parent_id_(-1), is_derivative_(false) {} //has_parent_(false){}
 
 CondensedSequenceAmberPrepResidue::CondensedSequenceAmberPrepResidue(string name, string anomeric_carbon, string parent_oxygen, bool is_derivative) :
     name_(name), anomeric_carbon_(anomeric_carbon), parent_oxygen_(parent_oxygen), parent_id_(0), is_derivative_(is_derivative) {}
