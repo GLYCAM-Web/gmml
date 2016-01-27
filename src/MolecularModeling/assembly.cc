@@ -10391,6 +10391,8 @@ string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string st
     query << "?pdb_file      :identifier   ?pdb.\n";
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
@@ -10426,6 +10428,8 @@ string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ri
     query << "?sugarName    :monosaccharideShortName   ?condensed_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
@@ -10455,6 +10459,8 @@ string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
     query << "?mono     :anomericStatus    ?anomeric_status.\n";
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
@@ -10485,6 +10491,8 @@ string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
     query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
@@ -10516,6 +10524,8 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
 //    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
@@ -10655,6 +10665,8 @@ string Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string a
     query << "?sn       :monosaccharideStereochemShortName 	?stereo_condensed_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
@@ -10709,6 +10721,8 @@ string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type
     }
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
@@ -10825,6 +10839,8 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
     }
     query << Ontology::END_WHERE_CLAUSE;
 
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
     stringstream ss;
     ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
     ss << query.str() << "\'";
