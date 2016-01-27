@@ -10386,6 +10386,16 @@ string Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string st
     query << "?sugarName    :monosaccharideShortName   ?condensed_name.\n";
     query << "?pdb_file      :identifier   ?pdb.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring_type, string configuration)
@@ -10411,6 +10421,16 @@ string Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ri
     query << "?sugarName    :monosaccharideName   ?name.\n";
     query << "?sugarName    :monosaccharideShortName   ?condensed_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
@@ -10430,6 +10450,16 @@ string Assembly::ExtractOntologyInfoByPDBID(string pdb_id)
     query << "?oligo	:hasRoot	?mono.\n";
     query << "?mono     :anomericStatus    ?anomeric_status.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
@@ -10450,6 +10480,16 @@ string Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code)
     query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
     query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_name)
@@ -10471,6 +10511,16 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
 //    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
 //    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string oligo_name_pattern)
@@ -10506,18 +10556,20 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string 
         string filter2 = oligo_name_pattern.substr(first + 1, oligo_name_pattern.size() - 1);
         query << "FILTER regex(?oligo_sequence, \"" << filter2 << "\", \"i\")\n";
     }
-
-    ///string manipulation
-    ///if stars are only at the end/beginning so something(1 filter)
-    ///else (more than 1 filter)
-
-//        query << "?oligo	:hasRoot	?mono.\n";
-//        query << "?mono     :hasSugarName	?sn.\n";
-//        query << "?sn       :monosaccharideName 	?name.\n";
-//        query << "?sn       :monosaccharideShortName 	?short_name.\n";
-//        query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
-//        query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    cout << "GENERATED QUERY:" << endl;
+    cout << query.str() << endl;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string anomeric_orientation, string minus_one_orientation, string index_two_orientation, string index_three_orientation,
@@ -10598,6 +10650,16 @@ string Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string a
     query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
     query << "?sn       :monosaccharideStereochemShortName 	?stereo_condensed_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
  }
 string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type, DerivativeModificationMap derivative_modification_map)
@@ -10642,6 +10704,16 @@ string Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type
 
     }
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures)
@@ -10748,60 +10820,70 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
         ///optional {?oligo1    :oligoName ?oligoName1.}??? only one of these should be matched
     }
     query << Ontology::END_WHERE_CLAUSE;
+
+    stringstream ss;
+    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+    ss << query.str() << "\'";
+    string tmp = ss.str();
+    cout << endl << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    system(cstr);
+    cout << endl;
+
     return query.str();
 }
 void Assembly::TestQueries()
 {
-    cout << "Query1 " << endl << ExtractOntologyInfoByNameOfGlycan("", "", "", "DGlcpNAcb");
-    cout << "Query2 " << endl << ExtractOntologyInfoByNamePartsOfGlycan("L",  "F", "alpha") << endl << endl;
-    cout << "Query3 " << endl << ExtractOntologyInfoByPDBID("4A2G") << endl << endl;
-    cout << "Query4 " << endl << ExtractOntologyInfoByStringChemicalCode("_4^2^3P^a^+1") << endl << endl;
-    cout << "Query5 " << endl << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << endl << endl;
+//    cout << "Query1 " << endl << ExtractOntologyInfoByNameOfGlycan("", "", "", "DGlcpNAcb");
+//    cout << "Query2 " << endl << ExtractOntologyInfoByNamePartsOfGlycan("L",  "F", "alpha") << endl << endl;
+//    cout << "Query3 " << endl << ExtractOntologyInfoByPDBID("4A2G") << endl << endl;
+//    cout << "Query4 " << endl << ExtractOntologyInfoByStringChemicalCode("_4^2^3P^a^+1") << endl << endl;
+//    cout << "Query5 " << endl << ExtractOntologyInfoByOligosaccharideNameSequence("DGlcpNAcb1-4DGlcpNAcb") << endl << endl;
 
-//    cout << "*b1-4L*" << endl;
+    cout << "*b1-4L*" << endl;
     cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*b1-4L*") << endl << endl;
-//    cout << "*DGlcpNAcb1-4DGlc*" << endl;
-//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb1-4DGlc*") << endl << endl;
-//    cout << "*GlcpNAcb1-4DGlcpNAcb" << endl;
-//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*GlcpNAcb1-4DGlcpNAcb") << endl << endl;
-//    cout << "DGlcpNAcb*DGlcpNAca" << endl;
-//    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb*4DGlcpNAca") << endl << endl;
+    cout << "*DGlcpNAcb1-4DGlc*" << endl;
+    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb1-4DGlc*") << endl << endl;
+    cout << "*GlcpNAcb1-4DGlcpNAcb" << endl;
+    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("*GlcpNAcb1-4DGlcpNAcb") << endl << endl;
+    cout << "DGlcpNAcb*DGlcpNAca" << endl;
+    cout << "Query6 " << endl << ExtractOntologyInfoByOligosaccharideNameSequenceByRegex("DGlcpNAcb*4DGlcpNAca") << endl << endl;
 
-    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("P", "Up", "", "Up","Up", "Down", "Down") << endl << endl;
-    map<string, string> derivative_modification_map;
-    derivative_modification_map["2"] = "xC-N-C=OCH3";
-    cout << "Query8 " << endl << ExtractOntologyInfoByDerivativeModificationMap("P", derivative_modification_map) << endl << endl;
-    AttachedGlycanStructuresVector structures = AttachedGlycanStructuresVector();
-    vector<string> v1 = vector<string>();
-    vector<string> v2 = vector<string>();
-    v1.push_back("P");
-    v1.push_back("Up");
-    v1.push_back("");
-    v1.push_back("Down");
-    v1.push_back("Up");
-    v1.push_back("Down");
-    v1.push_back("Up");
+//    cout << "Query7 " << endl << ExtractOntologyInfoByGlycanStructure("P", "Up", "", "Up","Up", "Down", "Down") << endl << endl;
+//    map<string, string> derivative_modification_map;
+//    derivative_modification_map["2"] = "xC-N-C=OCH3";
+//    cout << "Query8 " << endl << ExtractOntologyInfoByDerivativeModificationMap("P", derivative_modification_map) << endl << endl;
+//    AttachedGlycanStructuresVector structures = AttachedGlycanStructuresVector();
+//    vector<string> v1 = vector<string>();
+//    vector<string> v2 = vector<string>();
+//    v1.push_back("P");
+//    v1.push_back("Up");
+//    v1.push_back("");
+//    v1.push_back("Down");
+//    v1.push_back("Up");
+//    v1.push_back("Down");
+//    v1.push_back("Up");
 
-    v2.push_back("P");
-    v2.push_back("Up");
-    v2.push_back("");
-    v2.push_back("Down");
-    v2.push_back("Up");
-    v2.push_back("Down");
-    v2.push_back("Up");
-    structures.push_back(v1);
-    structures.push_back(v2);
-    cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
+//    v2.push_back("P");
+//    v2.push_back("Up");
+//    v2.push_back("");
+//    v2.push_back("Down");
+//    v2.push_back("Up");
+//    v2.push_back("Down");
+//    v2.push_back("Up");
+//    structures.push_back(v1);
+//    structures.push_back(v2);
+//    cout << "Query9 " << endl << ExtractOntologyInfoByAttachedGlycanStructures(structures) << endl << endl;
 
-    stringstream ss;
-//    ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
-    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
-    ss << ExtractOntologyInfoByPDBID("4A2G") << "\'";
-    string tmp = ss.str();
-    cout << "Automated query result handled by GMML:(Query3) " << endl;
-    const char* cstr = tmp.c_str();
-    system(cstr);
-    cout << endl;
+//    stringstream ss;
+////    ss << "curl -g -H 'Accept: application/json' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+//    ss << "curl -g -H 'Accept: text/csv' http://128.192.62.244:8890/sparql --data-urlencode query=\'";
+//    ss << ExtractOntologyInfoByPDBID("4A2G") << "\'";
+//    string tmp = ss.str();
+//    cout << "Automated query result handled by GMML:(Query3) " << endl;
+//    const char* cstr = tmp.c_str();
+//    system(cstr);
+//    cout << endl;
 
 }
 
@@ -11826,35 +11908,36 @@ void Assembly::ExtractDerivatives(Monosaccharide * mono)
         AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
         for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
         {
+            AtomVector pattern_atoms = AtomVector();
             Atom* t_neighbor = (*it1);
             if(t_neighbor->GetName().at(0) == 'N' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with nitrogen
             {
-                if((value = CheckxC_N(target, mono->cycle_atoms_str_)).compare("") != 0)///xCH-N
+                if((value = CheckxC_N(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xCH-N
                     break;
-                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH3
+                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH3
                     break;
-                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH2OH
+                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH2OH
                     break;
-                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-SO3
+                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-SO3
                     break;
-                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-PO3
+                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-PO3
                     break;
-                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-CH3
+                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-CH3
                     break;
             }
             if(t_neighbor->GetName().at(0) == 'O' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with oxygen
             {
-                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH3
+                if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH3
                     break;
-                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH2OH
+                if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH2OH
                     break;
-                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-SO3
+                if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-SO3
                     break;
-                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-PO3
+                if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-PO3
                     break;
-                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-CH3
+                if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-CH3
                     break;
-                if((value = CheckxCOO(target, mono->cycle_atoms_str_)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
+                if((value = CheckxCOO(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
                     break;
             }
         }
@@ -11893,35 +11976,36 @@ void Assembly::ExtractDerivatives(Monosaccharide * mono)
             AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
             {
+                AtomVector pattern_atoms = AtomVector();
                 Atom* t_neighbor = (*it1);
                 if(t_neighbor->GetName().at(0) == 'N' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with nitrogen
                 {
-                    if((value = CheckxC_N(target, mono->cycle_atoms_str_)).compare("") != 0)///xCH-N
+                    if((value = CheckxC_N(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xCH-N
                         break;
-                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH3
+                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH3
                         break;
-                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-C=OCH2OH
+                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-C=OCH2OH
                         break;
-                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-SO3
+                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-SO3
                         break;
-                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-PO3
+                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-PO3
                         break;
-                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N')).compare("") != 0)///xC-N-CH3
+                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-CH3
                         break;
                 }
                 if(t_neighbor->GetName().at(0) == 'O' && mono->cycle_atoms_str_.find(t_neighbor->GetId()) == string::npos)///check formulas with oxygen
                 {
-                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH3
+                    if((value = CheckxC_NxO_CO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH3
                         break;
-                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-C=OCH2OH
+                    if((value = CheckxC_NxO_CO_CO(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH2OH
                         break;
-                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-SO3
+                    if((value = CheckxC_NxO_SO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-SO3
                         break;
-                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-PO3
+                    if((value = CheckxC_NxO_PO3(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-PO3
                         break;
-                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O')).compare("") != 0)///xC-O-CH3
+                    if((value = CheckxC_NxO_C(target, mono->cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-CH3
                         break;
-                    if((value = CheckxCOO(target, mono->cycle_atoms_str_)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
+                    if((value = CheckxCOO(target, mono->cycle_atoms_str_, pattern_atoms)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
                         break;
                 }
             }
@@ -11951,7 +12035,7 @@ void Assembly::ExtractDerivatives(Monosaccharide * mono)
     }
 }
 
-string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str)
+string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -11989,7 +12073,7 @@ string Assembly::CheckxC_N(Atom* target, string cycle_atoms_str)
         return "";
 }
 
-string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12025,6 +12109,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
         }
         if(C != NULL)
         {
+            pattern_atoms.push_back(C);
             Atom* CC = NULL;
             Atom* CO = NULL;
             pattern << "-C";
@@ -12045,6 +12130,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
             }
             if(CO != NULL)
             {
+                pattern_atoms.push_back(CO);
                 pattern << "O";
                 AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
@@ -12056,6 +12142,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
             }
             if(CC != NULL)
             {
+                pattern_atoms.push_back(CC);
                 pattern << "-C";
                 AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
@@ -12090,7 +12177,7 @@ string Assembly::CheckxC_NxO_CO_C(Atom *target, string cycle_atoms_str, char NxO
         return "";
 }
 
-string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12126,6 +12213,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
         }
         if(C != NULL)
         {
+            pattern_atoms.push_back(C);
             Atom* CC = NULL;
             Atom* CO = NULL;
             pattern << "-C";
@@ -12146,6 +12234,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
             }
             if(CO != NULL)
             {
+                pattern_atoms.push_back(CO);
                 pattern << "O";
                 AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
@@ -12157,6 +12246,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
             }
             if(CC != NULL)
             {
+                pattern_atoms.push_back(CC);
                 Atom* O = NULL;
                 pattern << "-C";
                 AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
@@ -12172,6 +12262,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
                 }
                 if(O != NULL)
                 {
+                    pattern_atoms.push_back(O);
                     pattern << "-O";
                     AtomVector o_neighbors = O->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
@@ -12218,7 +12309,7 @@ string Assembly::CheckxC_NxO_CO_CO(Atom *target, string cycle_atoms_str, char Nx
         return "";
 }
 
-string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12254,6 +12345,7 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
         }
         if(S != NULL)
         {
+            pattern_atoms.push_back(S);
             Atom* O1 = NULL;
             Atom* O2 = NULL;
             Atom* O3 = NULL;
@@ -12273,6 +12365,9 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
             }
             if(O1 != NULL && O2 != NULL && O3 != NULL)
             {
+                pattern_atoms.push_back(O1);
+                pattern_atoms.push_back(O2);
+                pattern_atoms.push_back(O3);
                 pattern << "OOO";
                 AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
@@ -12320,7 +12415,7 @@ string Assembly::CheckxC_NxO_SO3(Atom *target, string cycle_atoms_str, char NxO)
         return "";
 }
 
-string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12356,6 +12451,7 @@ string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
         }
         if(P != NULL)
         {
+            pattern_atoms.push_back(P);
             Atom* O1 = NULL;
             Atom* O2 = NULL;
             Atom* O3 = NULL;
@@ -12375,6 +12471,9 @@ string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
             }
             if(O1 != NULL && O2 != NULL && O3 != NULL)
             {
+                pattern_atoms.push_back(O1);
+                pattern_atoms.push_back(O2);
+                pattern_atoms.push_back(O3);
                 pattern << "OOO";
                 AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
@@ -12422,7 +12521,7 @@ string Assembly::CheckxC_NxO_PO3(Atom *target, string cycle_atoms_str, char NxO)
         return "";
 }
 
-string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
+string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
@@ -12458,6 +12557,7 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
         }
         if(C != NULL)
         {
+            pattern_atoms.push_back(C);
             pattern << "-C";
             AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
@@ -12491,7 +12591,7 @@ string Assembly::CheckxC_NxO_C(Atom *target, string cycle_atoms_str, char NxO)
         return "";
 }
 
-string Assembly::CheckxCOO(Atom *target, string cycle_atoms_str)
+string Assembly::CheckxCOO(Atom *target, string cycle_atoms_str, AtomVector& pattern_atoms)
 {
     stringstream pattern;
     pattern << "xC";
