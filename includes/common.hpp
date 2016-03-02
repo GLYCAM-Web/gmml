@@ -5,6 +5,7 @@
 #include <vector>
 #include <math.h>
 #include <map>
+#include <set>
 
 #include "GeometryTopology/coordinate.hpp"
 #include "Glycan/sugarname.hpp"
@@ -14,6 +15,8 @@ namespace gmml
 
     //*******************************************
     typedef std::map<std::string, std::string> ResidueNameMap;
+    typedef ResidueNameMap GlycamAtomNameMap;
+    typedef std::map<std::string, std::set<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
     typedef GeometryTopology::Coordinate Vector;
 
