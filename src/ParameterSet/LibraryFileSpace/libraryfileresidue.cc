@@ -14,15 +14,15 @@ using namespace gmml;
 LibraryFileResidue::LibraryFileResidue() : name_(""), atoms_(), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
     head_atom_index_(-1), tail_atom_index_(-1) {}
 
-LibraryFileResidue::LibraryFileResidue(string &name) : name_(name), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
+LibraryFileResidue::LibraryFileResidue(string &name, int listing_index) : name_(name), listing_index_(listing_index), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
     head_atom_index_(-1), tail_atom_index_(-1)
 {
     atoms_ = AtomMap();
 }
 
-LibraryFileResidue::LibraryFileResidue(string &name, vector<LibraryFileAtom*> &atoms, int head_atom_index, int tail_atom_index, double box_angle, double box_length,
+LibraryFileResidue::LibraryFileResidue(string &name, int listing_index, vector<LibraryFileAtom*> &atoms, int head_atom_index, int tail_atom_index, double box_angle, double box_length,
                                        double box_width, double box_height) :
-    name_(name), box_angle_(box_angle), box_length_(box_length), box_width_(box_width), box_height_(box_height), head_atom_index_(head_atom_index),
+    name_(name), listing_index_(listing_index), box_angle_(box_angle), box_length_(box_length), box_width_(box_width), box_height_(box_height), head_atom_index_(head_atom_index),
     tail_atom_index_(tail_atom_index)
 {
     atoms_.clear();
@@ -109,6 +109,10 @@ LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(string atom_name)
     }
     return NULL;
 }
+int LibraryFileResidue::GetListingIndex()
+{
+    return listing_index_;
+}
 
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
@@ -169,6 +173,10 @@ void LibraryFileResidue::SetHeadAtomIndex(int head_atom_index)
 void LibraryFileResidue::SetTailAtomIndex(int tail_atom_index)
 {
     tail_atom_index_ = tail_atom_index;
+}
+void LibraryFileResidue::SetListingIndex(int listing_index)
+{
+    listing_index_ = listing_index;
 }
 
 //////////////////////////////////////////////////////////
