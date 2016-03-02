@@ -9705,7 +9705,7 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     remove("temp_config");
     remove("ring_conformations.txt");
 }
-=======
+
 bool Assembly::PatternMatching(Residue *residue, Residue *query_residue, GlycamAtomNameMap &pdb_glycam_map, GlycamAtomNameMap& glycam_atom_map)
 {
     AtomVector query_atoms = query_residue->GetAtoms();
@@ -10244,6 +10244,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
     for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
         (*it)->Print(cout);
     ///POPULATING ONTOLOGY
+    /*
     if(oligosaccharides.size() > 0)
     {
         std::ofstream out_file;
@@ -10264,6 +10265,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
             out_file.close();
         }
     }
+    */
     //    system("curl -g -H \"Accept: application/json\" \"http://192.168.1.52:8890/sparql\" --data-urlencode \"query=SELECT ?a where { ?a rdf:type owl:Class}\"");
 //    testConnection();
     return oligosaccharides;
