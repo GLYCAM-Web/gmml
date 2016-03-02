@@ -419,7 +419,7 @@ namespace gmml
       * @param code The string chemical code structure
       * @return SUGARNAMELOOKUP The closest row of the lookup table which matches th emost with the given code
       */
-    inline Glycan::SugarName ClosestMatchSugarStereoChemistryNameLookup(std::string code)
+    inline Glycan::SugarName ClosestMatchSugarStereoChemistryNameLookup(std::string code, std::vector<Glycan::SugarName>& closest_matches)
     {
         std::string vocab[] = {"2", "3", "4", "a", "+1", "+2", "+3", "-1"};
         int vocab_size = (sizeof(vocab)/sizeof(vocab[0]));
@@ -471,7 +471,69 @@ namespace gmml
                 score_map[diff_score].push_back(SUGARNAMELOOKUP[i]);
             }
         }
-        return score_map[min_diff_score].at(0);
+        closest_matches = score_map[min_diff_score];
+
+        ///SELECTING ONE MATCH FROM CLOSEST MATCHES
+        ///RULE1: choose D over L isomer in closest matches
+        ///RULE2: if the input chemical code has 'd's and the matches don't have corresponding 'd's. for D sugars choose the match that has '^' instead of 'd' for that index and '_' for L sugars
+        Glycan::SugarName selected_match;
+        selected_match.chemical_code_string_ = "";
+        std::vector<size_t> positions; // holds all the positions that 'd' occurs within the chemical code stirng
+        if(code.find("d") != std::string::npos)
+        {
+            size_t pos = code.find("d");
+            while(pos != std::string::npos)
+            {
+                positions.push_back(pos);
+                pos = code.find("d",pos+1);
+            }
+        }
+        int max_sugar_name_score = 0;
+        std::string to_be_check_orientation = "";
+        for(std::vector<Glycan::SugarName>::iterator it = closest_matches.begin(); it != closest_matches.end(); it++)
+        {
+            Glycan::SugarName name = (*it);
+            int sugar_name_score = 0;
+            to_be_check_orientation = "^";
+            if(name.isomer_.compare("D") == 0)
+                sugar_name_score = 100;
+            else
+                to_be_check_orientation = "_";
+
+            if(positions.size() == 0)
+            {
+                selected_match = name;
+                break;
+            }
+            else
+            {
+                std::string non_deoxy_position = "";
+                std::string deoxy_position = "";
+                int count = 0;
+                int corresponding_d_counts = 0;
+                for(int i = 0; i < positions.size(); i++)
+                {
+                    deoxy_position = name.chemical_code_string_.at(positions.at(i));
+                    if(deoxy_position.compare("d") == 0)
+                        corresponding_d_counts = corresponding_d_counts + 2;
+                    else
+                    {
+                        non_deoxy_position = name.chemical_code_string_.at(positions.at(i) - 1);
+                        if(non_deoxy_position.compare(to_be_check_orientation) == 0)
+                            count++;
+                    }
+                }
+                sugar_name_score += corresponding_d_counts + count;
+                if(sugar_name_score > max_sugar_name_score)
+                {
+                    max_sugar_name_score = sugar_name_score;
+                    selected_match = name;
+                }
+            }
+        }
+        if(selected_match.chemical_code_string_.compare("") == 0)
+            selected_match = closest_matches.at(0);
+        return selected_match;
 
     }
 
@@ -614,6 +676,23 @@ namespace gmml
         rotation_matrix[2][2] = w2 + (u2 + v2) * cos_rotation_angle;
 
         return rotation_matrix;
+    }
+    /*! \fn
+      * A function in order to replace all occurrences of a sub-string with another sub-string in a string
+      * @param str The string that is going to be manipulated
+      * @param search The sub-string that is going to be searched and later replaced in the string
+      * @param replace The replacement sub-string
+      */
+    inline void FindReplaceString(std::string &str, std::string search, std::string replace)
+    {
+        for(size_t pos = 0; ; pos += replace.length())
+        {
+            pos = str.find( search, pos);
+            if(pos == std::string::npos) break;
+
+            str.erase(pos, search.length());
+            str.insert(pos, replace);
+        }
     }
 }
 
