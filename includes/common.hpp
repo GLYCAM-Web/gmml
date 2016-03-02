@@ -649,12 +649,12 @@ namespace gmml
         OntPDB,
         OntResidue,
         OntOligosaccharide,
+        OntNote,
         OntLinkage,
         OntMonosaccharide,
         OntSugarName,
         OntAtom
     };
-
 }
 
 #endif // COMMON_HPP
