@@ -339,7 +339,7 @@ namespace MolecularModeling
               * Exports data from assembly data structure into pdb file structure
               * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1);
+            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1);
             /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
@@ -670,11 +670,14 @@ namespace MolecularModeling
               */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
-            gmml::ResidueNameMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
-            void ExtractOligosaccharideNamingMap(gmml::ResidueNameMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
+            gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
+            void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
                                                 int& index);
-            void UpdateResidueName2GlycamName(gmml::ResidueNameMap residue_glycam_map);
+            void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
+            bool PatternMatching(Residue* residue, Residue* query_residue, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
+            bool PatternMatching(Atom* atom, Atom* query_atom, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
+            bool HasAllNeighborsOf(Atom* atom, Atom* query_atom);
 
             /*! \fn
               * A function in order to extract all the saccharide structures
@@ -1004,7 +1007,7 @@ namespace MolecularModeling
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
 
             void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
-            Assembly* Solvation(double extension, double closeness, std::string lib_file);
+            void Solvation(double extension, double closeness, std::string lib_file);
 
             double GetTotalCharge();
             double GetRadius();

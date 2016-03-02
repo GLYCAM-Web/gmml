@@ -124,6 +124,7 @@ void LibraryFile::Read(std::ifstream& in_file)
 
     if(line.find("index") != string::npos)
     {
+        int listing_index = 1;
         getline(in_file, line);
         while(line[0] != '!')
         {
@@ -132,7 +133,8 @@ void LibraryFile::Read(std::ifstream& in_file)
                 /// Process index section
                 RemoveQuotes(line);
                 RemoveSpaces(line);
-                residues_[line] = new LibraryFileResidue(line);
+                residues_[line] = new LibraryFileResidue(line, listing_index);
+                listing_index++;
                 getline(in_file,line);      /// Read the next line
             } catch(...)
             {
@@ -323,8 +325,8 @@ void LibraryFile::Read(std::ifstream& in_file)
                     int to;
                     int t_int;
                     ss >> from >> to >> t_int;
-                    it -> second -> GetAtomByIndex(from)->AddBondedAtomIndex(to);
-                    it -> second -> GetAtomByIndex(to)->AddBondedAtomIndex(from);
+                    it -> second -> GetAtomByOrder(from)->AddBondedAtomIndex(to);
+                    it -> second -> GetAtomByOrder(to)->AddBondedAtomIndex(from);
                     getline(in_file,line);      /// Read the next line
                 } catch(...)
                 {
