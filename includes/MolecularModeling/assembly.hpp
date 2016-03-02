@@ -26,6 +26,7 @@
 #include "../InputSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../InputSet/PdbFileSpace/pdbmodel.hpp"
 #include "../Glycan/oligosaccharide.hpp"
+#include "../Glycan/note.hpp"
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 
 namespace MolecularModeling
@@ -54,6 +55,7 @@ namespace MolecularModeling
             typedef std::map<int, int> AssemblytoPdbSerialNumberMap;
             typedef std::map<std::string, std::string> DerivativeModificationMap;
             typedef std::vector<std::vector<std::string> > AttachedGlycanStructuresVector;
+            typedef std::vector<Glycan::Note*> NoteVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -148,6 +150,11 @@ namespace MolecularModeling
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
             CoordinateVector GetAllCoordinates();
+            /*! \fn
+              * A function to return all issues/notes within an assembly
+              * @return List of all notes of an assembly
+              */
+            NoteVector GetNotes();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -220,6 +227,19 @@ namespace MolecularModeling
               * @param model_index The target model index attribute of the current object
               */
             void SetModelIndex(int model_index);
+            /*! \fn
+              * A mutator function in order to set the list of notes of the current object
+              * Set the notes_ attribute of the current assembly
+              * @param notes The notes attribute of the current object
+              */
+            void SetNotes(NoteVector notes);
+            /*! \fn
+              * A function in order to add a note instance to the current object
+              * Set the notes_ attribute of the current assembly
+              * @param note The note instance of the current object
+              */
+            void AddNote(Glycan::Note* note);
+
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
@@ -319,7 +339,7 @@ namespace MolecularModeling
               * Exports data from assembly data structure into pdb file structure
               * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1);
+            PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1);
             /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
@@ -650,19 +670,31 @@ namespace MolecularModeling
               */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
 
-            gmml::ResidueNameMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
-            void ExtractOligosaccharideNamingMap(gmml::ResidueNameMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
+            gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
+            void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
                                                 int& index);
-            void UpdateResidueName2GlycamName(gmml::ResidueNameMap residue_glycam_map);
+            void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
+            bool PatternMatching(Residue* residue, Residue* query_residue, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
+            bool PatternMatching(Atom* atom, Atom* query_atom, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
+            bool HasAllNeighborsOf(Atom* atom, Atom* query_atom);
 
             /*! \fn
               * A function in order to extract all the saccharide structures
               * @param amino_lib_files The list of paths to amino library files
               */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files);
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files);            
+            /*! \fn
+            * A function in order to detec the shape of the ring using the external BFMP program
+            * This function creates a pdb file and a configuration file for input arguments of the external detect_shape program.
+            * the function updates the bfmp_ring_confomration attribute of the monosaccharide
+            * @param cycle The list of ring atoms
+            * @param mono The monosaccharide object
+            */
+            void DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono);
 
             void PopulateOntology(std::ofstream& out_file, OligosaccharideVector oligosaccharides);
+            void PopulateNotes(std::stringstream& pdb_stream, std::stringstream& note_stream, std::string pdb_uri, NoteVector notes, std::string id_prefix, int note_id);
             void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::stringstream& linkage_stream, std::string pdb_uri,
                                          std::string id_prefix, int& link_id, OligosaccharideVector oligos, std::vector<std::string>& side_or_ring_atoms,
                                          std::vector<int>& visited_oligos);
@@ -682,6 +714,7 @@ namespace MolecularModeling
             void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
             void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
             std::string CreateURIResource(gmml::URIType resource, int number, std::string id_prefix, std::string id);
+            void FormulateCURL(std::string query);
             std::string CreateURI(std::string uri_resource);
             std::string ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_condensed_name, std::string name, std::string condensed_name);
             std::string ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration);
@@ -768,7 +801,7 @@ namespace MolecularModeling
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @return o_neighbor The anomeric carbon which is the neighbor of oxygen
               */
-            Atom* FindAnomericCarbon(std::vector<std::string>& anomeric_carbons_status, AtomVector cycle, std::string cycle_atoms_str);
+            Atom* FindAnomericCarbon(Glycan::Note* anomeric_carbons_note, std::vector<std::string>& anomeric_carbons_status, AtomVector cycle, std::string cycle_atoms_str);
             /*! \fn
               * A function in order to sort atom objects of the cycle starting from the anomeric carbon of the ring (ring oxygen will be last atom)
               * @param cycle The list of cycle atoms
@@ -885,6 +918,7 @@ namespace MolecularModeling
               * @return pattern The discovered pattern attached to the target atom
               */
             std::string CheckTerminals(Atom* target, AtomVector& terminal_atoms);
+            void CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosaccharide* mono2, std::string linkage, std::vector<std::string>& checked_linkages);
 
             /*! \fn
               * A function in order to calculate the orientation(S/R) of additional side atoms
@@ -973,7 +1007,7 @@ namespace MolecularModeling
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
 
             void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
-            Assembly* Solvation(double extension, double closeness, std::string lib_file);
+            void Solvation(double extension, double closeness, std::string lib_file);
 
             double GetTotalCharge();
             double GetRadius();
@@ -1012,6 +1046,7 @@ namespace MolecularModeling
             std::string source_file_;                       /*!< File name that the current assembly has been built upon >*/
             gmml::InputFileType source_file_type_;          /*!< Type of the file that the current assembly has been built upon >*/
             int model_index_;                               /*!< In case that there are more than one models for an assembly, this attribute indicated which model is the target model >*/
+            NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
     };
 
     struct DistanceCalculationThreadArgument{

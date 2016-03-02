@@ -31,7 +31,7 @@ namespace LibraryFileSpace
               * Constructor with given atom name
               * @param name Atom name
               */
-            LibraryFileResidue(std::string& name);
+            LibraryFileResidue(std::string& name, int listing_index);
             /*! \fn
               * Constructor with given all information about an atom
               * @param name Atom name
@@ -43,7 +43,7 @@ namespace LibraryFileSpace
               * @param box_width Width of the surrounding box
               * @param box_height Height of the surrounding box
               */
-            LibraryFileResidue(std::string& name, std::vector<LibraryFileAtom*>& atoms, int head_atom_index, int tail_atom_index, double box_angle = 0,
+            LibraryFileResidue(std::string& name, int listing_index, std::vector<LibraryFileAtom*>& atoms, int head_atom_index, int tail_atom_index, double box_angle = 0,
                                double box_length = 0, double box_width = 0, double box_height = 0);
 
             //////////////////////////////////////////////////////////
@@ -107,6 +107,11 @@ namespace LibraryFileSpace
               * @return library_file_atom
               */
             LibraryFileAtom* GetLibraryAtomByAtomName(std::string atom_name);
+            /*! \fn
+              * An accessor function in order to access to listing index of the current object
+              * @return listing_index attribute of the current residue
+              */
+            int GetListingIndex();
 
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
@@ -165,6 +170,12 @@ namespace LibraryFileSpace
               * @param tail_atom_index An integer that indicates the tail atom index of the current residue
               */
             void SetTailAtomIndex(int tail_atom_index);
+            /*! \fn
+              * A mutator function in order to set the listing index of the current object
+              * Set the listing_index_ of the current atom
+              * @param listing_index An integer that indicates the tail atom index of the current residue
+              */
+            void SetListingIndex(int listing_index);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
@@ -188,6 +199,7 @@ namespace LibraryFileSpace
             double box_height_;         /*!< Box height; set by the 5th line of the boundbox section of a library file*/
             int head_atom_index_;       /*!< Head atom index; set by the 1st line of the connect section of a library file*/
             int tail_atom_index_;       /*!< Tail atom index; set by the 2nd line of the connect section of a library file*/
+            int listing_index_;
     };
 }
 
