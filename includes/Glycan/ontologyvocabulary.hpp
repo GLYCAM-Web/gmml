@@ -39,9 +39,9 @@ namespace Ontology
     const std::string hasRoot = "gmmo:hasRoot";
     const std::string hasSideAtom = "gmmo:hasSideAtom";
     const std::string hasSugarName = "gmmo:hasSugarName";
-    const std::string hasmemberOfResidue = "gmmo:memberOfResidue"; ///remove maybe?
 
     /* Datatype Properties */
+    const std::string input_file_path = "gmmo:filePath";
     const std::string anomeric_status = "gmmo:anomericStatus";
     const std::string chemical_code_str = "gmmo:stringChemicalCode";
     const std::string configuration = "gmmo:configuration";

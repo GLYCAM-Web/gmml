@@ -41,7 +41,7 @@ namespace Glycan
                     case MONOSACCHARIDE:
                         return "Monosaccharide";
                     case GLYCOSIDIC:
-                        return "Glycosidic";
+                        return "Glycosidic Linkage";
                     case ANOMERIC:
                         return "Anomeric";
                     case DER_MOD:

@@ -472,7 +472,6 @@ namespace gmml
             }
         }
         closest_matches = score_map[min_diff_score];
-
         ///SELECTING ONE MATCH FROM CLOSEST MATCHES
         ///RULE1: choose D over L isomer in closest matches
         ///RULE2: if the input chemical code has 'd's and the matches don't have corresponding 'd's. for D sugars choose the match that has '^' instead of 'd' for that index and '_' for L sugars
@@ -485,7 +484,10 @@ namespace gmml
             while(pos != std::string::npos)
             {
                 positions.push_back(pos);
-                pos = code.find("d",pos+1);
+                if(pos+1 < code.size())
+                    pos = code.find("d",pos+1);
+                else
+                    break;
             }
         }
         int max_sugar_name_score = 0;
@@ -507,20 +509,28 @@ namespace gmml
             }
             else
             {
+                std::string current = "";
                 std::string non_deoxy_position = "";
                 std::string deoxy_position = "";
                 int count = 0;
                 int corresponding_d_counts = 0;
                 for(int i = 0; i < positions.size(); i++)
                 {
-                    deoxy_position = name.chemical_code_string_.at(positions.at(i));
-                    if(deoxy_position.compare("d") == 0)
-                        corresponding_d_counts = corresponding_d_counts + 2;
-                    else
+                    if(positions.at(i) < name.chemical_code_string_.size())
                     {
-                        non_deoxy_position = name.chemical_code_string_.at(positions.at(i) - 1);
-                        if(non_deoxy_position.compare(to_be_check_orientation) == 0)
-                            count++;
+                        deoxy_position = name.chemical_code_string_.at(positions.at(i));
+                        if(deoxy_position.compare("d") == 0)
+                            corresponding_d_counts = corresponding_d_counts + 2;
+                        else
+                        {
+                            current = name.chemical_code_string_.at(positions.at(i));
+                            if(current.compare("1") == 0) ///check for -1 and +1. in this case orientation is 2 positions back from the current position
+                                non_deoxy_position = name.chemical_code_string_.at(positions.at(i) - 2);
+                            else
+                                non_deoxy_position = name.chemical_code_string_.at(positions.at(i) - 1);
+                            if(non_deoxy_position.compare(to_be_check_orientation) == 0)
+                                count++;
+                        }
                     }
                 }
                 sugar_name_score += corresponding_d_counts + count;
@@ -534,7 +544,6 @@ namespace gmml
         if(selected_match.chemical_code_string_.compare("") == 0)
             selected_match = closest_matches.at(0);
         return selected_match;
-
     }
 
     /*! \fn

@@ -3271,6 +3271,10 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
         cout << "Wrong input file format" << endl;
+        stringstream ss;
+        ss << record_name << " is an Unknown record name.";
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
+        cout << ss.str() << endl;
         return false;
     }
     return true;
