@@ -9538,7 +9538,7 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
             GlycamAtomNameMap pdb_glycam_map = GlycamAtomNameMap();
             GlycamAtomNameMap glycam_pdb_map = GlycamAtomNameMap();
             string glycam_name = *glycam_names.begin();
-            for(set<string>::iterator name_it = glycam_names.begin(); name_it != glycam_names.end(); name_it++)
+            /*for(set<string>::iterator name_it = glycam_names.begin(); name_it != glycam_names.end(); name_it++)
             {
                 string glycam_residue_name = *name_it;
                 PrepFile::ResidueMap customized_prep_residues = PrepFile::ResidueMap();
@@ -9565,8 +9565,8 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
                     glycam_name = glycam_residue_name;
                     cout << "Match " << glycam_name << " " << residue->GetName() << endl;
                     break;
-                }
-            }
+                } 
+            }*/
 
             AtomVector atoms = residue->GetAtoms();
             AtomVector updated_atoms = AtomVector();
@@ -9916,7 +9916,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         string cycle_atoms_str = (*it).first;
         AtomVector cycle = (*it).second;
 
-        DetectShape(cycle, mono);
+        ///DetectShape(cycle, mono);
 
         stringstream ring_atoms;
         ring_atoms << "Ring atoms: " << cycle_atoms_str;
