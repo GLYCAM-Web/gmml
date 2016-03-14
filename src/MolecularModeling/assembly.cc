@@ -9746,15 +9746,51 @@ bool Assembly::PatternMatching(Atom *atom, Atom *query_atom, GlycamAtomNameMap &
     {
         AtomVector query_atom_neighbors = query_atom_node->GetNodeNeighbors();
         AtomVector atom_neighbors = atom_node->GetNodeNeighbors();
-        for(int i = 0; i < query_atom_neighbors.size(); i ++)
+        bool flag[query_atom_neighbors.size()];
+        bool pass = false;
+        for(int i = 0; i < query_atom_neighbors.size(); i++)
         {
             Atom* query_atom_neighbor = query_atom_neighbors.at(i);
-            for(int j = 0; j < atom_neighbors.size(); j++)
+            if(glycam_atom_map.find(query_atom_neighbor->GetId()) == glycam_atom_map.end() &&
+                    !(query_atom_neighbors.at(i)->GetName().at(0) == 'H' ||
+                     (isdigit(query_atom_neighbors.at(i)->GetName().at(0)) && query_atom_neighbors.at(i)->GetName().at(1) == 'H')))
+                flag[i] = false;
+            else
+                flag[i] = true;
+        }
+        for(int i = 0; i < query_atom_neighbors.size(); i++)
+            if(flag[i] == false)
             {
-                Atom* atom_neighbor = atom_neighbors.at(j);
-
+                pass = false;
+                break;
+            }
+        if(!pass)
+        {
+            for(int i = 0; i < query_atom_neighbors.size(); i ++)
+            {
+                if(!flag[i])
+                {
+                    Atom* query_atom_neighbor = query_atom_neighbors.at(i);
+                    for(int j = 0; j < atom_neighbors.size(); j++)
+                    {
+                        Atom* atom_neighbor = atom_neighbors.at(j);
+                        GlycamAtomNameMap pdb_glycam_map_t = GlycamAtomNameMap();
+                        GlycamAtomNameMap glycam_atom_map_t = GlycamAtomNameMap();
+                        pdb_glycam_map_t[atom_neighbor->GetId()] = query_atom_neighbor->GetId();
+                        glycam_atom_map_t[query_atom_neighbor->GetId()] = atom_neighbor->GetId();
+                        if(PatternMatching(atom_neighbor, query_atom_neighbor, pdb_glycam_map_t, glycam_atom_map_t))
+                        {
+                            for(GlycamAtomNameMap::iterator it = pdb_glycam_map_t.begin(); it != pdb_glycam_map_t.end(); it++)
+                                pdb_glycam_map[(*it).first] = (*it).second;
+                            for(GlycamAtomNameMap::iterator it = glycam_atom_map_t.begin(); it != glycam_atom_map_t.end(); it++)
+                                glycam_atom_map[(*it).first] = (*it).second;
+                        }
+                    }
+                }
             }
         }
+        else
+            return true;
     }
     else
     {
