@@ -78,18 +78,6 @@ namespace Glycan
                                                                     ///-> first_mono == RAM(401_A)C1
                     end_index = link_left_side.find_last_of(")");
                     first_residue_of_linkage = link_left_side.substr(0, end_index + 1); ///filtering out atom name. e.g. RAM(401_A)
-
-//                    if(oligo_linkages_tokens.size() == 1)///It is a disaccharide and there are only 2 monos involved
-//                    {
-//                        link_right_side = link_tokens.at(2);     ///Getting the second residue of linkage in the line. e.g. {1}NAG(1521_A)C1-NAG(1520_A)C4, Glycosidic linkage: NAG(1520_A)O4
-//                                                                        ///-> second_mono == NAG(1520_A)C4
-//                        end_index = link_right_side.find_last_of(")");
-//                        second_residue_of_linkage = link_right_side.substr(0, end_index + 1); ///filtering out atom name. e.g. NAG(1520_A)
-//                        residue_links_stream << first_residue_of_linkage << "-" << second_residue_of_linkage;
-//                        break;
-//                    }
-
-
                     if(oligo_name_tokens.at(i).find("[") != std::string::npos)
                         residue_links_stream << "[" << first_residue_of_linkage;
                     if(oligo_name_tokens.at(i).find("]") != std::string::npos)
@@ -104,12 +92,9 @@ namespace Glycan
                         second_residue_of_linkage = link_right_side.substr(0, end_index + 1); ///filtering out atom name. e.g. NAG(1520_A)
                         residue_links_stream << first_residue_of_linkage << "-" << second_residue_of_linkage;
                     }
-//                        residue_links_stream << first_residue_of_linkage;
                 }
                 oligosaccharide_residue_linkages_ = residue_links_stream.str();
                 gmml::FindReplaceString(oligosaccharide_residue_linkages_, "-]", "]");
-
-
 
                 out << oligosaccharide_name_;
                 gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_name_);
@@ -117,7 +102,7 @@ namespace Glycan
                 out << oligosaccharide_linkages_;
                 gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);
                 out << std::endl;
-                out << oligosaccharide_residue_linkages_ << std::endl;
+//                out << oligosaccharide_residue_linkages_ << std::endl;
             }
 
             /*! \fn

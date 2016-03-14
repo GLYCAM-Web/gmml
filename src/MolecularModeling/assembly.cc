@@ -9705,7 +9705,7 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     remove("temp_config");
     remove("ring_conformations.txt");
 }
-=======
+
 bool Assembly::PatternMatching(Residue *residue, Residue *query_residue, GlycamAtomNameMap &pdb_glycam_map, GlycamAtomNameMap& glycam_atom_map)
 {
     AtomVector query_atoms = query_residue->GetAtoms();
@@ -9956,7 +9956,6 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << endl;
         string code_str = code->toString();
         gmml::log(__LINE__, __FILE__,  gmml::INF, code_str);
-
         ///CHECKING FOR +2 and +3 SIDE CARBONS
         AtomVector plus_sides = ExtractAdditionalSideAtoms(mono);
         ///FINDING CHEMICAL CODE IN LOOKUP TABLE
@@ -10114,7 +10113,6 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
                 {
                     stringstream complex_sugar_side;
                     AtomVector sides = (*it1);
-//                    cout << "side atom size" << sides.size() << endl;
                     if(it1 == mono->side_atoms_.begin())///side atoms of anomeric carbon
                     {
                         if(sides.at(0) != NULL && sides.at(1) != NULL)
@@ -10279,11 +10277,11 @@ void Assembly::PopulateOntology(ofstream& main_stream, OligosaccharideVector oli
     string id_prefix = ss.str();
     string pdb_uri = CreateURI(pdb_resource);
 
-
 //    pdb_stream << Ontology::ENTITY_COMMENT << pdb_resource << endl;
     AddTriple(pdb_uri, Ontology::TYPE, Ontology::PDB, pdb_stream);
     AddLiteral(pdb_uri, Ontology::id, pdb_resource, pdb_stream);
     AddLiteral(pdb_uri, Ontology::LABEL, pdb_resource, pdb_stream);
+    AddLiteral(pdb_uri, Ontology::input_file_path, source_file_, pdb_stream);
 
     int link_id = 1;
     stringstream oligo_stream;
@@ -10389,7 +10387,7 @@ void Assembly::PopulateLinkage(stringstream& linkage_stream, Oligosaccharide* ol
         int index = distance(oligo->child_oligos_.begin(), it);
 
         Oligosaccharide* child_oligo = (*it);
-        visited_oligos.push_back(child_oligo->root_->mono_id);
+//        visited_oligos.push_back(child_oligo->root_->mono_id);
 
         linkage_resource = CreateURIResource(gmml::OntLinkage, link_id, id_prefix, "");
         linkage_uri = CreateURI(linkage_resource);
@@ -10558,25 +10556,64 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
                                 vector<string>& side_or_ring_atoms)
 {
     stringstream object;
-//    side_atom_stream << Ontology::ENTITY_COMMENT << side_resource << endl;
-    AddTriple(side_uri, Ontology::TYPE, Ontology::SideAtom, side_atom_stream);
-    AddLiteral(side_uri, Ontology::id, side_resource, side_atom_stream);
-    AddLiteral(side_uri, Ontology::LABEL, side_resource, side_atom_stream);
-    Coordinate* coords = side_atom->GetCoordinates().at(model_index_);
-    /*AddLiteral(side_uri, Ontology::x, ConvertT<double>(coords->GetX()), side_atom_stream);
-    AddLiteral(side_uri, Ontology::y, ConvertT<double>(coords->GetY()), side_atom_stream);
-    AddLiteral(side_uri, Ontology::z, ConvertT<double>(coords->GetZ()), side_atom_stream);*/
 
-    stringstream coord_stream;
-    coord_stream << ConvertT<double>(coords->GetX()) << ", " << ConvertT<double>(coords->GetY()) << ", " << ConvertT<double>(coords->GetZ());
-    AddLiteral(side_uri, Ontology::coordinate, coord_stream.str(), side_atom_stream);
-
-    side_or_ring_atoms.push_back(side_atom->GetId());
     string chemical_code_str = mono->sugar_name_.chemical_code_string_;
-    if(mono->sugar_name_.ring_type_.compare("P") == 0 && ring_index == 5)
-    {
+    if((mono->sugar_name_.ring_type_.compare("P") == 0 && ring_index == 5) || (mono->sugar_name_.ring_type_.compare("F") == 0 && ring_index == 4))
         object << "+" << side_index;
-        std::size_t index = chemical_code_str.find(object.str().c_str());
+    else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") != 0))
+        object << "1";
+    else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") == 0 ))
+        object << "-1";
+    else
+        object << ring_index;
+
+    if(find(side_or_ring_atoms.begin(), side_or_ring_atoms.end(), side_atom->GetId()) == side_or_ring_atoms.end())///if this side atom has not been added to the ontology as side atom of another mono
+    {
+        //    side_atom_stream << Ontology::ENTITY_COMMENT << side_resource << endl;
+        AddTriple(side_uri, Ontology::TYPE, Ontology::SideAtom, side_atom_stream);
+        AddLiteral(side_uri, Ontology::id, side_resource, side_atom_stream);
+        AddLiteral(side_uri, Ontology::LABEL, side_resource, side_atom_stream);
+        Coordinate* coords = side_atom->GetCoordinates().at(model_index_);
+        /*AddLiteral(side_uri, Ontology::x, ConvertT<double>(coords->GetX()), side_atom_stream);
+        AddLiteral(side_uri, Ontology::y, ConvertT<double>(coords->GetY()), side_atom_stream);
+        AddLiteral(side_uri, Ontology::z, ConvertT<double>(coords->GetZ()), side_atom_stream);*/
+
+        stringstream coord_stream;
+        coord_stream << ConvertT<double>(coords->GetX()) << ", " << ConvertT<double>(coords->GetY()) << ", " << ConvertT<double>(coords->GetZ());
+        AddLiteral(side_uri, Ontology::coordinate, coord_stream.str(), side_atom_stream);
+
+        if(object.str().compare("1") == 0)
+        {
+            if(mono->derivatives_map_.find("a") != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
+        }
+        else
+        {
+            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
+        }
+
+        string neighbor_resource = "";
+        string neighbor_uri = "";
+        AtomVector neighbors = side_atom->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+        {
+            Atom* neighbor = (*it);
+            neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
+            neighbor_uri = CreateURI(neighbor_resource);
+            AddTriple(side_uri, Ontology::hasNeighbor, neighbor_uri, side_atom_stream);
+        }
+
+        side_or_ring_atoms.push_back(side_atom->GetId());
+    }
+
+    size_t index = string::npos;
+    if(object.str().compare("1") == 0)
+        index = chemical_code_str.find("a");
+    else
+        index = chemical_code_str.find(object.str().c_str());
+    if (index != string::npos)
+    {
         index--;
         if(chemical_code_str.at(index) == '^')
         {
@@ -10591,114 +10628,8 @@ void Assembly::PopulateSideAtom(stringstream& side_atom_stream, string id_prefix
             AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
         }
         AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
-        if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
-            AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
-    }
-    else if(mono->sugar_name_.ring_type_.compare("F") == 0 && ring_index == 4)
-    {
-        object << "+" << side_index;
-        std::size_t index = chemical_code_str.find(object.str().c_str());
-        if (index != string::npos)
-        {
-            index--;
-            if(chemical_code_str.at(index) == '^')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Up", side_atom_stream);
-            }
-            else if(chemical_code_str.at(index) == '_')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Down", side_atom_stream);
-            }
-            else
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
-            }
-            AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
-            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
-                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
-        }
-    }
-    else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") != 0))
-    {
-        size_t index = chemical_code_str.find("a");
-        if (index != string::npos)
-        {
-            index--;
-            if(chemical_code_str.at(index) == '^')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Up", side_atom_stream);
-            }
-            else if(chemical_code_str.at(index) == '_')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Down", side_atom_stream);
-            }
-            else
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
-            }
-        }
-        AddLiteral(side_uri, Ontology::side_index, "1", side_atom_stream);
-        if(mono->derivatives_map_.find("a") != mono->derivatives_map_.end())
-            AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_["a"], side_atom_stream);
-    }
-    else if(ring_index == 1 && (side_atom->GetName().substr(0,1).compare("C") == 0 ))
-    {
-        std::size_t index = chemical_code_str.find("-1");
-        if (index != string::npos)
-        {
-            index--;
-            if(chemical_code_str.at(index) == '^')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Up", side_atom_stream);
-            }
-            else if(chemical_code_str.at(index) == '_')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Down", side_atom_stream);
-            }
-            else
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
-            }
-            AddLiteral(side_uri, Ontology::side_index, "-1", side_atom_stream);
-            if(mono->derivatives_map_.find("-1") != mono->derivatives_map_.end())
-                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_["-1"], side_atom_stream);
-        }
-    }
-    else
-    {
-        object << ring_index;
-        std::size_t index = chemical_code_str.find(object.str());
-        if (index != string::npos)
-        {
-            index--;
-            if(chemical_code_str.at(index) == '^')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Up", side_atom_stream);
-            }
-            else if(chemical_code_str.at(index) == '_')
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Down", side_atom_stream);
-            }
-            else
-            {
-                AddLiteral(side_uri, Ontology::orientation, "Deoxy", side_atom_stream);
-            }
-            AddLiteral(side_uri, Ontology::side_index, object.str(), side_atom_stream);
-            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
-                AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
-        }
     }
 
-    string neighbor_resource = "";
-    string neighbor_uri = "";
-    AtomVector neighbors = side_atom->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
-    {
-        Atom* neighbor = (*it);
-        neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
-        neighbor_uri = CreateURI(neighbor_resource);
-        AddTriple(side_uri, Ontology::hasNeighbor, neighbor_uri, side_atom_stream);
-    }
 }
 void Assembly::PopulateSugarName(stringstream& mono_stream, string id_prefix, string mono_uri, int mono_id, SugarName sugar_name)
 {
@@ -10810,9 +10741,7 @@ void Assembly::AddLiteral(string s, string p, string o, stringstream& stream)
 string Assembly::CreateURI(string uri_resource)
 {
     stringstream uri;
-//    uri << ":" << uri_resource;
-//    uri << Ontology::ONT_DOMAIN << uri_resource << ">";
-        uri << Ontology::ONT_PREFIX << uri_resource;
+    uri << Ontology::ONT_PREFIX << uri_resource;
     return uri.str();
 }
 string Assembly::CreateURIResource(gmml::URIType resource , int number, string id_prefix, string id )
@@ -10971,7 +10900,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_n
 
     query << "?pdb      :hasOligo	?oligo.\n";
     query << "?oligo	:oligoName	\"" << oligo_name << "\"\n";
-    query << "?pdb      :oligoResidueLinkages	?oligo_residue_linkages.\n";
+    //query << "?pdb      :oligoResidueLinkages	?oligo_residue_linkages.\n";
 
     ///string manipulation: split the oligo_name by _ and for each of them write the following to represent the names of the monos:
 //    query << "?oligo	:hasRoot	?mono.\n";
@@ -11038,7 +10967,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string 
         query << "FILTER regex(?oligo_sequence, \"" << pattern_tokens.at(0) << ".+" << pattern_tokens.at(1) << "\", \"i\")\n";
     }
 
-    query << "?oligo	:oligoResidueLinkages	?oligo_residue_linkages.\n";
+    //query << "?oligo	:oligoResidueLinkages	?oligo_residue_linkages.\n";
 
     query << Ontology::END_WHERE_CLAUSE;
 
@@ -11187,10 +11116,10 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
         vector<string> structure = (*it);
         if(structure.size() < 7)
         {
-            cout << "Missing arguments! All should be set even as an empty value" << endl;
+            cout << "Missing arguments! All should be set even as an empty value (for empty values set \"\")" << endl;
             return "";
         }
-        if(structure.at(i).compare("") == 0)
+        if(structure.at(0).compare("") == 0)
         {
             cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << endl;
             return "";
@@ -11211,7 +11140,7 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
                 {
                     case 1:///anomeric
                         ring_atom << mono.str() << "_anomeric";
-                        side_atom << mono.str() << "anomeric_side_atom";
+                        side_atom << mono.str() << "_anomeric_side_atom";
                         query << mono.str() << "     :hasRingAtom	" << ring_atom.str() << ".\n";
                         query << ring_atom.str() << "  	:ringIndex  	\"" << j << "\".\n";
                         query << ring_atom.str() << "   :hasSideAtom    " << side_atom.str() << " .\n";
@@ -11259,13 +11188,13 @@ string Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStr
     for(i = 0; i < oligos.size(); i++)
     {
         if(i + 1 < oligos.size())
-        {
+        {            
             query << "{\n";
-            query << "?linkage :hasParent " << oligos.at(i) << ".\n";
-            query << "?linkage :hasChild " << oligos.at(i + 1) << ".\n";
+            query << "?linkage" << i << " :hasParent " << oligos.at(i) << ".\n";
+            query << "?linkage" << i << " :hasChild " << oligos.at(i + 1) << ".\n";
             query << "} UNION {\n";
-            query << "?linkage :hasParent " << oligos.at(i + 1) << ".\n";
-            query << "?linkage :hasChild " << oligos.at(i) << ".\n";
+            query << "?linkage" << i << " :hasParent " << oligos.at(i + 1) << ".\n";
+            query << "?linkage" << i << " :hasChild " << oligos.at(i) << ".\n";
             query << "}\n";
         }
     }
@@ -14814,7 +14743,7 @@ void Assembly::CheckLinkageNote(Monosaccharide* mono1, Monosaccharide* mono2, st
         if(left_c_index != glycosidic_o_index && right_c_index != glycosidic_o_index)
         {
             Note* linkage_note = new Note();
-            linkage_note->type_ = Glycan::WARNING;
+            linkage_note->type_ = Glycan::ERROR;
             linkage_note->category_ = Glycan::GLYCOSIDIC;
             stringstream n;
             n << mono1->sugar_name_.monosaccharide_short_name_ << ": Glycosidic oxygen/nitrogen index does not conform to carbon index in the linkage to "
