@@ -673,7 +673,7 @@ namespace MolecularModeling
             gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
             void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
-                                                int& index);
+                                                int& index);            
             void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
             bool PatternMatching(Residue* residue, Residue* query_residue, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
             bool PatternMatching(Atom* atom, Atom* query_atom, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
