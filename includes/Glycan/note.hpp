@@ -39,17 +39,17 @@ namespace Glycan
                 switch(category)
                 {
                     case MONOSACCHARIDE:
-                        return "Monosaccharide";
+                        return "monosaccharide";
                     case GLYCOSIDIC:
-                        return "Glycosidic Linkage";
+                        return "glycosidic linkage";
                     case ANOMERIC:
-                        return "Anomeric";
+                        return "anomeric";
                     case DER_MOD:
-                        return "Derivative/Modification";
+                        return "derivative/modification";
                     case RESIDUE_NAME:
-                        return "Residue Name";
+                        return "residue name";
                     default:
-                        return "Unknown";
+                        return "unknown";
                 }
             }
             /*! \fn
@@ -62,13 +62,13 @@ namespace Glycan
                 switch(type)
                 {
                     case COMMENT:
-                        return "Comment";
+                        return "comment";
                     case WARNING:
-                        return "Warning";
+                        return "warning";
                     case ERROR:
-                        return "Error";
+                        return "error";
                     default:
-                        return "Unknown";
+                        return "unknown";
                 }
             }
     } ;

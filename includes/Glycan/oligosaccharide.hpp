@@ -70,6 +70,7 @@ namespace Glycan
                 size_t end_index = 0;
                 std::string first_residue_of_linkage  = "";
                 std::string second_residue_of_linkage  = "";
+
                 for(int i = 0; i < oligo_linkages_tokens.size(); i++) ///Processing linkages line by line
                 {
                     full_glycosidic_linkage = oligo_linkages_tokens.at(i);
@@ -78,6 +79,7 @@ namespace Glycan
                                                                     ///-> first_mono == RAM(401_A)C1
                     end_index = link_left_side.find_last_of(")");
                     first_residue_of_linkage = link_left_side.substr(0, end_index + 1); ///filtering out atom name. e.g. RAM(401_A)
+
                     if(oligo_name_tokens.at(i).find("[") != std::string::npos)
                         residue_links_stream << "[" << first_residue_of_linkage;
                     if(oligo_name_tokens.at(i).find("]") != std::string::npos)
@@ -90,6 +92,7 @@ namespace Glycan
                                                                         ///-> second_mono == NAG(1520_A)C4
                         end_index = link_right_side.find_last_of(")");
                         second_residue_of_linkage = link_right_side.substr(0, end_index + 1); ///filtering out atom name. e.g. NAG(1520_A)
+
                         residue_links_stream << first_residue_of_linkage << "-" << second_residue_of_linkage;
                     }
                 }
