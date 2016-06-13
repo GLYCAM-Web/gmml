@@ -15,6 +15,7 @@ namespace Glycan
             std::string configuration_;                                 /*!< The configuration(a/b, alpha/beta) info of the monosacchride >*/
             std::string monosaccharide_name_;                           /*!< The name of the monosacchride >*/
             std::string monosaccharide_short_name_;                     /*!< The condensed name of the monosacchride >*/
+            std::string pdb_code_;                     /*!< The condensed name of the monosacchride >*/
     } ;
 }
 
