@@ -77,6 +77,10 @@ string Atom::GetId()
 {
     return id_;
 }
+bool Atom::GetIsRing()
+{
+    return is_ring_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -120,6 +124,10 @@ void Atom::SetNode(AtomNode *node)
 void Atom::SetId(string id)
 {
     id_ = id;
+}
+void Atom::SetIsRing(bool is_ring)
+{
+    is_ring_ = is_ring;
 }
 
 //////////////////////////////////////////////////////////

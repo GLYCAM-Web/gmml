@@ -1176,9 +1176,12 @@ namespace MolecularModeling
               * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
               * @param monos The list of extracted monosaccharide object
               * @param dataset_residue_names List of known terminal residue names
+              * @param number_of_covalent_links Number of sugars that covalenly bond to a protein
+              * @param number_of_probable_non_covalent_complex Number of sugars that might be non-covalantly interacting with a protein
               * @return oligosacchrides The list of extracted oligosacchrides
               */
-            OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names);
+            OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
+                                                          int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes);
             /*! \fn
               * A function in order to check if the target atom is attached to OME terminal
               * @param target_atom The atom which will be checked for a terminal
