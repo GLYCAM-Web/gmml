@@ -27,38 +27,38 @@ namespace Ontology
     /* Object Properties */
     const std::string hasAtom = "gmmo:hasAtom";
     const std::string hasChild = "gmmo:hasChild";
-    const std::string hasChildAtomLinkage = "gmmo:hasChildAtomIndex";
+    const std::string hasChildAtomLinkage = "gmmo:hasChildAtomLinkage";
+    const std::string hasParentAtomLinkage = "gmmo:hasParentAtomLinkage";
     const std::string hasGlycosidicLinkage = "gmmo:hasGlycosidicLinkage";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
     const std::string hasOligo = "gmmo:hasOligo";
     const std::string hasNote = "gmmo:hasNote";
     const std::string hasParent = "gmmo:hasParent";
-    const std::string hasParentAtomLinkage = "gmmo:hasParentAtomLinkage";
     const std::string hasResidue = "gmmo:hasResidue";
     const std::string hasRingAtom = "gmmo:hasRingAtom";
-    const std::string hasRoot = "gmmo:hasRoot";
+    const std::string hasCore = "gmmo:hasCore";
     const std::string hasSideAtom = "gmmo:hasSideAtom";
     const std::string hasSugarName = "gmmo:hasSugarName";
 
     /* Datatype Properties */
     const std::string input_file_path = "gmmo:filePath";
     const std::string anomeric_status = "gmmo:anomericStatus";
-    const std::string chemical_code_str = "gmmo:stringChemicalCode";
+    const std::string stereochemistry_chemical_code = "gmmo:stereochemistryChemicalCode";
     const std::string configuration = "gmmo:configuration";
-    const std::string cycle_atom_str = "gmmo:cycleAtomsString";
+    const std::string ring_atoms = "gmmo:ringAtoms";
     const std::string derivative = "gmmo:derivative";
-    const std::string glycosidic_linkage_str = "gmmo:glycosidicLinkageString";
+    const std::string glycosidic_linkage = "gmmo:glycosidicLinkage";
+    const std::string linkageIndeces = "gmmo:linkageIndeces";
     const std::string id = "gmmo:identifier";
     const std::string isomer = "gmmo:isomer";
-    const std::string linkage_str = "gmmo:linkageString";
     const std::string mono_name = "gmmo:monosaccharideName";
     const std::string mono_short_name = "gmmo:monosaccharideShortName";
     const std::string mono_stereo_name = "gmmo:monosaccharideStereochemName";
     const std::string mono_stereo_short_name = "gmmo:monosaccharideStereochemShortName";
     const std::string oligo_name = "gmmo:oligoName";
-    const std::string oligo_residue_linkages = "gmmo:oligoResidueLinkages";
-    const std::string note_type = "gmmo:type";
-    const std::string note_category = "gmmo:category";
+    const std::string oligo_residue_linkages = "gmmo:oligoResidueLinks";
+    const std::string note_type = "gmmo:NoteType";
+    const std::string note_category = "gmmo:NoteCategory";
     const std::string note_description = "gmmo:description";
     const std::string orientation = "gmmo:orientation";
     const std::string path = "gmmo:path";
@@ -76,7 +76,9 @@ namespace Ontology
     const std::string SELECT_CLAUSE = "SELECT";
     const std::string WHERE_CLAUSE = "WHERE {\n";
     const std::string END_WHERE_CLAUSE = "}\n";
-    const std::string OUTPUT_FORMAT = " \'Accept: text/csv\' "; /* " \'Accept: text/csv\' ", " \'Accept: application/json\' " */
+    const std::string CSV_OUTPUT_FORMAT = " \'Accept: text/csv\' ";
+    const std::string JSON_OUTPUT_FORMAT = " \'Accept: application/json\' ";
+    const std::string XML_OUTPUT_FORMAT = " \'Accept: application/sparql-results+xml' ";
     const std::string DATA_STORE_ADDRESS = "http://192.168.1.52:8890/sparql"; /* "http://128.192.62.244:8890/sparql", "http://192.168.1.52:8890/sparql" */
     const std::string CURL_PREFIX = "curl -g -H";
     const std::string QUERY_PREFIX = " --data-urlencode query=\'";

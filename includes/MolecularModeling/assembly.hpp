@@ -83,8 +83,6 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-           void ODBC();
-
             /*! \fn
               * An accessor function in order to access to the name
               * @return name_ attribute of the current object of this class
@@ -685,7 +683,8 @@ namespace MolecularModeling
 
             /*! \fn
               * A function in order to extract all the saccharide structures
-              * @param amino_lib_files The list of paths to amino library files
+              * @param amino_lib_files The list of paths to amino library files, used for identifying terminal residues
+              * @return oligosaccharides A list of extarcted oligosaccharide structures
               */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files);            
             /*! \fn
@@ -697,41 +696,322 @@ namespace MolecularModeling
             */
             void DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono);
 
+            /*! \fn
+            * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology
+            * @param outfile The output stream of the ontology file
+            * @param oligosaccharides All the oligosaccharide structures that have been identified by the ExtractSugars function
+            */
             void PopulateOntology(std::ofstream& out_file, OligosaccharideVector oligosaccharides);
+            /*! \fn
+            * A function in order to populate the Note class of the ontology which is designed for storing the issues/notes/problems identified in a PDB file
+            * @param pdb_stream The output stream of PDB triples to be added to the main output stream
+            * @param note_stream The output stream of Note triples to be added to the main output stream
+            * @param pdb_uri The URI for the PDB instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32
+            * @param notes The list of notes that have created by ExtractSugars function
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param note_id The numeric id to be used for URI of a note
+            */
             void PopulateNotes(std::stringstream& pdb_stream, std::stringstream& note_stream, std::string pdb_uri, NoteVector notes, std::string id_prefix, int note_id);
+            /*! \fn
+            * A function in order to populate the Oligosaccharide class of the ontology
+            * @param pdb_stream The output stream of PDB triples to be added to the main output stream
+            * @param oligo_stream The output stream of Oligosaccharide triples to be added to the main output stream
+            * @param mono_stream The output stream of Monosaccharide triples to be added to the main output stream
+            * @param linkage_stream The output stream of Linkage class triples to be added to the main output stream
+            * @param pdb_uri The URI for the PDB instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param link_id The numeric id to be used for URI of a link
+            * @param oligosaccharides All the oligosaccharide structures that have been identified by the ExtractSugars function
+            * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
+            * @param visited_oligos The list of oligos (monos) that have been visited and processed by traversing the tree like structure of main oligosaccharide.
+            * each oligosaccharide has a core of monosaccharide. The collection of linked oligosaccharides forms the main oligosaccharide structure.
+            */
             void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::stringstream& linkage_stream, std::string pdb_uri,
                                          std::string id_prefix, int& link_id, OligosaccharideVector oligos, std::vector<std::string>& side_or_ring_atoms,
                                          std::vector<int>& visited_oligos);
+            /*! \fn
+            * A function in order to populate the Linkage class of the ontology
+            * @param linkage_stream The output stream of Linkage triples to be added to the main output stream
+            * @param oligo An Assembly Oligosaccharide structure to be used to create linkage instances
+            * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param link_id The numeric id to be used for URI of a link
+            * @param visited_oligos The list of oligos (monos) that have been visited and processed by traversing the tree like structure of main oligosaccharide.
+            * each oligosaccharide has a core of monosaccharide. The collection of linked oligosaccharides forms the main oligosaccharide structure.
+            */
             void PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligosaccharide* oligo, std::string oligo_uri, std::string id_prefix, int& link_id,
                                  std::vector<int>& visited_oligos);
+            /*! \fn
+            * A function in order to extract the index of the carbon atom of of a monosaccharides that is linked to another monosaccharide. 2 for DNeupNAca in DNeupNAca2-3DGalp
+            * @param linkage_carbon_id The Assembly atom identifier of the carbon atom involved in a linkage
+            * @return c_index The index of the carbon atom based on the naming conventions.
+            */
+            int ExtractLinkageCarbonIndex(Glycan::Oligosaccharide* oligo, std::string linkage_carbon_id);
+            /*! \fn
+            * A function in order to populate the Monosaccharide class of the ontology
+            * @param oligo_stream The output stream of Oligosaccharide triples to be added to the main output stream
+            * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param mono An Assembly Monosaccharide object to be used for populating the Monosaccharide triples
+            * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
+            */
             void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix,
                                         Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+            /*! \fn
+            * A function in order to populate the RingAtom class of the ontology
+            * @param ring_atom_stream The output stream of RingAtom triples to be added to the main output stream
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param ring_uri The URI for the RingAtom instance to be used in the ontology. e.g http://gmmo.uga.edu/#5BO9_C2_4752_SIA_A_409_n_n_1
+            * @param ring_resource The ring atom resource in the ontology. e.g. 5BO9_C2_4752_SIA_A_409_n_n_1
+            * @param ring_index The ring index of the atom. can be any of 1, 2, 3, 4, 5
+            * @param mono An Assembly Monosaccharide object
+            * @param ring_atom An Assembly Atom object to be used for populating the RingAtom triples
+            * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
+            */
             void PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, int ring_index, Atom* ring_atom,
                                   Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+            /*! \fn
+            * A function in order to populate the SideAtom class of the ontology
+            * @param side_atom_stream The output stream of SideAtom triples to be added to the main output stream
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param side_uri The URI for the SideAtom instance to be used in the ontology. e.g http://gmmo.uga.edu/#5BO9_O3_4778_GAL_A_410_n_n_1
+            * @param side_resource The ring atom resource in the ontology. e.g. 5BO9_O3_4778_GAL_A_410_n_n_1
+            * @param side_index The index of the side atom. can be any of 1, 2, 3, 4, 5, 6, 7, 8 which will be stores as any of -1, 1, 2, 3, 4, 5, +1, +2, +3 in the ontology
+            * ring atom with index 1 can have side atoms with indeces -1 and 1.
+            * ring atom with index 4 in a furanose or 5 in a pyranose can have side atoms with indeces +1, +2 and +3
+            * @param side_atom An Assembly Atom object to be used for populating the SideAtom triples
+            * @param mono An Assembly Monosaccharide object
+            * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
+            */
             void PopulateSideAtom(std::stringstream& side_atom_stream, std::string id_prefix, std::string side_uri, std::string side_resource, int ring_index, int side_index, Atom* side_atom,
                                   Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+            /*! \fn
+            * A function in order to populate the SugarName class of the ontology
+            * @param mono_stream The output stream of SugarName triples to be added to the main output stream
+            * @param mono_uri The URI for the Monosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#5BO9_mono1
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param mono_id The numeric id to be used as part of the URI of a SugarName
+            * @param sugar_name An Assembly SugarName object to be used for populating SugarName class of the ontology
+            */
             void PopulateSugarName(std::stringstream& mono_stream, std::string mono_uri, std::string id_prefix, int mono_id, Glycan::SugarName sugar_name);
+            /*! \fn
+            * A function in order to populate the Residue class of the ontology
+            * @param pdb_stream The output stream of PDB triples to be added to the main output stream
+            * @param residue_stream The output stream of Residue triples to be added to the main output stream
+            * @param pdb_uri The URI for the PDB instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param residues A list of Assembly residue objects to be used for populating the Residue class of the ontology
+            * @param sugar_name An Assembly SugarName object to be used for populating SugarName class of the ontology
+            * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
+            */
             void PopulateResidue(std::stringstream& pdb_stream, std::stringstream& residue_stream, std::string pdb_uri, std::string id_prefix, ResidueVector residues,
                                  std::vector<std::string> side_or_ring_atoms);
+            /*! \fn
+            * A function in order to populate the Atom class of the ontology. This function populates the atoms that haven't been populated by PopulateRingAtom and PopulateSideAtom functions
+            * @param atom_stream The output stream of Atom triples to be added to the main output stream
+            * @param atom_uri The URI for the Atom instance to be used in the ontology.
+            * @param atom_resource The atom resource in the ontology.
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param atom An Assembly Atom object to be used for populating the Atom triples
+            */
             void PopulateAtom(std::stringstream& atom_stream, std::string atom_uri, std::string atom_resource, std::string id_prefix, Atom* atom);
+            /*! \fn
+            * A function in order to create a title for the specific PDB file triples
+            * @param pdb_resource The PDB resource which the title is created for
+            * @param pdb_stream The output stream of PDB triples to be added to the main output stream
+            */
             void CreateTitle(std::string pdb_resource, std::stringstream& pdb_stream);
-            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
+            /*! \fn
+            * A function in order to create a turtle formatted triple (subject predicate object) and appending it to the output file stream
+            * @param s The subject part of the triple
+            * @param p The predicate part of the triple
+            * @param o The object part of the triple
+            * @param stream The output stream which is going to be written in the ontology turtle file
+            */
+            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);            
+            /*! \fn
+            * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
+            * @param s The subject part of the triple
+            * @param p The predicate part of the triple
+            * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
+            * @param stream The output stream which is going to be written in the ontology turtle file
+            */
             void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
+            /*! \fn
+            * A function in order to create the an ontology resource based on the given resource type
+            * @param resource The resource type e.g. PDB, Residue, Atom
+            * @param number The numeric id that shoud be included in the URI resource
+            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param id The resource that is going to be created e.g. O3_4778_GAL_A_410_n_n_1
+            * @return uri_resource The resource that has been created by the function
+            */
             std::string CreateURIResource(gmml::URIType resource, int number, std::string id_prefix, std::string id);
-            void FormulateCURL(std::string query);
+            /*! \fn
+            * A function in order to create the unique URI for a resource of the ontology
+            * @param uri_resource The resource that has been created by the CreateURIResource function
+            * @return uri The unique URI that has been created by the function
+            */
             std::string CreateURI(std::string uri_resource);
-            std::string ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_condensed_name, std::string name, std::string condensed_name);
-            std::string ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration);
-            std::string ExtractOntologyInfoByPDBID(std::string pdb_id);
-            std::string ExtractOntologyInfoByStringChemicalCode(std::string chemical_code);
-            std::string ExtractOntologyInfoByOligosaccharideNameSequence(std::string oligo_name);
-            std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::string oligo_name_pattern);
-            std::string ExtractOntologyInfoByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation,
-                                                               std::string index_three_orientation, std::string index_four_orientation = "", std::string plus_one_orientation = "");
-            std::string ExtractOntologyInfoByDerivativeModificationMap(std::string ring_type, DerivativeModificationMap derivative_modification_map);
-            std::string ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures);
 
-            void TestQueries();
+            /*! \fn
+            * A function in order to formulate and execute a cURL command based on the given SPARQL query
+            * @param output_file_type The format of the result from query execution. e.g. csv, json, xml
+            * @param query The SPARQL query that is going to be used in the cURL command
+            */
+            void FormulateCURL(std::string output_file_type, std::string query);
+            /*! \fn
+            * A function in order to extract information from ontology based on the name of the sugar
+            * @param stereo_name The stereochemistry name of the sugar e.g. b-D-mannopyranose
+            * @param stereo_condensed_name The condensed version of stereochemistry name of the sugar e.g. DManpb
+            * @param name The complete name of the sugar e.g. 2-sulfo-b-D-mannopyranose
+            * @param condensed_name The condensed version of the complete name of the sugar e.g. DManp[2s]b
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_condensed_name, std::string name, std::string condensed_name, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on the different parts of the sugar name
+            * @param isomer The isomer(D/L) part of the monosacchride name
+            * @param ring_type The ring type(p/f) part of the monosacchride name
+            * @param name The complete name of the sugar e.g. 2-sulfo-b-D-mannopyranose
+            * @param configuration The configuration(a/b/x) part of the monosacchride name
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on a specific PDB ID
+            * @param pdb_id The unique PDB identifier
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByPDBID(std::string pdb_id, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on a specific chemical code
+            * inspired http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation
+            * @param chemical_code The chemical code structure of the sugar e.g. _2^3^4P_a^+1
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByStringChemicalCode(std::string chemical_code, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on a specific oligosaccharide name
+            * @param oligo_name The name of the oligosaccharide. e.g. DNeupNAca2-3DGalpb1-4DGlcpNAcb1-ROH
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByOligosaccharideNameSequence(std::string oligo_name, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on a given specific pattern
+            * @param oligo_name_pattern The oligosaccharide pattern that is going to be used in the query
+            * e.g. DGlcpNAcb1-4DGlc*, *b1-4L*, *GlcpNAcb1-4DGlcpNAcb, DGlcpNAcb*4DGlcpNAca, *DGlcpNAcb1-4DGlc*, DGlcpNAcb*DGlc*, *DManpa1-6[DManpa1-2DManpa1-3]D*
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::string oligo_name_pattern, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on the orientations of the side atoms of a monosaccharide structure
+            * @param ring_type The ring type(p/f) part of the monosacchride name
+            * @param anomeric_orientation The orientation of the side oxygen attached to anomeric carbon of the ring
+            * @param minus_one_orientation The orientation of the side carbon attached to anomeric carbon of the ring
+            * @param index_two_orientation The orientation of the side oxygen attached to second carbon of the ring
+            * @param index_three_orientation The orientation of the side oxygen attached to third carbon of the ring
+            * @param index_four_orientation The orientation of the side oxygen attached to fourth carbon of the ring
+            * @param plus_one_orientation The orientation of the side carbon attached to last carbon of the ring
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation,
+                                                               std::string index_three_orientation, std::string index_four_orientation = "", std::string plus_one_orientation = "", std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on a specific modification/derivative pattern
+            * @param ring_type The ring type(p/f) part of the monosacchride name
+            * @param derivative_modification_map A mapping between the monosacchride's atom position/index and the derivative/modification attached to it
+            * e.g. derivative_modification_map['2'] = 'xC-N-C=OCH3'
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByDerivativeModificationMap(std::string ring_type, DerivativeModificationMap derivative_modification_map, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on the sugar structures
+            * @param attached_structures The orientation of side atoms of attache monosaccharide
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on identified note(s) of PDB file(s)
+            * @param pdb_file The PDB ID that the notes have been extracted from
+            * @param note_type The type of the note. e.g. error, warning, comment
+            * @param note_category The category of the note. e.g. anomeric, residue name, monosaccharide
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByNote(std::string pdb_file, std::string note_type, std::string note_category, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on the given SPARQL query
+            * @param query The custom SPARQL query
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractOntologyInfoByCustomQuery(std::string query, std::string output_file_type = "csv");
+
+            /*! \fn
+            * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
+            * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
+            * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
+            */
+            void ExtractTorsionAnglesFromSlowQueryResult();
+            /*! \fn
+            * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
+            */
+            void ExtractTorsionAnglesFromFastQueryResult();
+            /*! \fn
+            * A function in order to extract torsion angles from a PDB file for a given disaccharide pattern
+            * @param amino_lib_files The list of paths to amino library files to process PDB file
+            * @param disaccharide The disaccharide pattern that is going to be used to extract torsio angles
+            */
+            void ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_files, std::string disaccharide);
+            /*! \fn
+            * A function in order to check if a parent and child oligosaccharide matches the given monosaccharid names and linkage indeces
+            * if the values matches, the function calculates the phi/psi angle(s)
+            * @param oligo An Assembly Oligosaccharide object that is going to be checked for matching the given values
+            * @param phi_angle The phi angle that is going to be calculated by this function
+            * @param phi_angle The phi angle that is going to be calculated by this function
+            * @param first_mono The first monosaccharide in the disaccharide pattern which is the child monosaccharide in the tree-like structure of the main oligosaccharide
+            * e.g. DGalpb in DNeupNAca2-3DGalpb
+            * @param second_mono The second monosaccharide in the disaccharide pattern which is the parent monosaccharide in the tree-like structure of the main oligosaccharide
+            * e.g. DNeupNAca in DNeupNAca2-3DGalpb
+            * @return true if disaccharide pattern was found and false otherwise.
+            */
+            bool MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo, double &phi_angle, double &psi_angle, std::string first_mono,
+                                   char mono1_carbon_index, std::string second_mono, char mono2_carbon_index);
+            /*! \fn
+            * A function in order to calculate torsion angles based on the coordinate objects
+            * @param atom1_crd The geometric coordinate of the first atom of the torsion angle
+            * @param atom2_crd The geometric coordinate of the second atom of the torsion angle
+            * @param atom3_crd The geometric coordinate of the third atom of the torsion angle
+            * @param atom4_crd The geometric coordinate of the fourth atom of the torsion angle
+            * @return current_dihedral The calculated torsion angle (radian)
+            */
+            double CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd,
+                                                      GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd);
+            /*! \fn
+            * A function in order to calculate torsion angles based on the Assembly atom objects
+            * @param atom1 The first atom of the torsion angle
+            * @param atom2 The second atom of the torsion angle
+            * @param atom3 The third atom of the torsion angle
+            * @param atom4 The fourth atom of the torsion angle
+            * @return current_dihedral The calculated torsion angle (radian)
+            */
+            double CalculateTorsionAngleByAtoms(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4);
+            /*! \fn
+            * A function in order to calculate a torsion angle matrix based on a file that contains torison angles calculated from PDB file(s)
+            * the matrix shows the number of angles that falls in a certain scope, the scope is calculated based on the given range
+            * @param torsion_file The files that contains all the calculated torsion angles for PDB file(s)
+            * @return low_range The lowest number of the range
+            * @return high_range The highest number of the range
+            */
+            void CalculateTorsionStatistics(std::string torsion_file = "", int low_range = -180, int high_range = 180);
 
             /*! \fn
               * A function in order to extract and print out all saccharides ring atoms information
@@ -739,12 +1019,13 @@ namespace MolecularModeling
             void ExtractRingAtomsInformation();
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
+              * The algorithm is derived from http://pubs.acs.org/doi/pdf/10.1021/ci960322f
               * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
               */
             CycleMap DetectCyclesByExhaustiveRingPerception();
             /*! \fn
               * A function in order to prune the graph (recursively removing nodes with zero or 1 neighbors)
-              * @param all_atoms The list of atoms of the graph
+              * @param all_atoms The list of atoms of the graph which is going to be updated by the function
               */
             void PruneGraph(AtomVector& all_atoms);
             /*! \fn
