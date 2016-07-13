@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <set>
 #include <queue>
+#include <stack>
 
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
@@ -8971,11 +8972,11 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
                         string terminal_atom_id = terminal_atom->GetId();
                         string terminal_residue_id = terminal_atom->GetResidue()->GetId();
                         if(pdb_glycam_residue_map.find(terminal_atom_id) == pdb_glycam_residue_map.end())
-                            pdb_glycam_residue_map[terminal_atom_id] == set<string>();
-                        pdb_glycam_residue_map[terminal_atom_id].insert(condensed_sequence_amber_residue_tree.at(index)->GetName());
+                            pdb_glycam_residue_map[terminal_atom_id] == vector<string>();
+                        pdb_glycam_residue_map[terminal_atom_id].push_back(condensed_sequence_amber_residue_tree.at(index)->GetName());
                         if(pdb_glycam_residue_map.find(terminal_residue_id) == pdb_glycam_residue_map.end())
-                            pdb_glycam_residue_map[terminal_residue_id] = set<string>();
-                        pdb_glycam_residue_map[terminal_residue_id].insert(condensed_sequence_amber_residue_tree.at(index)->GetName());
+                            pdb_glycam_residue_map[terminal_residue_id] = vector<string>();
+                        pdb_glycam_residue_map[terminal_residue_id].push_back(condensed_sequence_amber_residue_tree.at(index)->GetName());
                     }
                 }
             }
@@ -8990,14 +8991,14 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
 
 void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
                                                CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
-{   
+{
     string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
     //TODO: Done
     //Update to hold all possible three letter names for the specific residue_id
     string residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
     if(pdb_glycam_map.find(residue_id) == pdb_glycam_map.end())
-        pdb_glycam_map[residue_id] = set<string>();
-    pdb_glycam_map[residue_id].insert(name);
+        pdb_glycam_map[residue_id] = vector<string>();
+    pdb_glycam_map[residue_id].push_back(name);
     index++;
     //Separating SO3 and PO3 residues in glycam naming
     while(index < condensed_sequence_amber_residue_tree.size() && condensed_sequence_amber_residue_tree.at(index)->GetIsDerivative())
@@ -9038,14 +9039,14 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                     Atom* atom = *it;
                     string derivative_atom_id = atom->GetId();
                     if(pdb_glycam_map.find(derivative_atom_id) == pdb_glycam_map.end())
-                        pdb_glycam_map[derivative_atom_id] = set<string>();
-                    pdb_glycam_map[derivative_atom_id].insert("SO3");
+                        pdb_glycam_map[derivative_atom_id] = vector<string>();
+                    pdb_glycam_map[derivative_atom_id].push_back("SO3");
                 }
                 string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
-                    pdb_glycam_map[derivative_residue_id] = set<string>();
-                pdb_glycam_map[derivative_residue_id].insert(ConvertT<int>(carbon_index) + new_name.substr(1));
+                    pdb_glycam_map[derivative_residue_id] = vector<string>();
+                pdb_glycam_map[derivative_residue_id].push_back(ConvertT<int>(carbon_index) + new_name.substr(1));
             }
             AtomVector o_linkage_derivative_atoms = AtomVector();
             string o_linkage_derivative_string = CheckxC_NxO_SO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'O', o_linkage_derivative_atoms);
@@ -9056,14 +9057,14 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                     Atom* atom = *it;
                     string derivative_atom_id = atom->GetId();
                     if(pdb_glycam_map.find(derivative_atom_id) == pdb_glycam_map.end())
-                        pdb_glycam_map[derivative_atom_id] = set<string>();
-                    pdb_glycam_map[derivative_atom_id].insert("SO3");
+                        pdb_glycam_map[derivative_atom_id] = vector<string>();
+                    pdb_glycam_map[derivative_atom_id].push_back("SO3");
                 }
                 string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
-                    pdb_glycam_map[derivative_residue_id] = set<string>();
-                pdb_glycam_map[derivative_residue_id].insert(ConvertT<int>(carbon_index) + new_name.substr(1));
+                    pdb_glycam_map[derivative_residue_id] = vector<string>();
+                pdb_glycam_map[derivative_residue_id].push_back(ConvertT<int>(carbon_index) + new_name.substr(1));
             }
             AtomVector n_linkage_derivative_atoms_1 = AtomVector();
             string n_linkage_derivative_string_1 = CheckxC_NxO_PO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'N', n_linkage_derivative_atoms_1);
@@ -9074,14 +9075,14 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                     Atom* atom = *it;
                     string derivative_atom_id = atom->GetId();
                     if(pdb_glycam_map.find(derivative_atom_id) == pdb_glycam_map.end())
-                        pdb_glycam_map[derivative_atom_id] = set<string>();
-                    pdb_glycam_map[derivative_atom_id].insert("PO3");
+                        pdb_glycam_map[derivative_atom_id] = vector<string>();
+                    pdb_glycam_map[derivative_atom_id].push_back("PO3");
                 }
                 string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
-                    pdb_glycam_map[derivative_residue_id] = set<string>();
-                pdb_glycam_map[derivative_residue_id].insert(ConvertT<int>(carbon_index) + new_name.substr(1));
+                    pdb_glycam_map[derivative_residue_id] = vector<string>();
+                pdb_glycam_map[derivative_residue_id].push_back(ConvertT<int>(carbon_index) + new_name.substr(1));
             }
             AtomVector o_linkage_derivative_atoms_1 = AtomVector();
             string o_linkage_derivative_string_1 = CheckxC_NxO_PO3(carbon_atom, oligosaccharide->root_->cycle_atoms_str_, 'O', o_linkage_derivative_atoms_1);
@@ -9092,14 +9093,14 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                     Atom* atom = *it;
                     string derivative_atom_id = atom->GetId();
                     if(pdb_glycam_map.find(derivative_atom_id) == pdb_glycam_map.end())
-                        pdb_glycam_map[derivative_atom_id] = set<string>();
-                    pdb_glycam_map[derivative_atom_id].insert("PO3");
+                        pdb_glycam_map[derivative_atom_id] = vector<string>();
+                    pdb_glycam_map[derivative_atom_id].push_back("PO3");
                 }
                 string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
-                    pdb_glycam_map[derivative_residue_id] = set<string>();
-                pdb_glycam_map[derivative_residue_id].insert(ConvertT<int>(carbon_index) + new_name.substr(1));
+                    pdb_glycam_map[derivative_residue_id] = vector<string>();
+                pdb_glycam_map[derivative_residue_id].push_back(ConvertT<int>(carbon_index) + new_name.substr(1));
             }
         }
         index++;
@@ -9113,7 +9114,7 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
 }
 
 void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glycam_map, string prep_file)
-{    
+{
     for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
         (*it)->UpdateResidueName2GlycamName(residue_glycam_map, prep_file);
 
@@ -9128,7 +9129,6 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
         Residue* residue = *it2;
         string residue_name = residue->GetName();
         string residue_id = residue->GetId();
-        updated_residues.push_back(residue);
         if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
         {
             terminal_residues.push_back(new Residue(this, ""));
@@ -9139,11 +9139,12 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
             //Update to match the atoms of the residue with all the three-letter code prep residues to set the updated residue name correspondingly
             //Create a map between the current atom names and the corresponding prep atom names when the match is found
             //Add the residue mismatch into a structure for the Ontology usage
-            set<string> glycam_names = residue_glycam_map[residue_id];
+            vector<string> glycam_names = residue_glycam_map[residue_id];
             GlycamAtomNameMap pdb_glycam_map = GlycamAtomNameMap();
             GlycamAtomNameMap glycam_pdb_map = GlycamAtomNameMap();
             string glycam_name = *glycam_names.begin();
-            /*for(set<string>::iterator name_it = glycam_names.begin(); name_it != glycam_names.end(); name_it++)
+            ResidueVector query_residues = ResidueVector();
+            for(vector<string>::iterator name_it = glycam_names.begin(); name_it != glycam_names.end(); name_it++)
             {
                 string glycam_residue_name = *name_it;
                 PrepFile::ResidueMap customized_prep_residues = PrepFile::ResidueMap();
@@ -9158,24 +9159,19 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
                 prep_assembly->BuildStructureByPrepFileInformation();
                 remove((glycam_residue_name + ".prep").c_str());
 
-//                prep_assembly->Print();
-//                cout << endl;
-//                residue->Print();
-//                cout << endl;
-                if(PatternMatching(residue, prep_assembly->GetResidues().at(0), pdb_glycam_map, glycam_pdb_map) == true)
-                {
-                    //TODO:
-                    //The two residues atom names are matched but the geometry needs to be checked
-                    //if GeometryCheck returns true
-                    glycam_name = glycam_residue_name;
-                    cout << "Match " << glycam_name << " " << residue->GetName() << endl;
-                    break;
-                }
-            }*/
+                query_residues.push_back(prep_assembly->GetResidues().at(0));
+            }
+                //TODO:
+                //The two residues atom names are matched but the geometry needs to be checked
+                //if GeometryCheck returns true
+            PatternMatching(residue, query_residues, pdb_glycam_map, glycam_pdb_map);
+//            if(PatternMatching(residue, prep_assembly->GetResidues().at(0), pdb_glycam_map, glycam_pdb_map) == true)
+//                cout << "Match " << glycam_residue_name << " " << residue->GetName() << endl;
+//            for(GlycamAtomNameMap::iterator iit = pdb_glycam_map.begin(); iit != pdb_glycam_map.end(); iit++)
+//                cout << (*iit).first << " " << (*iit).second << endl;
 
-            string temp = glycam_name;
             AtomVector atoms = residue->GetAtoms();
-            AtomVector updated_atoms = AtomVector();
+            map<string, Residue*> residue_set = map<string, Residue*>();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
             {
                 Atom* atom = *it1;
@@ -9208,33 +9204,46 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
                 //Non-terminal residues glycam naming
                 else
                 {
-                    //TODO: Done
+                    //TODO:
                     //Update to match the atoms with the corresponding prep residue to change the atom names with respect to prep file
                     //Use the map to update the atom naming
                     //Add the atom name mismatch into a structure for the Ontology usage
-                    //                    string prep_atom_id = pdb_glycam_map[atom_id];
-                    glycam_name = temp;
-                    string prep_atom_id = atom_id;
+                    string prep_atom_id;
+                    if(pdb_glycam_map.find(atom_id) != pdb_glycam_map.end())
+                        prep_atom_id = pdb_glycam_map[atom_id];
+                    else
+                        prep_atom_id = atom_id;
+                    glycam_name = Split(prep_atom_id,"_")[2];
+                    if(residue_set.find(glycam_name) == residue_set.end())
+                    {
+                        residue_set[glycam_name] = (new Residue(this, glycam_name));
+                        residue_sequence_number--;
+                        vector<string> res_id_tokens = Split(residue_id, "_");
+                        string res_id = glycam_name + "_" + res_id_tokens.at(1) + "_" + ConvertT<int>(residue_sequence_number) + "_"
+                                + res_id_tokens.at(3) + "_" + res_id_tokens.at(4);
+                        residue_set[glycam_name]->SetId(res_id);
+                    }
                     string atom_name = atom->GetName();
                     string new_atom_name = Split(prep_atom_id,"_")[0];
                     string new_atom_id = atom_id;
                     int index = new_atom_id.find(residue_name);
-                    //                    glycam_name = Split(prep_atom_id,"_")[2];
                     if(index >= 0)
                         new_atom_id = new_atom_id.replace(index, residue_name_size, glycam_name);
                     index = new_atom_id.find(atom_name);
                     if(index >= 0)
                         new_atom_id = new_atom_id.replace(index, atom_name.size(), new_atom_name);
                     atom->SetId(new_atom_id);
-                    updated_atoms.push_back(atom);
+                    atom->SetResidue(residue_set[glycam_name]);
+                    residue_set[glycam_name]->AddAtom(atom);
                 }
             }
-            residue->SetAtoms(updated_atoms);
-            int i = residue_id.find(residue_name);
-            if(i >= 0)
-                residue->SetId(residue_id.replace(i, residue_name_size, glycam_name));
-            residue->SetName(glycam_name);
+            for(map<string, Residue*>::iterator it1 = residue_set.begin(); it1 != residue_set.end(); it1++)
+            {
+                updated_residues.push_back((*it1).second);
+            }
         }
+        else
+            updated_residues.push_back(residue);
     }
     this->SetResidues(updated_residues);
 }
@@ -9330,153 +9339,179 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     remove("ring_conformations.txt");
 }
 
-bool Assembly::PatternMatching(Residue *residue, Residue *query_residue, GlycamAtomNameMap &pdb_glycam_map, GlycamAtomNameMap& glycam_atom_map)
+bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, GlycamAtomNameMap &pdb_glycam_map, GlycamAtomNameMap& glycam_atom_map)
 {
-    AtomVector query_atoms = query_residue->GetAtoms();
-    AtomVector atoms = residue->GetAtoms();
-    cout << residue->GetName() << " " << query_residue->GetName() << endl;
-
-    for(int i = 0; i < query_atoms.size(); i++)
+    CreatePrunedMatchingGraph(residue, query_residues);
+    for(ResidueVector::iterator it = query_residues.begin(); it != query_residues.end(); it++)
     {
-        Atom* query_atom = query_atoms.at(i);
-        for(int j = 0; j < atoms.size(); j++)
+        Residue* query_residue = *it;
+        AtomVector lowest_degree_atoms = query_residue->GetAtomsWithLowestIntraDegree();
+        stack<BacktrackingElements*> backtracking_stack_1 = stack<BacktrackingElements*>();
+        for(int i = lowest_degree_atoms.size() - 1; i >= 0; i--)
+            backtracking_stack_1.push(new BacktrackingElements(pdb_glycam_map, glycam_atom_map, lowest_degree_atoms, i));
+        if(!backtracking_stack_1.empty())
         {
-            GlycamAtomNameMap pdb_glycam_map_t = GlycamAtomNameMap();
-            GlycamAtomNameMap glycam_atom_map_t = GlycamAtomNameMap();
-            Atom* atom = atoms.at(j);
-            pdb_glycam_map_t[atom->GetId()] = query_atom->GetId();
-            glycam_atom_map_t[query_atom->GetId()] = atom->GetId();
-            if(PatternMatching(atom, query_atom, pdb_glycam_map_t, glycam_atom_map_t))
+            // backtracking point
+            BacktrackingElements* backtracking_point_1 = backtracking_stack_1.top();
+            backtracking_stack_1.pop();
+            pdb_glycam_map = backtracking_point_1->pdb_glycam_map_;
+            glycam_atom_map = backtracking_point_1->glycam_atom_map_;
+            lowest_degree_atoms = backtracking_point_1->atoms_;
+            Atom* source_atom = lowest_degree_atoms.at(backtracking_point_1->index_);
+            AtomVector source_atom_intra_neighbors = source_atom->GetNode()->GetIntraNodeNeighbors();
+            stack<BacktrackingElements*> backtracking_stack_2 = stack<BacktrackingElements*>();
+            for(int i = source_atom_intra_neighbors.size() - 1; i >= 0; i--)
+                backtracking_stack_2.push(new BacktrackingElements(pdb_glycam_map, glycam_atom_map, source_atom_intra_neighbors, i));
+            if(!backtracking_stack_2.empty())
             {
-                for(GlycamAtomNameMap::iterator it = pdb_glycam_map_t.begin(); it != pdb_glycam_map_t.end(); it++)
-                    pdb_glycam_map[(*it).first] = (*it).second;
-                for(GlycamAtomNameMap::iterator it = glycam_atom_map_t.begin(); it != glycam_atom_map_t.end(); it++)
-                    glycam_atom_map[(*it).first] = (*it).second;
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool Assembly::PatternMatching(Atom *atom, Atom *query_atom, GlycamAtomNameMap &pdb_glycam_map, GlycamAtomNameMap& glycam_atom_map)
-{
-    cout << atom->GetId() << " " << query_atom->GetId() << endl;
-    if(HasAllNeighborsOf(atom, query_atom) == false)
-        return false;
-    AtomNode* atom_node = atom->GetNode();
-    AtomNode* query_atom_node = query_atom->GetNode();
-    if(query_atom_node != NULL && atom_node != NULL)
-    {
-        AtomVector query_atom_neighbors = query_atom_node->GetNodeNeighbors();
-        AtomVector atom_neighbors = atom_node->GetNodeNeighbors();
-        bool flag[query_atom_neighbors.size()];
-        bool pass = false;
-        for(int i = 0; i < query_atom_neighbors.size(); i++)
-        {
-            Atom* query_atom_neighbor = query_atom_neighbors.at(i);
-            if(glycam_atom_map.find(query_atom_neighbor->GetId()) == glycam_atom_map.end() &&
-                    !(query_atom_neighbors.at(i)->GetName().at(0) == 'H' ||
-                      (isdigit(query_atom_neighbors.at(i)->GetName().at(0)) && query_atom_neighbors.at(i)->GetName().at(1) == 'H')))
-                flag[i] = false;
-            else
-                flag[i] = true;
-        }
-        for(int i = 0; i < query_atom_neighbors.size(); i++)
-            if(flag[i] == false)
-            {
-                pass = false;
-                break;
-            }
-        if(!pass)
-        {
-            for(int i = 0; i < query_atom_neighbors.size(); i ++)
-            {
-                if(!flag[i])
+                // backtracking point
+                BacktrackingElements* backtracking_point_2 = backtracking_stack_2.top();
+                backtracking_stack_2.pop();
+                pdb_glycam_map = backtracking_point_2->pdb_glycam_map_;
+                glycam_atom_map = backtracking_point_2->glycam_atom_map_;
+                source_atom_intra_neighbors = backtracking_point_2->atoms_;
+                Atom* mapped_atom = source_atom_intra_neighbors.at(backtracking_point_2->index_);
+                pdb_glycam_map[mapped_atom->GetId()] = source_atom->GetId();
+                glycam_atom_map[source_atom->GetId()] = mapped_atom->GetId();
+                AtomVector source_atom_neighbors = source_atom->GetNode()->GetNodeNeighbors();
+                queue<Atom*> to_visit = queue<Atom*>();
+                queue<Atom*> parents = queue<Atom*>();
+                for(int i = 0; i < source_atom_neighbors.size(); i++)
                 {
-                    Atom* query_atom_neighbor = query_atom_neighbors.at(i);
-                    for(int j = 0; j < atom_neighbors.size(); j++)
+                    if(glycam_atom_map.find(source_atom_neighbors.at(i)->GetId()) == glycam_atom_map.end())
                     {
-                        Atom* atom_neighbor = atom_neighbors.at(j);
-                        GlycamAtomNameMap pdb_glycam_map_t = GlycamAtomNameMap();
-                        GlycamAtomNameMap glycam_atom_map_t = GlycamAtomNameMap();
-                        pdb_glycam_map_t[atom_neighbor->GetId()] = query_atom_neighbor->GetId();
-                        glycam_atom_map_t[query_atom_neighbor->GetId()] = atom_neighbor->GetId();
-                        if(PatternMatching(atom_neighbor, query_atom_neighbor, pdb_glycam_map_t, glycam_atom_map_t))
+                        to_visit.push(source_atom_neighbors.at(i));
+                        parents.push(mapped_atom);
+                    }
+                }
+                stack<BacktrackingElements*> backtracking_stack_3 = stack<BacktrackingElements*>();
+                while(!to_visit.empty())
+                {
+                    Atom* atom = to_visit.front();
+                    Atom* parent = parents.front();
+                    to_visit.pop();
+                    parents.pop();
+                    AtomVector atom_intra_neighbors = atom->GetNode()->GetIntraNodeNeighbors();
+                    AtomVector atom_intra_neighbors_filtered_with_parent = AtomVector();
+                    for(int i = 0; i < atom_intra_neighbors.size(); i++)
+                    {
+                        AtomVector neighbors = atom_intra_neighbors.at(i)->GetNode()->GetNodeNeighbors();
+                        if(find(neighbors.begin(), neighbors.end(), parent) != neighbors.end() &&
+                                pdb_glycam_map.find(atom_intra_neighbors.at(i)->GetId()) == pdb_glycam_map.end())
+                            atom_intra_neighbors_filtered_with_parent.push_back(atom_intra_neighbors.at(i));
+                    }
+                    for(int i = atom_intra_neighbors_filtered_with_parent.size() - 1; i >= 0; i--)
+                        backtracking_stack_3.push(new BacktrackingElements(pdb_glycam_map, glycam_atom_map,
+                                                                           atom_intra_neighbors_filtered_with_parent, i, to_visit));
+                    if(!backtracking_stack_3.empty())
+                    {
+                        // backtracking point
+                        BacktrackingElements* backtracking_point_3 = backtracking_stack_3.top();
+                        backtracking_stack_3.pop();
+                        pdb_glycam_map = backtracking_point_3->pdb_glycam_map_;
+                        glycam_atom_map = backtracking_point_3->glycam_atom_map_;
+                        atom_intra_neighbors_filtered_with_parent = backtracking_point_3->atoms_;
+                        Atom* mapped = atom_intra_neighbors_filtered_with_parent.at(backtracking_point_3->index_);
+                        pdb_glycam_map[mapped->GetId()] = atom->GetId();
+                        glycam_atom_map[atom->GetId()] = mapped->GetId();
+                        AtomVector atom_neighbors = atom->GetNode()->GetNodeNeighbors();
+                        for(int i = 0; i < atom_neighbors.size(); i++)
                         {
-                            for(GlycamAtomNameMap::iterator it = pdb_glycam_map_t.begin(); it != pdb_glycam_map_t.end(); it++)
-                                pdb_glycam_map[(*it).first] = (*it).second;
-                            for(GlycamAtomNameMap::iterator it = glycam_atom_map_t.begin(); it != glycam_atom_map_t.end(); it++)
-                                glycam_atom_map[(*it).first] = (*it).second;
+                            if(glycam_atom_map.find(atom_neighbors.at(i)->GetId()) == glycam_atom_map.end())
+                            {
+                                to_visit.push(atom_neighbors.at(i));
+                                parents.push(mapped);
+                            }
                         }
                     }
                 }
+                // Check if the mapping is complete
+                // continue to the next residue
+                // else
+                // backtrack
             }
+            // Check if the mapping is complete
+            // continue to the next residue
+            // else
+            // backtrack
         }
-        else
-            return true;
+        // Check if the mapping is complete
+        // continue to the next residue
+        // else
+        // backtrack
     }
-    else
+    // Check if the mapping is complete
+    // return true
+    // else
+    // return false
+}
+
+void Assembly::CreateLabelGraph(Residue *residue, Residue *query_residue)
+{
+    AtomVector query_atoms = query_residue->GetAtoms();
+    AtomVector atoms = residue->GetAtoms();
+    for(AtomVector::iterator it = query_atoms.begin(); it != query_atoms.end(); it++)
     {
-        if((atom_node != NULL && query_atom_node == NULL) || (atom_node == NULL && query_atom_node != NULL))
-            return false;
-        else
+        Atom* query_atom = *it;
+        AtomNode* query_atom_node = query_atom->GetNode();
+        AtomVector query_atom_intra_neighbors = AtomVector();
+        if(query_atom_node == NULL)
+            query_atom_node = new AtomNode();
+        for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
         {
-            pdb_glycam_map[atom->GetId()] = query_atom->GetId();
-            glycam_atom_map[query_atom->GetId()] = atom->GetId();
-            return true;
+            Atom* atom = *it1;
+            AtomNode* atom_node = atom->GetNode();
+            if(atom_node == NULL)
+                atom_node = new AtomNode();
+            if(query_atom_node->GetElementLabel().compare(atom_node->GetElementLabel()) == 0)
+                query_atom_intra_neighbors.push_back(atom);
+        }
+        query_atom_node->SetIntraNodeNeighbors(query_atom_intra_neighbors);
+    }
+}
+
+void Assembly::PruneLabelGraphByNeighboringLabels(Residue *query_residue)
+{
+    AtomVector query_atoms = query_residue->GetAtoms();
+    for(AtomVector::iterator it = query_atoms.begin(); it != query_atoms.end(); it++)
+    {
+        Atom* query_atom = *it;
+        AtomNode* query_atom_node = query_atom->GetNode();
+        if(query_atom_node != NULL)
+        {
+            string query_atom_neighborhood_label = query_atom_node->CreateNeighboringLabel();
+            AtomVector query_atom_intra_neighbors = query_atom_node->GetIntraNodeNeighbors();
+            AtomVector updated_query_atom_intra_neighbors = AtomVector();
+            for(AtomVector::iterator it1 = query_atom_intra_neighbors.begin(); it1 != query_atom_intra_neighbors.end(); it1++)
+            {
+                Atom* query_atom_intra_neighbor = *it1;
+                AtomNode* query_atom_intra_neighbor_node = query_atom_intra_neighbor->GetNode();
+                if(query_atom_intra_neighbor_node != NULL)
+                {
+                    string query_atom_intra_neighbor_neighborhood_label = query_atom_intra_neighbor_node->CreateNeighboringLabel();
+                    if(query_atom_neighborhood_label.compare(query_atom_intra_neighbor_neighborhood_label) == 0)
+                        updated_query_atom_intra_neighbors.push_back(query_atom_intra_neighbor);
+                }
+            }
+            query_atom_node->SetIntraNodeNeighbors(updated_query_atom_intra_neighbors);
         }
     }
 }
 
-bool Assembly::HasAllNeighborsOf(Atom *atom, Atom *query_atom)
-{    
-    if(atom->GetName().at(0) != query_atom->GetName().at(0))
-        return false;
-    AtomNode* query_atom_node = query_atom->GetNode();
-    AtomNode* atom_node = atom->GetNode();
-    if(query_atom_node != NULL && atom_node != NULL)
+void Assembly::CreatePrunedMatchingGraph(Residue *residue, ResidueVector query_residues)
+{
+    if(residue->GraphElementLabeling())
     {
-        AtomVector query_atom_neighbors = query_atom_node->GetNodeNeighbors();
-        AtomVector atom_neighbors = atom_node->GetNodeNeighbors();
-        vector<bool> matched = vector<bool>(query_atom_neighbors.size());
-        vector<bool> found = vector<bool>(atom_neighbors.size());
-        for(int i = 0; i < atom_neighbors.size(); i++)
+        for(ResidueVector::iterator it = query_residues.begin(); it != query_residues.end(); it++)
         {
-            Atom* atom_neighbor = atom_neighbors.at(i);
-            for(int j = 0; j < query_atom_neighbors.size(); j++)
+            Residue* query_residue = *it;
+            if(query_residue->GraphElementLabeling())
             {
-                Atom* query_atom_neighbor = query_atom_neighbors.at(j);
-                if(atom_neighbor->GetName().at(0) == query_atom_neighbor->GetName().at(0) && matched[j] == false)
-                {
-                    found[i] = true;
-                    matched[j] = true;
-                    break;
-                }
+                this->CreateLabelGraph(residue, query_residue);
+                this->PruneLabelGraphByNeighboringLabels(query_residue);
+//                query_residue->Print();
             }
         }
-        for(int i = 0; i < found.size(); i++)
-            if(found[i] == false && (atom_neighbors.at(i)->GetName().at(0) == 'H' ||
-                                     (isdigit(atom_neighbors.at(i)->GetName().at(0)) && atom_neighbors.at(i)->GetName().at(1) == 'H')))
-                found[i] = true;
-        for(int i = 0; i < matched.size(); i++)
-            if(matched[i] == false && (query_atom_neighbors.at(i)->GetName().at(0) == 'H' ||
-                                       (isdigit(query_atom_neighbors.at(i)->GetName().at(0)) && query_atom_neighbors.at(i)->GetName().at(1) == 'H')))
-                matched[i] = true;
-        for(int i = 0; i < found.size(); i++)
-            if(found[i] == false)
-                return false;
-        for(int i = 0; i < matched.size(); i++)
-            if(matched[i] == false)
-                return false;
-        return true;
-    }
-    else
-    {
-        if((atom_node != NULL && query_atom_node == NULL) || (atom_node == NULL && query_atom_node != NULL))
-            return false;
-        else
-            return true;
     }
 }
 

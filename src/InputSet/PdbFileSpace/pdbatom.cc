@@ -52,7 +52,7 @@ PdbAtom::PdbAtom(string &line)
 
     temp = line.substr(21,1);
     temp = Trim(temp);
-    if(temp.empty())
+    if(temp.empty() || temp.compare("_") == 0)
     {
         atom_chain_id_ = BLANK_SPACE;
     }

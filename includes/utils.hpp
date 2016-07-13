@@ -614,6 +614,16 @@ namespace gmml
         return AMBERGLYCAMLOOKUP[0];
     }
 
+    inline gmml::AtomTypesInfo AtomTypesLookup(std::string atom_type)
+    {
+        for(int i = 0; i < ATOMTYPESINFOLOOKUPSIZE; i++)
+        {
+            if(atom_type.compare(ATOMTYPESINFOLOOKUP[i].atom_type_) == 0)
+                return ATOMTYPESINFOLOOKUP[i];
+        }
+        return ATOMTYPESINFOLOOKUP[0];
+    }
+
     /*! \fn
       * A function in order to write the information/warning/error messages produced by the program into a log file
       * @param line The line number producing the message
@@ -703,6 +713,17 @@ namespace gmml
             str.insert(pos, replace);
         }
     }
+
+    inline std::string ConvertVectorString2String(std::vector<std::string> vector_string)
+    {
+        std::string result = "";
+        for(int i = 0; i < vector_string.size(); i++)
+        {
+            result += vector_string.at(i);
+        }
+        return result;
+    }
 }
+
 
 #endif // UTILS_HPP
