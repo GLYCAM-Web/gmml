@@ -128,6 +128,7 @@ void Atom::SetId(string id)
 void Atom::Print(ostream &out)
 {
     out << "Atom name: " << name_ << endl;
+    out << "Element: " << element_symbol_ << endl;
     out << "Coordinates: " << endl;
     if(coordinates_.size() != 0)
     {

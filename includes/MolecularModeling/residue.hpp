@@ -144,6 +144,19 @@ namespace MolecularModeling
             void SetId(std::string id);
 
             //////////////////////////////////////////////////////////
+            //                       FUNCTIONS                      //
+            //////////////////////////////////////////////////////////
+            /// Check if all atoms in the residue have their element symbols --> Label directly (1st priority)
+            bool CheckSymbolBasedElementLabeling();
+            /// Check if all atoms in the residue have their atom type --> Element symbols come from parameter file (2nd priority)
+            bool CheckParameterBasedElementLabeling();
+            bool GraphElementLabeling();
+            bool GraphSymbolBasedElementLabeling();
+            bool GraphParameterBasedElementLabeling();
+            bool GraphPredictionBasedElementLabeling();
+            AtomVector GetAtomsWithLowestIntraDegree();
+
+            //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             /*! \fn
