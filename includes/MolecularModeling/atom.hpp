@@ -24,6 +24,7 @@ namespace MolecularModeling
               * List of coordinates
               */
             typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
+            typedef std::vector<Atom*> AtomVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -83,6 +84,11 @@ namespace MolecularModeling
               * @return is_ring_ attribute of the current object of this class
               */
             bool GetIsRing();
+
+            //////////////////////////////////////////////////////////
+            //                       FUNCTIONS                      //
+            //////////////////////////////////////////////////////////
+            void FindConnectedAtoms(AtomVector &visitedAtoms);
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //

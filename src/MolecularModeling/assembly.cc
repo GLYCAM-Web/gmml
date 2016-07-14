@@ -1089,8 +1089,11 @@ SetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, double torsion)
 
     double** torsion_matrix = GenerateRotationMatrix(b4, a2, current_dihedral - ConvertDegree2Radian(torsion));
 
-    AtomVector all_atoms = this->GetAllAtomsOfAssembly();
-    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    AtomVector atomsToRotate = AtomVector();
+    atomsToRotate.push_back(atom2);
+    atom3->FindConnectedAtoms(atomsToRotate);
+
+    for(AtomVector::iterator it = atomsToRotate.begin(); it != atomsToRotate.end(); it++)
     {
         Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
         Coordinate* result = new Coordinate();

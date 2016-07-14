@@ -131,6 +131,28 @@ void Atom::SetIsRing(bool is_ring)
 }
 
 //////////////////////////////////////////////////////////
+//                       FUNCTIONS                      //
+//////////////////////////////////////////////////////////
+void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
+{
+    visitedAtoms.push_back(this);
+    Assembly::AtomVector neighbors = this->GetNode()->GetNodeNeighbors();
+    bool alreadyVisited = false;
+
+    for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++){
+        alreadyVisited = false; // reset for each neighbor
+        for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++){
+            if ( (*neighbor)->GetId() == (*visitedAtom)->GetId() )
+                alreadyVisited = true;
+        }
+        if (!alreadyVisited) {
+            //std::cout << "Found unvisited neighbor, Going to " << (*neighbor)->GetId() << " from " << this->GetId() << std::endl;
+            (*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 void Atom::Print(ostream &out)
