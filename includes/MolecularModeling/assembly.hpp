@@ -681,9 +681,11 @@ namespace MolecularModeling
             /*! \fn
               * A function in order to extract all the saccharide structures
               * @param amino_lib_files The list of paths to amino library files, used for identifying terminal residues
+              * @param gyprobity_report A flag to prompt information for glyprobity report
+              * @param populate_ontology A flag to prompt ontology population
               * @return oligosaccharides A list of extarcted oligosaccharide structures
               */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files);            
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
             /*! \fn
             * A function in order to detec the shape of the ring using the external BFMP program
             * This function creates a pdb file and a configuration file for input arguments of the external detect_shape program.
@@ -963,6 +965,23 @@ namespace MolecularModeling
             */
             void ExtractTorsionAnglesFromFastQueryResult();
             /*! \fn
+            * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond lenghts, mean and standard deviation
+            * @param atom_name1 The name of the first atom
+            * @param atom_name1 The name of the second atom
+            * @param mono_name The name of the monosaccharide which contains the given atoms
+            * @return statistics A list of calculated statistics. Mean and standard deviation
+            */
+            std::vector<double> CalculateBondlengthsStatisticsBasedOnOntologyIno(std::string atom_name1, std::string atom_name2, std::string mono_name);
+            /*! \fn
+            * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond angles, mean and standard deviation
+            * @param atom_name1 The name of the first atom
+            * @param atom_name1 The name of the second atom
+            * @param atom_name3 The name of the third atom
+            * @param mono_name The name of the monosaccharide which contains the given atoms
+            * @return statistics A list of calculated statistics. Mean and standard deviation
+            */
+            std::vector<double> CalculateBondAnglesStatisticsBasedOnOntologyIno(std::string atom_name1, std::string atom_name2, std::string atom_name3, std::string mono_name);
+            /*! \fn
             * A function in order to extract torsion angles from a PDB file for a given disaccharide pattern
             * @param amino_lib_files The list of paths to amino library files to process PDB file
             * @param disaccharide The disaccharide pattern that is going to be used to extract torsio angles
@@ -982,6 +1001,22 @@ namespace MolecularModeling
             */
             bool MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo, double &phi_angle, double &psi_angle, std::string first_mono,
                                    char mono1_carbon_index, std::string second_mono, char mono2_carbon_index);
+            /*! \fn
+            * A function in order to calculate bond angles based on the coordinate objects
+            * @param atom1_crd The geometric coordinate of the first atom of the bond angle
+            * @param atom2_crd The geometric coordinate of the second atom of the bond angle
+            * @param atom3_crd The geometric coordinate of the third atom of the bond angle
+            * @return The calculated bond angle (radian)
+            */
+            double CalculateBondAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd, GeometryTopology::Coordinate* atom3_crd);
+            /*! \fn
+            * A function in order to calculate bond angles based on the coordinate objects
+            * @param atom1 The first atom of the bond angle
+            * @param atom2 The second atom of the bond angle
+            * @param atom3 The third atom of the bond angle
+            * @return The calculated bond angle (radian)
+            */
+            double CalculateBondAngleByAtoms(Atom* atom1, Atom* atom2, Atom* atom3);
             /*! \fn
             * A function in order to calculate torsion angles based on the coordinate objects
             * @param atom1_crd The geometric coordinate of the first atom of the torsion angle
@@ -1092,6 +1127,11 @@ namespace MolecularModeling
               * @return sorted_cycle The sorted list of cycle atom objects
               */
             AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
+            /*! \fn
+              * A function in order to calculate geometry outliers for glyprobity report (e.g. bond lengths, bond angles, torsion angles)
+              * @param mono The monosaccharide object which is processed by this function to calculate its outliers
+              */
+            void CalculateGlyprobityGeometryOutliers(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to extract the relative oriantation of the side atoms that are attached to ring atoms against the ring
               * @param mono The monosaccharide object
