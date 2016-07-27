@@ -103,7 +103,7 @@ void CondensedSequence::ParseCondensedSequence(string sequence)
 {
     bool reading_residue = true;
     int start_index = 0;
-    for(int i = 0; i < sequence.size(); i++)
+    for(unsigned int i = 0; i < sequence.size(); i++)
     {
         switch (sequence[i])
         {
@@ -214,7 +214,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
 {
     condensed_sequence_amber_prep_residue_tree_ = CondensedSequenceAmberPrepResidueTree();
     vector<vector<int> > open_valences = vector<vector<int> >(residue_tree.size());
-    for(int i = 0; i < residue_tree.size(); i++)
+    for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
         CondensedSequenceResidue* residue = residue_tree.at(i);
@@ -230,7 +230,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
 
     int current_derivative_count = 0;
     vector<int> derivatives = vector<int>(residue_tree.size(), 0);
-    for(int i = 1; i < residue_tree.size(); i++)
+    for(unsigned int i = 1; i < residue_tree.size(); i++)
     {
         derivatives[i] = current_derivative_count;
         CondensedSequenceResidue* condensed_residue = residue_tree.at(i);
@@ -309,7 +309,7 @@ string CondensedSequence::GetAmberPrepResidueCodeOfCondensedResidue(CondensedSeq
     }
 
     bitset<10> open_valences_check = bitset<10>();
-    for(int i = 0; i < open_valences.size(); i ++)
+    for(unsigned int i = 0; i < open_valences.size(); i ++)
     {
         if(open_valences[i] < 0 || open_valences[i] >= 10)
             throw CondensedSequenceProcessingException("Invalid open valence");

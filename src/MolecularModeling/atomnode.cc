@@ -146,7 +146,7 @@ void AtomNode::Print(ostream &out)
 {
     out << "Element:" << element_label_ << endl;
     out << atom_->GetId() << ": ";
-    for(int i = 0; i < intra_node_neighbors_.size(); i++)
+    for(unsigned int i = 0; i < intra_node_neighbors_.size(); i++)
     {
         out << "\t" << intra_node_neighbors_.at(i)->GetId();
     }

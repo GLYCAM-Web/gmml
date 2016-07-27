@@ -71,7 +71,7 @@ namespace Glycan
                 std::string first_residue_of_linkage  = "";
                 std::string second_residue_of_linkage  = "";
 
-                for(int i = 0; i < oligo_linkages_tokens.size(); i++) ///Processing linkages line by line
+                for(unsigned int i = 0; i < oligo_linkages_tokens.size(); i++) ///Processing linkages line by line
                 {
                     full_glycosidic_linkage = oligo_linkages_tokens.at(i);
                     link_tokens = gmml::Split(full_glycosidic_linkage, "}-,");
