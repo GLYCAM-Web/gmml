@@ -1,6 +1,7 @@
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
+#include "../../includes/utils.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -37,6 +38,21 @@ int AtomNode::GetId()
     return id_;
 }
 
+string AtomNode::GetElementLabel()
+{
+    return element_label_;
+}
+
+char AtomNode::GetChiralityLabel()
+{
+    return chirality_label_;
+}
+
+AtomNode::AtomVector AtomNode::GetIntraNodeNeighbors()
+{
+    return intra_node_neighbors_;
+}
+
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -71,11 +87,70 @@ void AtomNode::RemoveNodeNeighbor(Atom *node_neighbor)
     }
 }
 
+void AtomNode::SetElementLabel(string element_label)
+{
+    element_label_ = element_label;
+}
+
+void AtomNode::SetChiralityLabel(char chirality_label)
+{
+    chirality_label_ = chirality_label;
+}
+
+void AtomNode::SetIntraNodeNeighbors(AtomVector intra_node_neighbors)
+{
+    intra_node_neighbors_.clear();
+    for(AtomVector::iterator it = intra_node_neighbors.begin(); it != intra_node_neighbors.end(); it++)
+        intra_node_neighbors_.push_back(*it);
+}
+
+void AtomNode::AddIntraNodeNeighbor(Atom *intra_node_neighbor)
+{
+    intra_node_neighbors_.push_back(intra_node_neighbor);
+}
+
+void AtomNode::RemoveIntraNodeNeighbor(Atom *intra_node_neighbor)
+{
+    for(AtomVector::iterator it = intra_node_neighbors_.begin(); it != intra_node_neighbors_.end(); it++)
+    {
+        Atom* atom = (*it);
+        if(atom->GetId().compare(intra_node_neighbor->GetId()) == 0)
+            intra_node_neighbors_.erase(it);
+    }
+}
+
+string AtomNode::CreateNeighboringLabel(bool excluding_hydrogen)
+{
+    AtomVector inter_neighbors = this->GetNodeNeighbors();
+    vector<string> inter_neighbors_labels = vector<string>();
+    for(AtomVector::iterator it = inter_neighbors.begin(); it != inter_neighbors.end(); it++)
+    {
+        if((*it)->GetNode()->GetElementLabel() != "H" && excluding_hydrogen)
+            inter_neighbors_labels.push_back((*it)->GetNode()->GetElementLabel());
+        else if((*it)->GetNode()->GetElementLabel() == "H" && !excluding_hydrogen)
+            inter_neighbors_labels.push_back((*it)->GetNode()->GetElementLabel());
+    }
+    sort(inter_neighbors_labels.begin(), inter_neighbors_labels.end());
+    return gmml::ConvertVectorString2String(inter_neighbors_labels);
+}
+
+int AtomNode::GetIntraEdgeDegree()
+{
+    return intra_node_neighbors_.size();
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 void AtomNode::Print(ostream &out)
 {
+    out << "Element:" << element_label_ << endl;
+    out << atom_->GetId() << ": ";
+    for(unsigned int i = 0; i < intra_node_neighbors_.size(); i++)
+    {
+        out << "\t" << intra_node_neighbors_.at(i)->GetId();
+    }
+    out << endl;
     int number_of_bonds = node_neighbors_.size();
     switch(number_of_bonds)
     {

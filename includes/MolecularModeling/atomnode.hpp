@@ -41,11 +41,15 @@ namespace MolecularModeling
               */
             AtomVector GetNodeNeighbors();
             /*! \fn
-              * An accessor function in order to know if the atom is visited
-              * @return visited_ attribute of the current object of this class
+              * An accessor function in order to access to the atom id
+              * @return id_ attribute of the current object of this class
               */
             int GetId();
 
+            /// Pattern matching-related accessor functions
+            std::string GetElementLabel();
+            char GetChiralityLabel();
+            AtomVector GetIntraNodeNeighbors();
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -73,8 +77,16 @@ namespace MolecularModeling
               * @param id_ The id attribute of the current object
               */
             void SetId(int id);
-            void RemoveNodeNeighbor(Atom* node_neighbor);
 
+            /// Pattern matching-related mutator function
+            void RemoveNodeNeighbor(Atom* node_neighbor);
+            void SetElementLabel(std::string element_label);
+            void SetChiralityLabel(char chirality_label);
+            void SetIntraNodeNeighbors(AtomVector intra_node_neighbors);
+            void AddIntraNodeNeighbor(Atom* intra_node_neighbor);
+            void RemoveIntraNodeNeighbor(Atom* intra_node_neighbor);
+            std::string CreateNeighboringLabel(bool excluding_hydrogen = true);
+            int GetIntraEdgeDegree();
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -92,6 +104,11 @@ namespace MolecularModeling
             Atom* atom_;                        /*!< Pointer back to an atom that this node of graph indicates >*/
             AtomVector node_neighbors_;         /*!< List of all neighbors of this atom in the graph >*/
             int id_;                            /*!< An integer number that indicates the id of a node in the graph >*/
+
+            /// Pattern matching-related attribute
+            std::string element_label_;
+            char chirality_label_;
+            AtomVector intra_node_neighbors_;
 
     };
 }

@@ -140,6 +140,128 @@ void Residue::SetId(string id)
 }
 
 //////////////////////////////////////////////////////////
+//                       FUNCTIONS                      //
+//////////////////////////////////////////////////////////
+bool Residue::CheckSymbolBasedElementLabeling()
+{
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetElementSymbol().compare("") == 0)
+            return false;
+    }
+    return true;
+}
+
+bool Residue::CheckParameterBasedElementLabeling()
+{
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetAtomType().compare("UNK") == 0 || atom->GetAtomType().compare("") == 0)
+            return false;
+    }
+    return true;
+}
+
+bool Residue::GraphElementLabeling()
+{
+    if(this->CheckSymbolBasedElementLabeling())
+        return this->GraphSymbolBasedElementLabeling();
+    else if(this->CheckParameterBasedElementLabeling())
+        return this->GraphParameterBasedElementLabeling();
+    return GraphPredictionBasedElementLabeling();
+}
+
+bool Residue::GraphSymbolBasedElementLabeling()
+{
+    cout << "Labeling residue nodes based on elements' symbol ... " << endl;
+    bool flag = true;
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        AtomNode* atom_node = atom->GetNode();
+        if(atom_node != NULL)
+            atom_node->SetElementLabel(atom->GetElementSymbol());
+        else
+        {
+            atom_node->SetElementLabel("UNK");
+            flag = false;
+        }
+    }
+    return flag;
+}
+
+bool Residue::GraphParameterBasedElementLabeling()
+{
+    cout << "Labeling residue nodes based on atom type and parameter file" << endl;
+    bool flag = true;
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        AtomNode* atom_node = atom->GetNode();
+        if(atom_node != NULL)
+        {
+            string element_symbol = gmml::AtomTypesLookup(atom->GetAtomType()).element_symbol_;
+            if(element_symbol != "")
+                atom_node->SetElementLabel(element_symbol);
+            else
+            {
+                atom_node->SetElementLabel("UNK");
+                flag = false;
+            }
+        }
+        else
+        {
+            atom_node->SetElementLabel("UNK");
+            flag = false;
+        }
+    }
+    return flag;
+}
+
+bool Residue::GraphPredictionBasedElementLabeling()
+{
+    cout << "Labeling residue nodes based on first letter prediction ... " << endl;
+    bool flag = true;
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        AtomNode* atom_node = atom->GetNode();
+        if(atom_node != NULL)
+            atom_node->SetElementLabel(isdigit(atom->GetName().at(0)) ? atom->GetName().at(1) + "" : atom->GetName().at(0) + "");
+        else
+        {
+            atom_node->SetElementLabel("UNK");
+            flag = false;
+        }
+    }
+    return flag;
+}
+
+
+Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
+{
+    int degree = INFINITY;
+    AtomVector lowest_degree_atoms = AtomVector();
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        int current = atom->GetNode()->GetIntraEdgeDegree();
+        if(current < degree)
+            current = degree;
+    }
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* atom = *it;
+        if(atom->GetNode()->GetIntraEdgeDegree() == degree)
+            lowest_degree_atoms.push_back(atom);
+    }
+
+    return lowest_degree_atoms;
+}
+
+//////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 void Residue::Print(ostream &out)

@@ -33,7 +33,7 @@
 namespace MolecularModeling
 {
     class Residue;
-    class Atom;
+    class Atom;    
     class Assembly
     {
         public:
@@ -242,6 +242,8 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
+            bool CheckCondensedSequenceSanity(std::string sequence,
+                                              CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree prep_residues);
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
@@ -674,9 +676,12 @@ namespace MolecularModeling
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
                                                 int& index);            
             void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
-            bool PatternMatching(Residue* residue, Residue* query_residue, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
-            bool PatternMatching(Atom* atom, Atom* query_atom, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
-            bool HasAllNeighborsOf(Atom* atom, Atom* query_atom);
+
+            /// Pattern mathing
+            bool PatternMatching(Residue* residue, ResidueVector query_residues, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
+            void CreateLabelGraph(Residue* residue, Residue* query_residue);
+            void PruneLabelGraphByNeighboringLabels(Residue* query_residue);
+            void CreatePrunedMatchingGraph(Residue *residue, ResidueVector query_residues);
 
             /*! \fn
               * A function in order to extract all the saccharide structures
@@ -1425,7 +1430,25 @@ namespace MolecularModeling
             }
     };
 
+    struct BacktrackingElements
+    {
+        public:
+            BacktrackingElements(gmml::GlycamAtomNameMap pdb_glycam_map, gmml::GlycamAtomNameMap glycam_atom_map,
+                                 Assembly::AtomVector atoms, int index, std::queue<Atom*> to_visit = std::queue<Atom*>())
+            {
+                pdb_glycam_map_ = pdb_glycam_map;
+                glycam_atom_map_ = glycam_atom_map;
+                atoms_ = atoms;
+                index_ = index;
+                to_visit_ = to_visit;
+            }
 
+            gmml::GlycamAtomNameMap pdb_glycam_map_;
+            gmml::GlycamAtomNameMap glycam_atom_map_;
+            Assembly::AtomVector atoms_;
+            std::queue<Atom*> to_visit_;
+            int index_;
+    };
 }
 
 #endif // ASSEMBLY_HPP

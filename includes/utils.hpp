@@ -514,7 +514,7 @@ namespace gmml
                 std::string deoxy_position = "";
                 int count = 0;
                 int corresponding_d_counts = 0;
-                for(int i = 0; i < positions.size(); i++)
+                for(unsigned int i = 0; i < positions.size(); i++)
                 {
                     if(positions.at(i) < name.chemical_code_string_.size())
                     {
@@ -614,6 +614,16 @@ namespace gmml
         return AMBERGLYCAMLOOKUP[0];
     }
 
+    inline gmml::AtomTypesInfo AtomTypesLookup(std::string atom_type)
+    {
+        for(int i = 0; i < ATOMTYPESINFOLOOKUPSIZE; i++)
+        {
+            if(atom_type.compare(ATOMTYPESINFOLOOKUP[i].atom_type_) == 0)
+                return ATOMTYPESINFOLOOKUP[i];
+        }
+        return ATOMTYPESINFOLOOKUP[0];
+    }
+
     /*! \fn
       * A function in order to write the information/warning/error messages produced by the program into a log file
       * @param line The line number producing the message
@@ -703,6 +713,17 @@ namespace gmml
             str.insert(pos, replace);
         }
     }
+
+    inline std::string ConvertVectorString2String(std::vector<std::string> vector_string)
+    {
+        std::string result = "";
+        for(unsigned int i = 0; i < vector_string.size(); i++)
+        {
+            result += vector_string.at(i);
+        }
+        return result;
+    }
 }
+
 
 #endif // UTILS_HPP
