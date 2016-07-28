@@ -56,6 +56,8 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/GeometryTopology/InternalCoordinate/angle.cc \
 		src/GeometryTopology/InternalCoordinate/dihedral.cc \
 		src/GeometryTopology/InternalCoordinate/distance.cc \
+		src/InputSet/CifFileSpace/ciffile.cc \
+		src/InputSet/CifFileSpace/ciffileatom.cc \
 		src/InputSet/CifFileSpace/ciffileprocessingexception.cc \
 		src/InputSet/CondensedSequenceSpace/condensedsequence.cc \
 		src/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.cc \
@@ -178,6 +180,8 @@ OBJECTS       = build/cell.o \
 		build/angle.o \
 		build/dihedral.o \
 		build/distance.o \
+		build/ciffile.o \
+		build/ciffileatom.o \
 		build/ciffileprocessingexception.o \
 		build/condensedsequence.o \
 		build/condensedsequenceamberprepresidue.o \
@@ -595,6 +599,21 @@ build/dihedral.o: src/GeometryTopology/InternalCoordinate/dihedral.cc includes/G
 
 build/distance.o: src/GeometryTopology/InternalCoordinate/distance.cc includes/GeometryTopology/InternalCoordinate/distance.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/distance.o src/GeometryTopology/InternalCoordinate/distance.cc
+
+build/ciffile.o: src/InputSet/CifFileSpace/ciffile.cc includes/InputSet/CifFileSpace/ciffile.hpp \
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/ciffile.o src/InputSet/CifFileSpace/ciffile.cc
+
+build/ciffileatom.o: src/InputSet/CifFileSpace/ciffileatom.cc includes/InputSet/CifFileSpace/ciffileatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/ciffileatom.o src/InputSet/CifFileSpace/ciffileatom.cc
 
 build/ciffileprocessingexception.o: src/InputSet/CifFileSpace/ciffileprocessingexception.cc includes/common.hpp \
 		includes/GeometryTopology/coordinate.hpp \
