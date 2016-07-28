@@ -12,6 +12,8 @@ namespace Ontology
     const std::string TYPE = "rdf:type";
     const std::string LABEL = "rdfs:label";
 
+    const std::string TTL_FILE_PREFIX = "@prefix : <http://www.semanticweb.org/owl/owlapi/turtle#> .\n @prefix owl: <http://www.w3.org/2002/07/owl#> .\n @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n @prefix xml: <http://www.w3.org/XML/1998/namespace> .\n @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n @prefix gmmo: <http://gmmo.uga.edu/#> .\n @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n @base <http://gmmo.uga.edu/> .\n <http://gmmo.uga.edu/> rdf:type owl:Ontology .\n";
+
     /* Classes */
     const std::string Atom = "gmmo:Atom";
     const std::string RingAtom = "gmmo:RingAtom";
