@@ -11483,7 +11483,7 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
     in.close();
 }
 
-vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyIno(string atom_name1, string atom_name2, string mono_name)
+vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(string atom_name1, string atom_name2, bool is_atom2_ring, string mono_name)
 {
     stringstream query;
     query << "sparql PREFIX : <http://gmmo.uga.edu/#> " <<
@@ -11496,8 +11496,13 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyIno(string
     query <<  "?mono          :hasSugarName   ?sn.";
     query <<  "?sn            :monosaccharideShortName   \"" << mono_name << "\".\n";
     query <<  "?mono          :hasRingAtom   ?atom1.";
-    query <<  "?mono          :hasRingAtom   ?atom2.";
-    query <<  "?atom1         :hasNeighbor    ?atom2.";
+    if(is_atom2_ring)
+    {
+        query <<  "?mono          :hasRingAtom   ?atom2.";
+        query <<  "?atom1         :hasNeighbor    ?atom2.";
+    }
+    else
+        query <<  "?atom1          :hasSideAtom   ?atom2.";
     query <<  "?atom1         :identifier    ?atom1_id.";
     query <<  "?atom2         :identifier    ?atom2_id.";
     query << "FILTER regex(?atom1_id, \"" << atom_name1 << "_" << "\", \"i\")";
@@ -11507,11 +11512,11 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyIno(string
     query <<  "?atom2         :coordinate    ?atom2_crd.";
     query << "};";
 
-    cout << query.str();
     std::ofstream sparql;
     sparql.open("bonds.sparql", fstream::app);
-    sparql << query.str() ;
+    sparql << query.str();
     sparql.close();
+
     system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< bonds.sparql \>  bond_results.txt");
     remove("bonds.sparql");
 
@@ -11521,7 +11526,10 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyIno(string
     while (getline (in, line))///skip the first lines until the coordinates
     {
         if(line.find("____") != string::npos)
+        {
+            getline (in, line);
             break;
+        }
     }
     Coordinate* atom1_crd = new Coordinate();
     Coordinate* atom2_crd = new Coordinate();
@@ -11531,15 +11539,15 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyIno(string
     int number_of_bond_lengths = 0;
 
     ///Reading the coordinates from the result file, calculating the distance
-    while (getline (in, line) && !line.empty());
+    while (getline (in, line) && !line.empty())
     {
         vector<string> line_tokens = Split(line," ");
         atom1_crd->SetX(ConvertString<double>(Split(line_tokens.at(0), ",").at(0)));
-        atom1_crd->SetY(ConvertString<double>(Split(line_tokens.at(1), ",").at(1)));
+        atom1_crd->SetY(ConvertString<double>(Split(line_tokens.at(1), ",").at(0)));
         atom1_crd->SetZ(ConvertString<double>(line_tokens.at(2)));
 
         atom2_crd->SetX(ConvertString<double>(Split(line_tokens.at(3), ",").at(0)));
-        atom2_crd->SetY(ConvertString<double>(Split(line_tokens.at(4), ",").at(1)));
+        atom2_crd->SetY(ConvertString<double>(Split(line_tokens.at(4), ",").at(0)));
         atom2_crd->SetZ(ConvertString<double>(line_tokens.at(5)));
 
         distance = atom1_crd->Distance(*(atom2_crd));
@@ -11559,7 +11567,7 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyIno(string
 
     return statistics;
 }
-vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyIno(string atom_name1, string atom_name2, string atom_name3, string mono_name)
+vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(string atom_name1, string atom_name2, string atom_name3, bool is_atom3_ring, string mono_name)
 {
     stringstream query;
     query << "sparql PREFIX : <http://gmmo.uga.edu/#> " <<
@@ -11573,27 +11581,32 @@ vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyIno(string 
     query <<  "?sn            :monosaccharideShortName   \"" << mono_name << "\".\n";
     query <<  "?mono          :hasRingAtom   ?atom1.";
     query <<  "?mono          :hasRingAtom   ?atom2.";
-    query <<  "?mono          :hasRingAtom   ?atom3.";
     query <<  "?atom1         :hasNeighbor    ?atom2.";
-    query <<  "?atom2         :hasNeighbor    ?atom3.";
-    query <<  "FILTER(atom1 != atom3).";
+    if(is_atom3_ring)
+    {
+        query <<  "?mono          :hasRingAtom   ?atom3.";
+        query <<  "?atom2         :hasNeighbor    ?atom3.";
+        query <<  "FILTER (?atom1 != ?atom3)";
+    }
+    else
+        query <<  "?atom2          :hasSideAtom   ?atom3.";
     query <<  "?atom1         :identifier    ?atom1_id.";
     query <<  "?atom2         :identifier    ?atom2_id.";
     query <<  "?atom3         :identifier    ?atom3_id.";
     query << "FILTER regex(?atom1_id, \"" << atom_name1 << "_" << "\", \"i\")";
     query << "FILTER regex(?atom2_id, \"" << atom_name2 << "_" << "\", \"i\")";
-    query << "FILTER regex(?atom2_id, \"" << atom_name3 << "_" << "\", \"i\")";
+    query << "FILTER regex(?atom3_id, \"" << atom_name3 << "_" << "\", \"i\")";
 
     query <<  "?atom1         :coordinate    ?atom1_crd.";
     query <<  "?atom2         :coordinate    ?atom2_crd.";
     query <<  "?atom3         :coordinate    ?atom3_crd.";
     query << "};";
 
-    cout << query.str();
     std::ofstream sparql;
     sparql.open("bond_angles.sparql", fstream::app);
-    sparql << query.str() ;
+    sparql << query.str();
     sparql.close();
+
     system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< bond_angles.sparql \>  bond_angle_results.txt");
     remove("bond_angles.sparql");
 
@@ -11603,7 +11616,10 @@ vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyIno(string 
     while (getline (in, line))///skip the first lines until the coordinates
     {
         if(line.find("____") != string::npos)
+        {
+            getline (in, line);
             break;
+        }
     }
     Coordinate* atom1_crd = new Coordinate();
     Coordinate* atom2_crd = new Coordinate();
@@ -11614,26 +11630,27 @@ vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyIno(string 
     int number_of_bond_angles = 0;
 
     ///Reading the coordinates from the result file, calculating the distance
-    while (getline (in, line) && !line.empty());
+    while (getline (in, line) && !line.empty())
     {
         vector<string> line_tokens = Split(line," ");
-        atom1_crd->SetX(ConvertString<double>(Trim(Split(line_tokens.at(0), ",").at(0))));
-        atom1_crd->SetY(ConvertString<double>(Trim(Split(line_tokens.at(0), ",").at(1))));
-        atom1_crd->SetZ(ConvertString<double>(Trim(Split(line_tokens.at(0), ",").at(2))));
+        atom1_crd->SetX(ConvertString<double>(Split(line_tokens.at(0), ",").at(0)));
+        atom1_crd->SetY(ConvertString<double>(Split(line_tokens.at(1), ",").at(0)));
+        atom1_crd->SetZ(ConvertString<double>(line_tokens.at(2)));
 
-        atom2_crd->SetX(ConvertString<double>(Trim(Split(line_tokens.at(1), ",").at(0))));
-        atom2_crd->SetY(ConvertString<double>(Trim(Split(line_tokens.at(1), ",").at(1))));
-        atom2_crd->SetZ(ConvertString<double>(Trim(Split(line_tokens.at(1), ",").at(2))));
+        atom2_crd->SetX(ConvertString<double>(Split(line_tokens.at(3), ",").at(0)));
+        atom2_crd->SetY(ConvertString<double>(Split(line_tokens.at(4), ",").at(0)));
+        atom2_crd->SetZ(ConvertString<double>(line_tokens.at(5)));
 
-        atom3_crd->SetX(ConvertString<double>(Trim(Split(line_tokens.at(2), ",").at(0))));
-        atom3_crd->SetY(ConvertString<double>(Trim(Split(line_tokens.at(2), ",").at(1))));
-        atom3_crd->SetZ(ConvertString<double>(Trim(Split(line_tokens.at(2), ",").at(2))));
+        atom3_crd->SetX(ConvertString<double>(Split(line_tokens.at(6), ",").at(0)));
+        atom3_crd->SetY(ConvertString<double>(Split(line_tokens.at(7), ",").at(0)));
+        atom3_crd->SetZ(ConvertString<double>(line_tokens.at(8)));
 
         bond_angle = CalculateBondAngleByCoordinates(atom1_crd, atom2_crd, atom3_crd);
         sum_of_bond_angles += bond_angle;
         sum_of_bond_angles_squared += (bond_angle*bond_angle);
         number_of_bond_angles++;
     }
+
     in.close();
     remove("bond_angle_results.txt");
 
@@ -12824,13 +12841,19 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
     vector<string> visited_bonds = vector<string>();
     vector<string> visited_angles = vector<string>();
     vector<double> bond_statistics = vector<double>();
+    vector<double> bond_angle_statistics = vector<double>();
     stringstream bond_lengths_stream;
     stringstream bond_angles_stream;
+    double bond_angle = 0.0;
+    bool is_atom2_ring = false;
+    bool is_atom3_ring = false;
 
     bond_lengths_stream << "GLYPROBITY REPORT" << endl <<
                            "<--Geometry Outliers-->" << endl <<
                            "Bond lengths (current bond length, ontology mean, ontology standard deviation)" << endl;
-    bond_angles_stream << "Bond angles" << endl << "<--------------------->" << endl;
+
+    bond_angles_stream << "Bond angles (current bond angle, ontology mean, ontology standard deviation)" << endl;
+
     for(AtomVector::iterator ring_atom_it = mono->cycle_atoms_.begin(); ring_atom_it != mono->cycle_atoms_.end(); ring_atom_it++)
     {
         Atom* atom1 = (*ring_atom_it);
@@ -12840,7 +12863,7 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
             Atom* atom2 = (*atom1_neighbors_it);
             stringstream check_bond;
             stringstream check_bond_reverse;
-            double bond_angle = 0.0;
+
             check_bond << atom1->GetId() << "-" << atom2->GetId();
             check_bond_reverse << atom2->GetId() << "-" << atom1->GetId();
             if(find(visited_bonds.begin(), visited_bonds.end(), check_bond.str()) == visited_bonds.end() &&
@@ -12851,35 +12874,56 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
                 bond_lengths_stream << atom1->GetName() << "-" << atom2->GetName() << ": " <<
                                        atom1->GetCoordinates().at(model_index_)->Distance(*(atom2->GetCoordinates().at(model_index_)));
 
+                ///if atom 2 is not a ring atom set the flag to true
+                if(mono->cycle_atoms_str_.find(atom2->GetId()) == string::npos)
+                    is_atom2_ring = false;
+                else
+                    is_atom2_ring = true;
+
                 ///Find same bonds in the same monosaccharide in the ontology, calculate mean and standard deviation from ontology
-//                bond_statistics = CalculateBondlengthsStatisticsBasedOnOntologyIno(atom1->GetName(), atom2->GetName(), mono->sugar_name_.monosaccharide_short_name_);
-//                bond_lengths_stream << ", " << bond_statistics.at(0) << ", " << bond_statistics.at(1) << endl;
+                bond_statistics = CalculateBondlengthsStatisticsBasedOnOntologyInfo(atom1->GetName(), atom2->GetName(), is_atom2_ring, mono->sugar_name_.monosaccharide_short_name_);
+                bond_lengths_stream << ", " << bond_statistics.at(0) << ", " << bond_statistics.at(1) << endl;
             }
 
-            ///EXTRACTING BOND ANGLES
-            AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator atom2_neighbors_it = atom2_neighbors.begin(); atom2_neighbors_it != atom2_neighbors.end(); atom2_neighbors_it++)
+            if(is_atom2_ring)///Calculating bond angles only for ring atoms and combination of ring atoms anf their immediate neighbors
             {
-                if((*ring_atom_it) != (*atom2_neighbors_it))///if the neighbor of the second atom is not the first atom we chose
+                ///EXTRACTING BOND ANGLES
+                AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator atom2_neighbors_it = atom2_neighbors.begin(); atom2_neighbors_it != atom2_neighbors.end(); atom2_neighbors_it++)
                 {
-                    Atom* atom3 = (*atom2_neighbors_it);
-                    stringstream check_angle;
-                    stringstream check_angle_reverse;
-                    check_angle << atom1->GetId() << "-" << atom2->GetId() << "-" << atom3->GetId();
-                    check_angle_reverse  << atom3->GetId() << "-" << atom2->GetId() << "-" << atom1->GetId();
-                    if(find(visited_angles.begin(), visited_angles.end(), check_angle.str()) == visited_angles.end() &&
-                            find(visited_angles.begin(), visited_angles.end(), check_angle_reverse.str()) == visited_angles.end())///if the bond has not been visited before
+                    if((*ring_atom_it) != (*atom2_neighbors_it))///if the neighbor of the second atom is not the first atom we chose
                     {
-                        visited_bonds.push_back(check_bond.str());
-                        visited_bonds.push_back(check_bond_reverse.str());
-                        bond_angle = CalculateBondAngleByAtoms(atom1, atom2, atom3);
-                        bond_angles_stream << atom1->GetName() << "-" << atom2->GetName() << "-" << atom3->GetName() << ": " << ConvertRadian2Degree(bond_angle) << endl;
+                        Atom* atom3 = (*atom2_neighbors_it);
+                        stringstream check_angle;
+                        stringstream check_angle_reverse;
+                        check_angle << atom1->GetId() << "-" << atom2->GetId() << "-" << atom3->GetId();
+                        check_angle_reverse  << atom3->GetId() << "-" << atom2->GetId() << "-" << atom1->GetId();
+                        if(find(visited_angles.begin(), visited_angles.end(), check_angle.str()) == visited_angles.end() &&
+                                find(visited_angles.begin(), visited_angles.end(), check_angle_reverse.str()) == visited_angles.end())///if the bond angle has not been visited before
+                        {
+                            visited_angles.push_back(check_angle.str());
+                            visited_angles.push_back(check_angle_reverse.str());
+
+                            bond_angle = CalculateBondAngleByAtoms(atom1, atom2, atom3);
+                            bond_angles_stream << atom1->GetName() << "-" << atom2->GetName() << "-" << atom3->GetName() << ": " << bond_angle;
+
+                            ///if atom 3 is not a ring atom set the flag to true
+                            if(mono->cycle_atoms_str_.find(atom3->GetId()) == string::npos)
+                                is_atom3_ring = false;
+                            else
+                                is_atom3_ring = true;
+
+                            ///Find same bond angles in the same monosaccharide in the ontology, calculate mean and standard deviation from ontology
+                            bond_angle_statistics = CalculateBondAnglesStatisticsBasedOnOntologyInfo(atom1->GetName(), atom2->GetName(), atom3->GetName(), is_atom3_ring,
+                                                                                                     mono->sugar_name_.monosaccharide_short_name_);
+                            bond_angles_stream << ", " << bond_angle_statistics.at(0) << ", " << bond_angle_statistics.at(1) << endl;
+                        }
                     }
                 }
             }
         }
     }
-    cout << endl << bond_lengths_stream.str() << endl << bond_angles_stream.str() << "<---------->" << endl << endl;
+    cout << endl << bond_lengths_stream.str() << endl << bond_angles_stream.str() << "<--------------------->" << endl << endl;
 }
 
 vector<string> Assembly::GetSideGroupOrientations(Monosaccharide* mono, string cycle_atoms_str)
