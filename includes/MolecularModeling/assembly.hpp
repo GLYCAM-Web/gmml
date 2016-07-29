@@ -973,19 +973,22 @@ namespace MolecularModeling
             * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond lenghts, mean and standard deviation
             * @param atom_name1 The name of the first atom
             * @param atom_name1 The name of the second atom
+            * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
             * @param mono_name The name of the monosaccharide which contains the given atoms
             * @return statistics A list of calculated statistics. Mean and standard deviation
             */
-            std::vector<double> CalculateBondlengthsStatisticsBasedOnOntologyIno(std::string atom_name1, std::string atom_name2, std::string mono_name);
+            std::vector<double> CalculateBondlengthsStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, bool is_atom2_ring, std::string mono_name);
             /*! \fn
             * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond angles, mean and standard deviation
             * @param atom_name1 The name of the first atom
             * @param atom_name1 The name of the second atom
             * @param atom_name3 The name of the third atom
+            * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
             * @param mono_name The name of the monosaccharide which contains the given atoms
             * @return statistics A list of calculated statistics. Mean and standard deviation
             */
-            std::vector<double> CalculateBondAnglesStatisticsBasedOnOntologyIno(std::string atom_name1, std::string atom_name2, std::string atom_name3, std::string mono_name);
+            std::vector<double> CalculateBondAnglesStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, std::string atom_name3,
+                                                                                 bool is_atom3_ring, std::string mono_name);
             /*! \fn
             * A function in order to extract torsion angles from a PDB file for a given disaccharide pattern
             * @param amino_lib_files The list of paths to amino library files to process PDB file
