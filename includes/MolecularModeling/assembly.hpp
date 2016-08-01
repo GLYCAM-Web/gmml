@@ -243,7 +243,7 @@ namespace MolecularModeling
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
             bool CheckCondensedSequenceSanity(std::string sequence,
-                                              CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree prep_residues);
+                                              CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues);
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
