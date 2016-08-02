@@ -4,6 +4,7 @@
 #include "../../includes/MolecularModeling/dockingatom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
+#include "cmath"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -128,6 +129,36 @@ void Atom::SetId(string id)
 void Atom::SetIsRing(bool is_ring)
 {
     is_ring_ = is_ring;
+}
+
+//////////////////////////////////////////////////////////
+//                       FUNCTIONS                      //
+//////////////////////////////////////////////////////////
+void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
+{
+    visitedAtoms.push_back(this);
+    AtomVector neighbors = this->GetNode()->GetNodeNeighbors();
+    bool alreadyVisited = false;
+
+    for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++){
+        alreadyVisited = false; // reset for each neighbor
+        for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++){
+            if ( (*neighbor)->GetId() == (*visitedAtom)->GetId() )
+                alreadyVisited = true;
+        }
+        if (!alreadyVisited) {
+            //std::cout << "Found unvisited neighbor, Going to " << (*neighbor)->GetId() << " from " << this->GetId() << std::endl;
+            (*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
+        }
+    }
+}
+
+double Atom::GetDistanceToAtom(Atom *otherAtom)
+{
+    double x = ( this->GetCoordinates().at(0)->GetX() - otherAtom->GetCoordinates().at(0)->GetX() );
+    double y = ( this->GetCoordinates().at(0)->GetY() - otherAtom->GetCoordinates().at(0)->GetY() );
+    double z = ( this->GetCoordinates().at(0)->GetZ() - otherAtom->GetCoordinates().at(0)->GetZ() );
+    return sqrt( (x*x) + (y*y) + (z*z) );
 }
 
 //////////////////////////////////////////////////////////

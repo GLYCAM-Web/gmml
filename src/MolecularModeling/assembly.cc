@@ -1089,8 +1089,11 @@ SetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, double torsion)
 
     double** torsion_matrix = GenerateRotationMatrix(b4, a2, current_dihedral - ConvertDegree2Radian(torsion));
 
-    AtomVector all_atoms = this->GetAllAtomsOfAssembly();
-    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    AtomVector atomsToRotate = AtomVector();
+    atomsToRotate.push_back(atom2);
+    atom3->FindConnectedAtoms(atomsToRotate);
+
+    for(AtomVector::iterator it = atomsToRotate.begin(); it != atomsToRotate.end(); it++)
     {
         Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
         Coordinate* result = new Coordinate();
@@ -14220,18 +14223,20 @@ void Assembly::GetCenterOfMass(Coordinate *center_of_mass)
 
 void Assembly::GetCenterOfGeometry(Coordinate *center_of_geometry)
 {
-    //    center_of_geometry = new Coordinate();
-    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
-    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    double sumX = 0.0;
+    double sumY = 0.0;
+    double sumZ = 0.0;
+    CoordinateVector all_coords = this->GetAllCoordinates();
+    for(CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
     {
-        Atom* atom = *it;
-        center_of_geometry->Translate(atom->GetCoordinates().at(model_index_)->GetX(),
-                                      atom->GetCoordinates().at(model_index_)->GetY(),
-                                      atom->GetCoordinates().at(model_index_)->GetZ());
+        GeometryTopology::Coordinate coord = *it;
+        sumX += coord.GetX();
+        sumY += coord.GetY();
+        sumZ += coord.GetZ();
     }
-    center_of_geometry->operator /(Coordinate(center_of_geometry->GetX() / all_atoms_of_assembly.size(),
-                                              center_of_geometry->GetY() / all_atoms_of_assembly.size(),
-                                              center_of_geometry->GetZ() / all_atoms_of_assembly.size()));
+    center_of_geometry->SetX( (sumX / all_coords.size()) );
+    center_of_geometry->SetY( (sumY / all_coords.size()) );
+    center_of_geometry->SetZ( (sumZ / all_coords.size()) );
 }
 
 void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper_right_front_corner)
@@ -14289,6 +14294,48 @@ void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper
         upper_right_front_corner->SetY(0.0);
         upper_right_front_corner->SetZ(0.0);
     }
+}
+
+double Assembly::CalculateAtomicOverlaps(Assembly *assemblyB)
+{
+    AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
+    AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
+
+    double rA = 0.0, rB = 0.0, distance = 0.0, totalOverlap = 0.0;
+
+    for(AtomVector::iterator atomA = assemblyAAtoms.begin(); atomA != assemblyAAtoms.end(); atomA++)
+    {
+        for(AtomVector::iterator atomB = assemblyBAtoms.begin(); atomB != assemblyBAtoms.end(); atomB++)
+        {
+            distance = (*atomA)->GetDistanceToAtom( (*atomB));
+            if ( ( distance < 3.6 ) && ( distance > 0.0 ) ) //Close enough to overlap, but not the same atom
+            {
+                // element info not set, so I look at first letter of atom name.
+                if ((*atomA)->GetName().at(0) == 'C') rA = 1.70; // Rowland and Taylor modification
+                if ((*atomA)->GetName().at(0) == 'O') rA = 1.52;
+                if ((*atomA)->GetName().at(0) == 'N') rA = 1.55;
+                if ((*atomA)->GetName().at(0) == 'S') rA = 1.80;
+                if ((*atomA)->GetName().at(0) == 'P') rA = 1.80;
+                if ((*atomA)->GetName().at(0) == 'H') rA = 1.09;
+
+                if ((*atomB)->GetName().at(0) == 'C') rB = 1.70;
+                if ((*atomB)->GetName().at(0) == 'O') rB = 1.52;
+                if ((*atomB)->GetName().at(0) == 'N') rB = 1.55;
+                if ((*atomB)->GetName().at(0) == 'S') rB = 1.80;
+                if ((*atomA)->GetName().at(0) == 'P') rA = 1.80;
+                if ((*atomA)->GetName().at(0) == 'H') rA = 1.09;
+
+       //         std::cout << "Distance=" << distance << " rA=" << rA << " rB=" << rB << std::endl;
+                if (rA + rB > distance + 0.6){ // 0.6 overlap is deemed acceptable. (Copying chimera:)
+                    // Eqn 1, Rychkov and Petukhov, J. Comput. Chem., 2006, Joint Neighbours...
+                    // Each atom against each atom, so overlap can be "double" counted. See paper.
+                    totalOverlap += ( 2 * (PI_RADIAN) * rA* ( rA - distance / 2 - ( ( (rA*rA) - (rB*rB) ) / (2 * distance) ) ) );
+                    //std::cout << "Overlap=" << totalOverlap << std::endl;
+                }
+            }
+        }
+    }
+    return (totalOverlap / CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 
 void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
@@ -15639,3 +15686,4 @@ void Assembly::WriteHetAtoms(string file_name)
             residue->WriteHetAtoms(out_file);
     }   
 }
+

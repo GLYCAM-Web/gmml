@@ -1303,6 +1303,14 @@ namespace MolecularModeling
             void GetCenterOfMass(GeometryTopology::Coordinate* center_of_mass);
             void GetCenterOfGeometry(GeometryTopology::Coordinate* center_of_geometry);
             void GetBoundary(GeometryTopology::Coordinate* lower_left_back_corner, GeometryTopology::Coordinate* upper_right_front_corner);
+            /*! \fn
+              * A function in order to calculate the surface area of overlap between atoms of two assemblies
+              * @param assemblyB is the second assembly. Overlaps between atoms of the same assembly are not counted
+              * @return Total overlap between assemblies, relative to the surface area of a buried C atom.
+              */
+            double CalculateAtomicOverlaps(Assembly *assemblyB);
+
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

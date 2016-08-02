@@ -57,6 +57,7 @@ namespace gmml
     const double DIST_EPSILON = 0.000001;
     const int MAX_PDB_ATOM = 99999;
     const double CHARGE_DIVIDER = 18.2223;
+    const double CARBON_SURFACE_AREA = 36.31681103;
 
     // Ionizing
     const double DEFAULT_GRID_LENGTH = 2;//0.5;
