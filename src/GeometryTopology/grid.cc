@@ -457,7 +457,7 @@ Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
     if(ion_charge > 0)
     {
         double min_value = INFINITY;
-        for(int i = 0; i < grid->GetCells().size(); i++)
+        for(unsigned int i = 0; i < grid->GetCells().size(); i++)
         {
             if(grid->GetCells().at(i)->GetCellPotentialEnergy() == INFINITY)
             {
@@ -468,7 +468,7 @@ Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
                 min_value = grid->GetCells().at(i)->GetCellPotentialEnergy();
             }
         }
-        for(int i = 0; i < grid->GetCells().size(); i++)
+        for(unsigned int i = 0; i < grid->GetCells().size(); i++)
         {
             if(grid->GetCells().at(i)->GetCellPotentialEnergy() == INFINITY)
             {
@@ -483,7 +483,7 @@ Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
     else if(ion_charge < 0)
     {
         double max_value = -INFINITY;
-        for(int i = 0; i < grid->GetCells().size(); i++)
+        for(unsigned int i = 0; i < grid->GetCells().size(); i++)
         {
             if(grid->GetCells().at(i)->GetCellPotentialEnergy() == INFINITY)
             {
@@ -494,7 +494,7 @@ Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
                 max_value = grid->GetCells().at(i)->GetCellPotentialEnergy();
             }
         }
-        for(int i = 0; i < grid->GetCells().size(); i++)
+        for(unsigned int i = 0; i < grid->GetCells().size(); i++)
         {
             if(grid->GetCells().at(i)->GetCellPotentialEnergy() == INFINITY)
             {

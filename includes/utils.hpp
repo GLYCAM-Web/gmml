@@ -514,7 +514,7 @@ namespace gmml
                 std::string deoxy_position = "";
                 int count = 0;
                 int corresponding_d_counts = 0;
-                for(int i = 0; i < positions.size(); i++)
+                for(unsigned int i = 0; i < positions.size(); i++)
                 {
                     if(positions.at(i) < name.chemical_code_string_.size())
                     {
@@ -717,7 +717,7 @@ namespace gmml
     inline std::string ConvertVectorString2String(std::vector<std::string> vector_string)
     {
         std::string result = "";
-        for(int i = 0; i < vector_string.size(); i++)
+        for(unsigned int i = 0; i < vector_string.size(); i++)
         {
             result += vector_string.at(i);
         }

@@ -478,6 +478,33 @@ void Assembly::AddNote(Note *note)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
+bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::CondensedSequenceAmberPrepResidueTree prep_residues)
+{
+    try
+    {
+        CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
+        CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); it++)
+        {
+            CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
+            string amber_prep_residue_name = amber_prep_residue->GetName();
+            if(amber_prep_residue_name.compare("UNK") == 0)
+            {
+                cout << "The input sequence (" << sequence << ") is not valid" << endl;
+                return false;
+            }
+        }
+    }
+    catch(exception ex)
+    {
+        cout << "The input sequence (" << sequence << ") is not valid" << endl;
+        return false;
+    }
+
+    cout << "The input sequence (" << sequence << ") is valid" << endl;
+    return true;
+}
+
 void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file, bool structure)
 {
     ResidueVector parent_residues = ResidueVector();
@@ -9110,7 +9137,7 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
     }
 
     //Recursively assign glycam naming to the monosaccharides of an oligosaccharide
-    for(int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
+    for(unsigned int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
     {
         this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_amber_residue_tree, index);
     }
@@ -9167,11 +9194,7 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
                 //TODO:
                 //The two residues atom names are matched but the geometry needs to be checked
                 //if GeometryCheck returns true
-            PatternMatching(residue, query_residues, pdb_glycam_map, glycam_pdb_map);
-//            if(PatternMatching(residue, prep_assembly->GetResidues().at(0), pdb_glycam_map, glycam_pdb_map) == true)
-//                cout << "Match " << glycam_residue_name << " " << residue->GetName() << endl;
-//            for(GlycamAtomNameMap::iterator iit = pdb_glycam_map.begin(); iit != pdb_glycam_map.end(); iit++)
-//                cout << (*iit).first << " " << (*iit).second << endl;
+//            PatternMatching(residue, query_residues, pdb_glycam_map, glycam_pdb_map);
 
             AtomVector atoms = residue->GetAtoms();
             map<string, Residue*> residue_set = map<string, Residue*>();
@@ -9350,7 +9373,7 @@ bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, G
         Residue* query_residue = *it;
         AtomVector lowest_degree_atoms = query_residue->GetAtomsWithLowestIntraDegree();
         stack<BacktrackingElements*> backtracking_stack_1 = stack<BacktrackingElements*>();
-        for(int i = lowest_degree_atoms.size() - 1; i >= 0; i--)
+        for(unsigned int i = lowest_degree_atoms.size() - 1; i >= 0; i--)
             backtracking_stack_1.push(new BacktrackingElements(pdb_glycam_map, glycam_atom_map, lowest_degree_atoms, i));
         if(!backtracking_stack_1.empty())
         {
@@ -9363,7 +9386,7 @@ bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, G
             Atom* source_atom = lowest_degree_atoms.at(backtracking_point_1->index_);
             AtomVector source_atom_intra_neighbors = source_atom->GetNode()->GetIntraNodeNeighbors();
             stack<BacktrackingElements*> backtracking_stack_2 = stack<BacktrackingElements*>();
-            for(int i = source_atom_intra_neighbors.size() - 1; i >= 0; i--)
+            for(unsigned int i = source_atom_intra_neighbors.size() - 1; i >= 0; i--)
                 backtracking_stack_2.push(new BacktrackingElements(pdb_glycam_map, glycam_atom_map, source_atom_intra_neighbors, i));
             if(!backtracking_stack_2.empty())
             {
@@ -9379,7 +9402,7 @@ bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, G
                 AtomVector source_atom_neighbors = source_atom->GetNode()->GetNodeNeighbors();
                 queue<Atom*> to_visit = queue<Atom*>();
                 queue<Atom*> parents = queue<Atom*>();
-                for(int i = 0; i < source_atom_neighbors.size(); i++)
+                for(unsigned int i = 0; i < source_atom_neighbors.size(); i++)
                 {
                     if(glycam_atom_map.find(source_atom_neighbors.at(i)->GetId()) == glycam_atom_map.end())
                     {
@@ -9396,14 +9419,14 @@ bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, G
                     parents.pop();
                     AtomVector atom_intra_neighbors = atom->GetNode()->GetIntraNodeNeighbors();
                     AtomVector atom_intra_neighbors_filtered_with_parent = AtomVector();
-                    for(int i = 0; i < atom_intra_neighbors.size(); i++)
+                    for(unsigned int i = 0; i < atom_intra_neighbors.size(); i++)
                     {
                         AtomVector neighbors = atom_intra_neighbors.at(i)->GetNode()->GetNodeNeighbors();
                         if(find(neighbors.begin(), neighbors.end(), parent) != neighbors.end() &&
                                 pdb_glycam_map.find(atom_intra_neighbors.at(i)->GetId()) == pdb_glycam_map.end())
                             atom_intra_neighbors_filtered_with_parent.push_back(atom_intra_neighbors.at(i));
                     }
-                    for(int i = atom_intra_neighbors_filtered_with_parent.size() - 1; i >= 0; i--)
+                    for(unsigned int i = atom_intra_neighbors_filtered_with_parent.size() - 1; i >= 0; i--)
                         backtracking_stack_3.push(new BacktrackingElements(pdb_glycam_map, glycam_atom_map,
                                                                            atom_intra_neighbors_filtered_with_parent, i, to_visit));
                     if(!backtracking_stack_3.empty())
@@ -9418,7 +9441,7 @@ bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, G
                         pdb_glycam_map[mapped->GetId()] = atom->GetId();
                         glycam_atom_map[atom->GetId()] = mapped->GetId();
                         AtomVector atom_neighbors = atom->GetNode()->GetNodeNeighbors();
-                        for(int i = 0; i < atom_neighbors.size(); i++)
+                        for(unsigned int i = 0; i < atom_neighbors.size(); i++)
                         {
                             if(glycam_atom_map.find(atom_neighbors.at(i)->GetId()) == glycam_atom_map.end())
                             {
@@ -9518,7 +9541,7 @@ void Assembly::CreatePrunedMatchingGraph(Residue *residue, ResidueVector query_r
     }
 }
 
-vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
+vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files, bool glyprobity_report, bool populate_ontology)
 {
     ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
 
@@ -9556,7 +9579,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         Note* anomeric_note = new Note();
         Atom* anomeric = FindAnomericCarbon(anomeric_note, anomeric_carbons_status, cycle_atoms, cycle_atoms_str);
         anomeric_notes.push_back(anomeric_note);
-        if(anomeric != NULL) ///Sorint the cycle atoms and adding it to the sorted_cycles map if an anomeric carbon identified, otherwise the structure can't be a sugar
+        if(anomeric != NULL) ///Sorting the cycle atoms and adding it to the sorted_cycles map if an anomeric carbon identified, otherwise the structure can't be a sugar
         {
             AtomVector sorted_cycle_atoms = AtomVector();
             stringstream sorted_cycle_stream;
@@ -9583,13 +9606,6 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         cout << "Ring atoms: " << cycle_atoms_str << endl;
         mono->cycle_atoms_str_ = cycle_atoms_str;
         mono->cycle_atoms_ = cycle;
-
-        ///EXTRACTING BOND LENGTHS OF MONOSACCHARIDE ATOM PAIRS
-//        CalcualteMonoasaccharideBondAndAngleLengths()
-//        for(AtomVector::iterator ring_atom_it = cycle.begin(); ring_atom_it != cycle.end(); ring_atom_it++)
-//        {
-
-//        }
 
         ///ASSIGNING SIDE ATOMS (EXCOCYCLIC ATOMS) TO MONOSACCHARIDE OBJECT
         vector<string> orientations = GetSideGroupOrientations(mono, cycle_atoms_str);
@@ -9645,7 +9661,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
         ///CHECKING FOR +2 and +3 SIDE CARBONS
         AtomVector plus_sides = ExtractAdditionalSideAtoms(mono);
 
-        ///FINDING CHEMICAL CODE IN NAME LOOKUP TABLE        
+        ///FINDING CHEMICAL CODE IN NAME LOOKUP TABLE
         string code_str = code->toString();
         mono->sugar_name_ = SugarStereoChemistryNameLookup(code_str);
 
@@ -9792,6 +9808,10 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
                 cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << endl;
         }
 
+        ///GLYPROBITY REPORT (GEOMETRY OUTLIERS)
+        if(glyprobity_report)
+            CalculateGlyprobityGeometryOutliers(mono);
+
         ///ADDING NOTES/ISSUES OF ANOMERIC CONFIGURATION
         Note* anomeric_note = anomeric_notes.at(status_index);
         stringstream n;
@@ -9885,40 +9905,42 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files)
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 
     ///PRINTING STATISTICAL REPORT OF GLYPROBITY
-    cout << endl << "GLYPROBITY REPORT" << endl;
-    cout << "--Topology--" << endl;
-    cout << "Monosaccharide detected: " << monos.size() << endl;
-    cout << "Residue Distribution " << endl;
-    cout << " Monosaccharides: " << number_of_monosaccharides << endl;
-    cout << " Oligosaccharides: " << number_of_oligosaccharides << endl;
-    cout << "Carbohydrate Context " << endl;
-    cout << " Covalently linked to protein: " << number_of_covalent_links << endl;
-    cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << endl;
+    if(glyprobity_report)
+    {
+        cout << endl << "GLYPROBITY REPORT" << endl;
+        cout << "<-------Topology------>" << endl;
+        cout << "Monosaccharide detected: " << monos.size() << endl;
+        cout << "Residue Distribution " << endl;
+        cout << " Monosaccharides: " << number_of_monosaccharides << endl;
+        cout << " Oligosaccharides: " << number_of_oligosaccharides << endl;
+        cout << "Carbohydrate Context " << endl;
+        cout << " Covalently linked to protein: " << number_of_covalent_links << endl;
+        cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << endl;
+        cout << "<--------------------->" << endl;
+    }
 
     ///POPULATING GMMO ONTOLOGY
-    if(oligosaccharides.size() > 0)
+    if(populate_ontology)
     {
-        std::ofstream out_file;
-        string gmmo = "gmmo.ttl";
-        try
+        if(oligosaccharides.size() > 0)
         {
-            out_file.open (gmmo.c_str(), ios::out | ios::app);
-        }
-        catch(...)
-        {
-        }
-        try
-        {
+            string gmmo = "gmmo.ttl";
+            std::ofstream out_file;
+            out_file.open(gmmo.c_str(), fstream::app);
+
+            ifstream in("gmmo.ttl");///Checking if the file is empty
+            size_t out_file_size = 0;
+            in.seekg(0,ios_base::end);
+            out_file_size = in.tellg();
+            in.close();
+            if(out_file_size == 0) ///If the file is empty add the prefixes first
+                out_file << Ontology::TTL_FILE_PREFIX << endl;
+
             this->PopulateOntology(out_file, oligosaccharides);
-        }
-        catch(...)
-        {
             out_file.close();
         }
     }
 
-    //    system("curl -g -H \"Accept: application/json\" \"http://192.168.1.52:8890/sparql\" --data-urlencode \"query=SELECT ?a where { ?a rdf:type owl:Class}\"");
-    //    testConnection();
     return oligosaccharides;
 }
 
@@ -10834,7 +10856,8 @@ void Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type, 
 void Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures, string output_file_type)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb "<< Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?linkage_indices ?stereo_short_name0 ?short_name0 ?stereo_short_name1 ?short_name1 ?oligo_sequence ?residue_links "
+          << Ontology::WHERE_CLAUSE;
     int i = 0;
     vector<string> oligos = vector<string>();
     for(AttachedGlycanStructuresVector::iterator it = attached_structures.begin(); it != attached_structures.end(); it++)
@@ -10918,10 +10941,24 @@ void Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStruc
             query << "{\n";
             query << "?linkage" << i << " :hasParent " << oligos.at(i) << ".\n";
             query << "?linkage" << i << " :hasChild " << oligos.at(i + 1) << ".\n";
+            query << oligos.at(i) << " :oligoResidueLinks ?residue_links.\n";
+            query << "OPTIONAL {" << oligos.at(i) << "  :oligoName ?oligo_sequence}\n";
             query << "} UNION {\n";
             query << "?linkage" << i << " :hasParent " << oligos.at(i + 1) << ".\n";
             query << "?linkage" << i << " :hasChild " << oligos.at(i) << ".\n";
+            query << oligos.at(i + 1) << " :oligoResidueLinks ?residue_links.\n";
+            query << "OPTIONAL {" << oligos.at(i + 1) << "  :oligoName ?oligo_sequence}\n";
             query << "}\n";
+
+            query << "?linkage" << i << ":linkageIndeces ?linkage_indices.\n";
+
+            query << "?mono0    :hasSugarName ?sn0.\n";
+            query << "?sn0      :monosaccharideShortName ?short_name0.\n";
+            query << "?sn0      :monosaccharideStereochemShortName ?stereo_short_name0.\n";
+
+            query << "?mono1    :hasSugarName ?sn1.\n";
+            query << "?sn1      :monosaccharideShortName ?short_name1.\n";
+            query << "?sn1      :monosaccharideStereochemShortName ?stereo_short_name1.\n";
         }
     }
     for(i = 0; i < oligos.size(); i++)
@@ -10984,57 +11021,7 @@ void Assembly::ExtractOntologyInfoByCustomQuery(string query_file, string output
 }
 
 void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string disaccharide_pattern, string output_file_type)
-{///find *s in the pattern, modify the query generation
-
-//    FindReplaceString(oligo_name_pattern, "[", "\\\\[");
-//    FindReplaceString(oligo_name_pattern, "]", "\\\\]");
-//    if(disaccharide_pattern.compare("") == 0)
-//    {
-//        cout << "Please specify the input argument. (you can use the wild card * in the name of the sugar and ? in the linkage)" << endl;
-//        return;
-//    }
-//    if(count(disaccharide_pattern.begin(), disaccharide_pattern.end(), '*') > 2)
-//    {
-//        cout << "Wrong disaccharide pattern format." << endl;
-//        return;
-//    }
-
-//    stringstream query;
-//    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
-//    query << "?oligo        :oligoName	?oligo_sequence.\n";
-
-//    size_t first = oligo_name_pattern.find_first_of("*");
-//    size_t last = oligo_name_pattern.find_last_of("*");
-
-//    string filter1 = oligo_name_pattern.substr(0, first);
-//    string filter2 = oligo_name_pattern.substr(first + 1, last - 1);
-//    string filter3 = oligo_name_pattern.substr(last + 1, oligo_name_pattern.size() - 1);
-//    if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 0) ///No *
-//        query << "?oligo	:oligoName	\"" << oligo_name_pattern << "\".\n";
-//    else if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 1) ///Only one *
-//    {
-//        if(first == 0) ///* at the beginning
-//            query << "FILTER regex(?oligo_sequence, \"" << filter2 << "$\", \"i\")\n";
-//        else if(first == oligo_name_pattern.size()-1) ///* at the end
-//            query << "FILTER regex(?oligo_sequence, \"^" << filter1 << "\", \"i\")\n";
-//        else if(first < oligo_name_pattern.size()-1 && first > 0) ///* in the middle
-//            query << "FILTER regex(?oligo_sequence, \"^" << filter1 << ".+" << filter3 << "$\", \"i\")\n";
-//    }
-//    else if (count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 2)
-//    {
-//        if(first == 0 && last == oligo_name_pattern.size() - 1) ///* at the beginning and end
-//            query << "FILTER regex(?oligo_sequence, \"" << filter2 << "\", \"i\")\n";
-//        else if(first == 0 && last < oligo_name_pattern.size() - 1)///one * at the beginning another in the middle
-//            query << "FILTER regex(?oligo_sequence, \"" << filter2 << ".+" << filter3 << "$\", \"i\")\n";
-//        else if(first > 0 && last == oligo_name_pattern.size() - 1)///one * in the middle another at the end
-//            query << "FILTER regex(?oligo_sequence, \"^" << filter1 << ".+" << filter2 << "\", \"i\")\n";
-//    }
-//    else
-//    {
-//        vector<string> pattern_tokens = Split(filter2, "*");
-//        query << "FILTER regex(?oligo_sequence, \"" << pattern_tokens.at(0) << ".+" << pattern_tokens.at(1) << "\", \"i\")\n";
-
-
+{
 
     int link_index = disaccharide_pattern.find_first_of("-");
     string child_mono = disaccharide_pattern.substr(0, link_index - 1); /// e.g DNeupNAca in DNeupNAca2-3DGalpb
@@ -11055,10 +11042,10 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string dis
         if(child_mono.find("*") != string::npos)
         {
             query <<  "?sn1           :monosaccharideShortName    ?short_name1. \n";
-            query << "FILTER regex(?short_name1, \"" << child_mono << "\", \"i\")\n";
+            query << "FILTER regex(?short_name1, \"" << Split(child_mono, "*").at(0) << "\", \"i\")\n";
         }
         else
-            query <<  "?sn1           :monosaccharideShortName    \"" << Split(child_mono, "*").at(0) << "\". \n";
+            query <<  "?sn1           :monosaccharideShortName    \"" << child_mono << "\". \n";
         query <<  "?mono1         :hasSugarName    ?sn1.\n";
         query <<  "?oligo1        :hasCore    ?mono1. \n";
     }
@@ -11116,7 +11103,6 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string dis
     }
 
     query << Ontology::END_WHERE_CLAUSE;
-cout << query.str() << endl;
     stringstream curl;
     curl << Ontology::CURL_PREFIX;
     curl << Ontology::CSV_OUTPUT_FORMAT;
@@ -11500,6 +11486,188 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
     in.close();
 }
 
+vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(string atom_name1, string atom_name2, bool is_atom2_ring, string mono_name)
+{
+    stringstream query;
+    query << "sparql PREFIX : <http://gmmo.uga.edu/#> " <<
+             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " <<
+             "PREFIX owl: <http://www.w3.org/2002/07/owl#> " <<
+             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " <<
+             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" <<
+             "SELECT ?atom1_crd ?atom2_crd WHERE {" ;
+
+    query <<  "?mono          :hasSugarName   ?sn.";
+    query <<  "?sn            :monosaccharideShortName   \"" << mono_name << "\".\n";
+    query <<  "?mono          :hasRingAtom   ?atom1.";
+    if(is_atom2_ring)
+    {
+        query <<  "?mono          :hasRingAtom   ?atom2.";
+        query <<  "?atom1         :hasNeighbor    ?atom2.";
+    }
+    else
+        query <<  "?atom1          :hasSideAtom   ?atom2.";
+    query <<  "?atom1         :identifier    ?atom1_id.";
+    query <<  "?atom2         :identifier    ?atom2_id.";
+    query << "FILTER regex(?atom1_id, \"" << atom_name1 << "_" << "\", \"i\")";
+    query << "FILTER regex(?atom2_id, \"" << atom_name2 << "_" << "\", \"i\")";
+
+    query <<  "?atom1         :coordinate    ?atom1_crd.";
+    query <<  "?atom2         :coordinate    ?atom2_crd.";
+    query << "};";
+
+    std::ofstream sparql;
+    sparql.open("bonds.sparql", fstream::app);
+    sparql << query.str();
+    sparql.close();
+
+    system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< bonds.sparql \>  bond_results.txt");
+    remove("bonds.sparql");
+
+    ///Read query result file
+    string line;
+    ifstream in("bond_results.txt");
+    while (getline (in, line))///skip the first lines until the coordinates
+    {
+        if(line.find("____") != string::npos)
+        {
+            getline (in, line);
+            break;
+        }
+    }
+    Coordinate* atom1_crd = new Coordinate();
+    Coordinate* atom2_crd = new Coordinate();
+    double distance = 0.0;
+    double sum_of_bond_lengths = 0.0;
+    double sum_of_bond_lengths_squared = 0.0;
+    int number_of_bond_lengths = 0;
+
+    ///Reading the coordinates from the result file, calculating the distance
+    while (getline (in, line) && !line.empty())
+    {
+        vector<string> line_tokens = Split(line," ");
+        atom1_crd->SetX(ConvertString<double>(Split(line_tokens.at(0), ",").at(0)));
+        atom1_crd->SetY(ConvertString<double>(Split(line_tokens.at(1), ",").at(0)));
+        atom1_crd->SetZ(ConvertString<double>(line_tokens.at(2)));
+
+        atom2_crd->SetX(ConvertString<double>(Split(line_tokens.at(3), ",").at(0)));
+        atom2_crd->SetY(ConvertString<double>(Split(line_tokens.at(4), ",").at(0)));
+        atom2_crd->SetZ(ConvertString<double>(line_tokens.at(5)));
+
+        distance = atom1_crd->Distance(*(atom2_crd));
+        sum_of_bond_lengths += distance;
+        sum_of_bond_lengths_squared += (distance*distance);
+        number_of_bond_lengths++;
+    }
+    in.close();
+    remove("bond_results.txt");
+
+    double mean  = sum_of_bond_lengths/number_of_bond_lengths;
+    double standard_deviation = sqrt(((sum_of_bond_lengths_squared - ((sum_of_bond_lengths*sum_of_bond_lengths)/number_of_bond_lengths))/number_of_bond_lengths));
+
+    vector<double> statistics = vector<double>();
+    statistics.push_back(mean);
+    statistics.push_back(standard_deviation);
+
+    return statistics;
+}
+vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(string atom_name1, string atom_name2, string atom_name3, bool is_atom3_ring, string mono_name)
+{
+    stringstream query;
+    query << "sparql PREFIX : <http://gmmo.uga.edu/#> " <<
+             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " <<
+             "PREFIX owl: <http://www.w3.org/2002/07/owl#> " <<
+             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " <<
+             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>" <<
+             "SELECT ?atom1_crd ?atom2_crd ?atom3_crd WHERE {" ;
+
+    query <<  "?mono          :hasSugarName   ?sn.";
+    query <<  "?sn            :monosaccharideShortName   \"" << mono_name << "\".\n";
+    query <<  "?mono          :hasRingAtom   ?atom1.";
+    query <<  "?mono          :hasRingAtom   ?atom2.";
+    query <<  "?atom1         :hasNeighbor    ?atom2.";
+    if(is_atom3_ring)
+    {
+        query <<  "?mono          :hasRingAtom   ?atom3.";
+        query <<  "?atom2         :hasNeighbor    ?atom3.";
+        query <<  "FILTER (?atom1 != ?atom3)";
+    }
+    else
+        query <<  "?atom2          :hasSideAtom   ?atom3.";
+    query <<  "?atom1         :identifier    ?atom1_id.";
+    query <<  "?atom2         :identifier    ?atom2_id.";
+    query <<  "?atom3         :identifier    ?atom3_id.";
+    query << "FILTER regex(?atom1_id, \"" << atom_name1 << "_" << "\", \"i\")";
+    query << "FILTER regex(?atom2_id, \"" << atom_name2 << "_" << "\", \"i\")";
+    query << "FILTER regex(?atom3_id, \"" << atom_name3 << "_" << "\", \"i\")";
+
+    query <<  "?atom1         :coordinate    ?atom1_crd.";
+    query <<  "?atom2         :coordinate    ?atom2_crd.";
+    query <<  "?atom3         :coordinate    ?atom3_crd.";
+    query << "};";
+
+    std::ofstream sparql;
+    sparql.open("bond_angles.sparql", fstream::app);
+    sparql << query.str();
+    sparql.close();
+
+    system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< bond_angles.sparql \>  bond_angle_results.txt");
+    remove("bond_angles.sparql");
+
+    ///Read query result file
+    string line;
+    ifstream in("bond_angle_results.txt");
+    while (getline (in, line))///skip the first lines until the coordinates
+    {
+        if(line.find("____") != string::npos)
+        {
+            getline (in, line);
+            break;
+        }
+    }
+    Coordinate* atom1_crd = new Coordinate();
+    Coordinate* atom2_crd = new Coordinate();
+    Coordinate* atom3_crd = new Coordinate();
+    double bond_angle = 0.0;
+    double sum_of_bond_angles = 0.0;
+    double sum_of_bond_angles_squared = 0.0;
+    int number_of_bond_angles = 0;
+
+    ///Reading the coordinates from the result file, calculating the distance
+    while (getline (in, line) && !line.empty())
+    {
+        vector<string> line_tokens = Split(line," ");
+        atom1_crd->SetX(ConvertString<double>(Split(line_tokens.at(0), ",").at(0)));
+        atom1_crd->SetY(ConvertString<double>(Split(line_tokens.at(1), ",").at(0)));
+        atom1_crd->SetZ(ConvertString<double>(line_tokens.at(2)));
+
+        atom2_crd->SetX(ConvertString<double>(Split(line_tokens.at(3), ",").at(0)));
+        atom2_crd->SetY(ConvertString<double>(Split(line_tokens.at(4), ",").at(0)));
+        atom2_crd->SetZ(ConvertString<double>(line_tokens.at(5)));
+
+        atom3_crd->SetX(ConvertString<double>(Split(line_tokens.at(6), ",").at(0)));
+        atom3_crd->SetY(ConvertString<double>(Split(line_tokens.at(7), ",").at(0)));
+        atom3_crd->SetZ(ConvertString<double>(line_tokens.at(8)));
+
+        bond_angle = CalculateBondAngleByCoordinates(atom1_crd, atom2_crd, atom3_crd);
+        sum_of_bond_angles += bond_angle;
+        sum_of_bond_angles_squared += (bond_angle*bond_angle);
+        number_of_bond_angles++;
+    }
+
+    in.close();
+    remove("bond_angle_results.txt");
+
+    double mean  = sum_of_bond_angles/number_of_bond_angles;
+    double standard_deviation = sqrt(((sum_of_bond_angles_squared - ((sum_of_bond_angles*sum_of_bond_angles)/number_of_bond_angles))/number_of_bond_angles));
+
+    vector<double> statistics = vector<double>();
+    statistics.push_back(mean);
+    statistics.push_back(standard_deviation);
+
+    return statistics;
+}
+
+
 void Assembly::ExtractTorsionAnglesFromPDB(vector<string> amino_lib_files, string disaccharide)
 {
     string pdb_file_path = this->GetSourceFile();
@@ -11661,6 +11829,29 @@ bool Assembly::MatchDisaccharide(queue<Oligosaccharide*> oligo_queue, double &ph
     else
         return found_disaccharide;
 }
+double Assembly::CalculateBondAngleByCoordinates(Coordinate* atom1_crd, Coordinate* atom2_crd, Coordinate* atom3_crd)
+{
+    Coordinate* b1 = new Coordinate(*atom1_crd);
+    b1->operator -(*atom2_crd);
+    Coordinate* b2 = new Coordinate(*atom3_crd);
+    b2->operator -(*atom2_crd);
+
+    return acos(b1->DotProduct((*b2)) / b1->length() / b2->length());
+
+}
+double Assembly::CalculateBondAngleByAtoms(Atom *atom1, Atom *atom2, Atom *atom3)
+{
+    Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+    Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+
+    Coordinate* b1 = new Coordinate(*a1);
+    b1->operator -(*a2);
+    Coordinate* b2 = new Coordinate(*a3);
+    b2->operator -(*a2);
+
+    return acos(b1->DotProduct((*b2)) / b1->length() / b2->length());
+}
 
 double Assembly::CalculateTorsionAngleByCoordinates(Coordinate* atom1_crd, Coordinate* atom2_crd, Coordinate* atom3_crd, Coordinate* atom4_crd)
 {
@@ -11690,7 +11881,6 @@ double Assembly::CalculateTorsionAngleByCoordinates(Coordinate* atom1_crd, Coord
 
 double Assembly::CalculateTorsionAngleByAtoms(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4)
 {
-    cout << atom1->GetId() << ", " << atom2->GetId() << ", " << atom3->GetId() << ", " << atom4->GetId() << endl;
     double current_dihedral = 0.0;
     Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
     Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
@@ -11932,8 +12122,8 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     int neighbor_counter = 2;
     ///Reducing the path graph
-    ///Whenever a walk a-b-c is found it should be reduced to a-c and the lable should be changed from [a-b], [b-c] to [a-b-c]
-    /// the node with lowest number of connected edges should be examined first
+    ///Whenever a walk a-b-c is found it should be reduced to a-c and the label should be changed from [a-b], [b-c] to [a-b-c]
+    /// the node with lowest number of edges to other nodes should be examined first
     while(atoms.size() > 1 && path_graph_edges.size() != 0)
     {
         AtomVector::iterator common_atom_it;
@@ -12148,8 +12338,7 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                 vector<string> new_edge_atoms = Split(new_edge.str(), ",");
                 if(new_edge_atoms.at(0).compare(new_edge_atoms.at(1)) == 0) ///edge is a,a
                 {
-                    cycles.push_back(new_label.str());
-                    //cout << new_label.str() << endl;
+                    cycles.push_back(new_label.str());///label shows the atom involved in a cycle
                 }
                 ///adding the newly-formed edge (a,c) and label(a-b-c)
                 else if(find(reduced_path_graph_labels.begin(), reduced_path_graph_labels.end(), new_label.str()) == reduced_path_graph_labels.end())
@@ -12163,9 +12352,7 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                     to_be_deleted_edges.push_back(source_index);
                 if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), target_index) == to_be_deleted_edges.end())
                     to_be_deleted_edges.push_back(target_index);
-
             }
-
         }
     }
 
@@ -12649,6 +12836,97 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
         }
     }
     return sorted_cycle;
+}
+
+void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
+{
+    ///EXTRACTING BOND LENGTHS OF MONOSACCHARIDE ATOM PAIRS AND BOND ANGLES
+    vector<string> visited_bonds = vector<string>();
+    vector<string> visited_angles = vector<string>();
+    vector<double> bond_statistics = vector<double>();
+    vector<double> bond_angle_statistics = vector<double>();
+    stringstream bond_lengths_stream;
+    stringstream bond_angles_stream;
+    double bond_angle = 0.0;
+    bool is_atom2_ring = false;
+    bool is_atom3_ring = false;
+
+    bond_lengths_stream << "GLYPROBITY REPORT" << endl <<
+                           "<--Geometry Outliers-->" << endl <<
+                           "Bond lengths (current bond length, ontology mean, ontology standard deviation)" << endl;
+
+    bond_angles_stream << "Bond angles (current bond angle, ontology mean, ontology standard deviation)" << endl;
+
+    for(AtomVector::iterator ring_atom_it = mono->cycle_atoms_.begin(); ring_atom_it != mono->cycle_atoms_.end(); ring_atom_it++)
+    {
+        Atom* atom1 = (*ring_atom_it);
+        AtomVector atom1_neighbors = atom1->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator atom1_neighbors_it = atom1_neighbors.begin(); atom1_neighbors_it != atom1_neighbors.end(); atom1_neighbors_it++)
+        {
+            Atom* atom2 = (*atom1_neighbors_it);
+            stringstream check_bond;
+            stringstream check_bond_reverse;
+
+            check_bond << atom1->GetId() << "-" << atom2->GetId();
+            check_bond_reverse << atom2->GetId() << "-" << atom1->GetId();
+            if(find(visited_bonds.begin(), visited_bonds.end(), check_bond.str()) == visited_bonds.end() &&
+                    find(visited_bonds.begin(), visited_bonds.end(), check_bond_reverse.str()) == visited_bonds.end())///if the bond has not been visited before
+            {
+                visited_bonds.push_back(check_bond.str());
+                visited_bonds.push_back(check_bond_reverse.str());
+                bond_lengths_stream << atom1->GetName() << "-" << atom2->GetName() << ": " <<
+                                       atom1->GetCoordinates().at(model_index_)->Distance(*(atom2->GetCoordinates().at(model_index_)));
+
+                ///if atom 2 is not a ring atom set the flag to true
+                if(mono->cycle_atoms_str_.find(atom2->GetId()) == string::npos)
+                    is_atom2_ring = false;
+                else
+                    is_atom2_ring = true;
+
+                ///Find same bonds in the same monosaccharide in the ontology, calculate mean and standard deviation from ontology
+                bond_statistics = CalculateBondlengthsStatisticsBasedOnOntologyInfo(atom1->GetName(), atom2->GetName(), is_atom2_ring, mono->sugar_name_.monosaccharide_short_name_);
+                bond_lengths_stream << ", " << bond_statistics.at(0) << ", " << bond_statistics.at(1) << endl;
+            }
+
+            if(is_atom2_ring)///Calculating bond angles only for ring atoms and combination of ring atoms anf their immediate neighbors
+            {
+                ///EXTRACTING BOND ANGLES
+                AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator atom2_neighbors_it = atom2_neighbors.begin(); atom2_neighbors_it != atom2_neighbors.end(); atom2_neighbors_it++)
+                {
+                    if((*ring_atom_it) != (*atom2_neighbors_it))///if the neighbor of the second atom is not the first atom we chose
+                    {
+                        Atom* atom3 = (*atom2_neighbors_it);
+                        stringstream check_angle;
+                        stringstream check_angle_reverse;
+                        check_angle << atom1->GetId() << "-" << atom2->GetId() << "-" << atom3->GetId();
+                        check_angle_reverse  << atom3->GetId() << "-" << atom2->GetId() << "-" << atom1->GetId();
+                        if(find(visited_angles.begin(), visited_angles.end(), check_angle.str()) == visited_angles.end() &&
+                                find(visited_angles.begin(), visited_angles.end(), check_angle_reverse.str()) == visited_angles.end())///if the bond angle has not been visited before
+                        {
+                            visited_angles.push_back(check_angle.str());
+                            visited_angles.push_back(check_angle_reverse.str());
+
+                            bond_angle = CalculateBondAngleByAtoms(atom1, atom2, atom3);
+                            bond_angles_stream << atom1->GetName() << "-" << atom2->GetName() << "-" << atom3->GetName() << ": " << bond_angle;
+
+                            ///if atom 3 is not a ring atom set the flag to true
+                            if(mono->cycle_atoms_str_.find(atom3->GetId()) == string::npos)
+                                is_atom3_ring = false;
+                            else
+                                is_atom3_ring = true;
+
+                            ///Find same bond angles in the same monosaccharide in the ontology, calculate mean and standard deviation from ontology
+                            bond_angle_statistics = CalculateBondAnglesStatisticsBasedOnOntologyInfo(atom1->GetName(), atom2->GetName(), atom3->GetName(), is_atom3_ring,
+                                                                                                     mono->sugar_name_.monosaccharide_short_name_);
+                            bond_angles_stream << ", " << bond_angle_statistics.at(0) << ", " << bond_angle_statistics.at(1) << endl;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    cout << endl << bond_lengths_stream.str() << endl << bond_angles_stream.str() << "<--------------------->" << endl << endl;
 }
 
 vector<string> Assembly::GetSideGroupOrientations(Monosaccharide* mono, string cycle_atoms_str)
@@ -13963,7 +14241,7 @@ void Assembly::Ionizing(string ion_name, string lib_file, string parameter_file,
 }
 
 void Assembly::Solvation(double extension, double closeness, string lib_file)
-{        
+{
     Coordinate* solvent_component_min_boundary = new Coordinate();
     Coordinate* solvent_component_max_boundary = new Coordinate();
     Assembly* solvent_component = new Assembly();                   //Box of water (TIP3p | TIP5p)
@@ -15684,6 +15962,6 @@ void Assembly::WriteHetAtoms(string file_name)
         string name = residue->GetName();
         if(name.compare("HOH") != 0)
             residue->WriteHetAtoms(out_file);
-    }   
+    }
 }
 

@@ -4,24 +4,26 @@
 # Template: lib
 #############################################################################
 
+MAKEFILE      = Makefile-main
+
 ####### Compiler, tools and options
 
 CC            = gcc
 CXX           = g++
-CFLAGS        = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
-CXXFLAGS      = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
-INCPATH       = -I. -Iincludes -Iincludes/GeometryTopology -Iincludes/Glycan -Iincludes/InputSet/CoordinateFileSpace -Iincludes/InputSet/PdbFileSpace -Iincludes/InputSet/PdbqtFileSpace -Iincludes/InputSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iinclude/InpuSet/CondensedSequenceSpace -Iincludes/GeometryTopology/InternalCoordinate -Iincludes/Resolver/PdbPreprocessor -I.
+CFLAGS        = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -m64 -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+INCPATH       = -I. -Iincludes -Iincludes/GeometryTopology -Iincludes/Glycan -Iincludes/InputSet/CoordinateFileSpace -Iincludes/InputSet/PdbFileSpace -Iincludes/InputSet/PdbqtFileSpace -Iincludes/InputSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/InputSet/CondensedSequenceSpace -Iincludes/GeometryTopology/InternalCoordinate -Iincludes/Resolver/PdbPreprocessor -Iincludes/InputSet/CifFileSpace -I.
 LINK          = g++
-LFLAGS        = -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1
-LIBS          = $(SUBLIBS)  -L/usr/lib/x86_64-linux-gnu -lpthread 
+LFLAGS        = -m64 -Wl,-O1 -shared -Wl,-soname,libgmml.so.1
+LIBS          = $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu -lpthread 
 AR            = ar cqs
 RANLIB        = 
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 COPY          = cp -f
 SED           = sed
-COPY_FILE     = $(COPY)
-COPY_DIR      = $(COPY) -r
+COPY_FILE     = cp -f
+COPY_DIR      = cp -f -R
 STRIP         = strip
 INSTALL_FILE  = install -m 644 -p
 INSTALL_DIR   = $(COPY_DIR)
@@ -54,6 +56,9 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/GeometryTopology/InternalCoordinate/angle.cc \
 		src/GeometryTopology/InternalCoordinate/dihedral.cc \
 		src/GeometryTopology/InternalCoordinate/distance.cc \
+		src/InputSet/CifFileSpace/ciffile.cc \
+		src/InputSet/CifFileSpace/ciffileatom.cc \
+		src/InputSet/CifFileSpace/ciffileprocessingexception.cc \
 		src/InputSet/CondensedSequenceSpace/condensedsequence.cc \
 		src/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.cc \
 		src/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.cc \
@@ -175,6 +180,9 @@ OBJECTS       = build/cell.o \
 		build/angle.o \
 		build/dihedral.o \
 		build/distance.o \
+		build/ciffile.o \
+		build/ciffileatom.o \
+		build/ciffileprocessingexception.o \
 		build/condensedsequence.o \
 		build/condensedsequenceamberprepresidue.o \
 		build/condensedsequenceprocessingexception.o \
@@ -289,6 +297,7 @@ TARGET0       = libgmml.so
 TARGET1       = libgmml.so.1
 TARGET2       = libgmml.so.1.0
 
+
 first: all
 ####### Implicit rules
 
@@ -314,7 +323,7 @@ first: all
 all: Makefile-main  bin/$(TARGET)
 
 bin/$(TARGET):  $(OBJECTS) $(SUBLIBS) $(OBJCOMP)  
-	@$(CHK_DIR_EXISTS) bin/ || $(MKDIR) bin/ 
+	@test -d bin/ || mkdir -p bin/
 	-$(DEL_FILE) $(TARGET) $(TARGET0) $(TARGET1) $(TARGET2)
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(LIBS) $(OBJCOMP)
 	-ln -s $(TARGET) $(TARGET0)
@@ -324,7 +333,11 @@ bin/$(TARGET):  $(OBJECTS) $(SUBLIBS) $(OBJCOMP)
 	-$(DEL_FILE) bin/$(TARGET0)
 	-$(DEL_FILE) bin/$(TARGET1)
 	-$(DEL_FILE) bin/$(TARGET2)
-	-$(MOVE) $(TARGET) $(TARGET0) $(TARGET1) $(TARGET2) bin/
+	-$(MOVE) $(TARGET)  bin/ 
+	-$(MOVE) $(TARGET0) bin/ 
+	-$(MOVE) $(TARGET1) bin/ 
+	-$(MOVE) $(TARGET2) bin/ 
+	
 
 
 
@@ -349,20 +362,12 @@ distclean: clean
 
 check: first
 
-mocclean: compiler_moc_header_clean compiler_moc_source_clean
-
-mocables: compiler_moc_header_make_all compiler_moc_source_make_all
-
-compiler_moc_header_make_all:
-compiler_moc_header_clean:
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_image_collection_make_all: 
-compiler_image_collection_clean:
+compiler_moc_header_make_all:
+compiler_moc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all:
-compiler_uic_clean:
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
@@ -386,6 +391,7 @@ build/cell.o: src/GeometryTopology/cell.cc includes/common.hpp \
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
 		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
 		includes/InputSet/PdbFileSpace/pdbfile.hpp \
 		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
 		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
@@ -400,7 +406,9 @@ build/cell.o: src/GeometryTopology/cell.cc includes/common.hpp \
 		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
 		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
 		includes/Glycan/oligosaccharide.hpp \
-		includes/utils.hpp
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/cell.o src/GeometryTopology/cell.cc
 
 build/coordinate.o: src/GeometryTopology/coordinate.cc includes/GeometryTopology/coordinate.hpp \
@@ -421,6 +429,7 @@ build/grid.o: src/GeometryTopology/grid.cc includes/GeometryTopology/coordinate.
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
 		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
 		includes/InputSet/PdbFileSpace/pdbfile.hpp \
 		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
 		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
@@ -435,7 +444,9 @@ build/grid.o: src/GeometryTopology/grid.cc includes/GeometryTopology/coordinate.
 		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
 		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
 		includes/Glycan/oligosaccharide.hpp \
-		includes/utils.hpp
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/grid.o src/GeometryTopology/grid.cc
 
 build/plane.o: src/GeometryTopology/plane.cc includes/GeometryTopology/plane.hpp \
@@ -455,6 +466,7 @@ build/assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/a
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
 		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
 		includes/InputSet/PdbFileSpace/pdbfile.hpp \
 		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
 		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
@@ -470,9 +482,10 @@ build/assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/a
 		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
 		includes/Glycan/oligosaccharide.hpp \
 		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
-		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
 		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
@@ -490,6 +503,9 @@ build/assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/a
 		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
 		includes/InputSet/PdbFileSpace/pdbatom.hpp \
 		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
 		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
 		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
 		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
@@ -521,7 +537,10 @@ build/atomnode.o: src/MolecularModeling/atomnode.cc includes/MolecularModeling/a
 		includes/MolecularModeling/moleculardynamicatom.hpp \
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
-		includes/MolecularModeling/residue.hpp
+		includes/MolecularModeling/residue.hpp \
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/atomnode.o src/MolecularModeling/atomnode.cc
 
 build/dockingatom.o: src/MolecularModeling/dockingatom.cc includes/MolecularModeling/dockingatom.hpp
@@ -551,6 +570,7 @@ build/residue.o: src/MolecularModeling/residue.cc includes/MolecularModeling/res
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
 		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
 		includes/InputSet/PdbFileSpace/pdbfile.hpp \
 		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
 		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
@@ -566,6 +586,8 @@ build/residue.o: src/MolecularModeling/residue.cc includes/MolecularModeling/res
 		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
 		includes/Glycan/oligosaccharide.hpp \
 		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
 		includes/MolecularModeling/atomnode.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/residue.o src/MolecularModeling/residue.cc
 
@@ -578,37 +600,59 @@ build/dihedral.o: src/GeometryTopology/InternalCoordinate/dihedral.cc includes/G
 build/distance.o: src/GeometryTopology/InternalCoordinate/distance.cc includes/GeometryTopology/InternalCoordinate/distance.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/distance.o src/GeometryTopology/InternalCoordinate/distance.cc
 
+build/ciffile.o: src/InputSet/CifFileSpace/ciffile.cc includes/InputSet/CifFileSpace/ciffile.hpp \
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/ciffile.o src/InputSet/CifFileSpace/ciffile.cc
+
+build/ciffileatom.o: src/InputSet/CifFileSpace/ciffileatom.cc includes/InputSet/CifFileSpace/ciffileatom.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/utils.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/ciffileatom.o src/InputSet/CifFileSpace/ciffileatom.cc
+
+build/ciffileprocessingexception.o: src/InputSet/CifFileSpace/ciffileprocessingexception.cc includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
+		includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/ciffileprocessingexception.o src/InputSet/CifFileSpace/ciffileprocessingexception.cc
+
 build/condensedsequence.o: src/InputSet/CondensedSequenceSpace/condensedsequence.cc includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
-                includes/common.hpp \
-                includes/GeometryTopology/coordinate.hpp \
-                includes/Glycan/sugarname.hpp \
-                includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
-                includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
-                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
-                includes/utils.hpp
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
+		includes/utils.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequence.o src/InputSet/CondensedSequenceSpace/condensedsequence.cc
 
 build/condensedsequenceamberprepresidue.o: src/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.cc includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
-                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
-                includes/common.hpp \
-                includes/GeometryTopology/coordinate.hpp \
-                includes/Glycan/sugarname.hpp \
-                includes/utils.hpp
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequenceamberprepresidue.o src/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.cc
 
 build/condensedsequenceprocessingexception.o: src/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.cc includes/common.hpp \
-                includes/GeometryTopology/coordinate.hpp \
-                includes/Glycan/sugarname.hpp \
-                includes/utils.hpp \
-                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequenceprocessingexception.o src/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.cc
 
 build/condensedsequenceresidue.o: src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
-                includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
-                includes/common.hpp \
-                includes/GeometryTopology/coordinate.hpp \
-                includes/Glycan/sugarname.hpp \
-                includes/utils.hpp
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp \
+		includes/common.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/utils.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/condensedsequenceresidue.o src/InputSet/CondensedSequenceSpace/condensedsequenceresidue.cc
 
 build/coordinatefile.o: src/InputSet/CoordinateFileSpace/coordinatefile.cc includes/utils.hpp \
@@ -1355,6 +1399,7 @@ build/pdbpreprocessor.o: src/Resolver/PdbPreprocessor/pdbpreprocessor.cc include
 		includes/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.hpp \
 		includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp \
 		includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
