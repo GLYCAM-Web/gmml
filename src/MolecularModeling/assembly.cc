@@ -478,13 +478,13 @@ void Assembly::AddNote(Note *note)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::CondensedSequenceAmberPrepResidueTree prep_residues)
+bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues)
 {
     try
     {
         CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
-        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); it++)
+        prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
         {
             CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
             string amber_prep_residue_name = amber_prep_residue->GetName();
@@ -510,190 +510,197 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
     ResidueVector parent_residues = ResidueVector();
     ResidueVector branch_residues = ResidueVector();
 
-    CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
-    CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
-    PrepFile* prep = new PrepFile(prep_file);
-    PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
-    ParameterFile* parameter = NULL;
-    ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
-    if(parameter_file.compare("") != 0)
+    try
     {
-        parameter = new ParameterFile(parameter_file);
-        atom_type_map = parameter->GetAtomTypes();
-    }
-    int sequence_number = 0;
-    stringstream ss;
-    for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
-    {
-        CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
-        string amber_prep_residue_name = amber_prep_residue->GetName();
-        string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
-
-        if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
+        CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
+        CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        PrepFile* prep = new PrepFile(prep_file);
+        PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
+        ParameterFile* parameter = NULL;
+        ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+        if(parameter_file.compare("") != 0)
         {
-            PrepFileResidue* prep_residue = prep_residue_map[amber_prep_residue_name];
+            parameter = new ParameterFile(parameter_file);
+            atom_type_map = parameter->GetAtomTypes();
+        }
+        int sequence_number = 0;
+        stringstream ss;
+        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
+        {
+            CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
+            string amber_prep_residue_name = amber_prep_residue->GetName();
+            string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
 
-            // Build residue from prep residue
-            sequence_number++;
-            CoordinateVector cartesian_coordinate_list = CoordinateVector();
-
-            Residue* assembly_residue = new Residue();
-            assembly_residue->SetAssembly(this);
-            string prep_residue_name = prep_residue->GetName();
-            assembly_residue->SetName(prep_residue_name);
-            stringstream id;
-            id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
-               << gmml::BLANK_SPACE << "_" << id_;
-            assembly_residue->SetId(id.str());
-            if(distance(amber_prep_residues.begin(), it) == (int)amber_prep_residues.size()-1)
-                ss << prep_residue_name;
-            else
-                ss << prep_residue_name << "-";
-
-            PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-            int serial_number = 0;
-            for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+            if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
             {
-                serial_number++;
-                Atom* assembly_atom = new Atom();
-                PrepFileAtom* prep_atom = (*it1);
-                assembly_atom->SetResidue(assembly_residue);
-                string atom_name = prep_atom->GetName();
-                assembly_atom->SetName(atom_name);
-                stringstream atom_id;
-                atom_id << atom_name << "_" << serial_number << "_" << id.str();
-                assembly_atom->SetId(atom_id.str());
+                PrepFileResidue* prep_residue = prep_residue_map[amber_prep_residue_name];
 
-                assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
-                assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
-                if(parameter != NULL)
+                // Build residue from prep residue
+                sequence_number++;
+                CoordinateVector cartesian_coordinate_list = CoordinateVector();
+
+                Residue* assembly_residue = new Residue();
+                assembly_residue->SetAssembly(this);
+                string prep_residue_name = prep_residue->GetName();
+                assembly_residue->SetName(prep_residue_name);
+                stringstream id;
+                id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+                   << gmml::BLANK_SPACE << "_" << id_;
+                assembly_residue->SetId(id.str());
+                if(distance(amber_prep_residues.begin(), it) == (int)amber_prep_residues.size()-1)
+                    ss << prep_residue_name;
+                else
+                    ss << prep_residue_name << "-";
+
+                PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+                int serial_number = 0;
+                for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
                 {
-                    if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
+                    serial_number++;
+                    Atom* assembly_atom = new Atom();
+                    PrepFileAtom* prep_atom = (*it1);
+                    assembly_atom->SetResidue(assembly_residue);
+                    string atom_name = prep_atom->GetName();
+                    assembly_atom->SetName(atom_name);
+                    stringstream atom_id;
+                    atom_id << atom_name << "_" << serial_number << "_" << id.str();
+                    assembly_atom->SetId(atom_id.str());
+
+                    assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
+                    assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
+                    if(parameter != NULL)
                     {
-                        ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
-                        assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
-                        assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
+                        if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
+                        {
+                            ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                            assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
+                            assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
+                        }
+                        else
+                        {
+                            assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
+                            assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                        }
                     }
                     else
                     {
                         assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
                         assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
                     }
+
+                    if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0 && prep_residue_name.compare("SO3") == 0)
+                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
+                    else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
+                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() - 0.039);
+                    else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
+                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.008);
+
+                    if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
+                    {
+                        vector<Coordinate*> coordinate_list = vector<Coordinate*>();
+                        int index = distance(prep_atoms.begin(), it1);
+                        if(index == 0)
+                        {
+                        }
+                        if(index == 1)
+                        {
+                            int parent_index = prep_atom->GetBondIndex() - 1;
+                            Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                            coordinate_list.push_back(parent_coordinate);
+                        }
+                        if(index == 2)
+                        {
+                            int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                            int parent_index = prep_atom->GetBondIndex() - 1;
+                            Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                            Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                            coordinate_list.push_back(grandparent_coordinate);
+                            coordinate_list.push_back(parent_coordinate);
+                        }
+                        if(index > 2)
+                        {
+                            int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
+                            int grandparent_index = prep_atom->GetAngleIndex() - 1;
+                            int parent_index = prep_atom->GetBondIndex() - 1;
+
+                            Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
+                            Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                            Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                            coordinate_list.push_back(great_grandparent_coordinate);
+                            coordinate_list.push_back(grandparent_coordinate);
+                            coordinate_list.push_back(parent_coordinate);
+                        }
+                        Coordinate* coordinate = new Coordinate();
+                        coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                                                                                         prep_atom->GetAngle(), prep_atom->GetDihedral());
+                        cartesian_coordinate_list.push_back(coordinate);
+
+                        assembly_atom->AddCoordinate(coordinate);
+                    }
+                    else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
+                    {
+                        assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+                    }
+                    if(assembly_atom->GetAtomType().compare("DU") != 0)
+                        assembly_residue->AddAtom(assembly_atom);
+                    if(atom_name.compare(amber_prep_residue->GetAnomericCarbon()) == 0)
+                        assembly_residue->AddHeadAtom(assembly_atom);
                 }
-                else
+
+                if(structure)
                 {
-                    assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                    assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    Assembly* temp_assembly = new Assembly();
+                    ResidueVector temp_assembly_residues = ResidueVector();
+                    temp_assembly_residues.push_back(assembly_residue);
+                    temp_assembly->SetResidues(temp_assembly_residues);
+                    temp_assembly->SetSourceFile(prep_file);
+                    temp_assembly->BuildStructureByPrepFileInformation();
                 }
-
-                if(atom_name.compare(amber_prep_residue_parent_oxygen) == 0 && prep_residue_name.compare("SO3") == 0)
-                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
-                else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
-                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() - 0.039);
-                else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
-                    assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.008);
-
-                if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
+                residues_.push_back(assembly_residue);
+                if(amber_prep_residue->GetParentId() != -1)
                 {
-                    vector<Coordinate*> coordinate_list = vector<Coordinate*>();
-                    int index = distance(prep_atoms.begin(), it1);
-                    if(index == 0)
+                    Residue* parent_residue = residues_.at(amber_prep_residue->GetParentId());
+                    AtomVector parent_residue_atoms = parent_residue->GetAtoms();
+                    for(AtomVector::iterator it3 = parent_residue_atoms.begin(); it3 != parent_residue_atoms.end(); it3++)
                     {
+                        Atom* parent_atom = *it3;
+                        if(parent_atom->GetName().compare(amber_prep_residue->GetParentOxygen()) == 0)
+                            parent_residue->AddTailAtom(parent_atom);
                     }
-                    if(index == 1)
-                    {
-                        int parent_index = prep_atom->GetBondIndex() - 1;
-                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
-                        coordinate_list.push_back(parent_coordinate);
-                    }
-                    if(index == 2)
-                    {
-                        int grandparent_index = prep_atom->GetAngleIndex() - 1;
-                        int parent_index = prep_atom->GetBondIndex() - 1;
-                        Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
-                        coordinate_list.push_back(grandparent_coordinate);
-                        coordinate_list.push_back(parent_coordinate);
-                    }
-                    if(index > 2)
-                    {
-                        int great_grandparent_index = prep_atom->GetDihedralIndex() - 1;
-                        int grandparent_index = prep_atom->GetAngleIndex() - 1;
-                        int parent_index = prep_atom->GetBondIndex() - 1;
-
-                        Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
-                        Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                        Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
-                        coordinate_list.push_back(great_grandparent_coordinate);
-                        coordinate_list.push_back(grandparent_coordinate);
-                        coordinate_list.push_back(parent_coordinate);
-                    }
-                    Coordinate* coordinate = new Coordinate();
-                    coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                     prep_atom->GetAngle(), prep_atom->GetDihedral());
-                    cartesian_coordinate_list.push_back(coordinate);
-
-                    assembly_atom->AddCoordinate(coordinate);
+                    parent_residues.push_back(parent_residue);
+                    branch_residues.push_back(assembly_residue);
                 }
-                else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
-                {
-                    assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
-                }
-                if(assembly_atom->GetAtomType().compare("DU") != 0)
-                    assembly_residue->AddAtom(assembly_atom);
-                if(atom_name.compare(amber_prep_residue->GetAnomericCarbon()) == 0)
-                    assembly_residue->AddHeadAtom(assembly_atom);
             }
-
-            if(structure)
+            else
             {
-                Assembly* temp_assembly = new Assembly();
-                ResidueVector temp_assembly_residues = ResidueVector();
-                temp_assembly_residues.push_back(assembly_residue);
-                temp_assembly->SetResidues(temp_assembly_residues);
-                temp_assembly->SetSourceFile(prep_file);
-                temp_assembly->BuildStructureByPrepFileInformation();
-            }
-            residues_.push_back(assembly_residue);
-            if(amber_prep_residue->GetParentId() != -1)
-            {
-                Residue* parent_residue = residues_.at(amber_prep_residue->GetParentId());
-                AtomVector parent_residue_atoms = parent_residue->GetAtoms();
-                for(AtomVector::iterator it3 = parent_residue_atoms.begin(); it3 != parent_residue_atoms.end(); it3++)
-                {
-                    Atom* parent_atom = *it3;
-                    if(parent_atom->GetName().compare(amber_prep_residue->GetParentOxygen()) == 0)
-                        parent_residue->AddTailAtom(parent_atom);
-                }
-                parent_residues.push_back(parent_residue);
-                branch_residues.push_back(assembly_residue);
+                cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
             }
         }
-        else
+
+        name_ = ss.str();
+        this->SetSourceFile(prep_file);
+
+        if(structure)
         {
-            cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
+            map<Residue*, int> parent_branch_map = map<Residue*, int>();
+            for(ResidueVector::iterator it = parent_residues.begin(); it != parent_residues.end(); it++)
+            {
+                Residue* parent_residue = (*it);
+                int parent_index = distance(parent_residues.begin(), it);
+                if(parent_branch_map.find(parent_residue) == parent_branch_map.end())
+                    parent_branch_map[parent_residue] = 0;
+                else
+                    parent_branch_map[parent_residue]++;
+                Residue* assembly_residue = branch_residues.at(parent_index);
+
+                int branch_index = parent_branch_map[parent_residue];
+                this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
+            }
         }
     }
-
-    name_ = ss.str();
-    this->SetSourceFile(prep_file);
-
-    if(structure)
+    catch(exception ex)
     {
-        map<Residue*, int> parent_branch_map = map<Residue*, int>();
-        for(ResidueVector::iterator it = parent_residues.begin(); it != parent_residues.end(); it++)
-        {
-            Residue* parent_residue = (*it);
-            int parent_index = distance(parent_residues.begin(), it);
-            if(parent_branch_map.find(parent_residue) == parent_branch_map.end())
-                parent_branch_map[parent_residue] = 0;
-            else
-                parent_branch_map[parent_residue]++;
-            Residue* assembly_residue = branch_residues.at(parent_index);
-
-            int branch_index = parent_branch_map[parent_residue];
-            this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
-        }
+        cout << "Building assembly from " << sequence << " failed." << endl;
     }
 }
 
