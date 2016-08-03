@@ -17,6 +17,7 @@ Atom::Atom() : name_(""), chemical_type_(""), element_symbol_(""), description_(
     coordinates_ = CoordinateVector();
     residue_ = NULL;
     node_ = NULL;
+    index_ = this->generateAtomIndex();
 }
 
 Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
@@ -28,6 +29,7 @@ Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
     for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
         coordinates_.push_back(*it);
     node_ = NULL;
+    index_ = this->generateAtomIndex();
 }
 
 Atom::Atom(Atom *atom)
@@ -41,6 +43,7 @@ Atom::Atom(Atom *atom)
 
     AtomNode node = atom->GetNode();
     node_ = new AtomNode(node);
+    index_ = atom->GetIndex();
 }
 
 //////////////////////////////////////////////////////////
@@ -81,6 +84,10 @@ string Atom::GetId()
 bool Atom::GetIsRing()
 {
     return is_ring_;
+}
+unsigned long long Atom::GetIndex()
+{
+    return index_;
 }
 
 //////////////////////////////////////////////////////////
@@ -143,7 +150,7 @@ void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
     for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++){
         alreadyVisited = false; // reset for each neighbor
         for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++){
-            if ( (*neighbor)->GetId() == (*visitedAtom)->GetId() )
+            if ( (*neighbor)->GetIndex() == (*visitedAtom)->GetIndex() )
                 alreadyVisited = true;
         }
         if (!alreadyVisited) {
@@ -159,6 +166,12 @@ double Atom::GetDistanceToAtom(Atom *otherAtom)
     double y = ( this->GetCoordinates().at(0)->GetY() - otherAtom->GetCoordinates().at(0)->GetY() );
     double z = ( this->GetCoordinates().at(0)->GetZ() - otherAtom->GetCoordinates().at(0)->GetZ() );
     return sqrt( (x*x) + (y*y) + (z*z) );
+}
+
+unsigned long long Atom::generateAtomIndex()
+{
+    static unsigned long long s_AtomIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+    return s_AtomIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
 }
 
 //////////////////////////////////////////////////////////

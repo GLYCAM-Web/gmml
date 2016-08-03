@@ -84,12 +84,18 @@ namespace MolecularModeling
               * @return is_ring_ attribute of the current object of this class
               */
             bool GetIsRing();
+            /*! \fn
+              * An accessor function in order to access to the index
+              * @return index_ attribute of the current object of this class
+              */
+            unsigned long long GetIndex();
 
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
             void FindConnectedAtoms(AtomVector &visitedAtoms);
             double GetDistanceToAtom(Atom *otherAtom);
+            unsigned long long generateAtomIndex();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -179,7 +185,7 @@ namespace MolecularModeling
             std::string id_;                        /*!< An identifier for an atom which is generated based on the type of the input file from which the structure has to be built
                                                       Mostly it is like "residue_name:atom_name" >*/
             bool is_ring_;                          /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/
-
+            unsigned long long index_;              /*!< A unqiue index for each atom in an assembly >*/
     };
 }
 
