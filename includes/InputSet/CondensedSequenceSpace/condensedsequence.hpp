@@ -17,7 +17,7 @@ namespace CondensedSequenceSpace
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
-            //////////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////////         
             /*! \typedef
               * List of condensed sequence residues
               */
@@ -31,6 +31,7 @@ namespace CondensedSequenceSpace
 
             typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueTree;
             typedef std::vector<CondensedSequenceAmberPrepResidue*> CondensedSequenceAmberPrepResidueTree;
+            typedef std::vector<std::pair<std::string, gmml::RotomersAndGlycosidicAnglesInfo> >CondensedSequenceRotomersAndGlycosidicAnglesInfo;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -71,6 +72,7 @@ namespace CondensedSequenceSpace
             std::string GetSecondLetterOfAmberPrepResidueCode(std::string residue_name, std::string isomer);
             std::string GetThirdLetterOfAmberPrepResidueCode(std::string configuration, std::string ring_type);
             CondensedSequenceAmberPrepResidue* GetCondensedSequenceDerivativeAmberPrepResidue(std::string derivative_name, int derivative_index);
+            CondensedSequenceRotomersAndGlycosidicAnglesInfo GetCondensedSequenceRotomersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

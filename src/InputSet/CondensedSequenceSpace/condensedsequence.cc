@@ -429,6 +429,26 @@ CondensedSequenceAmberPrepResidue* CondensedSequence::GetCondensedSequenceDeriva
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
 }
 
+CondensedSequence::CondensedSequenceRotomersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotomersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
+{
+    for(unsigned int i = 0; i < residue_tree.size(); i++)
+    {
+        int parent = residue_tree.at(i)->GetParentId();
+        if(parent > 0)
+        {
+            CondensedSequenceResidue* residue = residue_tree.at(i);
+            CondensedSequenceResidue* parent_residue = residue_tree.at(parent);
+            stringstream rotomers_name;
+            rotomers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration() << residue->GetAnomericCarbon() << "-" <<
+                             residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();
+            char ring_letter = residue->GetName()[3];
+            string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
+
+
+        }
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////

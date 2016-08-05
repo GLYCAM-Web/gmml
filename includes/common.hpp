@@ -21,7 +21,7 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
     typedef GeometryTopology::Coordinate Vector;    
 
-    //*******************************************
+    //*******************************************    
 
     struct AtomTypesInfo{
             std::string atom_type_;
@@ -71,7 +71,7 @@ namespace gmml
     const double CHARGE_TOLERANCE = 0.001;//0.0001;
     const double GRID_OFFSET = 1.0;
     const double MARGIN = 0.0;//10.0;
-    const double CRITICAL_RADIOUS = 1.0;    
+    const double CRITICAL_RADIOUS = 1.0;        
 
     const AtomTypesInfo ATOMTYPESINFOLOOKUP[] = {
         {"","",""},
@@ -882,6 +882,30 @@ namespace gmml
         OntMonosaccharide,
         OntSugarName,
         OntAtom
+    };
+
+    enum GlycosidicAngle
+    {
+        PHI,
+        PSI,
+        OMEGA
+    };
+
+    enum Rotomers
+    {
+        T,
+        G,
+        _G,
+        GG,
+        GT,
+        TG
+    };
+
+    // Options for condensed sequence: rotomers and glycosidic angles
+    struct RotomersAndGlycosidicAnglesInfo{
+            std::vector<Rotomers> possible_rotomers_;
+            std::vector<Rotomers> default_seleted_rotomers_;
+            std::vector<GlycosidicAngle> enabled_glycosidic_angles_;
     };
 }
 
