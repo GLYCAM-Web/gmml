@@ -49,31 +49,31 @@ ParameterFile::ParameterFile(std::string param_file, int file_type)
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-const std::string& ParameterFile::GetFilePath() const
+const std::string& ParameterFile::GetFilePath()
 {
     return path_;
 }
-const std::string& ParameterFile::GetTitle() const
+const std::string& ParameterFile::GetTitle()
 {
     return title_;
 }
-const ParameterFile::AtomTypeMap& ParameterFile::GetAtomTypes() const
+const ParameterFile::AtomTypeMap& ParameterFile::GetAtomTypes()
 {
     return atom_types_;
 }
-const ParameterFile::BondMap& ParameterFile::GetBonds() const
+const ParameterFile::BondMap& ParameterFile::GetBonds()
 {
     return bonds_;
 }
-const ParameterFile::AngleMap& ParameterFile::GetAngles() const
+const ParameterFile::AngleMap& ParameterFile::GetAngles()
 {
     return angles_;
 }
-const ParameterFile::DihedralMap& ParameterFile::GetDihedrals() const
+const ParameterFile::DihedralMap& ParameterFile::GetDihedrals()
 {
     return dihedrals_;
 }
-const int ParameterFile::GetParameterFileType() const
+const int ParameterFile::GetParameterFileType()
 {
     return file_type_;
 }

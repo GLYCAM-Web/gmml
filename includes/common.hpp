@@ -21,7 +21,7 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
     typedef GeometryTopology::Coordinate Vector;    
 
-    //*******************************************
+    //*******************************************    
 
     struct AtomTypesInfo{
             std::string atom_type_;
@@ -32,6 +32,7 @@ namespace gmml
     struct ResidueCodeName{
             std::string name_;
             std::string code_;
+            int index_;
     };
 
     struct AmberGlycamMap{
@@ -57,6 +58,7 @@ namespace gmml
     const double DIST_EPSILON = 0.000001;
     const int MAX_PDB_ATOM = 99999;
     const double CHARGE_DIVIDER = 18.2223;
+    const double CARBON_SURFACE_AREA = 36.31681103;
 
     // Ionizing
     const double DEFAULT_GRID_LENGTH = 2;//0.5;
@@ -70,7 +72,7 @@ namespace gmml
     const double CHARGE_TOLERANCE = 0.001;//0.0001;
     const double GRID_OFFSET = 1.0;
     const double MARGIN = 0.0;//10.0;
-    const double CRITICAL_RADIOUS = 1.0;    
+    const double CRITICAL_RADIOUS = 1.0;        
 
     const AtomTypesInfo ATOMTYPESINFOLOOKUP[] = {
         {"","",""},
@@ -291,45 +293,45 @@ namespace gmml
     const int ATOMTYPESINFOLOOKUPSIZE = (sizeof(ATOMTYPESINFOLOOKUP)/sizeof(ATOMTYPESINFOLOOKUP[0]));
 
     const ResidueCodeName RESIDUENAMECODELOOKUP[] = {
-        {"", ""},
-        {"All", "N"},
-        {"Alt", "E"},
-        {"Ara", "A"},
-        {"Bac", "BC"},
-        {"Fru", "C"},
-        {"Fuc", "F"},
-        {"Gal", "L"},
-        {"GalA", "O"},
-        {"GalNAc", "V"},
-        {"Glc", "G"},
-        {"GlcA", "Z"},
-        {"GlcNAc", "Y"},
-        {"Gul", "K"},
-        {"Ido", "I"},
-        {"IdoA", "U"},
-        {"IdoA(1C4)", "U1"},
-        {"IdoA(2SO)", "U2"},
-        {"IdoA(4C1)", "U3"},
-        {"Lyx", "D"},
-        {"Man", "M"},
-        {"ManNAc", "W"},
-        {"Neu", ""},
-        {"Neu5Ac", "S"},
-        {"Neu5Gc", "GL"},
-        {"NeuNAc", "S"},
-        {"NeuNGc", "GL"},
-        {"Psi", "P"},
-        {"Qui", "Q"},
-        {"Rha", "H"},
-        {"Rib", "R"},
-        {"Sor", "B"},
-        {"Tag", "J"},
-        {"Tal", "T"},
-        {"Tyv", "TV"},
-        {"Xyl", "X"},
-        {"GlcNS", "Y"},
-        {"U", "045"},
-        {"S", "245"},
+        {"", "", 0},
+        {"All", "N", 1},
+        {"Alt", "E", 2},
+        {"Ara", "A", 3},
+        {"Bac", "BC", 4},
+        {"Fru", "C", 5},
+        {"Fuc", "F", 6},
+        {"Gal", "L", 7},
+        {"GalA", "O", 8},
+        {"GalNAc", "V", 9},
+        {"Glc", "G", 10},
+        {"GlcA", "Z", 11},
+        {"GlcNAc", "Y", 12},
+        {"Gul", "K", 13},
+        {"Ido", "I", 14},
+        {"IdoA", "U", 15},
+        {"IdoA(1C4)", "U1", 16},
+        {"IdoA(2SO)", "U2", 17},
+        {"IdoA(4C1)", "U3", 18},
+        {"Lyx", "D", 19},
+        {"Man", "M", 20},
+        {"ManNAc", "W", 21},
+        {"Neu", "", 22},
+        {"Neu5Ac", "S", 23},
+        {"Neu5Gc", "GL", 24},
+        {"NeuNAc", "S", 25},
+        {"NeuNGc", "GL", 26},
+        {"Psi", "P", 27},
+        {"Qui", "Q", 28},
+        {"Rha", "H", 29},
+        {"Rib", "R", 30},
+        {"Sor", "B", 31},
+        {"Tag", "J", 32},
+        {"Tal", "T", 33},
+        {"Tyv", "TV", 34},
+        {"Xyl", "X", 35},
+        {"GlcNS", "Y", 36},
+        {"U", "045", 37},
+        {"S", "245", 38},
     };
 
     const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));
@@ -881,7 +883,7 @@ namespace gmml
         OntMonosaccharide,
         OntSugarName,
         OntAtom
-    };
+    };    
 }
 
 #endif // COMMON_HPP

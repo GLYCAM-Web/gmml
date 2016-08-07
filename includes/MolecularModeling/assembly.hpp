@@ -243,7 +243,7 @@ namespace MolecularModeling
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
             bool CheckCondensedSequenceSanity(std::string sequence,
-                                              CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree prep_residues);
+                                              CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues);
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
@@ -1348,6 +1348,14 @@ namespace MolecularModeling
             void GetCenterOfMass(GeometryTopology::Coordinate* center_of_mass);
             void GetCenterOfGeometry(GeometryTopology::Coordinate* center_of_geometry);
             void GetBoundary(GeometryTopology::Coordinate* lower_left_back_corner, GeometryTopology::Coordinate* upper_right_front_corner);
+            /*! \fn
+              * A function in order to calculate the surface area of overlap between atoms of two assemblies
+              * @param assemblyB is the second assembly. Overlaps between atoms of the same assembly are not counted
+              * @return Total overlap between assemblies, relative to the surface area of a buried C atom.
+              */
+            double CalculateAtomicOverlaps(Assembly *assemblyB);
+
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

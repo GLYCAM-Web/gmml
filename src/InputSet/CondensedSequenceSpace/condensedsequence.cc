@@ -267,6 +267,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
             this->InsertNodeInCondensedSequenceAmberPrepResidueTree(tree_residue, parent + derivatives[parent]);
 
             cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << endl;
+            throw CondensedSequenceProcessingException("Invalid residue in the sequence (" + condensed_residue->GetName().substr(0,3) + ")");
         }
     }
 }
@@ -426,6 +427,75 @@ CondensedSequenceAmberPrepResidue* CondensedSequence::GetCondensedSequenceDeriva
     else if(derivative_name.compare("A") == 0)
         return new CondensedSequenceAmberPrepResidue("ACX", carbon_name, oxygen_name, true);
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
+}
+
+CondensedSequence::CondensedSequenceRotomersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotomersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
+{
+    CondensedSequenceRotomersAndGlycosidicAnglesInfo rotomers_glycosidic_angles = CondensedSequenceRotomersAndGlycosidicAnglesInfo();
+    for(unsigned int i = 0; i < residue_tree.size(); i++)
+    {
+        int parent = residue_tree.at(i)->GetParentId();
+        if(parent > 0)
+        {
+            CondensedSequenceResidue* residue = residue_tree.at(i);
+            CondensedSequenceResidue* parent_residue = residue_tree.at(parent);
+            stringstream rotomers_name;
+            rotomers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration() << residue->GetAnomericCarbon() << "-" <<
+                             residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();
+            char ring_letter = residue->GetName()[3];
+            string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
+            vector<string> possible_rotomers = vector<string>();
+            vector<string> default_selected_rotomers = vector<string>();
+            vector<string> enabled_glycosidic_angles = vector<string>();
+            enabled_glycosidic_angles.push_back("phi");
+            enabled_glycosidic_angles.push_back("psi");
+            if(ring_letter == 'p')
+            {
+                switch(ResidueNameIndexLookup(residue_absolute_name).index_)
+                {
+                    case 10:
+                    case 1:
+                    case 2:
+                    case 12:
+                    case 21:
+                    case 20:
+                        possible_rotomers.push_back("gg");
+                        possible_rotomers.push_back("gt");
+                        possible_rotomers.push_back("tg");
+                        default_selected_rotomers.push_back("gg");
+                        default_selected_rotomers.push_back("gt");
+                        enabled_glycosidic_angles.push_back("omega");
+                        break;
+                    case 14:
+                    case 13:
+                    case 33:
+                    case 9:
+                    case 7:
+                        possible_rotomers.push_back("gg");
+                        possible_rotomers.push_back("gt");
+                        possible_rotomers.push_back("tg");
+                        default_selected_rotomers.push_back("gg");
+                        default_selected_rotomers.push_back("gt");
+                        default_selected_rotomers.push_back("tg");
+                        enabled_glycosidic_angles.push_back("omega");
+                        break;
+                    case 23:
+                    case 24:
+                        possible_rotomers.push_back("t");
+                        possible_rotomers.push_back("g");
+                        possible_rotomers.push_back("-g");
+                        default_selected_rotomers.push_back("t");
+                        default_selected_rotomers.push_back("-g");
+                        break;
+                }
+                RotomersAndGlycosidicAnglesInfo* info = new RotomersAndGlycosidicAnglesInfo(possible_rotomers, default_selected_rotomers, enabled_glycosidic_angles);
+                RotomerNameInfoPair pair_info = make_pair(rotomers_name.str(), info);
+
+                rotomers_glycosidic_angles.push_back(pair_info);
+            }
+        }
+    }
+    return rotomers_glycosidic_angles;
 }
 
 //////////////////////////////////////////////////////////
