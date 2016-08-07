@@ -10,8 +10,8 @@ MAKEFILE      = Makefile-main
 
 CC            = gcc
 CXX           = g++
-CFLAGS        = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
-CXXFLAGS      = -m64 -pipe -O3 -Wall -W -D_REENTRANT -fPIC
+CFLAGS        = -m64 -pipe -O3 -D_REENTRANT -fPIC
+CXXFLAGS      = -m64 -pipe -O3 -D_REENTRANT -fPIC
 INCPATH       = -I. -Iincludes -Iincludes/GeometryTopology -Iincludes/Glycan -Iincludes/InputSet/CoordinateFileSpace -Iincludes/InputSet/PdbFileSpace -Iincludes/InputSet/PdbqtFileSpace -Iincludes/InputSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/InputSet/CondensedSequenceSpace -Iincludes/GeometryTopology/InternalCoordinate -Iincludes/Resolver/PdbPreprocessor -Iincludes/InputSet/CifFileSpace -I.
 LINK          = g++
 LFLAGS        = -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1

@@ -594,6 +594,16 @@ namespace gmml
         return RESIDUENAMECODELOOKUP[0];
     }
 
+    inline gmml::ResidueCodeName ResidueNameIndexLookup(std::string residue_name)
+    {
+        for(int i = 0; i < RESIDUENAMECODELOOKUPSIZE; i++)
+        {
+            if(residue_name.compare(RESIDUENAMECODELOOKUP[i].name_) == 0)
+                return RESIDUENAMECODELOOKUP[i];
+        }
+        return RESIDUENAMECODELOOKUP[0];
+    }
+
     inline gmml::AmberGlycamMap AmberGlycamLookup(std::string amber_residue_name)
     {
         for(int i = 0; i < AMBERGLYCAMLOOKUPSIZE; i++)

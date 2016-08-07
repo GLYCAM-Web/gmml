@@ -12,6 +12,34 @@ namespace CondensedSequenceSpace
 {
     class CondensedSequenceResidue;
     class CondensedSequenceAmberPrepResidue;
+    // Options for condensed sequence: rotomers and glycosidic angles
+    struct RotomersAndGlycosidicAnglesInfo{
+        public:
+            RotomersAndGlycosidicAnglesInfo(std::vector<std::string> possible_rotomers, std::vector<std::string> default_selected_rotomers,
+                                            std::vector<std::string> enabled_glycosidic_angles)
+            {
+                possible_rotomers_ = possible_rotomers;
+                default_seleted_rotomers_ = default_selected_rotomers;
+                enabled_glycosidic_angles_ = enabled_glycosidic_angles;
+            }
+
+            std::vector<std::string> GetPossibleRotomers(){
+                return possible_rotomers_;
+            }
+
+            std::vector<std::string> GetDefaultSelectedRotomers(){
+                return default_seleted_rotomers_;
+            }
+
+            std::vector<std::string> GetEnabledGlycosidicAngles(){
+                return enabled_glycosidic_angles_;
+            }
+
+            std::vector<std::string> possible_rotomers_;
+            std::vector<std::string> default_seleted_rotomers_;
+            std::vector<std::string> enabled_glycosidic_angles_;
+    };
+
     class CondensedSequence
     {
         public:
@@ -30,8 +58,9 @@ namespace CondensedSequenceSpace
 //            typedef std::vector<std::pair<CondensedSequenceAmberPrepResidue*, int> > CondensedSequenceAmberPrepResidueTree;
 
             typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueTree;
-            typedef std::vector<CondensedSequenceAmberPrepResidue*> CondensedSequenceAmberPrepResidueTree;
-            typedef std::vector<std::pair<std::string, gmml::RotomersAndGlycosidicAnglesInfo> >CondensedSequenceRotomersAndGlycosidicAnglesInfo;
+            typedef std::vector<CondensedSequenceAmberPrepResidue*> CondensedSequenceAmberPrepResidueTree;       
+            typedef std::pair<std::string, RotomersAndGlycosidicAnglesInfo*> RotomerNameInfoPair;
+            typedef std::vector<RotomerNameInfoPair> CondensedSequenceRotomersAndGlycosidicAnglesInfo;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //

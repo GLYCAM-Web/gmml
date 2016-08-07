@@ -53,37 +53,37 @@ namespace ParameterFileSpace
               * An accessor function in order to access to parameter file path of the current object
               * @return path_ attribute of the current object of this class
               */
-            const std::string& GetFilePath() const;
+            const std::string& GetFilePath();
             /*! \fn
               * An accessor function in order to access to the title of the current object
               * @return title_ attribute of the current object of this class
               */
-            const std::string& GetTitle() const;
+            const std::string& GetTitle();
             /*! \fn
               * An accessor function in order to access to the map of atom types (as string) to their atom objects of the current object
               * @return atom_types_ attribute of the current object of this class
               */
-            const AtomTypeMap& GetAtomTypes() const ;
+            const AtomTypeMap& GetAtomTypes();
             /*! \fn
               * An accessor function in order to access to the map of bonds (dual string of atom types) to their bond objects of the current object
               * @return bonds_ attribute of the current object of this class
               */
-            const BondMap& GetBonds() const;
+            const BondMap& GetBonds();
             /*! \fn
               * An accessor function in order to access to the map of angles (triple string of atom types) of the current object
               * @return angles_ attribute of the current object of this class
               */
-            const AngleMap& GetAngles() const;
+            const AngleMap& GetAngles();
             /*! \fn
               * An accessor function in order to access to the map of dihedrals (fourple string of atom types) of the current object
               * @return path_ attribute of the current object of this class
               */
-            const DihedralMap& GetDihedrals() const;
+            const DihedralMap& GetDihedrals();
             /*! \fn
               * An accessor function in order to access to the parameter file type of the current object
               * @return file_type_ attribute of the current object of this class
               */
-            const int GetParameterFileType() const;
+            const int GetParameterFileType();
             /*! \fn
               * An accessor function in order to access all improper dihedrals of the current object
               * @return improper_dihedrals Improper dihedrals the current object of this class
