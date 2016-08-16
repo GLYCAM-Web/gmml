@@ -12,31 +12,37 @@ namespace CondensedSequenceSpace
 {
     class CondensedSequenceResidue;
     class CondensedSequenceAmberPrepResidue;
-    // Options for condensed sequence: rotomers and glycosidic angles
-    struct RotomersAndGlycosidicAnglesInfo{
+    // Options for condensed sequence: rotamers and glycosidic angles
+    struct RotamersAndGlycosidicAnglesInfo{
         public:
-            RotomersAndGlycosidicAnglesInfo(std::vector<std::string> possible_rotomers, std::vector<std::string> default_selected_rotomers,
+            RotamersAndGlycosidicAnglesInfo(int linkage_index, std::vector<std::string> possible_rotamers, std::vector<std::string> default_selected_rotamers,
                                             std::vector<std::string> enabled_glycosidic_angles)
             {
-                possible_rotomers_ = possible_rotomers;
-                default_seleted_rotomers_ = default_selected_rotomers;
+                linkage_index_ = linkage_index;
+                possible_rotamers_ = possible_rotamers;
+                default_seleted_rotamers_ = default_selected_rotamers;
                 enabled_glycosidic_angles_ = enabled_glycosidic_angles;
             }
 
-            std::vector<std::string> GetPossibleRotomers(){
-                return possible_rotomers_;
+            int GetLinkageIndex(){
+                return linkage_index_;
             }
 
-            std::vector<std::string> GetDefaultSelectedRotomers(){
-                return default_seleted_rotomers_;
+            std::vector<std::string> GetPossibleRotamers(){
+                return possible_rotamers_;
+            }
+
+            std::vector<std::string> GetDefaultSelectedRotamers(){
+                return default_seleted_rotamers_;
             }
 
             std::vector<std::string> GetEnabledGlycosidicAngles(){
                 return enabled_glycosidic_angles_;
             }
 
-            std::vector<std::string> possible_rotomers_;
-            std::vector<std::string> default_seleted_rotomers_;
+            int linkage_index_;
+            std::vector<std::string> possible_rotamers_;
+            std::vector<std::string> default_seleted_rotamers_;
             std::vector<std::string> enabled_glycosidic_angles_;
     };
 
@@ -59,8 +65,8 @@ namespace CondensedSequenceSpace
 
             typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueTree;
             typedef std::vector<CondensedSequenceAmberPrepResidue*> CondensedSequenceAmberPrepResidueTree;       
-            typedef std::pair<std::string, RotomersAndGlycosidicAnglesInfo*> RotomerNameInfoPair;
-            typedef std::vector<RotomerNameInfoPair> CondensedSequenceRotomersAndGlycosidicAnglesInfo;
+            typedef std::pair<std::string, RotamersAndGlycosidicAnglesInfo*> RotamerNameInfoPair;
+            typedef std::vector<RotamerNameInfoPair> CondensedSequenceRotamersAndGlycosidicAnglesInfo;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -101,7 +107,7 @@ namespace CondensedSequenceSpace
             std::string GetSecondLetterOfAmberPrepResidueCode(std::string residue_name, std::string isomer);
             std::string GetThirdLetterOfAmberPrepResidueCode(std::string configuration, std::string ring_type);
             CondensedSequenceAmberPrepResidue* GetCondensedSequenceDerivativeAmberPrepResidue(std::string derivative_name, int derivative_index);
-            CondensedSequenceRotomersAndGlycosidicAnglesInfo GetCondensedSequenceRotomersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree);
+            CondensedSequenceRotamersAndGlycosidicAnglesInfo GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
