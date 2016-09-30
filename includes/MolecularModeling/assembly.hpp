@@ -245,10 +245,16 @@ namespace MolecularModeling
             bool CheckCondensedSequenceSanity(std::string sequence,
                                               CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues);
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
+            AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
+                                                                 std::string prep_file, std::string parameter_file,
+                                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueAngle(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueTorsion(Residue* residue, Residue* parent_residue, int branch_index);
+            void SetPhiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
+            void SetPsiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
+            void SetOmegaTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
             void SetDihedral(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4, double torsion);
             /*! \fn
               * A function to build a structure from a single pdb file
