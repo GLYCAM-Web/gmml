@@ -741,7 +741,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                     {
                         vector<vector<double> > res = new_mapper[i];
                         res.push_back(phi_psi_omega_vector_map.at(j).at(k));
-                        mapper[mapper.size() + i] = res;
+                        mapper[new_mapper.size() + i] = res;
                     }
                 }
             }
