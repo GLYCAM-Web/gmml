@@ -255,6 +255,7 @@ namespace MolecularModeling
             void SetPhiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
             void SetPsiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
             void SetOmegaTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
+            void SetOmegaDerivativeTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
             void SetDihedral(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4, double torsion);
             /*! \fn
               * A function to build a structure from a single pdb file

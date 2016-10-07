@@ -943,28 +943,39 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                     {
                         //Attach derivative
                         structures.at(i)->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
-                        linkage_index--;
                     }
-                    if(linkage_index >= 0 && !derivatives.at(parent_index))
+                    if(linkage_index >= 0)
                     {
-                        /*cout << rotamers_glycosidic_angles_info.at(linkage_index).first << " "
+                        if(!derivatives.at(parent_index))
+                        {
+                            /*cout << rotamers_glycosidic_angles_info.at(linkage_index).first << " "
                              << assembly_residue->GetName() << "(" << assembly_residue->GetHeadAtoms().at(0)->GetName() << "-"
                              << parent_residue->GetTailAtoms().at(branch_index)->GetName() << ")" << parent_residue->GetName() << endl;*/
-                        vector<double> phi_psi_omega = structure_map[i].at(linkage_index);
-                        if(phi_psi_omega.at(0) != dNotSet)
-                        {
-                            double phi = phi_psi_omega.at(0);
-                            structures.at(i)->SetPhiTorsion(assembly_residue, parent_residue, branch_index, phi);// Set phi angle of assembly_residue-parent_residue to phi
+                            vector<double> phi_psi_omega = structure_map[i].at(linkage_index);
+                            if(phi_psi_omega.at(0) != dNotSet)
+                            {
+                                double phi = phi_psi_omega.at(0);
+                                structures.at(i)->SetPhiTorsion(assembly_residue, parent_residue, branch_index, phi);// Set phi angle of assembly_residue-parent_residue to phi
+                            }
+                            if(phi_psi_omega.at(1) != dNotSet)
+                            {
+                                double psi = phi_psi_omega.at(1);
+                                structures.at(i)->SetPsiTorsion(assembly_residue, parent_residue, branch_index, psi);// Set psi angle of assembly_residue-parent_residue to psi
+                            }
+                            if(phi_psi_omega.at(2) != dNotSet)
+                            {
+                                double omega = phi_psi_omega.at(2);
+                                structures.at(i)->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, omega);// Set omega angle of assembly_residue-parent_residue to omega
+                            }
                         }
-                        if(phi_psi_omega.at(1) != dNotSet)
+                        else
                         {
-                            double psi = phi_psi_omega.at(1);
-                            structures.at(i)->SetPsiTorsion(assembly_residue, parent_residue, branch_index, psi);// Set psi angle of assembly_residue-parent_residue to psi
-                        }
-                        if(phi_psi_omega.at(2) != dNotSet)
-                        {
-                            double omega = phi_psi_omega.at(2);
-                            structures.at(i)->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, omega);// Set omega angle of assembly_residue-parent_residue to omega
+                            vector<double> phi_psi_omega = structure_map[i].at(linkage_index);
+                            if(phi_psi_omega.at(2) != dNotSet)
+                            {
+                                double omega = phi_psi_omega.at(2);
+                                structures.at(i)->SetOmegaDerivativeTorsion(assembly_residue, parent_residue, branch_index, omega);
+                            }
                         }
                     }
                     linkage_index++;
@@ -1563,6 +1574,81 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                 {
                     this->SetDihedral(atom1, atom2, atom3, atom4, torsion);
                 }
+            }
+        }
+    }
+}
+
+void Assembly::SetOmegaDerivativeTorsion(Residue *residue, Residue *parent_residue, int branch_index, double torsion)
+{
+    string residue_name = residue->GetName();
+    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+
+    Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
+    if(oxygen != NULL)
+    {
+        int oxygen_index = 1;
+        if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
+            oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+        if(residue_name.compare("SO3") == 0 && oxygen_index == 6)
+        {
+            Atom* atom1 = NULL;
+            Atom* atom2 = NULL;
+            Atom* atom3 = NULL;
+            Atom* atom4 = oxygen;
+
+            AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
+            for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
+            {
+                Atom* neighbor = *it;
+                if(neighbor->GetName().at(0) == 'C' &&
+                        (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                         ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                {
+                    atom3 = neighbor;
+                    break;
+                }
+
+            }
+            if(atom3 != NULL)
+            {
+                AtomVector atom2_neighbors = atom3->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
+                {
+                    Atom* neighbor = *it;
+                    if(neighbor->GetId().compare(oxygen->GetId()) != 0)
+                    {
+                        if(neighbor->GetName().at(0) == 'C' &&
+                                (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                        {
+                            atom2 = neighbor;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(atom2 != NULL)
+            {
+                AtomVector atom3_neighbors = atom2->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
+                {
+                    Atom* neighbor = *it;
+                    if(neighbor->GetId().compare(atom3->GetId()) != 0)
+                    {
+                        if(neighbor->GetName().at(0) == 'O' &&
+                                (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                        {
+                            atom1 = neighbor;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(atom1 != NULL && atom2 != NULL && atom3 != NULL && atom4 != NULL)
+            {
+                this->SetDihedral(atom1, atom2, atom3, atom4, torsion);
             }
         }
     }

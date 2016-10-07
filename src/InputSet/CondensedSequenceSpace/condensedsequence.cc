@@ -555,6 +555,70 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                 RotamerNameInfoPair pair_info = make_pair(rotamers_name.str(), info);
 
                 rotamers_glycosidic_angles.push_back(pair_info);
+
+
+                vector<pair<string, vector<string> > > der_possible_rotamers = vector<pair<string, vector<string> > >();
+                vector<pair<string, vector<string> > > der_selected_rotamers = vector<pair<string, vector<string> > >();
+                vector<pair<string, double> > der_enabled_glycosidic_angles = vector<pair<string, double> >();
+                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
+                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+                CondensedSequenceResidue::DerivativeMap derivatives = residue->GetDerivatives();
+                for(CondensedSequenceResidue::DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++)
+                {
+                    int derivative_index = (*it).first;
+                    string derivative_name = (*it).second;
+                    switch(ResidueNameIndexLookup(residue_absolute_name).index_)
+                    {
+                        case 10:
+                        case 1:
+                        case 2:
+                        case 12:
+                        case 21:
+                        case 20:
+                            if(derivative_index == 6 && derivative_name.compare("S") == 0)
+                            {
+                                vector<string> rot = vector<string>();
+                                rot.push_back("gg");
+                                rot.push_back("gt");
+                                rot.push_back("tg");
+                                der_possible_rotamers.push_back(make_pair("omega", rot));
+
+                                vector<string> rot1 = vector<string>();
+                                rot1.push_back("gg");
+                                rot1.push_back("gt");
+                                der_selected_rotamers.push_back(make_pair("omega", rot1));
+
+                                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                            }
+                            break;
+                        case 14:
+                        case 13:
+                        case 33:
+                        case 9:
+                        case 7:
+                            if(derivative_index == 6 && derivative_name.compare("S") == 0)
+                            {
+                                vector<string> rot = vector<string>();
+                                rot.push_back("gg");
+                                rot.push_back("gt");
+                                rot.push_back("tg");
+                                der_possible_rotamers.push_back(make_pair("omega", rot));
+                                der_selected_rotamers.push_back(make_pair("omega", rot));
+
+                                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                            }
+                            break;
+                    }
+                    linkage_index++;
+                    stringstream der_rotamers_name;
+                    der_rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration()
+                                      << "[" << derivative_index << derivative_name << "]";
+                    RotamersAndGlycosidicAnglesInfo* der_info = new RotamersAndGlycosidicAnglesInfo(linkage_index, der_possible_rotamers,
+                                                                                                    der_selected_rotamers, der_enabled_glycosidic_angles);
+                    RotamerNameInfoPair der_pair_info = make_pair(der_rotamers_name.str(), der_info);
+
+                    rotamers_glycosidic_angles.push_back(der_pair_info);
+                }
             }
         }
     }
@@ -677,7 +741,10 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
             phi.push_back(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(0).second);
 
         vector<double> psi = vector<double>();
-        psi.push_back(0.0); // standard psi angle
+        if(rotamers_glycosidic_angles_info.at(i).first.find("[") == string::npos)
+            psi.push_back(0.0); // standard psi angle
+        else
+            psi.push_back(dNotSet);
 
         // omega => dNotSet in all omega cases means not applicable
         // for the cases that the angle is not set by any of selecting rotamers or setting the angle, it is set to 180.0
@@ -763,6 +830,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
     {
         IndexLinkageConfigurationMap new_mapper = IndexLinkageConfigurationMap();
         new_mapper = mapper;
+        int counter = 0;
         for(unsigned int k = 0; k < phi_psi_omega_vector_map.at(j).size(); k++)
         {
             if(j == 0)
@@ -781,7 +849,8 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                     {
                         vector<vector<double> > res = new_mapper[i];
                         res.push_back(phi_psi_omega_vector_map.at(j).at(k));
-                        mapper[new_mapper.size() + i] = res;
+                        mapper[new_mapper.size() + counter] = res;
+                        counter++;
                     }
                 }
             }
