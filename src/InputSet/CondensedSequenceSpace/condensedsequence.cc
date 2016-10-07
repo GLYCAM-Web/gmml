@@ -446,6 +446,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                              residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();
             char ring_letter = residue->GetName()[3];
             string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
+            string parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
             vector<pair<string, vector<string> > > possible_rotamers = vector<pair<string, vector<string> > >();
             vector<pair<string, vector<string> > > selected_rotamers = vector<pair<string, vector<string> > >();
             vector<pair<string, double> > enabled_glycosidic_angles = vector<pair<string, double> >();
@@ -496,19 +497,58 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                         break;
                     case 23:
                     case 24:
-                        if(residue->GetOxygenPosition() == 2)
+                        switch(ResidueNameIndexLookup(parent_residue_absolute_name).index_)
                         {
-                            vector<string> rot = vector<string>();
-                            rot.push_back("t");
-                            rot.push_back("g");
-                            rot.push_back("-g");
-                            possible_rotamers.push_back(make_pair("phi", rot));
+                            case 10:
+                            case 1:
+                            case 2:
+                            case 12:
+                            case 21:
+                            case 20:
+                                if(residue->GetOxygenPosition() == 6)
+                                {
+                                    vector<string> rot = vector<string>();
+                                    rot.push_back("gg");
+                                    rot.push_back("gt");
+                                    rot.push_back("tg");
+                                    possible_rotamers.push_back(make_pair("omega", rot));
 
-                            vector<string> rot1 = vector<string>();
-                            rot1.push_back("t");
-                            rot1.push_back("-g");
-                            selected_rotamers.push_back(make_pair("phi", rot1));
+                                    vector<string> rot1 = vector<string>();
+                                    rot1.push_back("gg");
+                                    rot1.push_back("gt");
+                                    selected_rotamers.push_back(make_pair("omega", rot1));
+
+                                    enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                }
+                                break;
+                            case 14:
+                            case 13:
+                            case 33:
+                            case 9:
+                            case 7:
+                                if(residue->GetOxygenPosition() == 6)
+                                {
+                                    vector<string> rot = vector<string>();
+                                    rot.push_back("gg");
+                                    rot.push_back("gt");
+                                    rot.push_back("tg");
+                                    possible_rotamers.push_back(make_pair("omega", rot));
+                                    selected_rotamers.push_back(make_pair("omega", rot));
+
+                                    enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                }
+                                break;
                         }
+                        vector<string> rot = vector<string>();
+                        rot.push_back("t");
+                        rot.push_back("g");
+                        rot.push_back("-g");
+                        possible_rotamers.push_back(make_pair("phi", rot));
+
+                        vector<string> rot1 = vector<string>();
+                        rot1.push_back("t");
+                        rot1.push_back("-g");
+                        selected_rotamers.push_back(make_pair("phi", rot1));
                         break;
                 }
                 RotamersAndGlycosidicAnglesInfo* info = new RotamersAndGlycosidicAnglesInfo(linkage_index, possible_rotamers, selected_rotamers, enabled_glycosidic_angles);

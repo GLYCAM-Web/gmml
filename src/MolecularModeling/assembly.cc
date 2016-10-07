@@ -1381,6 +1381,10 @@ void Assembly::SetPhiTorsion(Residue *residue, Residue *parent_residue, int bran
             if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
                 oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
 
+            int carbon_index = 1;
+            if(carbon->GetName().size() > 1 && isdigit(carbon->GetName().at(1)))
+                carbon_index = ConvertString<int>(ConvertT<char>(carbon->GetName().at(1)));
+
             Atom* atom1 = NULL;
             Atom* atom2 = carbon;
             Atom* atom3 = oxygen;
@@ -1392,7 +1396,9 @@ void Assembly::SetPhiTorsion(Residue *residue, Residue *parent_residue, int bran
                 Atom* neighbor = *it;
                 if(neighbor->GetId().compare(carbon->GetId()) != 0)
                 {
-                    if(neighbor->GetName().at(0) == 'C')
+                    if(neighbor->GetName().at(0) == 'C' &&
+                            (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                             ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                     {
                         atom4 = neighbor;
                         break;
@@ -1405,7 +1411,9 @@ void Assembly::SetPhiTorsion(Residue *residue, Residue *parent_residue, int bran
                 Atom* neighbor = *it;
                 if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                 {
-                    if(neighbor->GetName().at(0) == 'O')
+                    if(neighbor->GetName().at(0) == 'C' &&
+                            (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                             ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == carbon_index - 1))
                     {
                         atom1 = neighbor;
                         break;
