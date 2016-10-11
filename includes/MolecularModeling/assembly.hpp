@@ -253,8 +253,8 @@ namespace MolecularModeling
             void SetAttachedResidueAngle(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueTorsion(Residue* residue, Residue* parent_residue, int branch_index);
             void SetPhiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
-            void SetPsiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
-            void SetOmegaTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
+            void SetPsiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion, bool crystallographic_definition = true);
+            void SetOmegaTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion, int type = 6);
             void SetOmegaDerivativeTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
             void SetDihedral(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4, double torsion);
             /*! \fn

@@ -111,6 +111,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceAmberPrepResidue* GetCondensedSequenceDerivativeAmberPrepResidue(std::string derivative_name, int derivative_index);
             CondensedSequenceRotamersAndGlycosidicAnglesInfo GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree);
             int CountAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
+            int CountAllPossible28LinkagesRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             std::vector<std::vector<int> > CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             IndexLinkageConfigurationMap CreateIndexLinkageConfigurationMap(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
 

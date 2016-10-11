@@ -539,16 +539,20 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                 }
                                 break;
                         }
-                        vector<string> rot = vector<string>();
-                        rot.push_back("t");
-                        rot.push_back("g");
-                        rot.push_back("-g");
-                        possible_rotamers.push_back(make_pair("phi", rot));
+                        if(ResidueNameIndexLookup(parent_residue_absolute_name).index_ != 23 &&
+                                ResidueNameIndexLookup(parent_residue_absolute_name).index_ != 24)
+                        {
+                            vector<string> rot = vector<string>();
+                            rot.push_back("t");
+                            rot.push_back("g");
+                            rot.push_back("-g");
+                            possible_rotamers.push_back(make_pair("phi", rot));
 
-                        vector<string> rot1 = vector<string>();
-                        rot1.push_back("t");
-                        rot1.push_back("-g");
-                        selected_rotamers.push_back(make_pair("phi", rot1));
+                            vector<string> rot1 = vector<string>();
+                            rot1.push_back("t");
+                            rot1.push_back("-g");
+                            selected_rotamers.push_back(make_pair("phi", rot1));
+                        }
                         break;
                 }
                 RotamersAndGlycosidicAnglesInfo* info = new RotamersAndGlycosidicAnglesInfo(linkage_index, possible_rotamers, selected_rotamers, enabled_glycosidic_angles);
@@ -654,6 +658,21 @@ int CondensedSequence::CountAllPossibleSelectedRotamers(CondensedSequenceRotamer
     return count;
 }
 
+int CondensedSequence::CountAllPossible28LinkagesRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info)
+{
+    int count = 1;
+    for(unsigned int i = 0; i < rotamers_glycosidic_angles_info.size(); i++)
+    {
+        string rotamer_name = rotamers_glycosidic_angles_info.at(i).first;
+        if(rotamer_name.find("DNeup5AcA2-8") != string::npos ||
+                rotamer_name.find("DNeup5AcB2-8") != string::npos)
+            count *= 6;
+        if(rotamer_name.find("DNeup5GcA2-8") != string::npos)
+            count *= 5;
+    }
+    return count;
+}
+
 vector<vector<int> > CondensedSequence::CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info)
 {
     vector<vector<int> > mapper = vector<vector<int> >();
@@ -742,7 +761,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
 
         vector<double> psi = vector<double>();
         if(rotamers_glycosidic_angles_info.at(i).first.find("[") == string::npos)
-            psi.push_back(0.0); // standard psi angle
+            psi.push_back(dNotSet); // standard psi angle
         else
             psi.push_back(dNotSet);
 
@@ -805,7 +824,30 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                     combination.push_back(phi.at(j));
                     combination.push_back(psi.at(k));
                     combination.push_back(omega.at(l));
-                    phi_psi_omega.push_back(combination);
+                    string rotamer_name = rotamers_glycosidic_angles_info.at(i).first;
+                    if(rotamer_name.find("DNeup5AcA2-8") != string::npos ||
+                            rotamer_name.find("DNeup5AcB2-8") != string::npos)
+                    {
+                        for(int m = 0; m < 6; m++)
+                        {
+                            vector<double> new_combination = combination;
+                            for(int n = 0; n < 5; n++)
+                                new_combination.push_back(EXTERNAL28LINKAGEROTAMERS[m][n]);
+                            phi_psi_omega.push_back(new_combination);
+                        }
+                    }
+                    else if(rotamer_name.find("DNeup5GcA2-8") != string::npos)
+                    {
+                        for(int m = 0; m < 5; m++)
+                        {
+                            vector<double> new_combination = combination;
+                            for(int n = 0; n < 5; n++)
+                                new_combination.push_back(INTERNAL28LINKAGEROTAMERS[m][n]);
+                            phi_psi_omega.push_back(new_combination);
+                        }
+                    }
+                    else
+                        phi_psi_omega.push_back(combination);
                 }
             }
         }
@@ -820,7 +862,13 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
         for(unsigned int j = 0; j < phi_psi_omega_combination.size(); j++)
         {
             vector<double> phi_psi_omega = phi_psi_omega_combination.at(j);
-            cout << "<" << phi_psi_omega.at(0) << ", " << phi_psi_omega.at(1) << ", " << phi_psi_omega.at(2) << ">";
+            cout << "<";
+            for(unsigned int k = 0; k < phi_psi_omega.size(); k++)
+            {
+                cout << phi_psi_omega.at(k);
+                (k < phi_psi_omega.size() - 1) ? cout << ", " : cout << "";
+            }
+            cout << ">";
         }
         cout << endl;
     }*/
@@ -861,7 +909,15 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
     {
         cout << i << ": ";
         for(unsigned int j = 0; j < mapper[i].size(); j++)
-            cout << "<" << mapper[i].at(j).at(0) << ", " << mapper[i].at(j).at(1) << ", " << mapper[i].at(j).at(2) << ">";
+        {
+            cout << "<";
+            for(unsigned int k = 0; k < mapper[i].at(j).size(); k++)
+            {
+                cout << mapper[i].at(j).at(k);
+                (k < mapper[i].at(j).size() - 1) ? cout << ", " : cout << " ";
+            }
+            cout << ">";
+        }
         cout << endl;
     }*/
     return mapper;
