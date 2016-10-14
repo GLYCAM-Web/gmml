@@ -595,11 +595,11 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     {
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
-                    else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
+                    else if(atom_name.at(0) == 'C' && prep_residue_name.compare("MEX") == 0)
                     {
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
-                    else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
+                    else if(atom_name.find("C1") != string::npos && prep_residue_name.compare("ACX") == 0)
                     {
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
@@ -844,11 +844,11 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         {
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
-                        else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
+                        else if(atom_name.at(0) == 'C' && prep_residue_name.compare("MEX") == 0)
                         {                            
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
-                        else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
+                        else if(atom_name.find("C1") != string::npos && prep_residue_name.compare("ACX") == 0)
                         {
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
