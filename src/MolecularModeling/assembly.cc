@@ -713,8 +713,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 else //Attach derivative
                 {
                     this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
-                    cout << this->GetTotalCharge() << endl;
                     this->AdjustCharge(assembly_residue, parent_residue, branch_index);
+                    this->SetDerivativeAngle(assembly_residue, parent_residue, branch_index);
                 }
                 // 2-8 default rotamer
                 stringstream linkage_name;
@@ -965,6 +965,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         //Attach derivative
                         structures.at(i)->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
                         structures.at(i)->AdjustCharge(assembly_residue, parent_residue, branch_index);
+                        structures.at(i)->SetDerivativeAngle(assembly_residue, parent_residue, branch_index);
                     }
                     if(linkage_index >= 0)
                     {
@@ -1030,6 +1031,38 @@ void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, int bra
 
     ///Rotate all atoms of the attached residue to set the proper Phi, Psi and Omega torsion angles
     this->SetAttachedResidueTorsion(residue, parent_residue, branch_index);
+}
+
+void Assembly::SetDerivativeAngle(Residue *residue, Residue *parent_residue, int branch_index)
+{
+    Atom* atom3 = residue->GetHeadAtoms().at(0);
+    Atom* atom2 = parent_residue->GetTailAtoms().at(branch_index);
+    Atom* atom1 = NULL;
+    if(atom2 != NULL)
+    {
+        int atom2_index = 1;
+        if(atom2->GetName().size() > 1 && isdigit(atom2->GetName().at(1)))
+            atom2_index = ConvertString<int>(ConvertT<char>(atom2->GetName().at(1)));
+
+        AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
+        {
+            Atom* neighbor = *it;
+            if(neighbor->GetId().compare(atom3->GetId()) != 0)
+            {
+                if(neighbor->GetName().at(0) == 'C' &&
+                        (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                         ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == atom2_index))
+                {
+                    atom1 = neighbor;
+                    break;
+                }
+            }
+        }
+        if(atom1 != NULL && atom2 != NULL && atom3 != NULL)
+            this->SetAngle(atom1, atom2, atom3, 124.0);
+
+    }
 }
 
 void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branch_index)
@@ -1116,8 +1149,11 @@ void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue,
     Coordinate* offset = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
     offset->operator -(*oxygen_position);
 
-    AtomVector all_atoms_of_attached_residue = residue->GetAtoms();
-    for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+    AtomVector atomsToTranslate = AtomVector();
+    atomsToTranslate.push_back(parent_target_atom);
+    residue_head_atom->FindConnectedAtoms(atomsToTranslate);
+
+    for(AtomVector::iterator it = atomsToTranslate.begin() + 1; it != atomsToTranslate.end(); it++)
     {
         (*it)->GetCoordinates().at(model_index_)->Translate(offset->GetX(), offset->GetY(), offset->GetZ());
     }
@@ -1180,8 +1216,11 @@ void Assembly::SetAttachedResidueAngle(Residue *residue, Residue *parent_residue
     direction->Normalize();
     double** rotation_matrix = GenerateRotationMatrix(direction, parent_target_atom->GetCoordinates().at(model_index_), rotation_angle);
 
-    AtomVector all_atoms_of_attached_residue = residue->GetAtoms();
-    for(AtomVector::iterator it = all_atoms_of_attached_residue.begin(); it != all_atoms_of_attached_residue.end(); it++)
+    AtomVector atomsToRotate = AtomVector();
+    atomsToRotate.push_back(parent_target_atom);
+    residue_head_atom->FindConnectedAtoms(atomsToRotate);
+
+    for(AtomVector::iterator it = atomsToRotate.begin() + 1; it != atomsToRotate.end(); it++)
     {
         Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
         Coordinate* result = new Coordinate();
@@ -2031,6 +2070,47 @@ void Assembly::SetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, d
                 torsion_matrix[1][2] * atom_coordinate->GetZ() + torsion_matrix[1][3]);
         result->SetZ(torsion_matrix[2][0] * atom_coordinate->GetX() + torsion_matrix[2][1] * atom_coordinate->GetY() +
                 torsion_matrix[2][2] * atom_coordinate->GetZ() + torsion_matrix[2][3]);
+
+        (*it)->GetCoordinates().at(model_index_)->SetX(result->GetX());
+        (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
+        (*it)->GetCoordinates().at(model_index_)->SetZ(result->GetZ());
+    }
+}
+
+void Assembly::SetAngle(Atom* atom1, Atom* atom2, Atom* atom3, double angle)
+{
+    double current_angle = 0.0;
+    Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+    Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+
+    Coordinate* b1 = new Coordinate(*a1);
+    b1->operator -(*a2);
+    Coordinate* b2 = new Coordinate(*a3);
+    b2->operator -(*a2);
+
+    current_angle = acos((b1->DotProduct(*b2)) / (b1->length() * b2->length() + DIST_EPSILON));
+    double rotation_angle = ConvertDegree2Radian(angle) - current_angle;
+
+    Coordinate* direction = new Coordinate(*b1);
+    direction->CrossProduct(*b2);
+    direction->Normalize();
+    double** rotation_matrix = GenerateRotationMatrix(direction, a2, rotation_angle);
+
+    AtomVector atomsToRotate = AtomVector();
+    atomsToRotate.push_back(atom2);
+    atom3->FindConnectedAtoms(atomsToRotate);
+
+    for(AtomVector::iterator it = atomsToRotate.begin() + 1; it != atomsToRotate.end(); it++)
+    {
+        Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+        Coordinate* result = new Coordinate();
+        result->SetX(rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
+                rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3]);
+        result->SetY(rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
+                rotation_matrix[1][2] * atom_coordinate->GetZ() + rotation_matrix[1][3]);
+        result->SetZ(rotation_matrix[2][0] * atom_coordinate->GetX() + rotation_matrix[2][1] * atom_coordinate->GetY() +
+                rotation_matrix[2][2] * atom_coordinate->GetZ() + rotation_matrix[2][3]);
 
         (*it)->GetCoordinates().at(model_index_)->SetX(result->GetX());
         (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
