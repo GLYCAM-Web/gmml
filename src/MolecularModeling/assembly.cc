@@ -593,17 +593,14 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                         assembly_residue->AddHeadAtom(assembly_atom);
                     else if(atom_name.at(0) == 'S' && prep_residue_name.compare("SO3") == 0)
                     {
-                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
                     else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
                     {
-                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() - 0.039);
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
                     else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
                     {
-                        assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.008);
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
 
@@ -714,7 +711,11 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 if(!derivatives.at(parent_index))
                     this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
                 else //Attach derivative
+                {
                     this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
+                    cout << this->GetTotalCharge() << endl;
+                    this->AdjustCharge(assembly_residue, parent_residue, branch_index);
+                }
                 // 2-8 default rotamer
                 stringstream linkage_name;
                 linkage_name << assembly_residue->GetName() << assembly_residue->GetHeadAtoms().at(0)->GetName().at(1) << "-" <<
@@ -840,17 +841,14 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                             assembly_residue->AddHeadAtom(assembly_atom);
                         else if(atom_name.at(0) == 'S' && prep_residue_name.compare("SO3") == 0)
                         {
-                            assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.031);
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
                         else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("MEX") == 0)
-                        {
-                            assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() - 0.039);
+                        {                            
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
                         else if(atom_name.compare("C" + amber_prep_residue_parent_oxygen[1]) == 0 && prep_residue_name.compare("ACX") == 0)
                         {
-                            assembly_atom->MolecularDynamicAtom::SetCharge(assembly_atom->MolecularDynamicAtom::GetCharge() + 0.008);
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
 
@@ -959,12 +957,14 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
 
                     int branch_index = parent_branch_map[parent_residue];
 
+
                     if(!derivatives.at(parent_index))
                         structures.at(i)->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
                     else
                     {
                         //Attach derivative
                         structures.at(i)->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
+                        structures.at(i)->AdjustCharge(assembly_residue, parent_residue, branch_index);
                     }
                     if(linkage_index >= 0)
                     {
@@ -1030,6 +1030,43 @@ void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, int bra
 
     ///Rotate all atoms of the attached residue to set the proper Phi, Psi and Omega torsion angles
     this->SetAttachedResidueTorsion(residue, parent_residue, branch_index);
+}
+
+void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branch_index)
+{
+    if(residue->GetName().compare("SO3") == 0)
+    {
+      parent_residue->GetTailAtoms().at(branch_index)->MolecularDynamicAtom::SetCharge(
+                  parent_residue->GetTailAtoms().at(branch_index)->MolecularDynamicAtom::GetCharge() + 0.031);
+    }
+    else if(residue->GetName().compare("MEX") == 0 || residue->GetName().compare("ACX") == 0)
+    {
+        Atom* oxygen = parent_residue->GetTailAtoms().at(branch_index);
+        Atom* carbon = NULL;
+        int oxygen_index = 1;
+        if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
+            oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+
+        AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
+        {
+            Atom* neighbor = *it;
+            if(neighbor->GetName().at(0) == 'C' &&
+                    (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+            {
+                carbon = neighbor;
+                break;
+            }
+        }
+        if(carbon != NULL)
+        {
+            if(residue->GetName().compare("MEX") == 0)
+                carbon->MolecularDynamicAtom::SetCharge(carbon->MolecularDynamicAtom::GetCharge() - 0.039);
+            if(residue->GetName().compare("ACX") == 0)
+                carbon->MolecularDynamicAtom::SetCharge(carbon->MolecularDynamicAtom::GetCharge() + 0.008);
+        }
+    }
 }
 
 void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue, int branch_index, string parameter_file)

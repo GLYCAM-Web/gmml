@@ -249,6 +249,7 @@ namespace MolecularModeling
                                                                  std::string prep_file, std::string parameter_file,
                                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
+            void AdjustCharge(Residue* residue, Residue* parent_residue, int branch_index);
             void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueAngle(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueTorsion(Residue* residue, Residue* parent_residue, int branch_index);
