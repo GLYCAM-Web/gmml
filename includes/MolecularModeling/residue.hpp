@@ -101,6 +101,12 @@ namespace MolecularModeling
               */
             void AddAtom(Atom* atom);
             /*! \fn
+              * A function in order to remove the atom from the current object
+              * Set the atoms_ attribute of the current residue
+              * @param atom The atom of the current object
+              */
+            void RemoveAtom(Atom* atom);
+            /*! \fn
               * A mutator function in order to set the head atoms of the current object
               * Set the head_atoms_ attribute of the current residue
               * @param head_atoms The head atoms attribute of the current object

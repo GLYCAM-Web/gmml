@@ -102,6 +102,22 @@ void Residue::AddAtom(Atom *atom)
 {
     atoms_.push_back(atom);
 }
+void Residue::RemoveAtom(Atom *atom)
+{
+    AtomVector newAtoms = AtomVector();
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        Atom* a = *it;
+        if(a->GetId().compare(atom->GetId()) != 0)
+        {
+            if(a->GetNode() != NULL)
+                a->GetNode()->RemoveNodeNeighbor(atom);
+            newAtoms.push_back(a);
+        }
+    }
+    this->SetAtoms(newAtoms);
+}
+
 void Residue::SetHeadAtoms(AtomVector head_atoms)
 {
     head_atoms_.clear();

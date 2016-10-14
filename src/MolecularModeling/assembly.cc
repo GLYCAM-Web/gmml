@@ -713,6 +713,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 else //Attach derivative
                 {
                     this->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
+                    this->RemoveHydrogenAtAttachedPosition(parent_residue, branch_index);
                     this->AdjustCharge(assembly_residue, parent_residue, branch_index);
                     this->SetDerivativeAngle(assembly_residue, parent_residue, branch_index);
                 }
@@ -964,6 +965,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                     {
                         //Attach derivative
                         structures.at(i)->AttachResidues(assembly_residue, parent_residue, branch_index, parameter_file);
+                        structures.at(i)->RemoveHydrogenAtAttachedPosition(parent_residue, branch_index);
                         structures.at(i)->AdjustCharge(assembly_residue, parent_residue, branch_index);
                         structures.at(i)->SetDerivativeAngle(assembly_residue, parent_residue, branch_index);
                     }
@@ -1031,6 +1033,34 @@ void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, int bra
 
     ///Rotate all atoms of the attached residue to set the proper Phi, Psi and Omega torsion angles
     this->SetAttachedResidueTorsion(residue, parent_residue, branch_index);
+}
+
+void Assembly::RemoveHydrogenAtAttachedPosition(Residue *residue, int branch_index)
+{
+    Atom* oxygen = residue->GetTailAtoms().at(branch_index);
+    if(oxygen != NULL)
+    {
+        int oxygen_index = 1;
+        if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
+            oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+
+        Atom* hydrogen = NULL;
+
+        AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
+        for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
+        {
+            Atom* neighbor = *it;
+            if(neighbor->GetName().at(0) == 'H' &&
+                    (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
+                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+            {
+                hydrogen = neighbor;
+                break;
+            }
+
+        }
+        residue->RemoveAtom(hydrogen);
+    }
 }
 
 void Assembly::SetDerivativeAngle(Residue *residue, Residue *parent_residue, int branch_index)
