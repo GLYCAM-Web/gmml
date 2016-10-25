@@ -1352,6 +1352,8 @@ namespace MolecularModeling
 
             void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
             void Solvation(double extension, double closeness, std::string lib_file);
+            void SplitSolvent(Assembly* solvent, Assembly* solute);
+            void SplitIons(Assembly* assembly, ResidueVector ions);
 
             double GetTotalCharge();
             double GetRadius();

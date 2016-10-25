@@ -15438,6 +15438,37 @@ void Assembly::Solvation(double extension, double closeness, string lib_file)
     }
 }
 
+void Assembly::SplitSolvent(Assembly* solvent, Assembly* solute)
+{
+    for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
+    {
+        (*it)->SplitSolvent(solvent, solute);
+    }
+    for(ResidueVector::iterator it = this->residues_.begin(); it != this->residues_.end(); it++)
+    {
+        Residue* residue = *it;
+        if(residue->GetName().compare("HOH") == 0 || residue->GetName().compare("TP3") == 0 ||
+                residue->GetName().compare("TP5") == 0)
+            solvent->AddResidue(residue);
+        else
+            solute->AddResidue(residue);
+    }
+}
+
+void Assembly::SplitIons(Assembly *assembly, ResidueVector ions)
+{
+    for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
+        (*it)->SplitIons(assembly, ions);
+    for(ResidueVector::iterator it = this->residues_.begin(); it != this->residues_.end(); it++)
+    {
+        Residue* residue = *it;
+        if(residue->GetAtoms().size() == 1)
+            ions.push_back(residue);
+        else
+            assembly->AddResidue(residue);
+    }
+}
+
 double Assembly::GetTotalCharge()
 {
     double charge = 0;
