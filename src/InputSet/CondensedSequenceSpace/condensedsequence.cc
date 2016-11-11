@@ -714,21 +714,30 @@ vector<vector<int> > CondensedSequence::CreateBaseMapAllPossibleSelectedRotamers
 }
 
 CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLinkageConfigurationMap(
-        CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info)
+        CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info, IndexNameMap& names)
 {
     IndexLinkageConfigurationMap mapper = IndexLinkageConfigurationMap();
+    IndexConfigurationNameMap name_mapper = IndexConfigurationNameMap();
     vector<vector<int> > mapping = this->CreateBaseMapAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info);
     vector<vector<vector<double> > > phi_psi_omega_vector_map = vector<vector<vector<double> > >();
+    vector<vector<vector<string> > > phi_psi_omega_rt_vector_map = vector<vector<vector<string> > >();
     for(unsigned int i = 0; i < mapping.size(); i++)
     {
         vector<double> phi = vector<double>();
+        vector<string> phi_rt = vector<string>();
         // phi => dNotSet in all phi cases means default value
         if(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(0).second == dNotSet) // value not set
         {
             if(rotamers_glycosidic_angles_info.at(i).second->possible_rotamers_.size() == 0) // no possible rotamer
+            {
                 phi.push_back(dNotSet);
+                phi_rt.push_back("df");
+            }
             else if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.size() == 0) // no selected rotamer
+            {
                 phi.push_back(dNotSet);
+                phi_rt.push_back("df");
+            }
             else
             {
                 bool phi_check = false;
@@ -737,50 +746,88 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                     if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).first.compare("phi") == 0)
                     {
                         if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.size() == 0)
+                        {
                             phi.push_back(dNotSet);
+                            phi_rt.push_back("df");
+                        }
                         else
                         {
                             for(unsigned int k = 0; k < rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.size(); k++)
                             {
                                 if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.at(k).compare("t") == 0)
+                                {
                                     phi.push_back(180.0);
+                                    phi_rt.push_back("t");
+                                }
                                 else if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.at(k).compare("g") == 0)
+                                {
                                     phi.push_back(60.0);
+                                    phi_rt.push_back("g");
+                                }
                                 else if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.at(k).compare("-g") == 0)
+                                {
                                     phi.push_back(-60.0);
+                                    phi_rt.push_back("-g");
+                                }
                                 else
+                                {
                                     phi.push_back(dNotSet);
+                                    phi_rt.push_back("df");
+                                }
                             }
                         }
                         phi_check = true;
                     }
                 }
                 if(!phi_check)
+                {
                     phi.push_back(dNotSet);
+                    phi_rt.push_back("df");
+                }
             }
         }
         else
+        {
             phi.push_back(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(0).second);
+            phi_rt.push_back("cu");
+        }
 
         vector<double> psi = vector<double>();
+        vector<string> psi_rt = vector<string>();
         if(rotamers_glycosidic_angles_info.at(i).first.find("[") == string::npos)
+        {
             psi.push_back(dNotSet); // standard psi angle
+            psi_rt.push_back("df");
+        }
         else
+        {
             psi.push_back(dNotSet);
+            psi_rt.push_back("df");
+        }
 
         // omega => dNotSet in all omega cases means not applicable
         // for the cases that the angle is not set by any of selecting rotamers or setting the angle, it is set to 180.0
         vector<double> omega = vector<double>();
+        vector<string> omega_rt = vector<string>();
         if(mapping.at(i).at(2) == 0)
+        {
             omega.push_back(dNotSet);
+            omega_rt.push_back("na");
+        }
         else
         {
             if(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(2).second == dNotSet) // value not set
             {
                 if(rotamers_glycosidic_angles_info.at(i).second->possible_rotamers_.size() == 0) // no possible rotamer, never happens
+                {
                     omega.push_back(180.0);
+                    omega_rt.push_back("df");
+                }
                 else if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.size() == 0) // no selected rotamer
+                {
                     omega.push_back(180.0);
+                    omega_rt.push_back("df");
+                }
                 else
                 {
                     bool omega_check = false;
@@ -789,34 +836,56 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                         if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).first.compare("omega") == 0)
                         {
                             if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.size() == 0)
+                            {
                                 omega.push_back(180.0);
+                                omega_rt.push_back("df");
+                            }
                             else
                             {
                                 for(unsigned int k = 0; k < rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.size(); k++)
                                 {
                                     if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.at(k).compare("tg") == 0)
+                                    {
                                         omega.push_back(180.0);
+                                        omega_rt.push_back("tg");
+                                    }
                                     else if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.at(k).compare("gt") == 0)
+                                    {
                                         omega.push_back(60.0);
+                                        omega_rt.push_back("gt");
+                                    }
                                     else if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.at(k).compare("gg") == 0)
+                                    {
                                         omega.push_back(-60.0);
+                                        omega_rt.push_back("gg");
+                                    }
                                     else
+                                    {
                                         omega.push_back(180.0);
+                                        omega_rt.push_back("df");
+                                    }
                                 }
                             }
                             omega_check = true;
                         }
                     }
                     if(!omega_check)
+                    {
                         omega.push_back(180.0);
+                        omega_rt.push_back("df");
+                    }
                 }
             }
             else
+            {
                 omega.push_back(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(0).second);
+                omega_rt.push_back("cu");
+            }
         }
 
         // Build all <phi, psi, omega> for each linkage
         vector<vector<double> > phi_psi_omega = vector<vector<double> >();
+        vector<vector<string> > phi_psi_omega_rt = vector<vector<string> >();
         for(unsigned int j = 0; j < phi.size(); j++)
         {
             for(unsigned int k = 0; k < psi.size(); k++)
@@ -824,9 +893,13 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                 for(unsigned int l = 0; l < omega.size(); l++)
                 {
                     vector<double> combination = vector<double>();
+                    vector<string> combination_rt = vector<string>();
                     combination.push_back(phi.at(j));
+                    combination_rt.push_back(phi_rt.at(j));
                     combination.push_back(psi.at(k));
+                    combination_rt.push_back(psi_rt.at(k));
                     combination.push_back(omega.at(l));
+                    combination_rt.push_back(omega_rt.at(l));
                     string rotamer_name = rotamers_glycosidic_angles_info.at(i).first;
                     if(rotamer_name.find("DNeup5AcA2-8") != string::npos ||
                             rotamer_name.find("DNeup5AcB2-8") != string::npos)
@@ -834,9 +907,14 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                         for(int m = 0; m < 6; m++)
                         {
                             vector<double> new_combination = combination;
+                            vector<string> new_combination_rt = combination_rt;
                             for(int n = 0; n < 5; n++)
+                            {
                                 new_combination.push_back(EXTERNAL28LINKAGEROTAMERS[m][n]);
+                                new_combination_rt.push_back("E" + ConvertT<int>(m) + "/" + ConvertT<int>(n));
+                            }
                             phi_psi_omega.push_back(new_combination);
+                            phi_psi_omega_rt.push_back(new_combination_rt);
                         }
                     }
                     else if(rotamer_name.find("DNeup5GcA2-8") != string::npos)
@@ -844,17 +922,26 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                         for(int m = 0; m < 5; m++)
                         {
                             vector<double> new_combination = combination;
+                            vector<string> new_combination_rt = combination_rt;
                             for(int n = 0; n < 5; n++)
+                            {
                                 new_combination.push_back(INTERNAL28LINKAGEROTAMERS[m][n]);
+                                new_combination_rt.push_back("I" + ConvertT<int>(m) + "/" + ConvertT<int>(n));
+                            }
                             phi_psi_omega.push_back(new_combination);
+                            phi_psi_omega_rt.push_back(new_combination_rt);
                         }
                     }
                     else
+                    {
                         phi_psi_omega.push_back(combination);
+                        phi_psi_omega_rt.push_back(combination_rt);
+                    }
                 }
             }
         }
         phi_psi_omega_vector_map.push_back(phi_psi_omega);
+        phi_psi_omega_rt_vector_map.push_back(phi_psi_omega_rt);
 
     }
 
@@ -880,7 +967,9 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
     for(unsigned int j = 0; j < phi_psi_omega_vector_map.size(); j++)
     {
         IndexLinkageConfigurationMap new_mapper = IndexLinkageConfigurationMap();
+        IndexConfigurationNameMap new_name_mapper = IndexConfigurationNameMap();
         new_mapper = mapper;
+        new_name_mapper = name_mapper;
         int counter = 0;
         for(unsigned int k = 0; k < phi_psi_omega_vector_map.at(j).size(); k++)
         {
@@ -888,19 +977,26 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
             {
                 mapper[k] = vector<vector<double> >();
                 mapper[k].push_back(phi_psi_omega_vector_map.at(j).at(k));
+                name_mapper[k].push_back(phi_psi_omega_rt_vector_map.at(j).at(k));
             }
             else
             {
                 if(k == 0)
                     for(unsigned int i = 0; i < mapper.size(); i++)
+                    {
                         mapper[i].push_back(phi_psi_omega_vector_map.at(j).at(k));
+                        name_mapper[i].push_back(phi_psi_omega_rt_vector_map.at(j).at(k));
+                    }
                 else
                 {
                     for(unsigned int i = 0; i < new_mapper.size(); i++)
                     {
                         vector<vector<double> > res = new_mapper[i];
+                        vector<vector<string> > res_rt = new_name_mapper[i];
                         res.push_back(phi_psi_omega_vector_map.at(j).at(k));
+                        res_rt.push_back(phi_psi_omega_rt_vector_map.at(j).at(k));
                         mapper[new_mapper.size() + counter] = res;
+                        name_mapper[new_name_mapper.size() + counter] = res_rt;
                         counter++;
                     }
                 }
@@ -908,9 +1004,9 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
         }
     }
 
-    /*for(int i = 0; i < mapper.size(); i++)
+    for(int i = 0; i < mapper.size(); i++)
     {
-        cout << i << ": ";
+        /*cout << i << ": ";
         for(unsigned int j = 0; j < mapper[i].size(); j++)
         {
             cout << "<";
@@ -919,10 +1015,23 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                 cout << mapper[i].at(j).at(k);
                 (k < mapper[i].at(j).size() - 1) ? cout << ", " : cout << " ";
             }
-            cout << ">";
+            cout << ">";            
+        }*/
+        stringstream ss;
+        for(unsigned int j = 0; j < mapper[i].size(); j++)
+        {
+            for(unsigned int k = 0; k < mapper[i].at(j).size(); k++)
+            {
+                if(name_mapper[i].at(j).at(k).compare("df") != 0 &&
+                        name_mapper[i].at(j).at(k).compare("cu") != 0 &&
+                        name_mapper[i].at(j).at(k).compare("na") != 0)
+                    ss << name_mapper[i].at(j).at(k) << "-";
+            }
         }
-        cout << endl;
-    }*/
+        names[i] = ss.str().substr(0,ss.str().size()-1);
+        /*cout << "<" << ss.str().substr(0,ss.str().size()-1) << ">";
+        cout << endl;*/
+    }
     return mapper;
 }
 
@@ -930,7 +1039,9 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 void CondensedSequence::Print(ostream &out)
-{}
+{
+
+}
 
 
 

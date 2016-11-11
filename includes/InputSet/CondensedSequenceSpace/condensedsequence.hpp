@@ -69,6 +69,8 @@ namespace CondensedSequenceSpace
             typedef std::pair<std::string, RotamersAndGlycosidicAnglesInfo*> RotamerNameInfoPair;
             typedef std::vector<RotamerNameInfoPair> CondensedSequenceRotamersAndGlycosidicAnglesInfo;
             typedef std::map<int, std::vector<std::vector<double> > > IndexLinkageConfigurationMap;
+            typedef std::map<int, std::vector<std::vector<std::string> > > IndexConfigurationNameMap;
+            typedef std::map<int, std::string> IndexNameMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -113,7 +115,8 @@ namespace CondensedSequenceSpace
             int CountAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             int CountAllPossible28LinkagesRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             std::vector<std::vector<int> > CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
-            IndexLinkageConfigurationMap CreateIndexLinkageConfigurationMap(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
+            IndexLinkageConfigurationMap CreateIndexLinkageConfigurationMap(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
+                                                                            IndexNameMap& names);
 
 
             //////////////////////////////////////////////////////////

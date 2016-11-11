@@ -748,15 +748,17 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
 }
 
 Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string sequence, string prep_file, string parameter_file,
-                                                                         CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info)
+                                                                         CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
+                                                                         CondensedSequence::IndexNameMap& names)
 {
 
     try
     {
         CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
         AssemblyVector structures = AssemblyVector(condensed_sequence->CountAllPossible28LinkagesRotamers(rotamers_glycosidic_angles_info) *
-                                                   condensed_sequence->CountAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info));
-        CondensedSequence::IndexLinkageConfigurationMap structure_map = condensed_sequence->CreateIndexLinkageConfigurationMap(rotamers_glycosidic_angles_info);
+                                                   condensed_sequence->CountAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info));        
+        CondensedSequence::IndexLinkageConfigurationMap structure_map = condensed_sequence->CreateIndexLinkageConfigurationMap(
+                    rotamers_glycosidic_angles_info, names);
         CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
         PrepFile* prep = new PrepFile(prep_file);
         PrepFile::ResidueMap prep_residue_map = prep->GetResidues();

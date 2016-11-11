@@ -247,7 +247,8 @@ namespace MolecularModeling
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
             AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
                                                                  std::string prep_file, std::string parameter_file,
-                                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
+                                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
+                                                                 CondensedSequenceSpace::CondensedSequence::IndexNameMap& names);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
             void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);
