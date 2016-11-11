@@ -61,6 +61,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
+#include "../../../includes/GeometryTopology/coordinate.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
@@ -2194,12 +2195,21 @@ void PdbFile::InsertResidueBefore(PdbAtomCard* residue)
                         sequence_number = atom->GetAtomResidueSequenceNumber();
                     if(located)
                     {
+                        // TODO: update coordinates with respect to it2
+                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                            coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
+                        base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, -1);
+                        base_coordinate->RotateAngularAll(coordinate_set, 180.0, -1);
+                        base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, -1);
                         for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
                             PdbAtom* atom_of_residue = (*it3);
+                            int index = distance(ordered_atoms_of_residue.begin(), it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                            atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
+                                                            atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
@@ -2342,12 +2352,21 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, i
                         sequence_number = atom->GetAtomResidueSequenceNumber();
                     if(located)
                     {
+                        // TODO: update coordinates with respect to it2
+                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                            coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
+                        base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, -1);
+                        base_coordinate->RotateAngularAll(coordinate_set, 180.0, -1);
+                        base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, -1);
                         for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
                             PdbAtom* atom_of_residue = (*it3);
+                            int index = distance(ordered_atoms_of_residue.begin(), it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                            atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
+                                                            atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
@@ -2505,13 +2524,22 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                 {
                     if(located)
                     {
+                        // TODO: update coordinates with respect to it2
+                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                            coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
+                        base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
+                        base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
+                        base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, 1);
                         sequence_number++;
                         for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
                             PdbAtom* atom_of_residue = (*it3);
+                            int index = distance(ordered_atoms_of_residue.begin(), it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                            atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
+                                                            atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
@@ -2552,13 +2580,22 @@ void PdbFile::InsertResidueAfter(PdbAtomCard* residue)
                 }
                 if(it2 == --ordered_atoms.end() && located)
                 {
+                    // TODO: update coordinates with respect to it2
+                    GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                    GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                    for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                        coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
+                    base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
+                    base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
+                    base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, 1);
                     sequence_number++;
                     for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                     {
                         PdbAtom* atom_of_residue = (*it3);
+                        int index = distance(ordered_atoms_of_residue.begin(), it3);
                         PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                        atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
+                                                        atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                         atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                         updated_atoms[serial_number] = new_atom;
@@ -2676,13 +2713,22 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                 {
                     if(located)
                     {
+                        // TODO: update coordinates with respect to it2
+                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                        for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                            coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
+                        base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
+                        base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
+                        base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, 1);
                         sequence_number++;
                         for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
                             PdbAtom* atom_of_residue = (*it3);
+                            int index = distance(ordered_atoms_of_residue.begin(), it3);
                             PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                            atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
+                                                            atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                             atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                             updated_atoms[serial_number] = new_atom;
@@ -2722,13 +2768,22 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, in
                 }
                 if(it2 == --ordered_atoms.end() && located)
                 {
+                    // TODO: update coordinates with respect to it2
+                    GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                    GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                    for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                        coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
+                    base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
+                    base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
+                    base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, 1);
                     sequence_number++;
                     for(PdbAtomCard::PdbAtomOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                     {
                         PdbAtom* atom_of_residue = (*it3);
+                        int index = distance(ordered_atoms_of_residue.begin(), it3);
                         PdbAtom* new_atom = new PdbAtom(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                        atom_of_residue->GetAtomInsertionCode(), atom_of_residue->GetAtomOrthogonalCoordinate(),
+                                                        atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
                                                         atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
                         updated_atoms[serial_number] = new_atom;
