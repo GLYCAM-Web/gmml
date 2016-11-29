@@ -696,6 +696,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
         if(structure)
         {
             map<Residue*, int> parent_branch_map = map<Residue*, int>();
+            int linkage_index = -1;
             for(ResidueVector::iterator it = parent_residues.begin(); it != parent_residues.end(); it++)
             {
                 Residue* parent_residue = (*it);
@@ -717,27 +718,31 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     this->AdjustCharge(assembly_residue, parent_residue, branch_index);
                     this->SetDerivativeAngle(assembly_residue, parent_residue, branch_index);
                 }
-                // 2-8 default rotamer
-                stringstream linkage_name;
-                linkage_name << assembly_residue->GetName() << assembly_residue->GetHeadAtoms().at(0)->GetName().at(1) << "-" <<
-                                parent_residue->GetTailAtoms().at(branch_index)->GetName().at(1) << parent_residue->GetName();
-                if(linkage_name.str().find("0SA2-8") != string::npos ||
-                                            linkage_name.str().find("0SB2-8") != string::npos)
+                if(linkage_index >= 0)
                 {
-                    this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][0]);
-                    this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][1], false);
-                    this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][2], 7);
-                    this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][3], 8);
-                    this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][4], 9);
+                    // 2-8 default rotamer
+                    stringstream linkage_name;
+                    linkage_name << assembly_residue->GetName() << assembly_residue->GetHeadAtoms().at(0)->GetName().at(1) << "-" <<
+                                    parent_residue->GetTailAtoms().at(branch_index)->GetName().at(1) << parent_residue->GetName();
+                    if(linkage_name.str().find("0SA2-8") != string::npos ||
+                                                linkage_name.str().find("0SB2-8") != string::npos)
+                    {
+                        this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][0]);
+                        this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][1], false);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][2], 7);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][3], 8);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][4], 9);
+                    }
+                    if(linkage_name.str().find("0GL2-8") != string::npos)
+                    {
+                        this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][0]);
+                        this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][1], false);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][2], 7);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][3], 8);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][4], 9);
+                    }
                 }
-                if(linkage_name.str().find("0GL2-8") != string::npos)
-                {
-                    this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][0]);
-                    this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][1], false);
-                    this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][2], 7);
-                    this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][3], 8);
-                    this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][4], 9);
-                }
+                linkage_index++;
             }
         }
     }
