@@ -4,12 +4,17 @@
 #include <ostream>
 #include <iomanip>
 #include <iostream>
+#include <vector>
 
 namespace GeometryTopology
 {
     class Coordinate
     {
         public:
+            //////////////////////////////////////////////////////////
+            //                    TYPE DEFINITION                   //
+            //////////////////////////////////////////////////////////
+            typedef std::vector<Coordinate*> CoordinateVector;
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
@@ -121,7 +126,9 @@ namespace GeometryTopology
             void operator /(Coordinate coordinate);
             void operator/(double divisor);
             void operator*(double multiplier);
-
+            void TranslateAll(CoordinateVector coordinate_set, double margin, int pos);
+            void RotateAngularAll(CoordinateVector coordinate_set, double angle, int pos);
+            void RotateTorsionalAll(CoordinateVector coordinate_set, double torsion, int pos);
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

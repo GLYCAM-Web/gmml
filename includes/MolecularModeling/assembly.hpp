@@ -247,15 +247,21 @@ namespace MolecularModeling
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
             AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
                                                                  std::string prep_file, std::string parameter_file,
-                                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
+                                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
+                                                                 CondensedSequenceSpace::CondensedSequence::IndexNameMap& names);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
+            void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
+            void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);
+            void AdjustCharge(Residue* residue, Residue* parent_residue, int branch_index);
             void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueAngle(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void SetAttachedResidueTorsion(Residue* residue, Residue* parent_residue, int branch_index);
             void SetPhiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
-            void SetPsiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
-            void SetOmegaTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
+            void SetPsiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion, bool crystallographic_definition = true);
+            void SetOmegaTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion, int type = 6);
+            void SetOmegaDerivativeTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
             void SetDihedral(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4, double torsion);
+            void SetAngle(Atom* atom1, Atom* atom2, Atom* atom3, double angle);
             /*! \fn
               * A function to build a structure from a single pdb file
               * Imports data from pdb file data structure into central data structure
@@ -1347,6 +1353,8 @@ namespace MolecularModeling
 
             void Ionizing(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
             void Solvation(double extension, double closeness, std::string lib_file);
+            void SplitSolvent(Assembly* solvent, Assembly* solute);
+            void SplitIons(Assembly* assembly, ResidueVector ions);
 
             double GetTotalCharge();
             double GetRadius();

@@ -78,13 +78,15 @@ void AtomNode::SetId(int id)
     id_ = id;
 }
 void AtomNode::RemoveNodeNeighbor(Atom *node_neighbor)
-{
+{    
+    AtomVector new_node_neighbors = AtomVector();
     for(AtomVector::iterator it = node_neighbors_.begin(); it != node_neighbors_.end(); it++)
     {
         Atom* atom = (*it);
-        if(atom->GetId().compare(node_neighbor->GetId()) == 0)
-                node_neighbors_.erase(it);
+        if(atom->GetId().compare(node_neighbor->GetId()) != 0)
+                new_node_neighbors.push_back(atom);
     }
+    this->SetNodeNeighbors(new_node_neighbors);
 }
 
 void AtomNode::SetElementLabel(string element_label)
