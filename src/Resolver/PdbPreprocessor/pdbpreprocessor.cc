@@ -2931,7 +2931,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<stri
         PdbPreprocessorMissingResidue* gap = (*it1);
         pdb_file->SplitAtomCardOfModelCard(gap->GetResidueChainId(), gap->GetResidueAfterGap());
     }
-    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms;
+    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms;    
     for(PdbPreprocessor::PdbPreprocessorMissingResidueVector::iterator it1 = gaps.begin(); it1 != gaps.end(); it1++)
     {
         PdbPreprocessorMissingResidue* gap = (*it1);
