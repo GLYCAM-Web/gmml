@@ -8,32 +8,32 @@ MAKEFILE      = Makefile-main
 
 ####### Compiler, tools and options
 
-CC            = gcc
-CXX           = g++
-CFLAGS        = -m64 -pipe -O3 -D_REENTRANT -fPIC
+CC	    = gcc
+CXX	   = g++
+CFLAGS	= -m64 -pipe -O3 -D_REENTRANT -fPIC
 CXXFLAGS      = -m64 -pipe -O3 -D_REENTRANT -fPIC
 INCPATH       = -I. -Iincludes -Iincludes/GeometryTopology -Iincludes/Glycan -Iincludes/InputSet/CoordinateFileSpace -Iincludes/InputSet/PdbFileSpace -Iincludes/InputSet/PdbqtFileSpace -Iincludes/InputSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/InputSet/CondensedSequenceSpace -Iincludes/GeometryTopology/InternalCoordinate -Iincludes/Resolver/PdbPreprocessor -Iincludes/InputSet/CifFileSpace -I.
-LINK          = g++
-LFLAGS        = -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1
-LIBS          = $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu -lpthread 
-AR            = ar cqs
-RANLIB        = 
-TAR           = tar -cf
+LINK	  = g++
+LFLAGS	= -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1
+LIBS	  = $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu -lpthread 
+AR	    = ar cqs
+RANLIB	= 
+TAR	   = tar -cf
 COMPRESS      = gzip -9f
-COPY          = cp -f
-SED           = sed
+COPY	  = cp -f
+SED	   = sed
 COPY_FILE     = cp -f
 COPY_DIR      = cp -f -R
-STRIP         = strip
+STRIP	 = strip
 INSTALL_FILE  = install -m 644 -p
 INSTALL_DIR   = $(COPY_DIR)
 INSTALL_PROGRAM = install -m 755 -p
 DEL_FILE      = rm -f
 SYMLINK       = ln -f -s
 DEL_DIR       = rmdir
-MOVE          = mv -f
+MOVE	  = mv -f
 CHK_DIR_EXISTS= test -d
-MKDIR         = mkdir -p
+MKDIR	 = mkdir -p
 
 ####### Output directory
 
@@ -45,7 +45,26 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/GeometryTopology/coordinate.cc \
 		src/GeometryTopology/grid.cc \
 		src/GeometryTopology/plane.cc \
-		src/MolecularModeling/assembly.cc \
+		src/MolecularModeling/Assembly/assembly.cc \
+		src/MolecularModeling/Assembly/geometryoperation.cc \
+		src/MolecularModeling/Assembly/manipulationoperation.cc \
+		src/MolecularModeling/Assembly/Ontology/population.cc \
+		src/MolecularModeling/Assembly/Ontology/query.cc \
+		src/MolecularModeling/Assembly/Ontology/analysis.cc \
+		src/MolecularModeling/Assembly/SugarIdentification/ringperception.cc \
+		src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc \
+		src/MolecularModeling/Assembly/structurebuilder.cc \
+		src/MolecularModeling/Assembly/assemblybuilder.cc \
+		src/MolecularModeling/Assembly/Output/pdbbuilder.cc \
+		src/MolecularModeling/Assembly/Output/pdbqtbuilder.cc \
+		src/MolecularModeling/Assembly/Output/prepbuilder.cc \
+		src/MolecularModeling/Assembly/Output/topologybuilder.cc \
+		src/MolecularModeling/Assembly/Output/coordinatebuilder.cc \
+		src/MolecularModeling/Assembly/Output/librarybuilder.cc \
+		src/MolecularModeling/Assembly/solvation.cc \
+		src/MolecularModeling/Assembly/ionization.cc \
+		src/MolecularModeling/Assembly/selection.cc \
+		src/MolecularModeling/Assembly/glycamnaming.cc \
 		src/MolecularModeling/atom.cc \
 		src/MolecularModeling/atomnode.cc \
 		src/MolecularModeling/dockingatom.cc \
@@ -290,7 +309,7 @@ OBJECTS       = build/cell.o \
 		build/pdbpreprocessorunrecognizedheavyatom.o \
 		build/pdbpreprocessorunrecognizedresidue.o
 DESTDIR       = bin/
-TARGET        = libgmml.so.1.0.0
+TARGET	= libgmml.so.1.0.0
 TARGETA       = bin/libgmml.a
 TARGETD       = libgmml.so.1.0.0
 TARGET0       = libgmml.so
@@ -455,7 +474,7 @@ build/plane.o: src/GeometryTopology/plane.cc includes/GeometryTopology/plane.hpp
 		includes/Glycan/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/plane.o src/GeometryTopology/plane.cc
 
-build/assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/assembly.hpp \
+build/assembly.o: src/MolecularModeling/Assembly/assembly.cc includes/MolecularModeling/assembly.hpp \
 		includes/GeometryTopology/coordinate.hpp \
 		includes/GeometryTopology/plane.hpp \
 		includes/common.hpp \
@@ -520,7 +539,1280 @@ build/assembly.o: src/MolecularModeling/assembly.cc includes/MolecularModeling/a
 		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
 		includes/GeometryTopology/grid.hpp \
 		includes/GeometryTopology/cell.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/assembly.o src/MolecularModeling/assembly.cc
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/assembly.o src/MolecularModeling/Assembly/assembly.cc
+
+build/geometryoperation.o: src/MolecularModeling/Assembly/geometryoperation.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/geometryoperation.o src/MolecularModeling/Assembly/geometryoperation.cc
+
+build/manipulationoperation.o: src/MolecularModeling/Assembly/manipulationoperation.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/manipulationoperation.o src/MolecularModeling/Assembly/manipulationoperation.cc
+
+build/population.o: src/MolecularModeling/Assembly/Ontology/population.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/population.o src/MolecularModeling/Assembly/Ontology/population.cc
+
+build/query.o: src/MolecularModeling/Assembly/Ontology/query.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/query.o src/MolecularModeling/Assembly/Ontology/query.cc
+
+build/analysis.o: src/MolecularModeling/Assembly/Ontology/analysis.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/analysis.o src/MolecularModeling/Assembly/Ontology/analysis.cc
+
+build/ringperception.o: src/MolecularModeling/Assembly/SugarIdentification/ringperception.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/ringperception.o src/MolecularModeling/Assembly/SugarIdentification/ringperception.cc
+
+build/oligosaccharidedetection.o: src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/oligosaccharidedetection.o src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc
+
+build/structurebuilder.o: src/MolecularModeling/Assembly/structurebuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/structurebuilder.o src/MolecularModeling/Assembly/structurebuilder.cc
+
+build/assemblybuilder.o: src/MolecularModeling/Assembly/assemblybuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/assemblybuilder.o src/MolecularModeling/Assembly/assemblybuilder.cc
+
+build/pdbbuilder.o: src/MolecularModeling/Assembly/Output/pdbbuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbbuilder.o src/MolecularModeling/Assembly/Output/pdbbuilder.cc
+
+build/pdbqtbuilder.o: src/MolecularModeling/Assembly/Output/pdbqtbuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbqtbuilder.o src/MolecularModeling/Assembly/Output/pdbqtbuilder.cc
+
+build/prepbuilder.o: src/MolecularModeling/Assembly/Output/prepbuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/prepbuilder.o src/MolecularModeling/Assembly/Output/prepbuilder.cc
+
+build/topologybuilder.o: src/MolecularModeling/Assembly/Output/topologybuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/topologybuilder.o src/MolecularModeling/Assembly/Output/topologybuilder.cc
+
+build/coordinatebuilder.o: src/MolecularModeling/Assembly/Output/coordinatebuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/coordinatebuilder.o src/MolecularModeling/Assembly/Output/coordinatebuilder.cc
+
+build/librarybuilder.o: src/MolecularModeling/Assembly/Output/librarybuilder.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/librarybuilder.o src/MolecularModeling/Assembly/Output/librarybuilder.cc
+
+build/solvation.o: src/MolecularModeling/Assembly/solvation.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/solvation.o src/MolecularModeling/Assembly/solvation.cc
+
+build/ionization.o: src/MolecularModeling/Assembly/ionization.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/ionization.o src/MolecularModeling/Assembly/ionization.cc
+
+build/selection.o: src/MolecularModeling/Assembly/selection.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/selection.o src/MolecularModeling/Assembly/selection.cc
+
+build/glycamnaming.o: src/MolecularModeling/Assembly/glycamnaming.cc includes/MolecularModeling/assembly.hpp \
+		includes/GeometryTopology/coordinate.hpp \
+		includes/GeometryTopology/plane.hpp \
+		includes/common.hpp \
+		includes/Glycan/sugarname.hpp \
+		includes/Glycan/chemicalcode.hpp \
+		includes/MolecularModeling/atom.hpp \
+		includes/MolecularModeling/moleculardynamicatom.hpp \
+		includes/MolecularModeling/quantommechanicatom.hpp \
+		includes/MolecularModeling/dockingatom.hpp \
+		includes/Glycan/monosaccharide.hpp \
+		includes/Glycan/ontologyvocabulary.hpp \
+		includes/InputSet/PdbFileSpace/pdbfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp \
+		includes/InputSet/TopologyFileSpace/topologyfile.hpp \
+		includes/InputSet/CoordinateFileSpace/coordinatefile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfile.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
+		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfile.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfile.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodelcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbmodel.hpp \
+		includes/Glycan/oligosaccharide.hpp \
+		includes/utils.hpp \
+		includes/Glycan/note.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+		includes/MolecularModeling/residue.hpp \
+		includes/MolecularModeling/atomnode.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
+		includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyassembly.hpp \
+		includes/InputSet/TopologyFileSpace/topologyresidue.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatom.hpp \
+		includes/InputSet/TopologyFileSpace/topologybond.hpp \
+		includes/InputSet/TopologyFileSpace/topologybondtype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangle.hpp \
+		includes/InputSet/TopologyFileSpace/topologyangletype.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedral.hpp \
+		includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp \
+		includes/InputSet/TopologyFileSpace/topologyatompair.hpp \
+		includes/InputSet/PdbFileSpace/pdbtitlecard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp \
+		includes/InputSet/PdbFileSpace/pdbatom.hpp \
+		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkcard.hpp \
+		includes/InputSet/PdbFileSpace/pdblink.hpp \
+		includes/InputSet/PdbFileSpace/pdblinkresidue.hpp \
+		includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp \
+		includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
+		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp \
+		includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp \
+		includes/GeometryTopology/grid.hpp \
+		includes/GeometryTopology/cell.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/glycamnaming.o src/MolecularModeling/Assembly/glycamnaming.cc
 
 build/atom.o: src/MolecularModeling/atom.cc includes/MolecularModeling/atom.hpp \
 		includes/GeometryTopology/coordinate.hpp \
