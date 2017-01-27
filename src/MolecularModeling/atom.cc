@@ -181,6 +181,7 @@ void Atom::Print(ostream &out)
 {
     out << "Atom name: " << name_ << endl;
     out << "Element: " << element_symbol_ << endl;
+    out << "Atom Type: " << this->MolecularDynamicAtom::GetAtomType() << endl;
     out << "Coordinates: " << endl;
     if(coordinates_.size() != 0)
     {
