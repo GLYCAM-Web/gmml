@@ -8,32 +8,32 @@ MAKEFILE      = Makefile-main
 
 ####### Compiler, tools and options
 
-CC	    = gcc
-CXX	   = g++
-CFLAGS	= -m64 -pipe -O3 -D_REENTRANT -fPIC
-CXXFLAGS      = -m64 -pipe -O3 -D_REENTRANT -fPIC
-INCPATH       = -I. -Iincludes -Iincludes/GeometryTopology -Iincludes/Glycan -Iincludes/InputSet/CoordinateFileSpace -Iincludes/InputSet/PdbFileSpace -Iincludes/InputSet/PdbqtFileSpace -Iincludes/InputSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/InputSet/CondensedSequenceSpace -Iincludes/GeometryTopology/InternalCoordinate -Iincludes/Resolver/PdbPreprocessor -Iincludes/InputSet/CifFileSpace -I.
-LINK	  = g++
-LFLAGS	= -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1
-LIBS	  = $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu -lpthread 
-AR	    = ar cqs
-RANLIB	= 
-TAR	   = tar -cf
-COMPRESS      = gzip -9f
-COPY	  = cp -f
-SED	   = sed
-COPY_FILE     = cp -f
-COPY_DIR      = cp -f -R
-STRIP	 = strip
-INSTALL_FILE  = install -m 644 -p
-INSTALL_DIR   = $(COPY_DIR)
-INSTALL_PROGRAM = install -m 755 -p
-DEL_FILE      = rm -f
-SYMLINK       = ln -f -s
-DEL_DIR       = rmdir
-MOVE	  = mv -f
-CHK_DIR_EXISTS= test -d
-MKDIR	 = mkdir -p
+CC		= gcc
+CXX		= g++
+CFLAGS		= -m64 -pipe -O3 -D_REENTRANT -fPIC
+CXXFLAGS	= -m64 -pipe -O3 -D_REENTRANT -fPIC
+INCPATH		= -I. -Iincludes -Iincludes/GeometryTopology -Iincludes/Glycan -Iincludes/InputSet/CoordinateFileSpace -Iincludes/InputSet/PdbFileSpace -Iincludes/InputSet/PdbqtFileSpace -Iincludes/InputSet/TopologyFileSpace -Iincludes/MolecularModeling -Iincludes/ParameterSet/PrepFileSpace -Iincludes/ParameterSet/LibraryFileSpace -Iincludes/ParameterSet/ParameterFileSpace -Iincludes/InputSet/CondensedSequenceSpace -Iincludes/GeometryTopology/InternalCoordinate -Iincludes/Resolver/PdbPreprocessor -Iincludes/InputSet/CifFileSpace -I.
+LINK		= g++
+LFLAGS		= -m64 -Wl,-O3 -shared -Wl,-soname,libgmml.so.1
+LIBS		= $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu -lpthread 
+AR		= ar cqs
+RANLIB		= 
+TAR		= tar -cf
+COMPRESS	= gzip -9f
+COPY		 = cp -f
+SED		= sed
+COPY_FILE	= cp -f
+COPY_DIR	= cp -f -R
+STRIP		= strip
+INSTALL_FILE	= install -m 644 -p
+INSTALL_DIR	= $(COPY_DIR)
+INSTALL_PROGRAM	= install -m 755 -p
+DEL_FILE	= rm -f
+SYMLINK		= ln -f -s
+DEL_DIR		= rmdir
+MOVE		= mv -f
+CHK_DIR_EXISTS	= test -d
+MKDIR		= mkdir -p
 
 ####### Output directory
 
@@ -45,26 +45,6 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/GeometryTopology/coordinate.cc \
 		src/GeometryTopology/grid.cc \
 		src/GeometryTopology/plane.cc \
-		src/MolecularModeling/Assembly/assembly.cc \
-		src/MolecularModeling/Assembly/geometryoperation.cc \
-		src/MolecularModeling/Assembly/manipulationoperation.cc \
-		src/MolecularModeling/Assembly/Ontology/population.cc \
-		src/MolecularModeling/Assembly/Ontology/query.cc \
-		src/MolecularModeling/Assembly/Ontology/analysis.cc \
-		src/MolecularModeling/Assembly/SugarIdentification/ringperception.cc \
-		src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc \
-		src/MolecularModeling/Assembly/structurebuilder.cc \
-		src/MolecularModeling/Assembly/assemblybuilder.cc \
-		src/MolecularModeling/Assembly/Output/pdbbuilder.cc \
-		src/MolecularModeling/Assembly/Output/pdbqtbuilder.cc \
-		src/MolecularModeling/Assembly/Output/prepbuilder.cc \
-		src/MolecularModeling/Assembly/Output/topologybuilder.cc \
-		src/MolecularModeling/Assembly/Output/coordinatebuilder.cc \
-		src/MolecularModeling/Assembly/Output/librarybuilder.cc \
-		src/MolecularModeling/Assembly/solvation.cc \
-		src/MolecularModeling/Assembly/ionization.cc \
-		src/MolecularModeling/Assembly/selection.cc \
-		src/MolecularModeling/Assembly/glycamnaming.cc \
 		src/MolecularModeling/atom.cc \
 		src/MolecularModeling/atomnode.cc \
 		src/MolecularModeling/dockingatom.cc \
@@ -183,12 +163,31 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorreplacedhydrogen.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.cc \
 		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.cc \
-		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc 
+		src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc \
+		src/MolecularModeling/Assembly/assembly.cc \
+		src/MolecularModeling/Assembly/geometryoperation.cc \
+		src/MolecularModeling/Assembly/manipulationoperation.cc \
+		src/MolecularModeling/Assembly/Ontology/population.cc \
+		src/MolecularModeling/Assembly/Ontology/query.cc \
+		src/MolecularModeling/Assembly/Ontology/analysis.cc \
+		src/MolecularModeling/Assembly/SugarIdentification/ringperception.cc \
+		src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc \
+		src/MolecularModeling/Assembly/structurebuilder.cc \
+		src/MolecularModeling/Assembly/assemblybuilder.cc \
+		src/MolecularModeling/Assembly/Output/pdbbuilder.cc \
+		src/MolecularModeling/Assembly/Output/pdbqtbuilder.cc \
+		src/MolecularModeling/Assembly/Output/prepbuilder.cc \
+		src/MolecularModeling/Assembly/Output/topologybuilder.cc \
+		src/MolecularModeling/Assembly/Output/coordinatebuilder.cc \
+		src/MolecularModeling/Assembly/Output/librarybuilder.cc \
+		src/MolecularModeling/Assembly/solvation.cc \
+		src/MolecularModeling/Assembly/ionization.cc \
+		src/MolecularModeling/Assembly/selection.cc \
+		src/MolecularModeling/Assembly/glycamnaming.cc 
 OBJECTS       = build/cell.o \
 		build/coordinate.o \
 		build/grid.o \
 		build/plane.o \
-		build/assembly.o \
 		build/atom.o \
 		build/atomnode.o \
 		build/dockingatom.o \
@@ -307,7 +306,27 @@ OBJECTS       = build/cell.o \
 		build/pdbpreprocessorreplacedhydrogen.o \
 		build/pdbpreprocessorresidueinfo.o \
 		build/pdbpreprocessorunrecognizedheavyatom.o \
-		build/pdbpreprocessorunrecognizedresidue.o
+		build/pdbpreprocessorunrecognizedresidue.o \
+		build/assembly.o \
+                build/geometryoperation.o \
+                build/manipulationoperation.o \
+                build/population.o \
+                build/query.o \
+                build/analysis.o \
+                build/ringperception.o \
+                build/oligosaccharidedetection.o \
+                build/structurebuilder.o \
+                build/assemblybuilder.o \
+                build/pdbbuilder.o \
+                build/pdbqtbuilder.o \
+                build/prepbuilder.o \
+                build/topologybuilder.o \
+                build/coordinatebuilder.o \
+                build/librarybuilder.o \
+                build/solvation.o \
+                build/ionization.o \
+                build/selection.o \
+                build/glycamnaming.o
 DESTDIR       = bin/
 TARGET	= libgmml.so.1.0.0
 TARGETA       = bin/libgmml.a
