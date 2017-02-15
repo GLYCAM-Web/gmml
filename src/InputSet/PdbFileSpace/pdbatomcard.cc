@@ -32,7 +32,9 @@ PdbAtomCard::PdbAtomCard(stringstream &stream_block, string index)
         }
 
         PdbAtom* atom = new PdbAtom(line);
+        int ch = 65 + ConvertString<int>(Split(index, "_")[1]);
         atom->SetAtomCardIndexInResidueSet(index);
+        atom->SetAtomChainId((char)ch);
         atoms_[atom->GetAtomSerialNumber()] = atom;
         ordered_atoms_.push_back(atom);
 
