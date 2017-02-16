@@ -166,7 +166,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 {
                     PrepFileAtom* prep_atom = (*it1);
                     string atom_name = prep_atom->GetName();
-                    serial_number++;
+                    if(prep_atom->GetType() != "DU")
+                        serial_number++;
                     Atom* assembly_atom = new Atom();
                     assembly_atom->SetResidue(assembly_residue);
                     assembly_atom->SetName(atom_name);
@@ -420,15 +421,18 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                     PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
                     for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
                     {
-                        serial_number++;
                         Atom* assembly_atom = new Atom();
                         PrepFileAtom* prep_atom = (*it1);
+                        if(prep_atom->GetType() != "DU")
+                            serial_number++;
                         assembly_atom->SetResidue(assembly_residue);
                         string atom_name = prep_atom->GetName();
                         assembly_atom->SetName(atom_name);
                         stringstream atom_id;
                         atom_id << atom_name << "_" << serial_number << "_" << id.str();
                         assembly_atom->SetId(atom_id.str());
+                        //cout << assembly_atom->GetId() << endl;
+                        cout << "HELLO" << endl;
 
                         assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
                         assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
