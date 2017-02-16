@@ -430,9 +430,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         assembly_atom->SetName(atom_name);
                         stringstream atom_id;
                         atom_id << atom_name << "_" << serial_number << "_" << id.str();
-                        assembly_atom->SetId(atom_id.str());
-                        //cout << assembly_atom->GetId() << endl;
-                        cout << "HELLO" << endl;
+                        assembly_atom->SetId(atom_id.str());                        
 
                         assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
                         assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
