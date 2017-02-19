@@ -1,9 +1,9 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "includes/gmml.hpp"
+#include "../includes/gmml.hpp"
 
-#define PdbPreprocessingTest
+#define BuildAssemblyTest
 
 #ifdef ParameterFileTest
 using namespace ParameterFileSpace;
@@ -1009,14 +1009,15 @@ int main(int argc, char *argv[])
         if(temp->CheckCondensedSequenceSanity(argv[1], prep_residues))
             temp->BuildAssemblyFromCondensedSequence(argv[1], argv[2], argv[3], true);
         temp->SetSourceFile(argv[2]);
+//        temp->Print();
 //        temp->BuildStructureByPrepFileInformation();
 //        temp->BuildStructureByDistance();
-//        TopologyFileSpace::TopologyFile* top_file = temp->BuildTopologyFileStructureFromAssembly(argv[3]);
-//        top_file->Write("top_file.parm7");
-//        CoordinateFileSpace::CoordinateFile* crd_file = temp->BuildCoordinateFileStructureFromAssembly();
-//        crd_file->Write("crd_file.rst7");
-        PdbFileSpace::PdbFile* pdb_file = temp->BuildPdbFileStructureFromAssembly();
-        pdb_file->Write("pdb_file.pdb");
+        TopologyFileSpace::TopologyFile* top_file = temp->BuildTopologyFileStructureFromAssembly(argv[3]);
+        top_file->Write("top_file.parm7");
+        CoordinateFileSpace::CoordinateFile* crd_file = temp->BuildCoordinateFileStructureFromAssembly();
+        crd_file->Write("crd_file.rst7");
+//        PdbFileSpace::PdbFile* pdb_file = temp->BuildPdbFileStructureFromAssembly();
+//        pdb_file->Write("pdb_file.pdb");
 //        TopologyFileSpace::TopologyFile* top_file = temp->BuildTopologyFileStructureFromAssembly(argv[3]);
 //        top_file->Write("top_file.parm7");
 //        CoordinateFileSpace::CoordinateFile* crd_file = temp->BuildCoordinateFileStructureFromAssembly();

@@ -660,6 +660,11 @@ namespace TopologyFileSpace
               * A function to write back pointer section of the topology file into an output stream
               * @param out Intermediate output stream in order to write pointer section
               */
+            void ResolveGitVersion(std::ofstream& out);
+            /*! \fn
+              * A function to write back version section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write pointer section
+              */
             void ResolvePointersSection(std::ofstream& out);
             /*! \fn
               * A function to write back atom name section of the topology file into an output stream

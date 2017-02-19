@@ -1,5 +1,6 @@
 #include <fstream>
 #include <math.h>
+#include <stdlib.h>
 
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
@@ -1751,7 +1752,8 @@ void TopologyFile::Write(const string &top_file)
 
 void TopologyFile::ResolveSections(ofstream &out_stream)
 {
-    out_stream << endl;
+    //out_stream << endl;
+    this->ResolveGitVersion(out_stream);
     this->ResolveTitleSection(out_stream);
     this->ResolvePointersSection(out_stream);
     this->ResolveAtomNameSection(out_stream);
@@ -1794,6 +1796,19 @@ void TopologyFile::ResolveSections(ofstream &out_stream)
     this->ResolveScreenSection(out_stream);
 
 }
+
+void TopologyFile::ResolveGitVersion(ofstream &out)
+{
+    out << "%VERSION ";
+    string pwdd = execcommand("pwd");
+    string cd = execcommand(("cd "+pwdd).c_str());
+    string gitversion =  execcommand("git rev-parse HEAD");
+    //string pwd = system(("pwd").c_str());
+    //system(("cd "+pwd).c_str());
+    //string gitversion = system("git rev-parse HEAD");
+    out << gitversion;
+}
+
 
 void TopologyFile::ResolveTitleSection(ofstream &out)
 {
@@ -3071,7 +3086,7 @@ void TopologyFile::ResolveExcludedAtomsListSection(ofstream& out)
             for(vector<string>::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
             {
                 string atom_id = (*it);
-                int index1 = ConvertString<int>(Split(atom_id, "_").at(1));
+                int index1 = ConvertString<int>(Split(atom_id, "()").at(3));
                 out << setw(ITEM_LENGTH) << right << index1;
                 count++;
                 total_count++;
@@ -3182,14 +3197,74 @@ void TopologyFile::ResolveJoinArraySection(ofstream& out)
     out << "%FLAG JOIN_ARRAY" << endl
         << "%FORMAT(10I8)" << endl;
     //
-    out << endl;
+    //out << endl;
+    int total_count = 0;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            //if(atom->GetAtomicNumber() != iNotSet)
+            //    out << setw(ITEM_LENGTH) << right << atom->GetAtomicNumber();
+            //else
+            out << setw(ITEM_LENGTH) << right << 0;
+            count++;
+            total_count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE && count != 0)
+        out << endl;
+    if(total_count == 0)
+        out << endl;
+
 }
 
 void TopologyFile::ResolveIRotatSection(ofstream& out)
 {
     out << "%FLAG IROTAT" << endl
-        << "%FORMAT(10I8)" << endl << endl;
-    //
+        << "%FORMAT(10I8)" << endl ;
+    //out << endl;
+    int total_count = 0;
+    int count = 0;
+    int index = 0;
+    const int MAX_IN_LINE = 10;
+    const int ITEM_LENGTH = 8;
+    for(int i = 0; i < number_of_residues_; i++)
+    {
+        TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+        for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
+        {
+            TopologyAtom* atom = residue->GetAtomByIndex(index+1);
+            index++;
+            //if(atom->GetAtomicNumber() != iNotSet)
+            //out << setw(ITEM_LENGTH) << right << atom->GetAtomicNumber();
+            //else
+            out << setw(ITEM_LENGTH) << right << 0;
+            count++;
+            total_count++;
+            if(count == MAX_IN_LINE)
+            {
+                count = 0;
+                out << endl;
+            }
+        }
+    }
+    if(count < MAX_IN_LINE && count != 0)
+        out << endl;
+    if(total_count == 0)
+        out << endl;
+
 }
 
 void TopologyFile::ResolveRadiusSetSection(ofstream& out)

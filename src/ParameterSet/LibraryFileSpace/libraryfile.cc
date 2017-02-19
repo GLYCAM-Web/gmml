@@ -2,8 +2,8 @@
 #include <iostream>
 #include <iomanip>
 
-#include "utils.hpp"
-#include "common.hpp"
+#include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
