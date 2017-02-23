@@ -1,11 +1,2 @@
-To use the library create a main.cc file in the gmml root directory
-Use the following command to compile your program
-(This makes all the linkings to the library files and corresponding object files)
-
-g++ -Iincludes/* -Lbin/ main.cc -lgmml -o bin/gmml
-
-This creates an executable file named gmml under the bin directory,
-which you can run using the following command:
-
-./gmml [optional arguments]
-
+To carry out all the tests, simply run ./compile_run_tests.bash
+To perform individual tests, copy that section from compile_run_tests.bash into a bash terminal

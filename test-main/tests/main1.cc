@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "../includes/gmml.hpp"
+#include "../../includes/gmml.hpp"
 
 #define BuildAssemblyTest
 
