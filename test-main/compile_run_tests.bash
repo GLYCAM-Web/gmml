@@ -10,7 +10,7 @@ printf "Testing create_Assembly_WritePDB... "
 g++ -I../includes/* -L../bin/ tests/create_Assembly_WritePDB.cc -lgmml -o create_Assembly_WritePDB
 ./create_Assembly_WritePDB > /dev/null 2>&1
 if [ -f test-NLN.pdb ]; then
-    if [ `diff test-NLN.pdb correct_outputs/test-NLN.pdb` ]; then
+    if [ `diff test-NLN.pdb tests/correct_outputs/test-NLN.pdb` ]; then
         printf "Test failed.\n"
     else 
         printf "Test passed.\n"
@@ -20,3 +20,17 @@ else
 fi
 rm test-NLN.pdb create_Assembly_WritePDB > /dev/null 2>&1
 
+# Test
+printf "Testing superimposition_Eigen... "
+g++ -I../includes/* -L../bin/ tests/superimposition_Eigen.cc -lgmml -o superimposition_Eigen
+./superimposition_Eigen > /dev/null 2>&1
+if [ -f moved.pdb ]; then
+    if [ `diff moved.pdb tests/correct_outputs/moved.pdb` ]; then
+        printf "Test failed.\n"
+    else
+        printf "Test passed.\n"
+    fi
+else
+    printf "Test failed.\n"
+fi
+rm moved.pdb superimposition_Eigen > /dev/null 2>&1
