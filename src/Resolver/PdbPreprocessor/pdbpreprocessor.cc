@@ -2741,7 +2741,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<
                     int j = distance(residues.begin(), it1 + 1);
                     PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
                     PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-                    double distance = INFINITY;
+                    double distance = 0.0;
                     if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
                     {
                         GeometryTopology::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
@@ -2903,7 +2903,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
                 int j = distance(residues.begin(), it1 + 1);
                 PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
                 PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-                double distance = INFINITY;
+                double distance = 0.0;
                 if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
                 {
                     GeometryTopology::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
@@ -3281,7 +3281,7 @@ bool PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
                         {
                             vector<bool> selected = vector<bool>();
                             selected.push_back(true);
-                            selected.push_back(false);
+                            selected.push_back(true); // OG edit, changed to true so that A coords get written out
                             vector<char> alternate_locations = vector<char>();
                             alternate_locations.push_back(target_alternate_location);
                             alternate_locations.push_back(alternate_location);
@@ -3346,7 +3346,7 @@ bool PdbPreprocessor::ExtractAlternateResidue(PdbFile* pdb_file)
                     {
                         vector<bool> selected = vector<bool>();
                         selected.push_back(true);
-                        selected.push_back(false);
+                        selected.push_back(true); // OG edit, changed to true so that A coords get written out
                         vector<char> alternate_locations = vector<char>();
                         alternate_locations.push_back(target_alternate_location);
                         alternate_locations.push_back(alternate_location);
