@@ -34,6 +34,7 @@ namespace MolecularModeling
               */
             Atom();
             Atom(Residue* residue, std::string name, CoordinateVector coordinates);
+            Atom(Residue* residue, std::string name, GeometryTopology::Coordinate coordinate);
             Atom(Atom* atom);
 
             //////////////////////////////////////////////////////////
