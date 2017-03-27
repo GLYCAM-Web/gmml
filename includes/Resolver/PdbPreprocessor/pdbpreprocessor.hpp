@@ -101,6 +101,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the disulfide bonds
               * @return disulfide_bonds_ attribute of the current object of this class
@@ -161,10 +164,13 @@ namespace PdbPreprocessorSpace
               * @return reisude_info_map_ attribute of the current object of this class
               */
             PdbPreprocessorResidueInfoMap GetResidueInfoMap();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the disulfide bonds of the current object
               * Set the disulfide_bonds_ attribute of the current pdb preprocessor
@@ -273,10 +279,13 @@ namespace PdbPreprocessorSpace
               * @param to_be_deleted_residues The to be deleted residues attribute of the current object
               */
             void SetToBeDeletedResidues(PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * A function in order to access to the unrecognized residue names of pdb
               * @param pdb_residue_names The list of residue names in the current pdb file
@@ -378,7 +387,10 @@ namespace PdbPreprocessorSpace
             gmml::ResidueNameMap GetAllResidueNamesFromDatasetFilesMap(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
             //**************************************************
-
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A function in order to extract the unrecognized residues of a pdb file
               * @param pdb_file_path The path to the pdb file
@@ -429,6 +441,10 @@ namespace PdbPreprocessorSpace
               * @param pdb_residues The list of pdb residues
               * @return all_cys_residues
               */
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             PdbFileSpace::PdbFile::PdbResidueVector GetAllCYSResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues);
             /*! \fn
               * A function in order to access to the distance of a pair of CYS residues
@@ -448,6 +464,11 @@ namespace PdbPreprocessorSpace
               * @param pdb_file_path The path to the pdb file
               * @return bool value
               */
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
+
             bool ExtractCYSResidues(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the CYS residues of a pdb file
@@ -462,7 +483,7 @@ namespace PdbPreprocessorSpace
               */
             void UpdateCYSResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorDisulfideBondVector disulfide_bonds);
             /*! \fn
-              * A function in order to remove the unknown heavy atoms of a pdb file
+             * A function in order to remove the unknown heavy atoms of a pdb file
               * @param pdb_file The object of a pdb file
               * @param disulfide_bonds The list of disulfide bonds
               * @param model_number Selected model number from the multiple models that are in a pdb file
@@ -473,12 +494,20 @@ namespace PdbPreprocessorSpace
               * @param pdb_residues The list of pdb residues
               * @return all_his_residues
               */
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             PdbFileSpace::PdbFile::PdbResidueVector GetAllHISResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues);
             /*! \fn
               * A function in order to extract the HIS residues of a pdb file
               * @param pdb_file_path The path to the pdb file
               * @return bool value
               */
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
             bool ExtractHISResidues(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the HIS residues of a pdb file
@@ -505,6 +534,10 @@ namespace PdbPreprocessorSpace
               * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
               * @return unknown_heavy_atom_names_of_residue
               */
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             std::vector<std::string> GetUnknownHeavyAtomNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
 
             /*! \fn
@@ -558,6 +591,10 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
             bool ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the unknown heavy atoms of a pdb file
@@ -599,6 +636,10 @@ namespace PdbPreprocessorSpace
               * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
               * @return removed_hydrogen_names_of_residue
               */
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             std::vector<std::string> GetRemovedHydrogenNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
 
             /*! \fn
@@ -616,6 +657,10 @@ namespace PdbPreprocessorSpace
               * @param prep_files The list of paths to the prep files
               * @return bool value
               */
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
             bool ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the removed hydrogens of a pdb file
@@ -722,12 +767,20 @@ namespace PdbPreprocessorSpace
               * @param lib_files The list of paths to the library files
               * @return library_residue
               */
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             LibraryFileSpace::LibraryFileResidue* GetLibraryResidueByNameFromMultipleLibraryFiles(std::string residue_name, std::vector<std::string> lib_files);
             /*! \fn
               * A function in order to extract the alternate residues of a pdb file
               * @param pdb_file_path The path to the pdb file
               * @return bool value
               */
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
             bool ExtractAlternateResidue(std::string pdb_file_path);
             /*! \fn
               * A function in order to extract the alternate residues of a pdb file
@@ -806,7 +859,7 @@ namespace PdbPreprocessorSpace
               * @return model_charge Overal charge of the model
               */
             double CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -837,4 +890,4 @@ namespace PdbPreprocessorSpace
     };
 }
 
-#endif // PDBPREPROCESSOR_HPP
+#endf // PDBPREPROCESSOR_HPP

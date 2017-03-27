@@ -39,6 +39,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue chain Id 1
               * @return residue_chain_id_1_ attribute of the current object of this class
@@ -99,10 +102,13 @@ namespace PdbPreprocessorSpace
               * @return sulfur_atom_serial_number_2_ attribute of the current object of this class
               */
             int GetSulfurAtomSerialNumber2();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue chain id 1 of the current object
               * Set the residue_chain_id_1_ attribute of the current pdb preprocessor disulfide bond
@@ -175,6 +181,7 @@ namespace PdbPreprocessorSpace
               * @param sulfur_atom_serial_number_2 The second sulfur atom serial number attribute of the current object
               */
             void SetSulfurAtomSerialNumber2(int sulfur_atom_serial_number_2);
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

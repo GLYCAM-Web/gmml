@@ -46,6 +46,9 @@ namespace LibraryFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to atom type of the current object
               * @return type_ attribute of the current atom
@@ -91,10 +94,13 @@ namespace LibraryFileSpace
               * @return atom_order_ attribute of the current atom
               */
             int GetAtomOrder();
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the atom type of the current object
               * Set the type_ attribute of the current atom
@@ -149,7 +155,7 @@ namespace LibraryFileSpace
               * @param atom_order_ written order of the current object in a library file
               */
             void SetAtomOrder(int atom_order);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

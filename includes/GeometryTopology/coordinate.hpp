@@ -40,6 +40,9 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to X coordinate attribute of the current object
               * The attribute is set by the contents of the given file
@@ -58,17 +61,23 @@ namespace GeometryTopology
               * @return z_ of the current object of this class
               */
             double GetZ();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             void SetX(double x);
             void SetY(double y);
             void SetZ(double z);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Verifiers_and_Issue_Resolvers
+               * @{
+               */
             /*! \fn
               * Translate a coordinate with respect to given coordinate by x, y and z
               * @param x A double value on X axis for the origin of translation
@@ -116,6 +125,7 @@ namespace GeometryTopology
               * Add current object to the given one and update the current one
               * @param coordinate Second vector in the add operator
               */
+/** @}*/
             void operator+(Coordinate coordinate);
             void operator +(double addition);
             /*! \fn

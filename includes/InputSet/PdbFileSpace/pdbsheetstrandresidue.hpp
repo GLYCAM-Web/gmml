@@ -35,6 +35,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue name in a sheet strand residue
               * @return residue_name_ attribute of the current object of this class
@@ -55,10 +58,13 @@ namespace PdbFileSpace
               * @return residue_insertion_code_ attribute of the current object of this class
               */
             char GetResidueInsertionCode();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue name of the current object
               * Set the residue_name_ attribute of the current sheet strand residue
@@ -83,7 +89,7 @@ namespace PdbFileSpace
               * @param residue_insertion_code The residue insertion code of the current object
               */
             void SetResidueInsertionCode(char residue_insertion_code);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

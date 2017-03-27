@@ -39,8 +39,11 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
-              * An accessor function in order to access to the heterogen identifier in a heterogen synonym
+             * An accessor function in order to access to the heterogen identifier in a heterogen synonym
               * @return heterogen_identifier_ attribute of the current object of this class
               */
             std::string GetHeterogenIdentifier();
@@ -49,10 +52,13 @@ namespace PdbFileSpace
               * @return heterogen_synonyms_ of the current object of this class
               */
             std::vector<std::string> GetHeterogenSynonyms();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the heterogen identifier of the current object
               * Set the heterogen_identifier_ attribute of the current heterogen synonym
@@ -71,7 +77,7 @@ namespace PdbFileSpace
               * @param heterogen_synonyms The heterogen synonyms of the current object
               */
             void AddHeterogenSynonym(const std::string heterogen_synonym);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

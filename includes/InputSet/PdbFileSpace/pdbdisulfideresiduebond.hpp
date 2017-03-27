@@ -45,6 +45,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the serial number in a disulfide residue bond
               * @return serial_number_ attribute of the current object of this class
@@ -60,10 +63,13 @@ namespace PdbFileSpace
               * @return bond_length_ attribute of the current object of this class
               */
             double GetBondLength();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the serial number of the current object
               * Set the serial_number_ attribute of the current disulfide residue bond
@@ -88,7 +94,7 @@ namespace PdbFileSpace
               * @param bond_length The bond length of the current object
               */
             void SetBondLength(double bond_length);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

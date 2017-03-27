@@ -35,6 +35,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the record name in a title card
               * @return record_name_ attribute of the current object of this class
@@ -45,10 +48,13 @@ namespace PdbFileSpace
               * @return title_ attribute of the current object of this class
               */
             std::string GetTitle();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the record name of the current object
               * Set the record_name_ attribute of the current title card
@@ -61,7 +67,7 @@ namespace PdbFileSpace
               * @param title The title of the current object
               */
             void SetTitle(const std::string title);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

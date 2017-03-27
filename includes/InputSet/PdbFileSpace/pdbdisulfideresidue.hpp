@@ -36,6 +36,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the residue name in a disulfide residue
               * @return resdiue_name_ attribute of the current object of this class
@@ -61,10 +64,13 @@ namespace PdbFileSpace
               * @return symmetry operator_ attribute of the current object of this class
               */
             int GetSymmetryOperator();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the residue name of the current object
               * Set the residue_name_ attribute of the current disulfide residue
@@ -95,7 +101,7 @@ namespace PdbFileSpace
               * @param symmetry_operator The symmetry operator of the current object
               */
             void SetSymmetryOperator(int symmetry_operator);
-
+ /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

@@ -34,6 +34,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue chain Id
               * @return residue_chain_id_ attribute of the current object of this class
@@ -64,10 +67,13 @@ namespace PdbPreprocessorSpace
               * @return selected_alternate_location_ attribute of the current object of this class
               */
             std::vector<bool> GetSelectedAlternateLocation();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue chain id of the current object
               * Set the residue_chain_id_ attribute of the current pdb preprocessor alternate residue
@@ -104,7 +110,7 @@ namespace PdbPreprocessorSpace
               * @param selected_alternate_location The selected alternate location attribute of the current object
               */
             void SetSelectedAlternateLocation(std::vector<bool> selected_alternate_location);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

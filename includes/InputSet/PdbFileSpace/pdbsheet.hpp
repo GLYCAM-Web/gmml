@@ -46,6 +46,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the sheet id in a pdb sheet
               * @return sheet_id_ attribute of the current object of this class
@@ -61,10 +64,13 @@ namespace PdbFileSpace
               * @return strands_ attribute of the current object of this class
               */
             SheetStrandVector GetStrands();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators 
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the sheet id of the current object
               * Set the sheet_id_ attribute of the current sheet
@@ -89,7 +95,7 @@ namespace PdbFileSpace
               * @param strand The strand of the current object
               */
             void AddStrand(PdbSheetStrand* strand);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

@@ -40,6 +40,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue
               * @return residue_ attribute of the current object of this class
@@ -90,7 +93,7 @@ namespace MolecularModeling
               * @return index_ attribute of the current object of this class
               */
             unsigned long long GetIndex();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
@@ -101,6 +104,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue of the current object
               * Set the residue_ attribute of the current atom
@@ -161,7 +167,7 @@ namespace MolecularModeling
               * @param is_ring The boolean value representing if the current atom object is in aring or not
               */
             void SetIsRing(bool is_ring);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
