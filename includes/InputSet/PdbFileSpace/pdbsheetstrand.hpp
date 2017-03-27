@@ -54,6 +54,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the strand residues in a sheet strand
               * @return strand_residues_ attribute of the current object of this class
@@ -74,10 +77,13 @@ namespace PdbFileSpace
               * @return previous_atom_ attribute of the current object of this class
               */
             std::string GetPreviousAtom();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the strand residues of the current object
               * Set the strand_residues_ attribute of the current sheet strand
@@ -108,7 +114,7 @@ namespace PdbFileSpace
               * @param previous_atom The previous atom of the current object
               */
             void SetPreviousAtom(const std::string previous_atom);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

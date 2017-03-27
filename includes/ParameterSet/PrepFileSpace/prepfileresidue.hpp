@@ -73,6 +73,9 @@ namespace PrepFileSpace
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Input_File_Reader
+* @{
+*/
             /*! \fn
               * A function to load information of the residue by the given stream
               * Parse the given stream and set the attributes of the current object accordingly
@@ -134,10 +137,13 @@ namespace PrepFileSpace
               * @return A vector of improper dihedrals in the residue
               */
             DihedralVector ExtractImproperDihedral(std::ifstream& in_file);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to an atom in the residue by its name
               * @return An atom in atmos_ attribute of the current object of this class that has the given name
@@ -334,9 +340,13 @@ namespace PrepFileSpace
             BondedAtomIndexMap GetBondingsOfResidue();
             PrepFileAtom* GetPrepAtomByAtomName(std::string atom_name);
             PrepFileAtomVector GetAtomsParentVector();
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the title of the current object
               * Set the title_ attribute of the current object
@@ -421,16 +431,19 @@ namespace PrepFileSpace
               * @param loops The loops of the current object
               */
             void SetLoops(Loop loops);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     FUNCTIONS                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Verifiers_and_Issue_Resolvers
+               * @{
+               */
             /*! \fn
               * A function to calculate the overall charge of the prep file residue
               * @return residue_charge Overal charge of the prep file residue
               */
             double CalculatePrepResidueCharge();
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

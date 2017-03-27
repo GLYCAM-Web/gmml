@@ -30,6 +30,9 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the coordinates
               * @return coordinates_ attribute of the current object of this class
@@ -40,10 +43,13 @@ namespace GeometryTopology
               * @return angle_ attribute of the current object of this class
               */
             double GetAngle();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the coordinates of the current object
               * Set the coordinates_ attribute of the current angle
@@ -62,7 +68,7 @@ namespace GeometryTopology
               * @param angle The angle attribute of the current object
               */
             void SetAngle(double angle);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

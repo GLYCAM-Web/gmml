@@ -50,6 +50,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the molecule id in compound specification
               * @return molecule_id_ attribute of the current object of this class
@@ -95,10 +98,13 @@ namespace PdbFileSpace
               * @return comments_ attribute of the current object of this class
               */
             std::string GetComments();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the molecule id of the current object
               * Set the molecule_id_ attribute of the compound specification
@@ -170,7 +176,7 @@ namespace PdbFileSpace
               * @param comments The comments of the current object
               */
             void setComments(const std::string comments);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

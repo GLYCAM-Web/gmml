@@ -40,15 +40,21 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the scale n in a scale n card
               * @return scale_n_ attribute of the current object of this class
               */
             ScaleNVector GetScaleN();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the scale n attribute of the current object
               * Set the scale_n_ attribute of the current scale n card
@@ -61,7 +67,7 @@ namespace PdbFileSpace
               * @param scale The scale attribute of the current object
               */
             void AddScaleN(PdbScaleN* scale);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

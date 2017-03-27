@@ -49,6 +49,9 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to parameter file path of the current object
               * @return path_ attribute of the current object of this class
@@ -94,19 +97,26 @@ namespace ParameterFileSpace
               * @return proper_dihedrals proper dihedrals the current object of this class
               */
             DihedralMap GetAllproperDihedrals();
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the file type of the current object
               * Set the file_type_ attribute of the current parameter file
               * @param file_type The file type attribute of the current object
               */
             void SetParameterFileType(int file_type);
+/**@}*/
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Input_File_Reader
+               * @{
+               */
             /*! \fn
               * A function to parse the contents of a given stream of a file
               * Parse the given stream and set the attributes of the current object accordingly
@@ -191,6 +201,10 @@ namespace ParameterFileSpace
               * @return A double value of the given key string
               */
             double ProcessDoubleDihedralDescription(const std::string& dscr, const std::string& key);
+/** @}*/
+/** @addtogroup Output_File_Builder
+*  @{
+*/
             /*! \fn
               * A function in order to write back a parameter file into an output file
               * @param parameter_file Parameter output file name
@@ -256,7 +270,7 @@ namespace ParameterFileSpace
               * @param stream Parameter file output stream
               */
             void ResolvePotentialParameterSection(std::ofstream& stream);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

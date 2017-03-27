@@ -31,6 +31,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the record name in a matrix n
               * @return record_name_ attribute of the current object of this class
@@ -61,10 +64,13 @@ namespace PdbFileSpace
               * @return i_given_ attribute of the current object of this class
               */
             int GetIGiven();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the record name of the current object
               * Set the record_name_ attribute of the current matrix n
@@ -101,7 +107,7 @@ namespace PdbFileSpace
               * @param i_given The i given attribute of the current object
               */
             void SetIGiven(int i_given);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

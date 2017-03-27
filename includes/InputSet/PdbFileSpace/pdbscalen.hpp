@@ -32,6 +32,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the record name in a scale n
               * @return record_name_ attribute of the current object of this class
@@ -52,10 +55,13 @@ namespace PdbFileSpace
               * @return u_ attribute of the current object of this class
               */
             double GetU();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the record name attribute of the current object
               * Set the record_name_ attribute of the current scale n
@@ -80,7 +86,7 @@ namespace PdbFileSpace
               * @param u The U attribute of the current object
               */
             void SetU(double u);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

@@ -43,6 +43,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the heterogen id in a heterogen
               * @return heterogen_id_ attribute of the current object of this class
@@ -73,10 +76,13 @@ namespace PdbFileSpace
               * @return dscr_ attribute of the current object of this class
               */
             std::string GetDscr();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the heterogen id of the current object
               * Set the heterogen_id_ attribute of the current heterogen
@@ -113,7 +119,7 @@ namespace PdbFileSpace
               * @param dscr The description of the current object
               */
             void SetDscr(const std::string dscr);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

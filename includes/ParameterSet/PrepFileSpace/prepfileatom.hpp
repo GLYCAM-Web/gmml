@@ -44,6 +44,9 @@ namespace PrepFileSpace
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * A function to parse and extract topological type from a given string stream
               * Parse the given stream and return topological type of the current atom
@@ -51,7 +54,7 @@ namespace PrepFileSpace
               * @return Topological type of the current atom that is in the given string stream
               */
             gmml::TopologicalType ExtractAtomTopologicalType(std::istream& ss);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
@@ -65,6 +68,9 @@ namespace PrepFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to index of the current object
               * @return index_ attribute of the current object of this class
@@ -146,10 +152,13 @@ namespace PrepFileSpace
               * @return A value selected from TopologicalType enumerator correspondence to the given string
               */
             gmml::TopologicalType GetTopologicalTypeFromString(std::string topological_type);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the type of the current object
               * Set the index_ attribute of the current object
@@ -216,7 +225,7 @@ namespace PrepFileSpace
               * @param charge The charge of the current object
               */
             void SetCharge(double charge);
-
+/**@}*/
 
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //

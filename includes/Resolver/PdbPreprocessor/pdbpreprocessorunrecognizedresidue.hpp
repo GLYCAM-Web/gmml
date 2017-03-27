@@ -30,6 +30,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue chain Id
               * @return residue_chain_id_ attribute of the current object of this class
@@ -60,7 +63,7 @@ namespace PdbPreprocessorSpace
               * @return middle_of_chain_ attribute of the current object of this class
               */
             bool GetMiddleOfChain();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
