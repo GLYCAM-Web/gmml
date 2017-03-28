@@ -3878,11 +3878,12 @@ void PdbPreprocessor::ApplyPreprocessing(PdbFile *pdb_file, vector<string> amino
     amino_update << time_str.substr(0, time_str.size() - 1) << " Amino acid chains update: done" ;
     cout << amino_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
-    UpdateGapsInAminoAcidChains(pdb_file, amino_lib_files_path, this->GetMissingResidues());
+    //UpdateGapsInAminoAcidChains(pdb_file, amino_lib_files_path, this->GetMissingResidues()); // OG Mar 2017
     t = time(0);
     time_str = std::asctime(std::localtime(&t));
     stringstream gaps_update;
-    gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ;
+    //gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ; // OG Mar 2017
+    gaps_update << time_str.substr(0, time_str.size() - 1) << " Currently, GMML cannot not fix gaps " ; // OG Mar 2017
     cout << gaps_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
     t = time(0);
@@ -3951,11 +3952,12 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(PdbFile *pdb_fil
     amino_update << time_str.substr(0, time_str.size() - 1) << " Amino acid chains update: done" ;
     cout << amino_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
-    UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number);
+   // UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number); // OG Mar 2017
     t = time(0);
     time_str = std::asctime(std::localtime(&t));
     stringstream gaps_update;
-    gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ;
+    // gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ; // OG Mar 2017
+    gaps_update << time_str.substr(0, time_str.size() - 1) << " Currently, GMML cannot not fix gaps " ; // OG Mar 2017
     cout << gaps_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
     t = time(0);

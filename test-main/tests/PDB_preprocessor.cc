@@ -3,7 +3,6 @@
 
 
 int main(void) {
-std::string working_Directory = "/home/oliver/Programs/Cplusplus/TestingPreprocessor/";
 
     //************************************************//
     // Details for loading in a PDB file              //
@@ -27,7 +26,7 @@ std::string working_Directory = "/home/oliver/Programs/Cplusplus/TestingPreproce
     std::string parameter_file_path = "../dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_06j.dat";
     std::string ion_parameter_file_path = "../dat/CurrentParams/other/atomic_ions.lib";
 
-    std::string pdb_file_path = working_Directory + "preprocessor_input.pdb";
+    std::string pdb_file_path = "tests/inputs/preprocessor_input.pdb";
     PdbFileSpace::PdbFile pdbFile(pdb_file_path);
 
     PdbPreprocessorSpace::PdbPreprocessor preprocessor;
