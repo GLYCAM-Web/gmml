@@ -154,6 +154,12 @@ namespace MolecularModeling
               * @param id The identification attribute of the current object
               */
             void SetId(std::string id);
+            /*! \fn
+              * A mutator function that replaces the coordinates of the atoms of the current object
+              * Replace the coordinate attribute for atoms of the current residue
+              * @param atoms The atom attribute of the current object
+              */
+            void ReplaceAtomCoordinates(AtomVector *newAtoms);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
