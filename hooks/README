@@ -1,0 +1,24 @@
+==============
+Purpose
+==============
+
+These are simple hooks used to see if you've forgotten something, to make sure tests run properly, and to ensure that the expected results are being returned. 
+	-If all the conditions are fulfilled, it allows the user to commit.
+
+==============
+How it works
+==============
+
+	1. It will run each script in alphabetical order in the pre-commit.d directory.
+	
+	2. If it does not detect any bugs, it will say "SUCCESSFUL" and move to the next pre-commit in the list. If one of the pre-commit scripts fail, it will stop the whole commit process and indicate what went wrong.
+
+===============
+How to use it
+===============
+
+	1. Execute the make.sh file so the pre-commit files can be transferred into your '.git'directory.
+
+	2. Simply type "git commit" ("git commit -m [your message]" for faster commits) when your located inside the root of your gems directory.
+	
+	3. If its successful, you could then "git push" to the remote repository.
