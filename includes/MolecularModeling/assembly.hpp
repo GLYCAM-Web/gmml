@@ -250,7 +250,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             bool CheckCondensedSequenceSanity(std::string sequence,
                                               CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues);
-/** @addtogroup Output_Sequence_Builder
+/** @addtogroup Molecular_Data_Structure_Builders
 * @{ 
 */
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
@@ -506,7 +506,7 @@ namespace MolecularModeling
               * Exports data from assembly data structure into coordinate file structure
               */
 /** @}*/
-/** @addtogroup Output_Sequence_Builder
+/** @addtogroup Molecular_Data_Structure_Builders
 * @{ */
             CoordinateFileSpace::CoordinateFile* BuildCoordinateFileStructureFromAssembly();
             /*! \fn
@@ -1307,7 +1307,7 @@ namespace MolecularModeling
               */
             std::string CalculateRSOrientations(Atom* prev_atom, Atom* target, Atom* next_atom);
 /** @}*/
-            /** \addtogroup Output_Sequence_Builder
+            /** \addtogroup Molecular_Data_Structure_Builders
                * @{
                */
             /*! \fn

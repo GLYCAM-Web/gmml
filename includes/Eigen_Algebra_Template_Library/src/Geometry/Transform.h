@@ -532,7 +532,7 @@ public:
   /** \sa MatrixBase::setIdentity() */
   EIGEN_DEVICE_FUNC void setIdentity() { m_matrix.setIdentity(); }
 
-  /**
+/**
    * \brief Returns an identity transformation.
    * \todo In the future this function should be returning a Transform expression.
    */
