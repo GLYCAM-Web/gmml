@@ -16,7 +16,8 @@
 #include "LU"
 #include <limits>
 
-/** \defgroup Geometry_Module Geometry module
+/** @defgroup Geometry_Module Geometry module
+  * @ingroup Eigen
   *
   * This module provides support for:
   *  - fixed-size homogeneous transformations

@@ -1,38 +1,47 @@
-/** @defgroup Data_Sets
+/** @defgroup Architecture
+   * @brief This contains all the major categories that contain the architecture of GMML
+   *
+   */
+
+/** @defgroup Data_Sets Data Sets
+   *  @ingroup Architecture
    *  @brief This group contains code that read and store data relevant to the molecular data structures
    *
    *Their purpose is either to provide additional information for the molecular data structures (e.g., atomic masses for the atoms)
    *or to provide templates to be used in curating them (e.g., the proper bonding patterns corresponding to a certain molecule).
    */
 
-/** @defgroup Input_Command_Parser
+/** @defgroup Input_Command_Parser Input Command Parser
+   *  @ingroup Architecture
    *  @brief This group contains input that executes certain commands
    *
    *That is, various parts of the library might be put together to perform a certain task.
    *These parsers deal with that. I expect they are most often called from a gems script.
    */
 
-/** @defgroup Input_File_Reader
+/** @defgroup Input_File_Reader Input File Reader
+   *  @ingroup Architecture
    *  @brief This group contains parsers that read files of various types
    *
    *  
    */ 
 
-/** @defgroup Input_Sequence_Parser
-     *  @brief This group contains parsers that make sense of chemical names
-     *
-     *For example, DFrufb2-1DGlcpa 
-     *is sucrose, and the parser would turn DFrufb2-1DGlcpa into whatever it needs
-     *to be for the internal code. But, it might, in some cases, leave it as-is, 
-     *depending on what needs to be done, because that notation is one of the internal standards. 
-     *One day, it might also take in “sucrose” and translate that to DFrufb2-1DGlcpa and then to 
-     *whatever else is needed, if something else is needed.
-     *
-     *  
-     */   
+/** @defgroup Input_Sequence_Parser Input Sequence Parser
+   *  @ingroup Architecture
+   *  @brief This group contains parsers that make sense of chemical names
+   *
+   *For example, DFrufb2-1DGlcpa 
+   *is sucrose, and the parser would turn DFrufb2-1DGlcpa into whatever it needs
+   *to be for the internal code. But, it might, in some cases, leave it as-is, 
+   *depending on what needs to be done, because that notation is one of the internal standards. 
+   *One day, it might also take in “sucrose” and translate that to DFrufb2-1DGlcpa and then to 
+   *whatever else is needed, if something else is needed.
+   *
+   *  
+   */   
 
 /** @defgroup Manipulators
-   *  @ingroup Molecular_Data_Structure
+   *  @ingroup Molecular_Data_Structure 
    *  @brief This group contains code that make changes to the molecular data structure (MDS)
    *
    *They might change atomic coordinates, names, etc. They might also make selections from the MDS
@@ -40,7 +49,8 @@
    *residues or of other assemblies. Most functions will operate on assemblies.
    */
 
-/** @defgroup Molecular_Data_Structure
+/** @defgroup Molecular_Data_Structure Molecular Data Structure
+     *  @ingroup Architecture
      *  @brief This group contains information that pertains to well-organized storage for molecular data
      *
      *It contains information such as atom names, bonding and geometric information. 
@@ -52,19 +62,22 @@
      *  
      */   
 
-/** @defgroup Output_File_Builder
+/** @defgroup Output_File_Builder Output File Builder
+   *  @ingroup Architecture
    *  @brief This group contains code that export information stored in the MDS to files of varying types
    *
    *
    */
 
-/** @defgroup Output_Sequence_Builder
+/** @defgroup Molecular_Data_Structure_Builders Molecular Data Structure Builders
+   *  @ingroup Architecture
    *  @brief This group contains code that determine an appropriate sequence that describes all or part of the molecular data structure (MDS)
    *
    *
    */
 
-/** @defgroup Verifiers_and_Issue_Resolvers
+/** @defgroup Verifiers_and_Issue_Resolvers Verifiers and Issue Resolvers
+   *  @ingroup Architecture
    *  @brief This group contains functions that check to see if all the required information is present or if the current status of a molecular data structure conforms to an expected set of rules
    *
    * For example, code in this category might check to see if the information contained in
