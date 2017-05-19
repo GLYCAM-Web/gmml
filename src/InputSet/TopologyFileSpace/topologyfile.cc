@@ -1802,7 +1802,9 @@ void TopologyFile::ResolveGitVersion(ofstream &out)
     out << "%VERSION ";
     string pwdd = execcommand("pwd");
     string cd = execcommand(("cd "+pwdd).c_str());
-    string gitversion =  execcommand("git rev-parse HEAD");
+    //string gitversion = execcommand("git rev-parse HEAD");
+    // OG May 2017. If you're not in a git directory, the above command breaks the topology write.
+    string gitversion = execcommand("if (git rev-parse HEAD > /dev/null 2>&1); then git rev-parse HEAD; else echo 'file not generated in a git repo'; fi");
     //string pwd = system(("pwd").c_str());
     //system(("cd "+pwd).c_str());
     //string gitversion = system("git rev-parse HEAD");
