@@ -41,7 +41,8 @@ OBJECTS_DIR   = build/
 
 ####### Files
 
-SOURCES       = src/GeometryTopology/cell.cc \
+SOURCES       = src/superimposition.cpp \
+		src/GeometryTopology/cell.cc \
 		src/GeometryTopology/coordinate.cc \
 		src/GeometryTopology/grid.cc \
 		src/GeometryTopology/plane.cc \
@@ -184,7 +185,8 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/MolecularModeling/Assembly/ionization.cc \
 		src/MolecularModeling/Assembly/selection.cc \
 		src/MolecularModeling/Assembly/glycamnaming.cc 
-OBJECTS       = build/cell.o \
+OBJECTS       = build/superimposition.o \
+		build/cell.o \
 		build/coordinate.o \
 		build/grid.o \
 		build/plane.o \
@@ -415,6 +417,9 @@ compiler_lex_clean:
 compiler_clean: 
 
 ####### Compile
+
+build/superimposition.o: src/superimposition.cpp includes/superimposition.hpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/superimposition.o src/superimposition.cpp
 
 build/cell.o: src/GeometryTopology/cell.cc includes/common.hpp \
 		includes/GeometryTopology/coordinate.hpp \

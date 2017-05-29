@@ -162,7 +162,7 @@ void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
         for(AtomVector::iterator itt = newAtoms->begin(); itt != newAtoms->end(); ++itt)
         {
             Atom *atom1 = (*itt);
-            std::cout << "Comparing with " << atom1->GetName() << std::endl;
+            //std::cout << "Comparing with " << atom1->GetName() << std::endl;
             if (atom->GetName() == atom1->GetName() )
             {
                 //    std::cout << "Before X=" << atom->GetCoordinates().at(0)->GetX() << std::endl;
