@@ -44,6 +44,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the record name in a heterogen synonym card
               * @return record_name_ attribute of the current object of this class
@@ -54,17 +57,20 @@ namespace PdbFileSpace
               * @return heterogen_synonym_ attribute of the current object of this class
               */
             HeterogenSynonymMap GetHeterogensSynonyms();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the record name of the current object
               * Set the record_name_ attribute of the current heterogen synonym card
               * @param record_name The record name of the current object
               */
             void SetRecordName(const std::string record_name);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

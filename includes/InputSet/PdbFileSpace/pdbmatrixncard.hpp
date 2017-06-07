@@ -43,15 +43,21 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the matrix n in a matrix n card
               * @return matrix_n_ attribute of the current object of this class
               */
             MatrixNVectorVector GetMatrixN();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the matrix n attribute of the current object
               * Set the matrix_n_ attribute of the current matrix n card
@@ -64,7 +70,7 @@ namespace PdbFileSpace
               * @param matrix The matrix attribute of the current object
               */
             void AddMatrixN(MatrixNVector matrix);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

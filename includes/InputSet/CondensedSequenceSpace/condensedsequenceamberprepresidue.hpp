@@ -27,21 +27,27 @@ namespace CondensedSequenceSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             std::string GetName();
             std::string GetAnomericCarbon();
             std::string GetParentOxygen();
             bool GetIsDerivative();
             int GetParentId();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             void SetName(std::string name);
             void SetAnomericCarbon(std::string anomeric_carbon);
             void SetParentOxygen(std::string parent_oxygen);
             void SetIsDerivative(bool is_derivative);
             void SetParentId(int parent_id);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

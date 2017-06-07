@@ -40,6 +40,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the site id in a pdb site
               * @return site_id_ attribute of the current object of this class
@@ -55,10 +58,13 @@ namespace PdbFileSpace
               * @return number_of_residues_ attribute of the current object of this class
               */
             int GetNumberOfResidues();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the site id of the current object
               * Set the site_id_ attribute of the current site
@@ -83,7 +89,7 @@ namespace PdbFileSpace
               * @param number_of_residues The number of residues of the current object
               */
             void SetNumberOfResidues(int number_of_residues);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

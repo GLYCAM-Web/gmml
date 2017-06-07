@@ -36,6 +36,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the record name in model type card
               * @return record_name_ attribute of the current object of this class
@@ -46,10 +49,13 @@ namespace PdbFileSpace
               * @return comments_ attribute of the current object of this class
               */
             std::vector<std::string> GetComments();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the record name of the current object
               * Set the record_name_ attribute of the current model type card
@@ -62,7 +68,7 @@ namespace PdbFileSpace
               * @param comments The comments of the current object
               */
             void SetComments(const std::vector<std::string> comments);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

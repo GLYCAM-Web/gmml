@@ -5,6 +5,7 @@
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "cmath"
+#include <sstream>
 
 using namespace std;
 using namespace MolecularModeling;
@@ -25,11 +26,25 @@ Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
 {
     residue_ = residue;
     name_ = name;
-    coordinates_ = CoordinateVector();
-    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
-        coordinates_.push_back(*it);
+    this->SetCoordinates(coordinates);
     node_ = NULL;
     index_ = this->generateAtomIndex();
+    std::stringstream ss;
+    ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
+    id_ = ss.str();
+}
+
+Atom::Atom(Residue *residue, string name, GeometryTopology::Coordinate coordinate) :
+    chemical_type_(""), element_symbol_(""), description_("")
+{
+    residue_ = residue;
+    name_ = name;
+    this->AddCoordinate(new GeometryTopology::Coordinate(coordinate.GetX(), coordinate.GetY(), coordinate.GetZ()) );
+    node_ = NULL;
+    index_ = this->generateAtomIndex();
+    std::stringstream ss;
+    ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
+    id_ = ss.str();
 }
 
 Atom::Atom(Atom *atom)

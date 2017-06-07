@@ -56,6 +56,9 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** @addtogroup Molecular_Data_Structure
+*  @{
+*/
             /*! \fn
               * An accessor function in order to access to type of the current object
               * @return type_ attribute of the current object of this class
@@ -106,10 +109,13 @@ namespace ParameterFileSpace
               * @return equivalent_list_ attribute of the current object of this class
               */
             std::vector<std::string> GetEquivalentList();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** @addtogroup Manipulators
+*  @{
+*/
             /*! \fn
               * A mutator function in order to set the type of the current object
               * Set the type_ attribute of the current atom
@@ -164,7 +170,7 @@ namespace ParameterFileSpace
               * @param equivalent_list A list of equivalent_list of atoms of the current object
               */
             void SetEquivalentList( std::vector<std::string> equivalent_list);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

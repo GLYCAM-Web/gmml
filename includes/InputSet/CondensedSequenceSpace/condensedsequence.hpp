@@ -80,18 +80,23 @@ namespace CondensedSequenceSpace
               */
             CondensedSequence();
             CondensedSequence(std::string sequence);
-
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             CondensedSequenceResidueVector GetResidues();
             CondensedSequenceTokenTypeVector GetTokens();
             CondensedSequenceResidueTree GetCondensedSequenceResidueTree();
             CondensedSequenceAmberPrepResidueTree GetCondensedSequenceAmberPrepResidueTree();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             void SetResidues(CondensedSequenceResidueVector residues);
             void AddResidue(CondensedSequenceResidue* residue);
             void SetTokens(CondensedSequenceTokenTypeVector tokens);
@@ -102,9 +107,21 @@ namespace CondensedSequenceSpace
             //////////////////////////////////////////////////////////
             int InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue* condensed_residue, int parent_node_id = -1);
             int InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue* condensed_amber_prep_residue, int parent_node_id = -1);
+/** @}*/
+            /** \addtogroup Input_Sequence_Parser
+              * @{
+              */
             void ParseCondensedSequence(std::string sequence);
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
             void BuildArrayTreeOfCondensedSequenceResidue();
             void BuildArrayTreeOfCondensedSequenceAmberPrepResidue(CondensedSequenceResidueTree residue_tree);
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             std::string GetAmberPrepTerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
             std::string GetAmberPrepResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences, std::string parent_name);
             std::string GetFirstLetterOfAmberPrepResidueCode(std::bitset<10> open_valences_check);
@@ -117,7 +134,7 @@ namespace CondensedSequenceSpace
             std::vector<std::vector<int> > CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             IndexLinkageConfigurationMap CreateIndexLinkageConfigurationMap(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
                                                                             IndexNameMap& names);
-
+/** @}*/
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

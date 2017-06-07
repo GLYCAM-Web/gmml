@@ -32,6 +32,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue chain Id
               * @return residue_chain_id_ attribute of the current object of this class
@@ -67,10 +70,13 @@ namespace PdbPreprocessorSpace
               * @return residue_alternate_location_ attribute of the current object of this class
               */
             char GetResidueAlternateLocation();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue chain id of the current object
               * Set the residue_chain_id_ attribute of the current pdb preprocessor unrecognized heavy atom
@@ -113,7 +119,7 @@ namespace PdbPreprocessorSpace
               * @param residue_alternate_location The residue alternate location attribute of the current object
               */
             void SetResidueAlternateLocation(char residue_alternate_location);
-
+/** @*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

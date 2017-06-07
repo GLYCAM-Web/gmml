@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#Check branch
+BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+for h_file in `ls $BASEDIR/pre-commit.d/pre-commit.*`
+do
+    if [ -f "$h_file" ]; then
+        bash $h_file
+	h_file_return=$?
+        #If the test pass, move onto the next file
+	if [ $h_file_return == 0 ]; then
+            #echo "$h_file --- SUCCESSFUL"
+            echo ""
+        else
+        #Output a fail and stop the commit process
+            #echo "$h_file --- FAILED"
+            exit 1
+        fi
+    fi
+done

@@ -35,6 +35,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue chain Id
               * @return residue_chain_id_ attribute of the current object of this class
@@ -77,10 +80,13 @@ namespace PdbPreprocessorSpace
               * @return all_his_mapping_as_string
               */
             std::vector<std::string> GetAllHISMappingAsString();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue chain id of the current object
               * Set the residue_chain_id_ attribute of the current pdb preprocessor histidine mapping
@@ -111,7 +117,7 @@ namespace PdbPreprocessorSpace
               * @param residue_alternate_location The residue alternate location attribute of the current object
               */
             void SetResidueAlternateLocation(char residue_alternate_location);
-
+/** @*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

@@ -38,6 +38,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the heterogen identifier in a heterogen name class
               * @return heterogen_identifier_ attribute of the current object of this class
@@ -48,10 +51,13 @@ namespace PdbFileSpace
               * @return heterogen_name_ attribute of the current object of this class
               */
             std::string GetHeterogenName();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the heterogen identifier of the current object
               * Set the heterogen_identifier_ attribute of the current heterogen name
@@ -64,7 +70,7 @@ namespace PdbFileSpace
               * @param heterogen_name The heterogen name of the current object
               */
             void SetHeterogenName(const std::string heterogen_name);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

@@ -32,6 +32,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the origin X N attribute in a origin X N
               * @return origin_x_n_ attribute of the current object of this class
@@ -52,10 +55,13 @@ namespace PdbFileSpace
               * @return t_ attribute of the current object of this class
               */
             double GetT();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the record name of the current object
               * Set the record_name_ attribute of the current origin X N
@@ -80,7 +86,7 @@ namespace PdbFileSpace
               * @param t The T attribute of the current object
               */
             void SetT(double t);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

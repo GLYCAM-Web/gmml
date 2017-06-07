@@ -30,6 +30,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the atom
               * @return atom_ attribute of the current object of this class
@@ -50,9 +53,13 @@ namespace MolecularModeling
             std::string GetElementLabel();
             char GetChiralityLabel();
             AtomVector GetIntraNodeNeighbors();
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the atom of the current object
               * Set the atom_ attribute of the current atom node
@@ -87,6 +94,7 @@ namespace MolecularModeling
             void RemoveIntraNodeNeighbor(Atom* intra_node_neighbor);
             std::string CreateNeighboringLabel(bool excluding_hydrogen = true);
             int GetIntraEdgeDegree();
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

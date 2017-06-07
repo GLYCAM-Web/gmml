@@ -40,6 +40,9 @@ namespace LibraryFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to library file path of the current object
               * @return path_ attribute of the current object of this class
@@ -67,10 +70,13 @@ namespace LibraryFileSpace
               * @return atom_names_of_residue The atom names of the current object of this class
               */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the path of the current library file
               * Set the path_ attribute of the current library file
@@ -83,9 +89,13 @@ namespace LibraryFileSpace
               * @param residues The residue map attribute of the current object
               */
             void SetResidues(ResidueMap residues);
+/** @}*/
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Input_File_Reader
+               * @{
+               */
             /*! \fn
               * A function to parse the contents of a given stream of a file
               * Parse the given stream and set the attributes of the current object accordingly
@@ -97,28 +107,44 @@ namespace LibraryFileSpace
               * @param line A line from the atom section of a library file
               * @return A new LibraryFileAtom instance created by the information of the given line
               */
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             LibraryFileAtom* ProcessAtom(std::string& line);
             /*! \fn
               * A function in order to access to library file residue by a residue name
               * @param residue_name The name of the residue
               * @return library_file_residue
               */
+/** @}*/
+            /** \addtogroup Output_File_Builder
+               * @{
+               */
             LibraryFileResidue* GetLibraryResidueByResidueName(std::string residue_name);
             /*! \fn
               * A function to write back a library file into an output file
               * @param library_file Library output file name
               */
+/** @}*/
             void Write(const std::string& library_file);
             /*! \fn
               * A function to write a library file into an output stream
               * @param out_stream Output stream
               */
+/** \addtogroup Output_File_Builder
+               * @{
+               */
             void BuildLibraryFile(std::ofstream& out_stream);
             /*! \fn
               * A function in order to write the atom section of a specified residue into an output stream
               * @param stream Output stream
               * @param residue Specified residue in the library file that has to be written into an output stream
               */
+/** @}*/
+             /** \addtogroup Verifiers_and_Issue_Resolvers
+               * @{
+               */
             void ResolveAtomSection(std::ofstream& stream, LibraryFileResidue* residue);
             /*! \fn
               * A function in order to write the atom pert info section of a specified residue into an output stream
@@ -198,7 +224,7 @@ namespace LibraryFileSpace
               * @param residue Specified residue in the library file that has to be written into an output stream
               */
             void ResolveVelocitiesSection(std::ofstream& stream, LibraryFileResidue* residue);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
