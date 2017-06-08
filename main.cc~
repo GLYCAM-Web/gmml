@@ -1,0 +1,51 @@
+#include "includes/gmml.hpp"
+#include <string>
+#include <iostream>
+
+using namespace MolecularModeling;
+using namespace GeometryTopology;
+using namespace PdbFileSpace;
+
+using namespace std;
+int main(int argc, char* argv[]){
+    GeometryTopology::Coordinate* c_ND2 = new GeometryTopology::Coordinate(-0.847,   0.445,  -2.872);
+    GeometryTopology::Coordinate* c_CG = new GeometryTopology::Coordinate(0.535,   0.914,  -3.092);
+
+//    Atom *atomND2 = new Atom();
+//  atomND2->SetName("ND2");
+//   atomND2->AddCoordinate(c_ND2);
+ //  atomND2->SetDescription("Atom;");
+  //atomND2->SetId("ND2_1_NLN_?_1_?_?_1");
+
+//    Atom* atomCG = new Atom();
+//    atomCG->SetName("CG");
+//    atomCG->AddCoordinate(c_CG);
+//    atomCG->SetDescription("Atom;");
+//    atomCG->SetId("CG_2_NLN_?_1_?_?_1");
+	
+
+
+    //Atom *atomMP= new Atom(* atomCG);
+  //  atomCG->Print();
+    //atomMP->Print();
+    //atomCG->SetName("OS");
+    //atomMP->Print();
+  //  atomMP->SetName("MP");
+      //atomMP->Print();
+      //atomCG->Print();
+
+   Atom test2;
+   test2.SetName("Ayu");
+test2.AddCoordinate(c_CG);
+test2.Print();
+   Atom atomz = test2;
+    test2.SetName("Aj");
+    cout<<endl;
+   atomz.Print();
+      
+   atomz.SetName("jais");
+atomz.AddCoordinate(c_ND2);
+ atomz.Print();
+test2.Print();
+   return 0;
+}

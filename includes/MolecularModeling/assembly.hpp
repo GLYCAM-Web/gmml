@@ -704,7 +704,7 @@ namespace MolecularModeling
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
             /*! \fn
-            * A function in order to detec the shape of the ring using the external BFMP program
+            * A function in order to detect the shape of the ring using the external BFMP program
             * This function creates a pdb file and a configuration file for input arguments of the external detect_shape program.
             * the function updates the bfmp_ring_confomration attribute of the monosaccharide
             * @param cycle The list of ring atoms

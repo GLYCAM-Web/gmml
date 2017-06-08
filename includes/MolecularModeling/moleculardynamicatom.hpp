@@ -16,6 +16,7 @@ namespace MolecularModeling
               * Default constructor
               */
             MolecularDynamicAtom();
+            MolecularDynamicAtom(MolecularDynamicAtom& moleculardynamicatom);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

@@ -8,7 +8,35 @@ using namespace MolecularModeling;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 Element::Element() {}
-
+Element::~Element(){}
+Element ::Element(Element *element)
+{
+    this->symbol_=element->GetSymbol();
+    this->name_=element->GetName();
+    this->mass_=element->GetMass();
+    this->exact_mass_=element->GetExactMass();
+    this->ionization_energy_=element->GetIonizationEnergy();
+    this->election_affinity_=element->GetElectionAffinity();
+    this->election_negativity_=element->GetElectionNegativity();
+    this->covalent_radius_=element->GetCovalentRadius();
+    this->van_der_waals_radius_=element->GetVanDerWaalsRadius();
+    this->boiling_point_=element->GetBoilingPoint();
+    this->melting_point_=element->GetMeltingPoint();
+}
+Element :: Element(Element& element)
+{
+    this->symbol_=element.GetSymbol();
+    this->name_=element.GetName();
+    this->mass_=element.GetMass();
+    this->exact_mass_=element.GetExactMass();
+    this->ionization_energy_=element.GetIonizationEnergy();
+    this->election_affinity_=element.GetElectionAffinity();
+    this->election_negativity_=element.GetElectionNegativity();
+    this->covalent_radius_=element.GetCovalentRadius();
+    this->van_der_waals_radius_=element.GetVanDerWaalsRadius();
+    this->boiling_point_=element.GetBoilingPoint();
+    this->melting_point_=element.GetMeltingPoint();
+}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -38,7 +66,7 @@ double Element::GetElectionAffinity()
 }
 double Element::GetElectionNegativity()
 {
-    return election_affinity_;
+    return election_negativity_;
 }
 double Element::GetCovalentRadius()
 {
@@ -111,5 +139,18 @@ void Element::SetMeltingPoint(double melting_point)
 //////////////////////////////////////////////////////////
 void Element::Print(ostream &out)
 {
+
+    out << "*******Printing Element :"<<name_<<" *******"<<endl;
+    out << "Element symbol: " << symbol_<< endl;
+    out << "Element name: " << name_<< endl;
+    out << "Element mass: " << mass_<< endl;
+    out << "Element exact mass: " << exact_mass_<< endl;
+    out << "Element ionization energy: " << ionization_energy_<< endl;
+    out << "Element election affinity: " << election_affinity_<< endl;
+    out << "Element election negativity: " << election_negativity_<< endl;
+    out << "Element covalent radius: " << covalent_radius_<< endl;
+    out << "Element van der waals radius: " << van_der_waals_radius_<< endl;
+    out << "Element boiling point: " << boiling_point_<< endl;
+    out << "Element melting point: " << melting_point_<< endl;
 }
 

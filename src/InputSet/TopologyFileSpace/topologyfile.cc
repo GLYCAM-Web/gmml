@@ -647,6 +647,9 @@ void TopologyFile::ParseSections(ifstream &in_stream)
     vector<double> hb_cuts = vector<double>();
     vector<string> amber_atom_types = vector<string>();
     vector<string> tree_chain_classifications = vector<string>();
+    vector<int> solvent_pointers = vector<int>();
+    vector<int> atoms_per_molecule = vector<int>();
+    vector<double> box_dimensions = vector<double>();
     vector<string> radius_sets = vector<string>();
     vector<double> radiis = vector<double>();
     vector<double> screens = vector<double>();
@@ -820,12 +823,16 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             }
             else if(in_line.find("%FLAG SOLVENT_POINTERS") != string::npos)
             {
+                solvent_pointers = ParsePartition<int>(section);
+
             }
             else if(in_line.find("%FLAG ATOMS_PER_MOLECULE") != string::npos)
             {
+                atoms_per_molecule = ParsePartition<int>(section);
             }
             else if(in_line.find("%FLAG BOX_DIMENSIONS") != string::npos)
             {
+               box_dimensions = ParsePartition<double>(section);
             }
             else if(in_line.find("%FLAG CAP_INFO") != string::npos)
             {
@@ -1726,6 +1733,18 @@ vector<T> TopologyFile::PartitionLine(string line, string format)
         }
         return items;
     }
+    if(format.compare("3I8") == 0)
+    {
+        int number_of_items = 3;
+        int item_length = 8;
+        for(int i = 0; i < number_of_items && item_length * (i+1) <= (int)line.length(); i++)
+        {
+            string token = line.substr(i*item_length, item_length);
+            token = Trim(token);
+            items.push_back(ConvertString<T>(token));
+        }
+        return items;
+    }
     return items;
 }
 
@@ -1784,7 +1803,7 @@ void TopologyFile::ResolveSections(ofstream &out_stream)
     this->ResolveDihedralsIncHydrogenSection(out_stream);
     this->ResolveDihedralsWithoutHydrogenSection(out_stream);
     this->ResolveExcludedAtomsListSection(out_stream);
-    this->ResolveHydrogenBondACoefSection(out_stream);
+    this->ResolveHydrogenBoResolveSectionsndACoefSection(out_stream);
     this->ResolveHydrogenBondBCoefSection(out_stream);
     this->ResolveHBCutSection(out_stream);
     this->ResolveAmberAtomTypeSection(out_stream);
@@ -2347,8 +2366,10 @@ void TopologyFile::ResolveBondEquilValueSection(ofstream& out)
         out << endl;
 }
 
+
 void TopologyFile::ResolveAngleForceConstantSection(ofstream& out)
 {
+
     out << "%FLAG ANGLE_FORCE_CONSTANT" << endl
         << "%FORMAT(5E16.8)" << endl;
     int total_count = 0;
@@ -3324,6 +3345,26 @@ void TopologyFile::ResolveRadiiSection(ofstream& out)
         out << endl;
 }
 
+void TopologyFile::ResolveSolventPointersSection(ofstream& out)
+{
+    out << "%FLAG SOLVENT_POINTERS" << endl
+        << "%FORMAT(3I8)" << endl;
+    int total_count = 0;
+    int count = 0;
+    const int MAX_IN_LINE = 3;
+    const int ITEM_LENGTH = 8;
+
+      int last_solute_atom = this->
+    TopologyResidue* residue = this->assembly_->GetResidueByIndex(number_of_residues_);
+     out << setw(ITEM_LENGTH) << right << residue->GetResidueName();
+     solvation s1 = new solvation();
+
+    if(count < MAX_IN_LINE && count != 0)
+        out << endl;
+    if(total_count == 0)
+        out << endl;
+}
+
 void TopologyFile::ResolveScreenSection(ofstream& out)
 {
     out << "%FLAG SCREEN" << endl
@@ -3336,6 +3377,7 @@ void TopologyFile::ResolveScreenSection(ofstream& out)
     for(int i = 0; i < number_of_residues_; i++)
     {
         TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
+
         for(unsigned int j = 0; j < residue->GetAtoms().size(); j++)
         {
             TopologyAtom* atom = residue->GetAtomByIndex(index+1);

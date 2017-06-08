@@ -43,6 +43,32 @@ Residue::Residue(Residue *residue)
     id_ = residue->GetId();
 }
 
+Residue::Residue(Residue& residue){
+
+    Assembly *tempAssembly=residue.GetAssembly();
+    this->assembly_=tempAssembly;
+
+    this->name_=residue.GetName();
+    this->atoms_ = AtomVector();
+    AtomVector atoms = residue.GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+        atoms_.push_back(new Atom(*it));
+
+    this->head_atoms_ = AtomVector();
+    AtomVector head_atoms = residue.GetHeadAtoms();
+    for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
+        head_atoms_.push_back(new Atom(*it));
+
+    this->tail_atoms_ = AtomVector();
+    AtomVector tail_atoms = residue.GetTailAtoms();
+    for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
+        tail_atoms_.push_back(new Atom(*it));
+
+    this->chemical_type_ = residue.GetChemicalType();
+    this->description_ = residue.GetDescription();
+    this->id_ = residue.GetId();
+
+}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

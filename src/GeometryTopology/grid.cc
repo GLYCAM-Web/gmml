@@ -35,6 +35,21 @@ Grid::Grid(Assembly *assembly, Coordinate *min, Coordinate *max, double cell_len
     assembly_ = assembly;
     this->UpdateGrid(cell_length, cell_width, cell_height);
 }
+
+Grid::Grid(Grid &grid)
+{
+    cout<<"In Deep Copy"<<endl;
+    Coordinate* tempMinCoordinate = new Coordinate(*grid.GetMinCorner());
+    this->min_corner_=tempMinCoordinate;
+
+    Coordinate* tempMaxCoordinate = new Coordinate(*grid.GetMaxCorner());
+    this->max_corner_=tempMaxCoordinate;
+
+    this->cells_=grid.GetCells();
+
+    Assembly* tempAssembly = new Assembly(*grid.GetAssembly());
+    this->assembly_= tempAssembly;
+}
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////

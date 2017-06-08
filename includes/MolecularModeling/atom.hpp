@@ -35,6 +35,7 @@ namespace MolecularModeling
             Atom();
             Atom(Residue* residue, std::string name, CoordinateVector coordinates);
             Atom(Atom* atom);
+            Atom(Atom& atom);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

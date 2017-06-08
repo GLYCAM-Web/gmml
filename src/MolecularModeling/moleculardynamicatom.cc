@@ -9,6 +9,13 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 MolecularDynamicAtom::MolecularDynamicAtom() : atom_type_(""), charge_(gmml::dNotSet), mass_(gmml::dNotSet), radius_(gmml::dNotSet) {}
 
+MolecularDynamicAtom::MolecularDynamicAtom(MolecularDynamicAtom& moleculardynamicatom){
+    this->atom_type_=moleculardynamicatom.GetAtomType();
+    this->charge_=moleculardynamicatom.GetCharge();
+    this->mass_=moleculardynamicatom.GetMass();
+    this->radius_=moleculardynamicatom.GetRadius();
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -54,6 +61,10 @@ void MolecularDynamicAtom::SetRadius(double radius)
 //////////////////////////////////////////////////////////
 void MolecularDynamicAtom::Print(ostream &out)
 {    
+     out << "------------------------ Atom Type :" << atom_type_ << " --------------------------" << endl;
+     out<<"Atom Charge :"<<charge_<<endl;
+     out<<"Atom Mass :"<<mass_<<endl;
+     out<<"Atom Radius :"<<radius_<<endl;
 }
 
 void MolecularDynamicAtom::PrintHet(ostream &out)

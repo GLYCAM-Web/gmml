@@ -93,7 +93,8 @@ Assembly::Assembly() : description_(""), model_index_(0), sequence_number_(1), i
 }
 
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
-{
+{cout<<"grid1 "<<grid1.GetAssembly()->GetChemicalType()<<endl;
+    cout<<"grid2 "<<grid2.GetAssembly()->GetChemicalType()<<endl;
     source_file_type_ = type;
     description_ = "";
     model_index_ = 0;

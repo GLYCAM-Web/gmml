@@ -2,6 +2,8 @@
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/utils.hpp"
+#include <cstddef>
+#include <iostream>
 
 using namespace std;
 using namespace MolecularModeling;
@@ -9,7 +11,7 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-AtomNode::AtomNode() {}
+AtomNode::AtomNode(){}
 AtomNode::AtomNode(AtomNode *node)
 {
     atom_ = new Atom(new Atom(node->GetAtom()));
@@ -18,6 +20,26 @@ AtomNode::AtomNode(AtomNode *node)
     for(AtomVector::iterator it = node_neighbors.begin(); it != node_neighbors.end(); it++)
         node_neighbors_.push_back(new Atom(*it));
     id_ = node->GetId();
+}
+
+
+AtomNode::AtomNode(AtomNode& node)
+{
+    Atom* tempAtom = new Atom(*node.GetAtom());
+    this->atom_=tempAtom;
+
+    AtomVector node_neighbors =node.GetNodeNeighbors();
+   for(AtomVector::iterator it = node_neighbors.begin(); it != node_neighbors.end(); it++)
+         this->node_neighbors_.push_back(new Atom(*it));
+
+
+    this->id_=node.GetId();
+    this->element_label_=node.GetElementLabel();
+    this->chirality_label_=node.GetChiralityLabel();
+
+   AtomVector intra_node_neighbors=node.GetIntraNodeNeighbors();
+   for(AtomVector::iterator it = intra_node_neighbors.begin(); it != intra_node_neighbors.end(); it++)
+       this->intra_node_neighbors_.push_back(*it);
 }
 
 //////////////////////////////////////////////////////////
@@ -53,7 +75,7 @@ AtomNode::AtomVector AtomNode::GetIntraNodeNeighbors()
     return intra_node_neighbors_;
 }
 
-//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////accounant
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
 void AtomNode::SetAtom(Atom *atom)
@@ -147,7 +169,8 @@ int AtomNode::GetIntraEdgeDegree()
 void AtomNode::Print(ostream &out)
 {
     out << "Element:" << element_label_ << endl;
-    out << atom_->GetId() << ": ";
+    out << "Atomnode ID:"<<atom_->GetId() <<endl;
+
     for(unsigned int i = 0; i < intra_node_neighbors_.size(); i++)
     {
         out << "\t" << intra_node_neighbors_.at(i)->GetId();
@@ -205,5 +228,6 @@ void AtomNode::Print(ostream &out)
         case 5:
             break;
     }
+
 }
 

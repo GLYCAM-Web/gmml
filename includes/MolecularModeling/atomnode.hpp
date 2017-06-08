@@ -26,6 +26,7 @@ namespace MolecularModeling
               */
             AtomNode();
             AtomNode(AtomNode* node);
+            AtomNode(AtomNode& node);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

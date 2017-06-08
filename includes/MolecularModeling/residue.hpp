@@ -28,6 +28,7 @@ namespace MolecularModeling
             Residue();
             Residue(Assembly* assembly, std::string name);
             Residue(Residue* residue);
+            Residue(Residue& residue);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

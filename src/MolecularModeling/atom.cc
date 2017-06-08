@@ -5,6 +5,7 @@
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "cmath"
+#include <iostream>
 
 using namespace std;
 using namespace MolecularModeling;
@@ -14,6 +15,7 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 Atom::Atom() : name_(""), chemical_type_(""), element_symbol_(""), description_(""), id_("")
 {
+
     coordinates_ = CoordinateVector();
     residue_ = NULL;
     node_ = NULL;
@@ -23,6 +25,7 @@ Atom::Atom() : name_(""), chemical_type_(""), element_symbol_(""), description_(
 Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
     chemical_type_(""), element_symbol_(""), description_("")
 {
+
     residue_ = residue;
     name_ = name;
     coordinates_ = CoordinateVector();
@@ -34,6 +37,7 @@ Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
 
 Atom::Atom(Atom *atom)
 {
+
     residue_ = new Residue(atom->GetResidue());
     name_ = atom->GetName();
     coordinates_ = CoordinateVector();
@@ -41,9 +45,31 @@ Atom::Atom(Atom *atom)
     for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
         coordinates_.push_back(new GeometryTopology::Coordinate(*it));
 
-    AtomNode node = atom->GetNode();
+    AtomNode *node = atom->GetNode();
     node_ = new AtomNode(node);
     index_ = atom->GetIndex();
+}
+
+Atom::Atom(Atom& atom)
+{
+     Residue *residue_=atom.GetResidue();
+        this->SetResidue(residue_);
+
+     this->name_ = atom.GetName();
+
+     CoordinateVector coordinates = atom.GetCoordinates();
+       this->SetCoordinates(coordinates);
+
+    this->chemical_type_=atom.GetChemicalType();
+    this->description_=atom.GetDescription();
+    this->element_symbol_=atom.GetElementSymbol();
+
+     AtomNode *node = atom.GetNode();
+         this->SetNode(node);
+
+    this->id_=atom.GetId();
+    this->is_ring_=atom.GetIsRing();
+    this->index_ = atom.GetIndex();
 }
 
 //////////////////////////////////////////////////////////
