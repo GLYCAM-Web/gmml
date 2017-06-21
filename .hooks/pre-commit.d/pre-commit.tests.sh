@@ -31,7 +31,7 @@ check_gemshome $gemshome
 echo "Running mandatory tests..."
 echo "Q1. What... is the air-speed velocity of an unladen swallow?"
 cd $GEMSHOME/gmml/tests/
- source compile_run_tests.bash
+ bash compile_run_tests.bash
 cd -
 
 if [ -f $GEMSHOME/gmml/tests/All_Tests_Passed ] ; then
