@@ -337,6 +337,180 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
             ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
             GenerateCompleteSugarName(mono);
         }
+        /*
+          @TODO June 21, 2017 Davis - Bug was found by Rob on some cases the code was misidentifying DNeupNAc as LGlcpb.
+          Lachele found a working commit of the code from March 16, 2016 and a broken commit of the code on June 13, 2016.
+          From there I found a change where this else statement was commented out. I then uncommented this code out and
+          commented the broken version, which has seemed to fix the issue. I am leaving this TODO because I don't think
+          this is a permanent solution as the original person who commented it out was probably trying to do or fix something
+          else. I am hoping to learn more about the Chemistry aspect of the code to return and figure out if the original purpose
+          of the change needs to be addressed.
+        */
+        else///UPDATING SIDE ATOMS
+        {
+           if(plus_sides.size() == 3)
+           {
+               vector<string>::iterator index_it;
+               if((index_it = find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "+1")) != mono->chemical_code_->right_up_.end())
+               {
+                   ///CHECKING R or S
+                   stringstream plus_one;
+                   string orientation = CalculateRSOrientations(mono->cycle_atoms_.at(mono->cycle_atoms_.size() - 2), plus_sides.at(0), plus_sides.at(1));
+                   plus_one << "+1" << orientation;
+                   (*index_it) = plus_one.str();
+                   stringstream plus_two;
+                   orientation = CalculateRSOrientations(plus_sides.at(0), plus_sides.at(1), plus_sides.at(2));
+                   plus_two << "+2" << orientation;
+                   mono->chemical_code_->right_up_.push_back(plus_two.str());
+                   mono->chemical_code_->right_up_.push_back("+3");
+               }
+               else if((index_it = find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "+1")) != mono->chemical_code_->right_down_.end())
+               {
+                   ///CHECKING R or S
+                   stringstream plus_one;
+                   string orientation = CalculateRSOrientations(mono->cycle_atoms_.at(mono->cycle_atoms_.size() - 2), plus_sides.at(0), plus_sides.at(1));
+                   plus_one << "+1" << orientation;
+                   (*index_it) = plus_one.str();
+                   stringstream plus_two;
+                   orientation = CalculateRSOrientations(plus_sides.at(0), plus_sides.at(1), plus_sides.at(2));
+                   plus_two << "+2" << orientation;
+                   mono->chemical_code_->right_down_.push_back(plus_two.str());
+                   mono->chemical_code_->right_down_.push_back("+3");
+               }
+               ///UPDATING CHEMICAL CODE
+               UpdateComplexSugarChemicalCode(mono);
+
+               cout << "Complex structure side group atoms: " << endl;
+               gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
+               for(vector<AtomVector>::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++)
+               {
+                   stringstream complex_structure_side;
+                   AtomVector sides = (*it1);
+                   if(it1 == mono->side_atoms_.begin())///side atoms of anomeric carbon
+                   {
+                       if(sides.at(0) != NULL && sides.at(1) != NULL)
+                       {
+                           complex_structure_side << "[1] -> " << sides.at(0)->GetId() << ", " << sides.at(1)->GetId();
+                           cout << complex_structure_side.str() << endl;
+                           gmml::log(__LINE__, __FILE__,  gmml::INF, complex_structure_side.str());
+
+                       }
+                       else if(sides.at(1) != NULL)
+                       {
+                           complex_structure_side << "[1] -> " << sides.at(1)->GetId() ;
+                           cout << complex_structure_side.str() << endl;
+                           gmml::log(__LINE__, __FILE__,  gmml::INF, complex_structure_side.str());
+                       }
+                       else if(sides.at(0) != NULL)
+                       {
+                           complex_structure_side << "[1] -> " << sides.at(0)->GetId();
+                           cout << complex_structure_side.str() << endl;
+                           gmml::log(__LINE__, __FILE__,  gmml::INF, complex_structure_side.str());
+                       }
+                   }
+                   else if(it1 == mono->side_atoms_.end() - 1)//side atoms of last carbon of the ring
+                   {
+                       complex_structure_side << "[" << mono->cycle_atoms_.size() - 1 << "]";
+                       for(int i = 0; i < plus_sides.size() ; i++)
+                           complex_structure_side << " -> " << sides.at(i)->GetId();
+                       cout << complex_structure_side.str() << endl;
+                       gmml::log(__LINE__, __FILE__,  gmml::INF, complex_structure_side.str());
+                   }
+                   else if(sides.at(1) != NULL)
+                   {
+                       int cycle_atom_index = distance(mono->side_atoms_.begin(), it1);
+                       complex_structure_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at(1)->GetId();
+                       cout << complex_structure_side.str() << endl;
+                       gmml::log(__LINE__, __FILE__,  gmml::INF, complex_structure_side.str());
+                   }
+               }
+               cout << endl << "Complex sugar chemical code:" << endl;
+               gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex sugar chemical code:");
+               gmml::log(__LINE__, __FILE__,  gmml::INF, mono->chemical_code_->toString());
+               mono->chemical_code_->Print(cout);
+               ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
+               mono->sugar_name_ = ComplexSugarNameLookup(mono->chemical_code_->toString());
+           }
+           else if(plus_sides.size() == 2)
+           {
+               vector<string>::iterator index_it;
+               if((index_it = find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "+1")) != mono->chemical_code_->right_up_.end())
+               {
+                   ///CHECKING R or S
+                   stringstream plus_one;
+                   string orientation = CalculateRSOrientations(mono->cycle_atoms_.at(mono->cycle_atoms_.size() - 2), plus_sides.at(0), plus_sides.at(1));
+                   plus_one << "+1" << orientation;
+                   (*index_it) = plus_one.str();
+                   mono->chemical_code_->right_up_.push_back("+2");
+               }
+               else if((index_it = find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "+1")) != mono->chemical_code_->right_down_.end())
+               {
+                   ///CHECKING R or S
+                   stringstream plus_one;
+                   string orientation = CalculateRSOrientations(mono->cycle_atoms_.at(mono->cycle_atoms_.size() - 2), plus_sides.at(0), plus_sides.at(1));
+                   plus_one << "+1" << orientation;
+                   (*index_it) = plus_one.str();
+                   mono->chemical_code_->right_down_.push_back("+2");
+               }
+               ///UPDATING CHEMICAL CODE
+               UpdateComplexSugarChemicalCode(mono);
+
+               cout << "Complex structure side group atoms: " << endl;
+               gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
+               for(vector<AtomVector>::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++)
+               {
+                   stringstream complex_sugar_side;
+                   AtomVector sides = (*it1);
+                   if(it1 == mono->side_atoms_.begin())///side atoms of anomeric carbon
+                   {
+                       if(sides.at(0) != NULL && sides.at(1) != NULL)
+                       {
+                           complex_sugar_side << "[1] -> " << sides.at(0)->GetId() << ", " << sides.at(1)->GetId();
+                           cout << complex_sugar_side.str() << endl;
+                           gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+                       }
+                       else if(sides.at(1) != NULL)
+                       {
+                           complex_sugar_side << "[1] -> " << sides.at(1)->GetId();
+                           cout << complex_sugar_side.str() << endl;
+                           gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+                       }
+                       else if(sides.at(0) != NULL)
+                       {
+                           complex_sugar_side << "[1] -> " << sides.at(0)->GetId();
+                           cout << complex_sugar_side.str() << endl;
+                           gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+                       }
+                   }
+                   else if(it1 == mono->side_atoms_.end() - 1)//side atoms of last carbon of the ring
+                   {
+                       complex_sugar_side << "[" << mono->cycle_atoms_.size() - 1 << "]";
+                       for(int i = 0; i < plus_sides.size() ; i++)
+                       {
+                           complex_sugar_side << " -> " << sides.at(i)->GetId();
+                       }
+                       cout << complex_sugar_side.str() << endl;
+                       gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+                   }
+                   else if(sides.at(1) != NULL)
+                   {
+                       int cycle_atom_index = distance(mono->side_atoms_.begin(), it1);
+                       complex_sugar_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at(1)->GetId();
+                       cout << complex_sugar_side.str() << endl;
+                       gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+                   }
+               }
+               cout << endl << "Complex sugar chemical code:" << endl;
+               gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex sugar chemical code:");
+               gmml::log(__LINE__, __FILE__,  gmml::INF, mono->chemical_code_->toString());
+               mono->chemical_code_->Print(cout);
+               ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
+               mono->sugar_name_ = ComplexSugarNameLookup(mono->chemical_code_->toString());
+               ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
+               GenerateCompleteSugarName(mono);
+           }
+       }
+/*     // BROKEN version of else statement 
         else///UPDATING SIDE ATOMS
         {
             vector<string>::iterator index_it;
@@ -402,6 +576,8 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
                 GenerateCompleteSugarName(mono);
             }
         }
+*/
+
         cout << endl;
 
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
@@ -3328,4 +3504,3 @@ void Assembly::BuildOligosaccharideTreeStructure(Monosaccharide *key, vector<Mon
         return;
     }
 }
-
