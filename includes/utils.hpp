@@ -13,6 +13,7 @@
 #include "boost/foreach.hpp"
 #include "common.hpp"
 #include "GeometryTopology/coordinate.hpp"
+#include "MolecularModeling/atom.hpp"
 
 #include <fstream>
 
@@ -260,6 +261,84 @@ namespace gmml
     inline double ConvertRadian2Degree(double radian)
     {
         return radian*PI_DEGREE/PI_RADIAN;
+    }
+
+    // I found that Coordinate has a subtract operator, but I cannot get it to work as I want. I already made this, and it works so...
+    inline GeometryTopology::Coordinate subtract_coordinates(GeometryTopology::Coordinate minuaend, GeometryTopology::Coordinate subtrahend)
+    {
+        GeometryTopology::Coordinate new_coordinate ( (minuaend.GetX()-subtrahend.GetX()), (minuaend.GetY()-subtrahend.GetY()), (minuaend.GetZ()-subtrahend.GetZ()) );
+        return new_coordinate;
+    }
+
+    inline GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(GeometryTopology::Coordinate a, GeometryTopology::Coordinate b, GeometryTopology::Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+    {     // theta is the angle between 3 atoms. Phi is the torsion between 4 atoms.
+
+       //Convert from Degrees to Radians
+       //double theta_Radians = ( (theta_Degrees * PI_RADIAN) / 180 );
+        //double phi_Radians = ( (phi_Degrees * PI_RADIAN) / 180 );
+        double theta_Radians = ConvertDegree2Radian(theta_Degrees);
+        double phi_Radians = ConvertDegree2Radian(phi_Degrees);
+
+        Vector lmn_x, lmn_y, lmn_z;
+        double x_p, y_p, z_p;
+
+        Vector cb = subtract_coordinates(b, c);
+        Vector ba = subtract_coordinates(a, b);
+
+        //cb.Print(); std::cout << "^cb" << std::endl;
+        //ba.Print(); std::cout << "^ba" << std::endl;
+        //std::cout << std::endl;
+
+        lmn_y = ba;
+        lmn_y.CrossProduct(cb);
+        lmn_y.Normalize();
+
+        lmn_z = cb;
+        lmn_z.Normalize();
+
+        lmn_x = lmn_z;
+        lmn_x.CrossProduct(lmn_y);
+
+        /*
+        lmn_x.Print();
+        std::cout << "^lmn_x" << std::endl;
+        lmn_y.Print();
+        std::cout << "^lmn_y" << std::endl;
+        lmn_z.Print();
+        std::cout << "^lmn_z" << std::endl;
+        */
+
+        /*
+        lmn_y = normalize_vec(get_crossprod(ba, cb));
+        lmn_z = normalize_vec(cb);
+        lmn_x = get_crossprod(lmn_y, lmn_z);
+        */
+
+        x_p = distance_Angstrom *  sin(theta_Radians) * cos(phi_Radians);
+        y_p = distance_Angstrom * sin(theta_Radians) * sin(phi_Radians);
+        z_p = distance_Angstrom * cos(theta_Radians);
+
+        //std::cout << "x_p=" << x_p << "y_p=" << y_p << "z_p=" << z_p << std::endl;
+
+        GeometryTopology::Coordinate new_coordinate ( lmn_x.GetX()*x_p + lmn_y.GetX()*y_p + lmn_z.GetX()*z_p + c.GetX(),
+                                                      lmn_x.GetY()*x_p + lmn_y.GetY()*y_p + lmn_z.GetY()*z_p + c.GetY(),
+                                                      lmn_x.GetZ()*x_p + lmn_y.GetZ()*y_p + lmn_z.GetZ()*z_p + c.GetZ());
+
+        return new_coordinate;
+      /*  return (GeometryTopology::Coordinate)
+        {
+            lmn_x.GetX()*x_p + lmn_y.GetX()*y_p + lmn_z.GetX()*z_p + c.GetX(),
+            lmn_x.GetY()*x_p + lmn_y.GetY()*y_p + lmn_z.GetY()*z_p + c.GetY(),
+            lmn_x.GetZ()*x_p + lmn_y.GetZ()*y_p + lmn_z.GetZ()*z_p + c.GetZ()
+        };
+                */
+    }
+
+    inline GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+    {
+        GeometryTopology::Coordinate new_coordinate = get_cartesian_point_from_internal_coords(a->GetCoordinates().at(0), b->GetCoordinates().at(0), c->GetCoordinates().at(0), theta_Degrees, phi_Degrees, distance_Angstrom);
+        return new_coordinate;
+        //return {new_coordinate.GetX(), new_coordinate.GetY(), new_coordinate.GetZ()};
     }
 
     /*! \fn

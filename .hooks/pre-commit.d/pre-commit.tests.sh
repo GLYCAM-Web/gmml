@@ -28,6 +28,12 @@ gemshome=`pwd`
 cd -
 check_gemshome $gemshome 
 
+echo "Running mandatory tests..."
+echo "Q1. What... is the air-speed velocity of an unladen swallow?"
+cd $GEMSHOME/gmml/tests/
+ ./compile_run_tests.bash
+cd -
+
 if [ -f $GEMSHOME/gmml/tests/All_Tests_Passed ] ; then
     echo  "All tests have passed. Commits are allowed."
     exit 0

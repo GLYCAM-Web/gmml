@@ -165,11 +165,12 @@ void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
             //std::cout << "Comparing with " << atom1->GetName() << std::endl;
             if (atom->GetName() == atom1->GetName() )
             {
-                //    std::cout << "Before X=" << atom->GetCoordinates().at(0)->GetX() << std::endl;
+                //std::cout << "Replacing " << atom1->GetName() << " with " << atom->GetName() << std::endl;
+                //std::cout << "Before X=" << atom->GetCoordinates().at(0)->GetX() << std::endl;
                 atom->GetCoordinates().at(0)->SetX( atom1->GetCoordinates().at(0)->GetX() );
                 atom->GetCoordinates().at(0)->SetY( atom1->GetCoordinates().at(0)->GetY() );
                 atom->GetCoordinates().at(0)->SetZ( atom1->GetCoordinates().at(0)->GetZ() );
-                //   std::cout << "After X=" << atom->GetCoordinates().at(0)->GetX() << std::endl;
+                //std::cout << "After X=" << atom->GetCoordinates().at(0)->GetX() << std::endl;
             }
         }
     }
