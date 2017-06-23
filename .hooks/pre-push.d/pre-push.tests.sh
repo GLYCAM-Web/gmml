@@ -28,6 +28,12 @@ gemshome=`pwd`
 cd -
 check_gemshome $gemshome 
 
+#Compile gmml if not compiled:
+echo "Compiling gmml if necessary with ./make.sh NoClean no-wrap"
+cd $GEMSHOME/
+ ./make.sh no_clean no_wrap
+cd -
+
 echo "Running mandatory tests..."
 cd $GEMSHOME/gmml/tests/
  bash compile_run_tests.bash
@@ -39,8 +45,7 @@ if [ -f $GEMSHOME/gmml/tests/All_Tests_Passed ] ; then
 else
     echo "
          *****************************************************************
-         You're a naughty boy, Fawlty!
-         Tests have not been run, or have failed! 
+         The tests have failed! 
          Push cancelled.
          *****************************************************************
          "
