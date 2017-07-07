@@ -1057,3 +1057,88 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
     in.close();
 }
 
+string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceGF(string oligo_name, string output_file_type)
+{
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
+
+    query << "?pdb_file     :hasOligo	?oligo.\n";
+    query << "?oligo        :oligoName	\"" << oligo_name << "\"\n";
+    query << "OPTIONAL { ?oligo        :oligoResidueLinks	?residue_links.\n";
+    query << "?linkage      :hasParent 	?oligo.\n";
+    query << "?linkage      :glycosidicLinkage    ?glycosidic_linkage.}\n";
+    query << "?pdb_file     :identifier   ?pdb.\n";
+
+    ///To DO: string manipulation: split the oligo_name by _ and for each of them write the following to represent the names of the monos:
+    //    query << "?oligo	:hasCore	?mono.\n";
+    //    query << "?mono     :hasSugarName	?sn.\n";
+    //    query << "?sn       :monosaccharideName 	?name.\n";
+    //    query << "?sn       :monosaccharideShortName 	?short_name.\n";
+    //    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
+    //    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
+    query << Ontology::END_WHERE_CLAUSE;
+    return FormulateCURLGF(output_file_type, query.str());
+}
+
+string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(string oligo_name_pattern, string output_file_type)
+{
+    FindReplaceString(oligo_name_pattern, "[", "\\\\[");
+    FindReplaceString(oligo_name_pattern, "]", "\\\\]");
+    if(oligo_name_pattern.compare("") == 0)
+    {
+        cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << endl;
+        return "Please specify the input argument. (you can use up to two * in the name pattern)";
+    }
+    if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') > 3)
+    {
+        cout << "Wrong name pattern format. Please use only up to three * in the input argument." << endl;
+        return "Wrong name pattern format. Please use only up to three * in the input argument.";
+    }
+
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
+    query << "?oligo        :oligoName	?oligo_sequence.\n";
+
+    size_t first = oligo_name_pattern.find_first_of("*");
+    size_t last = oligo_name_pattern.find_last_of("*");
+
+    string filter1 = oligo_name_pattern.substr(0, first);
+    string filter2 = oligo_name_pattern.substr(first + 1, last - 1);
+    string filter3 = oligo_name_pattern.substr(last + 1, oligo_name_pattern.size() - 1);
+    if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 0) ///No *
+        query << "?oligo	:oligoName	\"" << oligo_name_pattern << "\".\n";
+    else if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 1) ///Only one *
+    {
+        if(first == 0) ///* at the beginning
+            query << "FILTER regex(?oligo_sequence, \"" << filter2 << "$\")\n";
+        else if(first == oligo_name_pattern.size()-1) ///* at the end
+            query << "FILTER regex(?oligo_sequence, \"^" << filter1 << "\")\n";
+        else if(first < oligo_name_pattern.size()-1 && first > 0) ///* in the middle
+            query << "FILTER regex(?oligo_sequence, \"^" << filter1 << ".+" << filter3 << "$\")\n";
+    }
+    else if (count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 2)
+    {
+        if(first == 0 && last == oligo_name_pattern.size() - 1) ///* at the beginning and end
+            query << "FILTER regex(?oligo_sequence, \"" << filter2 << "\")\n";
+        else if(first == 0 && last < oligo_name_pattern.size() - 1)///one * at the beginning another in the middle
+            query << "FILTER regex(?oligo_sequence, \"" << filter2 << ".+" << filter3 << "$\")\n";
+        else if(first > 0 && last == oligo_name_pattern.size() - 1)///one * in the middle another at the end
+            query << "FILTER regex(?oligo_sequence, \"^" << filter1 << ".+" << filter2 << "\")\n";
+    }
+    else
+    {
+        vector<string> pattern_tokens = Split(filter2, "*");
+        query << "FILTER regex(?oligo_sequence, \"" << pattern_tokens.at(0) << ".+" << pattern_tokens.at(1) << "\")\n";
+    }
+
+    query << "?pdb_file     :hasOligo	?oligo.\n";
+    query << "OPTIONAL { ?oligo        :oligoResidueLinks	?residue_links.\n";
+    query << "?linkage      :hasParent 	?oligo.\n";
+    query << "?linkage      :glycosidicLinkage    ?glycosidic_linkage.}\n";
+    query << "?pdb_file     :identifier	?pdb.\n";
+
+    query << Ontology::END_WHERE_CLAUSE;
+
+    return FormulateCURLGF(output_file_type, query.str());
+}
+
