@@ -19,9 +19,9 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > AtomMatchingMap;
     typedef std::map<std::string, std::vector<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef GeometryTopology::Coordinate Vector;    
+    typedef GeometryTopology::Coordinate Vector;
 
-    //*******************************************    
+    //*******************************************
 
     struct AtomTypesInfo{
             std::string atom_type_;
@@ -72,7 +72,7 @@ namespace gmml
     const double CHARGE_TOLERANCE = 0.001;//0.0001;
     const double GRID_OFFSET = 1.0;
     const double MARGIN = 0.0;//10.0;
-    const double CRITICAL_RADIOUS = 1.0;        
+    const double CRITICAL_RADIOUS = 1.0;
 
     const double EXTERNAL28LINKAGEROTAMERS[][6] = {
         {-66.0, 0.0, -66.0, 80.0, -167.0},
@@ -363,7 +363,16 @@ namespace gmml
     const int AMBERGLYCAMLOOKUPSIZE = (sizeof(AMBERGLYCAMLOOKUP)/sizeof(AMBERGLYCAMLOOKUP[0]));
 
     const Glycan::SugarName SUGARNAMELOOKUP[] = {
-
+        /* {  0 = "chemical_code_string_",
+              1 = "monosaccharide_stereochemistry_name_",
+              2 = "monosaccharide_stereochemistry_short_name_",
+              3 = "isomer_",
+              4 = "name_",
+              5 = "ring_type_",
+              6 = "configuration_",
+              7 = "monosaccharide_name_",
+              8 = "monosaccharide_short_name_",
+              9 = "pdb_code_" } */
         {"", "", "", "", "", "", "", "", "", ""},
         ///Alpha D Aldohexapyranoses
         {"_2_3_4P_a", "a-D-ribopyranose", "DRibpa", "D", "", "P", "a", "", "", "RIB"},
@@ -378,6 +387,8 @@ namespace gmml
         {"_3^2^4P_a^+1", "a-D-idopyranose", "DIdopa", "D", "", "P", "a", "", "", ""},
         {"_2^3^4P_a^+1", "a-D-galactopyranose", "DGalpa", "D", "", "P", "a", "", "", "GLA"},
         {"^2^3^4P_a^+1", "a-D-talopyranose", "DTalpa", "D", "", "P", "a", "", "", ""},
+        {"_2NAc_4^3P^+1_a", "N-acetyl-a-D-glucopyranose", "DGlcpNAca", "D", "", "P", "a", "", "", "NAG"},
+        {"_2NAc^3^4P^+1_a", "N-acetyl-a-D-galactopyranose", "DGalpNAca", "D", "", "P", "a", "", "", "NAG"},
         ///Beta D Aldohexapyranoses
         {"_2_3_4P^a", "b-D-ribopyranose", "DRibpb", "D", "", "P", "b", "", "", "RIP"},
         {"_3_4^2P^a", "b-D-arabinopyranose","DArapb", "D", "", "P", "b", "", "", ""},
@@ -391,6 +402,8 @@ namespace gmml
         {"_3^2^4P^a^+1",	"b-D-idopyranose",	"DIdopb", "D", "", "P", "b", "", "", ""},
         {"_2^3^4P^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "", "", "GAL,GLB"},
         {"^2^3^4P^a^+1",	"b-D-talopyranose",	"DTalpb", "D", "", "P", "b", "", "", ""},
+        {"_2NAc_4^3P^a^+1", "N-acetyl-b-D-glucopyranose", "DGlcpNAcb", "D", "", "P", "b", "", "", "NAG"},
+        {"_2NAc^3^4P^+1^a", "N-acetyl-b-D-galactopyranose", "DGalpNAcb", "D", "", "P", "b", "", "", "NAG"},
         ///Alpha D Ketohexapyranoses
         {"_2_3_4P_a^-1", "a-D-psicopyranose", "DPsipa", "D", "", "P", "a", "", "", "PSJ"},
         {"_3_4^2P_a^-1", "a-D-fructopyranose", "DFrupa", "D", "", "P", "a", "", "", "FRU,FUD"},
@@ -900,7 +913,7 @@ namespace gmml
         OntMonosaccharide,
         OntSugarName,
         OntAtom
-    };    
+    };
 }
 
 #endif // COMMON_HPP

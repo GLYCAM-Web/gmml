@@ -33,7 +33,7 @@
 namespace MolecularModeling
 {
     class Residue;
-    class Atom;    
+    class Atom;
     class Assembly
     {
         public:
@@ -251,7 +251,7 @@ namespace MolecularModeling
             bool CheckCondensedSequenceSanity(std::string sequence,
                                               CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues);
 /** @addtogroup Molecular_Data_Structure_Builders
-* @{ 
+* @{
 */
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
 /** @}*/
@@ -707,7 +707,7 @@ namespace MolecularModeling
             gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
             void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
-                                                int& index);            
+                                                int& index);
             void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
 
             /// Pattern mathing
@@ -865,7 +865,7 @@ namespace MolecularModeling
             * @param o The object part of the triple
             * @param stream The output stream which is going to be written in the ontology turtle file
             */
-            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);            
+            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
             /*! \fn
             * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
             * @param s The subject part of the triple
@@ -1281,6 +1281,11 @@ namespace MolecularModeling
               */
             void AddDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, std::string cond_name_pattern,
                                             std::stringstream& head, bool minus_one, std::stringstream& in_bracket);
+            /*! \fn
+              * A function in order to update the pdb_code_ of a monosaccharide to make sure the pdb_code_ takes into account derivatives.'
+              * @param mono The monosaccharide object
+              */
+            void UpdatePdbCode(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to update the chemical code structure of a complex monosaccharide (monosaccharide with side atoms at position +2 and +3)
               * @param mono The monosaccharide object

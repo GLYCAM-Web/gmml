@@ -17,6 +17,11 @@
 
 #include <fstream>
 
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 namespace gmml
 {
     /*! \fn
@@ -285,10 +290,6 @@ namespace gmml
         Vector cb = subtract_coordinates(b, c);
         Vector ba = subtract_coordinates(a, b);
 
-        //cb.Print(); std::cout << "^cb" << std::endl;
-        //ba.Print(); std::cout << "^ba" << std::endl;
-        //std::cout << std::endl;
-
         lmn_y = ba;
         lmn_y.CrossProduct(cb);
         lmn_y.Normalize();
@@ -299,26 +300,9 @@ namespace gmml
         lmn_x = lmn_z;
         lmn_x.CrossProduct(lmn_y);
 
-        /*
-        lmn_x.Print();
-        std::cout << "^lmn_x" << std::endl;
-        lmn_y.Print();
-        std::cout << "^lmn_y" << std::endl;
-        lmn_z.Print();
-        std::cout << "^lmn_z" << std::endl;
-        */
-
-        /*
-        lmn_y = normalize_vec(get_crossprod(ba, cb));
-        lmn_z = normalize_vec(cb);
-        lmn_x = get_crossprod(lmn_y, lmn_z);
-        */
-
         x_p = distance_Angstrom *  sin(theta_Radians) * cos(phi_Radians);
         y_p = distance_Angstrom * sin(theta_Radians) * sin(phi_Radians);
         z_p = distance_Angstrom * cos(theta_Radians);
-
-        //std::cout << "x_p=" << x_p << "y_p=" << y_p << "z_p=" << z_p << std::endl;
 
         GeometryTopology::Coordinate new_coordinate ( lmn_x.GetX()*x_p + lmn_y.GetX()*y_p + lmn_z.GetX()*z_p + c.GetX(),
                                                       lmn_x.GetY()*x_p + lmn_y.GetY()*y_p + lmn_z.GetY()*z_p + c.GetY(),
@@ -503,8 +487,9 @@ namespace gmml
     {
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
         {
-            if(code.compare(SUGARNAMELOOKUP[i].chemical_code_string_) == 0)
+            if(code.compare(SUGARNAMELOOKUP[i].chemical_code_string_) == 0){
                 return SUGARNAMELOOKUP[i];
+            }
         }
         return SUGARNAMELOOKUP[0];
     }
@@ -516,7 +501,7 @@ namespace gmml
       */
     inline Glycan::SugarName ClosestMatchSugarStereoChemistryNameLookup(std::string code, std::vector<Glycan::SugarName>& closest_matches)
     {
-        std::string vocab[] = {"2", "3", "4", "a", "+1", "+2", "+3", "-1"};
+        std::string vocab[] = {"2", "3", "4", "a", "+1", "+2", "+3", "-1", "NAc"};
         int vocab_size = (sizeof(vocab)/sizeof(vocab[0]));
         std::string pos = "^_";
         std::string stat = "d";
@@ -654,7 +639,7 @@ namespace gmml
                 return COMPLEXSUGARNAMELOOKUP[i];
         }
         return COMPLEXSUGARNAMELOOKUP[0];
-    }    
+    }
 
     /*! \fn
       * A function in order to initializing the common terminal residue map
