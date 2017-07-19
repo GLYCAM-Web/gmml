@@ -277,11 +277,18 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
 
         ///CREATING CHEMICAL CODE (Glycode) OBJECT
         ChemicalCode* code = BuildChemicalCode(orientations);
+        /*  Example ChemicalCode
+            4      -1
+          2d   P
+            3    a +1 */
+        // @TODO I'm pretty sure this should be if( code == NULL ) then do something
+        //  to make sure it isn't NULL for the code->Print( cout ); because if it is
+        //  NULL the code->Print( cout ); throws a Seg fault.
         if(code != NULL)
         {
             mono->chemical_code_ = code;
         }
-        cout << endl << "Stereo chemistry chemical code:"  << endl;
+        cout << endl << "Ring Stereo chemistry chemical code:"  << endl;
         code->Print(cout);
         cout << endl;
 
@@ -336,6 +343,8 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
         {
             ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
             GenerateCompleteSugarName(mono);
+            // @TODO Another possibly place for new function updatePdbCode
+            UpdatePdbCode(mono);
         }
         /*
           @TODO June 21, 2017 Davis - Bug was found by Rob on some cases the code was misidentifying DNeupNAc as LGlcpb.
@@ -510,7 +519,7 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
                GenerateCompleteSugarName(mono);
            }
        }
-/*     // BROKEN version of else statement 
+/*     // BROKEN version of else statement
         else///UPDATING SIDE ATOMS
         {
             vector<string>::iterator index_it;
@@ -577,18 +586,18 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
             }
         }
 */
-
         cout << endl;
-
         if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
         {
             ///FINDING CLOSEST MATCH FOR THE CHEMICAL CODE IN THE LOOKUP TABLE
             vector<Glycan::SugarName> closest_matches = vector<Glycan::SugarName>();
             mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString(), closest_matches);
-            if(mono->sugar_name_.monosaccharide_name_.compare("") == 0)
+            if(mono->sugar_name_.monosaccharide_name_.compare("") == 0){
                 mono->sugar_name_.monosaccharide_name_ = mono->sugar_name_.monosaccharide_stereochemistry_name_;
-            if(mono->sugar_name_.monosaccharide_short_name_.compare("") == 0)
+            }
+            if(mono->sugar_name_.monosaccharide_short_name_.compare("") == 0){
                 mono->sugar_name_.monosaccharide_short_name_ = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+            }
 
             ///ADDING NOTES/ISSUES OF MONOSACCHARIDE STRUCTURE
             Note* matching_note = new Note();
@@ -703,18 +712,19 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
 
     ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE
     vector<Note*> notes = this->GetNotes();
-    cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-    cout << endl << "NOTES/ISSUES:" << endl;
-    for(vector<Note*>::iterator note_it = notes.begin(); note_it != notes.end(); note_it++)
-    {
-        Note* note = (*note_it);
-        cout << endl << "Category: " << note->ConvertGlycanNoteCat2String(note->category_) << endl;
-        cout << "Type: " << note->ConvertGlycanNoteType2String(note->type_) << endl;
-        cout << "Description: " << note->description_ << endl;
+    if( notes.size() > 0){
+      cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+      cout << endl << "NOTES/ISSUES:" << endl;
+      for(vector<Note*>::iterator note_it = notes.begin(); note_it != notes.end(); note_it++)
+      {
+          Note* note = (*note_it);
+          cout << endl << "Category: " << note->ConvertGlycanNoteCat2String(note->category_) << endl;
+          cout << "Type: " << note->ConvertGlycanNoteType2String(note->type_) << endl;
+          cout << "Description: " << note->description_ << endl;
+      }
+
+      cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     }
-
-    cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-
     ///PRINTING STATISTICAL REPORT OF GLYPROBITY
     if(glyprobity_report)
     {
@@ -2450,6 +2460,7 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
     {
         long_name << head.str() << mono->sugar_name_.monosaccharide_stereochemistry_name_ << tail.str();
         mono->sugar_name_.monosaccharide_name_ = long_name.str();
+        // @TODO Possibly call new function here to updatePdbCode()
     }
 }
 
@@ -2716,6 +2727,14 @@ void Assembly::AddModificationRuleTwoInfo(string key, string pattern, Monosaccha
     this->AddNote(der_mod_note);
     cout << ss.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
+}
+
+void Assembly::UpdatePdbCode(Monosaccharide* mono){
+  for( int i = 0; i < SUGARNAMELOOKUPSIZE; i++ ) {
+    if(mono->sugar_name_.monosaccharide_name_.compare(SUGARNAMELOOKUP[i].monosaccharide_stereochemistry_name_) == 0){
+      mono->sugar_name_.pdb_code_ = SUGARNAMELOOKUP[i].pdb_code_;
+    }
+  }
 }
 
 void Assembly::UpdateComplexSugarChemicalCode(Monosaccharide *mono)
