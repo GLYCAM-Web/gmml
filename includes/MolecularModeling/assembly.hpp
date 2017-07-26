@@ -1282,15 +1282,15 @@ namespace MolecularModeling
             void AddDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, std::string cond_name_pattern,
                                             std::stringstream& head, bool minus_one, std::stringstream& in_bracket);
             /*! \fn
-              * A function in order to update the pdb_code_ of a monosaccharide to make sure the pdb_code_ takes into account derivatives.'
-              * @param mono The monosaccharide object
-              */
-            void UpdatePdbCode(Glycan::Monosaccharide* mono);
-            /*! \fn
               * A function in order to update the chemical code structure of a complex monosaccharide (monosaccharide with side atoms at position +2 and +3)
               * @param mono The monosaccharide object
               */
             void UpdateComplexSugarChemicalCode(Glycan::Monosaccharide* mono);
+            /*! /fn
+              * A function used to update the PDB code of a complex monosaccharide after derivatives have been found.
+              * @param mono The monosaccharide object
+              */
+            void UpdatePdbCode( Glycan::Monosaccharide * mono );
             /*! \fn
               * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
               * @param monos The list of extracted monosaccharide object

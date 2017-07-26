@@ -151,7 +151,7 @@ void Assembly::PopulateOligosaccharide(stringstream& pdb_stream, stringstream& o
 {
     string oligo_resource = "";
     string oligo_uri = "";
-    if(oligos.size() != NULL)
+    if(oligos.size() != 0)
     {
         for(OligosaccharideVector::iterator it = oligos.begin(); it != oligos.end(); it++)
         {
@@ -703,4 +703,3 @@ string Assembly::FormulateCURLGF(string output_file_type, string query)
     //cout << endl;
     return tmp;
 }
-
