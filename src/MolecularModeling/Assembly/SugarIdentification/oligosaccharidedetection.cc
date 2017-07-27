@@ -343,8 +343,6 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
         {
             ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
             GenerateCompleteSugarName(mono);
-            // @TODO Another possibly place for new function updatePdbCode
-            UpdatePdbCode(mono);
         }
         /*
           @TODO June 21, 2017 Davis - Bug was found by Rob on some cases the code was misidentifying DNeupNAc as LGlcpb.
@@ -2727,14 +2725,6 @@ void Assembly::AddModificationRuleTwoInfo(string key, string pattern, Monosaccha
     this->AddNote(der_mod_note);
     cout << ss.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
-}
-
-void Assembly::UpdatePdbCode(Monosaccharide* mono){
-  for( int i = 0; i < SUGARNAMELOOKUPSIZE; i++ ) {
-    if(mono->sugar_name_.monosaccharide_name_.compare(SUGARNAMELOOKUP[i].monosaccharide_stereochemistry_name_) == 0){
-      mono->sugar_name_.pdb_code_ = SUGARNAMELOOKUP[i].pdb_code_;
-    }
-  }
 }
 
 void Assembly::UpdateComplexSugarChemicalCode(Monosaccharide *mono)
