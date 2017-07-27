@@ -344,15 +344,6 @@ vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files,
             ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
             GenerateCompleteSugarName(mono);
         }
-        /*
-          @TODO June 21, 2017 Davis - Bug was found by Rob on some cases the code was misidentifying DNeupNAc as LGlcpb.
-          Lachele found a working commit of the code from March 16, 2016 and a broken commit of the code on June 13, 2016.
-          From there I found a change where this else statement was commented out. I then uncommented this code out and
-          commented the broken version, which has seemed to fix the issue. I am leaving this TODO because I don't think
-          this is a permanent solution as the original person who commented it out was probably trying to do or fix something
-          else. I am hoping to learn more about the Chemistry aspect of the code to return and figure out if the original purpose
-          of the change needs to be addressed.
-        */
         else///UPDATING SIDE ATOMS
         {
            if(plus_sides.size() == 3)
@@ -2458,7 +2449,6 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
     {
         long_name << head.str() << mono->sugar_name_.monosaccharide_stereochemistry_name_ << tail.str();
         mono->sugar_name_.monosaccharide_name_ = long_name.str();
-        // @TODO Possibly call new function here to updatePdbCode()
     }
 }
 
