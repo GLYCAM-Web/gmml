@@ -466,14 +466,12 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
     ///ADDING NOTES/ISSUES OF RESIDUE NAMING
     string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName();
-    cout << "Original Residue:\t" << original_residue << endl;
     vector<string> pdb_codes = Split(mono->sugar_name_.pdb_code_, ",");
     if( pdb_codes.size() > 0 ) {
       string pdb_code = "";
       bool found_code = false;
       for( vector< string >::iterator codes_it = pdb_codes.begin(); codes_it != pdb_codes.end(); codes_it++ ) {
         pdb_code = ( *codes_it );
-        cout << "PDB Code:\t" << pdb_code << endl;
         if( pdb_code.compare( original_residue ) == 0 ) {
           found_code = true;
           break;
@@ -488,7 +486,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
           res_ss << "PDB 3 letter code not found for " << mono->sugar_name_.monosaccharide_short_name_;
         } else {
           residue_naming_note->type_ = Glycan::ERROR;
-          res_ss << "Residue name in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match to PDB code: " << mono->sugar_name_.pdb_code_;
+          res_ss << "Residue name, " << original_residue << ", in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match to PDB code: " << mono->sugar_name_.pdb_code_;
         }
         residue_naming_note->description_ = res_ss.str();
         this->AddNote(residue_naming_note);
@@ -528,7 +526,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE
   vector<Note*> notes = this->GetNotes();
-  if( notes.size() > 0 ) {
+  if( !notes.empty() {
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << endl << "NOTES/ISSUES:" << endl;
     for( vector<Note*>::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {

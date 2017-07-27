@@ -387,8 +387,8 @@ namespace gmml
         {"_3^2^4P_a^+1", "a-D-idopyranose", "DIdopa", "D", "", "P", "a", "", "", ""},
         {"_2^3^4P_a^+1", "a-D-galactopyranose", "DGalpa", "D", "", "P", "a", "", "", "GLA"},
         {"^2^3^4P_a^+1", "a-D-talopyranose", "DTalpa", "D", "", "P", "a", "", "", ""},
-        {"_2NAc_4^3P_a^+1", "N-acetyl-a-D-glucopyranose", "DGlcpNAca", "D", "", "P", "a", "", "", "NAG"},
-        {"_2NAc^3^4P_a^+1", "N-acetyl-a-D-galactopyranose", "DGalpNAca", "D", "", "P", "a", "", "", "NAG"},
+        {"_2NAc_4^3P_a^+1", "N-acetyl-a-D-glucopyranose", "DGlcpNAca", "D", "", "P", "a", "", "", "NDG"},
+        {"_2NAc^3^4P_a^+1", "N-acetyl-a-D-galactopyranose", "DGalpNAca", "D", "", "P", "a", "", "", "A2G"},
         ///Beta D Aldohexapyranoses
         {"_2_3_4P^a", "b-D-ribopyranose", "DRibpb", "D", "", "P", "b", "", "", "RIP"},
         {"_3_4^2P^a", "b-D-arabinopyranose","DArapb", "D", "", "P", "b", "", "", ""},
