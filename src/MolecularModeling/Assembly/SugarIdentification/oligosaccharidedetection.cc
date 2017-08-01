@@ -320,9 +320,6 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
       ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
       GenerateCompleteSugarName( mono );
     } else {
-      // @FIXME I thnk the if-elseif statement could probably be reduced as well.
-      // This section of code needs to be redone to not have hard coded +1, +2, +3
-      //  in order to keep the changes made from previous steps.
       if( plus_sides.size() == 3 ) {
         vector< string >::iterator index_it;
         if( ( index_it = find( mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "+1" ) ) != mono->chemical_code_->right_up_.end() ) {
@@ -526,7 +523,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE
   vector<Note*> notes = this->GetNotes();
-  if( !notes.empty() {
+  if( !notes.empty() ) {
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << endl << "NOTES/ISSUES:" << endl;
     for( vector<Note*>::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
