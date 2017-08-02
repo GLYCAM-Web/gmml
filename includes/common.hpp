@@ -395,7 +395,6 @@ namespace gmml
         {"_2_3_4P^a^+1", "b-D-allopyranose",	"DAllpb", "D", "", "P", "b", "", "", "ALL"},
         {"_3_4^2P^a^+1", "b-D-altropyranose", "DAltpb", "D", "", "P", "b", "", "", ""},
         {"_2_4^3P^a^+1",	"b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "", "", "BGC"},
-        {"_4^2^3P^a^+1", "b-D-mannopyranose",	"DManpb", "D", "", "P", "b", "", "", "BMA"},
         {"_2_3^4P^a^+1", "b-D-gulopyranose", "DGulpb", "D", "", "P", "b", "", "", "GL0"},
         {"_3^2^4P^a^+1",	"b-D-idopyranose",	"DIdopb", "D", "", "P", "b", "", "", ""},
         {"_2^3^4P^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "", "", "GAL,GLB"},
@@ -647,12 +646,12 @@ namespace gmml
     const Glycan::SugarName COMPLEXSUGARNAMELOOKUP[] = {
 
         {"", "", "", "", "", "", "", "", "", ""},
-        ///Added to fix some warnings. Probably need to be moved to the correct subcategory
+        ///Added to fix some warnings. Probably need to be moved to the correct subcategory.
         {"_2_4^3P_a^+1A", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "a-D-glucuronic acid", "DGlcpAa" "GCU"},
         {"_2_4^3P^a^+1A", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "b-D-glucoronic acid", "DGlcpAb" "BDP,GCU"},
         {"_3_4^2MeP_+1d^a", "a-L-fucopyranose", "LFUcpa", "L", "", "P", "a", "2-O-methyl-a-L-fucopyranose", "LFucp[2Me]a", "MXZ"},
         {"_3_4^2MeP_+1d_a", "b-L-fucopyranose", "LFUcpb", "L", "", "P", "b", "2-O-methyl-b-L-fucopyranose", "LFucp[2Me]b", "MXY"},
-        {"_2NAc^3^4SP^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "4-O-sulfo-N-acetyl-b-D-galactosamine", "DGalpNAc[4S]b", "Unknown"},
+        {"_2NAc^3^4SP^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "4-O-sulfo-N-acetyl-b-D-galactosamine", "DGalpNAc[4S]b", "ASG"},
         {"_2NAc^3^4SP_a^+1", "a-D-galactopyranose", "DGalpa", "D", "", "P", "a", "4-O-sulfo-N-Acetyl-a-D-galactosamine", "DGalpNAc[4S]a", "NGK"},
         {"_2NAc_4^3P_a^+1", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "N-acetyl-a-D-glucosamine", "DGlcpNAca", "NDG"},
         {"_2NAc^3^4P_a^+1", "a-D-galactopyranose", "DGalpa", "D","", "P", "a", "N-acetyl-a-D-galactosamine", "DGalpNAca", "A2G"},

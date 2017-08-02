@@ -2641,10 +2641,20 @@ void Assembly::UpdateComplexSugarChemicalCode( Monosaccharide * mono ) {
 
 void Assembly::UpdatePdbCode( Monosaccharide * mono ) {
   string code = mono->chemical_code_->toString();
+  /*
   for( int i = 0; i < SUGARNAMELOOKUPSIZE; i++ ) {
     if( code.compare( SUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) {
       cout << "Code:\t" << code << "\tSUGARNAMELOOKUP chemical_code_string:\t" << SUGARNAMELOOKUP[ i ].chemical_code_string_ << endl;
       mono->sugar_name_.pdb_code_ = SUGARNAMELOOKUP[ i ].pdb_code_;
+      return;
+    }
+  }
+  */
+  for( int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++ ) {
+    if( code.compare( COMPLEXSUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) {
+      cout << "Code:\t" << code << "\tCOMPLEXSUGARNAMELOOKUP chemical_code_string:\t" << COMPLEXSUGARNAMELOOKUP[ i ].chemical_code_string_ << endl;
+      mono->sugar_name_.pdb_code_ = COMPLEXSUGARNAMELOOKUP[ i ].pdb_code_;
+      return;
     }
   }
 }
