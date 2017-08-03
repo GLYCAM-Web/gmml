@@ -273,9 +273,6 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
       4      -1
     2d   P
       3    a +1 */
-    // @TODO I'm pretty sure this should be if( code == NULL ) then do something
-    //  to make sure it isn't NULL for the code->Print( cout ); because if it is
-    //  NULL the code->Print( cout ); throws a Seg fault.
     if( code != NULL ) {
       mono->chemical_code_ = code;
     }
@@ -312,8 +309,6 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
       UpdateComplexSugarChemicalCode( mono );
       UpdatePdbCode( mono );
     }
-
-
 
     ///GENERATING COMPLETE NAME
     if( plus_sides.size() <= 1 ) {
@@ -402,8 +397,11 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
       mono->chemical_code_->Print(cout);
       ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
       mono->sugar_name_ = ComplexSugarNameLookup( mono->chemical_code_->toString() );
+      ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
+      GenerateCompleteSugarName( mono );
     }
     cout << endl;
+
     if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 && mono->sugar_name_.monosaccharide_name_.compare( "" ) == 0 ) {
       ///FINDING CLOSEST MATCH FOR THE CHEMICAL CODE IN THE LOOKUP TABLE
       vector< Glycan::SugarName > closest_matches = vector< Glycan::SugarName >();
@@ -2585,74 +2583,12 @@ void Assembly::UpdateComplexSugarChemicalCode( Monosaccharide * mono ) {
         }
       }
     }
-    cout << mono->chemical_code_->toString() << endl;
-/*
-    if(mono->side_atoms_.at(0).at(0) != NULL)
-    {
-        if(mono->derivatives_map_["-1"].compare("xC-(O,O)") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1")) != mono->chemical_code_->right_up_.end())
-                (*index_it) = "-1A";
-            else if((index_it = find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1")) != mono->chemical_code_->right_down_.end())
-                (*index_it) = "-1A";
-        }
-    }
-    if(mono->cycle_atoms_.at(2) != NULL)
-    {
-        if(mono->derivatives_map_["-1"].compare("xC-O-C=OCH3") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "3")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "3Ac";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "3")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "3Ac";
-        }
-    }
-    if(mono->cycle_atoms_.at(3) != NULL)
-    {
-        if(mono->derivatives_map_["4"].compare("xCH-N") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "4")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "4N";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "4")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "4N";
-        }
-        if(mono->derivatives_map_["4"].compare("xC-N-C=OCH3") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "4")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "4NAc";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "4")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "4NAc";
-        }
-        if(mono->derivatives_map_["4"].compare("xC-N-C=OCH2OH") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "4")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "4NGc";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "4")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "4NGc";
-        }
-    }
-    */
 }
 
 void Assembly::UpdatePdbCode( Monosaccharide * mono ) {
   string code = mono->chemical_code_->toString();
-  /*
-  for( int i = 0; i < SUGARNAMELOOKUPSIZE; i++ ) {
-    if( code.compare( SUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) {
-      cout << "Code:\t" << code << "\tSUGARNAMELOOKUP chemical_code_string:\t" << SUGARNAMELOOKUP[ i ].chemical_code_string_ << endl;
-      mono->sugar_name_.pdb_code_ = SUGARNAMELOOKUP[ i ].pdb_code_;
-      return;
-    }
-  }
-  */
   for( int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++ ) {
     if( code.compare( COMPLEXSUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) {
-      cout << "Code:\t" << code << "\tCOMPLEXSUGARNAMELOOKUP chemical_code_string:\t" << COMPLEXSUGARNAMELOOKUP[ i ].chemical_code_string_ << endl;
       mono->sugar_name_.pdb_code_ = COMPLEXSUGARNAMELOOKUP[ i ].pdb_code_;
       return;
     }
