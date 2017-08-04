@@ -358,6 +358,9 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
           mono->chemical_code_->right_down_.push_back( "+2" );
         }
       }
+      ///UPDATING CHEMICAL CODE
+      UpdateComplexSugarChemicalCode( mono );
+
       cout << "Complex structure side group atoms: " << endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
       for( vector< AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ ) {
@@ -397,8 +400,10 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
       mono->chemical_code_->Print(cout);
       ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
       mono->sugar_name_ = ComplexSugarNameLookup( mono->chemical_code_->toString() );
-      ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
-      GenerateCompleteSugarName( mono );
+      if( plus_sides.size() == 2 ) {
+        ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
+        GenerateCompleteSugarName( mono );
+      }
     }
     cout << endl;
 
