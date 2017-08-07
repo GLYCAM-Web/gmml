@@ -193,10 +193,10 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   }
 
   ///FILTERING OUT FUSED CYCLES. aka Cycles that are sharing an edge
-  RemoveFusedCycles(cycles);
+  RemoveFusedCycles( cycles );
 
   ///FILTERING OUT OXYGENLESS CYCLES
-  FilterAllCarbonCycles(cycles);
+  FilterAllCarbonCycles( cycles );
 
   ///ANOMERIC CARBON DETECTION and SORTING
   cout << endl << "Cycles after discarding rings that are all-carbon" << endl;
@@ -306,14 +306,14 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
         string value = ( *it1 ).second;
         cout << "Carbon at Ring Position " << key << " is attached to " << value << endl;
       }
-      UpdateComplexSugarChemicalCode( mono );
-      UpdatePdbCode( mono );
     }
 
     ///GENERATING COMPLETE NAME
     if( plus_sides.size() <= 1 ) {
       ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
       GenerateCompleteSugarName( mono );
+      UpdateComplexSugarChemicalCode( mono );
+      UpdatePdbCode( mono );
     } else {
       if( plus_sides.size() == 3 ) {
         vector< string >::iterator index_it;
@@ -360,6 +360,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
       }
       ///UPDATING CHEMICAL CODE
       UpdateComplexSugarChemicalCode( mono );
+      UpdatePdbCode( mono );
 
       cout << "Complex structure side group atoms: " << endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");

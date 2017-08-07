@@ -396,6 +396,7 @@ namespace gmml
         {"_3_4^2P^a^+1", "b-D-altropyranose", "DAltpb", "D", "", "P", "b", "", "", ""},
         {"_2_4^3P^a^+1",	"b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "", "", "BGC"},
         {"_2_3^4P^a^+1", "b-D-gulopyranose", "DGulpb", "D", "", "P", "b", "", "", "GL0"},
+        {"_4^2^3P^a^+1", "b-D-mannopyranose",	"DManpb", "D", "", "P", "b", "", "", "BMA"},
         {"_3^2^4P^a^+1",	"b-D-idopyranose",	"DIdopb", "D", "", "P", "b", "", "", ""},
         {"_2^3^4P^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "", "", "GAL,GLB"},
         {"^2^3^4P^a^+1",	"b-D-talopyranose",	"DTalpb", "D", "", "P", "b", "", "", ""},
