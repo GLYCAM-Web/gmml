@@ -935,6 +935,13 @@ namespace MolecularModeling
             * @param chemical_code The chemical code structure of the sugar e.g. _2^3^4P_a^+1
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
+            std::string ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string output_file_type = "csv");
+            /*! \fn
+            * A function used in GlyFinder project in order to extract information from ontology based on a specific chemical code
+            * inspired http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation
+            * @param chemical_code The chemical code structure of the sugar e.g. _2^3^4P_a^+1
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
             void ExtractOntologyInfoByStringChemicalCode(std::string chemical_code, std::string output_file_type = "csv");
             /*! \fn
             * A function in order to extract information from ontology based on a specific oligosaccharide name
