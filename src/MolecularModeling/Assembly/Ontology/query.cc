@@ -1142,3 +1142,25 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
     return FormulateCURLGF(output_file_type, query.str());
 }
 
+void Assembly::ExtractOntologyInfoByPDBIDGF(string pdb_id, string output_file_type)
+{
+    if(pdb_id.compare("") == 0)
+    {
+        cout << "Please specify the input argument." << endl;
+        return;
+    }
+    stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
+    query <<  ":" << pdb_id << "    :hasOligo   ?oligo.\n";
+    query << "?oligo    :oligoName 	?oligo_sequence.\n";
+    query << "OPTIONAL { ?oligo	:oligoResidueLinks	?residue_links.\n";
+    query << "?linkage 	:hasParent 	?oligo.\n";
+    query << "?linkage	:glycosidicLinkage    ?glycosidic_linkage.}\n";
+
+    //query << "?oligo	:hasCore	?mono.\n";
+    //query << "?mono     :anomericStatus    ?anomeric_status.\n";
+
+    query << Ontology::END_WHERE_CLAUSE;
+
+    return FormulateCURLGF(output_file_type, query.str());
+}
