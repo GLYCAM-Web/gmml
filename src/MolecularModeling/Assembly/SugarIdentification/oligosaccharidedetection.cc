@@ -188,7 +188,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   ///PRINTING ALL DETECTED CYCLES
   cout << endl << "All detected cycles" << endl;
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
-    string cycle_atoms_str = (*it).first;
+    string cycle_atoms_str = ( *it ).first;
     cout << cycle_atoms_str << endl;
   }
 
@@ -204,8 +204,8 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   vector< Note* > anomeric_notes = vector< Note* >();
   CycleMap sorted_cycles = CycleMap();
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
-    string cycle_atoms_str = (*it).first;
-    AtomVector cycle_atoms = (*it).second;
+    string cycle_atoms_str = ( *it ).first;
+    AtomVector cycle_atoms = ( *it ).second;
 
     cout << cycle_atoms_str << endl; ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
 
@@ -269,10 +269,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
     ///CREATING CHEMICAL CODE (Glycode) OBJECT
     ChemicalCode* code = BuildChemicalCode( orientations );
-    /*  Example ChemicalCode
-      4      -1
-    2d   P
-      3    a +1 */
+
     if( code != NULL ) {
       mono->chemical_code_ = code;
     }
@@ -282,6 +279,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
     ///DETECT SHAPE USING BFMP EXTERNAL PROGRAM. Currently, the program does not work for furanoses
     if( cycle.size() > 5 ) {
+      cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl;
       DetectShape( cycle, mono );
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 ) {
         cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl; ///Part of Glyprobity report
@@ -381,7 +379,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
             cout << complex_sugar_side.str() << endl;
             gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
           }
-        } else if(it1 == mono->side_atoms_.end() - 1) {//side atoms of last carbon of the ring
+        } else if( it1 == mono->side_atoms_.end() - 1 ) {//side atoms of last carbon of the ring
           complex_sugar_side << "[" << mono->cycle_atoms_.size() - 1 << "]";
           for( int i = 0; i < plus_sides.size() ; i++ ) {
             complex_sugar_side << " -> " << sides.at( i )->GetId();
@@ -854,132 +852,119 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
     cycles = fused_filtered_cycles;
 }
 
-Atom* Assembly::FindAnomericCarbon(Note* anomeric_note, vector<string>& anomeric_carbons_status, AtomVector cycle, string cycle_atoms_str)
-{
-    Atom* anomeric_carbon = new Atom();
-    for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
-    {
-        Atom* cycle_atom = (*it);
-        if((cycle_atom->GetName().substr(0,1).compare("O") == 0 ))///find oxygen in ring
-            //                && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
-        {
-            AtomNode* node = cycle_atom->GetNode();
-            AtomVector neighbors = node->GetNodeNeighbors();
+Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & anomeric_carbons_status, AtomVector cycle, string cycle_atoms_str ) {
+  Atom* anomeric_carbon = new Atom();
+  for( AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
+    Atom* cycle_atom = ( *it );
+    if( ( cycle_atom->GetName().substr( 0, 1 ).compare( "O" ) == 0 ) ) {///find oxygen in ring
+      //                && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
+      AtomNode* node = cycle_atom->GetNode();
+      AtomVector neighbors = node->GetNodeNeighbors();
 
-            ///Check the first neighbor of oxygen
-            Atom* o_neighbor1 = neighbors.at(0);
-            AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
-            AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
-            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
-            {
-                Atom* neighbor1_neighbor = (*it1);
-                if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && (neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor1_neighbor->GetName().substr(0,1).compare("N") == 0)) ///if first element is "O" or "N"
-                    //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
-                {
-                    anomeric_carbon = o_neighbor1;
-                    anomeric_carbons_status.push_back("Anomeric carbon: ");
-                    anomeric_note->description_ = "";
+      ///Check the first neighbor of oxygen
+      Atom* o_neighbor1 = neighbors.at( 0 );
+      AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
+      AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
+      for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
+        Atom* neighbor1_neighbor = ( *it1 );
 
-                    return anomeric_carbon;
-                }
-            }
+        cout << neighbor1_neighbor->GetName().substr( 0, 1 ) << endl;
+        if( cycle_atoms_str.find( neighbor1_neighbor->GetId() ) == string::npos ///if the neighbor is not one of the cycle atoms
+                && ( neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) { ///if first element is "O" or "N"
+          //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
+          anomeric_carbon = o_neighbor1;
+          anomeric_carbons_status.push_back( "Anomeric carbon: " );
+          anomeric_note->description_ = "";
 
-            ///Check the second neighbor of oxygen
-            Atom* o_neighbor2 = neighbors.at(1);
-            AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
-            AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
-            {
-                Atom* neighbor2_neighbor = (*it2);
-                if( cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos
-                        && (neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor2_neighbor->GetName().substr(0,1).compare("N") == 0))
-                    //                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
-                {
-                    anomeric_carbon = o_neighbor2;
-                    //                    cout << "Anomeric carbon is: " << anomeric_carbon->GetId() << endl;
-                    anomeric_carbons_status.push_back("Anomeric carbon: ");
-                    anomeric_note->description_ = "";
-                    return anomeric_carbon;
-                }
-            }
-
-            ///Check the order of the carbons based on their names to locate the anomeric
-            stringstream ss1;
-            for(int i = 0; i < o_neighbor1->GetName().size(); i++)
-            {
-                if(isdigit(o_neighbor1->GetName().at(i)) != 0)
-                    ss1 << o_neighbor1->GetName().at(i);
-            }
-            stringstream ss2;
-            for(int i = 0; i < o_neighbor2->GetName().size(); i++)
-            {
-                if(isdigit(o_neighbor2->GetName().at(i)) != 0)
-                    ss2 << o_neighbor2->GetName().at(i);
-            }
-            if(ConvertString<int>(ss1.str()) < ConvertString<int>(ss2.str()))
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor1;
-            }
-            if(ConvertString<int>(ss2.str()) < ConvertString<int>(ss1.str()))
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor2;
-            }
-
-            ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
-            bool neighbor2_is_anomeric = false;
-            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has non-ring carbon neighbor
-            {
-                Atom* neighbor1_neighbor = (*it1);
-                if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && (neighbor1_neighbor->GetName().substr(0,1).compare("C") == 0 )) ///if first element is "C"
-                {
-                    neighbor2_is_anomeric = true;
-                    break;
-                }
-            }
-            bool neighbor1_is_anomeric = false;
-            for(AtomVector::iterator it1 = o_neighbor2_neighbors.begin(); it1 != o_neighbor2_neighbors.end(); it1++)///check if neighbor1 of oxygen has non-ring carbon neighbor
-            {
-                Atom* neighbor2_neighbor = (*it1);
-                if(cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && (neighbor2_neighbor->GetName().substr(0,1).compare("C") == 0 )) ///if first element is "C"
-                {
-                    neighbor1_is_anomeric = true;
-                }
-            }
-            if(!neighbor1_is_anomeric)
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor2;
-            }
-            else if(!neighbor2_is_anomeric)
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor1;
-            }
-            anomeric_note->type_ = Glycan::WARNING;
-            anomeric_note->category_ = Glycan::ANOMERIC;
-            anomeric_note->description_ = "Anomeric oxygen is missing";
-            anomeric_carbons_status.push_back("Not enough information to detect the anomeric carbon, it has been chosen randomely: ");
-            return o_neighbor1;
+          return anomeric_carbon;
         }
+      }
+
+      ///Check the second neighbor of oxygen
+      Atom* o_neighbor2 = neighbors.at( 1 );
+      AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
+      AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
+      for( AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++ ) {///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
+        Atom* neighbor2_neighbor = ( *it2 );
+
+        cout << neighbor2_neighbor->GetName().substr( 0, 1 ) << endl;
+        if( cycle_atoms_str.find( neighbor2_neighbor->GetId()) == string::npos
+                && ( neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) {
+          //                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
+          anomeric_carbon = o_neighbor2;
+          anomeric_carbons_status.push_back( "Anomeric carbon: " );
+          anomeric_note->description_ = "";
+          return anomeric_carbon;
+        }
+      }
+
+      ///Check the order of the carbons based on their names to locate the anomeric
+      stringstream ss1;
+      for( int i = 0; i < o_neighbor1->GetName().size(); i++ ) {
+        if( isdigit( o_neighbor1->GetName().at( i )) != 0 )
+          ss1 << o_neighbor1->GetName().at( i );
+      }
+      stringstream ss2;
+      for( int i = 0; i < o_neighbor2->GetName().size(); i++ ) {
+        if( isdigit( o_neighbor2->GetName().at( i )) != 0 )
+          ss2 << o_neighbor2->GetName().at(i);
+      }
+      if( ConvertString< int >( ss1.str() ) < ConvertString< int >( ss2.str() ) ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Based on the number in the PDB, Anomeric carbon probably is: " );
+        return o_neighbor1;
+      }
+      if( ConvertString< int >( ss2.str() ) < ConvertString< int >( ss1.str() ) ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Based on the number in the PDB, Anomeric carbon probably is: " );
+        return o_neighbor2;
+      }
+      
+      ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
+      bool neighbor2_is_anomeric = false;
+      for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
+        Atom* neighbor1_neighbor = ( *it1 );
+        if( cycle_atoms_str.find( neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
+                && ( neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "C" ) == 0 ) ) {///if first element is "C"
+          neighbor2_is_anomeric = true;
+          break;
+        }
+      }
+      bool neighbor1_is_anomeric = false;
+      for( AtomVector::iterator it1 = o_neighbor2_neighbors.begin(); it1 != o_neighbor2_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
+        Atom* neighbor2_neighbor = ( *it1 );
+        if( cycle_atoms_str.find( neighbor2_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
+                && ( neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "C" ) == 0 ) ) {///if first element is "C"
+          neighbor1_is_anomeric = true;
+        }
+      }
+      if( !neighbor1_is_anomeric ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Based on the Carbon off the position, Anomeric carbon probably is: " );
+        return o_neighbor2;
+      }
+      else if( !neighbor2_is_anomeric ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Based on the Carbon off the position, Anomeric carbon probably is: " );
+        return o_neighbor1;
+      }
+      // @TODO August 8, 2017 Davis/Lachele - Once we get to a point where we read in mmcif definitions, we need to use it to determine the Anomeric Carbon.
+      anomeric_note->type_ = Glycan::WARNING;
+      anomeric_note->category_ = Glycan::ANOMERIC;
+      anomeric_note->description_ = "Anomeric oxygen is missing";
+      anomeric_carbons_status.push_back( "Not enough information to detect the anomeric carbon, it has been chosen as the first Carbon listed in the " + this->source_file_ + ": " );
+      return o_neighbor1;
     }
-    return NULL;
+  }
+  return NULL;
 }
 
 Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, stringstream &sorted_cycle_stream)

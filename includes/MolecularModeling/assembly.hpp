@@ -1186,6 +1186,7 @@ namespace MolecularModeling
             void RemoveFusedCycles(CycleMap& cycles);
             /*! \fn
               * A function in order to detect the anomeric carbon of the ring (the carbon which has two oxygon neighbors)
+              * @param anomeric_carbons_note 
               * @param anomeric_carbons_status The detection status of the anomeric carbon to be filled by the function
               * @param cycle The list of cycle atoms
               * @param cycle_atom_str The string version of atom identifiers of the cycle
