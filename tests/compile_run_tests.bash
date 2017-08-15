@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Manually change this number as you add tests:
-number_of_tests=4
+number_of_tests=3
 tests_passed=0
 
 # Required for compiling
