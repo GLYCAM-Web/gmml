@@ -40,7 +40,7 @@ cd $GEMSHOME/gmml/tests/
 cd -
 
 if [ -f $GEMSHOME/gmml/tests/All_Tests_Passed ] ; then
-    echo  "All tests have passed. Commits are now allowed."
+    echo  "All tests have passed. Pushing is allowed."
     exit 0
 else
     echo "
