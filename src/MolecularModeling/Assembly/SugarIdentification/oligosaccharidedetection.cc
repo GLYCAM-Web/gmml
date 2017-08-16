@@ -255,7 +255,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
         }
       } else if( it1 == mono->side_atoms_.end() - 1 ) {//side atoms of last carbon of the
         cout << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
-        if( sides.at(0) != NULL ) {
+        if( sides.at( 0 ) != NULL ) {
           cout << sides.at( 0 )->GetId() << endl;
         }
       } else if( sides.at( 1 ) != NULL ) {
@@ -501,7 +501,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
     mono_id++;
     mono->mono_id = mono_id;
-    monos.push_back(mono);
+    monos.push_back( mono );
   }
 
   ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
@@ -524,7 +524,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   }
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE
-  vector<Note*> notes = this->GetNotes();
+  vector< Note* > notes = this->GetNotes();
   if( !notes.empty() ) {
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << endl << "NOTES/ISSUES:" << endl;
@@ -856,6 +856,7 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
   Atom* anomeric_carbon = new Atom();
   for( AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
     Atom* cycle_atom = ( *it );
+
     if( ( cycle_atom->GetName().substr( 0, 1 ).compare( "O" ) == 0 ) ) {///find oxygen in ring
       //                && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
       AtomNode* node = cycle_atom->GetNode();
@@ -865,12 +866,12 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
       Atom* o_neighbor1 = neighbors.at( 0 );
       AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
       AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
-      for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
-        Atom* neighbor1_neighbor = ( *it1 );
 
-        cout << neighbor1_neighbor->GetName().substr( 0, 1 ) << endl;
-        if( cycle_atoms_str.find( neighbor1_neighbor->GetId() ) == string::npos ///if the neighbor is not one of the cycle atoms
-                && ( neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) { ///if first element is "O" or "N"
+      for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
+        Atom* o_neighbor1_neighbor = ( *it1 );
+
+        if( cycle_atoms_str.find( o_neighbor1_neighbor->GetId() ) == string::npos ///if the neighbor is not one of the cycle atoms
+                && ( o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) { ///if first element is "O" or "N"
           //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
           anomeric_carbon = o_neighbor1;
           anomeric_carbons_status.push_back( "Anomeric carbon: " );
@@ -884,16 +885,17 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
       Atom* o_neighbor2 = neighbors.at( 1 );
       AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
       AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
-      for( AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++ ) {///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
-        Atom* neighbor2_neighbor = ( *it2 );
 
-        cout << neighbor2_neighbor->GetName().substr( 0, 1 ) << endl;
-        if( cycle_atoms_str.find( neighbor2_neighbor->GetId()) == string::npos
-                && ( neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) {
+      for( AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++ ) {///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
+        Atom* o_neighbor2_neighbor = ( *it2 );
+
+        if( cycle_atoms_str.find( o_neighbor2_neighbor->GetId() ) == string::npos
+                && ( o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) {
           //                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
           anomeric_carbon = o_neighbor2;
           anomeric_carbons_status.push_back( "Anomeric carbon: " );
           anomeric_note->description_ = "";
+
           return anomeric_carbon;
         }
       }
@@ -914,6 +916,7 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_note->description_ = "Anomeric oxygen is missing";
         anomeric_carbons_status.push_back( "Based on the number in the PDB, Anomeric carbon probably is: " );
+
         return o_neighbor1;
       }
       if( ConvertString< int >( ss2.str() ) < ConvertString< int >( ss1.str() ) ) {
@@ -921,9 +924,10 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_note->description_ = "Anomeric oxygen is missing";
         anomeric_carbons_status.push_back( "Based on the number in the PDB, Anomeric carbon probably is: " );
+
         return o_neighbor2;
       }
-      
+
       ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
       bool neighbor2_is_anomeric = false;
       for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
