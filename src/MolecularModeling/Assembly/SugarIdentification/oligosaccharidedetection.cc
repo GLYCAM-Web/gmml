@@ -183,8 +183,6 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   ///CYCLE DETECTION
   CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
-  //    CycleMap cycles = DetectCyclesByDFS();
-
   ///PRINTING ALL DETECTED CYCLES
   cout << endl << "All detected cycles" << endl;
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
@@ -214,9 +212,10 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
     anomeric_notes.push_back( anomeric_note );
     if( anomeric != NULL ) { ///Sorting the cycle atoms and adding it to the sorted_cycles map if an anomeric carbon identified, otherwise the structure can't be a sugar
       AtomVector sorted_cycle_atoms = AtomVector();
-      stringstream sorted_cycle_stream;
-      sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric, sorted_cycle_stream );
-      sorted_cycles[ sorted_cycle_stream.str() ] = sorted_cycle_atoms;
+      //stringstream sorted_cycle_stream;
+      //sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric, sorted_cycle_stream );
+      sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric );
+      sorted_cycles[ cycle_atoms_str ] = sorted_cycle_atoms;
     }
   }
   cycles = sorted_cycles;
@@ -715,9 +714,10 @@ void Assembly::ExtractRingAtomsInformation()
         if(anomeric != NULL)
         {
             AtomVector sorted_cycle_atoms = AtomVector();
-            stringstream sorted_cycle_stream;
-            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
-            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
+            //stringstream sorted_cycle_stream;
+            //sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
+            sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric );
+            sorted_cycles[cycle_atoms_str] = sorted_cycle_atoms;
         }
     }
     cycles = sorted_cycles;
@@ -971,7 +971,8 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
   return NULL;
 }
 
-Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, stringstream &sorted_cycle_stream)
+//Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, stringstream &sorted_cycle_stream)
+Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom)
 {
     AtomVector sorted_cycle = AtomVector();
     for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
@@ -983,7 +984,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
             if(index == cycle.size() - 1)///anomeric atom is at the end of the cycle
             {
                 sorted_cycle.push_back(anomeric_atom);///anomeric atom as the first atom of the cycle
-                sorted_cycle_stream << anomeric_atom->GetId() << "-";
+                //sorted_cycle_stream << anomeric_atom->GetId() << "-";
                 anomeric_atom->SetIsRing(true);
                 Atom* a0 = cycle.at(0);
                 if(a0->GetName().substr(0,1).compare("O") == 0)///a0 is oxygen so the vector is in reverse order
@@ -992,11 +993,11 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                     {
                         Atom* a = (*it1);
                         sorted_cycle.push_back(a);
-                        sorted_cycle_stream << a->GetId() << "-";
+                        //sorted_cycle_stream << a->GetId() << "-";
                         a->SetIsRing(true);
                     }
                     sorted_cycle.push_back((*cycle.begin()));
-                    sorted_cycle_stream << (*cycle.begin())->GetId();
+                    //sorted_cycle_stream << (*cycle.begin())->GetId();
                     (*cycle.begin())->SetIsRing(true);
                 }
                 else
@@ -1006,10 +1007,10 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                         Atom* a = (*it1);
                         sorted_cycle.push_back(a);
                         a->SetIsRing(true);
-                        if(it1 == it - 1)
-                            sorted_cycle_stream << a->GetId();
-                        else
-                            sorted_cycle_stream << a->GetId() << "-";
+                        //if(it1 == it - 1)
+                        //    sorted_cycle_stream << a->GetId();
+                        //else
+                        //    sorted_cycle_stream << a->GetId() << "-";
                     }
                 }
             }
@@ -1022,21 +1023,21 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                     {
                         Atom* a_before = (*it1);
                         sorted_cycle.push_back(a_before);
-                        sorted_cycle_stream << a_before->GetId() << "-";
+                        //sorted_cycle_stream << a_before->GetId() << "-";
                         a_before->SetIsRing(true);
                     }
                     sorted_cycle.push_back((*cycle.begin()));
-                    sorted_cycle_stream << (*cycle.begin())->GetId() << "-";
+                    //sorted_cycle_stream << (*cycle.begin())->GetId() << "-";
                     (*cycle.begin())->SetIsRing(true);
                     for(AtomVector::iterator it2 = cycle.end() - 1; it2 != it; it2--)///atoms from end of the vector down to anomeric atom
                     {
                         Atom* atom_after = (*it2);
                         sorted_cycle.push_back(atom_after);
                         atom_after->SetIsRing(true);
-                        if(it2 == it + 1)
-                            sorted_cycle_stream << atom_after->GetId();
-                        else
-                            sorted_cycle_stream << atom_after->GetId() << "-";
+                        //if(it2 == it + 1)
+                        //    sorted_cycle_stream << atom_after->GetId();
+                        //else
+                        //    sorted_cycle_stream << atom_after->GetId() << "-";
                     }
                 }
                 else///oxygen is before the anomeric atom so the vector is in normal order
@@ -1049,17 +1050,17 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                         //                        if(it1 == cycle.end() - 1)
                         //                            sorted_cycle_stream << atom_after->GetId();
                         //                        else
-                        sorted_cycle_stream << atom_after->GetId() << "-";
+                        //sorted_cycle_stream << atom_after->GetId() << "-";
                     }
                     for(AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of vector
                     {
                         Atom* atom_before = (*it2);
                         sorted_cycle.push_back(atom_before);
                         atom_before->SetIsRing(true);
-                        if(it2 == it - 1)
-                            sorted_cycle_stream << atom_before->GetId();
-                        else
-                            sorted_cycle_stream << atom_before->GetId() << "-";
+                        //if(it2 == it - 1)
+                        //    sorted_cycle_stream << atom_before->GetId();
+                        //else
+                        //    sorted_cycle_stream << atom_before->GetId() << "-";
                     }
                 }
             }
