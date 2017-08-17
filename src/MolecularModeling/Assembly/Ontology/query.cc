@@ -1084,6 +1084,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
 {
     FindReplaceString(oligo_name_pattern, "[", "\\\\[");
     FindReplaceString(oligo_name_pattern, "]", "\\\\]");
+    FindReplaceString(oligo_name_pattern, "-OH", "-ROH");
     if(oligo_name_pattern.compare("") == 0)
     {
         cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << endl;
@@ -1142,12 +1143,12 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
     return FormulateCURLGF(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByPDBIDGF(string pdb_id, string output_file_type)
+string Assembly::ExtractOntologyInfoByPDBIDGF(string pdb_id, string output_file_type)
 {
     if(pdb_id.compare("") == 0)
     {
         cout << "Please specify the input argument." << endl;
-        return;
+        return "Please specify the input argument.";
     }
     stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
