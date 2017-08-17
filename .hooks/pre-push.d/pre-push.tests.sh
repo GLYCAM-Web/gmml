@@ -37,10 +37,10 @@ cd -
 echo "Running mandatory tests..."
 cd $GEMSHOME/gmml/tests/
  bash compile_run_tests.bash
+ result=$? # record the exit status from compile_run_tests.bash
 cd -
-
-if [ -f $GEMSHOME/gmml/tests/All_Tests_Passed ] ; then
-    echo  "All tests have passed. Commits are now allowed."
+if [ $result -eq 0 ] ; then
+    echo  "All tests have passed. Pushing is allowed."
     exit 0
 else
     echo "

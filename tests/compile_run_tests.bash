@@ -59,8 +59,10 @@ fi
 rm Processed.pdb PDB_preprocessor > /dev/null 2>&1
 
 
-############# Allow git commits ###################
+############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then
-   > All_Tests_Passed 
+   exit 0 #All tests passed
+else
+   exit 1
 fi
 
