@@ -395,7 +395,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
       cout << endl << "Complex sugar chemical code:" << endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex sugar chemical code:");
       gmml::log(__LINE__, __FILE__,  gmml::INF, mono->chemical_code_->toString());
-      mono->chemical_code_->Print(cout);
+      mono->chemical_code_->Print( cout );
       ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
       mono->sugar_name_ = ComplexSugarNameLookup( mono->chemical_code_->toString() );
       if( plus_sides.size() == 2 ) {
@@ -519,15 +519,15 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
     } else {
       number_of_monosaccharides++;
     }
-    oligo->Print(cout);
+    oligo->Print( cout );
   }
 
-  ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE
+  ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   vector< Note* > notes = this->GetNotes();
   if( !notes.empty() ) {
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << endl << "NOTES/ISSUES:" << endl;
-    for( vector<Note*>::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
+    for( vector< Note* >::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
       Note* note = ( *note_it );
       cout << endl << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << endl;
       cout << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << endl;
@@ -535,6 +535,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
     }
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
   }
+
   ///PRINTING STATISTICAL REPORT OF GLYPROBITY
   if( glyprobity_report ) {
     cout << endl << "GLYPROBITY REPORT" << endl;
