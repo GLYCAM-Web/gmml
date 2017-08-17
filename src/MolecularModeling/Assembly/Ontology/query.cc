@@ -1084,6 +1084,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
 {
     FindReplaceString(oligo_name_pattern, "[", "\\\\[");
     FindReplaceString(oligo_name_pattern, "]", "\\\\]");
+    FindReplaceString(oligo_name_pattern, "-OH", "-ROH");
     if(oligo_name_pattern.compare("") == 0)
     {
         cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << endl;
