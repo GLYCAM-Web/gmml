@@ -151,6 +151,9 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     detect_shape_configuration.close();
 
     ///Calling detect_shape program
+    // The better way to do this would be to pass the bfmp code the six cartesian 
+    // coords it needs and call it as a part of the library.  not sure how much
+    // work it would take to do this, but it would be better.  
     system("apps/BFMP/detect_shape temp_detect_shape_pdb.pdb temp_config > /dev/null");
 
     ///Adding the BFMP ring conformation infomration gained from the detect_sugar program to the monosaccharide
@@ -281,6 +284,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
     cout << endl;
 
     ///DETECT SHAPE USING BFMP EXTERNAL PROGRAM. Currently, the program does not work for furanoses
+    // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
     if( cycle.size() > 5 ) {
       DetectShape( cycle, mono );
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 ) {
