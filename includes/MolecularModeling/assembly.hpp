@@ -1193,7 +1193,7 @@ namespace MolecularModeling
             void RemoveFusedCycles(CycleMap& cycles);
             /*! \fn
               * A function in order to detect the anomeric carbon of the ring (the carbon which has two oxygon neighbors)
-              * @param anomeric_carbons_note
+              * @param anomeric_carbons_note The Note for the anomeric carbon to be filled by the function
               * @param anomeric_carbons_status The detection status of the anomeric carbon to be filled by the function
               * @param cycle The list of cycle atoms
               * @param cycle_atom_str The string version of atom identifiers of the cycle
@@ -1204,10 +1204,8 @@ namespace MolecularModeling
               * A function in order to sort atom objects of the cycle starting from the anomeric carbon of the ring (ring oxygen will be last atom)
               * @param cycle The list of cycle atoms
               * @param anomeric_atom The anomeric carbon of the ring
-              * @param sorted_cycle_stream The sorted atom of the cycle so far (to be filled with the fuction)
               * @return sorted_cycle The sorted list of cycle atom objects
               */
-           //AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
            AtomVector SortCycle(AtomVector cycle, Atom *anomeric_atom);
             /*! \fn
             * A function in order to calculate geometry outliers for glyprobity report (e.g. bond lengths, bond angles, torsion angles)

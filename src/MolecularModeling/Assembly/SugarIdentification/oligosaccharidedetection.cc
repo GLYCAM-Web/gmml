@@ -117,7 +117,7 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     PdbFile* pdb = detect_shape_assembly->BuildPdbFileStructureFromAssembly();
     pdb->Write("temp_gmml_pdb.pdb");
 
-    ///Converting the written PDB file to fomrat readable by detect_shape program
+    ///Converting the written PDB file to format readable by detect_shape program
     string line = "";
     ifstream gmml_pdb ("temp_gmml_pdb.pdb");
     ofstream detect_shape_pdb ("temp_detect_shape_pdb.pdb");
@@ -212,8 +212,6 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
     anomeric_notes.push_back( anomeric_note );
     if( anomeric != NULL ) { ///Sorting the cycle atoms and adding it to the sorted_cycles map if an anomeric carbon identified, otherwise the structure can't be a sugar
       AtomVector sorted_cycle_atoms = AtomVector();
-      //stringstream sorted_cycle_stream;
-      //sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric, sorted_cycle_stream );
       sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric );
       sorted_cycles[ cycle_atoms_str ] = sorted_cycle_atoms;
     }
@@ -278,7 +276,6 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
     ///DETECT SHAPE USING BFMP EXTERNAL PROGRAM. Currently, the program does not work for furanoses
     if( cycle.size() > 5 ) {
-      cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl;
       DetectShape( cycle, mono );
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 ) {
         cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl; ///Part of Glyprobity report
@@ -715,8 +712,6 @@ void Assembly::ExtractRingAtomsInformation()
         if(anomeric != NULL)
         {
             AtomVector sorted_cycle_atoms = AtomVector();
-            //stringstream sorted_cycle_stream;
-            //sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
             sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric );
             sorted_cycles[cycle_atoms_str] = sorted_cycle_atoms;
         }
@@ -916,7 +911,7 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the number in the PDB, Anomeric carbon probably is: " );
+        anomeric_carbons_status.push_back( "Based on the number in the " + ConvertAssemblyInputFileType2String( this->source_file_type_ ) + ", Anomeric carbon is: " );
 
         return o_neighbor1;
       }
@@ -924,7 +919,7 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the number in the PDB, Anomeric carbon probably is: " );
+        anomeric_carbons_status.push_back( "Based on the number in the " + ConvertAssemblyInputFileType2String( this->source_file_type_ ) + ", Anomeric carbon is: " );
 
         return o_neighbor2;
       }
@@ -951,28 +946,27 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the Carbon off the position, Anomeric carbon probably is: " );
+        anomeric_carbons_status.push_back( "Based on the carbon off the position, Anomeric carbon is: " );
         return o_neighbor2;
       }
       else if( !neighbor2_is_anomeric ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the Carbon off the position, Anomeric carbon probably is: " );
+        anomeric_carbons_status.push_back( "Based on the carbon off the position, Anomeric carbon is: " );
         return o_neighbor1;
       }
       // @TODO August 8, 2017 Davis/Lachele - Once we get to a point where we read in mmcif definitions, we need to use it to determine the Anomeric Carbon.
       anomeric_note->type_ = Glycan::WARNING;
       anomeric_note->category_ = Glycan::ANOMERIC;
       anomeric_note->description_ = "Anomeric oxygen is missing";
-      anomeric_carbons_status.push_back( "Not enough information to detect the anomeric carbon, it has been chosen as the first Carbon listed in the " + this->source_file_ + ": " );
+      anomeric_carbons_status.push_back( "Not enough information to detect the anomeric carbon, it has been chosen as the first carbon listed in the " + ConvertAssemblyInputFileType2String( this->source_file_type_ ) + ": " );
       return o_neighbor1;
     }
   }
   return NULL;
 }
 
-//Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, stringstream &sorted_cycle_stream)
 Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom)
 {
     AtomVector sorted_cycle = AtomVector();
@@ -985,7 +979,6 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom)
             if(index == cycle.size() - 1)///anomeric atom is at the end of the cycle
             {
                 sorted_cycle.push_back(anomeric_atom);///anomeric atom as the first atom of the cycle
-                //sorted_cycle_stream << anomeric_atom->GetId() << "-";
                 anomeric_atom->SetIsRing(true);
                 Atom* a0 = cycle.at(0);
                 if(a0->GetName().substr(0,1).compare("O") == 0)///a0 is oxygen so the vector is in reverse order
@@ -994,11 +987,9 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom)
                     {
                         Atom* a = (*it1);
                         sorted_cycle.push_back(a);
-                        //sorted_cycle_stream << a->GetId() << "-";
                         a->SetIsRing(true);
                     }
                     sorted_cycle.push_back((*cycle.begin()));
-                    //sorted_cycle_stream << (*cycle.begin())->GetId();
                     (*cycle.begin())->SetIsRing(true);
                 }
                 else
@@ -1008,10 +999,6 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom)
                         Atom* a = (*it1);
                         sorted_cycle.push_back(a);
                         a->SetIsRing(true);
-                        //if(it1 == it - 1)
-                        //    sorted_cycle_stream << a->GetId();
-                        //else
-                        //    sorted_cycle_stream << a->GetId() << "-";
                     }
                 }
             }
@@ -1024,21 +1011,15 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom)
                     {
                         Atom* a_before = (*it1);
                         sorted_cycle.push_back(a_before);
-                        //sorted_cycle_stream << a_before->GetId() << "-";
                         a_before->SetIsRing(true);
                     }
                     sorted_cycle.push_back((*cycle.begin()));
-                    //sorted_cycle_stream << (*cycle.begin())->GetId() << "-";
                     (*cycle.begin())->SetIsRing(true);
                     for(AtomVector::iterator it2 = cycle.end() - 1; it2 != it; it2--)///atoms from end of the vector down to anomeric atom
                     {
                         Atom* atom_after = (*it2);
                         sorted_cycle.push_back(atom_after);
                         atom_after->SetIsRing(true);
-                        //if(it2 == it + 1)
-                        //    sorted_cycle_stream << atom_after->GetId();
-                        //else
-                        //    sorted_cycle_stream << atom_after->GetId() << "-";
                     }
                 }
                 else///oxygen is before the anomeric atom so the vector is in normal order
@@ -1048,20 +1029,12 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom)
                         Atom* atom_after = (*it1);
                         sorted_cycle.push_back(atom_after);
                         atom_after->SetIsRing(true);
-                        //                        if(it1 == cycle.end() - 1)
-                        //                            sorted_cycle_stream << atom_after->GetId();
-                        //                        else
-                        //sorted_cycle_stream << atom_after->GetId() << "-";
                     }
                     for(AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of vector
                     {
                         Atom* atom_before = (*it2);
                         sorted_cycle.push_back(atom_before);
                         atom_before->SetIsRing(true);
-                        //if(it2 == it - 1)
-                        //    sorted_cycle_stream << atom_before->GetId();
-                        //else
-                        //    sorted_cycle_stream << atom_before->GetId() << "-";
                     }
                 }
             }
