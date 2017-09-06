@@ -627,6 +627,48 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                     rotamers_glycosidic_angles.push_back(der_pair_info);
                 }
             }
+
+            if(ring_letter == 'f')
+            {
+                if(parent > 0)
+                {
+
+                    CondensedSequenceResidue* parent_residue = residue_tree.at(parent);
+                    string parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
+                    stringstream rotamers_name;
+                    rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration() << residue->GetAnomericCarbon() << "-" <<
+                                  residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();
+
+                    RotamersAndGlycosidicAnglesInfo* info = new RotamersAndGlycosidicAnglesInfo(linkage_index, possible_rotamers, selected_rotamers, enabled_glycosidic_angles);
+                    RotamerNameInfoPair pair_info = make_pair(rotamers_name.str(), info);
+
+                    rotamers_glycosidic_angles.push_back(pair_info);
+                }
+
+
+
+
+                vector<pair<string, vector<string> > > der_possible_rotamers = vector<pair<string, vector<string> > >();
+                vector<pair<string, vector<string> > > der_selected_rotamers = vector<pair<string, vector<string> > >();
+                vector<pair<string, double> > der_enabled_glycosidic_angles = vector<pair<string, double> >();
+                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
+                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+                CondensedSequenceResidue::DerivativeMap derivatives = residue->GetDerivatives();
+                for(CondensedSequenceResidue::DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++)
+                {
+                    int derivative_index = (*it).first;
+                    string derivative_name = (*it).second;
+                    linkage_index++;
+                    stringstream der_rotamers_name;
+                    der_rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration()
+                                      << "[" << derivative_index << derivative_name << "]";
+                    RotamersAndGlycosidicAnglesInfo* der_info = new RotamersAndGlycosidicAnglesInfo(linkage_index, der_possible_rotamers,
+                                                                                                    der_selected_rotamers, der_enabled_glycosidic_angles);
+                    RotamerNameInfoPair der_pair_info = make_pair(der_rotamers_name.str(), der_info);
+
+                    rotamers_glycosidic_angles.push_back(der_pair_info);
+                }
+            }
         }
     }
     return rotamers_glycosidic_angles;

@@ -39,6 +39,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the residues in a link class
               * @return residues_ attribute of the current object of this class
@@ -49,10 +52,13 @@ namespace PdbFileSpace
               * @return link_length_ attribute of the current object of this class
               */
             double GetLinkLength();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the residues of the current object
               * Set the residues_ attribute of the current link card
@@ -71,7 +77,7 @@ namespace PdbFileSpace
               * @param link_length The link length of the current object
               */
             void SetLinkLength(double link_length);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

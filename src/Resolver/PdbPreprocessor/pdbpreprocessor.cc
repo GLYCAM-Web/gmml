@@ -2741,7 +2741,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(string pdb_file_path, vector<
                     int j = distance(residues.begin(), it1 + 1);
                     PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
                     PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-                    double distance = INFINITY;
+                    double distance = 0.0;
                     if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
                     {
                         GeometryTopology::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
@@ -2903,7 +2903,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFile *pdb_file, vector<str
                 int j = distance(residues.begin(), it1 + 1);
                 PdbAtom* c_atom_of_residue = pdb_file->GetAtomOfResidueByName(residue, "C", residue_atom_map);
                 PdbAtom* n_atom_of_next_residue = pdb_file->GetAtomOfResidueByName(next_residue, "N", residue_atom_map);
-                double distance = INFINITY;
+                double distance = 0.0;
                 if(c_atom_of_residue != NULL && n_atom_of_next_residue != NULL)
                 {
                     GeometryTopology::Coordinate c_atom_coordinate = c_atom_of_residue->GetAtomOrthogonalCoordinate();
@@ -3281,7 +3281,7 @@ bool PdbPreprocessor::ExtractAlternateResidue(string pdb_file_path)
                         {
                             vector<bool> selected = vector<bool>();
                             selected.push_back(true);
-                            selected.push_back(false);
+                            selected.push_back(true); // OG edit, changed to true so that A coords get written out
                             vector<char> alternate_locations = vector<char>();
                             alternate_locations.push_back(target_alternate_location);
                             alternate_locations.push_back(alternate_location);
@@ -3346,7 +3346,7 @@ bool PdbPreprocessor::ExtractAlternateResidue(PdbFile* pdb_file)
                     {
                         vector<bool> selected = vector<bool>();
                         selected.push_back(true);
-                        selected.push_back(false);
+                        selected.push_back(true); // OG edit, changed to true so that A coords get written out
                         vector<char> alternate_locations = vector<char>();
                         alternate_locations.push_back(target_alternate_location);
                         alternate_locations.push_back(alternate_location);
@@ -3878,11 +3878,12 @@ void PdbPreprocessor::ApplyPreprocessing(PdbFile *pdb_file, vector<string> amino
     amino_update << time_str.substr(0, time_str.size() - 1) << " Amino acid chains update: done" ;
     cout << amino_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
-    UpdateGapsInAminoAcidChains(pdb_file, amino_lib_files_path, this->GetMissingResidues());
+    //UpdateGapsInAminoAcidChains(pdb_file, amino_lib_files_path, this->GetMissingResidues()); // OG Mar 2017
     t = time(0);
     time_str = std::asctime(std::localtime(&t));
     stringstream gaps_update;
-    gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ;
+    //gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ; // OG Mar 2017
+    gaps_update << time_str.substr(0, time_str.size() - 1) << " Currently, GMML cannot not fix gaps " ; // OG Mar 2017
     cout << gaps_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
     t = time(0);
@@ -3951,11 +3952,12 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(PdbFile *pdb_fil
     amino_update << time_str.substr(0, time_str.size() - 1) << " Amino acid chains update: done" ;
     cout << amino_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
-    UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number);
+   // UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number); // OG Mar 2017
     t = time(0);
     time_str = std::asctime(std::localtime(&t));
     stringstream gaps_update;
-    gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ;
+    // gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ; // OG Mar 2017
+    gaps_update << time_str.substr(0, time_str.size() - 1) << " Currently, GMML cannot not fix gaps " ; // OG Mar 2017
     cout << gaps_update.str() << endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
     t = time(0);

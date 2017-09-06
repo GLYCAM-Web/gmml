@@ -151,7 +151,7 @@ void Assembly::PopulateOligosaccharide(stringstream& pdb_stream, stringstream& o
 {
     string oligo_resource = "";
     string oligo_uri = "";
-    if(oligos.size() != NULL)
+    if(oligos.size() != 0)
     {
         for(OligosaccharideVector::iterator it = oligos.begin(); it != oligos.end(); it++)
         {
@@ -681,3 +681,25 @@ void Assembly::FormulateCURL(string output_file_type, string query)
     cout << endl;
 }
 
+string Assembly::FormulateCURLGF(string output_file_type, string query)
+{
+    cout << "GENERATED QUERY:" << endl;
+    cout << query << endl;
+    stringstream curl;
+    curl << Ontology::CURL_PREFIX;
+
+    if(output_file_type.compare("csv") == 0)
+        curl << Ontology::CSV_OUTPUT_FORMAT;
+    else if(output_file_type.compare("xml") == 0)
+        curl << Ontology::XML_OUTPUT_FORMAT;
+    else if(output_file_type.compare("json") == 0)
+        curl << Ontology::JSON_OUTPUT_FORMAT;
+
+    curl << Ontology::DATA_STORE_ADDRESS_GF << Ontology::QUERY_PREFIX << query << Ontology::QUERY_POSTFIX;
+    string tmp = curl.str();
+    //cout << endl << "RESULTS: " << endl;
+    const char* cstr = tmp.c_str();
+    //system(cstr);
+    //cout << endl;
+    return tmp;
+}

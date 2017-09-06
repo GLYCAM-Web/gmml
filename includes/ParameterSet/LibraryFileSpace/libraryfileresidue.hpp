@@ -49,6 +49,9 @@ namespace LibraryFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to residue name of the current object
               * @return name_ attribute of the current residue
@@ -112,10 +115,13 @@ namespace LibraryFileSpace
               * @return listing_index attribute of the current residue
               */
             int GetListingIndex();
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue name of the current object
               * Set the name_ attribute of the current atom
@@ -176,7 +182,7 @@ namespace LibraryFileSpace
               * @param listing_index An integer that indicates the tail atom index of the current residue
               */
             void SetListingIndex(int listing_index);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

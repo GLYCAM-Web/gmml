@@ -1799,14 +1799,21 @@ void TopologyFile::ResolveSections(ofstream &out_stream)
 
 void TopologyFile::ResolveGitVersion(ofstream &out)
 {
-    out << "%VERSION ";
-    string pwdd = execcommand("pwd");
-    string cd = execcommand(("cd "+pwdd).c_str());
-    string gitversion =  execcommand("git rev-parse HEAD");
+    out << "%VERSION  VERSION_STAMP = V0001.000 "<< endl;
+
+    //char szTmp[32];
+    //sprintf(szTmp, "/proc/%d/exe", getpid());
+    //int bytes = MIN(readlink(szTmp, pBuf, len), len - 1);
+    //if(bytes >= 0)
+    //    pBuf[bytes] = '\0'; 
+
+    // string pwdd = execcommand("pwd");
+    //string cd = execcommand(("cd "+ bytes).c_str());
+    //string gitversion =  execcommand("git rev-parse HEAD");
     //string pwd = system(("pwd").c_str());
     //system(("cd "+pwd).c_str());
     //string gitversion = system("git rev-parse HEAD");
-    out << gitversion;
+    //out << gitversion;
 }
 
 

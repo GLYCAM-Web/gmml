@@ -33,7 +33,7 @@
 namespace MolecularModeling
 {
     class Residue;
-    class Atom;    
+    class Atom;
     class Assembly
     {
         public:
@@ -83,6 +83,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the name
               * @return name_ attribute of the current object of this class
@@ -154,10 +157,13 @@ namespace MolecularModeling
               * @return List of all notes of an assembly
               */
             NoteVector GetNotes();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the name of the current object
               * Set the name_ attribute of the current assembly
@@ -238,13 +244,17 @@ namespace MolecularModeling
               * @param note The note instance of the current object
               */
             void AddNote(Glycan::Note* note);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
             bool CheckCondensedSequenceSanity(std::string sequence,
                                               CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues);
+/** @addtogroup Molecular_Data_Structure_Builders
+* @{
+*/
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
+/** @}*/
             AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
                                                                  std::string prep_file, std::string parameter_file,
                                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
@@ -267,6 +277,9 @@ namespace MolecularModeling
               * Imports data from pdb file data structure into central data structure
               * @param pdb_file_path Path to a pdb file
               */
+/** \addtogroup Manipulators
+               * @{
+               */
             void BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<std::string> amino_lib_files = std::vector<std::string>(),
                                           std::vector<std::string> glycam_lib_files = std::vector<std::string>(),
                                           std::vector<std::string> other_lib_files = std::vector<std::string>(),
@@ -492,13 +505,15 @@ namespace MolecularModeling
               * A function to build a coordinate file structure from the current assembly object
               * Exports data from assembly data structure into coordinate file structure
               */
+/** @}*/
+/** @addtogroup Molecular_Data_Structure_Builders
+* @{ */
             CoordinateFileSpace::CoordinateFile* BuildCoordinateFileStructureFromAssembly();
             /*! \fn
               * A function to build a library file structure from the current assembly object
               * Exports data from assembly data structure into library file structure
               */
             LibraryFileSpace::LibraryFile* BuildLibraryFileStructureFromAssembly();
-
             /*! \fn
               * A function to build a graph structure (bonding information) for the current object of central data structure
               * @param building_option A building option that can be selected from BuildingStructureOption enumerator
@@ -526,7 +541,7 @@ namespace MolecularModeling
               * the original file in the case that the original file is a topology file
               */
             void BuildStructureByTOPFileInformation();
-            /*! \fn
+  	          /*! \fn
               * A function to build a graph structure for the current object of central data structure based on the bonding information provided in
               * the original file in the case that the original file is a lib file
               */
@@ -543,11 +558,15 @@ namespace MolecularModeling
               * @param file_paths List of the database file paths
               */
             void BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths);
+/** @}*/
+/** \addtogroup Data_Sets
+               * @{
+               */
             /*! \fn
               * A function that counts the number of atoms in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
               */
-            int CountNumberOfAtoms();
+	    int CountNumberOfAtoms();
             /*! \fn
               * A function that counts the number of atoms types in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
@@ -655,7 +674,7 @@ namespace MolecularModeling
             AtomVector Select(std::string pattern);
             SelectPatternMap ParsePatternString(std::string pattern);
             void GetHierarchicalMapOfAssembly(HierarchicalContainmentMap& hierarchical_map, std::stringstream& index);
-
+/** @}*/
             void ClearAssembly();
 
 //            void CycleDetection();
@@ -682,11 +701,13 @@ namespace MolecularModeling
               * @return all_residue_names
               */
             gmml::ResidueNameMap GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files);
-
+/** \addtogroup Manipulators
+               * @{
+               */
             gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
             void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree,
-                                                int& index);            
+                                                int& index);
             void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
 
             /// Pattern mathing
@@ -844,7 +865,7 @@ namespace MolecularModeling
             * @param o The object part of the triple
             * @param stream The output stream which is going to be written in the ontology turtle file
             */
-            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);            
+            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
             /*! \fn
             * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
             * @param s The subject part of the triple
@@ -883,6 +904,15 @@ namespace MolecularModeling
             * @param condensed_name The condensed version of the complete name of the sugar e.g. DManp[2s]b
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
+            std::string FormulateCURLGF(std::string output_file_type, std::string query);
+            /*! \fn
+            * A function used in GlyFinder project in order to extract information from ontology based on the name of the sugar
+            * @param stereo_name The stereochemistry name of the sugar e.g. b-D-mannopyranose
+            * @param stereo_condensed_name The condensed version of stereochemistry name of the sugar e.g. DManpb
+            * @param name The complete name of the sugar e.g. 2-sulfo-b-D-mannopyranose
+            * @param condensed_name The condensed version of the complete name of the sugar e.g. DManp[2s]b
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
             void ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_condensed_name, std::string name, std::string condensed_name, std::string output_file_type = "csv");
             /*! \fn
             * A function in order to extract information from ontology based on the different parts of the sugar name
@@ -905,6 +935,13 @@ namespace MolecularModeling
             * @param chemical_code The chemical code structure of the sugar e.g. _2^3^4P_a^+1
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
+            std::string ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string output_file_type = "csv");
+            /*! \fn
+            * A function used in GlyFinder project in order to extract information from ontology based on a specific chemical code
+            * inspired http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation
+            * @param chemical_code The chemical code structure of the sugar e.g. _2^3^4P_a^+1
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
             void ExtractOntologyInfoByStringChemicalCode(std::string chemical_code, std::string output_file_type = "csv");
             /*! \fn
             * A function in order to extract information from ontology based on a specific oligosaccharide name
@@ -921,6 +958,25 @@ namespace MolecularModeling
             void ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::string oligo_name_pattern, std::string output_file_type = "csv");
             /*! \fn
             * A function in order to extract information from ontology based on the orientations of the side atoms of a monosaccharide structure
+            * @param ring_type The ring type(p/f) part of the monosacchride name
+            * @param anomeric_orientation The orientation of the side oxygen attached to anomeric carbon of the ring
+            * @param minus_one_orientation The orientation of the side carbon attached to anomeric carbon of the ring
+            * @param index_two_orientation The orientation of the side oxygen attached to second carbon of the ring
+            * @param index_three_orientation The orientation of the side oxygen attached to third carbon of the ring
+            * @param index_four_orientation The orientation of the side oxygen attached to fourth carbon of the ring
+            * @param plus_one_orientation The orientation of the side carbon attached to last carbon of the ring
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            std::string ExtractOntologyInfoByOligosaccharideNameSequenceGF(std::string oligo_name, std::string output_file_type = "csv");
+            /*! \fn
+            * A function used in GlyFinder project in order to extract information from ontology based on a given specific pattern
+            * @param oligo_name_pattern The oligosaccharide pattern that is going to be used in the query
+            * e.g. DGlcpNAcb1-4DGlc*, *b1-4L*, *GlcpNAcb1-4DGlcpNAcb, DGlcpNAcb*4DGlcpNAca, *DGlcpNAcb1-4DGlc*, DGlcpNAcb*DGlc*, *DManpa1-6[DManpa1-2DManpa1-3]D*
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string output_file_type = "csv");
+            /*! \fn
+            * A function used in GlyFinder project in order to extract information from ontology based on the orientations of the side atoms of a monosaccharide structure
             * @param ring_type The ring type(p/f) part of the monosacchride name
             * @param anomeric_orientation The orientation of the side oxygen attached to anomeric carbon of the ring
             * @param minus_one_orientation The orientation of the side carbon attached to anomeric carbon of the ring
@@ -959,59 +1015,59 @@ namespace MolecularModeling
             * @param query The custom SPARQL query
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            void ExtractOntologyInfoByCustomQuery(std::string query, std::string output_file_type = "csv");
+		    void ExtractOntologyInfoByCustomQuery(std::string query, std::string output_file_type = "csv");
 
-            /*! \fn
-            * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
-            * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
-            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
-            */
-            void ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern, std::string output_file_type = "csv");
-            /*! \fn
-            * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
-            * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
-            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
-            */
-            void ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern, std::string output_file_type = "csv");
-            /*! \fn
-            * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
-            */
-            void ExtractTorsionAnglesFromSlowQueryResult();
-            /*! \fn
-            * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
-            */
-            void ExtractTorsionAnglesFromFastQueryResult();
-            /*! \fn
-            * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond lenghts, mean and standard deviation
-            * @param atom_name1 The name of the first atom
-            * @param atom_name1 The name of the second atom
-            * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
-            * @param mono_name The name of the monosaccharide which contains the given atoms
-            * @return statistics A list of calculated statistics. Mean and standard deviation
-            */
-            std::vector<double> CalculateBondlengthsStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, bool is_atom2_ring, std::string mono_name);
-            /*! \fn
-            * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond angles, mean and standard deviation
-            * @param atom_name1 The name of the first atom
-            * @param atom_name1 The name of the second atom
-            * @param atom_name3 The name of the third atom
-            * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
-            * @param mono_name The name of the monosaccharide which contains the given atoms
-            * @return statistics A list of calculated statistics. Mean and standard deviation
-            */
-            std::vector<double> CalculateBondAnglesStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, std::string atom_name3,
-                                                                                 bool is_atom3_ring, std::string mono_name);
-            /*! \fn
-            * A function in order to extract torsion angles from a PDB file for a given disaccharide pattern
-            * @param amino_lib_files The list of paths to amino library files to process PDB file
-            * @param disaccharide The disaccharide pattern that is going to be used to extract torsio angles
-            */
-            void ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_files, std::string disaccharide);
-            /*! \fn
-            * A function in order to check if a parent and child oligosaccharide matches the given monosaccharid names and linkage indeces
-            * if the values matches, the function calculates the phi/psi angle(s)
-            * @param oligo An Assembly Oligosaccharide object that is going to be checked for matching the given values
-            * @param phi_angle The phi angle that is going to be calculated by this function
+		    /*! \fn
+		    * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
+		    * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
+		    * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+		    */
+		    void ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern, std::string output_file_type = "csv");
+		    /*! \fn
+		    * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
+		    * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
+		    * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+		    */
+		    void ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern, std::string output_file_type = "csv");
+		    /*! \fn
+		    * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
+		    */
+		    void ExtractTorsionAnglesFromSlowQueryResult();
+		    /*! \fn
+		    * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
+		    */
+		    void ExtractTorsionAnglesFromFastQueryResult();
+		    /*! \fn
+		    * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond lenghts, mean and standard deviation
+		    * @param atom_name1 The name of the first atom
+		    * @param atom_name1 The name of the second atom
+		    * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
+		    * @param mono_name The name of the monosaccharide which contains the given atoms
+		    * @return statistics A list of calculated statistics. Mean and standard deviation
+		    */
+		    std::vector<double> CalculateBondlengthsStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, bool is_atom2_ring, std::string mono_name);
+		    /*! \fn
+		    * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond angles, mean and standard deviation
+		    * @param atom_name1 The name of the first atom
+		    * @param atom_name1 The name of the second atom
+		    * @param atom_name3 The name of the third atom
+		    * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
+		    * @param mono_name The name of the monosaccharide which contains the given atoms
+		    * @return statistics A list of calculated statistics. Mean and standard deviation
+		    */
+		    std::vector<double> CalculateBondAnglesStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, std::string atom_name3,
+											 bool is_atom3_ring, std::string mono_name);
+		    /*! \fn
+		    * A function in order to extract torsion angles from a PDB file for a given disaccharide pattern
+		    * @param amino_lib_files The list of paths to amino library files to process PDB file
+		    * @param disaccharide The disaccharide pattern that is going to be used to extract torsio angles
+		    */
+		    void ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_files, std::string disaccharide);
+		    /*! \fn
+		    * A function in order to check if a parent and child oligosaccharide matches the given monosaccharid names and linkage indeces
+		    * if the values matches, the function calculates the phi/psi angle(s)
+		    * @param oligo An Assembly Oligosaccharide object that is going to be checked for matching the given values
+		    * @param phi_angle The phi angle that is going to be calculated by this function
             * @param phi_angle The phi angle that is going to be calculated by this function
             * @param first_mono The first monosaccharide in the disaccharide pattern which is the child monosaccharide in the tree-like structure of the main oligosaccharide
             * e.g. DGalpb in DNeupNAca2-3DGalpb
@@ -1068,6 +1124,10 @@ namespace MolecularModeling
             /*! \fn
               * A function in order to extract and print out all saccharides ring atoms information
               */
+/** @}*/
+/** \addtogroup Verifiers_and_Issue_Resolvers
+               * @{
+               */
             void ExtractRingAtomsInformation();
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
@@ -1146,12 +1206,13 @@ namespace MolecularModeling
               * @param sorted_cycle_stream The sorted atom of the cycle so far (to be filled with the fuction)
               * @return sorted_cycle The sorted list of cycle atom objects
               */
-            AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
+           AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
             /*! \fn
             * A function in order to calculate geometry outliers for glyprobity report (e.g. bond lengths, bond angles, torsion angles)
             * @param mono The monosaccharide object which is processed by this function to calculate its outliers
             */
             void CalculateGlyprobityGeometryOutliers(Glycan::Monosaccharide* mono);
+/** @}*/
             /*! \fn
               * A function in order to extract the relative oriantation of the side atoms that are attached to ring atoms against the ring
               * @param mono The monosaccharide object
@@ -1160,6 +1221,9 @@ namespace MolecularModeling
               * @return orientations The list of side atoms orinetations
               */
             std::vector<std::string> GetSideGroupOrientations(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A function in order to build a chemical code structure for the monosaccharide based on the side atom orientations
               * @param orientations The list of side atoms orinetations
@@ -1229,6 +1293,11 @@ namespace MolecularModeling
               * @param mono The monosaccharide object
               */
             void UpdateComplexSugarChemicalCode(Glycan::Monosaccharide* mono);
+            /*! /fn
+              * A function used to update the PDB code of a complex monosaccharide after derivatives have been found.
+              * @param mono The monosaccharide object
+              */
+            void UpdatePdbCode( Glycan::Monosaccharide * mono );
             /*! \fn
               * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
               * @param monos The list of extracted monosaccharide object
@@ -1239,6 +1308,10 @@ namespace MolecularModeling
               */
             OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
                                                           int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes);
+/** @}*/
+            /** \addtogroup Verifiers_and_Issue_Resolvers
+               * @{
+               */
             /*! \fn
               * A function in order to check if the target atom is attached to OME terminal
               * @param target_atom The atom which will be checked for a terminal
@@ -1273,6 +1346,10 @@ namespace MolecularModeling
               * @return orientation The relative orientation of the additional side atom's oxygen neighbor
               */
             std::string CalculateRSOrientations(Atom* prev_atom, Atom* target, Atom* next_atom);
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure_Builders
+               * @{
+               */
             /*! \fn
               * A recursive function in order to build the tree like structure of the oligosacchrides (a directed graph made from the molecular graph structure of monosaccharides.
                 each monosaccharide is a node and their linkages are the edges)
@@ -1285,9 +1362,13 @@ namespace MolecularModeling
                 the current monosacchride object
               * @param visited_linkages The list of linkages(atoms involved in the linkages between monosacchrides) that have been visited so far by calls to the function
               */
-            void BuildOligosaccharideTreeStructure(Glycan::Monosaccharide* key, std::vector<Glycan::Monosaccharide*> val, Glycan::Oligosaccharide* oligo,
+	    void BuildOligosaccharideTreeStructure(Glycan::Monosaccharide* key, std::vector<Glycan::Monosaccharide*> val, Glycan::Oligosaccharide* oligo,
                                                                   std::vector<int>& visited_monos, std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> > monos_table,
                                                                   std::map<Glycan::Monosaccharide*, std::vector<std::string> > monos_table_linkages, std::vector<std::string>& visited_linkages);
+/** @}*/
+            /** \addtogroup Verifiers_and_Issue_Resolvers
+               * @{
+               */
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xCH-N
               * @param target_atom The atom which will be checked for a derivative
@@ -1350,7 +1431,7 @@ namespace MolecularModeling
               * @return pattern The discovered pattern of the attached derivative
               */
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
-
+/** @}*/
             void AddIon(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
             void AddSolvent(double extension, double closeness, std::string lib_file);
             void SplitSolvent(Assembly* solvent, Assembly* solute);
@@ -1368,8 +1449,6 @@ namespace MolecularModeling
               * @return Total overlap between assemblies, relative to the surface area of a buried C atom.
               */
             double CalculateAtomicOverlaps(Assembly *assemblyB);
-
-
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

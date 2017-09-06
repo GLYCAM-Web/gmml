@@ -36,6 +36,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the model serial number in a pdb model
               * @return model_serial_number_ attribute of the current object of this class
@@ -46,10 +49,13 @@ namespace PdbFileSpace
               * @return model_residue_set_ attribute of the current object of this class
               */
             PdbModelResidueSet* GetModelResidueSet();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the model serial number of the current object
               * Set the model_serial_number_ attribute of the current pdb model
@@ -62,7 +68,7 @@ namespace PdbFileSpace
               * @param model_residue_set The model residue set attribute of the current object
               */
             void SetModelResidueSet(PdbModelResidueSet* model_residue_set);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

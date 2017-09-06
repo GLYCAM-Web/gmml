@@ -39,6 +39,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the id code in a residue modification
               * @return id_code_ attribute of the current object of this class
@@ -74,10 +77,13 @@ namespace PdbFileSpace
               * @return dscr_ attribute of the current object of this class
               */
             std::string GetDscr();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the id code of the current object
               * Set the id_code_ attribute of the current residue modification
@@ -120,7 +126,7 @@ namespace PdbFileSpace
               * @param dscr The dscribtion of the current object
               */
             void SetDscr(const std::string dscr);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

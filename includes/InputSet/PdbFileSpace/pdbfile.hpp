@@ -88,6 +88,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to pdb file path of the current object
               * @return path_ attribute of the current object of this class
@@ -294,10 +297,13 @@ namespace PdbFileSpace
               * @return A 2-D vector of chain id and sequence number of residues that have been placed after residues that have no tail or have at least 2 tails
               */
             PdbPairVectorTerCardPositions GetAllTerCardPositions(std::vector<std::string> glycam_residue_names);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A function in order to set the path of the pdb file
               * @param pdb_path Pdb file path
@@ -543,10 +549,13 @@ namespace PdbFileSpace
               * A function to adjust the serial numbers of atoms that have been changed in connect card
               */
             void UpdateConnectCard();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Input_File_Reader
+              * @{
+              */
             /// Readers
 
             /*! \fn
@@ -827,7 +836,10 @@ namespace PdbFileSpace
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseEndCard(std::ifstream& stream, std::string& line);
-
+/** @}*/
+            /** \addtogroup Output_File_Builder
+              * @{
+              */
             /// Writers
             /*! \fn
               * A function to create an output pdb file with the given name
@@ -1047,7 +1059,7 @@ namespace PdbFileSpace
               * @param stream Intermediate output stream in order to write end card
               */
             void ResolveEndCard(std::ofstream& stream);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////

@@ -24,6 +24,9 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the first vector of plane
               * @return v1_ first vector of plane
@@ -36,15 +39,18 @@ namespace GeometryTopology
             gmml::Vector GetV2();
 
             gmml::Vector GetUnitNormalVector();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             void SetV1(gmml::Vector v1);
             void SetV1(double x, double y, double z);
             void SetV2(gmml::Vector v2);
             void SetV2(double x, double y, double z);
-
+/** @}*/
 
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //

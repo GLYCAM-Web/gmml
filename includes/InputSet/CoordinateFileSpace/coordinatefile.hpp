@@ -38,6 +38,9 @@ namespace CoordinateFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to coordinate file path of the current object.
               * @return path_ attribute of the current object of this class
@@ -61,10 +64,13 @@ namespace CoordinateFileSpace
               * @return coordinates_ attribute of the current object of this class
               */
             const std::vector<GeometryTopology::Coordinate*> GetCoordinates() const;
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the path attribute of the current object
               * Set the path_ attribute of the current object
@@ -97,16 +103,23 @@ namespace CoordinateFileSpace
               * @param title A string defines the title of the coordinate file which is extracted from the contents of the file
               */
             void AddCoordinate(GeometryTopology::Coordinate* coordinate);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Input_File_Reader
+              * @{
+              */
             /*! \fn
               * A function to parse the contents of a given stream of a file
               * Parse the given stream and set the attributes of the current object accordingly
               * @param in_file A stream contains whole contents of a coordinate file
               */
             void Read(std::ifstream& in_file);
+/** @}*/
+/** \addtogroup Output_File_Builder
+              * @{
+              */
             /*! \fn
               * A function to write back the coordinate file
               * @param coordinate_file The output file path
@@ -117,7 +130,7 @@ namespace CoordinateFileSpace
               * @param out_stream The output stream
               */
             void BuildCoordinateFile(std::ofstream& out_stream);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

@@ -37,6 +37,9 @@ namespace PrepFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to prep file path of the current object
               * @return path_ attribute of the current object of this class
@@ -59,10 +62,13 @@ namespace PrepFileSpace
               * @return atom_names_of_residue The atom names of the current object of this class
               */
             std::vector<std::string> GetAllAtomNamesOfResidue(std::string residue_name);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the path of the current prep file
               * Set the path_ attribute of the current library file
@@ -75,16 +81,23 @@ namespace PrepFileSpace
               * @param residues The residue map attribute of the current object
               */
             void SetResidues(ResidueMap residues);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Input_File_Reader
+               * @{
+               */
             /*! \fn
               * A function to parse the contents of a given stream of a file
               * Parse the given stream and set the attributes of the current object accordingly
               * @param in_file A stream contains whole contents of a prep file
               */
             void Read(std::ifstream& in_file);
+/** @}*/
+            /** \addtogroup Output_File_Builder
+               * @{
+               */
             /*! \fn
               * A function to residue section of the current prep file
               * Parse the given stream and set the attributes of the current object accordingly
@@ -101,7 +114,7 @@ namespace PrepFileSpace
               * @param out_stream Output stream
               */
             void BuildPrepFile(std::ofstream& out_stream);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

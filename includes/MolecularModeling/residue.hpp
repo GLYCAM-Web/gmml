@@ -32,6 +32,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the assembly
               * @return assembly_ attribute of the current object of this class
@@ -72,10 +75,13 @@ namespace MolecularModeling
               * @return id_ attribute of the current object of this class
               */
             std::string GetId();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the assembly of the current object
               * Set the assembly_ attribute of the current residue
@@ -148,7 +154,13 @@ namespace MolecularModeling
               * @param id The identification attribute of the current object
               */
             void SetId(std::string id);
-
+            /*! \fn
+              * A mutator function that replaces the coordinates of the atoms of the current object
+              * Replace the coordinate attribute for atoms of the current residue
+              * @param atoms The atom attribute of the current object
+              */
+            void ReplaceAtomCoordinates(AtomVector *newAtoms);
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
