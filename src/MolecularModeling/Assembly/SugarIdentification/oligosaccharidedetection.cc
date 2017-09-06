@@ -151,9 +151,9 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     detect_shape_configuration.close();
 
     ///Calling detect_shape program
-    // The better way to do this would be to pass the bfmp code the six cartesian 
+    // The better way to do this would be to pass the bfmp code the six cartesian
     // coords it needs and call it as a part of the library.  not sure how much
-    // work it would take to do this, but it would be better.  
+    // work it would take to do this, but it would be better.
     system("apps/BFMP/detect_shape temp_detect_shape_pdb.pdb temp_config > /dev/null");
 
     ///Adding the BFMP ring conformation infomration gained from the detect_sugar program to the monosaccharide
@@ -278,8 +278,8 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
     cout << endl;
 
     ///DETECT SHAPE USING BFMP EXTERNAL PROGRAM. Currently, the program does not work for furanoses
-    // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
-    if( cycle.size() > 5 ) {
+    // @TODO Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
+    if( cycle.size() == 6 ) {
       DetectShape( cycle, mono );
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 ) {
         cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl; ///Part of Glyprobity report
@@ -900,6 +900,13 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
         }
       }
 
+      cout << o_neighbor1->GetName() << endl;
+      ///Seems redundant to have this multiple times, if it is going to say the same thing and be generated for all cases after the first logic check.
+      ///Specially if we ever want to change this Note to say something different. Like I am doing now. :)
+      stringstream ss;
+      ss << "Could not find glycosidic oxygen or nitrogen within " << dCutOff << " Angstroms of a ring carbon bonded to the ring oxygen(" << node->GetAtom()->GetName() << ").";
+      anomeric_note->description_ = ss.str();
+
       ///Check the order of the carbons based on their names to locate the anomeric
       stringstream ss1;
       for( int i = 0; i < o_neighbor1->GetName().size(); i++ ) {
@@ -914,16 +921,16 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
       if( ConvertString< int >( ss1.str() ) < ConvertString< int >( ss2.str() ) ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the number in the " + ConvertAssemblyInputFileType2String( this->source_file_type_ ) + ", Anomeric carbon is: " );
+        //anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + ") as found in the input file (" + this->source_file_ + "), Anomeric Carbon: " );
 
         return o_neighbor1;
       }
       if( ConvertString< int >( ss2.str() ) < ConvertString< int >( ss1.str() ) ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the number in the " + ConvertAssemblyInputFileType2String( this->source_file_type_ ) + ", Anomeric carbon is: " );
+        //anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + ") as found in the input file (" + this->source_file_ + "), Anomeric Carbon: " );
 
         return o_neighbor2;
       }
@@ -949,22 +956,22 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
       if( !neighbor1_is_anomeric ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the carbon off the position, Anomeric carbon is: " );
+        //anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon: " );
         return o_neighbor2;
       }
       else if( !neighbor2_is_anomeric ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        anomeric_note->description_ = "Anomeric oxygen is missing";
-        anomeric_carbons_status.push_back( "Based on the carbon off the position, Anomeric carbon is: " );
+        //anomeric_note->description_ = "Anomeric oxygen is missing";
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon: " );
         return o_neighbor1;
       }
       // @TODO August 8, 2017 Davis/Lachele - Once we get to a point where we read in mmcif definitions, we need to use it to determine the Anomeric Carbon.
       anomeric_note->type_ = Glycan::WARNING;
       anomeric_note->category_ = Glycan::ANOMERIC;
-      anomeric_note->description_ = "Anomeric oxygen is missing";
-      anomeric_carbons_status.push_back( "Not enough information to detect the anomeric carbon, it has been chosen as the first carbon listed in the " + ConvertAssemblyInputFileType2String( this->source_file_type_ ) + ": " );
+      //anomeric_note->description_ = "Anomeric oxygen is missing";
+      anomeric_carbons_status.push_back( "Anomeric carbon assigned to the first ring carbon (" + o_neighbor1->GetName() + ") found in the file (" + this->source_file_ + "), Anomeric Carbon: " );
       return o_neighbor1;
     }
   }
@@ -2567,11 +2574,18 @@ void Assembly::UpdatePdbCode( Monosaccharide * mono ) {
       return;
     }
   }
+  for( int i = 0; i < SUGARNAMELOOKUPSIZE; i++ ) {
+    if( code.compare( SUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) {
+      mono->sugar_name_.pdb_code_ = SUGARNAMELOOKUP[ i ].pdb_code_;
+      return;
+    }
+  }
 }
 
-vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide*> monos, ResidueNameMap dataset_residue_names,
-                                                           int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes)
-{
+vector<Oligosaccharide*> Assembly::ExtractOligosaccharides( vector<Monosaccharide*> monos,
+                                                            ResidueNameMap dataset_residue_names,
+                                                            int& number_of_covalent_links,
+                                                            int& number_of_probable_non_covalent_complexes ) {
     string terminal_residue_name = "";
     ResidueNameMap common_terminal_residues = gmml::InitializeCommonTerminalResidueMap();
     map<Monosaccharide*, vector<Monosaccharide*> > monos_table = map<Monosaccharide*, vector<Monosaccharide*> >();
