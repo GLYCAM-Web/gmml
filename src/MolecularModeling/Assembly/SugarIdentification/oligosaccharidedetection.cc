@@ -85,6 +85,21 @@ using namespace CondensedSequenceSpace;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
+void Assembly::GetBFMP( Monosaccharide* mono ) {
+  CoordinateVector coordinates = GetCycleAtomCoordinates( mono );
+  // Testing GetCycleAtomCoordinates function
+  for( CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++ ) {
+    ( *it )->Print( cout );
+  }
+  // @TODO At this point you should have a CoordinateVector with the Coordinates of the 6 cycle atoms.
+  // Should just be math to figure out the bfmp to store to the Monosaccharide below.
+  string bfmp = "";
+
+
+  // Store the bfmp string to the Monosaccharide.
+  mono->bfmp_ring_conformation_ = bfmp;
+}
+
 void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
 {
     ///Creating a new assembly only from the ring atoms for external detect shape program
@@ -277,9 +292,11 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
     mono->chemical_code_->Print( cout );
     cout << endl;
 
-    ///DETECT SHAPE USING BFMP EXTERNAL PROGRAM. Currently, the program does not work for furanoses
-    // @TODO Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
     if( cycle.size() == 6 ) {
+      // @TODO uncomment this out once GetBFMP function is implemented to determine the BFMP of the Monosaccharide.
+      // Comment out the call to DetectShape. You can use the DetectShape function to compare the results of GetBFMP
+      // for testing purposes.
+      //GetBFMP( mono );
       DetectShape( cycle, mono );
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 ) {
         cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl; ///Part of Glyprobity report

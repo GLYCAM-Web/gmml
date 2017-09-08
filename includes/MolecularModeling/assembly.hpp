@@ -152,6 +152,12 @@ namespace MolecularModeling
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
             CoordinateVector GetAllCoordinates();
+            /* ! \fn
+             * A function to extract all the coordinates of all the cycle atoms on the monosaccharide.
+             * @param mono The Monosaccharide object
+             * @return coordinates The CoordinateVector with all the Coordinates
+             */
+            CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
             /*! \fn
               * A function to return all issues/notes within an assembly
               * @return List of all notes of an assembly
@@ -724,6 +730,11 @@ namespace MolecularModeling
             * @return oligosaccharides A list of extarcted oligosaccharide structures
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
+            /*! \fn
+             * A function in order to extract the BFMP ring conformation of a Monosaccharide object.
+             * @param mono The Monosaccharide object
+             */
+            void GetBFMP( Glycan::Monosaccharide* mono );
             /*! \fn
             * A function in order to detec the shape of the ring using the external BFMP program
             * This function creates a pdb file and a configuration file for input arguments of the external detect_shape program.
