@@ -153,7 +153,7 @@ namespace MolecularModeling
               */
             CoordinateVector GetAllCoordinates();
             /* ! \fn
-             * A function to extract all the coordinates of all the cycle atoms on the monosaccharide.
+             * A function to extract all the coordinates of all the cycle atoms of the monosaccharide.
              * @param mono The Monosaccharide object
              * @return coordinates The CoordinateVector with all the Coordinates
              */

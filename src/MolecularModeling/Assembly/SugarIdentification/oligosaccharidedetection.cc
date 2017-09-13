@@ -96,7 +96,8 @@ void Assembly::GetBFMP( Monosaccharide* mono ) {
   string bfmp = "";
 
 
-  // Store the bfmp string to the Monosaccharide.
+  // @TODO This may end up being 'return bfmp' since the name of the function is GetBFMP.
+  // It would make sense to have it return the BFMP for the user to store it as they wish.
   mono->bfmp_ring_conformation_ = bfmp;
 }
 
@@ -869,7 +870,7 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
     cycles = fused_filtered_cycles;
 }
 
-Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & anomeric_carbons_status, AtomVector cycle, string cycle_atoms_str ) {
+Atom* Assembly::FindAnomericCarbon( Note* anomeric_note, vector< string > & anomeric_carbons_status, AtomVector cycle, string cycle_atoms_str ) {
   Atom* anomeric_carbon = new Atom();
   for( AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
     Atom* cycle_atom = ( *it );
@@ -917,7 +918,6 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
         }
       }
 
-      cout << o_neighbor1->GetName() << endl;
       ///Seems redundant to have this multiple times, if it is going to say the same thing and be generated for all cases after the first logic check.
       ///Specially if we ever want to change this Note to say something different. Like I am doing now. :)
       stringstream ss;
@@ -938,7 +938,6 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
       if( ConvertString< int >( ss1.str() ) < ConvertString< int >( ss2.str() ) ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        //anomeric_note->description_ = "Anomeric oxygen is missing";
         anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + ") as found in the input file (" + this->source_file_ + "), Anomeric Carbon: " );
 
         return o_neighbor1;
@@ -946,7 +945,6 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
       if( ConvertString< int >( ss2.str() ) < ConvertString< int >( ss1.str() ) ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        //anomeric_note->description_ = "Anomeric oxygen is missing";
         anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + ") as found in the input file (" + this->source_file_ + "), Anomeric Carbon: " );
 
         return o_neighbor2;
@@ -973,21 +971,18 @@ Atom* Assembly::FindAnomericCarbon( Note * anomeric_note, vector< string > & ano
       if( !neighbor1_is_anomeric ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        //anomeric_note->description_ = "Anomeric oxygen is missing";
         anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon: " );
         return o_neighbor2;
       }
       else if( !neighbor2_is_anomeric ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        //anomeric_note->description_ = "Anomeric oxygen is missing";
         anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon: " );
         return o_neighbor1;
       }
       // @TODO August 8, 2017 Davis/Lachele - Once we get to a point where we read in mmcif definitions, we need to use it to determine the Anomeric Carbon.
       anomeric_note->type_ = Glycan::WARNING;
       anomeric_note->category_ = Glycan::ANOMERIC;
-      //anomeric_note->description_ = "Anomeric oxygen is missing";
       anomeric_carbons_status.push_back( "Anomeric carbon assigned to the first ring carbon (" + o_neighbor1->GetName() + ") found in the file (" + this->source_file_ + "), Anomeric Carbon: " );
       return o_neighbor1;
     }
