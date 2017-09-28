@@ -1217,7 +1217,7 @@ namespace MolecularModeling
               * @param anomeric_atom The anomeric carbon of the ring
               * @return sorted_cycle The sorted list of cycle atom objects
               */
-           AtomVector SortCycle(AtomVector cycle, Atom *anomeric_atom);
+           AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
             /*! \fn
             * A function in order to calculate geometry outliers for glyprobity report (e.g. bond lengths, bond angles, torsion angles)
             * @param mono The monosaccharide object which is processed by this function to calculate its outliers

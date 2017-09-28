@@ -367,7 +367,7 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
 Assembly::CoordinateVector Assembly::GetCycleAtomCoordinates( Monosaccharide* mono ) {
   CoordinateVector coordinates;
   for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); it1++ ) {
-    Atom * atom = ( *it1 );
+    Atom* atom = ( *it1 );
     CoordinateVector atom_coordinates = atom->GetCoordinates();
     for( CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
       coordinates.push_back( ( *it2 ) );
