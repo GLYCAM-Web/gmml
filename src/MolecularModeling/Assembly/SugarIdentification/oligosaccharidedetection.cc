@@ -3317,17 +3317,20 @@ void Assembly::BuildOligosaccharideTreeStructure(Monosaccharide *key, vector<Mon
             {
                 int it_index = distance(values.begin(), it);
                 vector<string> key_mono_linkages = monos_table_linkages[key];
+                /*for(int i = 0; i < key_mono_linkages.size(); i++ )  {
+                    std::cout << "HELP US!" << key_mono_linkages.at( i ) << std::endl;
+                }*/
                 string link = key_mono_linkages.at(it_index);
                 stringstream reverse_link;
                 reverse_link << Split(link, "-").at(2) << "-" << Split(link, "-").at(1) << "-" << Split(link, "-").at(0);
                 if(find(visited_linkages.begin(), visited_linkages.end(), link) == visited_linkages.end() &&
                         find(visited_linkages.begin(), visited_linkages.end(), reverse_link.str()) == visited_linkages.end())
                 {
-                    //                    cout << "key id " << key->mono_id  << ", value id " << value_mono->mono_id << endl;
+                    //cout << "key id " << key->mono_id  << ", value id " << value_mono->mono_id << endl;
                     Oligosaccharide* child_oligo = new Oligosaccharide();
                     vector<Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
-                    //                    cout << "call " << value_mono->mono_id << endl;
+                    //cout << "call " << value_mono->mono_id << endl;
                     BuildOligosaccharideTreeStructure(value_mono, value_mono_values, child_oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                     oligo->child_oligos_.push_back(child_oligo);
                     oligo->child_oligos_linkages_.push_back(link);
