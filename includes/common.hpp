@@ -914,9 +914,12 @@ namespace gmml
     {
         OntPDB,
         OntResidue,
+        OntSequenceResidue,
         OntOligosaccharide,
+        OntTerminal,
         OntNote,
         OntLinkage,
+        OntSequenceLinkage,
         OntMonosaccharide,
         OntSugarName,
         OntAtom
