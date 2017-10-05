@@ -127,6 +127,11 @@ namespace Glycan
                     std::string terminal_residue_number = atom_id_tokens.at(4);
                     if (root_residue_name.compare(terminal_residue_name) != 0 && root_residue_number.compare(terminal_residue_number) != 0)
                     {
+                        //Additional underscore(_) symbol is added at the end as terminal doesn't have BFMP
+                        //It makes it easier to remove/add BFMP conformation from the whole oligo-sequence
+                        //e.g. FUL(404_D_1C4)-NAG(401_D_2d5)-ASN(80_D_)
+                        //As we have underscore symbol at the end of terminal, we can remove everything after last _ in each residue of oligo
+                        //oligo-seq without BFMP would look like: FUL(404_D)-NAG(401_D)-ASN(80_D)
                         if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                             residue_links_stream << "-" << terminal_residue_name << "(" << terminal_residue_number << "_" << ")" ;
                         else

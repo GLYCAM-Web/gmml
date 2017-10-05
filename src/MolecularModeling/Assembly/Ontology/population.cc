@@ -456,27 +456,6 @@ void Assembly::PopulateSequenceLinkage(stringstream& oligo_sequence_stream, Olig
             AddLiteral(oligo_to_res_uri_map[child_oligo_uri], Ontology::sequence_linkage, link_indeces_str.str(), oligo_sequence_stream);
         }
     }
-    /*map<string, string>::iterator it2;
-    cout << "-------------oligo_to_res_uri_map--------------" << endl;
-    for ( it2 = oligo_to_res_uri_map.begin(); it2 != oligo_to_res_uri_map.end(); it2++)
-    {
-        cout << it2->first  // key
-                  << ':'
-                  << it2->second   // value
-                  << endl ;
-    }
-    cout << endl;
-    map<string, string>::iterator it3;
-    cout << "-------------mono_to_short_name_map--------------" << endl;
-    for ( it3 = mono_to_short_name_map.begin(); it3 != mono_to_short_name_map.end(); it3++)
-    {
-        cout << it3->first
-                  << ':'
-                  << it3->second
-                  << endl ;
-    }
-    cout << endl;
-    */
 }
 
 int Assembly::ExtractLinkageCarbonIndex(Oligosaccharide* oligo, string linkage_carbon_id)

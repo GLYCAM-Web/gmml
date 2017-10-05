@@ -796,10 +796,26 @@ namespace MolecularModeling
             void PopulateSequenceLinkage(std::stringstream& oligo_sequence_stream, Glycan::Oligosaccharide* oligo, std::string oligo_uri, std::string id_prefix, std::vector<int>& visited_oligos,
                                          std::map<std::string, std::string>& mono_to_short_name_map, std::map<std::string, std::string>& oligo_to_res_uri_map, int& root_oligo_id);
 
+            /*! \fn
+            * A function in order to populate the derivatives of the oligosaccharide sequence
+            * @param oligo_sequence_stream The output stream of SequenceLinkage triples to be added to the main output stream
+            * @param mono_short_name The short-name of current monosaccharide (of current oligo)
+            * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
+            * @param res_uri The URI for the current monosaccharide to be checked for derivatives
+            */
             void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri);
 
+            /*! \fn
+            * A function in order to check if the monosaccharide has derivates
+            * @param mono_short_name The short-name of current monosaccharide (of current oligo)
+            */
             bool hasDerivative(std::string mono_short_name);
 
+            /*! \fn
+            * A function in order to get the derivates of monosaccharide
+            * @param mono_short_name The short-name of current monosaccharide (of current oligo)
+            * @param derivatives The vector of derivatives of current monosaccharide (of current oligo)
+            */
             void getDerivatives(std::string& mono_short_name, std::vector<std::string>& derivatives);
 
             /*! \fn
