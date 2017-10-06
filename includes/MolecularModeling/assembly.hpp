@@ -138,6 +138,26 @@ namespace MolecularModeling
               */
             AtomVector GetAllAtomsOfAssembly();
             /*! \fn
+              * A functions that extracts all atoms of an assembly that are within protein residues and are backbone atoms
+              * @return Vector of all atoms in the current object of assembly that within protein residues and are backbone atoms
+              */
+            AtomVector GetAllAtomsOfAssemblyWithinProteinBackbone();
+            /*! \fn
+              * A functions that extracts all atoms of an assembly that are within protein residues but are not backbone atoms
+              * @return Vector of all atoms in the current object of assembly that are within protein residues but are not backbone atoms
+              */
+            AtomVector GetAllAtomsOfAssemblyWithinProteinSidechain();
+            /*! \fn
+              * A functions that extracts all atoms of an assembly that are within protein residues
+              * @return Vector of all atoms in the current object of assembly that are within protein residues
+              */
+            AtomVector GetAllAtomsOfAssemblyWithinProteinResidues();
+            /*! \fn
+              * A functions that extracts all atoms of an assembly that are not within protein residues
+              * @return Vector of all atoms in the current object of assembly that are not within protein residues
+              */
+            AtomVector GetAllAtomsOfAssemblyNotWithinProteinResidues();
+            /*! \fn
               * A functions that extracts all atoms of an assembly except atoms of water residues
               * @return Vector of all atoms in the current object of assembly except atoms of water residues
               */
@@ -1500,6 +1520,8 @@ namespace MolecularModeling
               * @return Total overlap between assemblies, relative to the surface area of a buried C atom.
               */
             double CalculateAtomicOverlaps(Assembly *assemblyB);
+            double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
+            AtomVector GetAllAtomsOfAssemblyWithinXAngstromOf(GeometryTopology::Coordinate *coordinate, double distance);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

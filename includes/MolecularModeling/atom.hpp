@@ -99,6 +99,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             void FindConnectedAtoms(AtomVector &visitedAtoms);
             double GetDistanceToAtom(Atom *otherAtom);
+            double GetDistanceToCoordinate(GeometryTopology::Coordinate *coordinate);
             unsigned long long generateAtomIndex();
 
             //////////////////////////////////////////////////////////
