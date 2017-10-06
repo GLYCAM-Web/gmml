@@ -271,6 +271,137 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
     return all_atoms_of_assembly;
 }
 
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
+{ // written by OG, so syntax a bit different from other functions.
+
+    AtomVector selection_from_assembly = AtomVector();
+    AtomVector all_protein_atoms = this->GetAllAtomsOfAssemblyWithinProteinResidues();
+    for(AtomVector::iterator it = all_protein_atoms.begin(); it != all_protein_atoms.end(); it++)
+    {
+        Atom *atom = *it;
+        if ( (atom->GetName().compare("N")==0) || (atom->GetName().compare("C")==0) || (atom->GetName().compare("O")==0) || (atom->GetName().compare("CA")==0) )
+        {
+            selection_from_assembly.push_back(atom);
+        }
+    }
+    return selection_from_assembly;
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
+{ // written by OG, so syntax a bit different from other functions.
+
+    AtomVector selection_from_assembly = AtomVector();
+    AtomVector all_protein_atoms = this->GetAllAtomsOfAssemblyWithinProteinResidues();
+    for(AtomVector::iterator it = all_protein_atoms.begin(); it != all_protein_atoms.end(); it++)
+    {
+        Atom *atom = *it;
+        if ( (atom->GetName().compare("N")!=0) && (atom->GetName().compare("C")!=0) && (atom->GetName().compare("O")!=0) && (atom->GetName().compare("CA")!=0) )
+        {
+            selection_from_assembly.push_back(atom);
+        }
+    }
+    return selection_from_assembly;
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
+{ // written by OG, so syntax a bit different from other functions.
+    AtomVector selection_from_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    //std::cout << "size is " << assemblies.size() << std::endl;
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        ResidueVector residues = assembly->GetResidues();
+        for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+        {
+            Residue* residue = (*it1);
+            if (residue->CheckIfProtein())
+            {
+                //std::cout << "Found a protein" << std::endl;
+                AtomVector atoms = residue->GetAtoms();
+                for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                {
+                    Atom *atom = *it2;
+                    selection_from_assembly.push_back(atom);
+                }
+
+            }
+
+        }
+    }
+    // This is unintuitive, but GetAssemblies does not return "this" assembly, just additonal "sub-assemblies" contained within this assembly. Horrific.
+    ResidueVector residues =  this->GetResidues();
+    for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        //std::cout << "Checking for a protein" << std::endl;
+        if (residue->CheckIfProtein())
+        {
+            //std::cout << "Found a protein" << std::endl;
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            {
+                Atom *atom = *it2;
+                selection_from_assembly.push_back(atom);
+            }
+
+        }
+
+    }
+    return selection_from_assembly;
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
+{ // written by OG, so syntax a bit different from other functions.
+    AtomVector selection_from_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    //std::cout << "size is " << assemblies.size() << std::endl;
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        ResidueVector residues = assembly->GetResidues();
+        for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+        {
+            Residue* residue = (*it1);
+            if (residue->CheckIfProtein()) {}
+            else
+            {
+                //std::cout << "Found a non-protein" << std::endl;
+                AtomVector atoms = residue->GetAtoms();
+                for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                {
+                    Atom *atom = *it2;
+                    selection_from_assembly.push_back(atom);
+                }
+
+            }
+
+        }
+    }
+    // This is unintuitive, but GetAssemblies does not return "this" assembly, just additonal "sub-assemblies" contained within this assembly. Horrific.
+    ResidueVector residues =  this->GetResidues();
+    for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        //std::cout << "Checking for a protein" << std::endl;
+        if (residue->CheckIfProtein()) {}
+        else
+        {
+            //std::cout << "Found a non-protein" << std::endl;
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            {
+                Atom *atom = *it2;
+                selection_from_assembly.push_back(atom);
+            }
+
+        }
+
+    }
+    return selection_from_assembly;
+}
+
+
 Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
 {
     AtomVector all_atoms_of_assembly = AtomVector();

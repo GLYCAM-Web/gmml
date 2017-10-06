@@ -82,6 +82,8 @@ using namespace gmml;
 using namespace Glycan;
 using namespace CondensedSequenceSpace;
 
+typedef std::vector<Atom*> AtomVector;
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -1346,34 +1348,41 @@ string Assembly::CalculateRSOrientations(Atom *prev_atom, Atom *target, Atom *ne
 
 double Assembly::CalculateAtomicOverlaps(Assembly *assemblyB)
 {
-    AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
     AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
+    this->CalculateAtomicOverlaps(assemblyBAtoms);
+}
+double Assembly::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
+{
+    AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
+    //AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
 
     double rA = 0.0, rB = 0.0, distance = 0.0, totalOverlap = 0.0;
 
-    for(AtomVector::iterator atomA = assemblyAAtoms.begin(); atomA != assemblyAAtoms.end(); atomA++)
+    for(AtomVector::iterator it = assemblyAAtoms.begin(); it != assemblyAAtoms.end(); it++)
     {
-        for(AtomVector::iterator atomB = assemblyBAtoms.begin(); atomB != assemblyBAtoms.end(); atomB++)
+        for(AtomVector::iterator itt = assemblyBAtoms.begin(); itt != assemblyBAtoms.end(); itt++)
         {
-            distance = (*atomA)->GetDistanceToAtom( (*atomB));
+            Atom *atomA = *it;
+            Atom *atomB = *itt;
+            distance = atomA->GetDistanceToAtom(atomB);
             if ( ( distance < 3.6 ) && ( distance > 0.0 ) ) //Close enough to overlap, but not the same atom
             {
                 // element info not set, so I look at first letter of atom name.
-                if ((*atomA)->GetName().at(0) == 'C') rA = 1.70; // Rowland and Taylor modification
-                if ((*atomA)->GetName().at(0) == 'O') rA = 1.52;
-                if ((*atomA)->GetName().at(0) == 'N') rA = 1.55;
-                if ((*atomA)->GetName().at(0) == 'S') rA = 1.80;
-                if ((*atomA)->GetName().at(0) == 'P') rA = 1.80;
-                if ((*atomA)->GetName().at(0) == 'H') rA = 1.09;
+                if (atomA->GetName().at(0) == 'C') rA = 1.70; // Rowland and Taylor modification
+                if (atomA->GetName().at(0) == 'O') rA = 1.52;
+                if (atomA->GetName().at(0) == 'N') rA = 1.55;
+                if (atomA->GetName().at(0) == 'S') rA = 1.80;
+                if (atomA->GetName().at(0) == 'P') rA = 1.80;
+                if (atomA->GetName().at(0) == 'H') rA = 1.09;
 
-                if ((*atomB)->GetName().at(0) == 'C') rB = 1.70;
-                if ((*atomB)->GetName().at(0) == 'O') rB = 1.52;
-                if ((*atomB)->GetName().at(0) == 'N') rB = 1.55;
-                if ((*atomB)->GetName().at(0) == 'S') rB = 1.80;
-                if ((*atomA)->GetName().at(0) == 'P') rA = 1.80;
-                if ((*atomA)->GetName().at(0) == 'H') rA = 1.09;
+                if (atomB->GetName().at(0) == 'C') rB = 1.70;
+                if (atomB->GetName().at(0) == 'O') rB = 1.52;
+                if (atomB->GetName().at(0) == 'N') rB = 1.55;
+                if (atomB->GetName().at(0) == 'S') rB = 1.80;
+                if (atomB->GetName().at(0) == 'P') rA = 1.80;
+                if (atomB->GetName().at(0) == 'H') rA = 1.09;
 
-       //         std::cout << "Distance=" << distance << " rA=" << rA << " rB=" << rB << std::endl;
+               //std::cout << "Distance=" << distance << " rA=" << rA << " rB=" << rB << std::endl;
                 if (rA + rB > distance + 0.6){ // 0.6 overlap is deemed acceptable. (Copying chimera:)
                     // Eqn 1, Rychkov and Petukhov, J. Comput. Chem., 2006, Joint Neighbours...
                     // Each atom against each atom, so overlap can be "double" counted. See paper.
@@ -1384,5 +1393,21 @@ double Assembly::CalculateAtomicOverlaps(Assembly *assemblyB)
         }
     }
     return (totalOverlap / CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+}
+
+
+AtomVector Assembly::GetAllAtomsOfAssemblyWithinXAngstromOf(GeometryTopology::Coordinate *coordinate, double distance)
+{
+    AtomVector returnAtoms;
+    AtomVector assemblyAtoms = this->GetAllAtomsOfAssembly();
+    for(AtomVector::iterator it = assemblyAtoms.begin(); it != assemblyAtoms.end(); ++it)
+    {
+        Atom *atom = *it;
+        if (atom->GetDistanceToCoordinate(coordinate) <= distance)
+        {
+            returnAtoms.push_back(atom);
+        }
+    }
+    return returnAtoms;
 }
 

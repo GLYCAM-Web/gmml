@@ -174,13 +174,17 @@ void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
         }
     }
 }
+double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate *coordinate)
+{
+    double x = ( this->GetCoordinates().at(0)->GetX() - coordinate->GetX() );
+    double y = ( this->GetCoordinates().at(0)->GetY() - coordinate->GetY() );
+    double z = ( this->GetCoordinates().at(0)->GetZ() - coordinate->GetZ() );
+    return sqrt( (x*x) + (y*y) + (z*z) );
+}
 
 double Atom::GetDistanceToAtom(Atom *otherAtom)
 {
-    double x = ( this->GetCoordinates().at(0)->GetX() - otherAtom->GetCoordinates().at(0)->GetX() );
-    double y = ( this->GetCoordinates().at(0)->GetY() - otherAtom->GetCoordinates().at(0)->GetY() );
-    double z = ( this->GetCoordinates().at(0)->GetZ() - otherAtom->GetCoordinates().at(0)->GetZ() );
-    return sqrt( (x*x) + (y*y) + (z*z) );
+    return GetDistanceToCoordinate(otherAtom->GetCoordinates().at(0));
 }
 
 unsigned long long Atom::generateAtomIndex()

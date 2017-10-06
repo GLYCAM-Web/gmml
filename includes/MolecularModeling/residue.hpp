@@ -18,6 +18,7 @@ namespace MolecularModeling
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             typedef std::vector<Atom*> AtomVector;
+            typedef std::vector<std::string> StringVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -45,6 +46,11 @@ namespace MolecularModeling
               * @return name_ attribute of the current object of this class
               */
             std::string GetName();
+            /*! \fn
+              * An accessor function in order to access to the number
+              * @return number split from id_ attribute of the current object of this class
+              */
+            std::string GetNumber();
             /*! \fn
               * An accessor function in order to access to the atoms
               * @return atoms_ attribute of the current object of this class
@@ -173,6 +179,7 @@ namespace MolecularModeling
             bool GraphParameterBasedElementLabeling();
             bool GraphPredictionBasedElementLabeling();
             AtomVector GetAtomsWithLowestIntraDegree();
+            bool CheckIfProtein();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
