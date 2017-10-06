@@ -28,7 +28,9 @@ namespace gmml
 
     Eigen::Affine3d Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd out);
 
-    void Superimpose(AtomVector *moving, AtomVector *target);
+    void Superimpose(AtomVector moving, AtomVector target);
+
+    void Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving);
 
     void Superimpose(Assembly *moving, Assembly *target);
 
