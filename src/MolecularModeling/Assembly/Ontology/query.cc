@@ -1060,13 +1060,11 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
 string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceGF(string oligo_name, string output_file_type)
 {
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?residue_links " << Ontology::WHERE_CLAUSE;
 
     query << "?pdb_file     :hasOligo	?oligo.\n";
     query << "?oligo        :oligoName	\"" << oligo_name << "\"\n";
-    query << "OPTIONAL { ?oligo        :oligoResidueLinks	?residue_links.\n";
-    query << "?linkage      :hasParent 	?oligo.\n";
-    query << "?linkage      :glycosidicLinkage    ?glycosidic_linkage.}\n";
+    query << "OPTIONAL { ?oligo        :oligoResidueLinks	?residue_links.}\n";
     query << "?pdb_file     :identifier   ?pdb.\n";
 
     ///To DO: string manipulation: split the oligo_name by _ and for each of them write the following to represent the names of the monos:
@@ -1084,6 +1082,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
 {
     FindReplaceString(oligo_name_pattern, "[", "\\\\[");
     FindReplaceString(oligo_name_pattern, "]", "\\\\]");
+    FindReplaceString(oligo_name_pattern, "-OH", "-ROH");
     if(oligo_name_pattern.compare("") == 0)
     {
         cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << endl;
@@ -1096,7 +1095,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
     }
 
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?oligo_sequence ?residue_links " << Ontology::WHERE_CLAUSE;
     query << "?oligo        :oligoName	?oligo_sequence.\n";
 
     size_t first = oligo_name_pattern.find_first_of("*");
@@ -1132,9 +1131,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
     }
 
     query << "?pdb_file     :hasOligo	?oligo.\n";
-    query << "OPTIONAL { ?oligo        :oligoResidueLinks	?residue_links.\n";
-    query << "?linkage      :hasParent 	?oligo.\n";
-    query << "?linkage      :glycosidicLinkage    ?glycosidic_linkage.}\n";
+    query << "OPTIONAL { ?oligo        :oligoResidueLinks	?residue_links.}\n";
     query << "?pdb_file     :identifier	?pdb.\n";
 
     query << Ontology::END_WHERE_CLAUSE;
@@ -1150,12 +1147,10 @@ string Assembly::ExtractOntologyInfoByPDBIDGF(string pdb_id, string output_file_
         return "Please specify the input argument.";
     }
     stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?oligo_sequence ?residue_links " << Ontology::WHERE_CLAUSE;
     query <<  ":" << pdb_id << "    :hasOligo   ?oligo.\n";
     query << "?oligo    :oligoName 	?oligo_sequence.\n";
-    query << "OPTIONAL { ?oligo	:oligoResidueLinks	?residue_links.\n";
-    query << "?linkage 	:hasParent 	?oligo.\n";
-    query << "?linkage	:glycosidicLinkage    ?glycosidic_linkage.}\n";
+    query << "OPTIONAL { ?oligo	:oligoResidueLinks	?residue_links.}\n";
 
     //query << "?oligo	:hasCore	?mono.\n";
     //query << "?mono     :anomericStatus    ?anomeric_status.\n";

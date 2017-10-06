@@ -172,6 +172,12 @@ namespace MolecularModeling
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
             CoordinateVector GetAllCoordinates();
+            /* ! \fn
+             * A function to extract all the coordinates of all the cycle atoms of the monosaccharide.
+             * @param mono The Monosaccharide object
+             * @return coordinates The CoordinateVector with all the Coordinates
+             */
+            CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
             /*! \fn
               * A function to return all issues/notes within an assembly
               * @return List of all notes of an assembly
@@ -561,7 +567,7 @@ namespace MolecularModeling
               * the original file in the case that the original file is a topology file
               */
             void BuildStructureByTOPFileInformation();
-  	          /*! \fn
+              /*! \fn
               * A function to build a graph structure for the current object of central data structure based on the bonding information provided in
               * the original file in the case that the original file is a lib file
               */
@@ -586,7 +592,7 @@ namespace MolecularModeling
               * A function that counts the number of atoms in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
               */
-	    int CountNumberOfAtoms();
+        int CountNumberOfAtoms();
             /*! \fn
               * A function that counts the number of atoms types in all assemblies and residues of the assembly
               * @return counter Number of atoms in all assemblies and residues in the current object of assembly
@@ -745,6 +751,11 @@ namespace MolecularModeling
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
             /*! \fn
+             * A function in order to extract the BFMP ring conformation of a Monosaccharide object.
+             * @param mono The Monosaccharide object
+             */
+            void GetBFMP( Glycan::Monosaccharide* mono );
+            /*! \fn
             * A function in order to detec the shape of the ring using the external BFMP program
             * This function creates a pdb file and a configuration file for input arguments of the external detect_shape program.
             * the function updates the bfmp_ring_confomration attribute of the monosaccharide
@@ -782,22 +793,46 @@ namespace MolecularModeling
             * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
             * @param visited_oligos The list of oligos (monos) that have been visited and processed by traversing the tree like structure of main oligosaccharide.
             * each oligosaccharide has a core of monosaccharide. The collection of linked oligosaccharides forms the main oligosaccharide structure.
+            * @param mono_to_short_name_map The map containing short-names of monosaccharides (of current oligo)
+            * @param oligo_to_res_uri_map The map containing URIs of monosaccharides (of current oligo)
+            * @param root_oligo_id The id of the main oligosaccharide's core mono.
             */
-            void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& mono_stream, std::stringstream& linkage_stream, std::string pdb_uri,
+            void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& oligo_sequence_stream, std::stringstream& mono_stream, std::stringstream& linkage_stream, std::string pdb_uri,
                                          std::string id_prefix, int& link_id, OligosaccharideVector oligos, std::vector<std::string>& side_or_ring_atoms,
-                                         std::vector<int>& visited_oligos);
+                                         std::vector<int>& visited_oligos, std::map<std::string, std::string>& mono_to_short_name_map, std::map<std::string, std::string>& oligo_to_res_uri_map, int& root_oligo_id);
             /*! \fn
             * A function in order to populate the Linkage class of the ontology
             * @param linkage_stream The output stream of Linkage triples to be added to the main output stream
             * @param oligo An Assembly Oligosaccharide structure to be used to create linkage instances
             * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
-            * @param id_prefix The specific prefix for the URIs related to aspecific PDB. e.g 3H32_
+            * @param id_prefix The specific prefix for the URIs related to a specific PDB. e.g 3H32_
             * @param link_id The numeric id to be used for URI of a link
             * @param visited_oligos The list of oligos (monos) that have been visited and processed by traversing the tree like structure of main oligosaccharide.
             * each oligosaccharide has a core of monosaccharide. The collection of linked oligosaccharides forms the main oligosaccharide structure.
             */
             void PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligosaccharide* oligo, std::string oligo_uri, std::string id_prefix, int& link_id,
-                                 std::vector<int>& visited_oligos);
+                                             std::vector<int>& visited_oligos);
+            /*! \fn
+            * A function in order to populate the Linkage class of the ontology
+            * @param oligo_sequence_stream The output stream of SequenceLinkage triples to be added to the main output stream
+            * @param oligo An Assembly Oligosaccharide structure to be used to create linkage instances
+            * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
+            * @param id_prefix The specific prefix for the URIs related to a specific PDB. e.g 3H32_
+            * @param visited_oligos The list of oligos (monos) that have been visited and processed by traversing the tree like structure of main oligosaccharide.
+            * each oligosaccharide has a core of monosaccharide. The collection of linked oligosaccharides forms the main oligosaccharide structure.
+            * @param mono_to_short_name_map The map containing short-names of monosaccharides (of current oligo)
+            * @param oligo_to_res_uri_map The map containing URIs of monosaccharides (of current oligo)
+            * @param root_oligo_id The id of the main oligosaccharide's core mono
+            */
+            void PopulateSequenceLinkage(std::stringstream& oligo_sequence_stream, Glycan::Oligosaccharide* oligo, std::string oligo_uri, std::string id_prefix, std::vector<int>& visited_oligos,
+                                         std::map<std::string, std::string>& mono_to_short_name_map, std::map<std::string, std::string>& oligo_to_res_uri_map, int& root_oligo_id);
+
+            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri);
+
+            bool hasDerivative(std::string mono_short_name);
+
+            void getDerivatives(std::string& mono_short_name, std::vector<std::string>& derivatives);
+
             /*! \fn
             * A function in order to extract the index of the carbon atom of of a monosaccharides that is linked to another monosaccharide. 2 for DNeupNAca in DNeupNAca2-3DGalp
             * @param linkage_carbon_id The Assembly atom identifier of the carbon atom involved in a linkage
@@ -1035,59 +1070,59 @@ namespace MolecularModeling
             * @param query The custom SPARQL query
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-		    void ExtractOntologyInfoByCustomQuery(std::string query, std::string output_file_type = "csv");
+            void ExtractOntologyInfoByCustomQuery(std::string query, std::string output_file_type = "csv");
 
-		    /*! \fn
-		    * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
-		    * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
-		    * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
-		    */
-		    void ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern, std::string output_file_type = "csv");
-		    /*! \fn
-		    * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
-		    * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
-		    * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
-		    */
-		    void ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern, std::string output_file_type = "csv");
-		    /*! \fn
-		    * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
-		    */
-		    void ExtractTorsionAnglesFromSlowQueryResult();
-		    /*! \fn
-		    * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
-		    */
-		    void ExtractTorsionAnglesFromFastQueryResult();
-		    /*! \fn
-		    * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond lenghts, mean and standard deviation
-		    * @param atom_name1 The name of the first atom
-		    * @param atom_name1 The name of the second atom
-		    * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
-		    * @param mono_name The name of the monosaccharide which contains the given atoms
-		    * @return statistics A list of calculated statistics. Mean and standard deviation
-		    */
-		    std::vector<double> CalculateBondlengthsStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, bool is_atom2_ring, std::string mono_name);
-		    /*! \fn
-		    * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond angles, mean and standard deviation
-		    * @param atom_name1 The name of the first atom
-		    * @param atom_name1 The name of the second atom
-		    * @param atom_name3 The name of the third atom
-		    * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
-		    * @param mono_name The name of the monosaccharide which contains the given atoms
-		    * @return statistics A list of calculated statistics. Mean and standard deviation
-		    */
-		    std::vector<double> CalculateBondAnglesStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, std::string atom_name3,
-											 bool is_atom3_ring, std::string mono_name);
-		    /*! \fn
-		    * A function in order to extract torsion angles from a PDB file for a given disaccharide pattern
-		    * @param amino_lib_files The list of paths to amino library files to process PDB file
-		    * @param disaccharide The disaccharide pattern that is going to be used to extract torsio angles
-		    */
-		    void ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_files, std::string disaccharide);
-		    /*! \fn
-		    * A function in order to check if a parent and child oligosaccharide matches the given monosaccharid names and linkage indeces
-		    * if the values matches, the function calculates the phi/psi angle(s)
-		    * @param oligo An Assembly Oligosaccharide object that is going to be checked for matching the given values
-		    * @param phi_angle The phi angle that is going to be calculated by this function
+            /*! \fn
+            * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
+            * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
+            * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            void ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
+            */
+            void ExtractTorsionAnglesFromSlowQueryResult();
+            /*! \fn
+            * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
+            */
+            void ExtractTorsionAnglesFromFastQueryResult();
+            /*! \fn
+            * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond lenghts, mean and standard deviation
+            * @param atom_name1 The name of the first atom
+            * @param atom_name1 The name of the second atom
+            * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
+            * @param mono_name The name of the monosaccharide which contains the given atoms
+            * @return statistics A list of calculated statistics. Mean and standard deviation
+            */
+            std::vector<double> CalculateBondlengthsStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, bool is_atom2_ring, std::string mono_name);
+            /*! \fn
+            * A function in order to extract atom coordinates from ontology based on the given arguments, calculate the bond angles, mean and standard deviation
+            * @param atom_name1 The name of the first atom
+            * @param atom_name1 The name of the second atom
+            * @param atom_name3 The name of the third atom
+            * @param is_atom2_ring A boolean value indicating if the second atom is a side (exocyclic) atom
+            * @param mono_name The name of the monosaccharide which contains the given atoms
+            * @return statistics A list of calculated statistics. Mean and standard deviation
+            */
+            std::vector<double> CalculateBondAnglesStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, std::string atom_name3,
+                                             bool is_atom3_ring, std::string mono_name);
+            /*! \fn
+            * A function in order to extract torsion angles from a PDB file for a given disaccharide pattern
+            * @param amino_lib_files The list of paths to amino library files to process PDB file
+            * @param disaccharide The disaccharide pattern that is going to be used to extract torsio angles
+            */
+            void ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_files, std::string disaccharide);
+            /*! \fn
+            * A function in order to check if a parent and child oligosaccharide matches the given monosaccharid names and linkage indeces
+            * if the values matches, the function calculates the phi/psi angle(s)
+            * @param oligo An Assembly Oligosaccharide object that is going to be checked for matching the given values
+            * @param phi_angle The phi angle that is going to be calculated by this function
             * @param phi_angle The phi angle that is going to be calculated by this function
             * @param first_mono The first monosaccharide in the disaccharide pattern which is the child monosaccharide in the tree-like structure of the main oligosaccharide
             * e.g. DGalpb in DNeupNAca2-3DGalpb
@@ -1213,6 +1248,7 @@ namespace MolecularModeling
             void RemoveFusedCycles(CycleMap& cycles);
             /*! \fn
               * A function in order to detect the anomeric carbon of the ring (the carbon which has two oxygon neighbors)
+              * @param anomeric_carbons_note The Note for the anomeric carbon to be filled by the function
               * @param anomeric_carbons_status The detection status of the anomeric carbon to be filled by the function
               * @param cycle The list of cycle atoms
               * @param cycle_atom_str The string version of atom identifiers of the cycle
@@ -1223,7 +1259,6 @@ namespace MolecularModeling
               * A function in order to sort atom objects of the cycle starting from the anomeric carbon of the ring (ring oxygen will be last atom)
               * @param cycle The list of cycle atoms
               * @param anomeric_atom The anomeric carbon of the ring
-              * @param sorted_cycle_stream The sorted atom of the cycle so far (to be filled with the fuction)
               * @return sorted_cycle The sorted list of cycle atom objects
               */
            AtomVector SortCycle(AtomVector cycle, Atom* anomeric_atom, std::stringstream& sorted_cycle_stream);
@@ -1382,7 +1417,7 @@ namespace MolecularModeling
                 the current monosacchride object
               * @param visited_linkages The list of linkages(atoms involved in the linkages between monosacchrides) that have been visited so far by calls to the function
               */
-	    void BuildOligosaccharideTreeStructure(Glycan::Monosaccharide* key, std::vector<Glycan::Monosaccharide*> val, Glycan::Oligosaccharide* oligo,
+        void BuildOligosaccharideTreeStructure(Glycan::Monosaccharide* key, std::vector<Glycan::Monosaccharide*> val, Glycan::Oligosaccharide* oligo,
                                                                   std::vector<int>& visited_monos, std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> > monos_table,
                                                                   std::map<Glycan::Monosaccharide*, std::vector<std::string> > monos_table_linkages, std::vector<std::string>& visited_linkages);
 /** @}*/
