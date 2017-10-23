@@ -71,7 +71,13 @@ namespace MolecularModeling
               *         Most of the time it has just one element (topology, prep, lib, pdb) but at some point it needs more than one file (topology+coordinate)
               * @param type Type of the input which is selected from InputFileType enumerator
               */
-            Assembly(std::vector<std::string> file_paths, gmml::InputFileType type);
+            Assembly(std::string file_path, gmml::InputFileType type);
+            /*! \fn
+              * Constructor to build a structure from the given set of input files
+              * @param file_path (topology, prep, lib, pdb)
+              * @param type Type of the input which is selected from InputFileType enumerator
+              */        
+            Assembly(std::vector<std::string> file_paths, gmml::InputFileType type); // redundant in parts due to above (new) constructor, but kept for compatibility.
             /*! \fn
               * Constructor to build a structure from multiple file types, a general version of the previous one
               * @param file_paths Set of set of file paths that are required to build a structure
