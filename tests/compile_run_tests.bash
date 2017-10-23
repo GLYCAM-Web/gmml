@@ -14,7 +14,7 @@ printf "Testing create_Assembly_WritePDB... "
 g++ -I../includes/* -L../bin/ tests/create_Assembly_WritePDB.cc -lgmml -o create_Assembly_WritePDB
 ./create_Assembly_WritePDB > /dev/null 2>&1
 if [ -f test-NLN.pdb ]; then
-    if [ `diff test-NLN.pdb tests/correct_outputs/test-NLN.pdb` ]; then
+    if ! cmp test-NLN.pdb tests/correct_outputs/test-NLN.pdb > /dev/null 2>&1; then
         printf "Test failed.\n"
     else 
         printf "Test passed.\n"
@@ -31,7 +31,7 @@ printf "Testing superimposition_Eigen... "
 g++ -I../includes/* -L../bin/ tests/superimposition_Eigen.cc -lgmml -o superimposition_Eigen
 ./superimposition_Eigen > /dev/null 2>&1
 if [ -f moved.pdb ]; then
-    if [ `diff moved.pdb tests/correct_outputs/moved.pdb` ]; then
+    if ! cmp moved.pdb tests/correct_outputs/moved.pdb > /dev/null 2>&1; then
         printf "Test failed.\n"
     else
         printf "Test passed.\n"
@@ -47,7 +47,7 @@ printf "Testing PDBpreprocessor... "
 g++ -I../includes/* -L../bin/ tests/PDB_preprocessor.cc -lgmml -o PDB_preprocessor
 ./PDB_preprocessor > /dev/null 2>&1
 if [ -f Processed.pdb ]; then
-    if [ `diff Processed.pdb tests/correct_outputs/Processed.pdb` ]; then
+    if ! cmp Processed.pdb tests/correct_outputs/Processed.pdb > /dev/null 2>&1; then
         printf "Test failed.\n"
     else
         printf "Test passed.\n"
