@@ -940,14 +940,14 @@ Atom* Assembly::FindAnomericCarbon( Note* anomeric_note, vector< string > & anom
       if( ConvertString< int >( ss1.str() ) < ConvertString< int >( ss2.str() ) ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + ") as found in the input file (" + this->source_file_ + "), Anomeric Carbon is: " );
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + "), Anomeric Carbon is: " );
 
         return o_neighbor1;
       }
       if( ConvertString< int >( ss2.str() ) < ConvertString< int >( ss1.str() ) ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
-        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + ") as found in the input file (" + this->source_file_ + "), Anomeric Carbon is: " );
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + "), Anomeric Carbon is: " );
 
         return o_neighbor2;
       }
