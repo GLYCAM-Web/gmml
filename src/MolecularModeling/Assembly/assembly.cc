@@ -92,6 +92,42 @@ Assembly::Assembly() : description_(""), model_index_(0), sequence_number_(1), i
     assemblies_ = AssemblyVector();
 }
 
+Assembly::Assembly(string file_path, gmml::InputFileType type)
+{
+    source_file_type_ = type;
+    description_ = "";
+    model_index_ = 0;
+    sequence_number_ = 1;
+    source_file_ = file_path;
+    residues_ = ResidueVector();
+    assemblies_ = AssemblyVector();
+    id_ = "1";
+    switch(type)
+    {
+    case gmml::PDB:
+        BuildAssemblyFromPdbFile(source_file_);
+        break;
+    case gmml::PDBQT:
+        BuildAssemblyFromPdbqtFile(source_file_);
+        break;
+    case gmml::TOP:
+        BuildAssemblyFromTopologyFile(source_file_);
+        break;
+    case gmml::LIB:
+        BuildAssemblyFromLibraryFile(source_file_);
+        break;
+    case gmml::PREP:
+        BuildAssemblyFromPrepFile(source_file_);
+        break;
+    case gmml::MULTIPLE:
+        break;
+    case gmml::UNKNOWN:
+        break;
+    default:
+        std::cout << "Error, problem with input file type in Assembly Constructor" << std::endl;
+    }
+}
+
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
 {
     source_file_type_ = type;
@@ -101,46 +137,48 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
     id_ = "1";
     switch(type)
     {
-        case gmml::PDB:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromPdbFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::PDBQT:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromPdbqtFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::TOP:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromTopologyFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::LIB:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromLibraryFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::PREP:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromPrepFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::TOP_CRD:
-            source_file_ = file_paths.at(0)+";"+file_paths.at(1);
-            residues_ = ResidueVector();
-            BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::MULTIPLE:
-            break;
-        case gmml::UNKNOWN:
-            break;
+    case gmml::PDB:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromPdbFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::PDBQT:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromPdbqtFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::TOP:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromTopologyFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::LIB:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromLibraryFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::PREP:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromPrepFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::TOP_CRD:
+        source_file_ = file_paths.at(0)+";"+file_paths.at(1);
+        residues_ = ResidueVector();
+        BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::MULTIPLE:
+        break;
+    case gmml::UNKNOWN:
+        break;
+    default:
+        std::cout << "Error, input type not recognized in Assembly Constructor" << std::endl;
     }
 }
 
