@@ -535,8 +535,15 @@ void Assembly::PopulateMonosaccharide(stringstream& mono_stream, stringstream& o
     AddLiteral(mono_uri, Ontology::anomeric_status, object.str(), mono_stream);
 
     AddLiteral(mono_uri, Ontology::stereochemistry_chemical_code, mono->sugar_name_.chemical_code_string_, mono_stream);
-    if(mono->bfmp_ring_conformation_.compare("") != 0)
-        AddLiteral(mono_uri, Ontology::bfmp_ring_conformation, mono->bfmp_ring_conformation_, mono_stream);
+    if(mono->bfmp_ring_conformation_.compare("") != 0) {
+      std::string bfmp = mono->bfmp_ring_conformation_;
+      std::size_t index;
+      // This is to only output two decimal places for BFMP values which have a decimal value.
+      if( ( index = mono->bfmp_ring_conformation_.find( "." ) ) != std::string::npos ) {
+        bfmp = bfmp.substr( 0, index + 3 ) + ")";
+      }
+      AddLiteral(mono_uri, Ontology::bfmp_ring_conformation, bfmp, mono_stream);
+    }
 
     SugarName sugar_name = mono->sugar_name_;
     PopulateSugarName(mono_stream, id_prefix, mono_uri, mono->mono_id, sugar_name);
