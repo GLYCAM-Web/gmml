@@ -3,7 +3,6 @@
 
 #include "common.hpp"
 #include "utils.hpp"
-#include "superimposition.hpp"
 #include "InputSet/CifFileSpace/ciffileatom.hpp"
 #include "InputSet/CifFileSpace/ciffileprocessingexception.hpp"
 #include "InputSet/CoordinateFileSpace/coordinatefile.hpp"
@@ -104,6 +103,7 @@
 #include "MolecularModeling/moleculardynamicatom.hpp"
 #include "MolecularModeling/quantommechanicatom.hpp"
 #include "MolecularModeling/residue.hpp"
+#include "MolecularModeling/superimposition.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp"

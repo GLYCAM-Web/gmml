@@ -1358,12 +1358,12 @@ double Assembly::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 
     double rA = 0.0, rB = 0.0, distance = 0.0, totalOverlap = 0.0;
 
-    for(AtomVector::iterator it = assemblyAAtoms.begin(); it != assemblyAAtoms.end(); it++)
+    for(AtomVector::iterator it1 = assemblyAAtoms.begin(); it1 != assemblyAAtoms.end(); ++it1)
     {
-        for(AtomVector::iterator itt = assemblyBAtoms.begin(); itt != assemblyBAtoms.end(); itt++)
+        for(AtomVector::iterator it2 = assemblyBAtoms.begin(); it2 != assemblyBAtoms.end(); ++it2)
         {
-            Atom *atomA = *it;
-            Atom *atomB = *itt;
+            Atom *atomA = *it1;
+            Atom *atomB = *it2;
             distance = atomA->GetDistanceToAtom(atomB);
             if ( ( distance < 3.6 ) && ( distance > 0.0 ) ) //Close enough to overlap, but not the same atom
             {
