@@ -5,10 +5,10 @@ using namespace gmml;
 using namespace MolecularModeling;
 
 int main(void) {
-    Assembly moving("tests/inputs/superimposition_Eigen_Moving.pdb", gmml::InputFileType::PDB);
+    Assembly moving("tests/inputs/superimposition_Eigen_Moving.pdb", PDB);
     moving.BuildStructureByDistance();
 
-    Assembly target("tests/inputs/superimposition_Eigen_Target.pdb", gmml::InputFileType::PDB);
+    Assembly target("tests/inputs/superimposition_Eigen_Target.pdb", PDB);
     target.BuildStructureByDistance();
     
     Superimpose(&moving, &target);

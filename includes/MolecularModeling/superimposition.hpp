@@ -1,10 +1,10 @@
 #ifndef SUPERIMPOSITION_HPP
 #define SUPERIMPOSITION_HPP
 
-#include "Eigen_Algebra_Template_Library/Geometry"
-#include "GeometryTopology/coordinate.hpp"
-#include "MolecularModeling/assembly.hpp"
-#include "MolecularModeling/atom.hpp"
+#include "../Eigen_Algebra_Template_Library/Geometry"
+//#include "../GeometryTopology/coordinate.hpp"
+#include "assembly.hpp"
+//#include "atom.hpp"
 
 //*******************************************
 
