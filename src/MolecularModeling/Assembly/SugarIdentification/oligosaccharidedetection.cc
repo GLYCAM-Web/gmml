@@ -985,7 +985,7 @@ Atom* Assembly::FindAnomericCarbon( Note* anomeric_note, vector< string > & anom
       // @TODO August 8, 2017 Davis/Lachele - Once we get to a point where we read in mmcif definitions, we need to use it to determine the Anomeric Carbon.
       anomeric_note->type_ = Glycan::WARNING;
       anomeric_note->category_ = Glycan::ANOMERIC;
-      anomeric_carbons_status.push_back( "Anomeric carbon assigned to the first ring carbon (" + o_neighbor1->GetName() + ") found in the file (" + this->source_file_ + "), Anomeric Carbon is: " );
+      anomeric_carbons_status.push_back( "Anomeric carbon assigned to the first ring carbon (" + o_neighbor1->GetName() + "), Anomeric Carbon is: " );
       return o_neighbor1;
     }
   }
