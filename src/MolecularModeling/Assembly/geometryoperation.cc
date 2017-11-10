@@ -10,6 +10,7 @@
 #include "../../../includes/MolecularModeling/residue.hpp"
 #include "../../../includes/MolecularModeling/atom.hpp"
 #include "../../../includes/MolecularModeling/atomnode.hpp"
+#include "../../../includes/MolecularModeling/overlaps.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
