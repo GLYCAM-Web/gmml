@@ -1345,7 +1345,7 @@ string Assembly::CalculateRSOrientations(Atom *prev_atom, Atom *target, Atom *ne
     }
     return orientation;
 }
-/*
+
 double Assembly::CalculateAtomicOverlaps(Assembly *assemblyB)
 {
     AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
@@ -1357,7 +1357,7 @@ double Assembly::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
     AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
     gmml::CalculateAtomicOverlaps(assemblyAAtoms, assemblyBAtoms);
 }
-*/
+
 
 
 
