@@ -1525,8 +1525,8 @@ namespace MolecularModeling
               * @param assemblyB is the second assembly. Overlaps between atoms of the same assembly are not counted
               * @return Total overlap between assemblies, relative to the surface area of a buried C atom.
               */
-            double CalculateAtomicOverlaps(Assembly *assemblyB);
-            double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
+            //double CalculateAtomicOverlaps(Assembly *assemblyB);
+           // double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
             AtomVector GetAllAtomsOfAssemblyWithinXAngstromOf(GeometryTopology::Coordinate *coordinate, double distance);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
