@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Manually change this number as you add tests:
-number_of_tests=3
+number_of_tests=4
 tests_passed=0
 
 # Required for compiling
@@ -57,6 +57,22 @@ else
     printf "Test FAILED!.\n"
 fi
 rm Processed.pdb PDB_preprocessor > /dev/null 2>&1
+
+###################### Test 04 ######################
+printf "Testing Overlaps function... "
+g++ -I../includes/* -L../bin/ tests/overlaps.cc -lgmml -o overlaps
+./overlaps > overlaps.txt
+if [ -f overlaps.txt ]; then
+    if ! cmp overlaps.txt tests/correct_outputs/overlaps.txt > /dev/null 2>&1; then
+        printf "Test FAILED!.\n"
+    else
+        printf "Test passed.\n"
+        ((tests_passed++))
+    fi
+else
+    printf "Test FAILED!.\n"
+fi
+rm overlaps overlaps.txt > /dev/null 2>&1
 
 
 ############# Allow git push ########################

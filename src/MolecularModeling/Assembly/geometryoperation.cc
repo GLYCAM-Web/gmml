@@ -1349,51 +1349,15 @@ string Assembly::CalculateRSOrientations(Atom *prev_atom, Atom *target, Atom *ne
 double Assembly::CalculateAtomicOverlaps(Assembly *assemblyB)
 {
     AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
-    this->CalculateAtomicOverlaps(assemblyBAtoms);
+    AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
+    gmml::CalculateAtomicOverlaps(assemblyAAtoms, assemblyBAtoms);
 }
 double Assembly::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 {
     AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
-    //AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
-
-    double rA = 0.0, rB = 0.0, distance = 0.0, totalOverlap = 0.0;
-
-    for(AtomVector::iterator it1 = assemblyAAtoms.begin(); it1 != assemblyAAtoms.end(); ++it1)
-    {
-        for(AtomVector::iterator it2 = assemblyBAtoms.begin(); it2 != assemblyBAtoms.end(); ++it2)
-        {
-            Atom *atomA = *it1;
-            Atom *atomB = *it2;
-            distance = atomA->GetDistanceToAtom(atomB);
-            if ( ( distance < 3.6 ) && ( distance > 0.0 ) ) //Close enough to overlap, but not the same atom
-            {
-                // element info not set, so I look at first letter of atom name.
-                if (atomA->GetName().at(0) == 'C') rA = 1.70; // Rowland and Taylor modification
-                if (atomA->GetName().at(0) == 'O') rA = 1.52;
-                if (atomA->GetName().at(0) == 'N') rA = 1.55;
-                if (atomA->GetName().at(0) == 'S') rA = 1.80;
-                if (atomA->GetName().at(0) == 'P') rA = 1.80;
-                if (atomA->GetName().at(0) == 'H') rA = 1.09;
-
-                if (atomB->GetName().at(0) == 'C') rB = 1.70;
-                if (atomB->GetName().at(0) == 'O') rB = 1.52;
-                if (atomB->GetName().at(0) == 'N') rB = 1.55;
-                if (atomB->GetName().at(0) == 'S') rB = 1.80;
-                if (atomB->GetName().at(0) == 'P') rA = 1.80;
-                if (atomB->GetName().at(0) == 'H') rA = 1.09;
-
-               //std::cout << "Distance=" << distance << " rA=" << rA << " rB=" << rB << std::endl;
-                if (rA + rB > distance + 0.6){ // 0.6 overlap is deemed acceptable. (Copying chimera:)
-                    // Eqn 1, Rychkov and Petukhov, J. Comput. Chem., 2006, Joint Neighbours...
-                    // Each atom against each atom, so overlap can be "double" counted. See paper.
-                    totalOverlap += ( 2 * (PI_RADIAN) * rA* ( rA - distance / 2 - ( ( (rA*rA) - (rB*rB) ) / (2 * distance) ) ) );
-                    //std::cout << "Overlap=" << totalOverlap << std::endl;
-                }
-            }
-        }
-    }
-    return (totalOverlap / CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+    gmml::CalculateAtomicOverlaps(assemblyAAtoms, assemblyBAtoms);
 }
+
 
 
 AtomVector Assembly::GetAllAtomsOfAssemblyWithinXAngstromOf(GeometryTopology::Coordinate *coordinate, double distance)

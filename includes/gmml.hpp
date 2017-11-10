@@ -101,6 +101,7 @@
 #include "MolecularModeling/dockingatom.hpp"
 #include "MolecularModeling/element.hpp"
 #include "MolecularModeling/moleculardynamicatom.hpp"
+#include "MolecularModeling/overlaps.hpp"
 #include "MolecularModeling/quantommechanicatom.hpp"
 #include "MolecularModeling/residue.hpp"
 #include "MolecularModeling/superimposition.hpp"
