@@ -2,7 +2,8 @@
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
-#include <algorithm>    // std::any_of
+#include "../../../includes/MolecularModeling/overlaps.hpp"
+//#include <algorithm>    // std::any_of
 
 using namespace std;
 using namespace MolecularModeling;
@@ -282,7 +283,6 @@ bool Residue::GraphPredictionBasedElementLabeling()
     return flag;
 }
 
-
 Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
 {
     int degree = INFINITY;
@@ -304,7 +304,21 @@ Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
     return lowest_degree_atoms;
 }
 
-/* Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
+double Residue::CalculateAtomicOverlaps(Assembly *assemblyB)
+{
+    AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
+    AtomVector residueAtoms = this->GetAtoms();
+    return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
+}
+double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
+{
+    AtomVector residueAtoms = this->GetAtoms();
+   // double overlap = gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
+   // return overlap;
+    return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
+}
+
+/* Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you. See below for C++98 code.
 bool Residue::CheckIfProtein()
 {
     std::vector<std::string> residue_list = {"ALA","ASP", "ASN", "ARG", "GLY", "GLU", "GLN", "PRO", "HIS", "CYS", "VAL", "LEU", "THR", "SER", "LYS", "MET", "TYR", "TRP", "PHE", "SEC", "ILE", "CYX", "HID", "HIE" };
@@ -312,9 +326,11 @@ bool Residue::CheckIfProtein()
     if (std::any_of(residue_list.begin(), residue_list.end(),
                     [resname](std::string residue_names) {
                     if (residue_names.compare(resname)==0)
+                    {
                         return true;
+                    }
                     return false;
-    }))
+                }))
         return true;
     return false;
 }
@@ -385,8 +401,29 @@ bool Residue::CheckIfProtein()
         return false;
 }
 
+GeometryTopology::Coordinate Residue::GetRingCenter()
+{
+    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
+    int numberOfRingAtoms = 0;
+    AtomVector atoms = this->GetAtoms();
 
-
+    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    {
+        if ( (*atom)->GetIsRing() )
+        {
+            numberOfRingAtoms++;
+            std::cout << "Atom is ring: " << (*atom)->GetName() << std::endl;
+            sumX += (*atom)->GetCoordinates().at(0)->GetX();
+            sumY += (*atom)->GetCoordinates().at(0)->GetY();
+            sumZ += (*atom)->GetCoordinates().at(0)->GetZ();
+        }
+    }
+    GeometryTopology::Coordinate center;
+    center.SetX( sumX / numberOfRingAtoms  );
+    center.SetY( sumY / numberOfRingAtoms  );
+    center.SetZ( sumZ / numberOfRingAtoms  );
+    return center;
+}
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

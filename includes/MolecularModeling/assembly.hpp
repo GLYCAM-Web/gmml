@@ -276,6 +276,8 @@ namespace MolecularModeling
               * @param note The note instance of the current object
               */
             void AddNote(Glycan::Note* note);
+
+            void MergeAssembly(Assembly *other);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
