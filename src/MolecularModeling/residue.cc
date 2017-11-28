@@ -2,10 +2,12 @@
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
+#include "../../includes/common.hpp"
 #include <algorithm>    // std::any_of
 
 using namespace std;
 using namespace MolecularModeling;
+using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -304,86 +306,89 @@ Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
     return lowest_degree_atoms;
 }
 
-/* Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
-bool Residue::CheckIfProtein()
-{
-    std::vector<std::string> residue_list = {"ALA","ASP", "ASN", "ARG", "GLY", "GLU", "GLN", "PRO", "HIS", "CYS", "VAL", "LEU", "THR", "SER", "LYS", "MET", "TYR", "TRP", "PHE", "SEC", "ILE", "CYX", "HID", "HIE" };
-    std::string resname = this->GetName();
-    if (std::any_of(residue_list.begin(), residue_list.end(),
-                    [resname](std::string residue_names) {
-                    if (residue_names.compare(resname)==0)
-                        return true;
-                    return false;
-    }))
-        return true;
+// Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
+// Your wish is my command. ;o) The Proteins are now defined as a const std::string in the common.hpp.
+//  This allows for easy modification of it and also if someone else wants to use it somewhere else it
+//  is now available to them.
+bool Residue::CheckIfProtein() {
+    // std::string resname = this->GetName();
+    // std::string first = PROTEINS;
+    // std::string last = ( PROTEINS + PROTEINSSIZE );
+    /* I prefer calling the above inline, but if you want to convert this to use the above variables then just
+     *  replace them below with the name of the variables above. */
+    if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) ) {
+      std::cout << resname << " is a PROTEIN." << std::endl;
+      return true;
+    }
+    std::cout << resname << " is NOT a PROTEIN." << std::endl;
     return false;
 }
-*/
 
-bool Residue::CheckIfProtein()
-{
-    std::string resname = this->GetName();
-    if(resname.compare("ALA")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("ASN")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("ARG")==0)
-        return true;
-    else if (resname.compare("GLY")==0)
-        return true;
-    else if (resname.compare("GLU")==0)
-        return true;
-    else if (resname.compare("GLN")==0)
-        return true;
-    else if (resname.compare("PRO")==0)
-        return true;
-    else if (resname.compare("HIS")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("VAL")==0)
-        return true;
-    else if (resname.compare("LEU")==0)
-        return true;
-    else if (resname.compare("THR")==0)
-        return true;
-    else if (resname.compare("SER")==0)
-        return true;
-    else if (resname.compare("LYS")==0)
-        return true;
-    else if (resname.compare("MET")==0)
-        return true;
-    else if (resname.compare("TYR")==0)
-        return true;
-    else if (resname.compare("TRP")==0)
-        return true;
-    else if (resname.compare("PHE")==0)
-        return true;
-    else if (resname.compare("SEC")==0)
-        return true;
-    else if (resname.compare("ILE")==0)
-        return true;
-    else if (resname.compare("CYX")==0)
-        return true;
-    else if (resname.compare("HID")==0)
-        return true;
-    else if (resname.compare("HIE")==0)
-        return true;
-    else if (resname.compare("NLN")==0)
-        return true;
-    else if (resname.compare("OLT")==0)
-        return true;
-    else if (resname.compare("OLS")==0)
-        return true;
-    else if (resname.compare("OLY")==0)
-        return true;
-    else
-        return false;
-}
+
+// bool Residue::CheckIfProtein()
+// {
+//     std::string resname = this->GetName();
+//     if(resname.compare("ALA")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ASN")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ARG")==0)
+//         return true;
+//     else if (resname.compare("GLY")==0)
+//         return true;
+//     else if (resname.compare("GLU")==0)
+//         return true;
+//     else if (resname.compare("GLN")==0)
+//         return true;
+//     else if (resname.compare("PRO")==0)
+//         return true;
+//     else if (resname.compare("HIS")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("VAL")==0)
+//         return true;
+//     else if (resname.compare("LEU")==0)
+//         return true;
+//     else if (resname.compare("THR")==0)
+//         return true;
+//     else if (resname.compare("SER")==0)
+//         return true;
+//     else if (resname.compare("LYS")==0)
+//         return true;
+//     else if (resname.compare("MET")==0)
+//         return true;
+//     else if (resname.compare("TYR")==0)
+//         return true;
+//     else if (resname.compare("TRP")==0)
+//         return true;
+//     else if (resname.compare("PHE")==0)
+//         return true;
+//     else if (resname.compare("SEC")==0)
+//         return true;
+//     else if (resname.compare("ILE")==0)
+//         return true;
+//     else if (resname.compare("CYX")==0)
+//         return true;
+//     else if (resname.compare("HID")==0)
+//         return true;
+//     else if (resname.compare("HIE")==0)
+//         return true;
+//     else if (resname.compare("NLN")==0)
+//         return true;
+//     else if (resname.compare("OLT")==0)
+//         return true;
+//     else if (resname.compare("OLS")==0)
+//         return true;
+//     else if (resname.compare("OLY")==0)
+//         return true;
+//     else
+//         return false;
+// }
 
 
 
