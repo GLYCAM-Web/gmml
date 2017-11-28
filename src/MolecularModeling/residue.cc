@@ -311,16 +311,9 @@ Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
 //  This allows for easy modification of it and also if someone else wants to use it somewhere else it
 //  is now available to them.
 bool Residue::CheckIfProtein() {
-    // std::string resname = this->GetName();
-    // std::string first = PROTEINS;
-    // std::string last = ( PROTEINS + PROTEINSSIZE );
-    /* I prefer calling the above inline, but if you want to convert this to use the above variables then just
-     *  replace them below with the name of the variables above. */
     if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) ) {
-      std::cout << resname << " is a PROTEIN." << std::endl;
       return true;
     }
-    std::cout << resname << " is NOT a PROTEIN." << std::endl;
     return false;
 }
 
