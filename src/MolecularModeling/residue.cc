@@ -3,10 +3,12 @@
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/MolecularModeling/overlaps.hpp"
-//#include <algorithm>    // std::any_of
+#include "../../includes/common.hpp"
+#include <algorithm>    // std::any_of
 
 using namespace std;
 using namespace MolecularModeling;
+using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -313,93 +315,86 @@ double Residue::CalculateAtomicOverlaps(Assembly *assemblyB)
 double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 {
     AtomVector residueAtoms = this->GetAtoms();
-   // double overlap = gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
-   // return overlap;
     return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
 }
 
-/* Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you. See below for C++98 code.
-bool Residue::CheckIfProtein()
+// Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
+// Your wish is my command. ;o) The Proteins are now defined as a const std::string in the common.hpp.
+//  This allows for easy modification of it and also if someone else wants to use it somewhere else it
+//  is now available to them.
+bool Residue::CheckIfProtein() 
 {
-    std::vector<std::string> residue_list = {"ALA","ASP", "ASN", "ARG", "GLY", "GLU", "GLN", "PRO", "HIS", "CYS", "VAL", "LEU", "THR", "SER", "LYS", "MET", "TYR", "TRP", "PHE", "SEC", "ILE", "CYX", "HID", "HIE" };
-    std::string resname = this->GetName();
-    if (std::any_of(residue_list.begin(), residue_list.end(),
-                    [resname](std::string residue_names) {
-                    if (residue_names.compare(resname)==0)
-                    {
-                        return true;
-                    }
-                    return false;
-                }))
+    if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) ) 
+    {
         return true;
+    }
     return false;
 }
-*/
 
-bool Residue::CheckIfProtein()
-{
-    std::string resname = this->GetName();
-    if(resname.compare("ALA")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("ASN")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("ARG")==0)
-        return true;
-    else if (resname.compare("GLY")==0)
-        return true;
-    else if (resname.compare("GLU")==0)
-        return true;
-    else if (resname.compare("GLN")==0)
-        return true;
-    else if (resname.compare("PRO")==0)
-        return true;
-    else if (resname.compare("HIS")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("VAL")==0)
-        return true;
-    else if (resname.compare("LEU")==0)
-        return true;
-    else if (resname.compare("THR")==0)
-        return true;
-    else if (resname.compare("SER")==0)
-        return true;
-    else if (resname.compare("LYS")==0)
-        return true;
-    else if (resname.compare("MET")==0)
-        return true;
-    else if (resname.compare("TYR")==0)
-        return true;
-    else if (resname.compare("TRP")==0)
-        return true;
-    else if (resname.compare("PHE")==0)
-        return true;
-    else if (resname.compare("SEC")==0)
-        return true;
-    else if (resname.compare("ILE")==0)
-        return true;
-    else if (resname.compare("CYX")==0)
-        return true;
-    else if (resname.compare("HID")==0)
-        return true;
-    else if (resname.compare("HIE")==0)
-        return true;
-    else if (resname.compare("NLN")==0)
-        return true;
-    else if (resname.compare("OLT")==0)
-        return true;
-    else if (resname.compare("OLS")==0)
-        return true;
-    else if (resname.compare("OLY")==0)
-        return true;
-    else
-        return false;
-}
+// bool Residue::CheckIfProtein()
+// {
+//     std::string resname = this->GetName();
+//     if(resname.compare("ALA")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ASN")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ARG")==0)
+//         return true;
+//     else if (resname.compare("GLY")==0)
+//         return true;
+//     else if (resname.compare("GLU")==0)
+//         return true;
+//     else if (resname.compare("GLN")==0)
+//         return true;
+//     else if (resname.compare("PRO")==0)
+//         return true;
+//     else if (resname.compare("HIS")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("VAL")==0)
+//         return true;
+//     else if (resname.compare("LEU")==0)
+//         return true;
+//     else if (resname.compare("THR")==0)
+//         return true;
+//     else if (resname.compare("SER")==0)
+//         return true;
+//     else if (resname.compare("LYS")==0)
+//         return true;
+//     else if (resname.compare("MET")==0)
+//         return true;
+//     else if (resname.compare("TYR")==0)
+//         return true;
+//     else if (resname.compare("TRP")==0)
+//         return true;
+//     else if (resname.compare("PHE")==0)
+//         return true;
+//     else if (resname.compare("SEC")==0)
+//         return true;
+//     else if (resname.compare("ILE")==0)
+//         return true;
+//     else if (resname.compare("CYX")==0)
+//         return true;
+//     else if (resname.compare("HID")==0)
+//         return true;
+//     else if (resname.compare("HIE")==0)
+//         return true;
+//     else if (resname.compare("NLN")==0)
+//         return true;
+//     else if (resname.compare("OLT")==0)
+//         return true;
+//     else if (resname.compare("OLS")==0)
+//         return true;
+//     else if (resname.compare("OLY")==0)
+//         return true;
+//     else
+//         return false;
+// }
 
 GeometryTopology::Coordinate Residue::GetRingCenter()
 {

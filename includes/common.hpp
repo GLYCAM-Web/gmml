@@ -91,6 +91,14 @@ namespace gmml
         {-43.0, 44.0, -62.0, -178.0, 62.0}
     };
 
+    const std::string PROTEINS[] = {  "ALA", "ASP", "ASN", "ARG", "GLY",
+                                      "GLU", "GLN", "PRO", "HIS", "CYS",
+                                      "VAL", "LEU", "THR", "SER", "LYS",
+                                      "MET", "TYR", "TRP", "PHE", "SEC",
+                                      "ILE", "CYX", "HID", "HIE" };
+
+    const int PROTEINSSIZE = ( sizeof( PROTEINS ) / sizeof( PROTEINS[ 0 ] ) );
+
     const AtomTypesInfo ATOMTYPESINFOLOOKUP[] = {
         {"","",""},
         {"2C", "C", "sp3"},
@@ -782,7 +790,7 @@ namespace gmml
         {"_4N^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminate", "LNeupb", ""}
     };
 
-        const int COMPLEXSUGARNAMELOOKUPSIZE = (sizeof(COMPLEXSUGARNAMELOOKUP)/sizeof(COMPLEXSUGARNAMELOOKUP[0]));
+    const int COMPLEXSUGARNAMELOOKUPSIZE = (sizeof(COMPLEXSUGARNAMELOOKUP)/sizeof(COMPLEXSUGARNAMELOOKUP[0]));
 
     /*! \enum
       * Enumerator to possible n chain termination
