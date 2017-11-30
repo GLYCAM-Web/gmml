@@ -61,7 +61,7 @@ string Residue::GetName()
 string Residue::GetNumber()
 {
     StringVector id = gmml::Split(id_, "_");
-    return id.at(2); // This is silly, why not add residue number to class?
+    return id.at(2); // This is silly, why not add residue number to class? OG: I know right?
 }
 Residue::AtomVector Residue::GetAtoms()
 {
