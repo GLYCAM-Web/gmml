@@ -1,37 +1,6 @@
 #include "../includes/MolecularModeling/superimposition.hpp"
 
-// OG: Have something else I'm changing, so can't update this now too. But there is lots of repeated code here.
-// OG: Should just have an AtomVector based function and have everything else call that.
-
 using namespace MolecularModeling;
-
-/*
-void gmml::GenerateMatrixFromAssembyCoordinates(Assembly *assembly, Eigen::Matrix3Xd *matrix)
-{
-    int col = 0; // Column index for matrix
-    CoordinateVector assemblyCoordinates = assembly->GetAllCoordinates();
-    for(CoordinateVector::iterator it = assemblyCoordinates.begin(); it != assemblyCoordinates.end(); it++)
-    {
-        (*matrix)(0, col) = (*it)->GetX();
-        (*matrix)(1, col) = (*it)->GetY();
-        (*matrix)(2, col) = (*it)->GetZ();
-        col++;
-    }
-}
-
-void gmml::ReplaceAssemblyCoordinatesFromMatrix(Assembly *assembly, Eigen::Matrix3Xd *matrix)
-{
-    int col = 0;
-    CoordinateVector assemblyCoordinates = assembly->GetAllCoordinates();
-    for(CoordinateVector::iterator it = assemblyCoordinates.begin(); it != assemblyCoordinates.end(); it++)
-    {
-        (*it)->SetX( (*matrix)(0, col) );
-        (*it)->SetY( (*matrix)(1, col) );
-        (*it)->SetZ( (*matrix)(2, col) );
-        col++;
-    }
-}
-*/
 
 void gmml::GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix)
 {
@@ -164,23 +133,6 @@ void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::A
     AtomVector target_atoms = target->GetAllAtomsOfAssembly();
 
     gmml::Superimpose(moving_atoms, target_atoms);
-
-    /*
-    Eigen::Matrix3Xd movingMatrix(3, moving->GetAllCoordinates().size()), targetMatrix(3, target->GetAllCoordinates().size());
-
-    // Create a matrices containing co-ordinates of assembly moving and target
-    GenerateMatrixFromAssembyCoordinates(moving, &movingMatrix);
-    GenerateMatrixFromAssembyCoordinates(target, &targetMatrix);
-
-    // Figure out how to move assembly moving onto target
-    Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
-
-    // Create a matirx containing the moved co-ordinates of assembly moving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
-
-    // Replace co-ordinates of moving with moved co-ordinates
-    ReplaceAssemblyCoordinatesFromMatrix(moving, &movedMatrix);
-    */
 }
 
 void gmml::Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving)
@@ -191,28 +143,6 @@ void gmml::Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving)
 
     gmml::Superimpose(moving_atoms, target_atoms, alsoMoving_atoms);
 
-    /*
-
-    Eigen::Matrix3Xd movingMatrix(3, moving->GetAllCoordinates().size()), targetMatrix(3, target->GetAllCoordinates().size());
-    Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving->GetAllCoordinates().size()); // separate from above line for clarity
-
-    // Create a matrices containing co-ordinates of assembly moving and target
-    GenerateMatrixFromAssembyCoordinates(moving, &movingMatrix);
-    GenerateMatrixFromAssembyCoordinates(target, &targetMatrix);
-    GenerateMatrixFromAssembyCoordinates(alsoMoving, &alsoMovingMatrix);
-
-    // Figure out how to move assembly moving onto target
-    Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
-
-    // Create a matrix containing the moved co-ordinates of assembly moving and alsoMoving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
-    Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
-
-
-    // Replace co-ordinates of moving with moved co-ordinates
-    ReplaceAssemblyCoordinatesFromMatrix(moving, &movedMatrix);
-    ReplaceAssemblyCoordinatesFromMatrix(alsoMoving, &alsoMovedMatrix);
-    */
 }
 
 void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
@@ -246,38 +176,6 @@ void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoM
         ReplaceAtomVectorCoordinatesFromMatrix(&alsoMoving_atoms, &alsoMovedMatrix);
     }
 }
-
-/*
-void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
-{
-
-    Eigen::Matrix3Xd movingMatrix(3, moving->GetAllCoordinates().size()), targetMatrix(3, target->GetAllCoordinates().size());
-
-    // Create a matrices containing co-ordinates of assembly moving and target
-    GenerateMatrixFromAssembyCoordinates(moving, &movingMatrix);
-    GenerateMatrixFromAssembyCoordinates(target, &targetMatrix);
-
-
-    // Figure out how to move assembly moving onto target
-    Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
-
-    // Create a matrix containing the moved co-ordinates of assembly moving and alsoMoving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
-
-    // Replace co-ordinates of moving with moved co-ordinates
-    ReplaceAssemblyCoordinatesFromMatrix(moving, &movedMatrix);
-
-    // Also move every assembly in also moving
-    for(AssemblyVector::iterator it = alsoMoving->begin(); it != alsoMoving->end(); it++)
-    {
-        Assembly *assembly = (*it); // I hate (*it)->
-        Eigen::Matrix3Xd alsoMovingMatrix(3, assembly->GetAllCoordinates().size());
-        GenerateMatrixFromAssembyCoordinates(assembly, &alsoMovingMatrix);
-        Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
-        ReplaceAssemblyCoordinatesFromMatrix(assembly, &alsoMovedMatrix);
-    }
-}
-*/
 
 // A function to test Find3DAffineTransform()
 /* void gmml::TestFind3DAffineTransform()
