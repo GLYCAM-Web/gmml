@@ -25,7 +25,7 @@ CondensedSequence::CondensedSequence(string sequence)
     condensed_sequence_residue_tree_ = CondensedSequenceResidueTree();
     ParseCondensedSequence(sequence);
     BuildArrayTreeOfCondensedSequenceResidue();
-    BuildArrayTreeOfCondensedSequenceAmberPrepResidue(this->condensed_sequence_residue_tree_);
+    BuildArrayTreeOfCondensedSequenceGlycam06Residue(this->condensed_sequence_residue_tree_);
 }
 
 //////////////////////////////////////////////////////////
@@ -43,9 +43,9 @@ CondensedSequence::CondensedSequenceResidueTree CondensedSequence::GetCondensedS
 {
     return condensed_sequence_residue_tree_;
 }
-CondensedSequence::CondensedSequenceAmberPrepResidueTree CondensedSequence::GetCondensedSequenceAmberPrepResidueTree()
+CondensedSequence::CondensedSequenceAmberPrepResidueTree CondensedSequence::GetCondensedSequenceGlycam06ResidueTree()
 {
-    return condensed_sequence_amber_prep_residue_tree_;
+    return condensed_sequence_glycam06_residue_tree_;
 }
 
 //////////////////////////////////////////////////////////
@@ -89,14 +89,14 @@ int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenc
     return condensed_sequence_residue_tree_.size() - 1;
 }
 
-int CondensedSequence::InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue *condensed_amber_prep_residue, int parent_node_id)
+int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceAmberPrepResidue *condensed_glycam06_residue, int parent_node_id)
 {
-    if(parent_node_id != -1 && parent_node_id >= condensed_sequence_amber_prep_residue_tree_.size())
+    if(parent_node_id != -1 && parent_node_id >= condensed_sequence_glycam06_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
-//    condensed_sequence_amber_prep_residue_tree_.push_back(std::make_pair(condensed_tree_residue, parent_node_id));
-    condensed_amber_prep_residue->SetParentId(parent_node_id);
-    condensed_sequence_amber_prep_residue_tree_.push_back(condensed_amber_prep_residue);
-    return condensed_sequence_amber_prep_residue_tree_.size() - 1;
+//    condensed_sequence_glycam06_residue_tree_.push_back(std::make_pair(condensed_tree_residue, parent_node_id));
+    condensed_glycam06_residue->SetParentId(parent_node_id);
+    condensed_sequence_glycam06_residue_tree_.push_back(condensed_glycam06_residue);
+    return condensed_sequence_glycam06_residue_tree_.size() - 1;
 }
 
 void CondensedSequence::ParseCondensedSequence(string sequence)
@@ -210,9 +210,9 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
     }
 }
 
-void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(CondensedSequenceResidueTree residue_tree)
+void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree)
 {
-    condensed_sequence_amber_prep_residue_tree_ = CondensedSequenceAmberPrepResidueTree();
+    condensed_sequence_glycam06_residue_tree_ = CondensedSequenceAmberPrepResidueTree();
     vector<vector<int> > open_valences = vector<vector<int> >(residue_tree.size());
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
@@ -226,7 +226,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
     }
 
     string terminal = residue_tree.at(0)->GetName();
-    this->InsertNodeInCondensedSequenceAmberPrepResidueTree(new CondensedSequenceAmberPrepResidue(this->GetAmberPrepTerminalResidueCodeOfTerminalResidue(terminal)));
+    this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceAmberPrepResidue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)));
 
     int current_derivative_count = 0;
     vector<int> derivatives = vector<int>(residue_tree.size(), 0);
@@ -244,18 +244,18 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
 
         try
         {
-            CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(this->GetAmberPrepResidueCodeOfCondensedResidue(
+            CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(this->GetGlycam06ResidueCodeOfCondensedResidue(
                                                                                                         condensed_residue, open_valences[i], parent_name)
                                                                                                     , anomeric_carbon, oxygen_position);
 
-            int residue_index = this->InsertNodeInCondensedSequenceAmberPrepResidueTree(tree_residue, parent + derivatives[parent]);
+            int residue_index = this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
 
             CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
             for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
             {
                 string derivative_name = it->second;
                 int derivative_index = it->first;
-                this->InsertNodeInCondensedSequenceAmberPrepResidueTree(this->GetCondensedSequenceDerivativeAmberPrepResidue(derivative_name, derivative_index), residue_index);
+                this->InsertNodeInCondensedSequenceGlycam06ResidueTree(this->GetCondensedSequenceDerivativeGlycam06Residue(derivative_name, derivative_index), residue_index);
                 current_derivative_count++;
             }
         }
@@ -264,7 +264,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
             CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(condensed_residue->GetName().substr(0,3)
                                                                                                     , anomeric_carbon, oxygen_position);
 
-            this->InsertNodeInCondensedSequenceAmberPrepResidueTree(tree_residue, parent + derivatives[parent]);
+            this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
 
             cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << endl;
             throw CondensedSequenceProcessingException("Invalid residue in the sequence (" + condensed_residue->GetName().substr(0,3) + ")");
@@ -272,7 +272,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceAmberPrepResidue(Conden
     }
 }
 
-string CondensedSequence::GetAmberPrepTerminalResidueCodeOfTerminalResidue(string terminal_residue_name)
+string CondensedSequence::GetGlycam06TerminalResidueCodeOfTerminalResidue(string terminal_residue_name)
 {
     if(terminal_residue_name.compare("OH") == 0 || terminal_residue_name.compare("ROH") == 0)
         return "ROH";
@@ -280,13 +280,13 @@ string CondensedSequence::GetAmberPrepTerminalResidueCodeOfTerminalResidue(strin
         return "OME";
     else if(terminal_residue_name.compare("OtBu") == 0 || terminal_residue_name.compare("TBT") == 0)
         return "TBT";
-    else if(AmberGlycamLookup(terminal_residue_name).amber_name_.compare("") != 0 ||
-            AmberGlycamLookup(terminal_residue_name).glycam_name_.compare("") != 0)
-        return AmberGlycamLookup(terminal_residue_name).glycam_name_;
+    else if(AminoacidGlycamLookup(terminal_residue_name).aminoacid_name_.compare("") != 0 ||
+            AminoacidGlycamLookup(terminal_residue_name).glycam_name_.compare("") != 0)
+        return AminoacidGlycamLookup(terminal_residue_name).glycam_name_;
     throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
 }
 
-string CondensedSequence::GetAmberPrepResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, vector<int> open_valences, string parent_name)
+string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, vector<int> open_valences, string parent_name)
 {
     if(condensed_residue->GetName().compare("UNK") == 0 || condensed_residue->GetName().compare("Unknown") == 0)
         return "UNK";
@@ -317,13 +317,13 @@ string CondensedSequence::GetAmberPrepResidueCodeOfCondensedResidue(CondensedSeq
         open_valences_check.set(open_valences[i]);
     }
 
-    string residue_code = this->GetFirstLetterOfAmberPrepResidueCode(open_valences_check) + this->GetSecondLetterOfAmberPrepResidueCode(residue_name, isomer);
+    string residue_code = this->GetFirstLetterOfGlycam06ResidueCode(open_valences_check) + this->GetSecondLetterOfGlycam06ResidueCode(residue_name, isomer);
     if(residue_code.size() < 3)
-        residue_code += this->GetThirdLetterOfAmberPrepResidueCode(configuration, ring_type);
+        residue_code += this->GetThirdLetterOfGlycam06ResidueCode(configuration, ring_type);
     return residue_code;
 }
 
-string CondensedSequence::GetFirstLetterOfAmberPrepResidueCode(bitset<10> open_valences_check)
+string CondensedSequence::GetFirstLetterOfGlycam06ResidueCode(bitset<10> open_valences_check)
 {
     bitset<10> open_valences_check_temp = open_valences_check;
     if (open_valences_check_temp.count() == 4)
@@ -393,7 +393,7 @@ string CondensedSequence::GetFirstLetterOfAmberPrepResidueCode(bitset<10> open_v
     throw CondensedSequenceProcessingException("There is no code in the GLYCAM code set for residues with open valences at the given positions.");
 }
 
-string CondensedSequence::GetSecondLetterOfAmberPrepResidueCode(string residue_name, string isomer)
+string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(string residue_name, string isomer)
 {
     gmml::ResidueCodeName residue_name_code = gmml::ResidueNameCodeLookup(residue_name);
     if(residue_name_code.name_.compare("") != 0)
@@ -406,7 +406,7 @@ string CondensedSequence::GetSecondLetterOfAmberPrepResidueCode(string residue_n
     throw CondensedSequenceProcessingException(residue_name + " is not a valid residue");
 }
 
-string CondensedSequence::GetThirdLetterOfAmberPrepResidueCode(string configuration, string ring_type)
+string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(string configuration, string ring_type)
 {
     if(configuration.compare("X") == 0)
         return "X";
@@ -416,7 +416,7 @@ string CondensedSequence::GetThirdLetterOfAmberPrepResidueCode(string configurat
         return (configuration.compare("A") == 0) ? "D" : "U";
 }
 
-CondensedSequenceAmberPrepResidue* CondensedSequence::GetCondensedSequenceDerivativeAmberPrepResidue(string derivative_name, int derivative_index)
+CondensedSequenceAmberPrepResidue* CondensedSequence::GetCondensedSequenceDerivativeGlycam06Residue(string derivative_name, int derivative_index)
 {
     string oxygen_name = "O" + ConvertT<int>(derivative_index);
     string carbon_name = "C" + ConvertT<int>(derivative_index);;

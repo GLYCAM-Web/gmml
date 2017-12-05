@@ -89,7 +89,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceResidueVector GetResidues();
             CondensedSequenceTokenTypeVector GetTokens();
             CondensedSequenceResidueTree GetCondensedSequenceResidueTree();
-            CondensedSequenceAmberPrepResidueTree GetCondensedSequenceAmberPrepResidueTree();
+            CondensedSequenceAmberPrepResidueTree GetCondensedSequenceGlycam06ResidueTree();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -106,7 +106,7 @@ namespace CondensedSequenceSpace
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
             int InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue* condensed_residue, int parent_node_id = -1);
-            int InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue* condensed_amber_prep_residue, int parent_node_id = -1);
+            int InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceAmberPrepResidue* condensed_glycam06_residue, int parent_node_id = -1);
 /** @}*/
             /** \addtogroup Input_Sequence_Parser
               * @{
@@ -117,17 +117,17 @@ namespace CondensedSequenceSpace
                * @{
                */
             void BuildArrayTreeOfCondensedSequenceResidue();
-            void BuildArrayTreeOfCondensedSequenceAmberPrepResidue(CondensedSequenceResidueTree residue_tree);
+            void BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
 /** @}*/
             /** \addtogroup Molecular_Data_Structure
                * @{
                */
-            std::string GetAmberPrepTerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
-            std::string GetAmberPrepResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences, std::string parent_name);
-            std::string GetFirstLetterOfAmberPrepResidueCode(std::bitset<10> open_valences_check);
-            std::string GetSecondLetterOfAmberPrepResidueCode(std::string residue_name, std::string isomer);
-            std::string GetThirdLetterOfAmberPrepResidueCode(std::string configuration, std::string ring_type);
-            CondensedSequenceAmberPrepResidue* GetCondensedSequenceDerivativeAmberPrepResidue(std::string derivative_name, int derivative_index);
+            std::string GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
+            std::string GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences, std::string parent_name);
+            std::string GetFirstLetterOfGlycam06ResidueCode(std::bitset<10> open_valences_check);
+            std::string GetSecondLetterOfGlycam06ResidueCode(std::string residue_name, std::string isomer);
+            std::string GetThirdLetterOfGlycam06ResidueCode(std::string configuration, std::string ring_type);
+            CondensedSequenceAmberPrepResidue* GetCondensedSequenceDerivativeGlycam06Residue(std::string derivative_name, int derivative_index);
             CondensedSequenceRotamersAndGlycosidicAnglesInfo GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree);
             int CountAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             int CountAllPossible28LinkagesRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
@@ -153,7 +153,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceResidueVector residues_;
             CondensedSequenceTokenTypeVector tokens_;
             CondensedSequenceResidueTree condensed_sequence_residue_tree_;
-            CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_prep_residue_tree_;
+            CondensedSequenceAmberPrepResidueTree condensed_sequence_glycam06_residue_tree_;
 
     };
 }

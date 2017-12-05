@@ -35,8 +35,8 @@ namespace gmml
             int index_;
     };
 
-    struct AmberGlycamMap{
-            std::string amber_name_;
+    struct AminoacidGlycamMap{
+            std::string aminoacid_name_;
             std::string glycam_name_;
     };
 
@@ -353,14 +353,14 @@ namespace gmml
 
     const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));
 
-    const AmberGlycamMap AMBERGLYCAMLOOKUP[] = {
+    const AminoacidGlycamMap AMINOACIDGLYCAMLOOKUP[] = {
         {"", ""},
         {"ASN", "NLN"},
         {"THR", "OLT"},
         {"SER", "OLS"}
     };
 
-    const int AMBERGLYCAMLOOKUPSIZE = (sizeof(AMBERGLYCAMLOOKUP)/sizeof(AMBERGLYCAMLOOKUP[0]));
+    const int AMINOACIDGLYCAMLOOKUPSIZE = (sizeof(AMINOACIDGLYCAMLOOKUP)/sizeof(AMINOACIDGLYCAMLOOKUP[0]));
 
     const Glycan::SugarName SUGARNAMELOOKUP[] = {
         /* {  0 = "chemical_code_string_",

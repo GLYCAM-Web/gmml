@@ -684,24 +684,24 @@ namespace gmml
         return RESIDUENAMECODELOOKUP[0];
     }
 
-    inline gmml::AmberGlycamMap AmberGlycamLookup(std::string amber_residue_name)
+    inline gmml::AminoacidGlycamMap AminoacidGlycamLookup(std::string aminoacid_residue_name)
     {
-        for(int i = 0; i < AMBERGLYCAMLOOKUPSIZE; i++)
+        for(int i = 0; i < AMINOACIDGLYCAMLOOKUPSIZE; i++)
         {
-            if(amber_residue_name.compare(AMBERGLYCAMLOOKUP[i].amber_name_) == 0)
-                return AMBERGLYCAMLOOKUP[i];
+            if(aminoacid_residue_name.compare(AMINOACIDGLYCAMLOOKUP[i].aminoacid_name_) == 0)
+                return AMINOACIDGLYCAMLOOKUP[i];
         }
-        return AMBERGLYCAMLOOKUP[0];
+        return AMINOACIDGLYCAMLOOKUP[0];
     }
 
-    inline gmml::AmberGlycamMap GlycamAmberLookup(std::string glycam_residue_name)
+    inline gmml::AminoacidGlycamMap GlycamAminoacidLookup(std::string glycam_residue_name)
     {
-        for(int i = 0; i < AMBERGLYCAMLOOKUPSIZE; i++)
+        for(int i = 0; i < AMINOACIDGLYCAMLOOKUPSIZE; i++)
         {
-            if(glycam_residue_name.compare(AMBERGLYCAMLOOKUP[i].glycam_name_) == 0)
-                return AMBERGLYCAMLOOKUP[i];
+            if(glycam_residue_name.compare(AMINOACIDGLYCAMLOOKUP[i].glycam_name_) == 0)
+                return AMINOACIDGLYCAMLOOKUP[i];
         }
-        return AMBERGLYCAMLOOKUP[0];
+        return AMINOACIDGLYCAMLOOKUP[0];
     }
 
     inline gmml::AtomTypesInfo AtomTypesLookup(std::string atom_type)

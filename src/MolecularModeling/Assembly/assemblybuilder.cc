@@ -90,12 +90,12 @@ bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::
     try
     {
         CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
-        prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        prep_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
         {
-            CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
-            string amber_prep_residue_name = amber_prep_residue->GetName();
-            if(amber_prep_residue_name.compare("UNK") == 0)
+            CondensedSequenceAmberPrepResidue* glycam06_residue = *it;
+            string glycam06_residue_name = glycam06_residue->GetName();
+            if(glycam06_residue_name.compare("UNK") == 0)
             {
                 cout << "The input sequence (" << sequence << ") is not valid" << endl;
                 return false;
@@ -118,7 +118,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
     try
     {
         CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        CondensedSequence::CondensedSequenceAmberPrepResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         PrepFile* prep = new PrepFile(prep_file);
         PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
         ParameterFile* parameter = NULL;
@@ -134,15 +134,15 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
         int sequence_number = 0;
         int serial_number = 0;
         stringstream ss;
-        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
+        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
         {
-            CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
-            string amber_prep_residue_name = amber_prep_residue->GetName();
-            string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
+            CondensedSequenceAmberPrepResidue* glycam06_residue = *it;
+            string glycam06_residue_name = glycam06_residue->GetName();
+            string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
 
-            if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
+            if(prep_residue_map.find(glycam06_residue_name) != prep_residue_map.end())
             {
-                PrepFileResidue* prep_residue = prep_residue_map[amber_prep_residue_name];
+                PrepFileResidue* prep_residue = prep_residue_map[glycam06_residue_name];
 
                 // Build residue from prep residue
                 sequence_number++;
@@ -156,7 +156,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
                    << gmml::BLANK_SPACE << "_" << id_;
                 assembly_residue->SetId(id.str());
-                if(distance(amber_prep_residues.begin(), it) == (int)amber_prep_residues.size()-1)
+                if(distance(glycam06_residues.begin(), it) == (int)glycam06_residues.size()-1)
                     ss << prep_residue_name;
                 else
                     ss << prep_residue_name << "-";
@@ -260,7 +260,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     }
                     if(assembly_atom->GetAtomType().compare("DU") != 0)
                         assembly_residue->AddAtom(assembly_atom);
-                    if(atom_name.compare(amber_prep_residue->GetAnomericCarbon()) == 0)
+                    if(atom_name.compare(glycam06_residue->GetAnomericCarbon()) == 0)
                         assembly_residue->AddHeadAtom(assembly_atom);
                 }
 
@@ -274,19 +274,19 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     temp_assembly->BuildStructureByPrepFileInformation();
                 }
                 residues_.push_back(assembly_residue);
-                if(amber_prep_residue->GetParentId() != -1)
+                if(glycam06_residue->GetParentId() != -1)
                 {
-                    Residue* parent_residue = residues_.at(amber_prep_residue->GetParentId());
+                    Residue* parent_residue = residues_.at(glycam06_residue->GetParentId());
                     AtomVector parent_residue_atoms = parent_residue->GetAtoms();
                     for(AtomVector::iterator it3 = parent_residue_atoms.begin(); it3 != parent_residue_atoms.end(); it3++)
                     {
                         Atom* parent_atom = *it3;
-                        if(parent_atom->GetName().compare(amber_prep_residue->GetParentOxygen()) == 0)
+                        if(parent_atom->GetName().compare(glycam06_residue->GetParentOxygen()) == 0)
                             parent_residue->AddTailAtom(parent_atom);
                     }
                     parent_residues.push_back(parent_residue);
                     branch_residues.push_back(assembly_residue);
-                    if(amber_prep_residue->GetIsDerivative())
+                    if(glycam06_residue->GetIsDerivative())
                         derivatives.push_back(true);
                     else
                         derivatives.push_back(false);
@@ -294,7 +294,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
             }
             else
             {
-                cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
+                cout << "Residue " << glycam06_residue_name << " has not been found in the database" << endl;
             }
         }
 
@@ -372,7 +372,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                                                    condensed_sequence->CountAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info));
         CondensedSequence::IndexLinkageConfigurationMap structure_map = condensed_sequence->CreateIndexLinkageConfigurationMap(
                     rotamers_glycosidic_angles_info, names);
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree amber_prep_residues = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        CondensedSequence::CondensedSequenceAmberPrepResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         PrepFile* prep = new PrepFile(prep_file);
         PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
         ParameterFile* parameter = NULL;
@@ -391,15 +391,15 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
             int sequence_number = 0;
             int serial_number = 0;
             stringstream ss;
-            for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = amber_prep_residues.begin(); it != amber_prep_residues.end(); ++it)
+            for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
             {
-                CondensedSequenceAmberPrepResidue* amber_prep_residue = *it;
-                string amber_prep_residue_name = amber_prep_residue->GetName();
-                string amber_prep_residue_parent_oxygen = amber_prep_residue->GetParentOxygen();
+                CondensedSequenceAmberPrepResidue* glycam06_residue = *it;
+                string glycam06_residue_name = glycam06_residue->GetName();
+                string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
 
-                if(prep_residue_map.find(amber_prep_residue_name) != prep_residue_map.end())
+                if(prep_residue_map.find(glycam06_residue_name) != prep_residue_map.end())
                 {
-                    PrepFileResidue* prep_residue = prep_residue_map[amber_prep_residue_name];
+                    PrepFileResidue* prep_residue = prep_residue_map[glycam06_residue_name];
 
                     // Build residue from prep residue
                     sequence_number++;
@@ -413,7 +413,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                     id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
                        << gmml::BLANK_SPACE << "_" << id_;
                     assembly_residue->SetId(id.str());
-                    if(distance(amber_prep_residues.begin(), it) == (int)amber_prep_residues.size()-1)
+                    if(distance(glycam06_residues.begin(), it) == (int)glycam06_residues.size()-1)
                         ss << prep_residue_name;
                     else
                         ss << prep_residue_name << "-";
@@ -517,7 +517,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         }
                         if(assembly_atom->GetAtomType().compare("DU") != 0)
                             assembly_residue->AddAtom(assembly_atom);
-                        if(atom_name.compare(amber_prep_residue->GetAnomericCarbon()) == 0)
+                        if(atom_name.compare(glycam06_residue->GetAnomericCarbon()) == 0)
                             assembly_residue->AddHeadAtom(assembly_atom);
                     }
 
@@ -531,19 +531,19 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         temp_assembly->BuildStructureByPrepFileInformation();
                     }
                     structures.at(i)->residues_.push_back(assembly_residue);
-                    if(amber_prep_residue->GetParentId() != -1)
+                    if(glycam06_residue->GetParentId() != -1)
                     {
-                        Residue* parent_residue = structures.at(i)->residues_.at(amber_prep_residue->GetParentId());
+                        Residue* parent_residue = structures.at(i)->residues_.at(glycam06_residue->GetParentId());
                         AtomVector parent_residue_atoms = parent_residue->GetAtoms();
                         for(AtomVector::iterator it3 = parent_residue_atoms.begin(); it3 != parent_residue_atoms.end(); it3++)
                         {
                             Atom* parent_atom = *it3;
-                            if(parent_atom->GetName().compare(amber_prep_residue->GetParentOxygen()) == 0)
+                            if(parent_atom->GetName().compare(glycam06_residue->GetParentOxygen()) == 0)
                                 parent_residue->AddTailAtom(parent_atom);
                         }
                         parent_residues.push_back(parent_residue);
                         branch_residues.push_back(assembly_residue);
-                        if(amber_prep_residue->GetIsDerivative())
+                        if(glycam06_residue->GetIsDerivative())
                             derivatives.push_back(true);
                         else
                             derivatives.push_back(false);
@@ -551,7 +551,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                 }
                 else
                 {
-                    cout << "Residue " << amber_prep_residue_name << " has not been found in the database" << endl;
+                    cout << "Residue " << glycam06_residue_name << " has not been found in the database" << endl;
                 }
             }
 

@@ -3258,13 +3258,13 @@ string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
                     terminal_atoms = target_residue->GetAtoms();
 
 
-                AmberGlycamMap amber_glycam = AmberGlycamLookup(target_o_neighbor->GetResidue()->GetName());
-                AmberGlycamMap glycam_amber = GlycamAmberLookup(target_o_neighbor->GetResidue()->GetName());
+                AminoacidGlycamMap aminoacid_glycam = AminoacidGlycamLookup(target_o_neighbor->GetResidue()->GetName());
+                AminoacidGlycamMap glycam_aminoacid = GlycamAminoacidLookup(target_o_neighbor->GetResidue()->GetName());
 
-                if(amber_glycam.amber_name_.compare("") != 0)
-                    return amber_glycam.amber_name_;
-                else if(glycam_amber.glycam_name_.compare("") != 0)
-                    return glycam_amber.amber_name_;
+                if(aminoacid_glycam.aminoacid_name_.compare("") != 0)
+                    return aminoacid_glycam.aminoacid_name_;
+                else if(glycam_aminoacid.glycam_name_.compare("") != 0)
+                    return glycam_aminoacid.aminoacid_name_;
                 else
                     return target_o_neighbor->GetResidue()->GetName();
             }

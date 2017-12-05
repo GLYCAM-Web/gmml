@@ -1,14 +1,11 @@
-#ifndef CONDENSEDSEQUENCEAMBERPREPRESIDUE_HPP
-#define CONDENSEDSEQUENCEAMBERPREPRESIDUE_HPP
-
+#ifndef CONDENSEDSEQUENCEGLYCAM06RESIDUE_HPP#define CONDENSEDSEQUENCEGLYCAM06RESIDUE_HPP
 #include <string>
 #include <vector>
 #include <iostream>
 
 namespace CondensedSequenceSpace
 {
-    class CondensedSequenceAmberPrepResidue
-    {
+    class CondensedSequenceGlycam06Residue    {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
@@ -74,4 +71,4 @@ namespace CondensedSequenceSpace
     };
 }
 
-#endif // CONDENSEDSEQUENCEAMBERPREPRESIDUE_HPP
+#endif // CONDENSEDSEQUENCEGLYCAM06RESIDUE_HPP
