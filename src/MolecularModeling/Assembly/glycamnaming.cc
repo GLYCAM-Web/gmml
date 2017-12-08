@@ -12,7 +12,7 @@
 #include "../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -103,7 +103,7 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
             oligo_name = oligo_name + "1-OH";
         CondensedSequence* condensed_sequence = new CondensedSequence(oligo_name);
         //Gets the three letter code of all carbohydrates involved in current oligosaccharide
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
+        CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         if(oligo->terminal_.compare("") != 0)
         {
             Atom* anomeric_o = NULL;
@@ -146,7 +146,7 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
 
 
 void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
-                                               CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_glycam06_residue_tree, int &index)
+                                               CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree, int &index)
 {
     string name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
     //TODO: Done

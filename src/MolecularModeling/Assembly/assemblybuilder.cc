@@ -12,7 +12,7 @@
 #include "../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -85,15 +85,15 @@ using namespace CondensedSequenceSpace;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::CondensedSequenceAmberPrepResidueTree& prep_residues)
+bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::CondensedSequenceGlycam06ResidueTree& prep_residues)
 {
     try
     {
         CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
         prep_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
-        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
+        for(CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
         {
-            CondensedSequenceAmberPrepResidue* glycam06_residue = *it;
+            CondensedSequenceGlycam06Residue* glycam06_residue = *it;
             string glycam06_residue_name = glycam06_residue->GetName();
             if(glycam06_residue_name.compare("UNK") == 0)
             {
@@ -118,7 +118,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
     try
     {
         CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
+        CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         PrepFile* prep = new PrepFile(prep_file);
         PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
         ParameterFile* parameter = NULL;
@@ -134,9 +134,9 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
         int sequence_number = 0;
         int serial_number = 0;
         stringstream ss;
-        for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
+        for(CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
         {
-            CondensedSequenceAmberPrepResidue* glycam06_residue = *it;
+            CondensedSequenceGlycam06Residue* glycam06_residue = *it;
             string glycam06_residue_name = glycam06_residue->GetName();
             string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
 
@@ -372,7 +372,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                                                    condensed_sequence->CountAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info));
         CondensedSequence::IndexLinkageConfigurationMap structure_map = condensed_sequence->CreateIndexLinkageConfigurationMap(
                     rotamers_glycosidic_angles_info, names);
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
+        CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         PrepFile* prep = new PrepFile(prep_file);
         PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
         ParameterFile* parameter = NULL;
@@ -391,9 +391,9 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
             int sequence_number = 0;
             int serial_number = 0;
             stringstream ss;
-            for(CondensedSequence::CondensedSequenceAmberPrepResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
+            for(CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
             {
-                CondensedSequenceAmberPrepResidue* glycam06_residue = *it;
+                CondensedSequenceGlycam06Residue* glycam06_residue = *it;
                 string glycam06_residue_name = glycam06_residue->GetName();
                 string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
 

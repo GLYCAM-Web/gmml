@@ -17,9 +17,9 @@ namespace CondensedSequenceSpace
             /*! \fn
               * Default constructor
               */
-            CondensedSequenceAmberPrepResidue();
-            CondensedSequenceAmberPrepResidue(std::string name);
-            CondensedSequenceAmberPrepResidue(std::string name, std::string anomeric_carbon, std::string parent_oxygen, bool is_derivative = false);
+            CondensedSequenceGlycam06Residue();
+            CondensedSequenceGlycam06Residue(std::string name);
+            CondensedSequenceGlycam06Residue(std::string name, std::string anomeric_carbon, std::string parent_oxygen, bool is_derivative = false);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

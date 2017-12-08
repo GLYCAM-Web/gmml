@@ -13,7 +13,7 @@
 #include "../../../includes/MolecularModeling/overlaps.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"

@@ -2,7 +2,7 @@
 #include <stack>
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
@@ -43,7 +43,7 @@ CondensedSequence::CondensedSequenceResidueTree CondensedSequence::GetCondensedS
 {
     return condensed_sequence_residue_tree_;
 }
-CondensedSequence::CondensedSequenceAmberPrepResidueTree CondensedSequence::GetCondensedSequenceGlycam06ResidueTree()
+CondensedSequence::CondensedSequenceGlycam06ResidueTree CondensedSequence::GetCondensedSequenceGlycam06ResidueTree()
 {
     return condensed_sequence_glycam06_residue_tree_;
 }
@@ -89,7 +89,7 @@ int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenc
     return condensed_sequence_residue_tree_.size() - 1;
 }
 
-int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceAmberPrepResidue *condensed_glycam06_residue, int parent_node_id)
+int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceGlycam06Residue *condensed_glycam06_residue, int parent_node_id)
 {
     if(parent_node_id != -1 && parent_node_id >= condensed_sequence_glycam06_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
@@ -212,7 +212,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
 
 void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree)
 {
-    condensed_sequence_glycam06_residue_tree_ = CondensedSequenceAmberPrepResidueTree();
+    condensed_sequence_glycam06_residue_tree_ = CondensedSequenceGlycam06ResidueTree();
     vector<vector<int> > open_valences = vector<vector<int> >(residue_tree.size());
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
@@ -226,7 +226,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
     }
 
     string terminal = residue_tree.at(0)->GetName();
-    this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceAmberPrepResidue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)));
+    this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceGlycam06Residue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)));
 
     int current_derivative_count = 0;
     vector<int> derivatives = vector<int>(residue_tree.size(), 0);
@@ -244,7 +244,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
 
         try
         {
-            CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(this->GetGlycam06ResidueCodeOfCondensedResidue(
+            CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceGlycam06Residue(this->GetGlycam06ResidueCodeOfCondensedResidue(
                                                                                                         condensed_residue, open_valences[i], parent_name)
                                                                                                     , anomeric_carbon, oxygen_position);
 
@@ -261,7 +261,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
         }
         catch(exception ex)
         {
-            CondensedSequenceAmberPrepResidue* tree_residue = new CondensedSequenceAmberPrepResidue(condensed_residue->GetName().substr(0,3)
+            CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceGlycam06Residue(condensed_residue->GetName().substr(0,3)
                                                                                                     , anomeric_carbon, oxygen_position);
 
             this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
@@ -416,16 +416,16 @@ string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(string configurati
         return (configuration.compare("A") == 0) ? "D" : "U";
 }
 
-CondensedSequenceAmberPrepResidue* CondensedSequence::GetCondensedSequenceDerivativeGlycam06Residue(string derivative_name, int derivative_index)
+CondensedSequenceGlycam06Residue* CondensedSequence::GetCondensedSequenceDerivativeGlycam06Residue(string derivative_name, int derivative_index)
 {
     string oxygen_name = "O" + ConvertT<int>(derivative_index);
     string carbon_name = "C" + ConvertT<int>(derivative_index);;
     if(derivative_name.compare("S") == 0)
-        return new CondensedSequenceAmberPrepResidue("SO3", carbon_name, oxygen_name, true);
+        return new CondensedSequenceGlycam06Residue("SO3", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("Me") == 0)
-        return new CondensedSequenceAmberPrepResidue("MEX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceGlycam06Residue("MEX", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("A") == 0)
-        return new CondensedSequenceAmberPrepResidue("ACX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceGlycam06Residue("ACX", carbon_name, oxygen_name, true);
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
 }
 
