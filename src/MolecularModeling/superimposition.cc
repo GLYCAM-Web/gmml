@@ -2,33 +2,6 @@
 
 using namespace MolecularModeling;
 
-void gmml::GenerateMatrixFromAssembyCoordinates(Assembly *assembly, Eigen::Matrix3Xd *matrix)
-{
-    int col = 0; // Column index for matrix
-    CoordinateVector assemblyCoordinates = assembly->GetAllCoordinates();
-    for(CoordinateVector::iterator it = assemblyCoordinates.begin(); it != assemblyCoordinates.end(); it++)
-    {
-        (*matrix)(0, col) = (*it)->GetX();
-        (*matrix)(1, col) = (*it)->GetY();
-        (*matrix)(2, col) = (*it)->GetZ();
-        col++;
-    }
-}
-
-void gmml::ReplaceAssemblyCoordinatesFromMatrix(Assembly *assembly, Eigen::Matrix3Xd *matrix)
-{
-    int col = 0;
-    CoordinateVector assemblyCoordinates = assembly->GetAllCoordinates();
-    for(CoordinateVector::iterator it = assemblyCoordinates.begin(); it != assemblyCoordinates.end(); it++)
-    {
-        (*it)->SetX( (*matrix)(0, col) );
-        (*it)->SetY( (*matrix)(1, col) );
-        (*it)->SetZ( (*matrix)(2, col) );
-        col++;
-    }
-}
-
-//Atom Vector version, may be removed
 void gmml::GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix)
 {
     int col = 0; // Column index for matrix
@@ -156,53 +129,33 @@ void gmml::Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMovi
 
 void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target)
 {
-    Eigen::Matrix3Xd movingMatrix(3, moving->GetAllCoordinates().size()), targetMatrix(3, target->GetAllCoordinates().size());
+    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
+    AtomVector target_atoms = target->GetAllAtomsOfAssembly();
 
-    // Create a matrices containing co-ordinates of assembly moving and target
-    GenerateMatrixFromAssembyCoordinates(moving, &movingMatrix);
-    GenerateMatrixFromAssembyCoordinates(target, &targetMatrix);
-
-    // Figure out how to move assembly moving onto target
-    Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
-
-    // Create a matirx containing the moved co-ordinates of assembly moving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
-
-    // Replace co-ordinates of moving with moved co-ordinates
-    ReplaceAssemblyCoordinatesFromMatrix(moving, &movedMatrix);
+    gmml::Superimpose(moving_atoms, target_atoms);
 }
 
 void gmml::Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving)
 {
-    Eigen::Matrix3Xd movingMatrix(3, moving->GetAllCoordinates().size()), targetMatrix(3, target->GetAllCoordinates().size());
-    Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving->GetAllCoordinates().size()); // separate from above line for clarity
+    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
+    AtomVector target_atoms = target->GetAllAtomsOfAssembly();
+    AtomVector alsoMoving_atoms = alsoMoving->GetAllAtomsOfAssembly();
 
-    // Create a matrices containing co-ordinates of assembly moving and target
-    GenerateMatrixFromAssembyCoordinates(moving, &movingMatrix);
-    GenerateMatrixFromAssembyCoordinates(target, &targetMatrix);
-    GenerateMatrixFromAssembyCoordinates(alsoMoving, &alsoMovingMatrix);
+    gmml::Superimpose(moving_atoms, target_atoms, alsoMoving_atoms);
 
-    // Figure out how to move assembly moving onto target
-    Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
-
-    // Create a matrix containing the moved co-ordinates of assembly moving and alsoMoving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
-    Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
-
-
-    // Replace co-ordinates of moving with moved co-ordinates
-    ReplaceAssemblyCoordinatesFromMatrix(moving, &movedMatrix);
-    ReplaceAssemblyCoordinatesFromMatrix(alsoMoving, &alsoMovedMatrix);
 }
 
 void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
 {
-    Eigen::Matrix3Xd movingMatrix(3, moving->GetAllCoordinates().size()), targetMatrix(3, target->GetAllCoordinates().size());
 
-    // Create a matrices containing co-ordinates of assembly moving and target
-    GenerateMatrixFromAssembyCoordinates(moving, &movingMatrix);
-    GenerateMatrixFromAssembyCoordinates(target, &targetMatrix);
+    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
+    AtomVector target_atoms = target->GetAllAtomsOfAssembly();
 
+    Eigen::Matrix3Xd movingMatrix(3, moving_atoms.size()), targetMatrix(3, target_atoms.size());
+
+        // Create a matrices containing co-ordinates of assembly moving and target
+    GenerateMatrixFromAtomVectorCoordinates(&moving_atoms, &movingMatrix);
+    GenerateMatrixFromAtomVectorCoordinates(&target_atoms, &targetMatrix);
 
     // Figure out how to move assembly moving onto target
     Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
@@ -211,18 +164,19 @@ void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoM
     Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
 
     // Replace co-ordinates of moving with moved co-ordinates
-    ReplaceAssemblyCoordinatesFromMatrix(moving, &movedMatrix);
+    ReplaceAtomVectorCoordinatesFromMatrix(&moving_atoms, &movedMatrix);
 
     // Also move every assembly in also moving
     for(AssemblyVector::iterator it = alsoMoving->begin(); it != alsoMoving->end(); it++)
     {
-        Assembly *assembly = (*it); // I hate (*it)->
-        Eigen::Matrix3Xd alsoMovingMatrix(3, assembly->GetAllCoordinates().size());
-        GenerateMatrixFromAssembyCoordinates(assembly, &alsoMovingMatrix);
+        AtomVector alsoMoving_atoms = (*it)->GetAllAtomsOfAssembly();
+        Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving_atoms.size());
+        GenerateMatrixFromAtomVectorCoordinates(&alsoMoving_atoms, &alsoMovingMatrix);
         Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
-        ReplaceAssemblyCoordinatesFromMatrix(assembly, &alsoMovedMatrix);
+        ReplaceAtomVectorCoordinatesFromMatrix(&alsoMoving_atoms, &alsoMovedMatrix);
     }
 }
+
 // A function to test Find3DAffineTransform()
 /* void gmml::TestFind3DAffineTransform()
         {

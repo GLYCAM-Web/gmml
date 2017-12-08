@@ -683,6 +683,16 @@ void Assembly::AddNote(Note *note)
     notes_.push_back(note);
 }
 
+void Assembly::MergeAssembly(Assembly *other) // Added by Oliver. He is unsure and this may well cause problems.
+{
+    ResidueVector residues = other->GetResidues();
+    for (ResidueVector::iterator it = residues.begin(); it != residues.end(); ++it)
+    {
+        Residue *residue = *it;
+        this->AddResidue(residue);
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////

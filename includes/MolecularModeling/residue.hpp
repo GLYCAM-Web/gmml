@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "../GeometryTopology/coordinate.hpp"
 
 
 namespace MolecularModeling
@@ -179,7 +180,10 @@ namespace MolecularModeling
             bool GraphParameterBasedElementLabeling();
             bool GraphPredictionBasedElementLabeling();
             AtomVector GetAtomsWithLowestIntraDegree();
+            double CalculateAtomicOverlaps(Assembly *assemblyB);
+            double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
             bool CheckIfProtein();
+            GeometryTopology::Coordinate GetRingCenter();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

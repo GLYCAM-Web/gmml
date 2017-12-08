@@ -2,10 +2,13 @@
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
+#include "../../../includes/MolecularModeling/overlaps.hpp"
+#include "../../includes/common.hpp"
 #include <algorithm>    // std::any_of
 
 using namespace std;
 using namespace MolecularModeling;
+using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -58,7 +61,7 @@ string Residue::GetName()
 string Residue::GetNumber()
 {
     StringVector id = gmml::Split(id_, "_");
-    return id.at(2); // This is silly, why not add residue number to class?
+    return id.at(2); // This is silly, why not add residue number to class? OG: I know right?
 }
 Residue::AtomVector Residue::GetAtoms()
 {
@@ -282,7 +285,6 @@ bool Residue::GraphPredictionBasedElementLabeling()
     return flag;
 }
 
-
 Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
 {
     int degree = INFINITY;
@@ -304,89 +306,119 @@ Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
     return lowest_degree_atoms;
 }
 
-/* Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
-bool Residue::CheckIfProtein()
+double Residue::CalculateAtomicOverlaps(Assembly *assemblyB)
 {
-    std::vector<std::string> residue_list = {"ALA","ASP", "ASN", "ARG", "GLY", "GLU", "GLN", "PRO", "HIS", "CYS", "VAL", "LEU", "THR", "SER", "LYS", "MET", "TYR", "TRP", "PHE", "SEC", "ILE", "CYX", "HID", "HIE" };
-    std::string resname = this->GetName();
-    if (std::any_of(residue_list.begin(), residue_list.end(),
-                    [resname](std::string residue_names) {
-                    if (residue_names.compare(resname)==0)
-                        return true;
-                    return false;
-    }))
+    AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
+    AtomVector residueAtoms = this->GetAtoms();
+    return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
+}
+double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
+{
+    AtomVector residueAtoms = this->GetAtoms();
+    return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
+}
+
+// Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
+// Your wish is my command. ;o) The Proteins are now defined as a const std::string in the common.hpp.
+//  This allows for easy modification of it and also if someone else wants to use it somewhere else it
+//  is now available to them.
+bool Residue::CheckIfProtein() 
+{
+    if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) ) 
+    {
         return true;
+    }
     return false;
 }
-*/
 
-bool Residue::CheckIfProtein()
+// bool Residue::CheckIfProtein()
+// {
+//     std::string resname = this->GetName();
+//     if(resname.compare("ALA")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ASN")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ARG")==0)
+//         return true;
+//     else if (resname.compare("GLY")==0)
+//         return true;
+//     else if (resname.compare("GLU")==0)
+//         return true;
+//     else if (resname.compare("GLN")==0)
+//         return true;
+//     else if (resname.compare("PRO")==0)
+//         return true;
+//     else if (resname.compare("HIS")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("VAL")==0)
+//         return true;
+//     else if (resname.compare("LEU")==0)
+//         return true;
+//     else if (resname.compare("THR")==0)
+//         return true;
+//     else if (resname.compare("SER")==0)
+//         return true;
+//     else if (resname.compare("LYS")==0)
+//         return true;
+//     else if (resname.compare("MET")==0)
+//         return true;
+//     else if (resname.compare("TYR")==0)
+//         return true;
+//     else if (resname.compare("TRP")==0)
+//         return true;
+//     else if (resname.compare("PHE")==0)
+//         return true;
+//     else if (resname.compare("SEC")==0)
+//         return true;
+//     else if (resname.compare("ILE")==0)
+//         return true;
+//     else if (resname.compare("CYX")==0)
+//         return true;
+//     else if (resname.compare("HID")==0)
+//         return true;
+//     else if (resname.compare("HIE")==0)
+//         return true;
+//     else if (resname.compare("NLN")==0)
+//         return true;
+//     else if (resname.compare("OLT")==0)
+//         return true;
+//     else if (resname.compare("OLS")==0)
+//         return true;
+//     else if (resname.compare("OLY")==0)
+//         return true;
+//     else
+//         return false;
+// }
+
+GeometryTopology::Coordinate Residue::GetRingCenter()
 {
-    std::string resname = this->GetName();
-    if(resname.compare("ALA")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("ASN")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("ARG")==0)
-        return true;
-    else if (resname.compare("GLY")==0)
-        return true;
-    else if (resname.compare("GLU")==0)
-        return true;
-    else if (resname.compare("GLN")==0)
-        return true;
-    else if (resname.compare("PRO")==0)
-        return true;
-    else if (resname.compare("HIS")==0)
-        return true;
-    else if (resname.compare("ASP")==0)
-        return true;
-    else if (resname.compare("VAL")==0)
-        return true;
-    else if (resname.compare("LEU")==0)
-        return true;
-    else if (resname.compare("THR")==0)
-        return true;
-    else if (resname.compare("SER")==0)
-        return true;
-    else if (resname.compare("LYS")==0)
-        return true;
-    else if (resname.compare("MET")==0)
-        return true;
-    else if (resname.compare("TYR")==0)
-        return true;
-    else if (resname.compare("TRP")==0)
-        return true;
-    else if (resname.compare("PHE")==0)
-        return true;
-    else if (resname.compare("SEC")==0)
-        return true;
-    else if (resname.compare("ILE")==0)
-        return true;
-    else if (resname.compare("CYX")==0)
-        return true;
-    else if (resname.compare("HID")==0)
-        return true;
-    else if (resname.compare("HIE")==0)
-        return true;
-    else if (resname.compare("NLN")==0)
-        return true;
-    else if (resname.compare("OLT")==0)
-        return true;
-    else if (resname.compare("OLS")==0)
-        return true;
-    else if (resname.compare("OLY")==0)
-        return true;
-    else
-        return false;
+    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
+    int numberOfRingAtoms = 0;
+    AtomVector atoms = this->GetAtoms();
+
+    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    {
+        if ( (*atom)->GetIsRing() )
+        {
+            numberOfRingAtoms++;
+            std::cout << "Atom is ring: " << (*atom)->GetName() << std::endl;
+            sumX += (*atom)->GetCoordinates().at(0)->GetX();
+            sumY += (*atom)->GetCoordinates().at(0)->GetY();
+            sumZ += (*atom)->GetCoordinates().at(0)->GetZ();
+        }
+    }
+    GeometryTopology::Coordinate center;
+    center.SetX( sumX / numberOfRingAtoms  );
+    center.SetY( sumY / numberOfRingAtoms  );
+    center.SetZ( sumZ / numberOfRingAtoms  );
+    return center;
 }
-
-
-
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
