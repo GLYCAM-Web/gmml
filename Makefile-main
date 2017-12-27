@@ -51,6 +51,7 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/MolecularModeling/element.cc \
 		src/MolecularModeling/moleculardynamicatom.cc \
 		src/MolecularModeling/quantommechanicatom.cc \
+		src/MolecularModeling/residueproperties.cc \
 		src/MolecularModeling/residue.cc \
 		src/GeometryTopology/InternalCoordinate/angle.cc \
 		src/GeometryTopology/InternalCoordinate/dihedral.cc \
@@ -183,7 +184,11 @@ SOURCES       = src/GeometryTopology/cell.cc \
 		src/MolecularModeling/Assembly/solvation.cc \
 		src/MolecularModeling/Assembly/ionization.cc \
 		src/MolecularModeling/Assembly/selection.cc \
-		src/MolecularModeling/Assembly/glycamnaming.cc 
+                src/MolecularModeling/Assembly/glycamnaming.cc \
+                src/MolecularModeling/GraphMolecule/Node.cc \
+                src/MolecularModeling/GraphMolecule/MolecularGraph.cc \
+		src/MolecularModeling/Molecule.cc \
+		src/MolecularModeling/residuenode.cc
 OBJECTS       = build/cell.o \
 		build/coordinate.o \
 		build/grid.o \
@@ -192,8 +197,9 @@ OBJECTS       = build/cell.o \
 		build/atomnode.o \
 		build/dockingatom.o \
 		build/element.o \
-		build/moleculardynamicatom.o \
-		build/quantommechanicatom.o \
+                build/moleculardynamicatom.o \
+                build/quantommechanicatom.o \
+                build/residueproperties.o \
 		build/residue.o \
 		build/angle.o \
 		build/dihedral.o \
@@ -326,9 +332,12 @@ OBJECTS       = build/cell.o \
                 build/solvation.o \
                 build/ionization.o \
                 build/selection.o \
-                build/glycamnaming.o
-DESTDIR       = bin/
-TARGET	= libgmml.so.1.0.0
+                build/glycamnaming.o \
+                build/node.o \
+                build/moleculargraph.o \
+		build/molecule.o \
+		build/residuenode.o
+TARGET        = libgmml.so.1.0.0
 TARGETA       = bin/libgmml.a
 TARGETD       = libgmml.so.1.0.0
 TARGET0       = libgmml.so
@@ -522,6 +531,7 @@ build/assembly.o: src/MolecularModeling/Assembly/assembly.cc includes/MolecularM
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -589,6 +599,7 @@ build/geometryoperation.o: src/MolecularModeling/Assembly/geometryoperation.cc i
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -656,6 +667,7 @@ build/manipulationoperation.o: src/MolecularModeling/Assembly/manipulationoperat
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -723,6 +735,7 @@ build/population.o: src/MolecularModeling/Assembly/Ontology/population.cc includ
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -790,6 +803,7 @@ build/query.o: src/MolecularModeling/Assembly/Ontology/query.cc includes/Molecul
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -857,6 +871,7 @@ build/analysis.o: src/MolecularModeling/Assembly/Ontology/analysis.cc includes/M
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -924,6 +939,7 @@ build/ringperception.o: src/MolecularModeling/Assembly/SugarIdentification/ringp
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -991,6 +1007,7 @@ build/oligosaccharidedetection.o: src/MolecularModeling/Assembly/SugarIdentifica
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1058,6 +1075,7 @@ build/structurebuilder.o: src/MolecularModeling/Assembly/structurebuilder.cc inc
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1125,6 +1143,7 @@ build/assemblybuilder.o: src/MolecularModeling/Assembly/assemblybuilder.cc inclu
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1192,6 +1211,7 @@ build/pdbbuilder.o: src/MolecularModeling/Assembly/Output/pdbbuilder.cc includes
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1259,6 +1279,7 @@ build/pdbqtbuilder.o: src/MolecularModeling/Assembly/Output/pdbqtbuilder.cc incl
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1326,6 +1347,7 @@ build/prepbuilder.o: src/MolecularModeling/Assembly/Output/prepbuilder.cc includ
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1393,6 +1415,7 @@ build/topologybuilder.o: src/MolecularModeling/Assembly/Output/topologybuilder.c
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1460,6 +1483,7 @@ build/coordinatebuilder.o: src/MolecularModeling/Assembly/Output/coordinatebuild
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1527,6 +1551,7 @@ build/librarybuilder.o: src/MolecularModeling/Assembly/Output/librarybuilder.cc 
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1594,6 +1619,7 @@ build/solvation.o: src/MolecularModeling/Assembly/solvation.cc includes/Molecula
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1661,6 +1687,7 @@ build/ionization.o: src/MolecularModeling/Assembly/ionization.cc includes/Molecu
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1728,6 +1755,7 @@ build/selection.o: src/MolecularModeling/Assembly/selection.cc includes/Molecula
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1795,6 +1823,7 @@ build/glycamnaming.o: src/MolecularModeling/Assembly/glycamnaming.cc includes/Mo
 		includes/utils.hpp \
 		includes/Glycan/note.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
 		includes/MolecularModeling/atomnode.hpp \
 		includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp \
@@ -1839,6 +1868,7 @@ build/atom.o: src/MolecularModeling/atom.cc includes/MolecularModeling/atom.hpp 
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
 		includes/MolecularModeling/atomnode.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/atom.o src/MolecularModeling/atom.cc
 
@@ -1848,8 +1878,9 @@ build/atomnode.o: src/MolecularModeling/atomnode.cc includes/MolecularModeling/a
 		includes/MolecularModeling/moleculardynamicatom.hpp \
 		includes/MolecularModeling/quantommechanicatom.hpp \
 		includes/MolecularModeling/dockingatom.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/residue.hpp \
-		includes/utils.hpp \
+                includes/utils.hpp \
 		includes/common.hpp \
 		includes/Glycan/sugarname.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/atomnode.o src/MolecularModeling/atomnode.cc
@@ -1869,7 +1900,11 @@ build/moleculardynamicatom.o: src/MolecularModeling/moleculardynamicatom.cc incl
 build/quantommechanicatom.o: src/MolecularModeling/quantommechanicatom.cc includes/MolecularModeling/quantommechanicatom.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/quantommechanicatom.o src/MolecularModeling/quantommechanicatom.cc
 
+build/residueproperties.o: src/MolecularModeling/residueproperties.cc includes/MolecularModeling/residueproperties.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/residueproperties.o src/MolecularModeling/residueproperties.cc
+
 build/residue.o: src/MolecularModeling/residue.cc includes/MolecularModeling/residue.hpp \
+                includes/MolecularModeling/residueproperties.hpp \
 		includes/MolecularModeling/assembly.hpp \
 		includes/GeometryTopology/coordinate.hpp \
 		includes/GeometryTopology/plane.hpp \
@@ -2711,7 +2746,7 @@ build/pdbpreprocessor.o: src/Resolver/PdbPreprocessor/pdbpreprocessor.cc include
 		includes/Resolver/PdbPreprocessor/pdbpreprocessoralternateresidue.hpp \
 		includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp \
 		includes/InputSet/PdbFileSpace/pdbconnectcard.hpp \
-		includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
+                includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp \
 		includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp \
 		includes/ParameterSet/PrepFileSpace/prepfileatom.hpp \
@@ -2755,6 +2790,21 @@ build/pdbpreprocessorunrecognizedheavyatom.o: src/Resolver/PdbPreprocessor/pdbpr
 
 build/pdbpreprocessorunrecognizedresidue.o: src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc includes/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/pdbpreprocessorunrecognizedresidue.o src/Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.cc
+
+build/node.o: src/MolecularModeling/GraphMolecule/Node.cc includes/MolecularModeling/GraphMolecule/Node.hpp \
+		includes/MolecularModeling/atom.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/node.o src/MolecularModeling/GraphMolecule/Node.cc
+
+build/moleculargraph.o: src/MolecularModeling/GraphMolecule/MolecularGraph.cc includes/MolecularModeling/GraphMolecule/MolecularGraph.hpp \
+		includes/MolecularModeling/GraphMolecule/Node.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/moleculargraph.o src/MolecularModeling/GraphMolecule/MolecularGraph.cc
+
+build/molecule.o: src/MolecularModeling/Molecule.cc includes/MolecularModeling/Molecule.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/molecule.o src/MolecularModeling/Molecule.cc
+
+build/residuenode.o: src/MolecularModeling/residuenode.cc includes/MolecularModeling/residuenode.hpp \
+		includes/MolecularModeling/residue.hpp		
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o build/residuenode.o src/MolecularModeling/residuenode.cc
 
 ####### Install
 

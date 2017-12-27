@@ -25,6 +25,7 @@ namespace MolecularModeling
               */
             typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
             typedef std::vector<Atom*> AtomVector;
+            typedef std::vector<std::string> AtomTypeVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -90,6 +91,12 @@ namespace MolecularModeling
               * @return index_ attribute of the current object of this class
               */
             unsigned long long GetIndex();
+
+            /*! \fn                                     //Added by ayush on 12/11/17 for molecules in assembly
+              * An accessor function in order to access to the atom types
+              * @return atom_types_ attribute of the current object of this class
+              */
+            AtomTypeVector GetAtomTypes();
 
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -162,6 +169,25 @@ namespace MolecularModeling
               */
             void SetIsRing(bool is_ring);
 
+            //Added by ayush on 11/12/17 for molecules in assembly
+            /*! \fn
+              * A mutator function in order to set the atom types of the current object
+              * Set the atom_types_ attribute of the current atom
+              * @param atom_types The string stypes attribute of the current object
+              */
+            void SetAtomTypes(AtomTypeVector atom_types);
+
+
+            //////////////////////////////////////////////////////////          //Added by ayush on 13/11/17 for molecules in assembly
+            //                       FUNCTIONS                      //
+            //////////////////////////////////////////////////////////
+
+            /*! \fn
+              * A function to add a type to the AtomTypeVector of an atom
+              * @param type The string type attribute of the atom
+              */
+            void AddAtomType(std::string type);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -187,6 +213,8 @@ namespace MolecularModeling
                                                       Mostly it is like "residue_name:atom_name" >*/
             bool is_ring_;                          /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/
             unsigned long long index_;              /*!< A unqiue index for each atom in an assembly >*/
+            AtomTypeVector atom_types_;             /*!< List the atom type in an assembly >*/      //Added by ayush on 13/11/17 for molecules in assembly
+
     };
 }
 

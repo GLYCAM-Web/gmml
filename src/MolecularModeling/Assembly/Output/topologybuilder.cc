@@ -125,6 +125,7 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         Residue* assembly_residue = *it;
+
         TopologyResidue* topology_residue = new TopologyResidue();
         residue_counter++;
         topology_residue->SetIndex(residue_counter);
@@ -138,6 +139,12 @@ TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(string parameter_
             ss << assembly_residue->GetName();
         else
             ss << assembly_residue->GetName() << "-";
+
+       // --Assinging assembly residue which is solvent to topology residue.---edited by Ayush on 07/11/17
+        bool is_residue_solvent=assembly_residue->GetIsResidueSolvent();
+        topology_residue->SetIsResidueSolvent(is_residue_solvent);
+
+
         topology_residue->SetStartingAtomIndex(atom_counter);
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
         PrepFileResidue::Loop loops = PrepFileResidue::Loop();

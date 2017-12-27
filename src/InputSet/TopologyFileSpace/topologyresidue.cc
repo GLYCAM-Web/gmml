@@ -16,6 +16,7 @@ TopologyResidue::TopologyResidue()
     atoms_ = TopologyAtomVector();
     index_ = iNotSet;
     starting_atom_index_ = iNotSet;
+    is_residue_solvent_=false;
 }
 
 TopologyResidue::TopologyResidue(string residue_name, TopologyAtomVector atoms, int index, int starting_atom_index) :
@@ -58,6 +59,10 @@ int TopologyResidue::GetStartingAtomIndex()
 {
     return starting_atom_index_;
 }
+bool TopologyResidue::GetIsResidueSolvent()
+{
+    return is_residue_solvent_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -77,6 +82,10 @@ void TopologyResidue::SetIndex(int index)
 void TopologyResidue::SetStartingAtomIndex(int starting_atom_index)
 {
     starting_atom_index_ = starting_atom_index;
+}
+void TopologyResidue::SetIsResidueSolvent(bool is_residue_solvent)
+{
+    is_residue_solvent_ = is_residue_solvent;
 }
 
 //////////////////////////////////////////////////////////

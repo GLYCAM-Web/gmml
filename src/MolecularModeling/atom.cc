@@ -116,6 +116,12 @@ unsigned long long Atom::GetIndex()
     return index_;
 }
 
+//Added by ayush on 13/11/17 for molecules in assembly
+Atom::AtomTypeVector Atom::GetAtomTypes()
+{
+    return atom_types_;
+}
+
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -164,6 +170,16 @@ void Atom::SetIsRing(bool is_ring)
     is_ring_ = is_ring;
 }
 
+//Added by ayush on 13/11/17 for molecules in assembly
+void Atom::SetAtomTypes(AtomTypeVector atom_types)
+{
+    atom_types_.clear();
+    for(AtomTypeVector::iterator it = atom_types.begin(); it != atom_types.end(); it++)
+    {
+        atom_types_.push_back(*it);
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -198,6 +214,14 @@ unsigned long long Atom::generateAtomIndex()
 {
     static unsigned long long s_AtomIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
     return s_AtomIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
+}
+
+
+//Added by ayush on 13/11/17 for molecules in assembly
+
+void Atom::AddAtomType(std::string type)
+{
+    atom_types_.push_back(type);
 }
 
 //////////////////////////////////////////////////////////

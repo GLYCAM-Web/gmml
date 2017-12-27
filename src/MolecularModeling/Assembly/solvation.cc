@@ -85,14 +85,12 @@ using namespace CondensedSequenceSpace;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::AddSolvent(double extension, double closeness, string lib_file)
+void Assembly::AddSolvent(double extension, double closeness, Assembly* solvent_component_assembly,string lib_file)
 {
+
     Coordinate* solvent_component_min_boundary = new Coordinate();
     Coordinate* solvent_component_max_boundary = new Coordinate();
-    Assembly* solvent_component = new Assembly();                   //Box of water (TIP3p | TIP5p)
-    solvent_component->BuildAssemblyFromLibraryFile(lib_file);      //Reading the box of water from library file
-    solvent_component->SetSourceFile(lib_file);
-    solvent_component->BuildStructureByLIBFileInformation();        //Building the structure of the box of water
+    Assembly* solvent_component = solvent_component_assembly;                  //Box of water (TIP3p | TIP5p)
 
     //Bounding box calculation of the water box (TIP3p | TIP5p)
     solvent_component->GetBoundary(solvent_component_min_boundary, solvent_component_max_boundary);
@@ -101,6 +99,8 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
     LibraryFile* lib = new LibraryFile(lib_file);
     LibraryFile::ResidueMap lib_residues = lib->GetResidues();
     LibraryFileResidue* lib_residue  = lib_residues.begin()->second;
+
+
 
     double solvent_length = lib_residue->GetBoxLength();
     double solvent_width = lib_residue->GetBoxWidth();
@@ -149,6 +149,7 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
     int sequence_number = this->GetResidues().size() + 1;
     int serial_number = this->GetAllAtomsOfAssembly().size() + 1;
 
+
     //Filling the solvent cube with water boxes
     for(int i = 0; i < x_copy; i ++)
     {
@@ -168,12 +169,8 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
                 solute_max_boundary_with_extension->SetX(solute_max_boundary->GetX() + closeness);
                 solute_max_boundary_with_extension->SetY(solute_max_boundary->GetY() + closeness);
                 solute_max_boundary_with_extension->SetZ(solute_max_boundary->GetZ() + closeness);
-                Assembly* tip_box = new Assembly();
-                tip_box->BuildAssemblyFromLibraryFile(lib_file);
-                tip_box->SetSourceFile(lib_file);
-                tip_box->BuildStructureByLIBFileInformation();
-                //                    tip_box->BuildStructureByDistance();
-                AtomVector all_atoms_of_tip = tip_box->GetAllAtomsOfAssembly();
+
+                AtomVector all_atoms_of_tip = solvent_component->GetAllAtomsOfAssembly();
                 Residue* tip_residue = new Residue();
                 vector<string> removed_atom_id_list = vector<string>();
                 for(AtomVector::iterator it = all_atoms_of_tip.begin(); it != all_atoms_of_tip.end(); it++)
@@ -254,6 +251,7 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
                         tip_residue->AddAtom(tip_atom);
                         string residue_name = tip_atom->GetResidue()->GetName().substr(0,4);
                         tip_residue->SetName("HOH");
+
                         tip_atom->SetResidue(tip_residue);
                         string id = residue_name + "_" + BLANK_SPACE + "_" + ConvertT<int>(sequence_number) + "_" +
                                 BLANK_SPACE + "_" + BLANK_SPACE + "_" + this->GetId();
@@ -261,12 +259,13 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
                         string atom_id = tip_atom->GetName() + "_" + ConvertT<int>(serial_number) + "_" + id;
                         serial_number++;
                         tip_atom->SetId(atom_id);
+                       tip_residue->SetIsResidueSolvent(true); //Setting Residue as solvent uisng flag  --- edited by Ayush on 06/28/2017
                     }
                 }
                 //Add the residue to the assembly
                 this->AddResidue(tip_residue);
                 sequence_number++;
-                //                }
+
             }
         }
     }
@@ -281,6 +280,7 @@ void Assembly::SplitSolvent(Assembly* solvent, Assembly* solute)
     for(ResidueVector::iterator it = this->residues_.begin(); it != this->residues_.end(); it++)
     {
         Residue* residue = *it;
+
         if(residue->GetName().compare("HOH") == 0 || residue->GetName().compare("TP3") == 0 ||
                 residue->GetName().compare("TP5") == 0)
             solvent->AddResidue(residue);
@@ -288,4 +288,3 @@ void Assembly::SplitSolvent(Assembly* solvent, Assembly* solute)
             solute->AddResidue(residue);
     }
 }
-

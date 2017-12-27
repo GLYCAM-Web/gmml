@@ -678,7 +678,7 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string dis
     curl << Ontology::CURL_PREFIX;
     curl << Ontology::CSV_OUTPUT_FORMAT;
 
-    curl << Ontology::DATA_STORE_ADDRESS << Ontology::QUERY_PREFIX << query.str() << Ontology::QUERY_POSTFIX << " \>\> result.txt";
+    curl << Ontology::DATA_STORE_ADDRESS << Ontology::QUERY_PREFIX << query.str() << Ontology::QUERY_POSTFIX << " \\>\\> result.txt";   //Has ewarning: unknown escape sequence: '\>' [enabled by default] so changed \>\> to \\>\\> by Ayush on 06/22/2017
     string tmp = curl.str();
     const char* cstr = tmp.c_str();
     system(cstr);
@@ -753,8 +753,8 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(string dis
 //    cout << ss.str() << endl;
 //    string tmp = ss.str();
 //    const char* cstr = tmp.c_str();
-    system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< sparql.sparql \>  result.txt");
-    remove("sparql.sparql");
+ //   system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< sparql.sparql \>  result.txt");
+   // remove("sparql.sparql");
 
 //    stringstream curl;
 //    curl << Ontology::CURL_PREFIX;

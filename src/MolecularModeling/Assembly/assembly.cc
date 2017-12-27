@@ -63,6 +63,8 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
+#include "../../../includes/MolecularModeling/residuenode.hpp"         //Added by ayush on 11/16/17 for identifying residuenodes in assembly
+#include "../../../includes/MolecularModeling/Molecule.hpp"            //Added by ayush on 11/12/17 for molecules in assembly
 
 #include <unistd.h>
 #include <errno.h>
@@ -93,8 +95,7 @@ Assembly::Assembly() : description_(""), model_index_(0), sequence_number_(1), i
 }
 
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
-{cout<<"grid1 "<<grid1.GetAssembly()->GetChemicalType()<<endl;
-    cout<<"grid2 "<<grid2.GetAssembly()->GetChemicalType()<<endl;
+{
     source_file_type_ = type;
     description_ = "";
     model_index_ = 0;
@@ -370,6 +371,18 @@ Assembly::NoteVector Assembly::GetNotes()
     return notes_;
 }
 
+  //Added by ayush on 11/16/17 for residuenodes in assembly
+Assembly::ResidueNodeVector Assembly::GetAllResidueNodesOfAssembly()
+{
+        return residuenodes_;
+}
+
+ //Added by ayush on 11/12/17 for molecules in assembly
+Assembly::MoleculeVector Assembly::GetMolecules()
+{
+      return molecules_;
+}
+
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -501,6 +514,28 @@ void Assembly::SetNotes(NoteVector notes)
 void Assembly::AddNote(Note *note)
 {
     notes_.push_back(note);
+}
+
+
+//Added by ayush on 11/16/17 for residuenodes in assembly
+void Assembly::SetResidueNodes(ResidueNodeVector residuenodes)
+{
+    residuenodes_.clear();
+    for(ResidueNodeVector::iterator it = residuenodes.begin(); it != residuenodes.end(); it++)
+    {
+        residuenodes_.push_back(*it);
+    }
+}
+
+
+//Added by ayush on 11/12/17 for molecules in assembly
+void Assembly::SetMolecules(MoleculeVector molecules)
+{
+    molecules_.clear();
+    for(MoleculeVector::iterator it = molecules.begin(); it != molecules.end(); it++)
+    {
+        molecules_.push_back(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -641,6 +676,130 @@ ResidueNameMap Assembly::GetAllResidueNamesFromMultipleLibFilesMap(vector<string
     return all_residue_names;
 }
 
+
+//Added by ayush on 11/16/17 for residuenodes in assembly
+void Assembly::AddResidueNode(ResidueNode* residuenode)
+{
+    residuenodes_.push_back(residuenode);
+}
+
+Assembly::ResidueNodeVector Assembly::GenerateResidueNodesInAssembly()
+{
+
+    int residue_counter=1;
+    ResidueVector assembly_residues=this->GetAllResiduesOfAssembly();
+    for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+    {
+        ResidueNode* residuenode = new ResidueNode();
+
+       Residue* residue = (*it);
+
+        residuenode->SetResidue(residue);
+
+        residuenode->SetId(residue_counter);
+
+        string residue_id=residue->GetId();
+
+        AtomVector residue_atoms = residue->GetAtoms();
+
+        for(AtomVector::iterator it1 = residue_atoms.begin(); it1 != residue_atoms.end(); it1++)
+        {
+                  Atom* residue_atom = *it1;
+                  AtomVector atom_neighbors = residue_atom->GetNode()->GetNodeNeighbors();
+
+                    for(AtomVector::iterator it2 =atom_neighbors.begin(); it2 != atom_neighbors.end(); it2++)
+                    {
+                             Atom* neighbor_atom = *it2;
+
+                              if((neighbor_atom->GetResidue()->GetId()).compare(residue_id)!=0)
+                              {
+                                  residuenode->AddResidueNodeConnectingAtom(residue_atom);
+
+                              }
+                    }
+
+        }
+            residue->SetNode(residuenode);
+            this->AddResidueNode(residuenode);
+            residue_counter++;
+
+    }
+
+    //For adding residuenode neighbours
+    for(ResidueNodeVector::iterator it3 = residuenodes_.begin(); it3 != residuenodes_.end(); it3++)
+    {
+            ResidueNode* residuenode = (*it3);
+
+             AtomVector residue_connecting_atoms = residuenode->GetResidueNodeConnectingAtoms();
+
+            for(AtomVector::iterator it4 = residue_connecting_atoms.begin(); it4 != residue_connecting_atoms.end(); it4++)
+            {
+                Atom* connecting_atom = (*it4);
+
+
+                AtomVector connecting_atom_neighbors= connecting_atom->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it5 = connecting_atom_neighbors.begin(); it5 != connecting_atom_neighbors.end(); it5++)
+                {
+
+                        Atom* connecting_atom_neighbor = (*it5);
+
+
+                        if((connecting_atom_neighbor->GetResidue()->GetId()).compare(residuenode->GetResidue()->GetId())!=0)
+                        {
+                                ResidueNode* neighbor_residue=connecting_atom_neighbor->GetResidue()->GetNode();
+                                 residuenode->AddResidueNodeNeighbor(neighbor_residue);
+                        }
+
+                }
+
+            }
+    }
+        return residuenodes_;
+  }
+
+//Added by ayush on 12/8/17 for molecules in assembly
+void Assembly::GenerateMoleculesInAssembly()
+{
+    int moleculecount=0;
+
+    for(ResidueNodeVector::iterator it = residuenodes_.begin(); it != residuenodes_.end(); it++)
+    {
+         ResidueNode* residuenode = (*it);
+         if(residuenode->GetIsVisited()==false)
+         {
+             GenerateMoleculesDFSUtil(residuenode);
+             moleculecount++;
+         }
+    }
+
+    cout<<"Total number of molecules in Assembly is:"<<moleculecount<<endl;
+
+}
+
+void Assembly::GenerateMoleculesDFSUtil(ResidueNode* DFSresiduenode)
+{
+        DFSresiduenode->SetIsVisited(true);
+        ResidueNodeVector residuenode_neighbors=DFSresiduenode->GetResidueNodeNeighbors();
+
+        for(ResidueNodeVector::iterator it2 = residuenode_neighbors.begin(); it2 != residuenode_neighbors.end(); it2++)
+        {
+               ResidueNode* current_residuenode_neighbor = (*it2);
+               if(current_residuenode_neighbor->GetIsVisited()==false)
+               {
+                    GenerateMoleculesDFSUtil(current_residuenode_neighbor);
+               }
+
+        }
+
+
+}
+//Added by ayush on 11/12/17 for molecules in assembly
+void Assembly::AddMolecule(Molecule *molecule)
+{
+    int max_index_=molecules_.size()+1;
+    molecule->SetMoleculeIndex(max_index_);
+    molecules_.push_back(molecule);
+}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////

@@ -151,7 +151,7 @@ void Assembly::PopulateOligosaccharide(stringstream& pdb_stream, stringstream& o
 {
     string oligo_resource = "";
     string oligo_uri = "";
-    if(oligos.size() != NULL)
+    if(oligos.size() != 0) //Earlier it was  if(oligos.size() != NULL) but throws  warning: NULL used in arithmetic [-Wpointer-arith], hence changed NULL to 0 by Ayush on 06/22/2017
     {
         for(OligosaccharideVector::iterator it = oligos.begin(); it != oligos.end(); it++)
         {

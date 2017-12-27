@@ -67,6 +67,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <iostream>
 
 using namespace std;
 using namespace MolecularModeling;
@@ -114,7 +115,6 @@ bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::
 
 void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file, bool structure)
 {
-
     try
     {
         CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
@@ -123,7 +123,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
         PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
         ParameterFile* parameter = NULL;
         ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
-        if(parameter_file.compare("") != 0)
+        if(parameter_file.compare("")!= 0)
         {
             parameter = new ParameterFile(parameter_file);
             atom_type_map = parameter->GetAtomTypes();
@@ -147,7 +147,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 // Build residue from prep residue
                 sequence_number++;
                 CoordinateVector cartesian_coordinate_list = CoordinateVector();
-
                 Residue* assembly_residue = new Residue();
                 assembly_residue->SetAssembly(this);
                 string prep_residue_name = prep_residue->GetName();
@@ -155,12 +154,12 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 stringstream id;
                 id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
                    << gmml::BLANK_SPACE << "_" << id_;
+
                 assembly_residue->SetId(id.str());
                 if(distance(amber_prep_residues.begin(), it) == (int)amber_prep_residues.size()-1)
                     ss << prep_residue_name;
                 else
                     ss << prep_residue_name << "-";
-
                 PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
                 for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
                 {
@@ -168,6 +167,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     string atom_name = prep_atom->GetName();
                     if(prep_atom->GetType() != "DU")
                         serial_number++;
+
                     Atom* assembly_atom = new Atom();
                     assembly_atom->SetResidue(assembly_residue);
                     assembly_atom->SetName(atom_name);
@@ -358,6 +358,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
     {
         cout << "Building assembly from " << sequence << " failed." << endl;
     }
+
+
 }
 
 Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string sequence, string prep_file, string parameter_file,

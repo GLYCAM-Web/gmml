@@ -608,6 +608,7 @@ void TopologyFile::Read(ifstream &in_file)
 
 void TopologyFile::ParseSections(ifstream &in_stream)
 {
+
     string line;
     /// Unable to read file
     if (!getline(in_stream, line))
@@ -825,22 +826,38 @@ void TopologyFile::ParseSections(ifstream &in_stream)
             {
                 solvent_pointers = ParsePartition<int>(section);
 
+                cout<<"Printing Solvent Pointers value"<<endl;
+                for (int x = 0; x != solvent_pointers.size(); ++x)
+                {
+                    // cout << example[x] << "- subscripting" << endl;
+                     cout << solvent_pointers.at(x) << " ";
+                }
+
             }
             else if(in_line.find("%FLAG ATOMS_PER_MOLECULE") != string::npos)
             {
                 atoms_per_molecule = ParsePartition<int>(section);
+                cout<<"Printing atoms_per_molecule value"<<endl;
+                for (int x = 0; x != atoms_per_molecule.size(); ++x)
+                {
+                    // cout << example[x] << "- subscripting" << endl;
+                     cout << atoms_per_molecule.at(x) << " ";
+                }
             }
             else if(in_line.find("%FLAG BOX_DIMENSIONS") != string::npos)
             {
                box_dimensions = ParsePartition<double>(section);
+               cout<<"Printing box_dimensions value"<<endl;
+               for (int x = 0; x != box_dimensions.size(); ++x)
+               {
+                   // cout << example[x] << "- subscripting" << endl;
+                    cout << box_dimensions.at(x) << " ";
+               }
             }
             else if(in_line.find("%FLAG CAP_INFO") != string::npos)
             {
             }
             else if(in_line.find("%FLAG CAP_INFO2") != string::npos)
-            {
-            }
-            else if(in_line.find("%FLAG SOLVENT_POINTERS") != string::npos)
             {
             }
             else if(in_line.find("%FLAG IPOL") != string::npos)
@@ -1469,6 +1486,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         int starting_atom_index = residue_pointers.at(residue_index - 1);
         int ending_atom_index;
 
+
         if(residue_index < number_of_residues_)
         {
             ending_atom_index = residue_pointers.at(residue_index);
@@ -1500,6 +1518,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
                     }
                     if(index >= start_atom_index && index < end_atom_index)
                     {
+
                         excluded_atom_residue_name = residue_labels.at(k) + "(" + ConvertT<int>(k+1) + ")";
                         break;
                     }
@@ -1511,7 +1530,7 @@ void TopologyFile::ParseSections(ifstream &in_stream)
         }
         stringstream residue_key;
         residue_key << residue_name << "_" << BLANK_SPACE << "_" << residue_index;
-        residues.push_back(new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index));
+        residues.push_back(new TopologyResidue(residue_name, atoms, residue_index, starting_atom_index)); //edited by Ayush on 06/30/17 for Solvent
     }
 
     assembly_ = new TopologyAssembly();
@@ -1653,11 +1672,16 @@ vector<T> TopologyFile::ParsePartition(stringstream &stream)
             for(typename vector<T>::iterator it = line_items.begin(); it != line_items.end(); it++)
             {
                 section.push_back(*it);
+                //Printing to check if the value is read or not ---Need to delete
+                //cout<<*it;
             }
+            // new line ---Need to delete
+          //  std::cout << "\n";
         }
         getline(stream, line);
     }
     return section;
+
 }
 
 template<typename T>
@@ -1803,7 +1827,7 @@ void TopologyFile::ResolveSections(ofstream &out_stream)
     this->ResolveDihedralsIncHydrogenSection(out_stream);
     this->ResolveDihedralsWithoutHydrogenSection(out_stream);
     this->ResolveExcludedAtomsListSection(out_stream);
-    this->ResolveHydrogenBoResolveSectionsndACoefSection(out_stream);
+    this->ResolveHydrogenBondACoefSection(out_stream);
     this->ResolveHydrogenBondBCoefSection(out_stream);
     this->ResolveHBCutSection(out_stream);
     this->ResolveAmberAtomTypeSection(out_stream);
@@ -1812,6 +1836,7 @@ void TopologyFile::ResolveSections(ofstream &out_stream)
     this->ResolveIRotatSection(out_stream);
     this->ResolveRadiusSetSection(out_stream);
     this->ResolveRadiiSection(out_stream);
+    this->ResolveSolventPointersSection(out_stream); //Added by Ayush for Solvation on 07/11/2017
     this->ResolveScreenSection(out_stream);
 
 }
@@ -3354,16 +3379,32 @@ void TopologyFile::ResolveSolventPointersSection(ofstream& out)
     const int MAX_IN_LINE = 3;
     const int ITEM_LENGTH = 8;
 
-      int last_solute_atom = this->
-    TopologyResidue* residue = this->assembly_->GetResidueByIndex(number_of_residues_);
-     out << setw(ITEM_LENGTH) << right << residue->GetResidueName();
-     solvation s1 = new solvation();
+    int final_residue=0;
+    for(int i = 0; i < number_of_residues_; i++)
+       {
+           TopologyResidue* residue = this->assembly_->GetResidueByIndex(i+1);
 
-    if(count < MAX_IN_LINE && count != 0)
-        out << endl;
-    if(total_count == 0)
-        out << endl;
-}
+           if(residue->GetIsResidueSolvent()==false)
+           { //cout<<"is residue solvent in topology file"<<endl;
+            //cout<<"residue name"<<residue->GetResidueName()<<endl;
+               final_residue++;
+           }
+
+           count++;
+           total_count++;
+           if(count == MAX_IN_LINE)
+           {
+               count = 0;
+               out << endl;
+           }
+       }
+        out<<final_residue;
+
+       if(count < MAX_IN_LINE && count != 0)
+           out << endl;
+       if(total_count == 0)
+           out << endl;
+   }
 
 void TopologyFile::ResolveScreenSection(ofstream& out)
 {

@@ -33,7 +33,9 @@
 namespace MolecularModeling
 {
     class Residue;
-    class Atom;    
+    class Atom;
+    class Molecule;
+    class ResidueNode;
     class Assembly
     {
         public:
@@ -57,6 +59,8 @@ namespace MolecularModeling
             typedef std::map<std::string, std::string> DerivativeModificationMap;
             typedef std::vector<std::vector<std::string> > AttachedGlycanStructuresVector;
             typedef std::vector<Glycan::Note*> NoteVector;
+            typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
+            typedef std::vector<Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -155,6 +159,20 @@ namespace MolecularModeling
               */
             NoteVector GetNotes();
 
+            /*! \fn                                                       //Added by ayush on 11/16/17 for residuenodes in assembly
+              * * A functions that extracts all residuesnodes in an assembly
+              * @return Vector of all residuesnode in the current object of assembly
+              */
+            ResidueNodeVector GetAllResidueNodesOfAssembly();
+
+            /*! \fn                                                       //Added by ayush on 11/12/17 for molecules in assembly
+              * * A functions that extracts all molecules of an assembly
+              * @return Vector of all molecules in the current object of assembly
+              */
+            MoleculeVector GetMolecules();
+
+
+
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -238,6 +256,21 @@ namespace MolecularModeling
               * @param note The note instance of the current object
               */
             void AddNote(Glycan::Note* note);
+
+            /*! \fn                                                         //Added by ayush on 11/16/17 for residuenodes in assembly
+              * A function in order to set residuenodes to the current object of Assembly
+              * Set the residuenodes_ attribute of the current assembly
+              * @param residuenodes The residuenodes of the current object
+              */
+            void SetResidueNodes(ResidueNodeVector residuenodes);
+
+            /*! \fn                                                         //Added by ayush on 11/12/17 for molecules in assembly
+              * A function in order to add the molecules to the current object
+              * Set the molecules_ attribute of the current assembly
+              * @param molecules The molecules of the current object
+              */
+            void SetMolecules(MoleculeVector molecules);
+
 
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -1352,7 +1385,7 @@ namespace MolecularModeling
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
 
             void AddIon(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
-            void AddSolvent(double extension, double closeness, std::string lib_file);
+            void AddSolvent(double extension, double closeness, Assembly* solvent_component_assembly, std::string lib_file );
             void SplitSolvent(Assembly* solvent, Assembly* solute);
             void SplitIons(Assembly* assembly, ResidueVector ions);
 
@@ -1369,6 +1402,34 @@ namespace MolecularModeling
               */
             double CalculateAtomicOverlaps(Assembly *assemblyB);
 
+            /*! \fn                                                                             //Added by ayush on 11/16/17 for residuenodes in assembly
+              * A function to add a residuenode to the ResidueNodeVector in an assembly
+              * @param residue a pointer to the residue object of class Residue
+              */
+            void AddResidueNode(ResidueNode* residuenode);
+
+            /*! \fn                                                                             //Added by ayush on 11/17/17 for residuenodes in assembly
+              * A function to generate residuenodes in an assembly
+              * @return A residuenode vector of all the residues nodes present in the assembly
+              */
+            ResidueNodeVector GenerateResidueNodesInAssembly();
+
+            /*! \fn                                                                             //Added by ayush on 11/12/17 for molecules in assembly
+              * A function to add a molecule to the MoleculeVector in an assembly
+              * @param molecule a pointer to the molecule object of class Molecule
+              */
+            void AddMolecule(Molecule* molecule);
+
+            /*! \fn                                                                             //Added by ayush on 12/7/17 for molecules in assembly
+              * A function to generate molecules in an assembly
+              * @return A molecule vector of all the molecules present in the assembly
+              */
+            void GenerateMoleculesInAssembly();
+
+            /*! \fn                                                                             //Added by ayush on 12/7/17 for molecules in assembly
+              * A DFS function to traverse the residuenodes the assembly
+              */
+            void GenerateMoleculesDFSUtil(ResidueNode* residuenode);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -1402,6 +1463,9 @@ namespace MolecularModeling
             gmml::InputFileType source_file_type_;          /*!< Type of the file that the current assembly has been built upon >*/
             int model_index_;                               /*!< In case that there are more than one models for an assembly, this attribute indicated which model is the target model >*/
             NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
+            ResidueNodeVector residuenodes_;                /*!< List of residuenodes present in the current object of assembly >*/     //Added by ayush on 11/16/17 for residuenodes in assembly
+            MoleculeVector molecules_;                      /*!< List of molecules present in the current object of assembly >*/        //Added by ayush on 11/12/17 for molecules in assembly
+
     };
 
     struct DistanceCalculationThreadArgument{

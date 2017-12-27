@@ -2,6 +2,8 @@
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
+#include "../../includes/MolecularModeling/residueproperties.hpp"
+#include "../../includes/MolecularModeling/residuenode.hpp"
 
 using namespace std;
 using namespace MolecularModeling;
@@ -50,6 +52,7 @@ Residue::Residue(Residue& residue){
 
     this->name_=residue.GetName();
     this->atoms_ = AtomVector();
+
     AtomVector atoms = residue.GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
         atoms_.push_back(new Atom(*it));
@@ -103,6 +106,13 @@ string Residue::GetDescription()
 string Residue::GetId()
 {
     return id_;
+}
+
+ //Added by ayush on 11/20/17 for residuenode in assembly
+ResidueNode* Residue::GetNode()
+{
+        return node_;
+        cout<<"called getNode in residue.cc"<<endl;
 }
 
 //////////////////////////////////////////////////////////
@@ -181,6 +191,11 @@ void Residue::SetId(string id)
     id_ = id;
 }
 
+ //Added by ayush on 11/20/17 for residuenode in assembly
+void Residue::SetNode(ResidueNode* node)
+{
+    node_ = node;
+}
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
