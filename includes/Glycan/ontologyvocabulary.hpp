@@ -12,7 +12,15 @@ namespace Ontology
     const std::string TYPE = "rdf:type";
     const std::string LABEL = "rdfs:label";
 
-    const std::string TTL_FILE_PREFIX = "@prefix : <http://www.semanticweb.org/owl/owlapi/turtle#> .\n @prefix owl: <http://www.w3.org/2002/07/owl#> .\n @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n @prefix xml: <http://www.w3.org/XML/1998/namespace> .\n @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n @prefix gmmo: <http://gmmo.uga.edu/#> .\n @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n @base <http://gmmo.uga.edu/> .\n <http://gmmo.uga.edu/> rdf:type owl:Ontology .\n";
+    const std::string TTL_FILE_PREFIX = "@prefix : <http://www.semanticweb.org/owl/owlapi/turtle#> .\n"
+                                        "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n"
+                                        "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n"
+                                        "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n"
+                                        "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n"
+                                        "@prefix gmmo: <http://gmmo.uga.edu/#> .\n"
+                                        "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n"
+                                        "@base <http://gmmo.uga.edu/> .\n"
+                                        "<http://gmmo.uga.edu/> rdf:type owl:Ontology .\n";
 
     /* Classes */
     const std::string Atom = "gmmo:Atom";
@@ -21,9 +29,11 @@ namespace Ontology
     const std::string Linkage = "gmmo:Linkage";
     const std::string Monosaccharide = "gmmo:Monosaccharide";
     const std::string Oligosaccharide = "gmmo:Oligosaccharide";
+    const std::string Terminal = "gmmo:Terminal";
     const std::string Note = "gmmo:Note";
     const std::string PDB = "gmmo:PDB";
     const std::string Residue = "gmmo:Residue";
+    const std::string SequenceResidue = "gmmo:SequenceResidue";
     const std::string SugarName = "gmmo:SugarName";
 
     /* Object Properties */
@@ -34,6 +44,9 @@ namespace Ontology
     const std::string hasGlycosidicLinkage = "gmmo:hasGlycosidicLinkage";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
     const std::string hasOligo = "gmmo:hasOligo";
+    const std::string hasTerminal = "gmmo:hasTerminal";
+    const std::string hasSequenceResidue = "gmmo:hasSequenceResidue";
+    const std::string isConnectedTo = "gmmo:isConnectedTo";
     const std::string hasNote = "gmmo:hasNote";
     const std::string hasParent = "gmmo:hasParent";
     const std::string hasResidue = "gmmo:hasResidue";
@@ -49,15 +62,18 @@ namespace Ontology
     const std::string configuration = "gmmo:configuration";
     const std::string ring_atoms = "gmmo:ringAtoms";
     const std::string derivative = "gmmo:derivative";
+    const std::string seq_derivative = "gmmo:sequenceDerivative";
     const std::string glycosidic_linkage = "gmmo:glycosidicLinkage";
     const std::string linkageIndeces = "gmmo:linkageIndeces";
     const std::string id = "gmmo:identifier";
+    const std::string sequence_linkage = "gmmo:sequenceLinkage";
     const std::string isomer = "gmmo:isomer";
     const std::string mono_name = "gmmo:monosaccharideName";
     const std::string mono_short_name = "gmmo:monosaccharideShortName";
     const std::string mono_stereo_name = "gmmo:monosaccharideStereochemName";
     const std::string mono_stereo_short_name = "gmmo:monosaccharideStereochemShortName";
     const std::string oligo_name = "gmmo:oligoName";
+    const std::string oligo_sequence_name = "gmmo:oligoSequenceName";
     const std::string oligo_residue_linkages = "gmmo:oligoResidueLinks";
     const std::string note_type = "gmmo:NoteType";
     const std::string note_category = "gmmo:NoteCategory";
@@ -82,7 +98,8 @@ namespace Ontology
     const std::string JSON_OUTPUT_FORMAT = " \'Accept: application/json\' ";
     const std::string XML_OUTPUT_FORMAT = " \'Accept: application/sparql-results+xml' ";
     const std::string DATA_STORE_ADDRESS = "http://192.168.1.52:8890/sparql"; /* "http://128.192.62.244:8890/sparql", "http://192.168.1.52:8890/sparql" */
-    const std::string CURL_PREFIX = "curl -g -H";
+    const std::string DATA_STORE_ADDRESS_GF = "http://gw_virt:8890/sparql";
+    const std::string CURL_PREFIX = "curl -g -s -H";
     const std::string QUERY_PREFIX = " --data-urlencode query=\'";
     const std::string QUERY_POSTFIX = "\'";
 }

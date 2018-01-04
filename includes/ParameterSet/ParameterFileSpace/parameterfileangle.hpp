@@ -29,6 +29,9 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** @addtogroup Molecular_Data_Structure
+*  @{
+*/
             /*! \fn
               * An accessor function in order to access to the atom types involved in an angle in the current object
               * @return types_ attribute of the current object of this class
@@ -51,10 +54,13 @@ namespace ParameterFileSpace
               * @return dscr_ attribute of the current object of this class
               */
             std::string GetDscr();
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** @addtogroup Manipulators
+*  @{
+*/
             /*! \fn
               * A mutator function in order to set the list of atom types of the current object
               * Set the types_ attribute of the current angle
@@ -79,7 +85,7 @@ namespace ParameterFileSpace
               * @param dscr The description attribute of the current object
               */
             void SetDscr(const std::string dscr);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

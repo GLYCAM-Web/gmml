@@ -45,6 +45,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the record name in a atom card
               * @return record_name_ attribute of the current object of this class
@@ -60,10 +63,13 @@ namespace PdbFileSpace
               * @return ordered_atoms_ attribute of the current object of this class
               */
             PdbAtomOrderVector GetOrderedAtoms();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the record name of the current object
               * Set the record_name_ attribute of the current atom card
@@ -82,7 +88,7 @@ namespace PdbFileSpace
               * @param ordered_atoms attribute of the current object
               */
             void SetOrderedAtoms(PdbAtomOrderVector ordered_atoms);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

@@ -27,14 +27,20 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             Coordinate* GetMinCorner();
             Coordinate* GetMaxCorner();
             CellVector GetCells();
             MolecularModeling::Assembly* GetAssembly();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             void SetMinCorner(Coordinate* min);
             void SetMaxCorner(Coordinate* max);
             void SetCells(CellVector cells);
@@ -51,7 +57,7 @@ namespace GeometryTopology
             void CalculateBoxPotentialEnergy();
             Cell* GetBestBox(Grid* grid, double ion_charge);
             std::vector<Coordinate*> GetBestPositions(double ion_charge);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

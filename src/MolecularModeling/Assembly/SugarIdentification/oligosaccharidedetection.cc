@@ -12,7 +12,7 @@
 #include "../../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -85,6 +85,22 @@ using namespace CondensedSequenceSpace;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
+void Assembly::GetBFMP( Monosaccharide* mono ) {
+  CoordinateVector coordinates = GetCycleAtomCoordinates( mono );
+  // Testing GetCycleAtomCoordinates function
+  for( CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++ ) {
+    ( *it )->Print( cout );
+  }
+  // @TODO At this point you should have a CoordinateVector with the Coordinates of the 6 cycle atoms.
+  // Should just be math to figure out the bfmp to store to the Monosaccharide below.
+  string bfmp = "";
+
+
+  // @TODO This may end up being 'return bfmp' since the name of the function is GetBFMP.
+  // It would make sense to have it return the BFMP for the user to store it as they wish.
+  mono->bfmp_ring_conformation_ = bfmp;
+}
+
 void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
 {
     ///Creating a new assembly only from the ring atoms for external detect shape program
@@ -117,7 +133,7 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     PdbFile* pdb = detect_shape_assembly->BuildPdbFileStructureFromAssembly();
     pdb->Write("temp_gmml_pdb.pdb");
 
-    ///Converting the written PDB file to fomrat readable by detect_shape program
+    ///Converting the written PDB file to format readable by detect_shape program
     string line = "";
     ifstream gmml_pdb ("temp_gmml_pdb.pdb");
     ofstream detect_shape_pdb ("temp_detect_shape_pdb.pdb");
@@ -151,6 +167,9 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     detect_shape_configuration.close();
 
     ///Calling detect_shape program
+    // The better way to do this would be to pass the bfmp code the six cartesian
+    // coords it needs and call it as a part of the library.  not sure how much
+    // work it would take to do this, but it would be better.
     system("apps/BFMP/detect_shape temp_detect_shape_pdb.pdb temp_config > /dev/null");
 
     ///Adding the BFMP ring conformation infomration gained from the detect_sugar program to the monosaccharide
@@ -176,407 +195,402 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     remove("ring_conformations.txt");
 }
 
-vector<Oligosaccharide*> Assembly::ExtractSugars(vector<string> amino_lib_files, bool glyprobity_report, bool populate_ontology)
-{
-    ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
+vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_files, bool glyprobity_report, bool populate_ontology ) {
 
-    ///CYCLE DETECTION
-    CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
+  ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
 
-    //    CycleMap cycles = DetectCyclesByDFS();
+  ///CYCLE DETECTION
+  CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
-    ///PRINTING ALL DETECTED CYCLES
-    cout << endl << "All detected cycles" << endl;
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    {
-        string cycle_atoms_str = (*it).first;
-        cout << cycle_atoms_str << endl;
+  ///PRINTING ALL DETECTED CYCLES
+  cout << endl << "All detected cycles" << endl;
+  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
+    string cycle_atoms_str = ( *it ).first;
+    cout << cycle_atoms_str << endl;
+  }
+
+  ///FILTERING OUT FUSED CYCLES. aka Cycles that are sharing an edge
+  RemoveFusedCycles( cycles );
+
+  ///FILTERING OUT OXYGENLESS CYCLES
+  FilterAllCarbonCycles( cycles );
+
+  ///ANOMERIC CARBON DETECTION and SORTING
+  cout << endl << "Cycles after discarding rings that are all-carbon" << endl;
+  vector< string > anomeric_carbons_status = vector< string >();
+  vector< Note* > anomeric_notes = vector< Note* >();
+  CycleMap sorted_cycles = CycleMap();
+  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
+    string cycle_atoms_str = ( *it ).first;
+    AtomVector cycle_atoms = ( *it ).second;
+
+    cout << cycle_atoms_str << endl; ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
+
+    Note* anomeric_note = new Note();
+    Atom* anomeric = FindAnomericCarbon( anomeric_note, anomeric_carbons_status, cycle_atoms, cycle_atoms_str );
+    anomeric_notes.push_back( anomeric_note );
+    if( anomeric != NULL ) { ///Sorting the cycle atoms and adding it to the sorted_cycles map if an anomeric carbon identified, otherwise the structure can't be a sugar
+      AtomVector sorted_cycle_atoms = AtomVector();
+      stringstream sorted_cycle_stream;
+      sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric, sorted_cycle_stream );
+      sorted_cycles[ sorted_cycle_stream.str() ] = sorted_cycle_atoms;
+    }
+  }
+  cycles = sorted_cycles;
+
+  ///CREATING MONOSACCHARIDE STRUCTURE. Ring atoms, side atoms, chemical code (Glycode), modifications/derivatives, names
+  cout << endl << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << endl;
+  vector< Monosaccharide* > monos = vector< Monosaccharide* >();
+  int mono_id = 0;
+  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
+    string cycle_atoms_str = ( *it ).first;
+    AtomVector cycle = ( *it ).second;
+
+    Monosaccharide* mono = new Monosaccharide();
+    int status_index = distance( cycles.begin(), it );
+    mono->anomeric_status_ = anomeric_carbons_status.at( status_index );
+
+    ///ASSIGNING RING ATOMS TO MONOSACCHARIDE OBJECT
+    cout << "Ring atoms: " << cycle_atoms_str << endl;
+    mono->cycle_atoms_str_ = cycle_atoms_str;
+    mono->cycle_atoms_ = cycle;
+
+    ///ASSIGNING SIDE ATOMS (EXCOCYCLIC ATOMS) TO MONOSACCHARIDE OBJECT
+    vector< string > orientations = GetSideGroupOrientations( mono, cycle_atoms_str );
+
+    ///PRINTING ASSIGNED SIDE ATOMS
+    cout << "Side group atoms: " << endl;
+    for( vector< AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ ) {
+      AtomVector sides = ( *it1 );
+      if( it1 == mono->side_atoms_.begin() ) {//side atoms of anomeric carbon
+        if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL ) {
+          cout << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId() << endl;
+        } else if( sides.at( 1 ) != NULL ) {
+          cout << "[1] -> " << sides.at( 1 )->GetId() << endl;
+        } else if( sides.at( 0 ) != NULL ) {
+          cout << "[1] -> " << sides.at( 0 )->GetId() << endl;
+        }
+      } else if( it1 == mono->side_atoms_.end() - 1 ) {//side atoms of last carbon of the
+        cout << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
+        if( sides.at( 0 ) != NULL ) {
+          cout << sides.at( 0 )->GetId() << endl;
+        }
+      } else if( sides.at( 1 ) != NULL ) {
+        int cycle_atom_index = distance( mono->side_atoms_.begin(), it1 );
+        cout << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId() << endl;
+      }
     }
 
-    ///FILTERING OUT FUSED CYCLES. aka Cycles that are sharing an edge
-    RemoveFusedCycles(cycles);
+    ///PRINTING ANOMERIC STATUS
+    cout << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << endl;
 
-    ///FILTERING OUT OXYGENLESS CYCLES
-    FilterAllCarbonCycles(cycles);
+    ///CREATING CHEMICAL CODE (Glycode) OBJECT
+    ChemicalCode* code = BuildChemicalCode( orientations );
 
-    ///ANOMERIC CARBON DETECTION and SORTING
-    cout << endl << "Cycles after discarding rings that are all-carbon" << endl;
-    vector<string> anomeric_carbons_status = vector<string>();
-    vector<Note*> anomeric_notes = vector<Note*>();
-    CycleMap sorted_cycles = CycleMap();
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    {
-        string cycle_atoms_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
-
-        cout << cycle_atoms_str << endl; ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
-
-        Note* anomeric_note = new Note();
-        Atom* anomeric = FindAnomericCarbon(anomeric_note, anomeric_carbons_status, cycle_atoms, cycle_atoms_str);
-        anomeric_notes.push_back(anomeric_note);
-        if(anomeric != NULL) ///Sorting the cycle atoms and adding it to the sorted_cycles map if an anomeric carbon identified, otherwise the structure can't be a sugar
-        {
-            AtomVector sorted_cycle_atoms = AtomVector();
-            stringstream sorted_cycle_stream;
-            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
-            sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
-        }
+    if( code != NULL ) {
+      mono->chemical_code_ = code;
     }
-    cycles = sorted_cycles;
-
-    ///CREATING MONOSACCHARIDE STRUCTURE. Ring atoms, side atoms, chemical code (Glycode), modifications/derivatives, names
-    cout << endl << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << endl;
-    vector<Monosaccharide*> monos = vector<Monosaccharide*>();
-    int mono_id = 0;
-    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
-    {
-        string cycle_atoms_str = (*it).first;
-        AtomVector cycle = (*it).second;
-
-        Monosaccharide* mono = new Monosaccharide();
-        int status_index = distance(cycles.begin(), it);
-        mono->anomeric_status_ = anomeric_carbons_status.at(status_index);
-
-        ///ASSIGNING RING ATOMS TO MONOSACCHARIDE OBJECT
-        cout << "Ring atoms: " << cycle_atoms_str << endl;
-        mono->cycle_atoms_str_ = cycle_atoms_str;
-        mono->cycle_atoms_ = cycle;
-
-        ///ASSIGNING SIDE ATOMS (EXCOCYCLIC ATOMS) TO MONOSACCHARIDE OBJECT
-        vector<string> orientations = GetSideGroupOrientations(mono, cycle_atoms_str);
-
-        ///PRINTING ASSIGNED SIDE ATOMS
-        cout << "Side group atoms: " << endl;
-        for(vector<AtomVector>::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++)
-        {
-            AtomVector sides = (*it1);
-            if(it1 == mono->side_atoms_.begin())///side atoms of anomeric carbon
-            {
-                if(sides.at(0) != NULL && sides.at(1) != NULL)
-                    cout << "[1] -> " << sides.at(0)->GetId() << ", " << sides.at(1)->GetId() << endl;
-                else if(sides.at(1) != NULL)
-                    cout << "[1] -> " << sides.at(1)->GetId() << endl;
-                else if(sides.at(0) != NULL)
-                    cout << "[1] -> " << sides.at(0)->GetId() << endl;
-            }
-            else if(it1 == mono->side_atoms_.end() - 1)//side atoms of last carbon of the ring
-            {
-                cout << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
-                if(sides.at(0) != NULL)
-                    cout << sides.at(0)->GetId() << endl;
-            }
-            else if(sides.at(1) != NULL)
-            {
-                int cycle_atom_index = distance(mono->side_atoms_.begin(), it1);
-                cout << "[" << cycle_atom_index + 1 << "] -> " << sides.at(1)->GetId() << endl;
-            }
-        }
-
-        ///PRINTING ANOMERIC STATUS
-        cout << mono->anomeric_status_ << mono->cycle_atoms_.at(0)->GetId() << endl;
-
-        ///CREATING CHEMICAL CODE (Glycode) OBJECT
-        ChemicalCode* code = BuildChemicalCode(orientations);
-        if(code != NULL)
-        {
-            mono->chemical_code_ = code;
-        }
-        cout << endl << "Stereo chemistry chemical code:"  << endl;
-        code->Print(cout);
-        cout << endl;
-
-        ///DETECT SHAPE USING BFMP EXTERNAL PROGRAM. Currently, the program does not work for furanoses
-        if(cycle.size() > 5)
-        {
-            DetectShape(cycle, mono);
-            if(mono->bfmp_ring_conformation_.compare("") != 0)
-                cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl; ///Part of Glyprobity report
-        }
-
-        ///CHECKING FOR +2 and +3 SIDE CARBONS
-        AtomVector plus_sides = ExtractAdditionalSideAtoms(mono);
-
-        ///FINDING CHEMICAL CODE IN NAME LOOKUP TABLE
-        string code_str = code->toString();
-        mono->sugar_name_ = SugarStereoChemistryNameLookup(code_str);
-
-        ///DERIVATIVE/MODIFICATION PATTERN EXTRACTION
-        ExtractDerivatives(mono);
-        bool minus_one = false;
-        if(mono->derivatives_map_.find("-1") != mono->derivatives_map_.end())
-            minus_one = true;
-        for(map<string, string>::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++)
-        {
-            string key = (*it1).first;
-            string value = (*it1).second;
-            if(minus_one)
-            {
-                if(key.compare("-1") == 0)
-                    cout << "Carbon at position 1 is attached to " << value << endl;
-                else if(key.compare("a") == 0)
-                    cout << "Carbon at position 2 is attached to " << value << endl;
-                else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    cout << "Carbon at position " << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) + 1 << " is attached to " << value << endl;
-                else
-                    cout << "Carbon at position " << (gmml::ConvertString<int>(key) + 1) << " is attached to " << value << endl;
-            }
-            else
-            {
-                if(key.compare("a") == 0)
-                    cout << "Carbon at position 1 is attached to " << value << endl;
-                else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    cout << "Carbon at position " << mono->cycle_atoms_.size() - 1 + ConvertString<int>(key) << " is attached to " << value << endl;
-                else
-                    cout << "Carbon at position " << key << " is attached to " << value << endl;
-            }
-        }
-
-        ///GENERATING COMPLETE NAME
-        if(plus_sides.size() <= 1)
-        {
-            ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
-            GenerateCompleteSugarName(mono);
-        }
-        else///UPDATING SIDE ATOMS
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "+1")) != mono->chemical_code_->right_up_.end()){}
-            else if((index_it = find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "+1")) != mono->chemical_code_->right_down_.end()){}
-
-            ///CHECKING R or S
-            stringstream plus_one;
-            string orientation = CalculateRSOrientations(mono->cycle_atoms_.at(mono->cycle_atoms_.size() - 2), plus_sides.at(0), plus_sides.at(1));
-            plus_one << "+1" << orientation;
-            (*index_it) = plus_one.str();
-            if(plus_sides.size() == 3)
-            {
-                stringstream plus_two;
-                orientation = CalculateRSOrientations(plus_sides.at(0), plus_sides.at(1), plus_sides.at(2));
-                plus_two << "+2" << orientation;
-                mono->chemical_code_->right_up_.push_back(plus_two.str());
-                mono->chemical_code_->right_up_.push_back("+3");
-            }
-
-            ///UPDATING CHEMICAL CODE
-            UpdateComplexSugarChemicalCode(mono);
-
-            ///PRINTING SIDE ATOMS OF COMPLEX STRUCTURE
-            cout << "Complex structure side group atoms: " << endl;
-            for(vector<AtomVector>::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++)
-            {
-                stringstream complex_structure_side;
-                AtomVector sides = (*it1);
-                if(it1 == mono->side_atoms_.begin())///side atoms of anomeric carbon
-                {
-                    if(sides.at(0) != NULL && sides.at(1) != NULL)
-                        complex_structure_side << "[1] -> " << sides.at(0)->GetId() << ", " << sides.at(1)->GetId() << endl;
-                    else if(sides.at(1) != NULL)
-                        complex_structure_side << "[1] -> " << sides.at(1)->GetId() << endl;
-                    else if(sides.at(0) != NULL)
-                        complex_structure_side << "[1] -> " << sides.at(0)->GetId() << endl;
-                }
-                else if(it1 == mono->side_atoms_.end() - 1)///side atoms of last carbon of the ring
-                {
-                    complex_structure_side << "[" << mono->cycle_atoms_.size() - 1 << "]";
-                    for(int i = 0; i < plus_sides.size() ; i++)
-                        complex_structure_side << " -> " << sides.at(i)->GetId();
-                    cout << complex_structure_side.str() << endl;
-                }
-                else if(sides.at(1) != NULL)
-                {
-                    int cycle_atom_index = distance(mono->side_atoms_.begin(), it1);
-                    complex_structure_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at(1)->GetId() << endl;
-                }
-            }
-
-            ///PRINTING COMPLEX SUGAR CHEMICAL CODE
-            cout << endl << "Complex sugar chemical code:" << endl;
-            mono->chemical_code_->Print(cout);
-
-            ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
-            mono->sugar_name_ = ComplexSugarNameLookup(mono->chemical_code_->toString());
-
-            if(plus_sides.size() == 2)
-            {
-                ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
-                GenerateCompleteSugarName(mono);
-            }
-        }
-        cout << endl;
-
-        if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0 && mono->sugar_name_.monosaccharide_name_.compare("") == 0)
-        {
-            ///FINDING CLOSEST MATCH FOR THE CHEMICAL CODE IN THE LOOKUP TABLE
-            vector<Glycan::SugarName> closest_matches = vector<Glycan::SugarName>();
-            mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup(mono->chemical_code_->toString(), closest_matches);
-            if(mono->sugar_name_.monosaccharide_name_.compare("") == 0)
-                mono->sugar_name_.monosaccharide_name_ = mono->sugar_name_.monosaccharide_stereochemistry_name_;
-            if(mono->sugar_name_.monosaccharide_short_name_.compare("") == 0)
-                mono->sugar_name_.monosaccharide_short_name_ = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
-
-            ///ADDING NOTES/ISSUES OF MONOSACCHARIDE STRUCTURE
-            Note* matching_note = new Note();
-            matching_note->type_ = Glycan::COMMENT;
-            matching_note->category_ = Glycan::MONOSACCHARIDE;
-            stringstream ss;
-            ss << "No exact match for " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << ". close matches: ";
-            for(vector<Glycan::SugarName>::iterator ite = closest_matches.begin(); ite != closest_matches.end(); ite++)
-            {
-                Glycan::SugarName sn = (*ite);
-                if(ite == closest_matches.end() - 1)
-                    ss << sn.monosaccharide_stereochemistry_short_name_;
-                else
-                    ss << sn.monosaccharide_stereochemistry_short_name_ << ", ";
-            }
-            matching_note->description_ = ss.str();
-            this->AddNote(matching_note);
-
-
-            if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") == 0)
-            {
-                mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
-                mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
-                mono->sugar_name_.monosaccharide_name_ = "Unknown";
-                mono->sugar_name_.monosaccharide_short_name_ = "Unknown";
-            }
-            else
-                cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << endl;
-        }
-
-        ///GLYPROBITY REPORT (GEOMETRY OUTLIERS)
-        if(glyprobity_report)
-            CalculateGlyprobityGeometryOutliers(mono);
-
-        ///ADDING NOTES/ISSUES OF ANOMERIC CONFIGURATION
-        Note* anomeric_note = anomeric_notes.at(status_index);
-        stringstream n;
-        if(anomeric_note->description_.compare("") != 0)
-        {
-            n << mono->sugar_name_.monosaccharide_short_name_ << ": " << anomeric_note->description_;
-            anomeric_note->description_ = n.str();
-            this->AddNote(anomeric_note);
-        }
-
-        ///ADDING NOTES/ISSUES OF RESIDUE NAMING
-        string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName();
-        vector<string> pdb_codes = Split(mono->sugar_name_.pdb_code_, ",");
-        if(pdb_codes.size() > 0)
-        {
-            string pdb_code = "";
-            bool found_code = false;
-            for(vector<string>::iterator codes_it = pdb_codes.begin(); codes_it != pdb_codes.end(); codes_it++)
-            {
-                pdb_code = (*codes_it);
-                if(pdb_code.compare(original_residue) == 0)
-                {
-                    found_code = true;
-                    break;
-                }
-            }
-            if(!found_code)
-            {
-                Note* residue_naming_note = new Note();
-                residue_naming_note->category_ = Glycan::RESIDUE_NAME;
-                stringstream res_ss;
-                if(mono->sugar_name_.pdb_code_.compare("") == 0)
-                {
-                    residue_naming_note->type_ = Glycan::WARNING;
-                    res_ss << "PDB 3 letter code not found for " << mono->sugar_name_.monosaccharide_short_name_;
-                }
-                else
-                {
-                    residue_naming_note->type_ = Glycan::ERROR;
-                    res_ss << "Residue name in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match to PDB code: " << mono->sugar_name_.pdb_code_;
-                }
-                residue_naming_note->description_ = res_ss.str();
-                this->AddNote(residue_naming_note);
-            }
-        }
-
-        ///PRINTING NAMES OF MONOSACCHARIDE
-        cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << endl;
-        cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << endl;
-        cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << endl;
-        cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << endl;
-
-        cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-
-        mono_id++;
-        mono->mono_id = mono_id;
-        monos.push_back(mono);
+    cout << endl << "Ring Stereo chemistry chemical code:"  << endl;
+    mono->chemical_code_->Print( cout );
+    cout << endl;
+    // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
+    if( cycle.size() > 5 ) {
+      // @TODO uncomment this out once GetBFMP function is implemented to determine the BFMP of the Monosaccharide.
+      // Comment out the call to DetectShape. You can use the DetectShape function to compare the results of GetBFMP
+      // for testing purposes.
+      //GetBFMP( mono );
+      DetectShape( cycle, mono );
+      if( mono->bfmp_ring_conformation_.compare( "" ) != 0 ) {
+        cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << endl << endl; ///Part of Glyprobity report
+      }
     }
 
-    ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
-    cout << endl << "Oligosaccharides:" << endl;
-    int number_of_covalent_links = 0;
-    int number_of_probable_non_covalent_complexes = 0;
-    vector<Oligosaccharide*> oligosaccharides = ExtractOligosaccharides(monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes);
+    ///CHECKING FOR +2 and +3 SIDE CARBONS
+    AtomVector plus_sides = ExtractAdditionalSideAtoms( mono );
 
-    ///BUILDING OLIGOSACCHARIDE SEQUENCE
-    int number_of_oligosaccharides = 0;
-    int number_of_monosaccharides = 0;
-    for(vector<Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
-    {
-        Oligosaccharide* oligo = (*it);
-        if(oligo->child_oligos_linkages_.size() > 0)
-            number_of_oligosaccharides++;
-        else
-            number_of_monosaccharides++;
-        oligo->Print(cout);
+    ///FINDING CHEMICAL CODE IN NAME LOOKUP TABLE
+    string code_str = code->toString();
+    mono->sugar_name_ = SugarStereoChemistryNameLookup( code_str );
+
+    ///DERIVATIVE/MODIFICATION PATTERN EXTRACTION
+    ExtractDerivatives( mono );
+
+    ///IF NO DERIVATIVES THEN NO NEED TO ITERATE THROUGH WHATS NOT THERE
+    /// Also, this now prints Ring Position instead of Position. e.g: -1, a( 1 ), 2, 3, 4, 5, +1, +2, +3
+    if( !mono->derivatives_map_.empty() ) {
+      for( map< string, string >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ ) {
+        string key = ( *it1 ).first;
+        string value = ( *it1 ).second;
+        cout << "Carbon at Ring Position " << key << " is attached to " << value << endl;
+      }
     }
 
-    ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE
-    vector<Note*> notes = this->GetNotes();
+    ///GENERATING COMPLETE NAME
+    if( plus_sides.size() <= 1 ) {
+      ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
+      GenerateCompleteSugarName( mono );
+      UpdateComplexSugarChemicalCode( mono );
+      UpdatePdbCode( mono );
+    } else {
+      if( plus_sides.size() == 3 ) {
+        vector< string >::iterator index_it;
+        if( ( index_it = find( mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "+1" ) ) != mono->chemical_code_->right_up_.end() ) {
+          ///CHECKING R or S
+          stringstream plus_one;
+          string orientation = CalculateRSOrientations( mono->cycle_atoms_.at( mono->cycle_atoms_.size() - 2 ), plus_sides.at( 0 ), plus_sides.at( 1 ) );
+          plus_one << "+1" << orientation;
+          ( *index_it ) = plus_one.str();
+          stringstream plus_two;
+          orientation = CalculateRSOrientations( plus_sides.at( 0 ), plus_sides.at( 1 ), plus_sides.at( 2 ) );
+          plus_two << "+2" << orientation;
+          mono->chemical_code_->right_up_.push_back( plus_two.str() );
+          mono->chemical_code_->right_up_.push_back( "+3" );
+        } else if( ( index_it = find( mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "+1" ) ) != mono->chemical_code_->right_down_.end() ) {
+          ///CHECKING R or S
+          stringstream plus_one;
+          string orientation = CalculateRSOrientations( mono->cycle_atoms_.at( mono->cycle_atoms_.size() - 2 ), plus_sides.at( 0 ), plus_sides.at( 1 ) );
+          plus_one << "+1" << orientation;
+          ( *index_it ) = plus_one.str();
+          stringstream plus_two;
+          orientation = CalculateRSOrientations( plus_sides.at( 0 ), plus_sides.at( 1 ), plus_sides.at( 2 ) );
+          plus_two << "+2" << orientation;
+          mono->chemical_code_->right_down_.push_back( plus_two.str() );
+          mono->chemical_code_->right_down_.push_back( "+3" );
+        }
+      } else if( plus_sides.size() == 2 ) {
+        vector< string >::iterator index_it;
+        if( ( index_it = find( mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "+1" ) ) != mono->chemical_code_->right_up_.end() ) {
+          ///CHECKING R or S
+          stringstream plus_one;
+          string orientation = CalculateRSOrientations( mono->cycle_atoms_.at( mono->cycle_atoms_.size() - 2 ), plus_sides.at( 0 ), plus_sides.at( 1 ) );
+          plus_one << "+1" << orientation;
+          (*index_it) = plus_one.str();
+          mono->chemical_code_->right_up_.push_back("+2");
+        } else if( ( index_it = find( mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "+1" ) ) != mono->chemical_code_->right_down_.end() ) {
+          ///CHECKING R or S
+          stringstream plus_one;
+          string orientation = CalculateRSOrientations(mono->cycle_atoms_.at( mono->cycle_atoms_.size() - 2 ), plus_sides.at( 0 ), plus_sides.at( 1 ) );
+          plus_one << "+1" << orientation;
+          ( *index_it ) = plus_one.str();
+          mono->chemical_code_->right_down_.push_back( "+2" );
+        }
+      }
+      ///UPDATING CHEMICAL CODE
+      UpdateComplexSugarChemicalCode( mono );
+      UpdatePdbCode( mono );
+
+      cout << "Complex structure side group atoms: " << endl;
+      gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
+      for( vector< AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ ) {
+        stringstream complex_sugar_side;
+        AtomVector sides = ( *it1 );
+        if( it1 == mono->side_atoms_.begin() ) {///side atoms of anomeric carbon
+          if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL ) {
+            complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId();
+            cout << complex_sugar_side.str() << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+          } else if( sides.at( 1 ) != NULL ) {
+            complex_sugar_side << "[1] -> " << sides.at( 1 )->GetId();
+            cout << complex_sugar_side.str() << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+          } else if( sides.at(0) != NULL ) {
+            complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId();
+            cout << complex_sugar_side.str() << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+          }
+        } else if( it1 == mono->side_atoms_.end() - 1 ) {//side atoms of last carbon of the ring
+          complex_sugar_side << "[" << mono->cycle_atoms_.size() - 1 << "]";
+          for( int i = 0; i < plus_sides.size() ; i++ ) {
+            complex_sugar_side << " -> " << sides.at( i )->GetId();
+          }
+          cout << complex_sugar_side.str() << endl;
+          gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+        } else if( sides.at( 1 ) != NULL ) {
+          int cycle_atom_index = distance( mono->side_atoms_.begin(), it1 );
+          complex_sugar_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId();
+          cout << complex_sugar_side.str() << endl;
+          gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+        }
+      }
+      cout << endl << "Complex sugar chemical code:" << endl;
+      gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex sugar chemical code:");
+      gmml::log(__LINE__, __FILE__,  gmml::INF, mono->chemical_code_->toString());
+      mono->chemical_code_->Print( cout );
+      ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
+      mono->sugar_name_ = ComplexSugarNameLookup( mono->chemical_code_->toString() );
+      if( plus_sides.size() == 2 ) {
+        ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
+        GenerateCompleteSugarName( mono );
+      }
+    }
+    cout << endl;
+
+    if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 && mono->sugar_name_.monosaccharide_name_.compare( "" ) == 0 ) {
+      ///FINDING CLOSEST MATCH FOR THE CHEMICAL CODE IN THE LOOKUP TABLE
+      vector< Glycan::SugarName > closest_matches = vector< Glycan::SugarName >();
+      mono->sugar_name_ = ClosestMatchSugarStereoChemistryNameLookup( mono->chemical_code_->toString(), closest_matches );
+      if( mono->sugar_name_.monosaccharide_name_.compare( "" ) == 0) {
+        mono->sugar_name_.monosaccharide_name_ = mono->sugar_name_.monosaccharide_stereochemistry_name_;
+      }
+      if( mono->sugar_name_.monosaccharide_short_name_.compare( "" ) == 0 ) {
+        mono->sugar_name_.monosaccharide_short_name_ = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+      }
+
+      ///ADDING NOTES/ISSUES OF MONOSACCHARIDE STRUCTURE
+      Note* matching_note = new Note();
+      matching_note->type_ = Glycan::COMMENT;
+      matching_note->category_ = Glycan::MONOSACCHARIDE;
+      stringstream ss;
+      if( mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare( "" ) != 0 ) {
+        ss << "No exact match for " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << ". close matches: ";
+        for( vector< Glycan::SugarName >::iterator ite = closest_matches.begin(); ite != closest_matches.end(); ite++ ) {
+          Glycan::SugarName sn = ( *ite );
+          if( ite == closest_matches.end() - 1 ) {
+            ss << sn.monosaccharide_stereochemistry_short_name_;
+          } else {
+            ss << sn.monosaccharide_stereochemistry_short_name_ << ", ";
+          }
+        }
+      } else {
+        ss << "No exact match for: " << mono->sugar_name_.monosaccharide_stereochemistry_name_;
+      }
+      matching_note->description_ = ss.str();
+      this->AddNote( matching_note );
+
+
+      if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 ) {
+        mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
+        mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
+        mono->sugar_name_.monosaccharide_name_ = "Unknown";
+        mono->sugar_name_.monosaccharide_short_name_ = "Unknown";
+      } else {
+        cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << endl;
+      }
+    }
+
+    ///GLYPROBITY REPORT (GEOMETRY OUTLIERS)
+    if( glyprobity_report ) {
+      CalculateGlyprobityGeometryOutliers( mono );
+    }
+
+    ///ADDING NOTES/ISSUES OF ANOMERIC CONFIGURATION
+    Note* anomeric_note = anomeric_notes.at( status_index );
+    stringstream n;
+    if( anomeric_note->description_.compare( "" ) != 0 ) {
+      n << mono->sugar_name_.monosaccharide_short_name_ << ": " << anomeric_note->description_;
+      anomeric_note->description_ = n.str();
+      this->AddNote( anomeric_note );
+    }
+
+    ///ADDING NOTES/ISSUES OF RESIDUE NAMING
+    string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName();
+    vector<string> pdb_codes = Split(mono->sugar_name_.pdb_code_, ",");
+    if( pdb_codes.size() > 0 ) {
+      string pdb_code = "";
+      bool found_code = false;
+      for( vector< string >::iterator codes_it = pdb_codes.begin(); codes_it != pdb_codes.end(); codes_it++ ) {
+        pdb_code = ( *codes_it );
+        if( pdb_code.compare( original_residue ) == 0 ) {
+          found_code = true;
+          break;
+        }
+      }
+      if( !found_code ) {
+        Note* residue_naming_note = new Note();
+        residue_naming_note->category_ = Glycan::RESIDUE_NAME;
+        stringstream res_ss;
+        if( mono->sugar_name_.pdb_code_.compare( "" ) == 0 ) {
+          residue_naming_note->type_ = Glycan::WARNING;
+          res_ss << "PDB 3 letter code not found for " << mono->sugar_name_.monosaccharide_short_name_;
+        } else {
+          residue_naming_note->type_ = Glycan::ERROR;
+          res_ss << "Residue name, " << original_residue << ", in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match to PDB code: " << mono->sugar_name_.pdb_code_;
+        }
+        residue_naming_note->description_ = res_ss.str();
+        this->AddNote(residue_naming_note);
+      }
+    }
+    ///PRINTING NAMES OF MONOSACCHARIDE
+    cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << endl;
+    cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << endl;
+    cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << endl;
+    cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << endl;
+
+    cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+
+    mono_id++;
+    mono->mono_id = mono_id;
+    monos.push_back( mono );
+  }
+
+  ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
+  cout << endl << "Oligosaccharides:" << endl;
+  int number_of_covalent_links = 0;
+  int number_of_probable_non_covalent_complexes = 0;
+  vector< Oligosaccharide* > oligosaccharides = ExtractOligosaccharides( monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
+
+  ///BUILDING OLIGOSACCHARIDE SEQUENCE
+  int number_of_oligosaccharides = 0;
+  int number_of_monosaccharides = 0;
+  for( vector< Oligosaccharide* >::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++ ) {
+    Oligosaccharide* oligo = ( *it );
+    if( oligo->child_oligos_linkages_.size() > 0 ) {
+      number_of_oligosaccharides++;
+    } else {
+      number_of_monosaccharides++;
+    }
+    oligo->Print( cout );
+  }
+
+  ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
+  vector< Note* > notes = this->GetNotes();
+  if( !notes.empty() ) {
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     cout << endl << "NOTES/ISSUES:" << endl;
-    for(vector<Note*>::iterator note_it = notes.begin(); note_it != notes.end(); note_it++)
-    {
-        Note* note = (*note_it);
-        cout << endl << "Category: " << note->ConvertGlycanNoteCat2String(note->category_) << endl;
-        cout << "Type: " << note->ConvertGlycanNoteType2String(note->type_) << endl;
-        cout << "Description: " << note->description_ << endl;
+    for( vector< Note* >::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
+      Note* note = ( *note_it );
+      cout << endl << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << endl;
+      cout << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << endl;
+      cout << "Description: " << note->description_ << endl;
     }
-
     cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+  }
 
-    ///PRINTING STATISTICAL REPORT OF GLYPROBITY
-    if(glyprobity_report)
-    {
-        cout << endl << "GLYPROBITY REPORT" << endl;
-        cout << "<-------Topology------>" << endl;
-        cout << "Monosaccharide detected: " << monos.size() << endl;
-        cout << "Residue Distribution " << endl;
-        cout << " Monosaccharides: " << number_of_monosaccharides << endl;
-        cout << " Oligosaccharides: " << number_of_oligosaccharides << endl;
-        cout << "Carbohydrate Context " << endl;
-        cout << " Covalently linked to protein: " << number_of_covalent_links << endl;
-        cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << endl;
-        cout << "<--------------------->" << endl;
+  ///PRINTING STATISTICAL REPORT OF GLYPROBITY
+  if( glyprobity_report ) {
+    cout << endl << "GLYPROBITY REPORT" << endl;
+    cout << "<-------Topology------>" << endl;
+    cout << "Monosaccharide detected: " << monos.size() << endl;
+    cout << "Residue Distribution " << endl;
+    cout << " Monosaccharides: " << number_of_monosaccharides << endl;
+    cout << " Oligosaccharides: " << number_of_oligosaccharides << endl;
+    cout << "Carbohydrate Context " << endl;
+    cout << " Covalently linked to protein: " << number_of_covalent_links << endl;
+    cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << endl;
+    cout << "<--------------------->" << endl;
+  }
+
+  ///POPULATING GMMO ONTOLOGY
+  if( populate_ontology ) {
+    if( oligosaccharides.size() > 0 ) {
+      string gmmo = "gmmo.ttl";
+      std::ofstream out_file;
+      out_file.open( gmmo.c_str(), fstream::app );
+
+      ifstream in( "gmmo.ttl" );///Checking if the file is empty
+      size_t out_file_size = 0;
+      in.seekg( 0,ios_base::end );
+      out_file_size = in.tellg();
+      in.close();
+      if( out_file_size == 0 ) {///If the file is empty add the prefixes first
+        out_file << Ontology::TTL_FILE_PREFIX << endl;
+      }
+      this->PopulateOntology( out_file, oligosaccharides );
+      out_file.close();
     }
+  }
 
-    ///POPULATING GMMO ONTOLOGY
-    if(populate_ontology)
-    {
-        if(oligosaccharides.size() > 0)
-        {
-            string gmmo = "gmmo.ttl";
-            std::ofstream out_file;
-            out_file.open(gmmo.c_str(), fstream::app);
-
-            ifstream in("gmmo.ttl");///Checking if the file is empty
-            size_t out_file_size = 0;
-            in.seekg(0,ios_base::end);
-            out_file_size = in.tellg();
-            in.close();
-            if(out_file_size == 0) ///If the file is empty add the prefixes first
-                out_file << Ontology::TTL_FILE_PREFIX << endl;
-
-            this->PopulateOntology(out_file, oligosaccharides);
-            out_file.close();
-        }
-    }
-
-    return oligosaccharides;
+  return oligosaccharides;
 }
 
 bool Assembly::MatchDisaccharide(queue<Oligosaccharide*> oligo_queue, double &phi_angle, double &psi_angle, string first_mono, char mono1_carbon_index, string second_mono, char mono2_carbon_index)
@@ -722,7 +736,7 @@ void Assembly::ExtractRingAtomsInformation()
         {
             AtomVector sorted_cycle_atoms = AtomVector();
             stringstream sorted_cycle_stream;
-            sorted_cycle_atoms = SortCycle(cycle_atoms, anomeric, sorted_cycle_stream);
+            sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric, sorted_cycle_stream );
             sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
         }
     }
@@ -858,135 +872,127 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
     cycles = fused_filtered_cycles;
 }
 
-Atom* Assembly::FindAnomericCarbon(Note* anomeric_note, vector<string>& anomeric_carbons_status, AtomVector cycle, string cycle_atoms_str)
-{
-    Atom* anomeric_carbon = new Atom();
-    for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
-    {
-        Atom* cycle_atom = (*it);
-        if((cycle_atom->GetName().substr(0,1).compare("O") == 0 ))///find oxygen in ring
-            //                && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
-        {
-            AtomNode* node = cycle_atom->GetNode();
-            AtomVector neighbors = node->GetNodeNeighbors();
+Atom* Assembly::FindAnomericCarbon( Note* anomeric_note, vector< string > & anomeric_carbons_status, AtomVector cycle, string cycle_atoms_str ) {
+  Atom* anomeric_carbon = new Atom();
+  for( AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
+    Atom* cycle_atom = ( *it );
 
-            ///Check the first neighbor of oxygen
-            Atom* o_neighbor1 = neighbors.at(0);
-            AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
-            AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
-            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
-            {
-                Atom* neighbor1_neighbor = (*it1);
-                if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && (neighbor1_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor1_neighbor->GetName().substr(0,1).compare("N") == 0)) ///if first element is "O" or "N"
-                    //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
-                {
-                    anomeric_carbon = o_neighbor1;
-                    anomeric_carbons_status.push_back("Anomeric carbon: ");
-                    anomeric_note->description_ = "";
+    if( ( cycle_atom->GetName().substr( 0, 1 ).compare( "O" ) == 0 ) ) {///find oxygen in ring
+      //                && isdigit(ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
+      AtomNode* node = cycle_atom->GetNode();
+      AtomVector neighbors = node->GetNodeNeighbors();
 
-                    return anomeric_carbon;
-                }
-            }
+      ///Check the first neighbor of oxygen
+      Atom* o_neighbor1 = neighbors.at( 0 );
+      AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
+      AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
 
-            ///Check the second neighbor of oxygen
-            Atom* o_neighbor2 = neighbors.at(1);
-            AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
-            AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
-            for(AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++)///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
-            {
-                Atom* neighbor2_neighbor = (*it2);
-                if( cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos
-                        && (neighbor2_neighbor->GetName().substr(0,1).compare("O") == 0 || neighbor2_neighbor->GetName().substr(0,1).compare("N") == 0))
-                    //                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
-                {
-                    anomeric_carbon = o_neighbor2;
-                    //                    cout << "Anomeric carbon is: " << anomeric_carbon->GetId() << endl;
-                    anomeric_carbons_status.push_back("Anomeric carbon: ");
-                    anomeric_note->description_ = "";
-                    return anomeric_carbon;
-                }
-            }
+      for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
+        Atom* o_neighbor1_neighbor = ( *it1 );
 
-            ///Check the order of the carbons based on their names to locate the anomeric
-            stringstream ss1;
-            for(int i = 0; i < o_neighbor1->GetName().size(); i++)
-            {
-                if(isdigit(o_neighbor1->GetName().at(i)) != 0)
-                    ss1 << o_neighbor1->GetName().at(i);
-            }
-            stringstream ss2;
-            for(int i = 0; i < o_neighbor2->GetName().size(); i++)
-            {
-                if(isdigit(o_neighbor2->GetName().at(i)) != 0)
-                    ss2 << o_neighbor2->GetName().at(i);
-            }
-            if(ConvertString<int>(ss1.str()) < ConvertString<int>(ss2.str()))
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor1;
-            }
-            if(ConvertString<int>(ss2.str()) < ConvertString<int>(ss1.str()))
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor2;
-            }
+        if( cycle_atoms_str.find( o_neighbor1_neighbor->GetId() ) == string::npos ///if the neighbor is not one of the cycle atoms
+                && ( o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) { ///if first element is "O" or "N"
+          //                        && isdigit(ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
+          anomeric_carbon = o_neighbor1;
+          anomeric_carbons_status.push_back( "Anomeric carbon: " );
+          anomeric_note->description_ = "";
 
-            ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
-            bool neighbor2_is_anomeric = false;
-            for(AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++)///check if neighbor1 of oxygen has non-ring carbon neighbor
-            {
-                Atom* neighbor1_neighbor = (*it1);
-                if(cycle_atoms_str.find(neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && (neighbor1_neighbor->GetName().substr(0,1).compare("C") == 0 )) ///if first element is "C"
-                {
-                    neighbor2_is_anomeric = true;
-                    break;
-                }
-            }
-            bool neighbor1_is_anomeric = false;
-            for(AtomVector::iterator it1 = o_neighbor2_neighbors.begin(); it1 != o_neighbor2_neighbors.end(); it1++)///check if neighbor1 of oxygen has non-ring carbon neighbor
-            {
-                Atom* neighbor2_neighbor = (*it1);
-                if(cycle_atoms_str.find(neighbor2_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
-                        && (neighbor2_neighbor->GetName().substr(0,1).compare("C") == 0 )) ///if first element is "C"
-                {
-                    neighbor1_is_anomeric = true;
-                }
-            }
-            if(!neighbor1_is_anomeric)
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor2;
-            }
-            else if(!neighbor2_is_anomeric)
-            {
-                anomeric_note->type_ = Glycan::WARNING;
-                anomeric_note->category_ = Glycan::ANOMERIC;
-                anomeric_note->description_ = "Anomeric oxygen is missing";
-                anomeric_carbons_status.push_back("Anomeric carbon probably is: ");
-                return o_neighbor1;
-            }
-            anomeric_note->type_ = Glycan::WARNING;
-            anomeric_note->category_ = Glycan::ANOMERIC;
-            anomeric_note->description_ = "Anomeric oxygen is missing";
-            anomeric_carbons_status.push_back("Not enough information to detect the anomeric carbon, it has been chosen randomely: ");
-            return o_neighbor1;
+          return anomeric_carbon;
         }
+      }
+
+      ///Check the second neighbor of oxygen
+      Atom* o_neighbor2 = neighbors.at( 1 );
+      AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
+      AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
+
+      for( AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++ ) {///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
+        Atom* o_neighbor2_neighbor = ( *it2 );
+
+        if( cycle_atoms_str.find( o_neighbor2_neighbor->GetId() ) == string::npos
+                && ( o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) {
+          //                        && isdigit(ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
+          anomeric_carbon = o_neighbor2;
+          anomeric_carbons_status.push_back( "Anomeric carbon: " );
+          anomeric_note->description_ = "";
+
+          return anomeric_carbon;
+        }
+      }
+
+      ///Seems redundant to have this multiple times, if it is going to say the same thing and be generated for all cases after the first logic check.
+      ///Specially if we ever want to change this Note to say something different. Like I am doing now. :)
+      stringstream ss;
+      ss << "Could not find glycosidic oxygen or nitrogen within " << dCutOff << " Angstroms of a ring carbon bonded to the ring oxygen(" << node->GetAtom()->GetName() << ").";
+      anomeric_note->description_ = ss.str();
+
+      ///Check the order of the carbons based on their names to locate the anomeric
+      stringstream ss1;
+      for( int i = 0; i < o_neighbor1->GetName().size(); i++ ) {
+        if( isdigit( o_neighbor1->GetName().at( i )) != 0 )
+          ss1 << o_neighbor1->GetName().at( i );
+      }
+      stringstream ss2;
+      for( int i = 0; i < o_neighbor2->GetName().size(); i++ ) {
+        if( isdigit( o_neighbor2->GetName().at( i )) != 0 )
+          ss2 << o_neighbor2->GetName().at(i);
+      }
+      if( ConvertString< int >( ss1.str() ) < ConvertString< int >( ss2.str() ) ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + "), Anomeric Carbon is: " );
+
+        return o_neighbor1;
+      }
+      if( ConvertString< int >( ss2.str() ) < ConvertString< int >( ss1.str() ) ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + "), Anomeric Carbon is: " );
+
+        return o_neighbor2;
+      }
+
+      ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
+      bool neighbor2_is_anomeric = false;
+      for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
+        Atom* neighbor1_neighbor = ( *it1 );
+        if( cycle_atoms_str.find( neighbor1_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
+                && ( neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "C" ) == 0 ) ) {///if first element is "C"
+          neighbor2_is_anomeric = true;
+          break;
+        }
+      }
+      bool neighbor1_is_anomeric = false;
+      for( AtomVector::iterator it1 = o_neighbor2_neighbors.begin(); it1 != o_neighbor2_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
+        Atom* neighbor2_neighbor = ( *it1 );
+        if( cycle_atoms_str.find( neighbor2_neighbor->GetId()) == string::npos ///if the neighbor is not one of the cycle atoms
+                && ( neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "C" ) == 0 ) ) {///if first element is "C"
+          neighbor1_is_anomeric = true;
+        }
+      }
+      if( !neighbor1_is_anomeric ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon is: " );
+        return o_neighbor2;
+      }
+      else if( !neighbor2_is_anomeric ) {
+        anomeric_note->type_ = Glycan::WARNING;
+        anomeric_note->category_ = Glycan::ANOMERIC;
+        anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon is: " );
+        return o_neighbor1;
+      }
+      // @TODO August 8, 2017 Davis/Lachele - Once we get to a point where we read in mmcif definitions, we need to use it to determine the Anomeric Carbon.
+      anomeric_note->type_ = Glycan::WARNING;
+      anomeric_note->category_ = Glycan::ANOMERIC;
+      anomeric_carbons_status.push_back( "Anomeric carbon assigned to the first ring carbon (" + o_neighbor1->GetName() + "), Anomeric Carbon is: " );
+      return o_neighbor1;
     }
-    return NULL;
+  }
+  return NULL;
 }
 
-Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, stringstream &sorted_cycle_stream)
+Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, stringstream& sorted_cycle_stream)
 {
     AtomVector sorted_cycle = AtomVector();
     for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
@@ -1022,9 +1028,9 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                         sorted_cycle.push_back(a);
                         a->SetIsRing(true);
                         if(it1 == it - 1)
-                            sorted_cycle_stream << a->GetId();
+                          sorted_cycle_stream << a->GetId();
                         else
-                            sorted_cycle_stream << a->GetId() << "-";
+                          sorted_cycle_stream << a->GetId() << "-";
                     }
                 }
             }
@@ -1049,9 +1055,9 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                         sorted_cycle.push_back(atom_after);
                         atom_after->SetIsRing(true);
                         if(it2 == it + 1)
-                            sorted_cycle_stream << atom_after->GetId();
+                          sorted_cycle_stream << atom_after->GetId();
                         else
-                            sorted_cycle_stream << atom_after->GetId() << "-";
+                          sorted_cycle_stream << atom_after->GetId() << "-";
                     }
                 }
                 else///oxygen is before the anomeric atom so the vector is in normal order
@@ -1061,9 +1067,6 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                         Atom* atom_after = (*it1);
                         sorted_cycle.push_back(atom_after);
                         atom_after->SetIsRing(true);
-                        //                        if(it1 == cycle.end() - 1)
-                        //                            sorted_cycle_stream << atom_after->GetId();
-                        //                        else
                         sorted_cycle_stream << atom_after->GetId() << "-";
                     }
                     for(AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of vector
@@ -1072,9 +1075,9 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, Atom *anomeric_atom, 
                         sorted_cycle.push_back(atom_before);
                         atom_before->SetIsRing(true);
                         if(it2 == it - 1)
-                            sorted_cycle_stream << atom_before->GetId();
+                          sorted_cycle_stream << atom_before->GetId();
                         else
-                            sorted_cycle_stream << atom_before->GetId() << "-";
+                          sorted_cycle_stream << atom_before->GetId() << "-";
                     }
                 }
             }
@@ -2143,7 +2146,9 @@ void Assembly::GenerateCompleteSugarName(Monosaccharide *mono)
     stringstream tail;
     bool minus_one = false;
     if(mono->derivatives_map_.find("-1") != mono->derivatives_map_.end())
+    {
         minus_one = true;
+    }
     for(map<string, string>::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++)
     {
         string key = (*it1).first;
@@ -2542,62 +2547,77 @@ void Assembly::AddModificationRuleTwoInfo(string key, string pattern, Monosaccha
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
 }
 
-void Assembly::UpdateComplexSugarChemicalCode(Monosaccharide *mono)
-{
-    if(mono->side_atoms_.at(0).at(0) != NULL)
-    {
-        if(mono->derivatives_map_["-1"].compare("xC-(O,O)") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1")) != mono->chemical_code_->right_up_.end())
-                (*index_it) = "-1A";
-            else if((index_it = find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1")) != mono->chemical_code_->right_down_.end())
-                (*index_it) = "-1A";
+void Assembly::UpdateComplexSugarChemicalCode( Monosaccharide * mono ) {
+    for( map< string, string >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ ) {
+      string key = ( *it1 ).first;
+      string value = ( *it1 ).second;
+      if( value.compare( "" ) != 0 ) {
+        string code = "";
+        if( value.compare( "xCH-N" ) == 0 ) {
+          code = key + "N";
+        } else if( value.compare( "xC-N-C=OCH3" ) == 0 ) {
+          code = key + "NAc";
+        } else if( value.compare( "xC-N-C=OCH2OH" ) == 0 ) {
+          code = key + "NGc";
+        } else if( value.compare( "xC-N-SO3" ) == 0 ) {
+          code = key + "NS";
+        } else if( value.compare( "xC-N-PO3" ) == 0 ) {
+          code = key + "NP";
+        } else if( value.compare( "xC-N-CH3" ) == 0 ) {
+          code = key + "NMe";
+        } else if( value.compare( "xC-O-C=OCH3" ) == 0 ) {
+          code = key + "Ac";
+        } else if( value.compare( "xC-O-C=OCH3OH" ) == 0 ) {
+          code = key + "Gc";
+        } else if( value.compare( "xC-O-SO3" ) == 0 ) {
+          code = key + "S";
+        } else if( value.compare( "xC-O-PO3" ) == 0 ) {
+          code = key + "P";
+        } else if( value.compare( "xC-O-CH3" ) == 0 ) {
+          code = key + "Me";
+        } else if( value.compare( "xC-(O,OH)" ) == 0 ) {
+          code = key + "AH";
+        } else if( value.compare( "xC-(O,O)" ) == 0 ) {
+          code = key + "A";
         }
-    }
-    if(mono->cycle_atoms_.at(2) != NULL)
-    {
-        if(mono->derivatives_map_["-1"].compare("xC-O-C=OCH3") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "3")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "3Ac";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "3")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "3Ac";
+        vector< string >::iterator index_it;
+        if( ( key.compare( "a" ) == 0 ) || ( key.compare( "-1" ) == 0 ) || ( key.compare( "+1" ) == 0 ) || ( key.compare( "+2" )== 0 ) || ( key.compare( "+3" ) == 0 ) ) {
+          if( ( index_it = find( mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), key ) ) != mono->chemical_code_->right_up_.end() ) {
+              ( *index_it ) = code;
+          } else if( ( index_it = find( mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), key ) ) != mono->chemical_code_->right_down_.end() ) {
+              ( *index_it ) = code;
+          }
+        } else if( ( key.compare( "2" ) == 0 ) || ( key.compare( "3" ) == 0 ) || ( key.compare( "4" ) == 0 ) ) {
+          if( ( index_it = find( mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), key ) ) != mono->chemical_code_->left_up_.end() ) {
+              ( *index_it ) = code;
+          } else if( ( index_it = find( mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), key ) ) != mono->chemical_code_->left_down_.end() ) {
+              ( *index_it ) = code;
+          }
         }
-    }
-    if(mono->cycle_atoms_.at(3) != NULL)
-    {
-        if(mono->derivatives_map_["4"].compare("xCH-N") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "4")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "4N";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "4")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "4N";
-        }
-        if(mono->derivatives_map_["4"].compare("xC-N-C=OCH3") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "4")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "4NAc";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "4")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "4NAc";
-        }
-        if(mono->derivatives_map_["4"].compare("xC-N-C=OCH2OH") == 0)
-        {
-            vector<string>::iterator index_it;
-            if((index_it = find(mono->chemical_code_->left_up_.begin(), mono->chemical_code_->left_up_.end(), "4")) != mono->chemical_code_->left_up_.end())
-                (*index_it) = "4NGc";
-            else if((index_it = find(mono->chemical_code_->left_down_.begin(), mono->chemical_code_->left_down_.end(), "4")) != mono->chemical_code_->left_down_.end())
-                (*index_it) = "4NGc";
-        }
+      }
     }
 }
 
-vector<Oligosaccharide*> Assembly::ExtractOligosaccharides(vector<Monosaccharide*> monos, ResidueNameMap dataset_residue_names,
-                                                           int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes)
-{
+void Assembly::UpdatePdbCode( Monosaccharide * mono ) {
+  string code = mono->chemical_code_->toString();
+  for( int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++ ) {
+    if( code.compare( COMPLEXSUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) {
+      mono->sugar_name_.pdb_code_ = COMPLEXSUGARNAMELOOKUP[ i ].pdb_code_;
+      return;
+    }
+  }
+  for( int i = 0; i < SUGARNAMELOOKUPSIZE; i++ ) {
+    if( code.compare( SUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) {
+      mono->sugar_name_.pdb_code_ = SUGARNAMELOOKUP[ i ].pdb_code_;
+      return;
+    }
+  }
+}
+
+vector<Oligosaccharide*> Assembly::ExtractOligosaccharides( vector<Monosaccharide*> monos,
+                                                            ResidueNameMap dataset_residue_names,
+                                                            int& number_of_covalent_links,
+                                                            int& number_of_probable_non_covalent_complexes ) {
     string terminal_residue_name = "";
     ResidueNameMap common_terminal_residues = gmml::InitializeCommonTerminalResidueMap();
     map<Monosaccharide*, vector<Monosaccharide*> > monos_table = map<Monosaccharide*, vector<Monosaccharide*> >();
@@ -3238,13 +3258,13 @@ string Assembly::CheckTerminals(Atom* target, AtomVector& terminal_atoms)
                     terminal_atoms = target_residue->GetAtoms();
 
 
-                AmberGlycamMap amber_glycam = AmberGlycamLookup(target_o_neighbor->GetResidue()->GetName());
-                AmberGlycamMap glycam_amber = GlycamAmberLookup(target_o_neighbor->GetResidue()->GetName());
+                AminoacidGlycamMap aminoacid_glycam = AminoacidGlycamLookup(target_o_neighbor->GetResidue()->GetName());
+                AminoacidGlycamMap glycam_aminoacid = GlycamAminoacidLookup(target_o_neighbor->GetResidue()->GetName());
 
-                if(amber_glycam.amber_name_.compare("") != 0)
-                    return amber_glycam.amber_name_;
-                else if(glycam_amber.glycam_name_.compare("") != 0)
-                    return glycam_amber.amber_name_;
+                if(aminoacid_glycam.aminoacid_name_.compare("") != 0)
+                    return aminoacid_glycam.aminoacid_name_;
+                else if(glycam_aminoacid.glycam_name_.compare("") != 0)
+                    return glycam_aminoacid.aminoacid_name_;
                 else
                     return target_o_neighbor->GetResidue()->GetName();
             }
@@ -3307,17 +3327,20 @@ void Assembly::BuildOligosaccharideTreeStructure(Monosaccharide *key, vector<Mon
             {
                 int it_index = distance(values.begin(), it);
                 vector<string> key_mono_linkages = monos_table_linkages[key];
+                /*for(int i = 0; i < key_mono_linkages.size(); i++ )  {
+                    std::cout << "HELP US!" << key_mono_linkages.at( i ) << std::endl;
+                }*/
                 string link = key_mono_linkages.at(it_index);
                 stringstream reverse_link;
                 reverse_link << Split(link, "-").at(2) << "-" << Split(link, "-").at(1) << "-" << Split(link, "-").at(0);
                 if(find(visited_linkages.begin(), visited_linkages.end(), link) == visited_linkages.end() &&
                         find(visited_linkages.begin(), visited_linkages.end(), reverse_link.str()) == visited_linkages.end())
                 {
-                    //                    cout << "key id " << key->mono_id  << ", value id " << value_mono->mono_id << endl;
+                    //cout << "key id " << key->mono_id  << ", value id " << value_mono->mono_id << endl;
                     Oligosaccharide* child_oligo = new Oligosaccharide();
                     vector<Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
-                    //                    cout << "call " << value_mono->mono_id << endl;
+                    //cout << "call " << value_mono->mono_id << endl;
                     BuildOligosaccharideTreeStructure(value_mono, value_mono_values, child_oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                     oligo->child_oligos_.push_back(child_oligo);
                     oligo->child_oligos_linkages_.push_back(link);
@@ -3328,4 +3351,3 @@ void Assembly::BuildOligosaccharideTreeStructure(Monosaccharide *key, vector<Mon
         return;
     }
 }
-

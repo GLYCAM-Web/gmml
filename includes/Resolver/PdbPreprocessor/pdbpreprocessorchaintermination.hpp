@@ -36,7 +36,10 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            /*! \fn
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */ 
+           /*! \fn
               * An accessor function in order to access to the residue chain Id
               * @return residue_chain_id_ attribute of the current object of this class
               */
@@ -106,10 +109,13 @@ namespace PdbPreprocessorSpace
               * @return all_possible_c_chian_termination_as_string
               */
             std::vector<std::string> GetAllPossibleCChainTerminationAsString();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue chain id of the current object
               * Set the residue_chain_id_ attribute of the current pdb preprocessor chain termination
@@ -153,7 +159,7 @@ namespace PdbPreprocessorSpace
               * @param ending_residue_insertion_code The ending residue insertion code attribute of the current object
               */
             void SetEndingResidueInsertionCode(char ending_residue_insertion_code);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

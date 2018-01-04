@@ -67,6 +67,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the helix id in a helix class
               * @return helix_id_ attribute of the current object of this class
@@ -97,10 +100,13 @@ namespace PdbFileSpace
               * @return helix_length_ attribute of the current object of this class
               */
             double GetHelixLength();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the helix id of the current object
               * Set the helix_id_ attribute of the current helix
@@ -143,7 +149,7 @@ namespace PdbFileSpace
               * @param helix_length The helix length of the current object
               */
             void SetHelixLength(double helix_length);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

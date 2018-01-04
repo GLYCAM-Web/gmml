@@ -22,6 +22,9 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             GeometryTopology::Coordinate* GetMinCorner();
             GeometryTopology::Coordinate* GetMaxCorner();
             double GetCellCharge();
@@ -30,25 +33,31 @@ namespace GeometryTopology
             double GetCellWidth();
             double GetCellHeight();
             Grid* GetGrid();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             void SetMinCorner(GeometryTopology::Coordinate* min);
             void SetMaxCorner(GeometryTopology::Coordinate* max);
             void SetCellCharge(double charge);
             void SetCellPotentialEnergy(double potential_energy);
             void SetGrid(Grid* grid);
-
+/** @}*/
             //////////////////////////////////////////////////////////+
             //                         FUNCTIONS                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             GeometryTopology::Coordinate* GetCellCenter();
             void CalculateCellCharge();
             void CalculateCellPotentialEnergy(double ion_radius);
             void CalculateBoxCharge();
             void CalculateBoxPotentialEnergy();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

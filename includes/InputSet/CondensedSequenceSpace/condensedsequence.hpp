@@ -11,7 +11,7 @@
 namespace CondensedSequenceSpace
 {
     class CondensedSequenceResidue;
-    class CondensedSequenceAmberPrepResidue;
+    class CondensedSequenceGlycam06Residue;
     // Options for condensed sequence: rotamers and glycosidic angles
     struct RotamersAndGlycosidicAnglesInfo{
         public:
@@ -62,10 +62,10 @@ namespace CondensedSequenceSpace
               */
             typedef std::vector<gmml::CondensedSequenceTokenType> CondensedSequenceTokenTypeVector;
 //            typedef std::vector<std::pair<CondensedSequenceResidue*, int> > CondensedSequenceResidueTree;
-//            typedef std::vector<std::pair<CondensedSequenceAmberPrepResidue*, int> > CondensedSequenceAmberPrepResidueTree;
+//            typedef std::vector<std::pair<CondensedSequenceGlycam06Residue*, int> > CondensedSequenceGlycam06ResidueTree;
 
             typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueTree;
-            typedef std::vector<CondensedSequenceAmberPrepResidue*> CondensedSequenceAmberPrepResidueTree;       
+            typedef std::vector<CondensedSequenceGlycam06Residue*> CondensedSequenceGlycam06ResidueTree;       
             typedef std::pair<std::string, RotamersAndGlycosidicAnglesInfo*> RotamerNameInfoPair;
             typedef std::vector<RotamerNameInfoPair> CondensedSequenceRotamersAndGlycosidicAnglesInfo;
             typedef std::map<int, std::vector<std::vector<double> > > IndexLinkageConfigurationMap;
@@ -80,18 +80,23 @@ namespace CondensedSequenceSpace
               */
             CondensedSequence();
             CondensedSequence(std::string sequence);
-
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             CondensedSequenceResidueVector GetResidues();
             CondensedSequenceTokenTypeVector GetTokens();
             CondensedSequenceResidueTree GetCondensedSequenceResidueTree();
-            CondensedSequenceAmberPrepResidueTree GetCondensedSequenceAmberPrepResidueTree();
-
+            CondensedSequenceGlycam06ResidueTree GetCondensedSequenceGlycam06ResidueTree();
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             void SetResidues(CondensedSequenceResidueVector residues);
             void AddResidue(CondensedSequenceResidue* residue);
             void SetTokens(CondensedSequenceTokenTypeVector tokens);
@@ -101,23 +106,35 @@ namespace CondensedSequenceSpace
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
             int InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue* condensed_residue, int parent_node_id = -1);
-            int InsertNodeInCondensedSequenceAmberPrepResidueTree(CondensedSequenceAmberPrepResidue* condensed_amber_prep_residue, int parent_node_id = -1);
+            int InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceGlycam06Residue* condensed_glycam06_residue, int parent_node_id = -1);
+/** @}*/
+            /** \addtogroup Input_Sequence_Parser
+              * @{
+              */
             void ParseCondensedSequence(std::string sequence);
+/** @}*/
+            /** \addtogroup Manipulators
+               * @{
+               */
             void BuildArrayTreeOfCondensedSequenceResidue();
-            void BuildArrayTreeOfCondensedSequenceAmberPrepResidue(CondensedSequenceResidueTree residue_tree);
-            std::string GetAmberPrepTerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
-            std::string GetAmberPrepResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences, std::string parent_name);
-            std::string GetFirstLetterOfAmberPrepResidueCode(std::bitset<10> open_valences_check);
-            std::string GetSecondLetterOfAmberPrepResidueCode(std::string residue_name, std::string isomer);
-            std::string GetThirdLetterOfAmberPrepResidueCode(std::string configuration, std::string ring_type);
-            CondensedSequenceAmberPrepResidue* GetCondensedSequenceDerivativeAmberPrepResidue(std::string derivative_name, int derivative_index);
+            void BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
+/** @}*/
+            /** \addtogroup Molecular_Data_Structure
+               * @{
+               */
+            std::string GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
+            std::string GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences, std::string parent_name);
+            std::string GetFirstLetterOfGlycam06ResidueCode(std::bitset<10> open_valences_check);
+            std::string GetSecondLetterOfGlycam06ResidueCode(std::string residue_name, std::string isomer);
+            std::string GetThirdLetterOfGlycam06ResidueCode(std::string configuration, std::string ring_type);
+            CondensedSequenceGlycam06Residue* GetCondensedSequenceDerivativeGlycam06Residue(std::string derivative_name, int derivative_index);
             CondensedSequenceRotamersAndGlycosidicAnglesInfo GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree);
             int CountAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             int CountAllPossible28LinkagesRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             std::vector<std::vector<int> > CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             IndexLinkageConfigurationMap CreateIndexLinkageConfigurationMap(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
                                                                             IndexNameMap& names);
-
+/** @}*/
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -136,7 +153,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceResidueVector residues_;
             CondensedSequenceTokenTypeVector tokens_;
             CondensedSequenceResidueTree condensed_sequence_residue_tree_;
-            CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_prep_residue_tree_;
+            CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree_;
 
     };
 }

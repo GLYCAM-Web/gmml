@@ -40,6 +40,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the record name in a connect card
               * @return record_name_ attribute of the current object of this class
@@ -50,10 +53,13 @@ namespace PdbFileSpace
               * @return bonded_atoms_serial_numbers_ attribute of the current object of this class
               */
             BondedAtomsSerialNumbersMap GetBondedAtomsSerialNumbers();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the record name of the current object
               * Set the record_name_ attribute of the current connect card
@@ -66,7 +72,7 @@ namespace PdbFileSpace
               * @param bonded_atom_serial_number The mapping of bonded atom serial numbers of the current object
               */
             void SetBondedAtomsSerialNumbers(BondedAtomsSerialNumbersMap bonded_atom_serial_numbers);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

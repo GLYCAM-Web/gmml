@@ -45,6 +45,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the atoms in a model residue set
               * @return atoms_ attribute of the current object of this class
@@ -55,10 +58,13 @@ namespace PdbFileSpace
               * @return heterogen_atoms_ attribute of the current object of this class
               */
             HeterogenAtomCardVector GetHeterogenAtoms();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the atoms of the current object
               * Set the atoms_ attribute of the current model residue set
@@ -83,7 +89,7 @@ namespace PdbFileSpace
               * @param heterogen_atom The heterogen atom attribute of the current object
               */
             void AddHeterogenAtom(PdbHeterogenAtomCard* heterogen_atom);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

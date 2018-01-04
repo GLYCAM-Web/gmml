@@ -29,6 +29,9 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to access to the factor attribute of the current object
               * The attribute is set by the contents of the given file
@@ -58,10 +61,13 @@ namespace ParameterFileSpace
               * @return dscr_ attribute of the current object of this class
               */
             std::string GetDscr();
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** @addtogroup Manipulators
+*  @{
+*/
             /*! \fn
               * A mutator function in order to set the factor of the current object
               * Set the factor_ attribute of the current term
@@ -92,7 +98,7 @@ namespace ParameterFileSpace
               * @param dscr The dscr attribute of the current object
               */
             void SetDscr( std::string dscr);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

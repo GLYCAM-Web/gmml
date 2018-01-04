@@ -35,6 +35,9 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the atom types involved in an dihedral in the current object
               * @return types_ attribute of the current object of this class
@@ -70,10 +73,13 @@ namespace ParameterFileSpace
               * @return is_improper_ of the current object of this class
               */
             bool GetIsImproper();
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** @addtogroup Manipulators
+*  @{
+*/
             /*! \fn
               * A mutator function in order to set the list of atom types of the current object
               * Set the types_ attribute of the current dihedral
@@ -116,7 +122,7 @@ namespace ParameterFileSpace
               * @param is_improper The is_improper attribute of the current object
               */
             void SetIsImproper(bool is_improper);
-
+/**@}*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

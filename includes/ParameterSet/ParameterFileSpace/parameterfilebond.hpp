@@ -39,6 +39,9 @@ namespace ParameterFileSpace
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the atom types involved in an angle in the current object
               * @return types_ attribute of the current object of this class
@@ -66,10 +69,13 @@ namespace ParameterFileSpace
               * @return hbond_coefficients_ attribute of the current object of this class
               */
             std::vector<double> GetHbondCoefficients();
-
+/**@*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the list of atom types of the current object
               * Set the types_ attribute of the current bond
@@ -100,7 +106,7 @@ namespace ParameterFileSpace
               * @param hbond_coefficients A hbond_coefficients of types of atoms of the current object
               */
             void SetHbondCoefficients(std::vector<double> hbond_coefficients);
-
+/**@*/
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

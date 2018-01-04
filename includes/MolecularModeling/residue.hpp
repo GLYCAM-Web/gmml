@@ -7,6 +7,8 @@
 #include <fstream>
 #include <vector>
 #include "residueproperties.hpp"
+#include "../GeometryTopology/coordinate.hpp"
+
 
 namespace MolecularModeling
 {
@@ -20,6 +22,7 @@ namespace MolecularModeling
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             typedef std::vector<Atom*> AtomVector;
+            typedef std::vector<std::string> StringVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -35,6 +38,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the assembly
               * @return assembly_ attribute of the current object of this class
@@ -45,6 +51,11 @@ namespace MolecularModeling
               * @return name_ attribute of the current object of this class
               */
             std::string GetName();
+            /*! \fn
+              * An accessor function in order to access to the number
+              * @return number split from id_ attribute of the current object of this class
+              */
+            std::string GetNumber();
             /*! \fn
               * An accessor function in order to access to the atoms
               * @return atoms_ attribute of the current object of this class
@@ -82,9 +93,13 @@ namespace MolecularModeling
               */
             ResidueNode* GetNode();
 
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the assembly of the current object
               * Set the assembly_ attribute of the current residue
@@ -165,6 +180,13 @@ namespace MolecularModeling
               */
             void SetNode(ResidueNode* node);
 
+            /*! \fn
+              * A mutator function that replaces the coordinates of the atoms of the current object
+              * Replace the coordinate attribute for atoms of the current residue
+              * @param atoms The atom attribute of the current object
+              */
+            void ReplaceAtomCoordinates(AtomVector *newAtoms);
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
@@ -177,6 +199,10 @@ namespace MolecularModeling
             bool GraphParameterBasedElementLabeling();
             bool GraphPredictionBasedElementLabeling();
             AtomVector GetAtomsWithLowestIntraDegree();
+            double CalculateAtomicOverlaps(Assembly *assemblyB);
+            double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
+            bool CheckIfProtein();
+            GeometryTopology::Coordinate GetRingCenter();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

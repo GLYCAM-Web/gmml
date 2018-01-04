@@ -25,6 +25,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the symbol
               * @return symbol_ attribute of the current object of this class
@@ -80,10 +83,13 @@ namespace MolecularModeling
               * @return melting_point_ attribute of the current object of this class
               */
             double GetMeltingPoint();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the symbol of the current object
               * Set the symbol_ attribute of the current element
@@ -150,7 +156,7 @@ namespace MolecularModeling
               * @param melting_point The melting point attribute of the current object
               */
             void SetMeltingPoint(double melting_point);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

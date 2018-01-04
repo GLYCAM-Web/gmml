@@ -21,6 +21,9 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the atom type
               * @return atom_type_ attribute of the current object of this class
@@ -41,10 +44,13 @@ namespace MolecularModeling
               * @return radius_ attribute of the current object of this class
               */
             double GetRadius();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the atom type of the current object
               * Set the atom_type_ attribute of the current md atom
@@ -69,7 +75,7 @@ namespace MolecularModeling
               * @param mass The radius attribute of the current object
               */
             void SetRadius(double radius);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

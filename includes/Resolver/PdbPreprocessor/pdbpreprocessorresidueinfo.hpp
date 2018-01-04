@@ -31,6 +31,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue chain Id
               * @return residue_chain_id_ attribute of the current object of this class
@@ -61,9 +64,13 @@ namespace PdbPreprocessorSpace
               * @return residue_charge_ attribute of the current object of this class
               */
             double GetResidueCharge();
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue chain id of the current object
               * Set the residue_chain_id_ attribute of the current pdb preprocessor residue info
@@ -100,7 +107,7 @@ namespace PdbPreprocessorSpace
               * @param residue_charge_ The residue charge attribute of the current object
               */
             void SetResidueCharge(double residue_charge);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

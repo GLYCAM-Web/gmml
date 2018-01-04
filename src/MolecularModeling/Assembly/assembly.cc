@@ -12,7 +12,7 @@
 #include "../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -94,6 +94,42 @@ Assembly::Assembly() : description_(""), model_index_(0), sequence_number_(1), i
     assemblies_ = AssemblyVector();
 }
 
+Assembly::Assembly(string file_path, gmml::InputFileType type)
+{
+    source_file_type_ = type;
+    description_ = "";
+    model_index_ = 0;
+    sequence_number_ = 1;
+    source_file_ = file_path;
+    residues_ = ResidueVector();
+    assemblies_ = AssemblyVector();
+    id_ = "1";
+    switch(type)
+    {
+    case gmml::PDB:
+        BuildAssemblyFromPdbFile(source_file_);
+        break;
+    case gmml::PDBQT:
+        BuildAssemblyFromPdbqtFile(source_file_);
+        break;
+    case gmml::TOP:
+        BuildAssemblyFromTopologyFile(source_file_);
+        break;
+    case gmml::LIB:
+        BuildAssemblyFromLibraryFile(source_file_);
+        break;
+    case gmml::PREP:
+        BuildAssemblyFromPrepFile(source_file_);
+        break;
+    case gmml::MULTIPLE:
+        break;
+    case gmml::UNKNOWN:
+        break;
+    default:
+        std::cout << "Error, problem with input file type in Assembly Constructor" << std::endl;
+    }
+}
+
 Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
 {
     source_file_type_ = type;
@@ -103,46 +139,48 @@ Assembly::Assembly(vector<string> file_paths, gmml::InputFileType type)
     id_ = "1";
     switch(type)
     {
-        case gmml::PDB:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromPdbFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::PDBQT:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromPdbqtFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::TOP:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromTopologyFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::LIB:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromLibraryFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::PREP:
-            source_file_ = file_paths.at(0);
-            residues_ = ResidueVector();
-            BuildAssemblyFromPrepFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::TOP_CRD:
-            source_file_ = file_paths.at(0)+";"+file_paths.at(1);
-            residues_ = ResidueVector();
-            BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::MULTIPLE:
-            break;
-        case gmml::UNKNOWN:
-            break;
+    case gmml::PDB:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromPdbFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::PDBQT:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromPdbqtFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::TOP:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromTopologyFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::LIB:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromLibraryFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::PREP:
+        source_file_ = file_paths.at(0);
+        residues_ = ResidueVector();
+        BuildAssemblyFromPrepFile(source_file_);
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::TOP_CRD:
+        source_file_ = file_paths.at(0)+";"+file_paths.at(1);
+        residues_ = ResidueVector();
+        BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
+        assemblies_ = AssemblyVector();
+        break;
+    case gmml::MULTIPLE:
+        break;
+    case gmml::UNKNOWN:
+        break;
+    default:
+        std::cout << "Error, input type not recognized in Assembly Constructor" << std::endl;
     }
 }
 
@@ -273,6 +311,137 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
     return all_atoms_of_assembly;
 }
 
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
+{ // written by OG, so syntax a bit different from other functions.
+
+    AtomVector selection_from_assembly = AtomVector();
+    AtomVector all_protein_atoms = this->GetAllAtomsOfAssemblyWithinProteinResidues();
+    for(AtomVector::iterator it = all_protein_atoms.begin(); it != all_protein_atoms.end(); it++)
+    {
+        Atom *atom = *it;
+        if ( (atom->GetName().compare("N")==0) || (atom->GetName().compare("C")==0) || (atom->GetName().compare("O")==0) || (atom->GetName().compare("CA")==0) )
+        {
+            selection_from_assembly.push_back(atom);
+        }
+    }
+    return selection_from_assembly;
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
+{ // written by OG, so syntax a bit different from other functions.
+
+    AtomVector selection_from_assembly = AtomVector();
+    AtomVector all_protein_atoms = this->GetAllAtomsOfAssemblyWithinProteinResidues();
+    for(AtomVector::iterator it = all_protein_atoms.begin(); it != all_protein_atoms.end(); it++)
+    {
+        Atom *atom = *it;
+        if ( (atom->GetName().compare("N")!=0) && (atom->GetName().compare("C")!=0) && (atom->GetName().compare("O")!=0) && (atom->GetName().compare("CA")!=0) )
+        {
+            selection_from_assembly.push_back(atom);
+        }
+    }
+    return selection_from_assembly;
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
+{ // written by OG, so syntax a bit different from other functions.
+    AtomVector selection_from_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    //std::cout << "size is " << assemblies.size() << std::endl;
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        ResidueVector residues = assembly->GetResidues();
+        for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+        {
+            Residue* residue = (*it1);
+            if (residue->CheckIfProtein())
+            {
+                //std::cout << "Found a protein" << std::endl;
+                AtomVector atoms = residue->GetAtoms();
+                for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                {
+                    Atom *atom = *it2;
+                    selection_from_assembly.push_back(atom);
+                }
+
+            }
+
+        }
+    }
+    // This is unintuitive, but GetAssemblies does not return "this" assembly, just additonal "sub-assemblies" contained within this assembly. Horrific.
+    ResidueVector residues =  this->GetResidues();
+    for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        //std::cout << "Checking for a protein" << std::endl;
+        if (residue->CheckIfProtein())
+        {
+            //std::cout << "Found a protein" << std::endl;
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            {
+                Atom *atom = *it2;
+                selection_from_assembly.push_back(atom);
+            }
+
+        }
+
+    }
+    return selection_from_assembly;
+}
+
+Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
+{ // written by OG, so syntax a bit different from other functions.
+    AtomVector selection_from_assembly = AtomVector();
+    AssemblyVector assemblies = this->GetAssemblies();
+    //std::cout << "size is " << assemblies.size() << std::endl;
+    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    {
+        Assembly* assembly = (*it);
+        ResidueVector residues = assembly->GetResidues();
+        for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+        {
+            Residue* residue = (*it1);
+            if (residue->CheckIfProtein()) {}
+            else
+            {
+                //std::cout << "Found a non-protein" << std::endl;
+                AtomVector atoms = residue->GetAtoms();
+                for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+                {
+                    Atom *atom = *it2;
+                    selection_from_assembly.push_back(atom);
+                }
+
+            }
+
+        }
+    }
+    // This is unintuitive, but GetAssemblies does not return "this" assembly, just additonal "sub-assemblies" contained within this assembly. Horrific.
+    ResidueVector residues =  this->GetResidues();
+    for(ResidueVector::iterator it1= residues.begin(); it1 != residues.end(); it1++)
+    {
+        Residue* residue = (*it1);
+        //std::cout << "Checking for a protein" << std::endl;
+        if (residue->CheckIfProtein()) {}
+        else
+        {
+            //std::cout << "Found a non-protein" << std::endl;
+            AtomVector atoms = residue->GetAtoms();
+            for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            {
+                Atom *atom = *it2;
+                selection_from_assembly.push_back(atom);
+            }
+
+        }
+
+    }
+    return selection_from_assembly;
+}
+
+
 Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
 {
     AtomVector all_atoms_of_assembly = AtomVector();
@@ -364,6 +533,18 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
         }
     }
     return coordinates;
+}
+
+Assembly::CoordinateVector Assembly::GetCycleAtomCoordinates( Monosaccharide* mono ) {
+  CoordinateVector coordinates;
+  for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); it1++ ) {
+    Atom* atom = ( *it1 );
+    CoordinateVector atom_coordinates = atom->GetCoordinates();
+    for( CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
+      coordinates.push_back( ( *it2 ) );
+    }
+  }
+  return coordinates;
 }
 
 Assembly::NoteVector Assembly::GetNotes()
@@ -535,6 +716,15 @@ void Assembly::SetMolecules(MoleculeVector molecules)
     for(MoleculeVector::iterator it = molecules.begin(); it != molecules.end(); it++)
     {
         molecules_.push_back(*it);
+	}
+}
+void Assembly::MergeAssembly(Assembly *other) // Added by Oliver. He is unsure and this may well cause problems.
+{
+    ResidueVector residues = other->GetResidues();
+    for (ResidueVector::iterator it = residues.begin(); it != residues.end(); ++it)
+    {
+        Residue *residue = *it;
+        this->AddResidue(residue);
     }
 }
 
@@ -921,4 +1111,3 @@ void Assembly::WriteHetAtoms(string file_name)
             residue->WriteHetAtoms(out_file);
     }
 }
-

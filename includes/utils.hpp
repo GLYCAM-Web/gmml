@@ -13,8 +13,14 @@
 #include "boost/foreach.hpp"
 #include "common.hpp"
 #include "GeometryTopology/coordinate.hpp"
+#include "MolecularModeling/atom.hpp"
 
 #include <fstream>
+
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 namespace gmml
 {
@@ -262,6 +268,63 @@ namespace gmml
         return radian*PI_DEGREE/PI_RADIAN;
     }
 
+    // I found that Coordinate has a subtract operator, but I cannot get it to work as I want. I already made this, and it works so...
+    inline GeometryTopology::Coordinate subtract_coordinates(GeometryTopology::Coordinate minuaend, GeometryTopology::Coordinate subtrahend)
+    {
+        GeometryTopology::Coordinate new_coordinate ( (minuaend.GetX()-subtrahend.GetX()), (minuaend.GetY()-subtrahend.GetY()), (minuaend.GetZ()-subtrahend.GetZ()) );
+        return new_coordinate;
+    }
+
+    inline GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(GeometryTopology::Coordinate a, GeometryTopology::Coordinate b, GeometryTopology::Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+    {     // theta is the angle between 3 atoms. Phi is the torsion between 4 atoms.
+
+       //Convert from Degrees to Radians
+       //double theta_Radians = ( (theta_Degrees * PI_RADIAN) / 180 );
+        //double phi_Radians = ( (phi_Degrees * PI_RADIAN) / 180 );
+        double theta_Radians = ConvertDegree2Radian(theta_Degrees);
+        double phi_Radians = ConvertDegree2Radian(phi_Degrees);
+
+        Vector lmn_x, lmn_y, lmn_z;
+        double x_p, y_p, z_p;
+
+        Vector cb = subtract_coordinates(b, c);
+        Vector ba = subtract_coordinates(a, b);
+
+        lmn_y = ba;
+        lmn_y.CrossProduct(cb);
+        lmn_y.Normalize();
+
+        lmn_z = cb;
+        lmn_z.Normalize();
+
+        lmn_x = lmn_z;
+        lmn_x.CrossProduct(lmn_y);
+
+        x_p = distance_Angstrom *  sin(theta_Radians) * cos(phi_Radians);
+        y_p = distance_Angstrom * sin(theta_Radians) * sin(phi_Radians);
+        z_p = distance_Angstrom * cos(theta_Radians);
+
+        GeometryTopology::Coordinate new_coordinate ( lmn_x.GetX()*x_p + lmn_y.GetX()*y_p + lmn_z.GetX()*z_p + c.GetX(),
+                                                      lmn_x.GetY()*x_p + lmn_y.GetY()*y_p + lmn_z.GetY()*z_p + c.GetY(),
+                                                      lmn_x.GetZ()*x_p + lmn_y.GetZ()*y_p + lmn_z.GetZ()*z_p + c.GetZ());
+
+        return new_coordinate;
+      /*  return (GeometryTopology::Coordinate)
+        {
+            lmn_x.GetX()*x_p + lmn_y.GetX()*y_p + lmn_z.GetX()*z_p + c.GetX(),
+            lmn_x.GetY()*x_p + lmn_y.GetY()*y_p + lmn_z.GetY()*z_p + c.GetY(),
+            lmn_x.GetZ()*x_p + lmn_y.GetZ()*y_p + lmn_z.GetZ()*z_p + c.GetZ()
+        };
+                */
+    }
+
+    inline GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+    {
+        GeometryTopology::Coordinate new_coordinate = get_cartesian_point_from_internal_coords(a->GetCoordinates().at(0), b->GetCoordinates().at(0), c->GetCoordinates().at(0), theta_Degrees, phi_Degrees, distance_Angstrom);
+        return new_coordinate;
+        //return {new_coordinate.GetX(), new_coordinate.GetY(), new_coordinate.GetZ()};
+    }
+
     /*! \fn
       * Convert internal coordinate to the corresponding cartesian coordinate
       * @param coordinate_list List of at most three internal coordinates in order to calculate the cartesian coordinate of the given internal coordinate (distance, angle, torsion)
@@ -424,8 +487,9 @@ namespace gmml
     {
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
         {
-            if(code.compare(SUGARNAMELOOKUP[i].chemical_code_string_) == 0)
+            if(code.compare(SUGARNAMELOOKUP[i].chemical_code_string_) == 0){
                 return SUGARNAMELOOKUP[i];
+            }
         }
         return SUGARNAMELOOKUP[0];
     }
@@ -437,7 +501,7 @@ namespace gmml
       */
     inline Glycan::SugarName ClosestMatchSugarStereoChemistryNameLookup(std::string code, std::vector<Glycan::SugarName>& closest_matches)
     {
-        std::string vocab[] = {"2", "3", "4", "a", "+1", "+2", "+3", "-1"};
+        std::string vocab[] = {"2", "3", "4", "a", "+1", "+2", "+3", "-1", "NAc"};
         int vocab_size = (sizeof(vocab)/sizeof(vocab[0]));
         std::string pos = "^_";
         std::string stat = "d";
@@ -575,7 +639,7 @@ namespace gmml
                 return COMPLEXSUGARNAMELOOKUP[i];
         }
         return COMPLEXSUGARNAMELOOKUP[0];
-    }    
+    }
 
     /*! \fn
       * A function in order to initializing the common terminal residue map
@@ -620,24 +684,24 @@ namespace gmml
         return RESIDUENAMECODELOOKUP[0];
     }
 
-    inline gmml::AmberGlycamMap AmberGlycamLookup(std::string amber_residue_name)
+    inline gmml::AminoacidGlycamMap AminoacidGlycamLookup(std::string aminoacid_residue_name)
     {
-        for(int i = 0; i < AMBERGLYCAMLOOKUPSIZE; i++)
+        for(int i = 0; i < AMINOACIDGLYCAMLOOKUPSIZE; i++)
         {
-            if(amber_residue_name.compare(AMBERGLYCAMLOOKUP[i].amber_name_) == 0)
-                return AMBERGLYCAMLOOKUP[i];
+            if(aminoacid_residue_name.compare(AMINOACIDGLYCAMLOOKUP[i].aminoacid_name_) == 0)
+                return AMINOACIDGLYCAMLOOKUP[i];
         }
-        return AMBERGLYCAMLOOKUP[0];
+        return AMINOACIDGLYCAMLOOKUP[0];
     }
 
-    inline gmml::AmberGlycamMap GlycamAmberLookup(std::string glycam_residue_name)
+    inline gmml::AminoacidGlycamMap GlycamAminoacidLookup(std::string glycam_residue_name)
     {
-        for(int i = 0; i < AMBERGLYCAMLOOKUPSIZE; i++)
+        for(int i = 0; i < AMINOACIDGLYCAMLOOKUPSIZE; i++)
         {
-            if(glycam_residue_name.compare(AMBERGLYCAMLOOKUP[i].glycam_name_) == 0)
-                return AMBERGLYCAMLOOKUP[i];
+            if(glycam_residue_name.compare(AMINOACIDGLYCAMLOOKUP[i].glycam_name_) == 0)
+                return AMINOACIDGLYCAMLOOKUP[i];
         }
-        return AMBERGLYCAMLOOKUP[0];
+        return AMINOACIDGLYCAMLOOKUP[0];
     }
 
     inline gmml::AtomTypesInfo AtomTypesLookup(std::string atom_type)
@@ -749,6 +813,7 @@ namespace gmml
         }
         return result;
     }
+
 }
 
 

@@ -27,6 +27,9 @@ namespace CondensedSequenceSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             bool GetIsTerminal();
             std::string GetIsomer();
             std::string GetConfiguration();
@@ -35,10 +38,13 @@ namespace CondensedSequenceSpace
             int GetOxygenPosition();
             DerivativeMap GetDerivatives();
             int GetParentId();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             void SetIsTerminal(bool is_terminal);
             void SetIsomer(std::string isomer);
             void SetConfiguration(std::string configuration);
@@ -47,7 +53,7 @@ namespace CondensedSequenceSpace
             void SetOxygenPosition(int oxygen_position);
             void SetDerivatives(DerivativeMap derivatives);
             void SetParentId(int parent_id);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

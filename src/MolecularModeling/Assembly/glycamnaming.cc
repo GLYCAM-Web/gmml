@@ -12,7 +12,7 @@
 #include "../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -103,7 +103,7 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
             oligo_name = oligo_name + "1-OH";
         CondensedSequence* condensed_sequence = new CondensedSequence(oligo_name);
         //Gets the three letter code of all carbohydrates involved in current oligosaccharide
-        CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree = condensed_sequence->GetCondensedSequenceAmberPrepResidueTree();
+        CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         if(oligo->terminal_.compare("") != 0)
         {
             Atom* anomeric_o = NULL;
@@ -128,17 +128,17 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
                         string terminal_residue_id = terminal_atom->GetResidue()->GetId();
                         if(pdb_glycam_residue_map.find(terminal_atom_id) == pdb_glycam_residue_map.end())
                             pdb_glycam_residue_map[terminal_atom_id] == vector<string>();
-                        pdb_glycam_residue_map[terminal_atom_id].push_back(condensed_sequence_amber_residue_tree.at(index)->GetName());
+                        pdb_glycam_residue_map[terminal_atom_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
                         if(pdb_glycam_residue_map.find(terminal_residue_id) == pdb_glycam_residue_map.end())
                             pdb_glycam_residue_map[terminal_residue_id] = vector<string>();
-                        pdb_glycam_residue_map[terminal_residue_id].push_back(condensed_sequence_amber_residue_tree.at(index)->GetName());
+                        pdb_glycam_residue_map[terminal_residue_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
                     }
                 }
             }
         }
 
         index++;
-        this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_amber_residue_tree, index);
+        this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_glycam06_residue_tree, index);
     }
 
     return pdb_glycam_residue_map;
@@ -146,9 +146,9 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
 
 
 void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glycam_map, Oligosaccharide *oligosaccharide,
-                                               CondensedSequence::CondensedSequenceAmberPrepResidueTree condensed_sequence_amber_residue_tree, int &index)
+                                               CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree, int &index)
 {
-    string name = condensed_sequence_amber_residue_tree.at(index)->GetName();
+    string name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
     //TODO: Done
     //Update to hold all possible three letter names for the specific residue_id
     string residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
@@ -157,10 +157,10 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
     pdb_glycam_map[residue_id].push_back(name);
     index++;
     //Separating SO3 and PO3 residues in glycam naming
-    while(index < condensed_sequence_amber_residue_tree.size() && condensed_sequence_amber_residue_tree.at(index)->GetIsDerivative())
+    while(index < condensed_sequence_glycam06_residue_tree.size() && condensed_sequence_glycam06_residue_tree.at(index)->GetIsDerivative())
     {
-        int parent_index = condensed_sequence_amber_residue_tree.at(index)->GetParentId();
-        int carbon_index = ConvertString<int>(condensed_sequence_amber_residue_tree.at(index)->GetAnomericCarbon().substr(1));
+        int parent_index = condensed_sequence_glycam06_residue_tree.at(index)->GetParentId();
+        int carbon_index = ConvertString<int>(condensed_sequence_glycam06_residue_tree.at(index)->GetAnomericCarbon().substr(1));
         Atom* carbon_atom = NULL;
         if(oligosaccharide->root_->derivatives_map_.find("-1") == oligosaccharide->root_->derivatives_map_.end())
         {
@@ -198,7 +198,7 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                         pdb_glycam_map[derivative_atom_id] = vector<string>();
                     pdb_glycam_map[derivative_atom_id].push_back("SO3");
                 }
-                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                string new_name = condensed_sequence_glycam06_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
                     pdb_glycam_map[derivative_residue_id] = vector<string>();
@@ -216,7 +216,7 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                         pdb_glycam_map[derivative_atom_id] = vector<string>();
                     pdb_glycam_map[derivative_atom_id].push_back("SO3");
                 }
-                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                string new_name = condensed_sequence_glycam06_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
                     pdb_glycam_map[derivative_residue_id] = vector<string>();
@@ -234,7 +234,7 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                         pdb_glycam_map[derivative_atom_id] = vector<string>();
                     pdb_glycam_map[derivative_atom_id].push_back("PO3");
                 }
-                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                string new_name = condensed_sequence_glycam06_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
                     pdb_glycam_map[derivative_residue_id] = vector<string>();
@@ -252,7 +252,7 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
                         pdb_glycam_map[derivative_atom_id] = vector<string>();
                     pdb_glycam_map[derivative_atom_id].push_back("PO3");
                 }
-                string new_name = condensed_sequence_amber_residue_tree.at(parent_index)->GetName();
+                string new_name = condensed_sequence_glycam06_residue_tree.at(parent_index)->GetName();
                 string derivative_residue_id = oligosaccharide->root_->cycle_atoms_.at(0)->GetResidue()->GetId();
                 if(pdb_glycam_map.find(derivative_residue_id) == pdb_glycam_map.end())
                     pdb_glycam_map[derivative_residue_id] = vector<string>();
@@ -265,7 +265,7 @@ void Assembly::ExtractOligosaccharideNamingMap(GlycamResidueNamingMap& pdb_glyca
     //Recursively assign glycam naming to the monosaccharides of an oligosaccharide
     for(unsigned int i = 0; i < oligosaccharide->child_oligos_.size(); i++)
     {
-        this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_amber_residue_tree, index);
+        this->ExtractOligosaccharideNamingMap(pdb_glycam_map, oligosaccharide->child_oligos_.at(i), condensed_sequence_glycam06_residue_tree, index);
     }
 }
 

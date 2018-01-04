@@ -35,12 +35,16 @@ namespace MolecularModeling
               */
             Atom();
             Atom(Residue* residue, std::string name, CoordinateVector coordinates);
+            Atom(Residue* residue, std::string name, GeometryTopology::Coordinate coordinate);
             Atom(Atom* atom);
             Atom(Atom& atom);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the residue
               * @return residue_ attribute of the current object of this class
@@ -98,16 +102,21 @@ namespace MolecularModeling
               */
             AtomTypeVector GetAtomTypes();
 
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
             void FindConnectedAtoms(AtomVector &visitedAtoms);
             double GetDistanceToAtom(Atom *otherAtom);
+            double GetDistanceToCoordinate(GeometryTopology::Coordinate *coordinate);
             unsigned long long generateAtomIndex();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the residue of the current object
               * Set the residue_ attribute of the current atom
@@ -188,6 +197,7 @@ namespace MolecularModeling
               */
             void AddAtomType(std::string type);
 
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

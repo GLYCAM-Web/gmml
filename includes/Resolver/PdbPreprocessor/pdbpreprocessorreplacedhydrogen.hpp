@@ -32,6 +32,9 @@ namespace PdbPreprocessorSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the atom serial number
               * @return atom_serial_number_ attribute of the current object of this class
@@ -67,10 +70,13 @@ namespace PdbPreprocessorSpace
               * @return residue_alternate_location_ attribute of the current object of this class
               */
             char GetResidueAlternateLocation();
-
+/** @*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the atom serial number of the current object
               * Set the atom_serial_number_ attribute of the current pdb preprocessor replaced hydrogen
@@ -113,7 +119,7 @@ namespace PdbPreprocessorSpace
               * @param residue_alternate_location The residue alternate location attribute of the current object
               */
             void SetResidueAlternateLocation(char residue_alternate_location);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

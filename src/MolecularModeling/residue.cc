@@ -4,9 +4,13 @@
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residueproperties.hpp"
 #include "../../includes/MolecularModeling/residuenode.hpp"
+#include "../../../includes/MolecularModeling/overlaps.hpp"
+#include "../../includes/common.hpp"
+#include <algorithm>    // std::any_of
 
 using namespace std;
 using namespace MolecularModeling;
+using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -82,6 +86,11 @@ Assembly* Residue::GetAssembly()
 string Residue::GetName()
 {
     return name_;
+}
+string Residue::GetNumber()
+{
+    StringVector id = gmml::Split(id_, "_");
+    return id.at(2); // This is silly, why not add residue number to class? OG: I know right?
 }
 Residue::AtomVector Residue::GetAtoms()
 {
@@ -190,6 +199,27 @@ void Residue::SetId(string id)
 {
     id_ = id;
 }
+void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
+{
+    for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); ++it)
+    {
+        Atom *atom = (*it);
+        for(AtomVector::iterator itt = newAtoms->begin(); itt != newAtoms->end(); ++itt)
+        {
+            Atom *atom1 = (*itt);
+            //std::cout << "Comparing with " << atom1->GetName() << std::endl;
+            if (atom->GetName() == atom1->GetName() )
+            {
+                //std::cout << "Replacing " << atom1->GetName() << " with " << atom->GetName() << std::endl;
+                //std::cout << "Before X=" << atom->GetCoordinates().at(0)->GetX() << std::endl;
+                atom->GetCoordinates().at(0)->SetX( atom1->GetCoordinates().at(0)->GetX() );
+                atom->GetCoordinates().at(0)->SetY( atom1->GetCoordinates().at(0)->GetY() );
+                atom->GetCoordinates().at(0)->SetZ( atom1->GetCoordinates().at(0)->GetZ() );
+                //std::cout << "After X=" << atom->GetCoordinates().at(0)->GetX() << std::endl;
+            }
+        }
+    }
+}
 
  //Added by ayush on 11/20/17 for residuenode in assembly
 void Residue::SetNode(ResidueNode* node)
@@ -296,7 +326,6 @@ bool Residue::GraphPredictionBasedElementLabeling()
     return flag;
 }
 
-
 Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
 {
     int degree = INFINITY;
@@ -316,6 +345,120 @@ Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
     }
 
     return lowest_degree_atoms;
+}
+
+double Residue::CalculateAtomicOverlaps(Assembly *assemblyB)
+{
+    AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
+    AtomVector residueAtoms = this->GetAtoms();
+    return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
+}
+double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
+{
+    AtomVector residueAtoms = this->GetAtoms();
+    return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
+}
+
+// Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
+// Your wish is my command. ;o) The Proteins are now defined as a const std::string in the common.hpp.
+//  This allows for easy modification of it and also if someone else wants to use it somewhere else it
+//  is now available to them.
+bool Residue::CheckIfProtein() 
+{
+    if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) ) 
+    {
+        return true;
+    }
+    return false;
+}
+
+// bool Residue::CheckIfProtein()
+// {
+//     std::string resname = this->GetName();
+//     if(resname.compare("ALA")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ASN")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("ARG")==0)
+//         return true;
+//     else if (resname.compare("GLY")==0)
+//         return true;
+//     else if (resname.compare("GLU")==0)
+//         return true;
+//     else if (resname.compare("GLN")==0)
+//         return true;
+//     else if (resname.compare("PRO")==0)
+//         return true;
+//     else if (resname.compare("HIS")==0)
+//         return true;
+//     else if (resname.compare("ASP")==0)
+//         return true;
+//     else if (resname.compare("VAL")==0)
+//         return true;
+//     else if (resname.compare("LEU")==0)
+//         return true;
+//     else if (resname.compare("THR")==0)
+//         return true;
+//     else if (resname.compare("SER")==0)
+//         return true;
+//     else if (resname.compare("LYS")==0)
+//         return true;
+//     else if (resname.compare("MET")==0)
+//         return true;
+//     else if (resname.compare("TYR")==0)
+//         return true;
+//     else if (resname.compare("TRP")==0)
+//         return true;
+//     else if (resname.compare("PHE")==0)
+//         return true;
+//     else if (resname.compare("SEC")==0)
+//         return true;
+//     else if (resname.compare("ILE")==0)
+//         return true;
+//     else if (resname.compare("CYX")==0)
+//         return true;
+//     else if (resname.compare("HID")==0)
+//         return true;
+//     else if (resname.compare("HIE")==0)
+//         return true;
+//     else if (resname.compare("NLN")==0)
+//         return true;
+//     else if (resname.compare("OLT")==0)
+//         return true;
+//     else if (resname.compare("OLS")==0)
+//         return true;
+//     else if (resname.compare("OLY")==0)
+//         return true;
+//     else
+//         return false;
+// }
+
+GeometryTopology::Coordinate Residue::GetRingCenter()
+{
+    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
+    int numberOfRingAtoms = 0;
+    AtomVector atoms = this->GetAtoms();
+
+    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    {
+        if ( (*atom)->GetIsRing() )
+        {
+            numberOfRingAtoms++;
+            std::cout << "Atom is ring: " << (*atom)->GetName() << std::endl;
+            sumX += (*atom)->GetCoordinates().at(0)->GetX();
+            sumY += (*atom)->GetCoordinates().at(0)->GetY();
+            sumZ += (*atom)->GetCoordinates().at(0)->GetZ();
+        }
+    }
+    GeometryTopology::Coordinate center;
+    center.SetX( sumX / numberOfRingAtoms  );
+    center.SetY( sumY / numberOfRingAtoms  );
+    center.SetZ( sumZ / numberOfRingAtoms  );
+    return center;
 }
 
 //////////////////////////////////////////////////////////

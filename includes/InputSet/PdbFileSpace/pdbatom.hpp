@@ -60,6 +60,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+              * @{
+              */
             /*! \fn
               * An accessor function in order to access to the atom serial number in a pdb atom
               * @return atom_serial_number_ attribute of the current object of this class
@@ -125,10 +128,13 @@ namespace PdbFileSpace
               * @return atom_card_index_in_residue_set_ attribute of the current object of this class
               */
             std::string GetAtomCardIndexInResidueSet();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+              * @{
+              */
             /*! \fn
               * A mutator function in order to set the atom serial number of the current object
               * Set the atom_serial_number_ attribute of the current pdb atom
@@ -207,6 +213,7 @@ namespace PdbFileSpace
               * @param atom_card_index_in_residue_sequence The atom card index in a residue set of the current object
               */
             void SetAtomCardIndexInResidueSet(std::string atom_card_index_in_residue_sequence);
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -237,4 +244,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBATOM_HPP
+#endif// PDBATOM_HPP

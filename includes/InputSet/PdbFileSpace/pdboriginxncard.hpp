@@ -40,15 +40,21 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the origin X N attribute in a origin X N card
               * @return origin_x_n_ attribute of the current object of this class
               */
             OriginXnVector GetOriginXN();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the origin X N of the current object
               * Set the origin_x_n_ attribute of the current origin X N
@@ -61,7 +67,7 @@ namespace PdbFileSpace
               * @param origin The origin of the current object
               */
             void AddOriginXN(PdbOriginXn* origin);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////

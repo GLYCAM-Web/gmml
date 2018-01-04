@@ -36,6 +36,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Molecular_Data_Structure
+               * @{
+               */
             /*! \fn
               * An accessor function in order to access to the chain id in residue sequence
               * @return chain_id_ attribute of the current object of this class
@@ -51,10 +54,13 @@ namespace PdbFileSpace
               * @return residue_names_ of the current object of this class
               */
             std::vector<std::string> GetResidueNames();
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
             //////////////////////////////////////////////////////////
+/** \addtogroup Manipulators
+               * @{
+               */
             /*! \fn
               * A mutator function in order to set the chain id of the current object
               * Set the chain_id_ attribute of the current residue sequence
@@ -79,7 +85,7 @@ namespace PdbFileSpace
               * @param residue_name The residue name of the current object
               */
             void AddResidueName(const std::string residue_name);
-
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
