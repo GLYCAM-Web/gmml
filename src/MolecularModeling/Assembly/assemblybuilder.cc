@@ -652,7 +652,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
     cout << "Building assembly from pdb file ..." << endl;
-    cout << "Reading PDB file into PdbFile structure." << endl;
+//    cout << "Reading PDB file into PdbFile structure." << endl;
     PdbFile pdb_file;
     try
     {
@@ -670,7 +670,7 @@ void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> ami
 void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_lib_files, vector<string> glycam_lib_files,
                                         vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
 {
-    cout << "Building assembly from pdb file ..." << endl;
+//    cout << "Building assembly from pdb file ..." << endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     try
     {
