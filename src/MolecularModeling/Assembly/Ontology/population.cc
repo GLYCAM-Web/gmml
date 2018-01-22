@@ -124,6 +124,18 @@ void Assembly::PopulateOntology(ofstream& main_stream, OligosaccharideVector oli
     PopulateOligosaccharide(pdb_stream, oligo_stream, oligo_sequence_stream, mono_stream, linkage_stream, pdb_uri, id_prefix, link_id, oligos, side_or_ring_atoms, visited_oligos, mono_to_short_name_map, oligo_to_res_uri_map, root_oligo_id);
 
     ResidueVector residues = this->GetResidues();
+
+		// Need to remove all Residues that are Waters or Proteins(except the Protein at the end of a Oligosaccharide)
+		for( ResidueVector::iterator it = residues.begin(); it != residues.end(); ) {
+			Residue* residue = ( *it );
+			if( residue->CheckIfProtein() || residue->CheckIfWater() ) {
+				delete residue;
+				it = residues.erase( it );
+			} else {
+				it++;
+			}
+		}
+
     stringstream residue_stream;
     PopulateResidue(pdb_stream, residue_stream, pdb_uri, id_prefix, residues, side_or_ring_atoms);
 
