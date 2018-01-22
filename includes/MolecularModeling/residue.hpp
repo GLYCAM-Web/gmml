@@ -80,7 +80,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the description
               * @return description_ attribute of the current object of this class
               */
-            std::string GetDescription();            
+            std::string GetDescription();
             /*! \fn
               * An accessor function in order to access to the id
               * @return id_ attribute of the current object of this class
@@ -202,6 +202,7 @@ namespace MolecularModeling
             double CalculateAtomicOverlaps(Assembly *assemblyB);
             double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
             bool CheckIfProtein();
+						bool CheckIfWater();
             GeometryTopology::Coordinate GetRingCenter();
 
             //////////////////////////////////////////////////////////

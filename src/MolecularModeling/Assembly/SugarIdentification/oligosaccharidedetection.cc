@@ -129,14 +129,25 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     }
     detect_shape_residue->SetAtoms(cycle);
 
+		// First need to get environment variable GEMSHOME
+		std::string gemshome( getenv( "GEMSHOME" ) );
+		// Concatenate GEMSHOME to name of all files used for BFMP detect shape program.
+		std::string detect_shape = gemshome + "/apps/BFMP/detect_shape";
+		std::string temp_gmml_PDB = gemshome + "/temp_gmml_pdb.pdb";
+		std::string temp_detect_shape_PDB = gemshome + "/temp_detect_shape_pdb.pdb";
+		std::string temp_config = gemshome + "/temp_config";
+		std::string canonicals = gemshome + "/apps/BFMP/canonicals.txt";
+		// This file doesn't get concatenated to GEMSHOME because BFMP program generates it in the PWD
+		std::string ring_conformations = "ring_conformations.txt";
+
     ///Write a new PDB file from the new assembly
     PdbFile* pdb = detect_shape_assembly->BuildPdbFileStructureFromAssembly();
-    pdb->Write("temp_gmml_pdb.pdb");
+    pdb->Write( temp_gmml_PDB );
 
     ///Converting the written PDB file to format readable by detect_shape program
     string line = "";
-    ifstream gmml_pdb ("temp_gmml_pdb.pdb");
-    ofstream detect_shape_pdb ("temp_detect_shape_pdb.pdb");
+    ifstream gmml_pdb ( temp_gmml_PDB.c_str() );
+    ofstream detect_shape_pdb ( temp_detect_shape_PDB.c_str() );
     int n = 0;
     if (gmml_pdb.is_open())
     {
@@ -151,10 +162,10 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
         gmml_pdb.close();
         detect_shape_pdb.close();
     }
-    else cout << "Unable to open temp_gmml_pdb.pdb file" << endl;
+    else cout << "Unable to open " << temp_detect_shape_PDB << " file" << endl;
 
     ///Writing a configuration file for the second argument of the detect_sugar program
-    ofstream detect_shape_configuration ("temp_config");
+    ofstream detect_shape_configuration ( temp_config.c_str() );
     detect_shape_configuration << "Atom" << endl;
     for(int i = 0; i < cycle.size(); i++)
     {
@@ -163,17 +174,18 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
     detect_shape_configuration << "Residue" << endl;
     detect_shape_configuration << "1" << endl;
     detect_shape_configuration << "Path" << endl;
-    detect_shape_configuration << "apps/BFMP/canonicals.txt" << endl;
+    detect_shape_configuration << canonicals << endl;
     detect_shape_configuration.close();
 
     ///Calling detect_shape program
     // The better way to do this would be to pass the bfmp code the six cartesian
     // coords it needs and call it as a part of the library.  not sure how much
     // work it would take to do this, but it would be better.
-    system("apps/BFMP/detect_shape temp_detect_shape_pdb.pdb temp_config > /dev/null");
+		std::string command = detect_shape + " " + temp_detect_shape_PDB + " " + temp_config + " > /dev/null";
+		system( command.c_str() );
 
-    ///Adding the BFMP ring conformation infomration gained from the detect_sugar program to the monosaccharide
-    ifstream shape_detection_result ("ring_conformations.txt");
+    ///Adding the BFMP ring conformation information gained from the detect_sugar program to the monosaccharide
+    ifstream shape_detection_result ( ring_conformations.c_str() );
     line = "";
     if (shape_detection_result.is_open())
     {
@@ -186,13 +198,13 @@ void Assembly::DetectShape(AtomVector cycle, Monosaccharide* mono)
             mono->bfmp_ring_conformation_ = line_tokens.at(1);
         shape_detection_result.close();
     }
-    else cout << "Unable to open ring_conformations.txt file from detect shape program" << endl;
+    else cout << "Unable to open " << ring_conformations << " file from detect shape program" << endl;
 
     ///Deleting temporary files
-    remove("temp_detect_shape_pdb.pdb");
-    remove("temp_gmml_pdb.pdb");
-    remove("temp_config");
-    remove("ring_conformations.txt");
+    remove( temp_detect_shape_PDB.c_str() );
+    remove( temp_gmml_PDB.c_str() );
+    remove( temp_config.c_str() );
+    remove( ring_conformations.c_str() );
 }
 
 vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_files, bool glyprobity_report, bool populate_ontology ) {

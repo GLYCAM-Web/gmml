@@ -363,13 +363,20 @@ double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 // Your wish is my command. ;o) The Proteins are now defined as a const std::string in the common.hpp.
 //  This allows for easy modification of it and also if someone else wants to use it somewhere else it
 //  is now available to them.
-bool Residue::CheckIfProtein() 
+bool Residue::CheckIfProtein()
 {
-    if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) ) 
+    if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) )
     {
         return true;
     }
     return false;
+}
+
+bool Residue::CheckIfWater() {
+	if( this->GetName().compare( "HOH" ) == 0 ) {
+		return true;
+	}
+	return false;
 }
 
 // bool Residue::CheckIfProtein()
