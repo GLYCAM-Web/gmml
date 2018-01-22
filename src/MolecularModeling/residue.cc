@@ -121,7 +121,6 @@ string Residue::GetId()
 ResidueNode* Residue::GetNode()
 {
         return node_;
-        cout<<"called getNode in residue.cc"<<endl;
 }
 
 //////////////////////////////////////////////////////////
