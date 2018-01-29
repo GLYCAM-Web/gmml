@@ -230,7 +230,7 @@ void Atom::Print(std::ostream &out)
 {
   out << "Atom name: "    << this->GetName() << std::endl;
   out << "Element: "      << this->GetElementSymbol() << std::endl;
-  // out << "Atom Type: "    << this->MolecularDynamicAtom::GetAtomType() << std::endl;
+  out << "Atom Type: "    << this->MolecularDynamicAtom::GetAtomType() << std::endl;
   out << "Coordinates: "  << std::endl;
   for(Atom::CoordinateVector::iterator it = this->GetCoordinates().begin(); it != this->GetCoordinates().end(); it++)
 	{

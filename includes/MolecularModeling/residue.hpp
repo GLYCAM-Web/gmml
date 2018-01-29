@@ -204,7 +204,7 @@ namespace MolecularModeling
             bool CheckIfProtein();
 						bool CheckIfWater();
             //GeometryTopology::Coordinate GetRingCenter(); disabled by OG. GetIsRing returns true for all atoms even when IsRing wasn't set.
-            GeometryTopology::Coordinate Residue::GetGeometricCenter();
+            GeometryTopology::Coordinate GetGeometricCenter();
 
 
             //////////////////////////////////////////////////////////
