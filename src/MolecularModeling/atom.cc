@@ -1,270 +1,332 @@
 #include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/quantommechanicatom.hpp"
-#include "../../includes/MolecularModeling/moleculardynamicatom.hpp"
-#include "../../includes/MolecularModeling/dockingatom.hpp"
-#include "../../includes/MolecularModeling/atomnode.hpp"
-#include "../../includes/MolecularModeling/residue.hpp"
-#include "cmath"
-#include <iostream>
-#include <sstream>
-
-using namespace std;
-using namespace MolecularModeling;
 
 //////////////////////////////////////////////////////////
-//                       CONSTRUCTOR                    //
+//                       CONSTRUCTORS                   //
 //////////////////////////////////////////////////////////
-Atom::Atom() : name_(""), chemical_type_(""), element_symbol_(""), description_(""), id_("")
+Atom::Atom()
 {
+	this->index_ = this->generateAtomIndex();
+	// Call to private helper function.
+	this->SetAttributes(NULL, "", CoordinateVector(), "", "", "", NULL, "", false, AtomTypeVector());
+} // end Default Constructor
 
-    coordinates_ = CoordinateVector();
-    residue_ = NULL;
-    node_ = NULL;
-    index_ = this->generateAtomIndex();
-}
-
-Atom::Atom(Residue *residue, string name, CoordinateVector coordinates) :
-    chemical_type_(""), element_symbol_(""), description_("")
+Atom::Atom(Residue* residue, std::string name, CoordinateVector coordinates)
 {
+	this->index_ = this->generateAtomIndex();
+	std::stringstream ss;
+  ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
+	// Call to private helper function.
+	this->SetAttributes(residue, name, coordinates, "", "", "", NULL, ss.str(), false, AtomTypeVector());
+} // end Constructor
 
-    residue_ = residue;
-    name_ = name;
-    this->SetCoordinates(coordinates);
-    node_ = NULL;
-    index_ = this->generateAtomIndex();
-    std::stringstream ss;
-    ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
-    id_ = ss.str();
-}
-
-Atom::Atom(Residue *residue, string name, GeometryTopology::Coordinate coordinate) :
-    chemical_type_(""), element_symbol_(""), description_("")
+Atom::Atom(Residue* residue, std::string name, GeometryTopology::Coordinate coordinate)
 {
-    residue_ = residue;
-    name_ = name;
-    this->AddCoordinate(new GeometryTopology::Coordinate(coordinate.GetX(), coordinate.GetY(), coordinate.GetZ()) );
-    node_ = NULL;
-    index_ = this->generateAtomIndex();
-    std::stringstream ss;
-    ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
-    id_ = ss.str();
-}
+	this->index_ = this->generateAtomIndex();
+	std::stringstream ss;
+  ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
+	CoordinateVector coordinates;
+	coordinates.push_back(new GeometryTopology::Coordinate(coordinate.GetX(), coordinate.GetY(), coordinate.GetZ()));
+	this->SetAttributes(residue, name, coordinates, "", "", "", NULL, ss.str(), false, AtomTypeVector());
+} // end Constructor
 
-Atom::Atom(Atom *atom)
+Atom::Atom(const Atom* atom)
 {
+	this->index_ = this->generateAtomIndex();
+	this->Copy(atom);
+} // end Copy Constructor(*)
 
-    residue_ = new Residue(atom->GetResidue());
-    name_ = atom->GetName();
-    coordinates_ = CoordinateVector();
-    CoordinateVector coordinates = atom->GetCoordinates();
-    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
-        coordinates_.push_back(new GeometryTopology::Coordinate(*it));
-
-    AtomNode *node = atom->GetNode();
-    node_ = new AtomNode(node);
-    index_ = atom->GetIndex();
-}
-
-Atom::Atom(Atom& atom)
+// Added by Ayush
+Atom::Atom(const Atom& atom)
 {
-     Residue *residue_=atom.GetResidue();
-        this->SetResidue(residue_);
-
-     this->name_ = atom.GetName();
-
-     CoordinateVector coordinates = atom.GetCoordinates();
-       this->SetCoordinates(coordinates);
-
-    this->chemical_type_=atom.GetChemicalType();
-    this->description_=atom.GetDescription();
-    this->element_symbol_=atom.GetElementSymbol();
-
-     AtomNode *node = atom.GetNode();
-         this->SetNode(node);
-
-    this->id_=atom.GetId();
-    this->is_ring_=atom.GetIsRing();
-    this->index_ = atom.GetIndex();
-}
+	this->index_ = this->generateAtomIndex();
+	this->Copy(&atom);
+} // end Copy Constructor(&)
 
 //////////////////////////////////////////////////////////
-//                         ACCESSOR                     //
+//                       DESTRUCTOR                     //
 //////////////////////////////////////////////////////////
-Residue* Atom::GetResidue()
+Atom::~Atom()
 {
-    return residue_;
-}
-string Atom::GetName()
+  for(CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++)
+    delete (*it);
+  if(this->node_ != NULL)
+    delete this->node_;
+	// DT - Still unsure if we need these below since the Object should be detroyed at this point.
+  this->coordinates_.clear();
+  this->node_ = NULL;
+} // end destructor
+
+//////////////////////////////////////////////////////////
+//                         ACCESSORS                    //
+//////////////////////////////////////////////////////////
+Residue* Atom::GetResidue() const
 {
-    return name_;
-}
-Atom::CoordinateVector Atom::GetCoordinates()
+  return this->residue_;
+} // end GetResidue
+
+std::string Atom::GetName() const
 {
-    return coordinates_;
-}
-string Atom::GetChemicalType()
+  return this->name_;
+} // end GetName
+
+Atom::CoordinateVector Atom::GetCoordinates() const
 {
-    return chemical_type_;
-}
-string Atom::GetDescription()
+  return this->coordinates_;
+} // end GetCoordinates
+
+std::string Atom::GetChemicalType() const
 {
-    return description_;
-}
-string Atom::GetElementSymbol()
+  return this->chemical_type_;
+} // end GetChemicalType
+
+std::string Atom::GetDescription() const
 {
-    return element_symbol_;
-}
-AtomNode* Atom::GetNode()
+  return this->description_;
+} // end GetDescription
+
+std::string Atom::GetElementSymbol() const
 {
-    return node_;
-}
-string Atom::GetId()
+  return this->element_symbol_;
+} // end GetElementSymbol
+
+AtomNode* Atom::GetNode() const
 {
-    return id_;
-}
-bool Atom::GetIsRing()
+  return this->node_;
+} // end GetNode
+
+std::string Atom::GetId() const
 {
-    return is_ring_;
-}
-unsigned long long Atom::GetIndex()
+  return this->id_;
+} // end GetId
+
+bool Atom::GetIsRing() const
 {
-    return index_;
-}
+  return this->is_ring_;
+} // end GetIsRing
+
+unsigned long long Atom::GetIndex() const
+{
+  return this->index_;
+} // end GetIndex
 
 //Added by ayush on 13/11/17 for molecules in assembly
-Atom::AtomTypeVector Atom::GetAtomTypes()
+Atom::AtomTypeVector Atom::GetAtomTypes() const
 {
-    return atom_types_;
-}
+  return this->atom_types_;
+} // end GetAtomTypes
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void Atom::SetResidue(Residue *residue)
+void Atom::SetResidue(Residue* residue)
 {
-    residue_ = residue;
-}
-void Atom::SetName(string name)
+  this->residue_ = residue;
+} // end SetResidue
+
+void Atom::SetName(std::string name)
 {
-    name_ = name;
-}
+  this->name_ = name;
+} // end SetName
+
 void Atom::SetCoordinates(CoordinateVector coordinates)
 {
-    coordinates_.clear();
-    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
-    {
-        coordinates_.push_back(*it);
-    }
-}
-void Atom::AddCoordinate(GeometryTopology::Coordinate *coordinate)
+	for(CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++ )
+		delete (*it);
+  for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    coordinates_.push_back(*it);
+}// end SetCoordinates
+
+void Atom::AddCoordinate(GeometryTopology::Coordinate* coordinate)
 {
-    coordinates_.push_back(coordinate);
-}
-void Atom::SetChemicalType(string chemical_type)
+  this->coordinates_.push_back(coordinate);
+} // end AddCoordinate
+
+void Atom::SetChemicalType(std::string chemical_type)
 {
-    chemical_type_ = chemical_type;
-}
-void Atom::SetDescription(string description)
+  this->chemical_type_ = chemical_type;
+} // end SetChemicalType
+
+void Atom::SetDescription(std::string description)
 {
-    description_ = description;
-}
-void Atom::SetElementSymbol(string element_symbol)
+  this->description_ = description;
+} // end SetDescription
+
+void Atom::SetElementSymbol(std::string element_symbol)
 {
-    element_symbol_ = element_symbol;
-}
-void Atom::SetNode(AtomNode *node)
+  this->element_symbol_ = element_symbol;
+} // end SetElementSymbol
+
+void Atom::SetNode(AtomNode* node)
 {
-    node_ = node;
-}
-void Atom::SetId(string id)
+  this->node_ = node;
+} // end SetNode
+
+void Atom::SetId(std::string id)
 {
-    id_ = id;
-}
+  this->id_ = id;
+} // end SetId
+
 void Atom::SetIsRing(bool is_ring)
 {
-    is_ring_ = is_ring;
+  this->is_ring_ = is_ring;
 }
-
 //Added by ayush on 13/11/17 for molecules in assembly
 void Atom::SetAtomTypes(AtomTypeVector atom_types)
 {
-    atom_types_.clear();
-    for(AtomTypeVector::iterator it = atom_types.begin(); it != atom_types.end(); it++)
-    {
-        atom_types_.push_back(*it);
-    }
-}
+  this->atom_types_.clear();
+  for(AtomTypeVector::iterator it = atom_types.begin(); it != atom_types.end(); it++)
+      atom_types_.push_back(*it);
+} // end SetAtomTypes
+
+//Added by ayush on 13/11/17 for molecules in assembly
+void Atom::AddAtomType(std::string type)
+{
+  this->atom_types_.push_back(type);
+} // end AddAtomType
+
+unsigned long long Atom::generateAtomIndex() {
+  static unsigned long long s_AtomIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+  return s_AtomIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
+} // end generateAtomIndex
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
+void Atom::FindConnectedAtoms(AtomVector& visitedAtoms)
 {
-    visitedAtoms.push_back(this);
-    AtomVector neighbors = this->GetNode()->GetNodeNeighbors();
-    bool alreadyVisited = false;
-
-    for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++){
-        alreadyVisited = false; // reset for each neighbor
-        for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++){
-            if ( (*neighbor)->GetIndex() == (*visitedAtom)->GetIndex() )
-                alreadyVisited = true;
-        }
-        if (!alreadyVisited) {
-            //std::cout << "Found unvisited neighbor, Going to " << (*neighbor)->GetId() << " from " << this->GetId() << std::endl;
-            (*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
-        }
+  visitedAtoms.push_back(this);
+  AtomVector neighbors = this->GetNode()->GetNodeNeighbors();
+  bool alreadyVisited = false;
+  for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++)
+	{
+    alreadyVisited = false; // reset for each neighbor
+    for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++)
+		{
+      if((*neighbor)->GetIndex() == (*visitedAtom)->GetIndex())
+        alreadyVisited = true;
     }
-}
-double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate *coordinate)
+    if(!alreadyVisited)
+      (*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
+  }
+} // end FindConnectedAtoms
+
+double Atom::GetDistanceToAtom(Atom* otherAtom)
 {
-    double x = ( this->GetCoordinates().at(0)->GetX() - coordinate->GetX() );
-    double y = ( this->GetCoordinates().at(0)->GetY() - coordinate->GetY() );
-    double z = ( this->GetCoordinates().at(0)->GetZ() - coordinate->GetZ() );
-    return sqrt( (x*x) + (y*y) + (z*z) );
-}
+  return GetDistanceToCoordinate(otherAtom->GetCoordinates().at(0));
+} // end GetDistanceToAtom
 
-double Atom::GetDistanceToAtom(Atom *otherAtom)
+double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
 {
-    return GetDistanceToCoordinate(otherAtom->GetCoordinates().at(0));
-}
-
-unsigned long long Atom::generateAtomIndex()
-{
-    static unsigned long long s_AtomIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
-    return s_AtomIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
-}
-
-
-//Added by ayush on 13/11/17 for molecules in assembly
-
-void Atom::AddAtomType(std::string type)
-{
-    atom_types_.push_back(type);
-}
+  double x = (this->GetCoordinates().at(0)->GetX() - coordinate->GetX());
+  double y = (this->GetCoordinates().at(0)->GetY() - coordinate->GetY());
+  double z = (this->GetCoordinates().at(0)->GetZ() - coordinate->GetZ());
+  return sqrt((x * x) + (y * y) + (z * z));
+} // end GetDistanceToCoordinate
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Atom::Print(ostream &out)
+void Atom::Print(std::ostream &out)
 {
-    out << "Atom name: " << name_ << endl;
-    out << "Element: " << element_symbol_ << endl;
-    out << "Atom Type: " << this->MolecularDynamicAtom::GetAtomType() << endl;
-    out << "Coordinates: " << endl;
-    if(coordinates_.size() != 0)
-    {
-        for(CoordinateVector::iterator it = coordinates_.begin(); it != coordinates_.end(); it++)
-        {
-            GeometryTopology::Coordinate* coordinate = *it;
-            out << "\t";
-            coordinate->Print(out);
-            out << endl;
-        }
-    }
-    out << "**************** Structure *****************" << endl;
-    if(node_ != NULL)
-        node_->Print(out);
-    out << endl;
+  out << "Atom name: "    << this->GetName() << std::endl;
+  out << "Element: "      << this->GetElementSymbol() << std::endl;
+  // out << "Atom Type: "    << this->MolecularDynamicAtom::GetAtomType() << std::endl;
+  out << "Coordinates: "  << std::endl;
+  for(Atom::CoordinateVector::iterator it = this->GetCoordinates().begin(); it != this->GetCoordinates().end(); it++)
+	{
+    GeometryTopology::Coordinate* coordinate = (*it);
+    out << "\t";
+    coordinate->Print(out);
+    out << std::endl;
+  }
+  if(this->GetNode() != NULL)
+	{
+    out << "**************** Structure *****************" << std::endl;
+    this->GetNode()->Print(out);
+  }
+  out << std::endl;
+} // end Print
 
-}
+//////////////////////////////////////////////////////////
+//                   HELPER FUNCTIONS                   //
+//////////////////////////////////////////////////////////
+void Atom::Copy(const Atom* atom)
+{
+	// Copy the easy stuff.
+	this->SetName(atom->GetName());
+	this->SetChemicalType(atom->GetChemicalType());
+	this->SetDescription(atom->GetDescription());
+	this->SetElementSymbol(atom->GetElementSymbol());
+	this->SetId(atom->GetId());
+	this->SetIsRing(atom->GetIsRing());
+	this->SetAtomTypes(atom->GetAtomTypes());
+	// Deep Copy objects
+	// this->residue_ = new Residue(atom->GetResidue());
+	this->SetResidue(atom->GetResidue());
+	if(this->node_ != NULL)
+		delete this->node_;
+	this->node_ = new AtomNode(atom->GetNode());
+	CoordinateVector atomCoordinates = atom->GetCoordinates();
+	for(CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )
+	{
+		GeometryTopology::Coordinate* tempCoordinate = (*it);
+		this->coordinates_.push_back(new GeometryTopology::Coordinate(tempCoordinate));
+	}
+} // end Copy
+
+void Atom::SetAttributes(Residue* residue, std::string name, CoordinateVector coordinates,
+										std::string chemical_type, std::string description, std::string element_symbol,
+										AtomNode* node, std::string id, bool is_ring, AtomTypeVector atom_types)
+{
+	// Having this function call the Setter functions for everything allows for
+	//	simple error handling and debugging because the setting of the variables
+	//	only happen in one place. DT
+	this->SetResidue(residue);
+	this->SetName(name);
+	this->SetCoordinates(coordinates);
+	this->SetChemicalType(chemical_type);
+	this->SetDescription(description);
+	this->SetElementSymbol(element_symbol);
+	this->SetNode(node);
+	this->SetId(id);
+	this->SetIsRing(is_ring);
+	// This function doesn't set index because of the attributes uniqueness, it should
+	//	only be called from the Constructors. DT
+	this->SetAtomTypes(atom_types);
+} // end SetAttributes
+
+//////////////////////////////////////////////////////////
+//                   OVERLOADED OPERATORS               //
+//////////////////////////////////////////////////////////
+// @TODO DT - The below operators are left for future development. See atom.hpp for
+//			details on why they could be useful.
+// void Atom::operator=(const Atom&)
+// {
+//
+// } // end Atom::operator=(&)
+
+// void Atom::operator=(const Atom*)
+// {
+//
+// } // end operator=(*)
+
+// std::ostream& operator<<( std::ostream& out, const Atom& atom )
+// {
+//   out << "Atom name: "    << atom.GetName()														<< std::endl;
+//   out << "Element: "      << atom.GetElementSymbol()										<< std::endl;
+//   out << "Atom Type: "    << atom.MolecularDynamicAtom::GetAtomType()	<< std::endl;
+//   out << "Coordinates: "  << std::endl;
+//   for( Atom::CoordinateVector::iterator it = atom.GetCoordinates().begin(); it != atom.GetCoordinates().end(); it++ )
+// 	{
+//     GeometryTopology::Coordinate * coordinate = (*it);
+//     out << "\t";
+//     coordinate->Print(out);
+//     out << std::endl;
+//   }
+//   if(atom.GetNode() != NULL)
+// 	{
+//     out << "**************** Structure *****************" << std::endl;
+//     atom.GetNode()->Print(out);
+//   }
+// 	return out;
+// } // end opeartor<<
