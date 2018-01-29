@@ -443,7 +443,8 @@ bool Residue::CheckIfWater() {
 //         return false;
 // }
 
-GeometryTopology::Coordinate Residue::GetRingCenter()
+
+/*GeometryTopology::Coordinate Residue::GetRingCenter() // Disabled by OG; GetIsRing returns true for all atoms even when IsRing wasn't set. 
 {
     double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
     int numberOfRingAtoms = 0;
@@ -454,7 +455,7 @@ GeometryTopology::Coordinate Residue::GetRingCenter()
         if ( (*atom)->GetIsRing() )
         {
             numberOfRingAtoms++;
-            std::cout << "Atom is ring: " << (*atom)->GetName() << std::endl;
+            //std::cout << "Atom is ring: " << (*atom)->GetName() << std::endl;
             sumX += (*atom)->GetCoordinates().at(0)->GetX();
             sumY += (*atom)->GetCoordinates().at(0)->GetY();
             sumZ += (*atom)->GetCoordinates().at(0)->GetZ();
@@ -465,7 +466,27 @@ GeometryTopology::Coordinate Residue::GetRingCenter()
     center.SetY( sumY / numberOfRingAtoms  );
     center.SetZ( sumZ / numberOfRingAtoms  );
     return center;
+}*/
+
+GeometryTopology::Coordinate Residue::GetGeometricCenter()
+{
+    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
+    AtomVector atoms = this->GetAtoms();
+    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    {   
+        sumX += (*atom)->GetCoordinates().at(0)->GetX();
+        sumY += (*atom)->GetCoordinates().at(0)->GetY();
+        sumZ += (*atom)->GetCoordinates().at(0)->GetZ();
+    }
+    GeometryTopology::Coordinate center;
+    center.SetX( sumX / atoms.size()  );
+    center.SetY( sumY / atoms.size()  );
+    center.SetZ( sumZ / atoms.size()  );
+    return center;
 }
+
+
+
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
