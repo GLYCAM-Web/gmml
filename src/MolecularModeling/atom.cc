@@ -45,16 +45,24 @@ Atom::Atom(const Atom& atom)
 //////////////////////////////////////////////////////////
 //                       DESTRUCTOR                     //
 //////////////////////////////////////////////////////////
-Atom::~Atom()
-{
-  for(CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++)
-    delete (*it);
-  if(this->node_ != NULL)
-    delete this->node_;
-	// DT - Still unsure if we need these below since the Object should be detroyed at this point.
-  this->coordinates_.clear();
-  this->node_ = NULL;
-} // end destructor
+// Atom::~Atom()
+// {
+//   for(CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++)
+// 	{
+// 		GeometryTopology::Coordinate* coordinate = (*it);
+// 		if(coordinate != NULL)
+// 		{
+//     	delete coordinate;
+// 			coordinate = NULL;
+// 		}
+// 	}
+// 	//this->coordinates_.clear();
+//   if(this->node_ != NULL)
+// 	{
+//     delete this->node_;
+// 		this->node_ = NULL;
+// 	}
+// } // end destructor
 
 //////////////////////////////////////////////////////////
 //                         ACCESSORS                    //
@@ -130,10 +138,19 @@ void Atom::SetName(std::string name)
 
 void Atom::SetCoordinates(CoordinateVector coordinates)
 {
+	// First need to delete any previous Coordinates, so we don't have any memory leaks.
 	for(CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++ )
-		delete (*it);
+	{
+		GeometryTopology::Coordinate* coordinate = (*it);
+		if(coordinate != NULL)
+		{
+			delete coordinate;
+			coordinate = NULL;
+		}
+	}
+	this->coordinates_.clear();
   for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
-    coordinates_.push_back(*it);
+    this->coordinates_.push_back(*it);
 }// end SetCoordinates
 
 void Atom::AddCoordinate(GeometryTopology::Coordinate* coordinate)
@@ -235,13 +252,16 @@ void Atom::Print(std::ostream &out)
   for(Atom::CoordinateVector::iterator it = this->GetCoordinates().begin(); it != this->GetCoordinates().end(); it++)
 	{
     GeometryTopology::Coordinate* coordinate = (*it);
-    out << "\t";
-    coordinate->Print(out);
-    out << std::endl;
+		if(coordinate != NULL)
+		{
+	    out << "\t";
+	    coordinate->Print(out);
+	    out << std::endl;
+		}
   }
+	out << "**************** Structure *****************" << std::endl;
   if(this->GetNode() != NULL)
 	{
-    out << "**************** Structure *****************" << std::endl;
     this->GetNode()->Print(out);
   }
   out << std::endl;
