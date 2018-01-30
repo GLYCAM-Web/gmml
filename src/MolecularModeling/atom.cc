@@ -131,10 +131,11 @@ unsigned long long Atom::GetIndex()
     return index_;
 }
 
-//Added by ayush on 13/11/17 for molecules in assembly
-Atom::AtomTypeVector Atom::GetAtomTypes()
+//Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
+
+string Atom::GetAtomType()
 {
-    return atom_types_;
+    return atom_type_;
 }
 
 //////////////////////////////////////////////////////////
@@ -186,13 +187,10 @@ void Atom::SetIsRing(bool is_ring)
 }
 
 //Added by ayush on 13/11/17 for molecules in assembly
-void Atom::SetAtomTypes(AtomTypeVector atom_types)
+
+void Atom::SetAtomType(string atom_type)
 {
-    atom_types_.clear();
-    for(AtomTypeVector::iterator it = atom_types.begin(); it != atom_types.end(); it++)
-    {
-        atom_types_.push_back(*it);
-    }
+    atom_type_ = atom_type;
 }
 
 //////////////////////////////////////////////////////////
@@ -235,14 +233,6 @@ unsigned long long Atom::generateAtomIndex()
     return s_AtomIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
 }
 
-
-//Added by ayush on 13/11/17 for molecules in assembly
-
-void Atom::AddAtomType(std::string type)
-{
-    atom_types_.push_back(type);
-}
-
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
@@ -250,7 +240,7 @@ void Atom::Print(ostream &out)
 {
     out << "Atom name: " << name_ << endl;
     out << "Element: " << element_symbol_ << endl;
-    out << "Atom Type: " << this->MolecularDynamicAtom::GetAtomType() << endl;
+    out << "Atom Type: " <<atom_type_ << endl;
     out << "Coordinates: " << endl;
     if(coordinates_.size() != 0)
     {
