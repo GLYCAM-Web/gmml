@@ -1,71 +1,84 @@
-// Author: Alireza Khatamian
 
 #include "../../../includes/InputSet/PdbFileSpace/pdbformulacard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbformula.hpp"
+#include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 
-
 using namespace std;
-using namespace gmml;
 using namespace PdbFileSpace;
+using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbFormulaCard::PdbFormulaCard() : record_name_("FORMUL") {}
+PdbFormulaCard::PdbFormulaCard() : heterogen_identifier_(""), component_number_(dNotSet), chemical_formula_("") {}
+PdbFormulaCard::PdbFormulaCard(const string &heterogen_identifier, int component_number, const string &chemical_formula)
+    : heterogen_identifier_(heterogen_identifier), component_number_(component_number), chemical_formula_(chemical_formula) {}
 
-PdbFormulaCard::PdbFormulaCard(const string &record_name) : record_name_(record_name) {}
-
-PdbFormulaCard::PdbFormulaCard(stringstream &stream_block)
+PdbFormulaCard::PdbFormulaCard(stringstream& stream_block)
 {
     string line;
-    bool is_record_name_set = false;
+    bool is_heterogen_identifier_set = false, is_component_number_set = false;
+    stringstream ss;
     getline(stream_block, line);
     string temp = line;
     while (!Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
-            Trim(record_name_);
-            is_record_name_set=true;
+        if(!is_heterogen_identifier_set){
+            heterogen_identifier_ = line.substr(12,3);
+            Trim(heterogen_identifier_);
+            is_heterogen_identifier_set = true;
         }
-        stringstream formula_block;
-        formula_block << line << endl;
-        string heterogen_identifier = line.substr(12,3);
+
+        if(!is_component_number_set){
+            if(line.substr(8, 2) == "  ")
+                component_number_ = iNotSet;
+            else
+                component_number_ = ConvertString<int>(line.substr(8,2));
+            is_component_number_set = true;
+        }
+
+        ss << line.substr(19,51) << " ";
 
         getline(stream_block, line);
         temp = line;
-
-        while (!Trim(temp).empty() && line.substr(12,3) == heterogen_identifier){
-            formula_block << line << endl;
-            getline(stream_block, line);
-            temp = line;
-        }
-        PdbFormula* formula = new PdbFormula(formula_block);
-        heterogen_identifier = Trim(heterogen_identifier);
-        formulas_[heterogen_identifier] = formula;
     }
+    chemical_formula_ = ss.str();
+    chemical_formula_ = Trim(chemical_formula_);
 }
-
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbFormulaCard::GetRecordName()
+string PdbFormulaCard::GetHeterogenIdentifier()
 {
-    return record_name_;
+    return heterogen_identifier_;
 }
 
-PdbFormulaCard::FormulaMap PdbFormulaCard::GetFormulas()
+int PdbFormulaCard::GetComponentNumber()
 {
-    return formulas_;
+    return component_number_;
+}
+
+string PdbFormulaCard::GetChemicalFormula()
+{
+    return chemical_formula_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbFormulaCard::SetRecordName(const string record_name)
+void PdbFormulaCard::SetHeterogenIdentifier(const string heterogen_identifier)
 {
-    record_name_ = record_name;
+    heterogen_identifier_ = heterogen_identifier;
+}
+
+void PdbFormulaCard::SetComponentNumber(int component_number)
+{
+    component_number_ = component_number;
+}
+
+void PdbFormulaCard::SetChemicalFormula(const string chemical_formula)
+{
+    chemical_formula_ = chemical_formula;
 }
 
 //////////////////////////////////////////////////////////
@@ -75,14 +88,13 @@ void PdbFormulaCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbFormulaCard::Print(ostream &out)
+void  PdbFormulaCard::Print(ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "=========== Formulas =============" << endl;
-    for(PdbFormulaCard::FormulaMap::iterator it = formulas_.begin(); it != formulas_.end(); it++)
-    {
-        out << "Heterogen ID: " << (it)->first << endl;
-        (it)->second->Print();
-        out << endl;
-    }
+    out << "Heterogen ID: " << heterogen_identifier_
+        << ", Component Number: ";
+    if(component_number_ != iNotSet)
+        out << component_number_;
+    else
+        out << " ";
+    out << "Chemical Formula: " << chemical_formula_ << endl;
 }

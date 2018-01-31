@@ -1,27 +1,20 @@
 // Created by: Alireza Khatamian
-// Modified by: Alireza Khatamian, Delaram Rahbarinia
+// Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
 #ifndef PDBFORMULACARD_HPP
 #define PDBFORMULACARD_HPP
 
 #include <string>
-#include <map>
-#include <sstream>
 #include <iostream>
 
 namespace PdbFileSpace
 {
-    class PdbFormula;
     class PdbFormulaCard
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            /*! \typedef
-              * Mapping between heterogen identifier and its chemical formula
-              */
-            typedef std::map<std::string, PdbFormula*> FormulaMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -32,14 +25,16 @@ namespace PdbFileSpace
             PdbFormulaCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
+              * @param heterogen_identifier Heterogen identifier
+              * @param component_number Component number of the formula
+              * @param chemical_formula Chemical formula of the object
               */
-            PdbFormulaCard(const std::string& record_name);
+            PdbFormulaCard(const std::string& heterogen_identifier, int component_number, const std::string& chemical_formula);
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param specification_block
               */
-            PdbFormulaCard(std::stringstream& stream_block);
+            PdbFormulaCard(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -47,29 +42,48 @@ namespace PdbFileSpace
 /** \addtogroup Molecular_Data_Structure
               * @{
               */
+
             /*! \fn
-              * An accessor function in order to access to the record name in a formula card
-              * @return record_name_ attribute of the current object of this class
+              * An accessor function in order to access to the heterogen identifier in a pdb formula
+              * @return heterogen_identifier_ attribute of the current object of this class
               */
-            std::string GetRecordName();
+            std::string GetHeterogenIdentifier();
             /*! \fn
-              * An accessor function in order to access to the formulas in a formula card
-              * @return formulas_ attribute of the current object of this class
+              * An accessor function in order to access to the component number in a pdb formula
+              * @return component_number_ attribute of the current object of this class
               */
-            FormulaMap GetFormulas();
+            int GetComponentNumber();
+            /*! \fn
+              * An accessor function in order to access to the chemical formula in a pdb formula
+              * @return chemical_formula_ attribute of the current object of this class
+              */
+            std::string GetChemicalFormula();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
-            //////////////////////////////////////////////////////////
+
+           //////////////////////////////////////////////////////////
 /** \addtogroup Manipulators
               * @{
               */
             /*! \fn
-              * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current formula card
-              * @param record_name The record name of the current object
+              * A mutator function in order to set the heterogen identifier of the current object
+              * Set the heterogen_identifier_ attribute of the current formula
+              * @param heterogen_identifier The heterogen identifier of the current object
               */
-            void SetRecordName(const std::string record_name);
+            void SetHeterogenIdentifier(const std::string heterogen_identifier);
+            /*! \fn
+              * A mutator function in order to set the component number of the current object
+              * Set the component_number_ attribute of the current formula
+              * @param component_number The component number of the current object
+              */
+            void SetComponentNumber(int component_number);
+            /*! \fn
+              * A mutator function in order to set the chemical formula of the current object
+              * Set the chemical_formula_ attribute of the current formula
+              * @param chemical_formula The chemical formula of the current object
+              */
+            void SetChemicalFormula(const std::string chemical_formula);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -79,7 +93,7 @@ namespace PdbFileSpace
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the formula card contents in a structural format
+              * A function to print out the formula contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -89,8 +103,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;       /*!< Record name of formula card in a pdb file >*/
-            FormulaMap formulas_;           /*!< Map of formulas with heterogen identifier as key >*/
+            std::string heterogen_identifier_;      /*!< Heterogen identifier >*/
+            int component_number_;                  /*!< Component number >*/
+            std::string chemical_formula_;          /*!< Chemical formula of the object >*/
     };
 }
 #endif // PDBFORMULACARD_HPP

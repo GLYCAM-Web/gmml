@@ -100,7 +100,7 @@ void AtomNode::SetId(int id)
     id_ = id;
 }
 void AtomNode::RemoveNodeNeighbor(Atom *node_neighbor)
-{    
+{
     AtomVector new_node_neighbors = AtomVector();
     for(AtomVector::iterator it = node_neighbors_.begin(); it != node_neighbors_.end(); it++)
     {
@@ -230,4 +230,3 @@ void AtomNode::Print(ostream &out)
     }
 
 }
-

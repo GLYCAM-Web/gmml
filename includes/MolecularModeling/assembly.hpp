@@ -22,10 +22,11 @@
 #include "../ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../ParameterSet/ParameterFileSpace/parameterfile.hpp"
+#include "../InputSet/PdbFileSpace/pdbremarksection.hpp"
 #include "../InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
 #include "../InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "../InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../InputSet/PdbFileSpace/pdbmodel.hpp"
 #include "../Glycan/oligosaccharide.hpp"
 #include "../Glycan/note.hpp"
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
@@ -80,7 +81,7 @@ namespace MolecularModeling
               * Constructor to build a structure from the given set of input files
               * @param file_path (topology, prep, lib, pdb)
               * @param type Type of the input which is selected from InputFileType enumerator
-              */        
+              */
             Assembly(std::vector<std::string> file_paths, gmml::InputFileType type); // redundant in parts due to above (new) constructor, but kept for compatibility.
             /*! \fn
               * Constructor to build a structure from multiple file types, a general version of the previous one
@@ -440,12 +441,12 @@ namespace MolecularModeling
               */
             PdbqtFileSpace::PdbqtFile* BuildPdbqtFileStructureFromAssembly();
 
-            void ExtractPdbModelCardFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
+            void ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
                                                  AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map, AssemblytoPdbSerialNumberMap& assembly_to_pdb_serial_number_map);
             void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
-            void ExtractPdbLinkCardFromAssembly(PdbFileSpace::PdbLinkCard* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
+            void ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
                                                 int link_card_direction = -1);
-            void ExtractPdbConnectCardFromAssembly(PdbFileSpace::PdbConnectCard* connect_card,
+            void ExtractPdbConnectSectionFromAssembly(PdbFileSpace::PdbConnectSection* connect_card,
                                                    AssemblytoPdbSerialNumberMap assembly_to_pdb_serial_number);
             /*! \fn
               * A function to extract bonds from the current assembly object
@@ -1629,7 +1630,7 @@ namespace MolecularModeling
             NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
             ResidueNodeVector residuenodes_;                /*!< List of residuenodes present in the current object of assembly >*/     //Added by ayush on 11/16/17 for residuenodes in assembly
             MoleculeVector molecules_;                      /*!< List of molecules present in the current object of assembly >*/        //Added by ayush on 11/12/17 for molecules in assembly
-
+            // PdbFile* pdb_file_;                             /*!< A pointer back to the PdbFile object >*/
     };
 
     struct DistanceCalculationThreadArgument{

@@ -60,7 +60,7 @@ void MolecularDynamicAtom::SetRadius(double radius)
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 void MolecularDynamicAtom::Print(ostream &out)
-{    
+{
      out << "------------------------ Atom Type :" << atom_type_ << " --------------------------" << endl;
      out<<"Atom Charge :"<<charge_<<endl;
      out<<"Atom Mass :"<<mass_<<endl;

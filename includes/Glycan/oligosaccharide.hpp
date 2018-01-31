@@ -153,7 +153,7 @@ namespace Glycan
                 out << oligosaccharide_name_;
                 gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_name_);
                 out << std::endl;
-                gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);                
+                gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);
             }
 
 

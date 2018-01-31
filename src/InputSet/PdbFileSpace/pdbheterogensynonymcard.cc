@@ -1,7 +1,6 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/InputSet/PdbFileSpace/pdbheterogensynonymcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogensynonym.hpp"
 #include "../../../includes/utils.hpp"
 
 using namespace std;
@@ -11,58 +10,73 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogenSynonymCard::PdbHeterogenSynonymCard() : record_name_("HETSYN") {}
-PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(const string& record_name) : record_name_(record_name) {}
-PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(stringstream &stream_block)
+PdbHeterogenSynonymCard::PdbHeterogenSynonymCard() : heterogen_identifier_("") {}
+PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(const string &heterogen_identifier, const vector<string> &heterogen_synonyms) : heterogen_identifier_ (heterogen_identifier)
+{
+    heterogen_synonyms_.clear();
+    for(vector<string>::const_iterator it = heterogen_synonyms.begin(); it != heterogen_synonyms.end(); it++)
+    {
+        heterogen_synonyms_.push_back(*it);
+    }
+}
+
+PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(stringstream& stream_block)
 {
     string line;
-    bool is_record_name_set = false;
+    bool is_heterogen_identifier_set = false;
+    stringstream ss;
     getline(stream_block, line);
     string temp = line;
     while (!Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
-            Trim(record_name_);
-            is_record_name_set=true;
+        if(!is_heterogen_identifier_set){
+            heterogen_identifier_ = line.substr(11,3);
+            Trim(heterogen_identifier_);
+            is_heterogen_identifier_set = true;
         }
-        stringstream heterogen_synonym_block;
-        heterogen_synonym_block << line << endl;
-        string heterogen_identifier = line.substr(11,3);
+
+        ss << line.substr(15,55) << " ";
 
         getline(stream_block, line);
         temp = line;
-
-        while (!Trim(temp).empty() && line.substr(11,3) == heterogen_identifier){
-            heterogen_synonym_block << line << endl;
-            getline(stream_block, line);
-            temp = line;
-        }
-        PdbHeterogenSynonym* heterogen_synonym = new PdbHeterogenSynonym(heterogen_synonym_block);
-        heterogen_identifier = Trim(heterogen_identifier);
-        heterogens_synonyms_[heterogen_identifier] = heterogen_synonym;
     }
+    string temp_synonym = ss.str();
+    heterogen_synonyms_ = Split(Trim(temp_synonym), ";");
 }
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbHeterogenSynonymCard::GetRecordName()
+string PdbHeterogenSynonymCard::GetHeterogenIdentifier()
 {
-    return record_name_;
+    return heterogen_identifier_;
 }
 
-PdbHeterogenSynonymCard::HeterogenSynonymMap PdbHeterogenSynonymCard::GetHeterogensSynonyms()
+vector<string> PdbHeterogenSynonymCard::GetHeterogenSynonymCards()
 {
-    return heterogens_synonyms_;
+    return heterogen_synonyms_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHeterogenSynonymCard::SetRecordName(const string record_name)
+void PdbHeterogenSynonymCard::SetHeterogenIdentifier(const string heterogen_identifier)
 {
-    record_name_ = record_name;
+    heterogen_identifier_ = heterogen_identifier;
+}
+
+void PdbHeterogenSynonymCard::SetHeterogenSynonyms(const vector<string> heterogen_synonyms)
+{
+    heterogen_synonyms_.clear();
+    for(vector<string>::const_iterator it = heterogen_synonyms.begin(); it != heterogen_synonyms.end(); it++)
+    {
+        heterogen_synonyms_.push_back(*it);
+    }
+}
+
+void PdbHeterogenSynonymCard::AddHeterogenSynonym(const string heterogen_synonym)
+{
+    heterogen_synonyms_.push_back(heterogen_synonym);
 }
 
 //////////////////////////////////////////////////////////
@@ -74,12 +88,10 @@ void PdbHeterogenSynonymCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 void PdbHeterogenSynonymCard::Print(ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "============ Heterogen Synonyms ===========" << endl;
-    for(PdbHeterogenSynonymCard::HeterogenSynonymMap::iterator it = heterogens_synonyms_.begin(); it != heterogens_synonyms_.end(); it++)
+    out << "Heterogen ID: " << heterogen_identifier_ << "Heterogen Synonyms: ";
+    for(vector<string>::iterator it = heterogen_synonyms_.begin(); it != heterogen_synonyms_.end(); it++)
     {
-        out << "Heterogen ID: " << (it)->first << endl;
-        (it)->second->Print();
-        out << endl;
+        out << (*it) << ", ";
     }
+    out << endl;
 }

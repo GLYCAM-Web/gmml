@@ -7,7 +7,7 @@
 
 #include "../../InputSet//PdbFileSpace/pdbresidue.hpp"
 #include "../../InputSet//PdbFileSpace/pdbfile.hpp"
-#include "../../InputSet//PdbFileSpace/pdbatom.hpp"
+#include "../../InputSet//PdbFileSpace/pdbatomcard.hpp"
 #include "../../ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../common.hpp"
@@ -76,7 +76,7 @@ namespace PdbPreprocessorSpace
             /*! \typedef
               * List of atoms to be deleted
               */
-            typedef std::vector<PdbFileSpace::PdbAtom*> PdbPreprocessorToBeDeletedAtomVector;
+            typedef std::vector<PdbFileSpace::PdbAtomCard*> PdbPreprocessorToBeDeletedAtomVector;
             /*! \typedef
               * List of residues to be deleted
               */
@@ -548,7 +548,7 @@ namespace PdbPreprocessorSpace
               */
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultipleLibFiles(std::string residue_name, std::vector<std::string> lib_files);
 
-            //**************************************************            
+            //**************************************************
             gmml::ResidueNameAtomNamesMap GetAllAtomNamesOfResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
             //**************************************************
 
@@ -560,7 +560,7 @@ namespace PdbPreprocessorSpace
               */
             std::vector<std::string> GetAllAtomNamesOfResidueFromMultiplePrepFiles(std::string residue_name, std::vector<std::string> prep_files);
 
-            //**************************************************            
+            //**************************************************
             gmml::ResidueNameAtomNamesMap GetAllAtomNamesOfResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
             //**************************************************
 
@@ -572,7 +572,7 @@ namespace PdbPreprocessorSpace
               */
             std::vector<std::string> GetAllAtomNamesOfResidueFromDatasetFiles(std::string residue_name, std::vector<std::string> lib_files, std::vector<std::string> prep_files);
 
-            //**************************************************           
+            //**************************************************
             gmml::ResidueNameAtomNamesMap GetAllAtomNamesOfResidueNamesFromDatasetFiles(std::vector<std::string> lib_files, std::vector<std::string> prep_files);
             //**************************************************
 
@@ -582,7 +582,7 @@ namespace PdbPreprocessorSpace
               * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
               * @return unknown_heavy_atoms_of_residue
               */
-            PdbFileSpace::PdbFile::PdbAtomVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+            PdbFileSpace::PdbFile::PdbAtomCardVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomCardVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
 
             /*! \fn
               * A function in order to extract the unknown heavy atoms of a pdb file
@@ -648,7 +648,7 @@ namespace PdbPreprocessorSpace
               * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
               * @return removed_hydrogens_of_residue
               */
-            PdbFileSpace::PdbFile::PdbAtomVector GetRemovedHydrogensOfResidue(PdbFileSpace::PdbFile::PdbAtomVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
+            PdbFileSpace::PdbFile::PdbAtomCardVector GetRemovedHydrogensOfResidue(PdbFileSpace::PdbFile::PdbAtomCardVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
 
             /*! \fn
               * A function in order to extract the removed hydrogens of a pdb file

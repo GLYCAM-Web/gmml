@@ -1,6 +1,6 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
 #include "../../../includes/utils.hpp"
 
 using namespace std;
@@ -82,7 +82,7 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
         {
             stringstream card_index;
             card_index << "ATOM_" << atom_card_index;
-            PdbAtomCard* atoms = new PdbAtomCard(atom_block, card_index.str());
+            PdbAtomSection* atoms = new PdbAtomSection(atom_block, card_index.str());
             this->AddAtom(atoms);
             atom_card_index++;
             /// Check for the end of the block
@@ -115,7 +115,7 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
         {
             stringstream card_index;
             card_index << "HETATOM_" << heterogen_atom_card_index;
-            PdbHeterogenAtomCard* heterogen_atoms = new PdbHeterogenAtomCard(heterogen_atom_block, card_index.str());
+            PdbHeterogenAtomSection* heterogen_atoms = new PdbHeterogenAtomSection(heterogen_atom_block, card_index.str());
             this->AddHeterogenAtom(heterogen_atoms);
             heterogen_atom_card_index++;
             break;
@@ -127,11 +127,11 @@ PdbModelResidueSet::PdbModelResidueSet(stringstream &residue_set_block)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-PdbModelResidueSet::AtomCardVector PdbModelResidueSet::GetAtoms(){
+PdbModelResidueSet::AtomCardVector PdbModelResidueSet::GetAtomCards(){
     return atoms_;
 }
 
-PdbModelResidueSet::HeterogenAtomCardVector PdbModelResidueSet::GetHeterogenAtoms(){
+PdbModelResidueSet::HeterogenAtomCardVector PdbModelResidueSet::GetHeterogenAtomCards(){
     return heterogen_atoms_;
 }
 
@@ -139,7 +139,7 @@ PdbModelResidueSet::HeterogenAtomCardVector PdbModelResidueSet::GetHeterogenAtom
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
 
-void PdbModelResidueSet::SetAtoms(PdbModelResidueSet::AtomCardVector atoms){
+void PdbModelResidueSet::SetAtomCards(PdbModelResidueSet::AtomCardVector atoms){
     atoms_.clear();
     for(AtomCardVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
@@ -147,7 +147,7 @@ void PdbModelResidueSet::SetAtoms(PdbModelResidueSet::AtomCardVector atoms){
     }
 }
 
-void PdbModelResidueSet::AddAtom(PdbAtomCard *atom)
+void PdbModelResidueSet::AddAtom(PdbAtomSection *atom)
 {
     atoms_.push_back(atom);
 }
@@ -160,7 +160,7 @@ void PdbModelResidueSet::SetHeterogenAtoms(PdbModelResidueSet::HeterogenAtomCard
     }
 }
 
-void PdbModelResidueSet::AddHeterogenAtom(PdbHeterogenAtomCard *heterogen_atom)
+void PdbModelResidueSet::AddHeterogenAtom(PdbHeterogenAtomSection *heterogen_atom)
 {
     heterogen_atoms_.push_back(heterogen_atom);
 }
