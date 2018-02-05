@@ -44,6 +44,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"

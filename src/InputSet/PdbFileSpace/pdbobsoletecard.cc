@@ -10,9 +10,11 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbObsoleteCard::PdbObsoleteCard() : replacement_date_(""), replacement_entries_() {}
-PdbObsoleteCard::PdbObsoleteCard(const string &replacement_date, const vector<std::string> &replacement_entries)
-    : replacement_date_(replacement_date), replacement_entries_(replacement_entries) {}
+PdbObsoleteCard::PdbObsoleteCard() : replacement_date_(""), identifier_codes_() {}
+PdbObsoleteCard::PdbObsoleteCard(const string &replacement_date,
+                                const std::vector<std::string> &identifier_codes) :
+                                replacement_date_(replacement_date),
+                                identifier_codes_(identifier_codes) {}
 
 PdbObsoleteCard::PdbObsoleteCard(stringstream& obsolete_block)
 {
@@ -33,14 +35,14 @@ PdbObsoleteCard::PdbObsoleteCard(stringstream& obsolete_block)
         getline(obsolete_block, line);
         temp = line;
     }
-    string all_replacement_entries_ = ss.str();
+    string all_identifier_codes_ = ss.str();
     std::size_t pos = 0, found;
-    while ((found = all_replacement_entries_.find_first_of('     ', pos)) != std::string::npos)
+    while ((found = all_identifier_codes_.find_first_of('      ', pos)) != std::string::npos)
     {
-      replacement_entries_.push_back(all_replacement_entries_.substr(pos, found - pos));
+      identifier_codes_.push_back(all_identifier_codes_.substr(pos, found - pos));
       pos = found + 1;
     }
-    replacement_entries_.push_back(all_replacement_entries_.substr(pos));
+    identifier_codes_.push_back(all_identifier_codes_.substr(pos));
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -50,9 +52,9 @@ string PdbObsoleteCard::GetReplacementDate()
     return replacement_date_;
 }
 
-vector<std::string> PdbObsoleteCard::GetReplacementEntries()
+vector<std::string> PdbObsoleteCard::GetIdentifierCodes()
 {
-    return replacement_entries_;
+    return identifier_codes_;
 }
 
 //////////////////////////////////////////////////////////
@@ -63,9 +65,9 @@ void PdbObsoleteCard::SetReplacementDate(const string replacement_date)
     replacement_date_ = replacement_date;
 }
 
-void PdbObsoleteCard::SetReplacementEntries(const vector<std::string> replacement_entries)
+void PdbObsoleteCard::SetIdentifierCodes(const vector<std::string> identifier_codes)
 {
-    replacement_entries_ = replacement_entries;
+    identifier_codes_ = identifier_codes;
 }
 
 //////////////////////////////////////////////////////////
@@ -79,6 +81,8 @@ void  PdbObsoleteCard::Print(ostream &out)
 {
     out << "Replacement Date: " << replacement_date_
         << " ";
-    for (int i = 0; i < replacement_entries_.size(); i++)
-     out << "Replacement Entries: " << replacement_entries_[i] << ", ";
+    for (int i = 0; i < identifier_codes_.size(); i++)
+    {
+      out << "Identifier Codes: " << identifier_codes_[i] << ", ";
+    }
 }

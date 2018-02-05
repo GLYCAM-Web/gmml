@@ -41,6 +41,8 @@
 #include "InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
 #include "InputSet/PdbFileSpace/pdbnummodelcard.hpp"
+#include "InputSet/PdbFileSpace/pdbobsoletesection.hpp"
+#include "InputSet/PdbFileSpace/pdbobsoletecard.hpp"
 #include "InputSet/PdbFileSpace/pdboriginxnsection.hpp"
 #include "InputSet/PdbFileSpace/pdboriginxncard.hpp"
 #include "InputSet/PdbFileSpace/pdbremarksection.hpp"

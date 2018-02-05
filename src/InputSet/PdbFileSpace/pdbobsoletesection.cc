@@ -11,12 +11,19 @@ using namespace PdbFileSpace;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbObsoleteSection::PdbObsoleteSection() : record_name_("OBSLTE") {}
+PdbObsoleteSection::PdbObsoleteSection() : record_name_("OBSLTE"),
+                                          continuation_(""),
+                                          replacement_date_(""),
+                                          identifier_codes_()  {}
 
-PdbObsoleteSection::PdbObsoleteSection(const std::string& record_name, const std::string& continuation,
-                  const std::string& replacement_date, const std::string& identifier_codes) :
-                  record_name_(record_name), continuation_(continuation), replacement_date_(replacement_date),
-                  identifier_codes_(identifier_codes) {}
+PdbObsoleteSection::PdbObsoleteSection(const std::string& record_name,
+                                        const std::string& continuation,
+                                        const std::string& replacement_date,
+                                        const std::vector<std::string>& identifier_codes) :
+                                        record_name_(record_name),
+                                        continuation_(continuation),
+                                        replacement_date_(replacement_date),
+                                        identifier_codes_(identifier_codes) {}
 
 PdbObsoleteSection::PdbObsoleteSection(stringstream &stream_block)
 {
@@ -44,10 +51,12 @@ PdbObsoleteSection::PdbObsoleteSection(stringstream &stream_block)
         temp = line;
         PdbObsoleteCard* obsolete_card = new PdbObsoleteCard(obsolete_block);
         obsolete_cards_[i] = obsolete_card;
+        replacement_date_ = obsolete_cards_[i]->GetReplacementDate();
+        vector<string> IDcodes = obsolete_cards_[i]->GetIdentifierCodes();
+        identifier_codes_.insert(identifier_codes_.end(), IDcodes.begin(), IDcodes.end());
         i++;
     }
-    replacement_date_ = obsolete_cards_[0]->GetReplacementDate();
-    identifier_codes_ = "";
+
 }
 
 //////////////////////////////////////////////////////////
@@ -68,7 +77,7 @@ string PdbObsoleteSection::GetReplacementDate()
     return replacement_date_;
 }
 
-string PdbObsoleteSection::GetIdentifierCodes()
+vector<string> PdbObsoleteSection::GetIdentifierCodes()
 {
     return identifier_codes_;
 }

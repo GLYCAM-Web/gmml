@@ -34,8 +34,10 @@ namespace PdbFileSpace
               * Constructor with required parameters
               * @param record_name
               */
-            PdbObsoleteSection(const std::string& record_name, const std::string& continuation,
-                              const std::string& replacement_date, const std::string& identifier_codes);
+            PdbObsoleteSection(const std::string& record_name,
+                                const std::string& continuation,
+                                const std::string& replacement_date,
+                                const std::vector<std::string>& identifier_codes);
             /*! \fn
               * Constructor with required parameters
               * @param stream_block
@@ -67,7 +69,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the identifier codes in a obsolete card
               * @return identifier_codes_ attribute of the current object of this class
               */
-            std::string GetIdentifierCodes();
+            std::vector<std::string> GetIdentifierCodes();
             /*! \fn
               * An accessor function in order to access to the obsoletes in a obsolete card
               * @return obsolete_cards_ attribute of the current object of this class
@@ -108,7 +110,7 @@ namespace PdbFileSpace
             std::string record_name_;             /*!< Record name of obsolete card in a pdb file >*/
             std::string continuation_;            /*!< Continuation obsolete card in a pdb file >*/
             std::string replacement_date_;        /*!< Replacement Date of obsolete card in a pdb file >*/
-            std::string identifier_codes_;        /*!< ID Codes of replacement PDB entries of obsolete card in a pdb file >*/
+            std::vector<std::string> identifier_codes_;        /*!< ID Codes of replacement PDB entries of obsolete card in a pdb file >*/
             ObsoleteCardVector obsolete_cards_;   /*!< Vector of obsolete cards >*/
     };
 }

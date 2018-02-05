@@ -5085,9 +5085,14 @@ void PdbFile::ResolveObsoleteCards(std::ofstream& stream)
           << left << setw(2) << obsolete_->GetContinuation()
           << left << setw(1) << " "
           << left << setw(9) << obsolete_->GetReplacementDate()
-          << left << setw(1) << " "
-          << right << setw(45) << obsolete_->GetIdentifierCodes()
-          << left << setw(14) << " "
+          << left << setw(1) << " ";
+          vector<string> identifier_codes = obsolete_->GetIdentifierCodes();
+          for (int i = 0; i < identifier_codes.size(); i++)
+          {
+            stream << left << setw(4) << identifier_codes[i]
+                  << left << setw(5) << "      ";
+          }
+          stream << left << setw(14) << " "
           << endl;
 }
 

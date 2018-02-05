@@ -26,9 +26,9 @@ namespace PdbFileSpace
             /*! \fn
               * Constructor with required parameters
               * @param replacement_date Replacement Date
-              * @param replacement_entries Replacement Entries
+              * @param identifier_codes Replacement Entries
               */
-            PdbObsoleteCard(const std::string& replacement_date, const std::vector<std::string>& replacement_entries);
+            PdbObsoleteCard(const std::string& replacement_date, const std::vector<std::string>& identifier_codes);
             /*! \fn
               * Constructor with required parameters
               * @param specification_block
@@ -49,9 +49,9 @@ namespace PdbFileSpace
             std::string GetReplacementDate();
             /*! \fn
               * An accessor function in order to access to the replacement entries in a pdb obsolete
-              * @return replacement_entries_ attribute of the current object of this class
+              * @return identifier_codes_ attribute of the current object of this class
               */
-            std::vector<std::string> GetReplacementEntries();
+            std::vector<std::string> GetIdentifierCodes();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
@@ -68,10 +68,10 @@ namespace PdbFileSpace
             void SetReplacementDate(const std::string replacement_date);
             /*! \fn
               * A mutator function in order to set the replacement entries of the current object
-              * Set the replacement_entries_ attribute of the current obsolete
-              * @param replacement_entries The replacement entries of the current object
+              * Set the identifier_codes_ attribute of the current obsolete
+              * @param identifier_codes The replacement entries of the current object
               */
-            void SetReplacementEntries(const std::vector<std::string> replacement_entries);
+            void SetIdentifierCodes(const std::vector<std::string> identifier_codes);
 
 /** @}*/
             //////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ namespace PdbFileSpace
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
             std::string replacement_date_;             /*!< Replacement Date >*/
-            std::vector<std::string> replacement_entries_;          /*!< Replacement Entries >*/
+            std::vector<std::string> identifier_codes_;          /*!< Replacement Entries >*/
     };
 }
 #endif // PDBOBSOLETECARD_HPP
