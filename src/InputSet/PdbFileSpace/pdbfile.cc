@@ -7,9 +7,12 @@
 #include <algorithm>
 #include <exception>
 #include <cctype>
+#include <string>
 
 #include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbheadercard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbobsoletesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbobsoletecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbcompoundsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
@@ -75,6 +78,7 @@ PdbFile::PdbFile()
 {
     path_ = "GMML-Generated";
     header_ = NULL;
+    obsolete_ = NULL;
     title_ = NULL;
     compound_ = NULL;
     number_of_models_ = NULL;
@@ -105,6 +109,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
 {
     path_ = pdb_file;
     header_ = NULL;
+    obsolete_ = NULL;
     title_ = NULL;
     compound_ = NULL;
     number_of_models_ = NULL;
@@ -203,6 +208,11 @@ string PdbFile::GetPath()
 PdbHeaderCard* PdbFile::GetHeader()
 {
     return header_;
+}
+
+PdbObsoleteSection* PdbFile::GetObsoleteCards()
+{
+    return obsolete_;
 }
 
 PdbTitleSection* PdbFile::GetTitle()
@@ -734,7 +744,7 @@ PdbAtomCard* PdbFile::GetAtomOfResidueByAtomKey(string atom_key)
     for(PdbModelResidueSet::AtomCardVector::iterator it = atom_cards.begin(); it != atom_cards.end(); it++)
     {
         PdbAtomSection* atom_card = (*it);
-        PdbAtomSection::PdbAtomCardMap atom_map = atom_card->GetAtomCards();
+        PdbAtomSection::PdbAtomMap atom_map = atom_card->GetAtomCards();
         if(atom_map[serial_number] != NULL)
             return atom_map[serial_number];
     }
@@ -758,7 +768,7 @@ PdbAtomCard* PdbFile::GetAtomBySerialNumber(int serial_number)
     for(PdbModelResidueSet::AtomCardVector::iterator it = atom_cards.begin(); it != atom_cards.end(); it++)
     {
         PdbAtomSection* atom_card = (*it);
-        PdbAtomSection::PdbAtomCardMap atom_map = atom_card->GetAtomCards();
+        PdbAtomSection::PdbAtomMap atom_map = atom_card->GetAtomCards();
         if(atom_map[serial_number] != NULL)
             return atom_map[serial_number];
     }
@@ -844,6 +854,11 @@ void PdbFile::SetHeader(PdbHeaderCard *header)
     header_ = header;
 
 }
+// void PdbFile::SetObsolete(PdbObsoleteSection *obsolete)
+// {
+//     obsolete_ = new PdbObsoleteSection();
+//     obsolete_ = obsolete;
+// }
 void PdbFile::SetTitle(PdbTitleSection *title)
 {
     title_ = new PdbTitleSection();
@@ -998,7 +1013,7 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms = PdbAtomSection::PdbAtomCardMap();
+            PdbAtomSection::PdbAtomMap updated_atoms = PdbAtomSection::PdbAtomMap();
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1112,7 +1127,7 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms = PdbAtomSection::PdbAtomCardMap();
+            PdbAtomSection::PdbAtomMap updated_atoms = PdbAtomSection::PdbAtomMap();
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1219,7 +1234,7 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms = PdbAtomSection::PdbAtomCardMap();
+            PdbAtomSection::PdbAtomMap updated_atoms = PdbAtomSection::PdbAtomMap();
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1333,7 +1348,7 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms = PdbAtomSection::PdbAtomCardMap();
+            PdbAtomSection::PdbAtomMap updated_atoms = PdbAtomSection::PdbAtomMap();
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1442,7 +1457,7 @@ void PdbFile::DeleteAtom(PdbAtomCard* target_atom)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1580,7 +1595,7 @@ void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1714,7 +1729,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtomCard* target_atom, int mo
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1852,7 +1867,7 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms,
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -1984,7 +1999,7 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -2080,7 +2095,7 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
@@ -2177,7 +2192,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
             PdbAtomSection* updated_atom_card = new PdbAtomSection();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
             bool located = true;
 
@@ -2336,7 +2351,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
             PdbAtomSection* updated_atom_card = new PdbAtomSection();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
             bool located = true;
 
@@ -2496,7 +2511,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
             PdbAtomSection* updated_atom_card = new PdbAtomSection();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
             bool located = false;
 
@@ -2689,7 +2704,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
             PdbAtomSection* updated_atom_card = new PdbAtomSection();
             updated_atom_card->SetRecordName(atom_card->GetRecordName());
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap updated_atoms;
+            PdbAtomSection::PdbAtomMap updated_atoms;
             PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
             bool located = false;
 
@@ -2880,8 +2895,8 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
             updated_atom_card_first_part->SetRecordName(atom_card->GetRecordName());
             updated_atom_card_second_part->SetRecordName(atom_card->GetRecordName());
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap atoms_first_part;
-            PdbAtomSection::PdbAtomCardMap atoms_second_part;
+            PdbAtomSection::PdbAtomMap atoms_first_part;
+            PdbAtomSection::PdbAtomMap atoms_second_part;
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_first_part = PdbAtomSection::PdbAtomCardOrderVector();
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_second_part = PdbAtomSection::PdbAtomCardOrderVector();
 
@@ -2962,8 +2977,8 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
             updated_atom_card_first_part->SetRecordName(atom_card->GetRecordName());
             updated_atom_card_second_part->SetRecordName(atom_card->GetRecordName());
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomCardMap atoms_first_part;
-            PdbAtomSection::PdbAtomCardMap atoms_second_part;
+            PdbAtomSection::PdbAtomMap atoms_first_part;
+            PdbAtomSection::PdbAtomMap atoms_second_part;
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_first_part = PdbAtomSection::PdbAtomCardOrderVector();
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_second_part = PdbAtomSection::PdbAtomCardOrderVector();
 
@@ -3433,6 +3448,8 @@ bool PdbFile::ParseObsoleteSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+
+    obsolete_= new PdbObsoleteSection(stream_block);
     return true;
 }
 
@@ -4861,6 +4878,10 @@ void PdbFile::ResolveCards(std::ofstream& out_stream)
     {
         this->ResolveHeaderCard(out_stream);
     }
+    if(this->obsolete_ != NULL)
+    {
+        this->ResolveObsoleteCards(out_stream);
+    }
     if(this->title_ != NULL)
     {
         this->ResolveTitleCards(out_stream);
@@ -4953,6 +4974,10 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
     if(this->header_ != NULL)
     {
         this->ResolveHeaderCard(out_stream);
+    }
+    if(this->obsolete_ != NULL)
+    {
+        this->ResolveObsoleteCards(out_stream);
     }
     if(this->title_ != NULL)
     {
@@ -5053,9 +5078,18 @@ void PdbFile::ResolveHeaderCard(std::ofstream& stream)
            << endl;
 }
 
-// void PdbFile::ResolveObsoleteCard(std::ofstream& stream)
-// {
-// }
+void PdbFile::ResolveObsoleteCards(std::ofstream& stream)
+{
+    stream << left << setw(6) << obsolete_->GetRecordName()
+          << left << setw(2) << " "
+          << left << setw(2) << obsolete_->GetContinuation()
+          << left << setw(1) << " "
+          << left << setw(9) << obsolete_->GetReplacementDate()
+          << left << setw(1) << " "
+          << right << setw(45) << obsolete_->GetIdentifierCodes()
+          << left << setw(14) << " "
+          << endl;
+}
 
 void PdbFile::ResolveTitleCards(std::ofstream& stream)
 {
@@ -5586,7 +5620,7 @@ void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
 //
 // }
 //
-// void PdbFile::ResolveRemarkCard(std::ofstream& stream)
+// void PdbFile::ResolveRemarkCards(std::ofstream& stream)
 // {
 //
 // }
@@ -6879,9 +6913,9 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
             char chain_id = ' ';
             int residue_sequence_number = 0;
             char insertion_code = ' ';
-            PdbAtomSection::PdbAtomCardMap atoms = atom_card->GetAtomCards();
+            PdbAtomSection::PdbAtomMap atoms = atom_card->GetAtomCards();
             int atoms_size = atoms.size();
-            for(PdbAtomSection::PdbAtomCardMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for(PdbAtomSection::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
                 PdbAtomCard* atom = (*it2).second;
                 stream << left << setw(6) << atom_card->GetRecordName();

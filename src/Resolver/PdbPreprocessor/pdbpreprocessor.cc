@@ -2327,7 +2327,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -2359,7 +2359,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -2387,7 +2387,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -2412,7 +2412,7 @@ void PdbPreprocessor::UpdateAminoAcidChains(PdbFile *pdb_file, vector<string> am
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card_for_c_termination = new PdbAtomSection();
                     pdb_atom_card_for_c_termination->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map_for_c_termination;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map_for_c_termination;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector_for_c_termination = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)
@@ -2487,7 +2487,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -2519,7 +2519,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -2547,7 +2547,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -2572,7 +2572,7 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbFile *pdb_
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card_for_c_termination = new PdbAtomSection();
                     pdb_atom_card_for_c_termination->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map_for_c_termination;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map_for_c_termination;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector_for_c_termination = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)
@@ -2954,7 +2954,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<stri
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -2986,7 +2986,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<stri
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -3023,7 +3023,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<stri
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -3048,7 +3048,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChains(PdbFile* pdb_file, vector<stri
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card_for_c_termination = new PdbAtomSection();
                     pdb_atom_card_for_c_termination->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map_for_c_termination;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map_for_c_termination;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector_for_c_termination = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)
@@ -3107,7 +3107,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFile
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -3139,7 +3139,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFile
                     lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -3176,7 +3176,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFile
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbAtomSection();
                     pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
@@ -3201,7 +3201,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbFile
                     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
                     PdbFileSpace::PdbAtomSection* pdb_atom_card_for_c_termination = new PdbAtomSection();
                     pdb_atom_card_for_c_termination->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardMap atom_map_for_c_termination;
+                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map_for_c_termination;
                     PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector_for_c_termination = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
                     int serial_number = 0;
                     for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)

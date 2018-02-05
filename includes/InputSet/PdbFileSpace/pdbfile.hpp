@@ -144,6 +144,11 @@ namespace PdbFileSpace
               */
             PdbHeaderCard* GetHeader();
             /*! \fn
+              * An accessor function in order to access to the obsolete of the current object
+              * @return obsolete_ attribute of the current object of this class
+              */
+            PdbObsoleteSection* GetObsoleteCards();
+            /*! \fn
               * An accessor function in order to access to the title of the current object
               * @return title_ attribute of the current object of this class
               */
@@ -362,6 +367,12 @@ namespace PdbFileSpace
               * @param header The header attribute of the current object
               */
             void SetHeader(PdbHeaderCard* header);
+            /*! \fn
+              * A mutator function in order to set the obsolete section of the current object
+              * Set the obsolete_ attribute of the current pdb file
+              * @param obsolete The obsolete attribute of the current object
+              */
+            void SetObsolete(PdbObsoleteSection* obsolete);
             /*! \fn
               * A mutator function in order to set the title card of the current object
               * Set the title_ attribute of the current pdb file
@@ -731,7 +742,7 @@ namespace PdbFileSpace
             /*! \fn
               * A function to parse the remark card that has been given as a stream
               * @param stream A stream contains remark card of a pdb file
-              * @param line Current line in the stream
+              * @param lHeaderine Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseRemarkSection(std::ifstream& stream, std::string& line);
@@ -1129,28 +1140,29 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             std::string path_;                                      /*!< Path of the given pdb file >*/
             PdbHeaderCard* header_;                                 /*!< Header card >*/
-            PdbTitleSection* title_;                                   /*!< Title carde >*/
-            PdbCompoundSection* compound_;                             /*!< Compound card >*/
+            PdbObsoleteSection* obsolete_;                          /*!<Obsolete section>*/
+            PdbTitleSection* title_;                                   /*!< Title section >*/
+            PdbCompoundSection* compound_;                             /*!< Compound section >*/
             PdbNumModelCard* number_of_models_;                     /*!< Number of models card >*/
-            PdbModelTypeSection* model_type_;                          /*!< Model type card >*/
-            PdbRemarkSection* remark_cards_;                                /*!< Remarks card>*/
-            PdbResidueSequenceSection* residues_sequence_;             /*!< Residue sequence card >*/
-            PdbResidueModificationSection* residue_modification_cards_;      /*!< Residue modification card >*/
-            PdbHeterogenSection* heterogen_cards_;                          /*!< Heterogen card >*/
-            PdbHeterogenNameSection* heterogen_name_cards_;                 /*!< Heterogen name card >*/
-            PdbHeterogenSynonymSection* heterogen_synonym_cards_;           /*!< Heterogen synonym card >*/
-            PdbFormulaSection* formulas_;                              /*!< Formula card >*/
-            PdbHelixSection* helix_cards_;                                 /*!< Helix card >*/
-            PdbSheetSection* sheet_cards_;                                  /*!< Sheet card >*/
-            PdbDisulfideBondSection* disulfide_bonds_;                 /*!< Disulfide bond card >*/
-            PdbLinkSection* link_cards_;                                    /*!< Link card >*/
-            PdbSiteSection* site_cards_;                                    /*!< Site card >*/
+            PdbModelTypeSection* model_type_;                          /*!< Model type section >*/
+            PdbRemarkSection* remark_cards_;                                /*!< Remarks section>*/
+            PdbResidueSequenceSection* residues_sequence_;             /*!< Residue sequence section >*/
+            PdbResidueModificationSection* residue_modification_cards_;      /*!< Residue modification section >*/
+            PdbHeterogenSection* heterogen_cards_;                          /*!< Heterogen section >*/
+            PdbHeterogenNameSection* heterogen_name_cards_;                 /*!< Heterogen name section >*/
+            PdbHeterogenSynonymSection* heterogen_synonym_cards_;           /*!< Heterogen synonym section >*/
+            PdbFormulaSection* formulas_;                              /*!< Formula section >*/
+            PdbHelixSection* helix_cards_;                                 /*!< Helix section >*/
+            PdbSheetSection* sheet_cards_;                                  /*!< Sheet section >*/
+            PdbDisulfideBondSection* disulfide_bonds_;                 /*!< Disulfide bond section >*/
+            PdbLinkSection* link_cards_;                                    /*!< Link section >*/
+            PdbSiteSection* site_cards_;                                    /*!< Site section >*/
             PdbCrystallographicCard* crystallography_;              /*!< Crystallography card >*/
-            PdbOriginXnSection* origins_;                              /*!< Origin card >*/
-            PdbScaleNSection* scales_;                                 /*!< Scale card >*/
-            PdbMatrixNSection* matrices_;                              /*!< Matrix card >*/
-            PdbModelSection* models_;                                  /*!< Model card >*/
-            PdbConnectSection* connectivities_;                        /*!< Connectivity card >*/
+            PdbOriginXnSection* origins_;                              /*!< Origin section >*/
+            PdbScaleNSection* scales_;                                 /*!< Scale section >*/
+            PdbMatrixNSection* matrices_;                              /*!< Matrix section >*/
+            PdbModelSection* models_;                                  /*!< Model section >*/
+            PdbConnectSection* connectivities_;                        /*!< Connectivity section >*/
             PdbSerialNumberMapping serial_number_mapping_;          /*!< A map that keeps track of serial numbers that have been changed during a process >*/
             PdbSequenceNumberMapping sequence_number_mapping_;      /*!< A map that keeps track of sequence numbers that have been changed during a process >*/
     };

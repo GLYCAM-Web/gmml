@@ -15,7 +15,7 @@ PdbAtomSection::PdbAtomSection() : record_name_("ATOM") {}
 
 PdbAtomSection::PdbAtomSection(stringstream &stream_block, string index)
 {
-    atom_cards_ = PdbAtomCardMap();
+    atom_cards_ = PdbAtomMap();
     ordered_atom_cards_ = PdbAtomCardOrderVector();
     string line;
     bool is_record_name_set = false;
@@ -50,7 +50,7 @@ string PdbAtomSection::GetRecordName()
 {
     return record_name_;
 }
-PdbAtomSection::PdbAtomCardMap PdbAtomSection::GetAtomCards()
+PdbAtomSection::PdbAtomMap PdbAtomSection::GetAtomCards()
 {
     return atom_cards_;
 }
@@ -67,10 +67,10 @@ void PdbAtomSection::SetRecordName(const string record_name)
     record_name_ = record_name;
 }
 
-void PdbAtomSection::SetAtomCards(PdbAtomCardMap atom_cards)
+void PdbAtomSection::SetAtomCards(PdbAtomMap atom_cards)
 {
     atom_cards_.clear();
-    for(PdbAtomCardMap::iterator it = atom_cards.begin(); it != atom_cards.end(); it++)
+    for(PdbAtomMap::iterator it = atom_cards.begin(); it != atom_cards.end(); it++)
     {
         PdbAtomCard* atom_card = (*it).second;
         int serial_number = (*it).first;
@@ -98,7 +98,7 @@ void PdbAtomSection::Print(ostream &out)
 {
     out << "Record Name: " << record_name_ << endl <<
            "_________________ Atoms _______________" << endl;
-    for(PdbAtomSection::PdbAtomCardMap::iterator it = atom_cards_.begin(); it != atom_cards_.end(); it++)
+    for(PdbAtomSection::PdbAtomMap::iterator it = atom_cards_.begin(); it != atom_cards_.end(); it++)
     {
         out << "Atom Serial Number: ";
         if((it)->first != iNotSet)

@@ -145,7 +145,7 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbModelResidueSet* residue_se
         }
         PdbAtomSection* atom_card = new PdbAtomSection();
         PdbHeterogenAtomSection* het_atom_card = new PdbHeterogenAtomSection();
-        PdbAtomSection::PdbAtomCardMap atom_map = PdbAtomSection::PdbAtomCardMap();
+        PdbAtomSection::PdbAtomMap atom_map = PdbAtomSection::PdbAtomMap();
         PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbAtomSection::PdbAtomCardOrderVector();
         PdbHeterogenAtomSection::PdbHeterogenAtomCardMap het_atom_map = PdbHeterogenAtomSection::PdbHeterogenAtomCardMap();
         PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector het_atom_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
@@ -202,7 +202,7 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbModelResidueSet* residue_se
     }
     PdbAtomSection* atom_card = new PdbAtomSection();
     PdbHeterogenAtomSection* het_atom_card = new PdbHeterogenAtomSection();
-    PdbAtomSection::PdbAtomCardMap atom_map = PdbAtomSection::PdbAtomCardMap();
+    PdbAtomSection::PdbAtomMap atom_map = PdbAtomSection::PdbAtomMap();
     PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbAtomSection::PdbAtomCardOrderVector();
     PdbHeterogenAtomSection::PdbHeterogenAtomCardMap het_atom_map = PdbHeterogenAtomSection::PdbHeterogenAtomCardMap();
     PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector het_atom_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();

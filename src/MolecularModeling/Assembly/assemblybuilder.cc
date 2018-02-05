@@ -677,8 +677,10 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
     try
     {
         this->ClearAssembly();
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Assembly cleared ...");
         // this->pdb_file_ = pdb_file;
         ParameterFile* parameter = NULL;
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Parameter File Created ...");
         ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
         if(parameter_file.compare("") != 0)
         {
@@ -708,7 +710,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
         vector<string> key_order = vector<string>();
         PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
 
-        pdb_file->GetRemarks()->Print(std::cout);
+        // pdb_file->GetRemarks()->Print(std::cout);
 
 
         for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)

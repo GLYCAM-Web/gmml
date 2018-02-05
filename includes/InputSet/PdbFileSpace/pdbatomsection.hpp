@@ -22,7 +22,7 @@ namespace PdbFileSpace
             /*! \typedef
               * A mapping between atom serial number and its its belonging factors and information in a model in a pdb file
               */
-            typedef std::map<int, PdbAtomCard*> PdbAtomCardMap;
+            typedef std::map<int, PdbAtomCard*> PdbAtomMap;
             /*! \typedef
               * A list of pdb atoms in the order of input pdb file
               */
@@ -57,7 +57,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the atoms in a atom card
               * @return atoms_ attribute of the current object of this class
               */
-            PdbAtomCardMap GetAtomCards();
+            PdbAtomMap GetAtomCards();
             /*! \fn
               * An accessor function in order to access to the atoms in the atom card in the order of the original pdb file
               * @return ordered_atoms_ attribute of the current object of this class
@@ -81,7 +81,7 @@ namespace PdbFileSpace
               * Set the atoms_ attribute of the current atom card
               * @param atoms Atom attribute of the current object
               */
-            void SetAtomCards(PdbAtomCardMap atom_cards);
+            void SetAtomCards(PdbAtomMap atom_cards);
             /*! \fn
               * A mutator function in order to set the atoms of the current object in the order of the original pdb file
               * Set the ordered_atoms_ attribute of the current atom card
@@ -108,7 +108,7 @@ namespace PdbFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::string record_name_;           /*!< Record name of atom card: "ATOM" */
-            PdbAtomCardMap atom_cards_;                  /*!< Map of all atom cards information that belong to a specific model in a pdb file by their serial numbers */
+            PdbAtomMap atom_cards_;                  /*!< Map of all atom cards information that belong to a specific model in a pdb file by their serial numbers */
             PdbAtomCardOrderVector ordered_atom_cards_;  /*!< A list of atom cards in order of the input pdb file */
 
     };
