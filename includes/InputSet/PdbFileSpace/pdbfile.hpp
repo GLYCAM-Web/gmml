@@ -19,18 +19,18 @@ namespace PdbFileSpace
     class PdbCaveatSection;
     class PdbCompoundSection;
     class PdbSourceSection;
-    class PdbKeywordsSection;
+    class PdbKeywordSection;
     class PdbExperimentalDataSection;
     class PdbNumModelCard;
     class PdbModelTypeSection;
     class PdbAuthorSection;
-    class PdbRevisionData;
+    class PdbRevisionDataSection;
     class PdbSupersededEntriesSection;
     class PdbJournalSection;
     class PdbRemarkSection;
 
     //Primary Structure Section
-    class PdbDatabaseSection;
+    class PdbDatabaseReferenceSection;
     class PdbSequenceAdvancedSection;
     class PdbResidueSequenceSection;
     class PdbResidueModificationSection;
@@ -74,7 +74,7 @@ namespace PdbFileSpace
 
     //Bookkeeping Section
     class PdbMasterCard;
-    class PdbEndCard;
+    // class PdbEndCard;
 
 
     class PdbFile
@@ -154,10 +154,35 @@ namespace PdbFileSpace
               */
             PdbTitleSection* GetTitle();
             /*! \fn
+              * An accessor function in order to access to the split of the current object
+              * @return split_ attribute of the current object of this class
+              */
+            PdbSplitSection* GetSplit();
+            /*! \fn
+              * An accessor function in order to access to the caveat of the current object
+              * @return caveat_ attribute of the current object of this class
+              */
+            // PdbCaveatSection* GetCaveat();
+            /*! \fn
               * An accessor function in order to access to the compound attribute of the current object
               * @return compound_ attribute of the current object of this class
               */
             PdbCompoundSection* GetCompound();
+            /*! \fn
+              * An accessor function in order to access to the source of the current object
+              * @return source_ attribute of the current object of this class
+              */
+            // PdbSourceSection* GetSource();
+            /*! \fn
+              * An accessor function in order to access to the keywords of the current object
+              * @return keywords_ attribute of the current object of this class
+              */
+            // PdbKeywordSection* GetKeywords();
+            /*! \fn
+              * An accessor function in order to access to the experimental_data of the current object
+              * @return experimental_data_ attribute of the current object of this class
+              */
+            // PdbExperimentalDataSection* GetExperimentalData();
             /*! \fn
               * An accessor function in order to access to the number of models attribute of the current object
               * @return number_of_models_ attribute of the current object of this class
@@ -169,10 +194,40 @@ namespace PdbFileSpace
               */
             PdbModelTypeSection* GetModelType();
             /*! \fn
+              * An accessor function in order to access to the author of the current object
+              * @return author_ attribute of the current object of this class
+              */
+            // PdbAuthorSection* GetAuthor();
+            /*! \fn
+              * An accessor function in order to access to the revision_data of the current object
+              * @return revision_data_ attribute of the current object of this class
+              */
+            // PdbRevisionDataSection* GetRevisionData();
+            /*! \fn
+              * An accessor function in order to access to the superseded_entries of the current object
+              * @return superseded_entries_ attribute of the current object of this class
+              */
+            // PdbSupersededEntriesSection* GetSupersededEntries();
+            /*! \fn
+              * An accessor function in order to access to the journal of the current object
+              * @return journal_ attribute of the current object of this class
+              */
+            // PdbJournalSection* GetJournal();
+            /*! \fn
               * An accessor function in order to access to the remark_cards type attribute of the current object
               * @return remark_cards_ attribute of the current object of this class
               */
             PdbRemarkSection* GetRemarks();
+            /*! \fn
+              * An accessor function in order to access to the database_reference of the current object
+              * @return database_reference_ attribute of the current object of this class
+              */
+            // PdbDatabaseReferenceSection* GetDatabaseReference();
+            /*! \fn
+              * An accessor function in order to access to the sequence_advanced of the current object
+              * @return sequence_advanced_ attribute of the current object of this class
+              */
+            // PdbSequenceAdvancedSection* GetSequenceAdvanced();
             /*! \fn
               * An accessor function in order to access to the residue sequence attribute of the current object
               * @return residue_sequence_ attribute of the current object of this class
@@ -223,6 +278,11 @@ namespace PdbFileSpace
               * @return link_cards_ attribute of the current object of this class
               */
             PdbLinkSection* GetResidueLinkCards();
+            /*! \fn
+              * An accessor function in order to access to the cis_peptide of the current object
+              * @return cis_peptide_ attribute of the current object of this class
+              */
+            // PdbCISPeptideSection* GetCISPeptide();
             /*! \fn
               * An accessor function in order to access to the site_cards attribute of the current object
               * @return site_cards_ attribute of the current object of this class
@@ -372,7 +432,7 @@ namespace PdbFileSpace
               * Set the obsolete_ attribute of the current pdb file
               * @param obsolete The obsolete attribute of the current object
               */
-            // void SetObsolete(PdbObsoleteSection* obsolete);
+            void SetObsolete(PdbObsoleteSection* obsolete);
             /*! \fn
               * A mutator function in order to set the title card of the current object
               * Set the title_ attribute of the current pdb file
@@ -380,11 +440,41 @@ namespace PdbFileSpace
               */
             void SetTitle(PdbTitleSection* title);
             /*! \fn
+              * A mutator function in order to set the split card of the current object
+              * Set the split_ attribute of the current pdb file
+              * @param split The split attribute of the current object
+              */
+            void SetSplit(PdbSplitSection* split);
+            /*! \fn
+              * A mutator function in order to set the caveat card of the current object
+              * Set the caveat_ attribute of the current pdb file
+              * @param caveat The caveat attribute of the current object
+              */
+            // void SetCaveat(PdbCaveatSection* caveat);
+            /*! \fn
               * A mutator function in order to set the compound card of the current object
               * Set the compound_ attribute of the current pdb file
               * @param compound The compound attribute of the current object
               */
             void SetCompound(PdbCompoundSection* compound);
+            /*! \fn
+              * A mutator function in order to set the source card of the current object
+              * Set the source_ attribute of the current pdb file
+              * @param source The source attribute of the current object
+              */
+            // void SetSource(PdbSourceSection* source);
+            /*! \fn
+              * A mutator function in order to set the keywords card of the current object
+              * Set the keywords_ attribute of the current pdb file
+              * @param keywords The keywords attribute of the current object
+              */
+            // void SetKeyword(PdbKeywordSection* keywords);
+            /*! \fn
+              * A mutator function in order to set the experimental_data card of the current object
+              * Set the experimental_data_ attribute of the current pdb file
+              * @param experimental_data The experimental_data attribute of the current object
+              */
+            // void SetExperimentalData(PdbExperimentalDataSection* experimental_data);
             /*! \fn
               * A mutator function in order to set the number of models card of the current object
               * Set the number_of_models_ attribute of the current pdb file
@@ -398,11 +488,47 @@ namespace PdbFileSpace
               */
             void SetModelType(PdbModelTypeSection* model_type);
             /*! \fn
+              * A mutator function in order to set the author card of the current object
+              * Set the author_ attribute of the current pdb file
+              * @param author The author attribute of the current object
+              */
+            // void SetAuthor(PdbAuthorSection* author);
+            /*! \fn
+              * A mutator function in order to set the revision_data card of the current object
+              * Set the revision_data_ attribute of the current pdb file
+              * @param revision_data The revision_data attribute of the current object
+              */
+            // void SetRevisionData(PdbRevisionDataSection* revision_data);
+            /*! \fn
+              * A mutator function in order to set the superseded_entries card of the current object
+              * Set the superseded_entries_ attribute of the current pdb file
+              * @param superseded_entries The superseded_entries attribute of the current object
+              */
+            // void SetSupersededEntries(PdbSupersededEntriesSection* superseded_entries);
+            /*! \fn
+              * A mutator function in order to set the journal card of the current object
+              * Set the journal_ attribute of the current pdb file
+              * @param journal The journal attribute of the current object
+              */
+            // void SetJournal(PdbJournalSection* journal);
+            /*! \fn
               * A mutator function in order to set the remark card of the current object
               * Set the remark_cards_ attribute of the current pdb file
               * @param remark_cards The model type attribute of the current object
               */
             void SetRemarks(PdbRemarkSection* remark_cards);
+            /*! \fn
+              * A mutator function in order to set the database_reference card of the current object
+              * Set the database_reference_ attribute of the current pdb file
+              * @param database_reference The database_reference attribute of the current object
+              */
+            // void SetDatabaseReference(PdbDatabaseReferenceSection* database_reference);
+            /*! \fn
+              * A mutator function in order to set the sequence_advanced card of the current object
+              * Set the sequence_advanced_ attribute of the current pdb file
+              * @param sequence_advanced The sequence_advanced attribute of the current object
+              */
+            // void SetSequenceAdvanced(PdbSequenceAdvancedSection* sequence_advanced);
             /*! \fn
               * A mutator function in order to set the residues sequence card of the current object
               * Set the residues_sequence_ attribute of the current pdb file
@@ -463,6 +589,12 @@ namespace PdbFileSpace
               * @param links The links attribute of the current object
               */
             void SetLinks(PdbLinkSection* links);
+            /*! \fn
+              * A mutator function in order to set the cis_peptide card of the current object
+              * Set the cis_peptide_ attribute of the current pdb file
+              * @param cis_peptide The cis_peptide attribute of the current object
+              */
+            // void SetCISPeptide(PdbCISPeptideSection* cis_peptide);
             /*! \fn
               * A mutator function in order to set the site_cards card of the current object
               * Set the site_cards_ attribute of the current pdb file
@@ -766,14 +898,14 @@ namespace PdbFileSpace
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSequenceResidueSection(std::ifstream& stream, std::string& line);
+            bool ParseResidueSequenceSection(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the modification residue card that has been given as a stream
               * @param stream A stream contains modification residue card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseModificationResidueSection(std::ifstream& stream, std::string& line);
+            bool ParseResidueModificationSection(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the heterogen card that has been given as a stream
               * @param stream A stream contains heterogen card of a pdb file
@@ -946,12 +1078,12 @@ namespace PdbFileSpace
               * A function to write back split card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write split card
               */
-            // void ResolveSplitCards(std::ofstream& stream);
+            void ResolveSplitCards(std::ofstream& stream);
             /*! \fn
               * A function to write back caveat card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write caveat card
               */
-            // void ResolveCaveatCards(std::ofstream& stream);
+            void ResolveCaveatCards(std::ofstream& stream);
             /*! \fn
               * A function to write back compound card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write compound card
@@ -961,17 +1093,17 @@ namespace PdbFileSpace
               * A function to write back source card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write source card
               */
-            // void ResolveSourceCards(std::ofstream& stream);
+            void ResolveSourceCards(std::ofstream& stream);
             /*! \fn
               * A function to write back keyword card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write keyword card
               */
-            // void ResolveKeywordCards(std::ofstream& stream);
+            void ResolveKeywordCards(std::ofstream& stream);
             /*! \fn
               * A function to write back expiration date card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write expiration date card
               */
-            // void ResolveExperimentalDataCards(std::ofstream& stream);
+            void ResolveExperimentalDataCards(std::ofstream& stream);
             /*! \fn
               * A function to write back num model card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write num model card
@@ -986,37 +1118,37 @@ namespace PdbFileSpace
               * A function to write back author card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write author card
               */
-            // void ResolveAuthorCards(std::ofstream& stream);
+            void ResolveAuthorCards(std::ofstream& stream);
             /*! \fn
               * A function to write back revision date card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write revision date card
               */
-            // void ResolveRevisionDataCards(std::ofstream& stream);
+            void ResolveRevisionDataCards(std::ofstream& stream);
             /*! \fn
               * A function to write back superseded entries card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write superseded entries card
               */
-            // void ResolveSupersededEntriesCards(std::ofstream& stream);
+            void ResolveSupersededEntriesCards(std::ofstream& stream);
             /*! \fn
               * A function to write back journal card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write journal card
               */
-            // void ResolveJournalCards(std::ofstream& stream);
+            void ResolveJournalCards(std::ofstream& stream);
             /*! \fn
               * A function to write back remark card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write remark card
               */
-            // void ResolveRemarkCards(std::ofstream& stream);
+            void ResolveRemarkCards(std::ofstream& stream);
             /*! \fn
               * A function to write back database reference card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write database reference card
               */
-            // void ResolveDatabaseReferenceCards(std::ofstream& stream);
+            void ResolveDatabaseReferenceCards(std::ofstream& stream);
             /*! \fn
               * A function to write back sequence advanced card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sequence advanced card
               */
-            // void ResolveSequenceAdvancedCards(std::ofstream& stream);
+            void ResolveSequenceAdvancedCards(std::ofstream& stream);
             /*! \fn
               * A function to write back sequence residue card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sequence residue card
@@ -1117,7 +1249,7 @@ namespace PdbFileSpace
               * A function to write back master card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write master card
               */
-            void ResolveMasterCard(std::ofstream& stream);
+            void ResolveMasterCards(std::ofstream& stream);
             /*! \fn
               * A function to write back end card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write end card
@@ -1138,33 +1270,47 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string path_;                                      /*!< Path of the given pdb file >*/
-            PdbHeaderCard* header_;                                 /*!< Header card >*/
-            PdbObsoleteSection* obsolete_;                          /*!<Obsolete section>*/
-            PdbTitleSection* title_;                                   /*!< Title section >*/
-            PdbCompoundSection* compound_;                             /*!< Compound section >*/
-            PdbNumModelCard* number_of_models_;                     /*!< Number of models card >*/
-            PdbModelTypeSection* model_type_;                          /*!< Model type section >*/
-            PdbRemarkSection* remark_cards_;                                /*!< Remarks section>*/
-            PdbResidueSequenceSection* residues_sequence_;             /*!< Residue sequence section >*/
-            PdbResidueModificationSection* residue_modification_cards_;      /*!< Residue modification section >*/
-            PdbHeterogenSection* heterogen_cards_;                          /*!< Heterogen section >*/
-            PdbHeterogenNameSection* heterogen_name_cards_;                 /*!< Heterogen name section >*/
-            PdbHeterogenSynonymSection* heterogen_synonym_cards_;           /*!< Heterogen synonym section >*/
-            PdbFormulaSection* formulas_;                              /*!< Formula section >*/
-            PdbHelixSection* helix_cards_;                                 /*!< Helix section >*/
-            PdbSheetSection* sheet_cards_;                                  /*!< Sheet section >*/
-            PdbDisulfideBondSection* disulfide_bonds_;                 /*!< Disulfide bond section >*/
-            PdbLinkSection* link_cards_;                                    /*!< Link section >*/
-            PdbSiteSection* site_cards_;                                    /*!< Site section >*/
-            PdbCrystallographicCard* crystallography_;              /*!< Crystallography card >*/
-            PdbOriginXnSection* origins_;                              /*!< Origin section >*/
-            PdbScaleNSection* scales_;                                 /*!< Scale section >*/
-            PdbMatrixNSection* matrices_;                              /*!< Matrix section >*/
-            PdbModelSection* models_;                                  /*!< Model section >*/
-            PdbConnectSection* connectivities_;                        /*!< Connectivity section >*/
-            PdbSerialNumberMapping serial_number_mapping_;          /*!< A map that keeps track of serial numbers that have been changed during a process >*/
-            PdbSequenceNumberMapping sequence_number_mapping_;      /*!< A map that keeps track of sequence numbers that have been changed during a process >*/
+            std::string path_;                                          /*!< Path of the given pdb file >*/
+            PdbHeaderCard* header_;                                     /*!< Header card >*/
+            PdbObsoleteSection* obsolete_;                              /*!<Obsolete section>*/
+            PdbTitleSection* title_;                                    /*!< Title section >*/
+            PdbSplitSection* split_;                                    /*!< Split Section >*/
+            PdbCaveatSection* caveat_;                                  /*!< Caveat Section>*/
+            PdbCompoundSection* compound_;                              /*!< Compound section >*/
+            PdbSourceSection* source_;                                  /*!< Source section >*/
+            PdbKeywordSection* keywords_;                               /*!< Keywords section >*/
+            PdbExperimentalDataSection* experimental_data_;             /*!< Experimental data section>*/
+            PdbNumModelCard* number_of_models_;                         /*!< Number of models card >*/
+            PdbModelTypeSection* model_type_;                           /*!< Model type section >*/
+            PdbAuthorSection* author_;                                  /*!< Author section >*/
+            PdbRevisionDataSection* revision_data_;                     /*!< Revision data section >*/
+            PdbSupersededEntriesSection* superseded_entries_;           /*!< Superseded entries section >*/
+            PdbJournalSection* journal_;                                /*!< Journal section >*/
+            PdbRemarkSection* remark_cards_;                            /*!< Remarks section>*/
+            PdbDatabaseReferenceSection* database_reference_;           /*!< Database reference section >*/
+            PdbSequenceAdvancedSection* sequence_advanced_;             /*!< Sequence advanced section >*/
+            PdbResidueSequenceSection* residues_sequence_;              /*!< Residue sequence section >*/
+            PdbResidueModificationSection* residue_modification_cards_; /*!< Residue modification section >*/
+            PdbHeterogenSection* heterogen_cards_;                      /*!< Heterogen section >*/
+            PdbHeterogenNameSection* heterogen_name_cards_;             /*!< Heterogen name section >*/
+            PdbHeterogenSynonymSection* heterogen_synonym_cards_;       /*!< Heterogen synonym section >*/
+            PdbFormulaSection* formulas_;                               /*!< Formula section >*/
+            PdbHelixSection* helix_cards_;                              /*!< Helix section >*/
+            PdbSheetSection* sheet_cards_;                              /*!< Sheet section >*/
+            PdbDisulfideBondSection* disulfide_bonds_;                  /*!< Disulfide bond section >*/
+            PdbLinkSection* link_cards_;                                /*!< Link section >*/
+            PdbCISPeptideSection* cis_peptide_;                         /*!< CIS peptide section >*/
+            PdbSiteSection* site_cards_;                                /*!< Site section >*/
+            PdbCrystallographicCard* crystallography_;                  /*!< Crystallography card >*/
+            PdbOriginXnSection* origins_;                               /*!< Origin section >*/
+            PdbScaleNSection* scales_;                                  /*!< Scale section >*/
+            PdbMatrixNSection* matrices_;                               /*!< Matrix section >*/
+            PdbModelSection* models_;                                   /*!< Model section >*/
+            PdbConnectSection* connectivities_;                         /*!< Connectivity section >*/
+            PdbSerialNumberMapping serial_number_mapping_;              /*!< A map that keeps track of serial numbers that have been changed during a process >*/
+            PdbSequenceNumberMapping sequence_number_mapping_;          /*!< A map that keeps track of sequence numbers that have been changed during a process >*/
+            PdbMasterCard* master_;                                     /*!< Master card >*/
+            // PdbEndCard* end_;                                           /*!< End Card >*/
     };
 }
 

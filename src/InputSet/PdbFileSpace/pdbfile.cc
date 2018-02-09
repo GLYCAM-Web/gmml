@@ -14,11 +14,22 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbobsoletesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbobsoletecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsplitsection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbcaveatsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbcompoundsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbsourcesection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbkeywordsection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduemodificationsection.hpp"
@@ -44,6 +55,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsitesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsitecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp"
@@ -61,6 +73,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
+// #include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/utils.hpp"
@@ -80,10 +93,21 @@ PdbFile::PdbFile()
     header_ = NULL;
     obsolete_ = NULL;
     title_ = NULL;
+    split_ = NULL;
+    caveat_ = NULL;
     compound_ = NULL;
+    source_ = NULL;
+    keywords_ = NULL;
+    experimental_data_ = NULL;
     number_of_models_ = NULL;
     model_type_ = NULL;
+    author_ = NULL;
+    revision_data_ = NULL;
+    superseded_entries_ = NULL;
+    journal_ = NULL;
     remark_cards_ = NULL;
+    database_reference_ = NULL;
+    sequence_advanced_ = NULL;
     residues_sequence_ = NULL;
     residue_modification_cards_ = NULL;
     heterogen_cards_ = NULL;
@@ -94,6 +118,7 @@ PdbFile::PdbFile()
     sheet_cards_ = NULL;
     disulfide_bonds_ = NULL;
     link_cards_ = NULL;
+    cis_peptide_ = NULL;
     site_cards_ = NULL;
     crystallography_ = NULL;
     origins_ = NULL;
@@ -103,6 +128,7 @@ PdbFile::PdbFile()
     connectivities_ = NULL;
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
     sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
+    master_ = NULL;
 }
 
 PdbFile::PdbFile(const std::string &pdb_file)
@@ -111,10 +137,21 @@ PdbFile::PdbFile(const std::string &pdb_file)
     header_ = NULL;
     obsolete_ = NULL;
     title_ = NULL;
+    split_ = NULL;
+    caveat_ = NULL;
     compound_ = NULL;
+    source_ = NULL;
+    // keywords_ = NULL;
+    // experimental_data_ = NULL;
     number_of_models_ = NULL;
     model_type_ = NULL;
+    author_ = NULL;
+    revision_data_ = NULL;
+    superseded_entries_ = NULL;
+    journal_ = NULL;
     remark_cards_ = NULL;
+    database_reference_ = NULL;
+    // sequence_advanced_ = NULL;
     residues_sequence_ = NULL;
     residue_modification_cards_ = NULL;
     heterogen_cards_ = NULL;
@@ -125,6 +162,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     sheet_cards_ = NULL;
     disulfide_bonds_ = NULL;
     link_cards_ = NULL;
+    cis_peptide_ = NULL;
     site_cards_ = NULL;
     crystallography_ = NULL;
     origins_ = NULL;
@@ -134,6 +172,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     connectivities_ = NULL;
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
     sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
+    master_ = NULL;
 
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
@@ -220,10 +259,35 @@ PdbTitleSection* PdbFile::GetTitle()
     return title_;
 }
 
+PdbSplitSection* PdbFile::GetSplit()
+{
+    return split_;
+}
+
+// PdbCaveatSection* PdbFile::GetCaveat()
+// {
+//     return caveat_;
+// }
+
 PdbCompoundSection* PdbFile::GetCompound()
 {
     return compound_;
 }
+
+// PdbSourceSection* PdbFile::GetSource()
+// {
+//     return source_;
+// }
+//
+// PdbKeywordSection* PdbFile::GetKeywords()
+// {
+//     return keywords_;
+// }
+//
+// PdbExperimentalDataSection* PdbFile::GetExperimentalData()
+// {
+//     return experimental_data_;
+// }
 
 PdbNumModelCard* PdbFile::GetNumberOfModels()
 {
@@ -234,11 +298,41 @@ PdbModelTypeSection* PdbFile::GetModelType()
 {
     return model_type_;
 }
+//
+// PdbAuthorSection* PdbFile::GetAuthor()
+// {
+//     return author_;
+// }
+//
+// PdbRevisionDataSection* PdbFile::GetRevisionData()
+// {
+//     return revision_data_;
+// }
+//
+// PdbSupersededEntriesSection* PdbFile::GetSupersededEntries()
+// {
+//     return superseded_entries_;
+// }
+//
+// PdbJournalSection* PdbFile::GetJournal()
+// {
+//     return journal_;
+// }
 
 PdbRemarkSection* PdbFile::GetRemarks()
 {
     return remark_cards_;
 }
+//
+// PdbDatabaseReferenceSection* PdbFile::GetDatabaseReference()
+// {
+//     return database_reference_;
+// }
+//
+// PdbSequenceAdvancedSection* PdbFile::GetSequenceAdvanced()
+// {
+//     return sequence_advanced_;
+// }
 
 PdbResidueSequenceSection* PdbFile::GetResiduesSequence()
 {
@@ -290,6 +384,11 @@ PdbLinkSection* PdbFile::GetResidueLinkCards()
     return link_cards_;
 }
 
+// PdbCISPeptideSection* PdbFile::GetCISPeptide()
+// {
+//     return cis_peptide_;
+// }
+
 PdbSiteSection* PdbFile::GetSites()
 {
     return site_cards_;
@@ -324,10 +423,12 @@ PdbConnectSection* PdbFile::GetConnectivities()
 {
     return connectivities_;
 }
+
 PdbFile::PdbSerialNumberMapping PdbFile::GetSerialNumberMapping()
 {
     return serial_number_mapping_;
 }
+
 PdbFile::PdbSerialNumberMapping PdbFile::GetSequenceNumberMapping()
 {
     return sequence_number_mapping_;
@@ -816,6 +917,7 @@ vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue)
     }
     return atom_names;
 }
+
 PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(vector<string> glycam_residue_names)
 {
     vector<pair<char, int> > ter_card_positions = vector<pair<char, int> >();
@@ -841,6 +943,10 @@ PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(vector<st
     return ter_card_positions;
 }
 
+// PdbMasterCard* PdbFile::GetMasterCard()
+// {
+//   return master_;
+// }
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -854,21 +960,46 @@ void PdbFile::SetHeader(PdbHeaderCard *header)
     header_ = header;
 
 }
-// void PdbFile::SetObsolete(PdbObsoleteSection *obsolete)
-// {
-//     obsolete_ = new PdbObsoleteSection();
-//     obsolete_ = obsolete;
-// }
+void PdbFile::SetObsolete(PdbObsoleteSection *obsolete)
+{
+    obsolete_ = new PdbObsoleteSection();
+    obsolete_ = obsolete;
+}
 void PdbFile::SetTitle(PdbTitleSection *title)
 {
     title_ = new PdbTitleSection();
     title_ = title;
 }
+void PdbFile::SetSplit(PdbSplitSection *split)
+{
+    split_ = new PdbSplitSection();
+    split_ = split;
+}
+// void PdbFile::SetCaveat(PdbCaveatSection *caveat)
+// {
+//     caveat_ = new PdbCaveatSection();
+//     caveat_ = caveat;
+// }
 void PdbFile::SetCompound(PdbCompoundSection *compound)
 {
     compound_ = new PdbCompoundSection();
     compound_ = compound;
 }
+// void PdbFile::SetSource(PdbSourceSection *source)
+// {
+//     source_ = new PdbSourceSection();
+//     source_ = source;
+// }
+// void PdbFile::SetKeyword(PdbKeywordSection *keywords)
+// {
+//     keywords_ = new PdbKeywordSection();
+//     keywords_ = keywords;
+// }
+// void PdbFile::SetExperimentalData(PdbExperimentalDataSection *experimental_data)
+// {
+//     experimental_data_ = new PdbExperimentalDataSection();
+//     experimental_data_ = experimental_data;
+// }
 void PdbFile::SetNumberOfModels(PdbNumModelCard *number_of_models)
 {
     number_of_models_ = new PdbNumModelCard();
@@ -879,11 +1010,41 @@ void PdbFile::SetModelType(PdbModelTypeSection *model_type)
     model_type_ = new PdbModelTypeSection();
     model_type_ = model_type;
 }
+// void PdbFile::SetAuthor(PdbAuthorSection *author)
+// {
+//     author_ = new PdbAuthorSection();
+//     author_ = author;
+// }
+// void PdbFile::SetRevisionData(PdbRevisionDataSection *revision_data)
+// {
+//     revision_data_ = new PdbRevisionDataSection();
+//     revision_data_ = revision_data;
+// }
+// void PdbFile::SetSupersededEntries(PdbSupersededEntriesSection *superseded_entries)
+// {
+//     superseded_entries_ = new PdbSupersededEntriesSection();
+//     superseded_entries_ = superseded_entries;
+// }
+// void PdbFile::SetJournal(PdbJournalSection *journal)
+// {
+//     journal_ = new PdbJournalSection();
+//     journal_ = journal;
+// }
 void PdbFile::SetRemarks(PdbRemarkSection *remark_cards)
 {
     remark_cards_ = new PdbRemarkSection();
     remark_cards_ = remark_cards;
 }
+// void PdbFile::SetDatabaseReference(PdbDatabaseReferenceSection *database_reference)
+// {
+//     database_reference_ = new PdbDatabaseReferenceSection();
+//     database_reference_ = database_reference;
+// }
+// void PdbFile::SetSequenceAdvanced(PdbSequenceAdvancedSection *sequence_advanced)
+// {
+//     sequence_advanced_ = new PdbSequenceAdvancedSection();
+//     sequence_advanced_ = sequence_advanced;
+// }
 void PdbFile::SetResiduesSequence(PdbResidueSequenceSection *residues_sequence)
 {
     residues_sequence_ = new PdbResidueSequenceSection();
@@ -934,6 +1095,11 @@ void PdbFile::SetLinks(PdbLinkSection *links)
     link_cards_ = new PdbLinkSection();
     link_cards_ = links;
 }
+// void PdbFile::SetCISPeptide(PdbCISPeptideSection *cis_peptide)
+// {
+//     cis_peptide_ = new PdbCISPeptideSection();
+//     cis_peptide_ = cis_peptide;
+// }
 void PdbFile::SetSites(PdbSiteSection *site_cards)
 {
     site_cards_ = new PdbSiteSection();
@@ -3218,14 +3384,14 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     record_name = Trim(record_name);
     if(record_name.compare("SEQRES") == 0)
     {
-        if(!ParseSequenceResidueSection(in_stream, line))
+        if(!ParseResidueSequenceSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
     record_name = Trim(record_name);
     if(record_name.compare("MODRES") == 0)
     {
-        if(!ParseModificationResidueSection(in_stream, line))
+        if(!ParseResidueModificationSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
@@ -3526,6 +3692,7 @@ bool PdbFile::ParseSplitSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    split_ = new PdbSplitSection(stream_block);
     return true;
 }
 
@@ -3563,6 +3730,7 @@ bool PdbFile::ParseCaveatSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // caveat_ = new PdbCaveatSection(stream_block);
     return true;
 }
 
@@ -3639,6 +3807,7 @@ bool PdbFile::ParseSourceSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // source_ = new PdbSourceSection(stream_block);
     return true;
 }
 
@@ -3676,6 +3845,7 @@ bool PdbFile::ParseKeywordSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // keywords_ =  new PdbKeywordSection(stream_block);
     return true;
 }
 
@@ -3713,6 +3883,7 @@ bool PdbFile::ParseExperimentalDataSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // experimental_data_ = new PdbExperimentalDataSection(stream_block);
     return true;
 }
 
@@ -3750,7 +3921,6 @@ bool PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     number_of_models_ = new PdbNumModelCard(stream_block);
     return true;
 }
@@ -3789,7 +3959,6 @@ bool PdbFile::ParseModelTypeSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     model_type_ = new PdbModelTypeSection(stream_block);
     return true;
 }
@@ -3828,6 +3997,7 @@ bool PdbFile::ParseAuthorSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // author_ = new PdbAuthorSection(stream_block);
     return true;
 }
 
@@ -3865,6 +4035,7 @@ bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // revision_data_ = new PdbRevisionDataSection(stream_block);
     return true;
 }
 
@@ -3902,6 +4073,7 @@ bool PdbFile::ParseSupersededEntriesSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // superseded_entries_ = new PdbSupersededEntriesSection(stream_block);
     return true;
 }
 
@@ -3939,6 +4111,7 @@ bool PdbFile::ParseJournalSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // journal_ = new PdbJournalSection(stream_block);
     return true;
 }
 
@@ -3976,12 +4149,9 @@ bool PdbFile::ParseRemarkSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    //cout << stream_block.str() << endl;
     remark_cards_ = new PdbRemarkSection(stream_block);
-    // remark_cards_->Print();
     return true;
 }
-
 
 bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, string& line)
 {
@@ -4017,6 +4187,7 @@ bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // database_reference_ = new PdbDatabaseReferenceSection(stream_block);
     return true;
 }
 
@@ -4054,10 +4225,11 @@ bool PdbFile::ParseSequenceAdvancedSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // sequence_advanced_ = new PdbSequenceAdvancedSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseSequenceResidueSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseResidueSequenceSection(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
@@ -4091,12 +4263,11 @@ bool PdbFile::ParseSequenceResidueSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     residues_sequence_ = new PdbResidueSequenceSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseModificationResidueSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseResidueModificationSection(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
@@ -4130,7 +4301,6 @@ bool PdbFile::ParseModificationResidueSection(std::ifstream& stream, string& lin
             return false;
         }
     }
-
     residue_modification_cards_ = new PdbResidueModificationSection(stream_block);
     return true;
 }
@@ -4169,7 +4339,6 @@ bool PdbFile::ParseHeterogenSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     heterogen_cards_ = new PdbHeterogenSection(stream_block);
     return true;
 }
@@ -4208,7 +4377,6 @@ bool PdbFile::ParseHeterogenNameSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     heterogen_name_cards_ = new PdbHeterogenNameSection(stream_block);
     return true;
 }
@@ -4247,7 +4415,6 @@ bool PdbFile::ParseHeterogenSynonymSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     heterogen_synonym_cards_ = new PdbHeterogenSynonymSection(stream_block);
     return true;
 }
@@ -4286,7 +4453,6 @@ bool PdbFile::ParseFormulaSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     formulas_ = new PdbFormulaSection(stream_block);
     return true;
 }
@@ -4325,7 +4491,6 @@ bool PdbFile::ParseHelixSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     helix_cards_ = new PdbHelixSection(stream_block);
     return true;
 }
@@ -4364,7 +4529,6 @@ bool PdbFile::ParseSheetSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     sheet_cards_ = new PdbSheetSection(stream_block);
     return true;
 }
@@ -4403,7 +4567,6 @@ bool PdbFile::ParseDisulfideBondSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     disulfide_bonds_ = new PdbDisulfideBondSection(stream_block);
     return true;
 }
@@ -4442,7 +4605,6 @@ bool PdbFile::ParseLinkSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     link_cards_ = new PdbLinkSection(stream_block);
     return true;
 }
@@ -4481,6 +4643,7 @@ bool PdbFile::ParseCISPeptideSection(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // cis_peptide_ = new PdbCISPeptideSection(stream_block);
     return true;
 }
 
@@ -4518,7 +4681,6 @@ bool PdbFile::ParseSiteSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     site_cards_ = new PdbSiteSection(stream_block);
     return true;
 }
@@ -4557,7 +4719,6 @@ bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     crystallography_ = new PdbCrystallographicCard(stream_block);
     return true;
 }
@@ -4596,7 +4757,6 @@ bool PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     origins_ = new PdbOriginXnSection(stream_block);
     return true;
 }
@@ -4635,7 +4795,6 @@ bool PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     scales_ = new PdbScaleNSection(stream_block);
     return true;
 }
@@ -4674,7 +4833,6 @@ bool PdbFile::ParseMatrixSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     matrices_ = new PdbMatrixNSection(stream_block);
     return true;
 }
@@ -4715,7 +4873,6 @@ bool PdbFile::ParseModelSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     // Model card
     //    gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str();
     models_ = new PdbModelSection(stream_block);
@@ -4756,7 +4913,6 @@ bool PdbFile::ParseConnectivitySection(std::ifstream& stream, string& line)
             return false;
         }
     }
-
     connectivities_ = new PdbConnectSection(stream_block);
     return true;
 }
@@ -4795,6 +4951,7 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
             return false;
         }
     }
+    // master_ = new PdbMasterCard(stream_block);
     return true;
 }
 
@@ -4827,6 +4984,7 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, string& line)
             return true;
         }
     }
+    // end_ = new PdbEndCard(stream_block);
     return true;
 }
 
@@ -4886,9 +5044,28 @@ void PdbFile::ResolveCards(std::ofstream& out_stream)
     {
         this->ResolveTitleCards(out_stream);
     }
+    if(this->split_ != NULL)
+    {
+        this->ResolveSplitCards(out_stream);
+    }if(this->caveat_ != NULL)
+    {
+        this->ResolveCaveatCards(out_stream);
+    }
     if(this->compound_ != NULL)
     {
         this->ResolveCompoundCards(out_stream);
+    }
+    if(this->source_ != NULL)
+    {
+        this->ResolveSourceCards(out_stream);
+    }
+    if(this->keywords_ != NULL)
+    {
+        this->ResolveKeywordCards(out_stream);
+    }
+    if(this->experimental_data_ != NULL)
+    {
+        this->ResolveExperimentalDataCards(out_stream);
     }
     if(this->number_of_models_ != NULL)
     {
@@ -4897,6 +5074,34 @@ void PdbFile::ResolveCards(std::ofstream& out_stream)
     if(this->model_type_ != NULL)
     {
         this->ResolveNumModelCard(out_stream);
+    }
+    if(this->author_ != NULL)
+    {
+        this->ResolveAuthorCards(out_stream);
+    }
+    if(this->revision_data_ != NULL)
+    {
+        this->ResolveRevisionDataCards(out_stream);
+    }
+    if(this->superseded_entries_ != NULL)
+    {
+        this->ResolveSupersededEntriesCards(out_stream);
+    }
+    if(this->journal_ != NULL)
+    {
+        this->ResolveJournalCards(out_stream);
+    }
+    if(this->remark_cards_ != NULL)
+    {
+        this->ResolveRemarkCards(out_stream);
+    }
+    if(this->database_reference_ != NULL)
+    {
+        this->ResolveDatabaseReferenceCards(out_stream);
+    }
+    if(this->sequence_advanced_ != NULL)
+    {
+        this->ResolveSequenceAdvancedCards(out_stream);
     }
     if(this->residues_sequence_ != NULL)
     {
@@ -4937,6 +5142,10 @@ void PdbFile::ResolveCards(std::ofstream& out_stream)
     if(this->link_cards_ != NULL)
     {
         this->ResolveLinkCards(out_stream);
+    }
+    if(this->cis_peptide_ != NULL)
+    {
+        this->ResolveCISPeptideCards(out_stream);
     }
     if(this->site_cards_ != NULL)
     {
@@ -4966,6 +5175,10 @@ void PdbFile::ResolveCards(std::ofstream& out_stream)
     {
         this->ResolveConnectivityCards(out_stream);
     }
+    if(this->master_ != NULL)
+    {
+        this->ResolveMasterCards(out_stream);
+    }
     this->ResolveEndCard(out_stream);
 }
 
@@ -4983,9 +5196,28 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
     {
         this->ResolveTitleCards(out_stream);
     }
+    if(this->split_ != NULL)
+    {
+        this->ResolveSplitCards(out_stream);
+    }if(this->caveat_ != NULL)
+    {
+        this->ResolveCaveatCards(out_stream);
+    }
     if(this->compound_ != NULL)
     {
         this->ResolveCompoundCards(out_stream);
+    }
+    if(this->source_ != NULL)
+    {
+        this->ResolveSourceCards(out_stream);
+    }
+    if(this->keywords_ != NULL)
+    {
+        this->ResolveKeywordCards(out_stream);
+    }
+    if(this->experimental_data_ != NULL)
+    {
+        this->ResolveExperimentalDataCards(out_stream);
     }
     if(this->number_of_models_ != NULL)
     {
@@ -4994,6 +5226,34 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
     if(this->model_type_ != NULL)
     {
         this->ResolveNumModelCard(out_stream);
+    }
+    if(this->author_ != NULL)
+    {
+        this->ResolveAuthorCards(out_stream);
+    }
+    if(this->revision_data_ != NULL)
+    {
+        this->ResolveRevisionDataCards(out_stream);
+    }
+    if(this->superseded_entries_ != NULL)
+    {
+        this->ResolveSupersededEntriesCards(out_stream);
+    }
+    if(this->journal_ != NULL)
+    {
+        this->ResolveJournalCards(out_stream);
+    }
+    if(this->remark_cards_ != NULL)
+    {
+        this->ResolveRemarkCards(out_stream);
+    }
+    if(this->database_reference_ != NULL)
+    {
+        this->ResolveDatabaseReferenceCards(out_stream);
+    }
+    if(this->sequence_advanced_ != NULL)
+    {
+        this->ResolveSequenceAdvancedCards(out_stream);
     }
     if(this->residues_sequence_ != NULL)
     {
@@ -5035,6 +5295,10 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
     {
         this->ResolveLinkCards(out_stream);
     }
+    if(this->cis_peptide_ != NULL)
+    {
+        this->ResolveCISPeptideCards(out_stream);
+    }
     if(this->site_cards_ != NULL)
     {
         this->ResolveSiteCards(out_stream);
@@ -5062,6 +5326,10 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
     if(this->connectivities_ != NULL)
     {
         this->ResolveConnectivityCards(out_stream);
+    }
+    if(this->master_ != NULL)
+    {
+        this->ResolveMasterCards(out_stream);
     }
     this->ResolveEndCard(out_stream);
 }
@@ -5135,16 +5403,16 @@ void PdbFile::ResolveTitleCards(std::ofstream& stream)
                << endl;
     }
 }
-//
-// void PdbFile::ResolveSplitCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveCaveatCard(std::ofstream& stream)
-// {
-//
-// }
+
+void PdbFile::ResolveSplitCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveCaveatCards(std::ofstream& stream)
+{
+
+}
 
 void PdbFile::ResolveCompoundCards(std::ofstream& stream)
 {
@@ -5527,20 +5795,20 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
 
 }
 
-// void PdbFile::ResolveSourceCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveKeywordCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveExpirationDateCard(std::ofstream& stream)
-// {
-//
-// }
+void PdbFile::ResolveSourceCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveKeywordCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveExperimentalDataCards(std::ofstream& stream)
+{
+
+}
 
 void PdbFile::ResolveNumModelCard(std::ofstream& stream)
 {
@@ -5605,40 +5873,40 @@ void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
     }
 }
 
-// void PdbFile::ResolveAuthorCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveRevisionDateCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveSupersededEntriesCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveJournalCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveRemarkCards(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveDatabaseReferenceCard(std::ofstream& stream)
-// {
-//
-// }
-//
-// void PdbFile::ResolveSequenceAdvancedCard(std::ofstream& stream)
-// {
-//
-// }
+void PdbFile::ResolveAuthorCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveSupersededEntriesCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveJournalCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveRemarkCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
+{
+
+}
+
+void PdbFile::ResolveSequenceAdvancedCards(std::ofstream& stream)
+{
+
+}
 
 void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
 {
@@ -7145,7 +7413,7 @@ void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveMasterCard(std::ofstream& stream)
+void PdbFile::ResolveMasterCards(std::ofstream& stream)
 {
 
 }
@@ -7171,10 +7439,35 @@ void PdbFile::Print(ostream &out)
         out << "******************************** TITLE *******************************" << endl;
         title_->Print(out);
     }
+    if(split_ != NULL)
+    {
+        out << "******************************** SPLIT *******************************" << endl;
+        // split_->Print(out);
+    }
+    if(caveat_ != NULL)
+    {
+        out << "******************************** CAVEAT *******************************" << endl;
+        // caveat_->Print(out);
+    }
     if(compound_ != NULL)
     {
         out << "****************************** COMPOUND ******************************" << endl;
         compound_->Print(out);
+    }
+    if(source_ != NULL)
+    {
+        out << "******************************** SOURCE *******************************" << endl;
+        // source_->Print(out);
+    }
+    if(keywords_ != NULL)
+    {
+        out << "******************************** KEYWORDS *******************************" << endl;
+        // keywords_->Print(out);
+    }
+    if(experimental_data_ != NULL)
+    {
+        out << "*************************** EXPERIMENTAL DATA ****************************" << endl;
+        // experimental_data_->Print(out);
     }
     if(number_of_models_ != NULL)
     {
@@ -7186,10 +7479,40 @@ void PdbFile::Print(ostream &out)
         out << "***************************** MODEL TYPE *****************************" << endl;
         model_type_->Print(out);
     }
+    if(author_ != NULL)
+    {
+        out << "******************************** AUTHOR ******************************" << endl;
+        // author_->Print(out);
+    }
+    if(revision_data_ != NULL)
+    {
+        out << "**************************** REVISION DATA ***************************" << endl;
+        // revision_data_->Print(out);
+    }
+    if(superseded_entries_ != NULL)
+    {
+        out << "************************** SUPERSEDED ENTRIES *************************" << endl;
+        // superseded_entries_->Print(out);
+    }
+    if(journal_ != NULL)
+    {
+        out << "******************************** JOURNAL *******************************" << endl;
+        // journal_->Print(out);
+    }
     if(remark_cards_ != NULL)
     {
         out << "****************************** REMARKS *******************************" << endl;
         remark_cards_->Print(out);
+    }
+    if(database_reference_ != NULL)
+    {
+        out << "************************** DATABASE REFERENCE *************************" << endl;
+        // database_reference_->Print(out);
+    }
+    if(sequence_advanced_ != NULL)
+    {
+        out << "*************************** SEQUENCE ADVANCED **************************" << endl;
+        // sequence_advanced_->Print(out);
     }
     if(residues_sequence_ != NULL)
     {
@@ -7241,6 +7564,11 @@ void PdbFile::Print(ostream &out)
         out << "******************************** LINK ********************************" << endl;
         link_cards_->Print(out);
     }
+    if(cis_peptide_ != NULL)
+    {
+        out << "***************************** CIS PEPTIDE ****************************" << endl;
+        // cis_peptide_->Print(out);
+    }
     if(site_cards_ != NULL)
     {
         out << "******************************** SITE ********************************" << endl;
@@ -7275,5 +7603,10 @@ void PdbFile::Print(ostream &out)
     {
         out << "******************************* CONNECT ******************************" << endl;
         connectivities_->Print(out);
+    }
+    if(master_ != NULL)
+    {
+        out << "******************************** MASTER *******************************" << endl;
+        // master_->Print(out);
     }
 }
