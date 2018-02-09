@@ -15,10 +15,11 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbobsoletecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsplitsection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbcaveatsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbcaveatsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbcompoundsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbsourcesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsourcesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsourcecard.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbkeywordsection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
@@ -264,20 +265,20 @@ PdbSplitSection* PdbFile::GetSplit()
     return split_;
 }
 
-// PdbCaveatSection* PdbFile::GetCaveat()
-// {
-//     return caveat_;
-// }
+PdbCaveatSection* PdbFile::GetCaveat()
+{
+    return caveat_;
+}
 
 PdbCompoundSection* PdbFile::GetCompound()
 {
     return compound_;
 }
 
-// PdbSourceSection* PdbFile::GetSource()
-// {
-//     return source_;
-// }
+PdbSourceSection* PdbFile::GetSourceCards()
+{
+    return source_;
+}
 //
 // PdbKeywordSection* PdbFile::GetKeywords()
 // {
@@ -975,21 +976,21 @@ void PdbFile::SetSplit(PdbSplitSection *split)
     split_ = new PdbSplitSection();
     split_ = split;
 }
-// void PdbFile::SetCaveat(PdbCaveatSection *caveat)
-// {
-//     caveat_ = new PdbCaveatSection();
-//     caveat_ = caveat;
-// }
+void PdbFile::SetCaveat(PdbCaveatSection *caveat)
+{
+    caveat_ = new PdbCaveatSection();
+    caveat_ = caveat;
+}
 void PdbFile::SetCompound(PdbCompoundSection *compound)
 {
     compound_ = new PdbCompoundSection();
     compound_ = compound;
 }
-// void PdbFile::SetSource(PdbSourceSection *source)
-// {
-//     source_ = new PdbSourceSection();
-//     source_ = source;
-// }
+void PdbFile::SetSourceCards(PdbSourceSection *source)
+{
+    source_ = new PdbSourceSection();
+    source_ = source;
+}
 // void PdbFile::SetKeyword(PdbKeywordSection *keywords)
 // {
 //     keywords_ = new PdbKeywordSection();
@@ -3730,7 +3731,7 @@ bool PdbFile::ParseCaveatSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // caveat_ = new PdbCaveatSection(stream_block);
+    caveat_ = new PdbCaveatSection(stream_block);
     return true;
 }
 
@@ -3807,7 +3808,7 @@ bool PdbFile::ParseSourceSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // source_ = new PdbSourceSection(stream_block);
+    source_ = new PdbSourceSection(stream_block);
     return true;
 }
 
@@ -7442,12 +7443,12 @@ void PdbFile::Print(ostream &out)
     if(split_ != NULL)
     {
         out << "******************************** SPLIT *******************************" << endl;
-        // split_->Print(out);
+        split_->Print(out);
     }
     if(caveat_ != NULL)
     {
         out << "******************************** CAVEAT *******************************" << endl;
-        // caveat_->Print(out);
+        caveat_->Print(out);
     }
     if(compound_ != NULL)
     {

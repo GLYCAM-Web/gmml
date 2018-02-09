@@ -162,7 +162,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the caveat of the current object
               * @return caveat_ attribute of the current object of this class
               */
-            // PdbCaveatSection* GetCaveat();
+            PdbCaveatSection* GetCaveat();
             /*! \fn
               * An accessor function in order to access to the compound attribute of the current object
               * @return compound_ attribute of the current object of this class
@@ -172,7 +172,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the source of the current object
               * @return source_ attribute of the current object of this class
               */
-            // PdbSourceSection* GetSource();
+            PdbSourceSection* GetSourceCards();
             /*! \fn
               * An accessor function in order to access to the keywords of the current object
               * @return keywords_ attribute of the current object of this class
@@ -450,10 +450,10 @@ namespace PdbFileSpace
               * Set the caveat_ attribute of the current pdb file
               * @param caveat The caveat attribute of the current object
               */
-            // void SetCaveat(PdbCaveatSection* caveat);
+            void SetCaveat(PdbCaveatSection* caveat);
             /*! \fn
               * A mutator function in order to set the compound card of the current object
-              * Set the compound_ attribute of the current pdb file
+              * Set the compound_ attriSourcebute of the current pdb file
               * @param compound The compound attribute of the current object
               */
             void SetCompound(PdbCompoundSection* compound);
@@ -462,7 +462,7 @@ namespace PdbFileSpace
               * Set the source_ attribute of the current pdb file
               * @param source The source attribute of the current object
               */
-            // void SetSource(PdbSourceSection* source);
+            void SetSourceCards(PdbSourceSection* source);
             /*! \fn
               * A mutator function in order to set the keywords card of the current object
               * Set the keywords_ attribute of the current pdb file
