@@ -20,7 +20,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsourcesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsourcecard.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbkeywordsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbkeywordssection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
@@ -142,7 +142,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     caveat_ = NULL;
     compound_ = NULL;
     source_ = NULL;
-    // keywords_ = NULL;
+    keywords_ = NULL;
     // experimental_data_ = NULL;
     number_of_models_ = NULL;
     model_type_ = NULL;
@@ -279,11 +279,11 @@ PdbSourceSection* PdbFile::GetSourceCards()
 {
     return source_;
 }
-//
-// PdbKeywordSection* PdbFile::GetKeywords()
-// {
-//     return keywords_;
-// }
+
+PdbKeywordsSection* PdbFile::GetKeywords()
+{
+    return keywords_;
+}
 //
 // PdbExperimentalDataSection* PdbFile::GetExperimentalData()
 // {
@@ -991,11 +991,11 @@ void PdbFile::SetSourceCards(PdbSourceSection *source)
     source_ = new PdbSourceSection();
     source_ = source;
 }
-// void PdbFile::SetKeyword(PdbKeywordSection *keywords)
-// {
-//     keywords_ = new PdbKeywordSection();
-//     keywords_ = keywords;
-// }
+void PdbFile::SetKeywords(PdbKeywordsSection *keywords)
+{
+    keywords_ = new PdbKeywordsSection();
+    keywords_ = keywords;
+}
 // void PdbFile::SetExperimentalData(PdbExperimentalDataSection *experimental_data)
 // {
 //     experimental_data_ = new PdbExperimentalDataSection();
@@ -3308,7 +3308,7 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     record_name = Trim(record_name);
     if(record_name.compare("KEYWDS") == 0)
     {
-        if(!ParseKeywordSection(in_stream, line))
+        if(!ParseKeywordsSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
@@ -3812,7 +3812,7 @@ bool PdbFile::ParseSourceSection(std::ifstream& stream, string& line)
     return true;
 }
 
-bool PdbFile::ParseKeywordSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseKeywordsSection(std::ifstream& stream, string& line)
 {
     stringstream stream_block;
     stream_block << line << endl;
@@ -3846,7 +3846,7 @@ bool PdbFile::ParseKeywordSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // keywords_ =  new PdbKeywordSection(stream_block);
+    keywords_ =  new PdbKeywordsSection(stream_block);
     return true;
 }
 
@@ -7458,12 +7458,12 @@ void PdbFile::Print(ostream &out)
     if(source_ != NULL)
     {
         out << "******************************** SOURCE *******************************" << endl;
-        // source_->Print(out);
+        source_->Print(out);
     }
     if(keywords_ != NULL)
     {
         out << "******************************** KEYWORDS *******************************" << endl;
-        // keywords_->Print(out);
+        keywords_->Print(out);
     }
     if(experimental_data_ != NULL)
     {

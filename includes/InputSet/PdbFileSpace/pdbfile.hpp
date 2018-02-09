@@ -19,7 +19,7 @@ namespace PdbFileSpace
     class PdbCaveatSection;
     class PdbCompoundSection;
     class PdbSourceSection;
-    class PdbKeywordSection;
+    class PdbKeywordsSection;
     class PdbExperimentalDataSection;
     class PdbNumModelCard;
     class PdbModelTypeSection;
@@ -177,7 +177,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the keywords of the current object
               * @return keywords_ attribute of the current object of this class
               */
-            // PdbKeywordSection* GetKeywords();
+            PdbKeywordsSection* GetKeywords();
             /*! \fn
               * An accessor function in order to access to the experimental_data of the current object
               * @return experimental_data_ attribute of the current object of this class
@@ -468,7 +468,7 @@ namespace PdbFileSpace
               * Set the keywords_ attribute of the current pdb file
               * @param keywords The keywords attribute of the current object
               */
-            // void SetKeyword(PdbKeywordSection* keywords);
+            void SetKeywords(PdbKeywordsSection* keywords);
             /*! \fn
               * A mutator function in order to set the experimental_data card of the current object
               * Set the experimental_data_ attribute of the current pdb file
@@ -821,7 +821,7 @@ namespace PdbFileSpace
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseKeywordSection(std::ifstream& stream, std::string& line);
+            bool ParseKeywordsSection(std::ifstream& stream, std::string& line);
             /*! \fn
               * A function to parse the expiration date card that has been given as a stream
               * @param stream A stream contains expiration date card of a pdb file
@@ -1278,7 +1278,7 @@ namespace PdbFileSpace
             PdbCaveatSection* caveat_;                                  /*!< Caveat Section>*/
             PdbCompoundSection* compound_;                              /*!< Compound section >*/
             PdbSourceSection* source_;                                  /*!< Source section >*/
-            PdbKeywordSection* keywords_;                               /*!< Keywords section >*/
+            PdbKeywordsSection* keywords_;                               /*!< Keywords section >*/
             PdbExperimentalDataSection* experimental_data_;             /*!< Experimental data section>*/
             PdbNumModelCard* number_of_models_;                         /*!< Number of models card >*/
             PdbModelTypeSection* model_type_;                           /*!< Model type section >*/
