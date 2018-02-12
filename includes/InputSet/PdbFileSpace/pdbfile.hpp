@@ -182,7 +182,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the experimental_data of the current object
               * @return experimental_data_ attribute of the current object of this class
               */
-            // PdbExperimentalDataSection* GetExperimentalData();
+            PdbExperimentalDataSection* GetExperimentalData();
             /*! \fn
               * An accessor function in order to access to the number of models attribute of the current object
               * @return number_of_models_ attribute of the current object of this class
@@ -474,7 +474,7 @@ namespace PdbFileSpace
               * Set the experimental_data_ attribute of the current pdb file
               * @param experimental_data The experimental_data attribute of the current object
               */
-            // void SetExperimentalData(PdbExperimentalDataSection* experimental_data);
+            void SetExperimentalData(PdbExperimentalDataSection* experimental_data);
             /*! \fn
               * A mutator function in order to set the number of models card of the current object
               * Set the number_of_models_ attribute of the current pdb file

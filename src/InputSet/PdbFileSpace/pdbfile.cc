@@ -21,7 +21,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbsourcesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsourcecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbkeywordssection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
@@ -143,7 +143,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     compound_ = NULL;
     source_ = NULL;
     keywords_ = NULL;
-    // experimental_data_ = NULL;
+    experimental_data_ = NULL;
     number_of_models_ = NULL;
     model_type_ = NULL;
     author_ = NULL;
@@ -284,11 +284,11 @@ PdbKeywordsSection* PdbFile::GetKeywords()
 {
     return keywords_;
 }
-//
-// PdbExperimentalDataSection* PdbFile::GetExperimentalData()
-// {
-//     return experimental_data_;
-// }
+
+PdbExperimentalDataSection* PdbFile::GetExperimentalData()
+{
+    return experimental_data_;
+}
 
 PdbNumModelCard* PdbFile::GetNumberOfModels()
 {
@@ -996,11 +996,11 @@ void PdbFile::SetKeywords(PdbKeywordsSection *keywords)
     keywords_ = new PdbKeywordsSection();
     keywords_ = keywords;
 }
-// void PdbFile::SetExperimentalData(PdbExperimentalDataSection *experimental_data)
-// {
-//     experimental_data_ = new PdbExperimentalDataSection();
-//     experimental_data_ = experimental_data;
-// }
+void PdbFile::SetExperimentalData(PdbExperimentalDataSection *experimental_data)
+{
+    experimental_data_ = new PdbExperimentalDataSection();
+    experimental_data_ = experimental_data;
+}
 void PdbFile::SetNumberOfModels(PdbNumModelCard *number_of_models)
 {
     number_of_models_ = new PdbNumModelCard();
@@ -3884,7 +3884,7 @@ bool PdbFile::ParseExperimentalDataSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // experimental_data_ = new PdbExperimentalDataSection(stream_block);
+    experimental_data_ = new PdbExperimentalDataSection(stream_block);
     return true;
 }
 
@@ -7468,7 +7468,7 @@ void PdbFile::Print(ostream &out)
     if(experimental_data_ != NULL)
     {
         out << "*************************** EXPERIMENTAL DATA ****************************" << endl;
-        // experimental_data_->Print(out);
+        experimental_data_->Print(out);
     }
     if(number_of_models_ != NULL)
     {
