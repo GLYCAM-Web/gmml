@@ -55,6 +55,8 @@
 #include "InputSet/PdbFileSpace/pdbresiduemodificationcard.hpp"
 #include "InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
 #include "InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
+#include "InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
+#include "InputSet/PdbFileSpace/pdbrevisiondatacard.hpp"
 #include "InputSet/PdbFileSpace/pdbscalensection.hpp"
 #include "InputSet/PdbFileSpace/pdbscalencard.hpp"
 #include "InputSet/PdbFileSpace/pdbsheetsection.hpp"

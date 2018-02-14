@@ -21,9 +21,9 @@ PdbSourceCard::PdbSourceCard(string &line)
       std::size_t position = line.find(":");
       if (position!=std::string::npos)
          {
-           token_ = line.substr(10,position);
+           token_ = line.substr(10,position-10);
            Trim(token_);
-           value_ = line.substr(position+1, 78);
+           value_ = line.substr(position+1, 78-position);
            Trim(value_);
          }
     }

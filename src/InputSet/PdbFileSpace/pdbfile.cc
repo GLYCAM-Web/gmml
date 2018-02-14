@@ -25,7 +25,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
@@ -304,12 +304,12 @@ PdbAuthorSection* PdbFile::GetAuthor()
 {
     return author_;
 }
-//
-// PdbRevisionDataSection* PdbFile::GetRevisionData()
-// {
-//     return revision_data_;
-// }
-//
+
+PdbRevisionDataSection* PdbFile::GetRevisionDataCards()
+{
+    return revision_data_;
+}
+
 // PdbSupersededEntriesSection* PdbFile::GetSupersededEntries()
 // {
 //     return superseded_entries_;
@@ -1016,11 +1016,11 @@ void PdbFile::SetAuthor(PdbAuthorSection *author)
     author_ = new PdbAuthorSection();
     author_ = author;
 }
-// void PdbFile::SetRevisionData(PdbRevisionDataSection *revision_data)
-// {
-//     revision_data_ = new PdbRevisionDataSection();
-//     revision_data_ = revision_data;
-// }
+void PdbFile::SetRevisionDataCards(PdbRevisionDataSection *revision_data)
+{
+    revision_data_ = new PdbRevisionDataSection();
+    revision_data_ = revision_data;
+}
 // void PdbFile::SetSupersededEntries(PdbSupersededEntriesSection *superseded_entries)
 // {
 //     superseded_entries_ = new PdbSupersededEntriesSection();
@@ -4008,8 +4008,8 @@ bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, string& line)
     stream_block << line << endl;
     if(!getline(stream, line))
     {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision date card corruption" );
-        cout << "Revision date card corruption" << endl;
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision data card corruption" );
+        cout << "Revision data card corruption" << endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
         cout << "Wrong input file format" << endl;
         return false;
@@ -4029,14 +4029,14 @@ bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, string& line)
         }
         else
         {
-            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision date card corruption" );
-            cout << "Revision date card corruption" << endl;
+            gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision data card corruption" );
+            cout << "Revision data card corruption" << endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
             cout << "Wrong input file format" << endl;
             return false;
         }
     }
-    // revision_data_ = new PdbRevisionDataSection(stream_block);
+    revision_data_ = new PdbRevisionDataSection(stream_block);
     return true;
 }
 
@@ -7488,7 +7488,7 @@ void PdbFile::Print(ostream &out)
     if(revision_data_ != NULL)
     {
         out << "**************************** REVISION DATA ***************************" << endl;
-        // revision_data_->Print(out);
+        revision_data_->Print(out);
     }
     if(superseded_entries_ != NULL)
     {

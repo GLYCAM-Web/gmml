@@ -202,7 +202,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the revision_data of the current object
               * @return revision_data_ attribute of the current object of this class
               */
-            // PdbRevisionDataSection* GetRevisionData();
+            PdbRevisionDataSection* GetRevisionDataCards();
             /*! \fn
               * An accessor function in order to access to the superseded_entries of the current object
               * @return superseded_entries_ attribute of the current object of this class
@@ -498,7 +498,7 @@ namespace PdbFileSpace
               * Set the revision_data_ attribute of the current pdb file
               * @param revision_data The revision_data attribute of the current object
               */
-            // void SetRevisionData(PdbRevisionDataSection* revision_data);
+            void SetRevisionDataCards(PdbRevisionDataSection* revision_data);
             /*! \fn
               * A mutator function in order to set the superseded_entries card of the current object
               * Set the superseded_entries_ attribute of the current pdb file
