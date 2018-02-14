@@ -9,6 +9,7 @@
 #include "InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
 #include "InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "InputSet/PdbFileSpace/pdbauthorsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcaveatsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcompoundsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcompoundspecification.hpp"

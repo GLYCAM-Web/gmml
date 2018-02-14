@@ -24,7 +24,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
@@ -299,11 +299,11 @@ PdbModelTypeSection* PdbFile::GetModelType()
 {
     return model_type_;
 }
-//
-// PdbAuthorSection* PdbFile::GetAuthor()
-// {
-//     return author_;
-// }
+
+PdbAuthorSection* PdbFile::GetAuthor()
+{
+    return author_;
+}
 //
 // PdbRevisionDataSection* PdbFile::GetRevisionData()
 // {
@@ -1011,11 +1011,11 @@ void PdbFile::SetModelType(PdbModelTypeSection *model_type)
     model_type_ = new PdbModelTypeSection();
     model_type_ = model_type;
 }
-// void PdbFile::SetAuthor(PdbAuthorSection *author)
-// {
-//     author_ = new PdbAuthorSection();
-//     author_ = author;
-// }
+void PdbFile::SetAuthor(PdbAuthorSection *author)
+{
+    author_ = new PdbAuthorSection();
+    author_ = author;
+}
 // void PdbFile::SetRevisionData(PdbRevisionDataSection *revision_data)
 // {
 //     revision_data_ = new PdbRevisionDataSection();
@@ -3998,7 +3998,7 @@ bool PdbFile::ParseAuthorSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // author_ = new PdbAuthorSection(stream_block);
+    author_ = new PdbAuthorSection(stream_block);
     return true;
 }
 
@@ -7483,7 +7483,7 @@ void PdbFile::Print(ostream &out)
     if(author_ != NULL)
     {
         out << "******************************** AUTHOR ******************************" << endl;
-        // author_->Print(out);
+        author_->Print(out);
     }
     if(revision_data_ != NULL)
     {

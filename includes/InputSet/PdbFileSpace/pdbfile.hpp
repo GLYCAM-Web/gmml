@@ -197,7 +197,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the author of the current object
               * @return author_ attribute of the current object of this class
               */
-            // PdbAuthorSection* GetAuthor();
+            PdbAuthorSection* GetAuthor();
             /*! \fn
               * An accessor function in order to access to the revision_data of the current object
               * @return revision_data_ attribute of the current object of this class
@@ -492,7 +492,7 @@ namespace PdbFileSpace
               * Set the author_ attribute of the current pdb file
               * @param author The author attribute of the current object
               */
-            // void SetAuthor(PdbAuthorSection* author);
+            void SetAuthor(PdbAuthorSection* author);
             /*! \fn
               * A mutator function in order to set the revision_data card of the current object
               * Set the revision_data_ attribute of the current pdb file

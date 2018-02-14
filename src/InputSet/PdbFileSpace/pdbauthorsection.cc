@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
 #include "../../../includes/utils.hpp"
 
 using namespace std;
@@ -10,15 +10,15 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbExperimentalDataSection::PdbExperimentalDataSection() : record_name_("EXPDTA"), experimental_data_(""){}
+PdbAuthorSection::PdbAuthorSection() : record_name_("AUTHOR"), author_(""){}
 
-PdbExperimentalDataSection::PdbExperimentalDataSection(const string &record_name, const string &experimental_data)
+PdbAuthorSection::PdbAuthorSection(const string &record_name, const string &author)
 {
     record_name_ = record_name;
-    experimental_data_ = experimental_data;
+    author_ = author;
 }
 
-PdbExperimentalDataSection::PdbExperimentalDataSection(stringstream& stream_block)
+PdbAuthorSection::PdbAuthorSection(stringstream& stream_block)
 {
     string line;
     bool is_record_name_set = false;
@@ -37,34 +37,34 @@ PdbExperimentalDataSection::PdbExperimentalDataSection(stringstream& stream_bloc
         getline(stream_block, line);
         temp = line;
     }
-    experimental_data_ = ss.str();
-    Trim(experimental_data_);
+    author_ = ss.str();
+    Trim(author_);
 }
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbExperimentalDataSection::GetRecordName()
+string PdbAuthorSection::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbExperimentalDataSection::GetExperimentalData()
+string PdbAuthorSection::GetAuthor()
 {
-    return experimental_data_;
+    return author_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbExperimentalDataSection::SetRecordName(const string record_name)
+void PdbAuthorSection::SetRecordName(const string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbExperimentalDataSection::SetExperimentalData(const string experimental_data)
+void PdbAuthorSection::SetAuthor(const string author)
 {
-    experimental_data_ = experimental_data;
+    author_ = author;
 }
 
 //////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ void PdbExperimentalDataSection::SetExperimentalData(const string experimental_d
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbExperimentalDataSection::Print(ostream &out)
+void PdbAuthorSection::Print(ostream &out)
 {
-    out << "Record Name: " << record_name_ << ", Experimental Data: " << experimental_data_ << endl << endl;
+    out << "Record Name: " << record_name_ << ", Author(s): " << author_ << endl << endl;
 }
