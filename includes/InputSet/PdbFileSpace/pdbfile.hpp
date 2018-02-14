@@ -207,7 +207,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the superseded_entries of the current object
               * @return superseded_entries_ attribute of the current object of this class
               */
-            // PdbSupersededEntriesSection* GetSupersededEntries();
+            PdbSupersededEntriesSection* GetSupersededEntriesCards();
             /*! \fn
               * An accessor function in order to access to the journal of the current object
               * @return journal_ attribute of the current object of this class
@@ -504,7 +504,7 @@ namespace PdbFileSpace
               * Set the superseded_entries_ attribute of the current pdb file
               * @param superseded_entries The superseded_entries attribute of the current object
               */
-            // void SetSupersededEntries(PdbSupersededEntriesSection* superseded_entries);
+            void SetSupersededEntriesCards(PdbSupersededEntriesSection* superseded_entries);
             /*! \fn
               * A mutator function in order to set the journal card of the current object
               * Set the journal_ attribute of the current pdb file

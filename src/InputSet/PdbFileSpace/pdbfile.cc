@@ -26,7 +26,8 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
@@ -310,10 +311,10 @@ PdbRevisionDataSection* PdbFile::GetRevisionDataCards()
     return revision_data_;
 }
 
-// PdbSupersededEntriesSection* PdbFile::GetSupersededEntries()
-// {
-//     return superseded_entries_;
-// }
+PdbSupersededEntriesSection* PdbFile::GetSupersededEntriesCards()
+{
+    return superseded_entries_;
+}
 //
 // PdbJournalSection* PdbFile::GetJournal()
 // {
@@ -1021,11 +1022,11 @@ void PdbFile::SetRevisionDataCards(PdbRevisionDataSection *revision_data)
     revision_data_ = new PdbRevisionDataSection();
     revision_data_ = revision_data;
 }
-// void PdbFile::SetSupersededEntries(PdbSupersededEntriesSection *superseded_entries)
-// {
-//     superseded_entries_ = new PdbSupersededEntriesSection();
-//     superseded_entries_ = superseded_entries;
-// }
+void PdbFile::SetSupersededEntriesCards(PdbSupersededEntriesSection *superseded_entries)
+{
+    superseded_entries_ = new PdbSupersededEntriesSection();
+    superseded_entries_ = superseded_entries;
+}
 // void PdbFile::SetJournal(PdbJournalSection *journal)
 // {
 //     journal_ = new PdbJournalSection();
@@ -4074,7 +4075,7 @@ bool PdbFile::ParseSupersededEntriesSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // superseded_entries_ = new PdbSupersededEntriesSection(stream_block);
+    superseded_entries_ = new PdbSupersededEntriesSection(stream_block);
     return true;
 }
 
@@ -7493,7 +7494,7 @@ void PdbFile::Print(ostream &out)
     if(superseded_entries_ != NULL)
     {
         out << "************************** SUPERSEDED ENTRIES *************************" << endl;
-        // superseded_entries_->Print(out);
+        superseded_entries_->Print(out);
     }
     if(journal_ != NULL)
     {

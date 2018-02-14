@@ -69,6 +69,8 @@
 #include "InputSet/PdbFileSpace/pdbsourcecard.hpp"
 #include "InputSet/PdbFileSpace/pdbsourcesection.hpp"
 #include "InputSet/PdbFileSpace/pdbsplitsection.hpp"
+#include "InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
+#include "InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
 #include "InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "InputSet/PdbqtFileSpace/pdbqtatom.hpp"
 #include "InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
