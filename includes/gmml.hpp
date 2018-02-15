@@ -33,6 +33,7 @@
 #include "InputSet/PdbFileSpace/pdbheterogennamecard.hpp"
 #include "InputSet/PdbFileSpace/pdbheterogensynonymsection.hpp"
 #include "InputSet/PdbFileSpace/pdbheterogensynonymcard.hpp"
+#include "InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "InputSet/PdbFileSpace/pdbkeywordssection.hpp"
 #include "InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
 #include "InputSet/PdbFileSpace/pdblinksection.hpp"

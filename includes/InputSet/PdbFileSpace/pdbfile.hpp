@@ -212,7 +212,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the journal of the current object
               * @return journal_ attribute of the current object of this class
               */
-            // PdbJournalSection* GetJournal();
+            PdbJournalSection* GetJournal();
             /*! \fn
               * An accessor function in order to access to the remark_cards type attribute of the current object
               * @return remark_cards_ attribute of the current object of this class
@@ -506,11 +506,11 @@ namespace PdbFileSpace
               */
             void SetSupersededEntriesCards(PdbSupersededEntriesSection* superseded_entries);
             /*! \fn
-              * A mutator function in order to set the journal card of the current object
+              * A mutator function in order to set the journal of the current object
               * Set the journal_ attribute of the current pdb file
-              * @param journal The journal attribute of the current object
+              * @param journal The journal of the current object
               */
-            // void SetJournal(PdbJournalSection* journal);
+            void SetJournal(PdbJournalSection* journal);
             /*! \fn
               * A mutator function in order to set the remark card of the current object
               * Set the remark_cards_ attribute of the current pdb file

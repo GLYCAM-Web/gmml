@@ -28,7 +28,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
@@ -315,11 +315,11 @@ PdbSupersededEntriesSection* PdbFile::GetSupersededEntriesCards()
 {
     return superseded_entries_;
 }
-//
-// PdbJournalSection* PdbFile::GetJournal()
-// {
-//     return journal_;
-// }
+
+PdbJournalSection* PdbFile::GetJournal()
+{
+    return journal_;
+}
 
 PdbRemarkSection* PdbFile::GetRemarks()
 {
@@ -1027,11 +1027,11 @@ void PdbFile::SetSupersededEntriesCards(PdbSupersededEntriesSection *superseded_
     superseded_entries_ = new PdbSupersededEntriesSection();
     superseded_entries_ = superseded_entries;
 }
-// void PdbFile::SetJournal(PdbJournalSection *journal)
-// {
-//     journal_ = new PdbJournalSection();
-//     journal_ = journal;
-// }
+void PdbFile::SetJournal(PdbJournalSection *journal)
+{
+    journal_ = new PdbJournalSection();
+    journal_ = journal;
+}
 void PdbFile::SetRemarks(PdbRemarkSection *remark_cards)
 {
     remark_cards_ = new PdbRemarkSection();
@@ -4113,7 +4113,7 @@ bool PdbFile::ParseJournalSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // journal_ = new PdbJournalSection(stream_block);
+    journal_ = new PdbJournalSection(stream_block);
     return true;
 }
 
@@ -7499,7 +7499,7 @@ void PdbFile::Print(ostream &out)
     if(journal_ != NULL)
     {
         out << "******************************** JOURNAL *******************************" << endl;
-        // journal_->Print(out);
+        journal_->Print(out);
     }
     if(remark_cards_ != NULL)
     {
