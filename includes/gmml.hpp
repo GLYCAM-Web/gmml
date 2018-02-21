@@ -15,6 +15,8 @@
 #include "InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcrystallographiccard.hpp"
+#include "InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
+#include "InputSet/PdbFileSpace/pdbdatabasereference.hpp"
 #include "InputSet/PdbFileSpace/pdbdisulfidebondsection.hpp"
 #include "InputSet/PdbFileSpace/pdbdisulfideresidue.hpp"
 #include "InputSet/PdbFileSpace/pdbdisulfideresiduebond.hpp"

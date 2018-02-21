@@ -30,7 +30,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
 // #include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
@@ -325,12 +325,12 @@ PdbRemarkSection* PdbFile::GetRemarks()
 {
     return remark_cards_;
 }
-//
-// PdbDatabaseReferenceSection* PdbFile::GetDatabaseReference()
-// {
-//     return database_reference_;
-// }
-//
+
+PdbDatabaseReferenceSection* PdbFile::GetDatabaseReferences()
+{
+    return database_reference_;
+}
+
 // PdbSequenceAdvancedSection* PdbFile::GetSequenceAdvanced()
 // {
 //     return sequence_advanced_;
@@ -1037,11 +1037,11 @@ void PdbFile::SetRemarks(PdbRemarkSection *remark_cards)
     remark_cards_ = new PdbRemarkSection();
     remark_cards_ = remark_cards;
 }
-// void PdbFile::SetDatabaseReference(PdbDatabaseReferenceSection *database_reference)
-// {
-//     database_reference_ = new PdbDatabaseReferenceSection();
-//     database_reference_ = database_reference;
-// }
+void PdbFile::SetDatabaseReferences(PdbDatabaseReferenceSection *database_reference)
+{
+    database_reference_ = new PdbDatabaseReferenceSection();
+    database_reference_ = database_reference;
+}
 // void PdbFile::SetSequenceAdvanced(PdbSequenceAdvancedSection *sequence_advanced)
 // {
 //     sequence_advanced_ = new PdbSequenceAdvancedSection();
@@ -4171,7 +4171,7 @@ bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, string& line)
     string record_name = line.substr(0,6);
     record_name = Trim(record_name);
 
-    while(record_name.compare("DBREF") == 0)
+    while(record_name.compare("DBREF") == 0 || record_name.compare("DBREF1") == 0 ||record_name.compare("DBREF2") == 0)
     {
         stream_block << line << endl;
         if(getline(stream, line))
@@ -4189,7 +4189,7 @@ bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // database_reference_ = new PdbDatabaseReferenceSection(stream_block);
+    database_reference_ = new PdbDatabaseReferenceSection(stream_block);
     return true;
 }
 
@@ -7509,7 +7509,7 @@ void PdbFile::Print(ostream &out)
     if(database_reference_ != NULL)
     {
         out << "************************** DATABASE REFERENCE *************************" << endl;
-        // database_reference_->Print(out);
+        database_reference_->Print(out);
     }
     if(sequence_advanced_ != NULL)
     {

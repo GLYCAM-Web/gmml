@@ -222,7 +222,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the database_reference of the current object
               * @return database_reference_ attribute of the current object of this class
               */
-            // PdbDatabaseReferenceSection* GetDatabaseReference();
+            PdbDatabaseReferenceSection* GetDatabaseReferences();
             /*! \fn
               * An accessor function in order to access to the sequence_advanced of the current object
               * @return sequence_advanced_ attribute of the current object of this class
@@ -522,7 +522,7 @@ namespace PdbFileSpace
               * Set the database_reference_ attribute of the current pdb file
               * @param database_reference The database_reference attribute of the current object
               */
-            // void SetDatabaseReference(PdbDatabaseReferenceSection* database_reference);
+            void SetDatabaseReferences(PdbDatabaseReferenceSection* database_reference);
             /*! \fn
               * A mutator function in order to set the sequence_advanced card of the current object
               * Set the sequence_advanced_ attribute of the current pdb file
