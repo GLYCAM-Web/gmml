@@ -247,7 +247,8 @@ void Atom::Print(std::ostream& out)
 	out << "Element: "      << this->GetElementSymbol() << std::endl;
 	out << "Atom Type: "    << this->GetAtomType() << std::endl;
 	out << "Coordinates: "  << std::endl;
-	for(Atom::CoordinateVector::iterator it = this->GetCoordinates().begin(); it != this->GetCoordinates().end(); it++)
+	Atom::CoordinateVector coordinates = this->GetCoordinates();
+	for(Atom::CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
 	{
 		GeometryTopology::Coordinate* coordinate = (*it);
 		if(coordinate != NULL)
