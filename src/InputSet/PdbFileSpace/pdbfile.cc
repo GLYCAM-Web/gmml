@@ -57,7 +57,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsitesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsitecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp"
@@ -386,10 +386,10 @@ PdbLinkSection* PdbFile::GetResidueLinkCards()
     return link_cards_;
 }
 
-// PdbCISPeptideSection* PdbFile::GetCISPeptide()
-// {
-//     return cis_peptide_;
-// }
+PdbCISPeptideSection* PdbFile::GetCISPeptide()
+{
+    return cis_peptide_;
+}
 
 PdbSiteSection* PdbFile::GetSites()
 {
@@ -1097,11 +1097,11 @@ void PdbFile::SetLinks(PdbLinkSection *links)
     link_cards_ = new PdbLinkSection();
     link_cards_ = links;
 }
-// void PdbFile::SetCISPeptide(PdbCISPeptideSection *cis_peptide)
-// {
-//     cis_peptide_ = new PdbCISPeptideSection();
-//     cis_peptide_ = cis_peptide;
-// }
+void PdbFile::SetCISPeptide(PdbCISPeptideSection *cis_peptide)
+{
+    cis_peptide_ = new PdbCISPeptideSection();
+    cis_peptide_ = cis_peptide;
+}
 void PdbFile::SetSites(PdbSiteSection *site_cards)
 {
     site_cards_ = new PdbSiteSection();
@@ -4645,7 +4645,7 @@ bool PdbFile::ParseCISPeptideSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // cis_peptide_ = new PdbCISPeptideSection(stream_block);
+    cis_peptide_ = new PdbCISPeptideSection(stream_block);
     return true;
 }
 
@@ -7569,7 +7569,7 @@ void PdbFile::Print(ostream &out)
     if(cis_peptide_ != NULL)
     {
         out << "***************************** CIS PEPTIDE ****************************" << endl;
-        // cis_peptide_->Print(out);
+        cis_peptide_->Print(out);
     }
     if(site_cards_ != NULL)
     {

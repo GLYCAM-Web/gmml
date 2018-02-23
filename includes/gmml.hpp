@@ -11,6 +11,8 @@
 #include "InputSet/PdbFileSpace/pdbatomcard.hpp"
 #include "InputSet/PdbFileSpace/pdbauthorsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcaveatsection.hpp"
+#include "InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
+#include "InputSet/PdbFileSpace/pdbcispeptidecard.hpp"
 #include "InputSet/PdbFileSpace/pdbcompoundsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "InputSet/PdbFileSpace/pdbconnectsection.hpp"

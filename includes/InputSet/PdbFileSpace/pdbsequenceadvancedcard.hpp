@@ -56,7 +56,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the Sequence Number attribute in a sequence advanced card
               * @return seq_num_ attribute of the current object of this class
               */
-            std::string GetSequenceNumber();
+            int GetSequenceNumber();
             /*! \fn
               * An accessor function in order to access to the InsertionCode attribute in a sequence advanced card
               * @return i_code_ attribute of the current object of this class
@@ -81,7 +81,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the Database Sequence attribute in a sequence advanced card
               * @return db_seq_ attribute of the current object of this class
               */
-            std::string GetDatabaseSequence();
+            int GetDatabaseSequence();
             /*! \fn
               * An accessor function in order to access to the Conflict attribute in a sequence advanced card
               * @return conflict_ attribute of the current object of this class
@@ -123,7 +123,7 @@ namespace PdbFileSpace
               * Set the seq_num_ attribute of the current sequence advanced card
               * @param seq_num The Sequence Number attribute of the current object
               */
-            void SetSequenceNumber(std::string seq_num);
+            void SetSequenceNumber(int seq_num);
             /*! \fn
               * A mutator function in order to set the Insertion Code attribute of the current object
               * Set the i_code_ attribute of the current sequence advanced card
@@ -153,7 +153,7 @@ namespace PdbFileSpace
               * Set the db_seq_ attribute of the current sequence advanced card
               * @param db_seq The Database Sequence attribute of the current object
               */
-            void SetDatabaseSequence(std::string db_seq);
+            void SetDatabaseSequence(int db_seq);
             /*! \fn
               * A mutator function in order to set the Conflict attribute of the current object
               * Set the conflict_ attribute of the current sequence advanced card
@@ -180,12 +180,12 @@ namespace PdbFileSpace
             std::string id_code_;                           /*!< ID code of this PDB entry >*/
             std::string residue_name_;                      /*!< Name of the PDB residue in conflict >*/
             std::string chain_id_;                          /*!< PDB chain identifier >*/
-            std::string seq_num_;                           /*!< PDB sequence number >*/
+            int seq_num_;                                   /*!< PDB sequence number >*/
             std::string i_code_;                            /*!< PDB insertion code >*/
             std::string database_;                          /*!< Database of the sequence advanced card >*/
             std::string db_accession_;                      /*!< Sequence database accession number >*/
             std::string db_res_;                            /*!< Sequence database residue name >*/
-            std::string db_seq_;                            /*!< Sequence database sequence number >*/
+            int db_seq_;                                    /*!< Sequence database sequence number >*/
             std::string conflict_;                          /*!< Conflict comment >*/
     };
 }

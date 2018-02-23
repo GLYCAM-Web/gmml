@@ -282,7 +282,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the cis_peptide of the current object
               * @return cis_peptide_ attribute of the current object of this class
               */
-            // PdbCISPeptideSection* GetCISPeptide();
+            PdbCISPeptideSection* GetCISPeptide();
             /*! \fn
               * An accessor function in order to access to the site_cards attribute of the current object
               * @return site_cards_ attribute of the current object of this class
@@ -594,7 +594,7 @@ namespace PdbFileSpace
               * Set the cis_peptide_ attribute of the current pdb file
               * @param cis_peptide The cis_peptide attribute of the current object
               */
-            // void SetCISPeptide(PdbCISPeptideSection* cis_peptide);
+            void SetCISPeptide(PdbCISPeptideSection* cis_peptide);
             /*! \fn
               * A mutator function in order to set the site_cards card of the current object
               * Set the site_cards_ attribute of the current pdb file

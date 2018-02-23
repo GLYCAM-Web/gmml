@@ -19,12 +19,12 @@ PdbSequenceAdvancedCard::PdbSequenceAdvancedCard(string &line)
       id_code_ = line.substr(7, 4);
       residue_name_ = line.substr(12, 3);
       chain_id_ = line.substr(16, 1);
-      seq_num_ = line.substr(18, 4);
+      seq_num_ = atoi(line.substr(18, 4).c_str());
       i_code_ = line.substr(22, 1);
       database_ = line.substr(24, 4);
       db_accession_ = line.substr(29, 9);
       db_res_ = line.substr(39, 3);
-      db_seq_ = line.substr(43, 5);
+      db_seq_ = atoi(line.substr(43, 5).c_str());
       conflict_ = line.substr(49, 21);
     }
 }
@@ -53,7 +53,7 @@ string PdbSequenceAdvancedCard::GetChainId()
     return chain_id_;
 }
 
-string PdbSequenceAdvancedCard::GetSequenceNumber()
+int PdbSequenceAdvancedCard::GetSequenceNumber()
 {
     return seq_num_;
 }
@@ -75,7 +75,7 @@ string PdbSequenceAdvancedCard::GetDatabaseResidue()
 {
     return db_res_;
 }
-string PdbSequenceAdvancedCard::GetDatabaseSequence()
+int PdbSequenceAdvancedCard::GetDatabaseSequence()
 {
     return db_seq_;
 }
@@ -108,7 +108,7 @@ void PdbSequenceAdvancedCard::SetChainId(const string chain_id)
      chain_id_ = chain_id;
 }
 
-void PdbSequenceAdvancedCard::SetSequenceNumber(const string seq_num)
+void PdbSequenceAdvancedCard::SetSequenceNumber(int seq_num)
 {
      seq_num_ = seq_num;
 }
@@ -130,7 +130,7 @@ void PdbSequenceAdvancedCard::SetDatabaseResidue(const string db_res)
 {
      db_res_ = db_res;
 }
-void PdbSequenceAdvancedCard::SetDatabaseSequence(const string db_seq)
+void PdbSequenceAdvancedCard::SetDatabaseSequence(int db_seq)
 {
      db_seq_ = db_seq;
 }
