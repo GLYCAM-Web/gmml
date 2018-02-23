@@ -43,6 +43,7 @@
 #include "InputSet/PdbFileSpace/pdblinksection.hpp"
 #include "InputSet/PdbFileSpace/pdblinkcard.hpp"
 #include "InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
+#include "InputSet/PdbFileSpace/pdbmastercard.hpp"
 #include "InputSet/PdbFileSpace/pdbmatrixnsection.hpp"
 #include "InputSet/PdbFileSpace/pdbmatrixncard.hpp"
 #include "InputSet/PdbFileSpace/pdbmodelsection.hpp"

@@ -409,6 +409,11 @@ namespace PdbFileSpace
               * @return A 2-D vector of chain id and sequence number of residues that have been placed after residues that have no tail or have at least 2 tails
               */
             PdbPairVectorTerCardPositions GetAllTerCardPositions(std::vector<std::string> glycam_residue_names);
+            /*! \fn
+              * An accessor function in order to access tthe master card of the current object
+              * @return master_ The atom names of the given resdidue of the current object of this class
+              */
+            PdbMasterCard* GetMasterCard();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
@@ -745,6 +750,12 @@ namespace PdbFileSpace
               * A function to adjust the serial numbers of atoms that have been changed in connect card
               */
             void UpdateConnectCard();
+            /*! \fn
+              * An accessor function in order to set the master card of the current object of this class
+              * @param master The master card of the current object
+              * @return master_ The master card of the current object of this class
+              */
+            void SetMasterCard(PdbMasterCard* master);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

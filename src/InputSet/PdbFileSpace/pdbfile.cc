@@ -75,7 +75,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresidue.hpp"
 #include "../../../includes/utils.hpp"
@@ -945,10 +945,10 @@ PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(vector<st
     return ter_card_positions;
 }
 
-// PdbMasterCard* PdbFile::GetMasterCard()
-// {
-//   return master_;
-// }
+PdbMasterCard* PdbFile::GetMasterCard()
+{
+  return master_;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -3233,7 +3233,11 @@ void PdbFile::UpdateConnectCard()
         connectivities_->SetBondedAtomsSerialNumbers(new_bonded_atoms_serial_numbers_map);
     }
 }
-
+void PdbFile::SetMasterCard(PdbMasterCard *master)
+{
+    master_ = new PdbMasterCard();
+    master_ = master;
+}
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
@@ -4953,7 +4957,7 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // master_ = new PdbMasterCard(stream_block);
+    master_ = new PdbMasterCard(stream_block);
     return true;
 }
 
@@ -7609,6 +7613,6 @@ void PdbFile::Print(ostream &out)
     if(master_ != NULL)
     {
         out << "******************************** MASTER *******************************" << endl;
-        // master_->Print(out);
+        master_->Print(out);
     }
 }
