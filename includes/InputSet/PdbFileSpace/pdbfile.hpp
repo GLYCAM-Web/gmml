@@ -1,4 +1,5 @@
 //Author: Alireza Khatamian
+//Modified by: Dave Montgomery
 
 #ifndef PDBFILE_HPP
 #define PDBFILE_HPP
@@ -10,34 +11,75 @@
 
 namespace PdbFileSpace
 {
+    //Title Section
     class PdbHeaderCard;
-    class PdbTitleCard;
-    class PdbCompoundCard;
+    class PdbObsoleteSection;
+    class PdbTitleSection;
+    class PdbSplitSection;
+    class PdbCaveatSection;
+    class PdbCompoundSection;
+    class PdbSourceSection;
+    class PdbKeywordsSection;
+    class PdbExperimentalDataSection;
     class PdbNumModelCard;
-    class PdbModelTypeCard;
-    class PdbResidueSequenceCard;
-    class PdbResidueModificationCard;
-    class PdbHeterogenCard;
-    class PdbHeterogenNameCard;
-    class PdbHeterogenSynonymCard;
-    class PdbFormulaCard;
-    class PdbHelixCard;
-    class PdbSheetCard;
-    class PdbDisulfideBondCard;
-    class PdbLinkCard;
-    class PdbSiteCard;
-    class PdbCrystallographicCard;
-    class PdbOriginXnCard;
-    class PdbScaleNCard;
-    class PdbMatrixNCard;
-    class PdbModelCard;
-    class PdbConnectCard;
+    class PdbModelTypeSection;
+    class PdbAuthorSection;
+    class PdbRevisionData;
+    class PdbSupersededEntriesSection;
+    class PdbJournalSection;
+    class PdbRemarkSection;
+
+    //Primary Structure Section
+    class PdbDatabaseSection;
+    class PdbSequenceAdvancedSection;
+    class PdbResidueSequenceSection;
+    class PdbResidueModificationSection;
     class PdbResidue;
-    class PdbAtom;
+
+    //Heterogen Section
+    class PdbHeterogenSection;
+    class PdbHeterogenNameSection;
+    class PdbHeterogenSynonymSection;
+    class PdbFormulaSection;
+
+    //Secondary Structure Section
+    class PdbHelixSection;
+    class PdbSheetSection;
+
+    //Connectivity Annotation Section
+    class PdbDisulfideBondSection;
+    class PdbLinkCard;
+    class PdbLinkSection;
+    class PdbCISPeptideSection;
+
+    //Miscellaneous Features Section
+    class PdbSiteSection;
+
+    //Crystallographic and Coordinate Transformation Section
+    class PdbCrystallographicCard;
+    class PdbOriginXnSection;
+    class PdbScaleNSection;
+    class PdbMatrixNSection;
+
+    //Coordinate Section
+    class PdbModelSection;
+    class PdbModelCard;
+    class PdbAtomSection;
     class PdbAtomCard;
+    //class PdbAnisotropicSection;
+    //class PdbTerminalSection;
+
+    //Connectivity Section
+    class PdbConnectSection;
+
+    //Bookkeeping Section
+    class PdbMasterCard;
+    class PdbEndCard;
+
+
     class PdbFile
     {
-        public:            
+        public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
@@ -48,11 +90,11 @@ namespace PdbFileSpace
             /*! \typedef
               * List of pdb atom
               */
-            typedef std::vector<PdbAtom*> PdbAtomVector;
+            typedef std::vector<PdbAtomCard*> PdbAtomCardVector;
             /*! \typedef
               * A mapping between a
               */
-            typedef std::map<std::string, PdbAtomVector* > PdbResidueAtomsMap;
+            typedef std::map<std::string, PdbAtomCardVector* > PdbResidueAtomsMap;
             /*! \typedef
               * Mapping between old serial number and new one that has been changed during a process
               */
@@ -102,15 +144,20 @@ namespace PdbFileSpace
               */
             PdbHeaderCard* GetHeader();
             /*! \fn
+              * An accessor function in order to access to the obsolete of the current object
+              * @return obsolete_ attribute of the current object of this class
+              */
+            PdbObsoleteSection* GetObsoleteCards();
+            /*! \fn
               * An accessor function in order to access to the title of the current object
               * @return title_ attribute of the current object of this class
               */
-            PdbTitleCard* GetTitle();
+            PdbTitleSection* GetTitle();
             /*! \fn
               * An accessor function in order to access to the compound attribute of the current object
               * @return compound_ attribute of the current object of this class
               */
-            PdbCompoundCard* GetCompound();
+            PdbCompoundSection* GetCompound();
             /*! \fn
               * An accessor function in order to access to the number of models attribute of the current object
               * @return number_of_models_ attribute of the current object of this class
@@ -120,62 +167,67 @@ namespace PdbFileSpace
               * An accessor function in order to access to the model type attribute of the current object
               * @return model_type_ attribute of the current object of this class
               */
-            PdbModelTypeCard* GetModelType();
+            PdbModelTypeSection* GetModelType();
+            /*! \fn
+              * An accessor function in order to access to the remark_cards type attribute of the current object
+              * @return remark_cards_ attribute of the current object of this class
+              */
+            PdbRemarkSection* GetRemarks();
             /*! \fn
               * An accessor function in order to access to the residue sequence attribute of the current object
               * @return residue_sequence_ attribute of the current object of this class
               */
-            PdbResidueSequenceCard* GetResiduesSequence();
+            PdbResidueSequenceSection* GetResiduesSequence();
             /*! \fn
               * An accessor function in order to access to the residue modification attribute of the current object
-              * @return residue_modification_ attribute of the current object of this class
+              * @return residue_modification_cards_ attribute of the current object of this class
               */
-            PdbResidueModificationCard* GetResidueModification();
+            PdbResidueModificationSection* GetResidueModification();
             /*! \fn
               * An accessor function in order to access to the heterogens attribute of the current object
-              * @return heterogens_ attribute of the current object of this class
+              * @return heterogen_cards_ attribute of the current object of this class
               */
-            PdbHeterogenCard* GetHeterogens();
+            PdbHeterogenSection* GetHeterogenCards();
             /*! \fn
               * An accessor function in order to access to the heterogens name attribute of the current object
               * @return heterogens_name_ attribute of the current object of this class
               */
-            PdbHeterogenNameCard* GetHeterogensName();
+            PdbHeterogenNameSection* GetHeterogenNameCards();
             /*! \fn
               * An accessor function in order to access to the heterogen synonyms attribute of the current object
               * @return heterogen_synonyms_ attribute of the current object of this class
               */
-            PdbHeterogenSynonymCard* GetHeterogenSynonyms();
+            PdbHeterogenSynonymSection* GetHeterogenSynonymCards();
             /*! \fn
               * An accessor function in order to access to the formulas attribute of the current object
               * @return formulas_ attribute of the current object of this class
               */
-            PdbFormulaCard* GetFormulas();
+            PdbFormulaSection* GetFormulaCards();
             /*! \fn
               * An accessor function in order to access to the helixes attribute of the current object
-              * @return helixes_ attribute of the current object of this class
+              * @return helix_cards_ attribute of the current object of this class
               */
-            PdbHelixCard* GetHelixes();
+            PdbHelixSection* GetHelixCards();
             /*! \fn
-              * An accessor function in order to access to the sheets attribute of the current object
-              * @return sheets_ attribute of the current object of this class
+              * An accessor function in order to access to the sheet_cards attribute of the current object
+              * @return sheet_cards_ attribute of the current object of this class
               */
-            PdbSheetCard* GetSheets();
+            PdbSheetSection* GetSheets();
             /*! \fn
               * An accessor function in order to access to the disulfide bonds attribute of the current object
               * @return disulfide_bonds_ attribute of the current object of this class
               */
-            PdbDisulfideBondCard* GetDisulfideBonds();
+            PdbDisulfideBondSection* GetDisulfideBonds();
             /*! \fn
               * An accessor function in order to access to the links attribute of the current object
-              * @return links_ attribute of the current object of this class
+              * @return link_cards_ attribute of the current object of this class
               */
-            PdbLinkCard* GetLinks();
+            PdbLinkSection* GetResidueLinkCards();
             /*! \fn
-              * An accessor function in order to access to the sites attribute of the current object
-              * @return sites_ attribute of the current object of this class
+              * An accessor function in order to access to the site_cards attribute of the current object
+              * @return site_cards_ attribute of the current object of this class
               */
-            PdbSiteCard* GetSites();
+            PdbSiteSection* GetSites();
             /*! \fn
               * An accessor function in order to access to the crystallography attribute of the current object
               * @return crystallography_ attribute of the current object of this class
@@ -185,27 +237,27 @@ namespace PdbFileSpace
               * An accessor function in order to access to the origins attribute of the current object
               * @return origins_ attribute of the current object of this class
               */
-            PdbOriginXnCard* GetOrigins();
+            PdbOriginXnSection* GetOrigins();
             /*! \fn
               * An accessor function in order to access to the scales attribute of the current object
               * @return scales_ attribute of the current object of this class
               */
-            PdbScaleNCard* GetScales();
+            PdbScaleNSection* GetScales();
             /*! \fn
               * An accessor function in order to access to the matrices attribute of the current object
               * @return matrices_ attribute of the current object of this class
               */
-            PdbMatrixNCard* GetMatrices();
+            PdbMatrixNSection* GetMatrices();
             /*! \fn
               * An accessor function in order to access to the models attribute of the current object
               * @return models_ attribute of the current object of this class
               */
-            PdbModelCard* GetModels();
+            PdbModelSection* GetModels();
             /*! \fn
               * An accessor function in order to access to the connectivities attribute of the current object
               * @return connectivities_ attribute of the current object of this class
               */
-            PdbConnectCard* GetConnectivities();
+            PdbConnectSection* GetConnectivities();
             /*! \fn
               * An accessor function in order to access to the serial number mapping attribute of the current object
               * @return serial_number_mapping attribute of the current object of this class
@@ -225,7 +277,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to all residue names from atom card of the current object
               * @return residue_names All residue names from atom card of the current object of this class
               */
-            PdbPairVectorAtomNamePositionFlag GetAllResidueNamesFromAtomCard();
+            PdbPairVectorAtomNamePositionFlag GetAllResidueNamesFromAtomSection();
             /*! \fn
               * An accessor function in order to access to all residues of the current object
               * @return all_residues_ All residues of the current object of this class
@@ -235,13 +287,13 @@ namespace PdbFileSpace
               * An accessor function in order to access to all residues from atom card of the current object
               * @return residues All resdidues from atom card of the current object of this class
               */
-            PdbResidueVector GetAllResiduesFromAtomCard();
+            PdbResidueVector GetAllResiduesFromAtomSection();
             /*! \fn
               * An accessor function in order to access to all atoms of a residue of the current object
               * @param residue The given residue to return all the atoms of it
               * @return atoms_of_residue All atoms of a resdidue of the current object of this class
               */
-            PdbAtomVector GetAllAtomsOfResidue(PdbResidue* residue);
+            PdbAtomCardVector GetAllAtomsOfResidue(PdbResidue* residue);
             /*! \fn
               * An accessor function in order to access to all atoms of all residues of the current object
               * @return residue_atom_map The map between all residues and their atoms of the current object of this class
@@ -259,26 +311,26 @@ namespace PdbFileSpace
               * @param residue_atom_map The map between residues and their atoms
               * @return atom The atom object of the given residue of the current object of this class
               */
-            PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name, PdbResidueAtomsMap residue_atom_map);
+            PdbAtomCard* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name, PdbResidueAtomsMap residue_atom_map);
             /*! \fn
               * An accessor function in order to access to atom of a residue of the current object using the atom name
               * @param residue The given residue to return one of its atoms
               * @param atom_name The atom name of the desired atom object
               * @return atom The atom object of the given residue of the current object of this class
               */
-            PdbAtom* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name);
+            PdbAtomCard* GetAtomOfResidueByName(PdbResidue* residue, std::string atom_name);
             /*! \fn
               * An accessor function in order to access to atom of a residue of the current object using the atom key
               * @param atom_key The atom key of the desired atom object
               * @return heterogen_atom_map The map between heterogen atoms of the current object of this class and their keys
               */
-            PdbAtom* GetAtomOfResidueByAtomKey(std::string atom_key);
+            PdbAtomCard* GetAtomOfResidueByAtomKey(std::string atom_key);
             /*! \fn
               * An accessor function in order to access to atom of a residue of the current object using the serial number
               * @param serial_number The serial number attribute of the desired atom object
               * @return heterogen_atom_map The map between heterogen atoms of the current object of this class and their keys
               */
-            PdbAtom* GetAtomBySerialNumber(int serial_number);
+            PdbAtomCard* GetAtomBySerialNumber(int serial_number);
             /*! \fn
               * An accessor function in order to access to all atom names of a residue of the current object
               * @param residue The given residue to return all of its atom names
@@ -291,7 +343,7 @@ namespace PdbFileSpace
               * @param residue The given residue to return all of its atom names
               * @return atom_names The atom names of the given resdidue of the current object of this class
               */
-            std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue);            
+            std::vector<std::string> GetAllAtomNamesOfResidue(PdbResidue* residue);
             /*! \fn
               * A finction that returns chain id and sequence number of a residue that has been placed after a residue that has no tail or has at least 2 tails
               * @return A 2-D vector of chain id and sequence number of residues that have been placed after residues that have no tail or have at least 2 tails
@@ -316,17 +368,23 @@ namespace PdbFileSpace
               */
             void SetHeader(PdbHeaderCard* header);
             /*! \fn
+              * A mutator function in order to set the obsolete section of the current object
+              * Set the obsolete_ attribute of the current pdb file
+              * @param obsolete The obsolete attribute of the current object
+              */
+            // void SetObsolete(PdbObsoleteSection* obsolete);
+            /*! \fn
               * A mutator function in order to set the title card of the current object
               * Set the title_ attribute of the current pdb file
               * @param title The title attribute of the current object
               */
-            void SetTitle(PdbTitleCard* title);
+            void SetTitle(PdbTitleSection* title);
             /*! \fn
               * A mutator function in order to set the compound card of the current object
               * Set the compound_ attribute of the current pdb file
               * @param compound The compound attribute of the current object
               */
-            void SetCompound(PdbCompoundCard* compound);
+            void SetCompound(PdbCompoundSection* compound);
             /*! \fn
               * A mutator function in order to set the number of models card of the current object
               * Set the number_of_models_ attribute of the current pdb file
@@ -338,73 +396,79 @@ namespace PdbFileSpace
               * Set the model_type_ attribute of the current pdb file
               * @param model_type The model type attribute of the current object
               */
-            void SetModelType(PdbModelTypeCard* model_type);
+            void SetModelType(PdbModelTypeSection* model_type);
+            /*! \fn
+              * A mutator function in order to set the remark card of the current object
+              * Set the remark_cards_ attribute of the current pdb file
+              * @param remark_cards The model type attribute of the current object
+              */
+            void SetRemarks(PdbRemarkSection* remark_cards);
             /*! \fn
               * A mutator function in order to set the residues sequence card of the current object
               * Set the residues_sequence_ attribute of the current pdb file
               * @param residues_sequence The residues sequence attribute of the current object
               */
-            void SetResiduesSequence(PdbResidueSequenceCard* residues_sequence);
+            void SetResiduesSequence(PdbResidueSequenceSection* residues_sequence);
             /*! \fn
               * A mutator function in order to set the residue modification card of the current object
-              * Set the residue_modification_ attribute of the current pdb file
-              * @param residue_modification The residue modification attribute of the current object
+              * Set the residue_modification_cards_ attribute of the current pdb file
+              * @param residue_modification_cards The residue modification attribute of the current object
               */
-            void SetResidueModification(PdbResidueModificationCard* residue_modification);
+            void SetResidueModification(PdbResidueModificationSection* residue_modification_cards);
             /*! \fn
               * A mutator function in order to set the heterogens card of the current object
-              * Set the heterogens_ attribute of the current pdb file
+              * Set the heterogen_cards_ attribute of the current pdb file
               * @param heterogens The heterogens attribute of the current object
               */
-            void SetHeterogens(PdbHeterogenCard* heterogens);
+            void SetHeterogens(PdbHeterogenSection* heterogen_cards);
             /*! \fn
               * A mutator function in order to set the heterogens name card of the current object
               * Set the heterogens_name_ attribute of the current pdb file
               * @param heterogens_name The heterogens name attribute of the current object
               */
-            void SetHeterogensName(PdbHeterogenNameCard* heterogens_name);
+            void SetHeterogensName(PdbHeterogenNameSection* heterogens_name);
             /*! \fn
               * A mutator function in order to set the heterogen synonyms card of the current object
               * Set the heterogen_synonyms_ attribute of the current pdb file
-              * @param heterogen_synonyms The heterogen synonyms attribute of the current object
+              * @param heterogen_synonym_cards The heterogen synonyms attribute of the current object
               */
-            void SetHeterogenSynonyms(PdbHeterogenSynonymCard* heterogen_synonyms);
+            void SetHeterogenSynonyms(PdbHeterogenSynonymSection* heterogen_synonym_cards);
             /*! \fn
               * A mutator function in order to set the formulas card of the current object
               * Set the formulas_ attribute of the current pdb file
               * @param formulas The formulas attribute of the current object
               */
-            void SetFormulas(PdbFormulaCard* formulas);
+            void SetFormulas(PdbFormulaSection* formulas);
             /*! \fn
               * A mutator function in order to set the helixes card of the current object
-              * Set the helixes_ attribute of the current pdb file
+              * Set the helix_cards_ attribute of the current pdb file
               * @param helixes The helixes attribute of the current object
               */
-            void SetHelixes(PdbHelixCard* helixes);
+            void SetHelixes(PdbHelixSection* helixes);
             /*! \fn
-              * A mutator function in order to set the sheets card of the current object
-              * Set the sheets_ attribute of the current pdb file
-              * @param sheets The sheets attribute of the current object
+              * A mutator function in order to set the sheet_cards card of the current object
+              * Set the sheet_cards_ attribute of the current pdb file
+              * @param sheet_cards The sheet_cards attribute of the current object
               */
-            void SetSheets(PdbSheetCard* sheets);
+            void SetSheets(PdbSheetSection* sheet_cards);
             /*! \fn
               * A mutator function in order to set the disulfide bonds card of the current object
               * Set the disulfide_bonds_ attribute of the current pdb file
               * @param disulfide_bonds The disulfide bonds attribute of the current object
               */
-            void SetDisulfideBonds(PdbDisulfideBondCard* disulfide_bonds);
+            void SetDisulfideBonds(PdbDisulfideBondSection* disulfide_bonds);
             /*! \fn
               * A mutator function in order to set the links card of the current object
-              * Set the links_ attribute of the current pdb file
+              * Set the link_cards_ attribute of the current pdb file
               * @param links The links attribute of the current object
               */
-            void SetLinks(PdbLinkCard* links);
+            void SetLinks(PdbLinkSection* links);
             /*! \fn
-              * A mutator function in order to set the sites card of the current object
-              * Set the sites_ attribute of the current pdb file
-              * @param sites The compound attribute of the current object
+              * A mutator function in order to set the site_cards card of the current object
+              * Set the site_cards_ attribute of the current pdb file
+              * @param site_cards The compound attribute of the current object
               */
-            void SetSites(PdbSiteCard* sites);
+            void SetSites(PdbSiteSection* site_cards);
             /*! \fn
               * A mutator function in order to set the crystallography card of the current object
               * Set the crystallography_ attribute of the current pdb file
@@ -416,31 +480,31 @@ namespace PdbFileSpace
               * Set the origins_ attribute of the current pdb file
               * @param origins The origins attribute of the current object
               */
-            void SetOrigins(PdbOriginXnCard* origins);
+            void SetOrigins(PdbOriginXnSection* origins);
             /*! \fn
               * A mutator function in order to set the scales card of the current object
               * Set the scales_ attribute of the current pdb file
               * @param scales The scales attribute of the current object
               */
-            void SetScales(PdbScaleNCard* scales);
+            void SetScales(PdbScaleNSection* scales);
             /*! \fn
               * A mutator function in order to set the matrices card of the current object
               * Set the matrices_ attribute of the current pdb file
               * @param matrices The matrices attribute of the current object
               */
-            void SetMatrices(PdbMatrixNCard* matrices);
+            void SetMatrices(PdbMatrixNSection* matrices);
             /*! \fn
               * A mutator function in order to set the models card of the current object
               * Set the models_ attribute of the current pdb file
               * @param models The models attribute of the current object
               */
-            void SetModels(PdbModelCard* models);
+            void SetModels(PdbModelSection* models);
             /*! \fn
               * A mutator function in order to set the connectivities card of the current object
               * Set the connectivities_ attribute of the current pdb file
               * @param connectivities The connectivities attribute of the current object
               */
-            void SetConnectivities(PdbConnectCard* connectivities);
+            void SetConnectivities(PdbConnectSection* connectivities);
             /*! \fn
               * A mutator function in order to set the serial number mapping of the current object
               * Set the serial_number_mapping_ attribute of the current pdb file
@@ -479,24 +543,24 @@ namespace PdbFileSpace
               * A function in order to delete an atom from the current object
               * @param atom An atom of the current object of this class
               */
-            void DeleteAtom(PdbAtom* atom);
+            void DeleteAtom(PdbAtomCard* atom);
             /*! \fn
               * A function in order to delete a list of atoms from the current object
               * @param atoms List of atoms of the current object of this class
               */
-            void DeleteAtoms(PdbAtomVector atoms);
+            void DeleteAtoms(PdbAtomCardVector atoms);
             /*! \fn
               * A function in order to delete an atom from the current object
               * @param atom An atom of the current object of this class
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void DeleteAtomWithTheGivenModelNumber(PdbAtom* atom, int model_number = 1);
+            void DeleteAtomWithTheGivenModelNumber(PdbAtomCard* atom, int model_number = 1);
             /*! \fn
               * A function in order to delete a list atoms from the current object
               * @param atoms List of atoms of the current object of this class
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void DeleteAtomsWithTheGivenModelNumber(PdbAtomVector atoms, int model_number = 1);
+            void DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector atoms, int model_number = 1);
             /*! \fn
               * A function in order to update the residue name of a residue of the current object
               * @param residue A residue of the current object of this class
@@ -514,24 +578,24 @@ namespace PdbFileSpace
               * A function in order to insert a residue before the given residue in a chain
               * @param residue A residue of the current object of this class
               */
-            void InsertResidueBefore(PdbAtomCard* residue);
+            void InsertResidueBefore(PdbAtomSection* residue);
             /*! \fn
               * A function in order to insert a residue before the given residue in a chain
               * @param residue A residue of the current object of this class
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void InsertResidueBeforeWithTheGivenModelNumber(PdbAtomCard* residue, int model_number = 1);
+            void InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue, int model_number = 1);
             /*! \fn
               * A function in order to insert a residue after the given residue in a chain
               * @param residue A residue of the current object of this class
               */
-            void InsertResidueAfter(PdbAtomCard* residue);
+            void InsertResidueAfter(PdbAtomSection* residue);
             /*! \fn
               * A function in order to insert a residue after the given residue in a chain
               * @param residue A residue of the current object of this class
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void InsertResidueAfterWithTheGivenModelNumber(PdbAtomCard* residue, int model_number = 1);
+            void InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue, int model_number = 1);
             /*! \fn
               * A function in order to split a chian of a model in atom card and put ter card at the given point
               * @param split_point_chain_id Residue chain id at the split point
@@ -571,266 +635,266 @@ namespace PdbFileSpace
               */
             bool ParseCards(std::ifstream& in_stream);
             /*! \fn
-              * A function to parse the header crad that has been given as a stream
+              * A function to parse the header card that has been given as a stream
               * @param stream A stream contains header card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseHeaderCard(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the obsolete crad that has been given as a stream
+              * A function to parse the obsolete card that has been given as a stream
               * @param stream A stream contains obsolete card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseObsoleteCard(std::ifstream& stream, std::string& line);
+            bool ParseObsoleteSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the title crad that has been given as a stream
+              * A function to parse the title card that has been given as a stream
               * @param stream A stream contains title card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseTitleCard(std::ifstream& stream, std::string& line);
+            bool ParseTitleSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the split crad that has been given as a stream
+              * A function to parse the split card that has been given as a stream
               * @param stream A stream contains split card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSplitCard(std::ifstream& stream, std::string& line);
+            bool ParseSplitSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the caveat crad that has been given as a stream
+              * A function to parse the caveat card that has been given as a stream
               * @param stream A stream contains caveat card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseCaveatCard(std::ifstream& stream, std::string& line);
+            bool ParseCaveatSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the compound crad that has been given as a stream
+              * A function to parse the compound card that has been given as a stream
               * @param stream A stream contains compound card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseCompoundCard(std::ifstream& stream, std::string& line);
+            bool ParseCompoundSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the source crad that has been given as a stream
+              * A function to parse the source card that has been given as a stream
               * @param stream A stream contains source card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSourceCard(std::ifstream& stream, std::string& line);
+            bool ParseSourceSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the keyword crad that has been given as a stream
+              * A function to parse the keyword card that has been given as a stream
               * @param stream A stream contains keyword card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseKeywordCard(std::ifstream& stream, std::string& line);
+            bool ParseKeywordSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the expiration date crad that has been given as a stream
+              * A function to parse the expiration date card that has been given as a stream
               * @param stream A stream contains expiration date card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseExpirationDateCard(std::ifstream& stream, std::string& line);
+            bool ParseExperimentalDataSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the num model crad that has been given as a stream
+              * A function to parse the num model card that has been given as a stream
               * @param stream A stream contains num model card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseNumModelCard(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the model type crad that has been given as a stream
+              * A function to parse the model type card that has been given as a stream
               * @param stream A stream contains model type card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseModelTypeCard(std::ifstream& stream, std::string& line);
+            bool ParseModelTypeSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the author crad that has been given as a stream
+              * A function to parse the author card that has been given as a stream
               * @param stream A stream contains author card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseAuthorCard(std::ifstream& stream, std::string& line);
+            bool ParseAuthorSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the revision date crad that has been given as a stream
+              * A function to parse the revision date card that has been given as a stream
               * @param stream A stream contains revision date card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseRevisionDateCard(std::ifstream& stream, std::string& line);
+            bool ParseRevisionDataSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the superseded entries crad that has been given as a stream
+              * A function to parse the superseded entries card that has been given as a stream
               * @param stream A stream contains superseded entries card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSupersededEntriesCard(std::ifstream& stream, std::string& line);
+            bool ParseSupersededEntriesSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the journal crad that has been given as a stream
+              * A function to parse the journal card that has been given as a stream
               * @param stream A stream contains journal card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseJournalCard(std::ifstream& stream, std::string& line);
+            bool ParseJournalSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the remark crad that has been given as a stream
+              * A function to parse the remark card that has been given as a stream
               * @param stream A stream contains remark card of a pdb file
-              * @param line Current line in the stream
+              * @param lHeaderine Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseRemarkCard(std::ifstream& stream, std::string& line);
+            bool ParseRemarkSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the database reference crad that has been given as a stream
+              * A function to parse the database reference card that has been given as a stream
               * @param stream A stream contains database reference card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseDatabaseReferenceCard(std::ifstream& stream, std::string& line);
+            bool ParseDatabaseReferenceSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the sequence advanced crad that has been given as a stream
+              * A function to parse the sequence advanced card that has been given as a stream
               * @param stream A stream contains sequence advanced card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSequenceAdvancedCard(std::ifstream& stream, std::string& line);
+            bool ParseSequenceAdvancedSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the sequence residue crad that has been given as a stream
+              * A function to parse the sequence residue card that has been given as a stream
               * @param stream A stream contains sequence reisdue card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSequenceResidueCard(std::ifstream& stream, std::string& line);
+            bool ParseSequenceResidueSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the modification residue crad that has been given as a stream
+              * A function to parse the modification residue card that has been given as a stream
               * @param stream A stream contains modification residue card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseModificationResidueCard(std::ifstream& stream, std::string& line);
+            bool ParseModificationResidueSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the heterogen crad that has been given as a stream
+              * A function to parse the heterogen card that has been given as a stream
               * @param stream A stream contains heterogen card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseHeterogenCard(std::ifstream& stream, std::string& line);
+            bool ParseHeterogenSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the heterogen name crad that has been given as a stream
+              * A function to parse the heterogen name card that has been given as a stream
               * @param stream A stream contains heterogen name card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseHeterogenNameCard(std::ifstream& stream, std::string& line);
+            bool ParseHeterogenNameSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the heterogen synonym crad that has been given as a stream
+              * A function to parse the heterogen synonym card that has been given as a stream
               * @param stream A stream contains heterogen synonym card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseHeterogenSynonymCard(std::ifstream& stream, std::string& line);
+            bool ParseHeterogenSynonymSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the formula crad that has been given as a stream
+              * A function to parse the formula card that has been given as a stream
               * @param stream A stream contains formula card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseFormulaCard(std::ifstream& stream, std::string& line);
+            bool ParseFormulaSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the helix crad that has been given as a stream
+              * A function to parse the helix card that has been given as a stream
               * @param stream A stream contains helix card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseHelixCard(std::ifstream& stream, std::string& line);
+            bool ParseHelixSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the sheet crad that has been given as a stream
+              * A function to parse the sheet card that has been given as a stream
               * @param stream A stream contains sheet card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSheetCard(std::ifstream& stream, std::string& line);
+            bool ParseSheetSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the disulfide bond crad that has been given as a stream
+              * A function to parse the disulfide bond card that has been given as a stream
               * @param stream A stream contains disulfide bond card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseDisulfideBondCard(std::ifstream& stream, std::string& line);
+            bool ParseDisulfideBondSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the link crad that has been given as a stream
+              * A function to parse the link card that has been given as a stream
               * @param stream A stream contains link card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseLinkCard(std::ifstream& stream, std::string& line);
+            bool ParseLinkSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the cis peptide crad that has been given as a stream
+              * A function to parse the cis peptide card that has been given as a stream
               * @param stream A stream contains cis peptide card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseCISPeptideCard(std::ifstream& stream, std::string& line);
+            bool ParseCISPeptideSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the site crad that has been given as a stream
+              * A function to parse the site card that has been given as a stream
               * @param stream A stream contains site card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseSiteCard(std::ifstream& stream, std::string& line);
+            bool ParseSiteSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the crystallography crad that has been given as a stream
+              * A function to parse the crystallography card that has been given as a stream
               * @param stream A stream contains crystallography card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseCrystallographyCard(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the origin crad that has been given as a stream
+              * A function to parse the origin card that has been given as a stream
               * @param stream A stream contains origin card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseOriginCard(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the scale crad that has been given as a stream
+              * A function to parse the scale card that has been given as a stream
               * @param stream A stream contains scale card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseScaleCard(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the matrix crad that has been given as a stream
+              * A function to parse the matrix card that has been given as a stream
               * @param stream A stream contains matrix card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseMatrixCard(std::ifstream& stream, std::string& line);
+            bool ParseMatrixSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the model crad that has been given as a stream
+              * A function to parse the model card that has been given as a stream
               * @param stream A stream contains model card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseModelCard(std::ifstream& stream, std::string& line);
+            bool ParseModelSection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the connectivity crad that has been given as a stream
+              * A function to parse the connectivity card that has been given as a stream
               * @param stream A stream contains connectivity card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
-            bool ParseConnectivityCard(std::ifstream& stream, std::string& line);
+            bool ParseConnectivitySection(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the master crad that has been given as a stream
+              * A function to parse the master card that has been given as a stream
               * @param stream A stream contains master card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
               */
             bool ParseMasterCard(std::ifstream& stream, std::string& line);
             /*! \fn
-              * A function to parse the end crad that has been given as a stream
+              * A function to parse the end card that has been given as a stream
               * @param stream A stream contains end card of a pdb file
               * @param line Current line in the stream
               * @return Boolean value that indicates parsing has been done successfully or not
@@ -872,42 +936,42 @@ namespace PdbFileSpace
               * A function to write back obsolete card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write obsolete card
               */
-            void ResolveObsoleteCard(std::ofstream& stream);
+            void ResolveObsoleteCards(std::ofstream& stream);
             /*! \fn
               * A function to write back title card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write title card
               */
-            void ResolveTitleCard(std::ofstream& stream);
+            void ResolveTitleCards(std::ofstream& stream);
             /*! \fn
               * A function to write back split card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write split card
               */
-            void ResolveSplitCard(std::ofstream& stream);
+            // void ResolveSplitCards(std::ofstream& stream);
             /*! \fn
               * A function to write back caveat card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write caveat card
               */
-            void ResolveCaveatCard(std::ofstream& stream);
+            // void ResolveCaveatCards(std::ofstream& stream);
             /*! \fn
               * A function to write back compound card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write compound card
               */
-            void ResolveCompoundCard(std::ofstream& stream);
+            void ResolveCompoundCards(std::ofstream& stream);
             /*! \fn
               * A function to write back source card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write source card
               */
-            void ResolveSourceCard(std::ofstream& stream);
+            // void ResolveSourceCards(std::ofstream& stream);
             /*! \fn
               * A function to write back keyword card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write keyword card
               */
-            void ResolveKeywordCard(std::ofstream& stream);
+            // void ResolveKeywordCards(std::ofstream& stream);
             /*! \fn
               * A function to write back expiration date card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write expiration date card
               */
-            void ResolveExpirationDateCard(std::ofstream& stream);
+            // void ResolveExperimentalDataCards(std::ofstream& stream);
             /*! \fn
               * A function to write back num model card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write num model card
@@ -917,102 +981,102 @@ namespace PdbFileSpace
               * A function to write back model type card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write model type card
               */
-            void ResolveModelTypeCard(std::ofstream& stream);
+            void ResolveModelTypeCards(std::ofstream& stream);
             /*! \fn
               * A function to write back author card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write author card
               */
-            void ResolveAuthorCard(std::ofstream& stream);
+            // void ResolveAuthorCards(std::ofstream& stream);
             /*! \fn
               * A function to write back revision date card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write revision date card
               */
-            void ResolveRevisionDateCard(std::ofstream& stream);
+            // void ResolveRevisionDataCards(std::ofstream& stream);
             /*! \fn
               * A function to write back superseded entries card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write superseded entries card
               */
-            void ResolveSupersededEntriesCard(std::ofstream& stream);
+            // void ResolveSupersededEntriesCards(std::ofstream& stream);
             /*! \fn
               * A function to write back journal card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write journal card
               */
-            void ResolveJournalCard(std::ofstream& stream);
+            // void ResolveJournalCards(std::ofstream& stream);
             /*! \fn
               * A function to write back remark card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write remark card
               */
-            void ResolveRemarkCard(std::ofstream& stream);
+            // void ResolveRemarkCards(std::ofstream& stream);
             /*! \fn
               * A function to write back database reference card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write database reference card
               */
-            void ResolveDatabaseReferenceCard(std::ofstream& stream);
+            // void ResolveDatabaseReferenceCards(std::ofstream& stream);
             /*! \fn
               * A function to write back sequence advanced card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sequence advanced card
               */
-            void ResolveSequenceAdvancedCard(std::ofstream& stream);
+            // void ResolveSequenceAdvancedCards(std::ofstream& stream);
             /*! \fn
               * A function to write back sequence residue card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sequence residue card
               */
-            void ResolveSequenceResidueCard(std::ofstream& stream);
+            void ResolveSequenceResidueCards(std::ofstream& stream);
             /*! \fn
               * A function to write back modification residue card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write modification residue card
               */
-            void ResolveModificationResidueCard(std::ofstream& stream);
+            void ResolveModificationResidueCards(std::ofstream& stream);
             /*! \fn
               * A function to write back heterogen card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write heterogen card
               */
-            void ResolveHeterogenCard(std::ofstream& stream);
+            void ResolveHeterogenCards(std::ofstream& stream);
             /*! \fn
               * A function to write back heterogen name card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write heterogen name card
               */
-            void ResolveHeterogenNameCard(std::ofstream& stream);
+            void ResolveHeterogenNameCards(std::ofstream& stream);
             /*! \fn
               * A function to write back heterogen synonym card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write heterogen synonym card
               */
-            void ResolveHeterogenSynonymCard(std::ofstream& stream);
+            void ResolveHeterogenSynonymCards(std::ofstream& stream);
             /*! \fn
               * A function to write back formula card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write formula card
               */
-            void ResolveFormulaCard(std::ofstream& stream);
+            void ResolveFormulaCards(std::ofstream& stream);
             /*! \fn
               * A function to write back helix card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write helix card
               */
-            void ResolveHelixCard(std::ofstream& stream);
+            void ResolveHelixCards(std::ofstream& stream);
             /*! \fn
               * A function to write back sheet card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sheet card
               */
-            void ResolveSheetCard(std::ofstream& stream);
+            void ResolveSheetCards(std::ofstream& stream);
             /*! \fn
               * A function to write back disulfide bond card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write disulfide bond card
               */
-            void ResolveDisulfideBondCard(std::ofstream& stream);
+            void ResolveDisulfideBondCards(std::ofstream& stream);
             /*! \fn
               * A function to write back link card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write link card
               */
-            void ResolveLinkCard(std::ofstream& stream);
+            void ResolveLinkCards(std::ofstream& stream);
             /*! \fn
               * A function to write back cis peptide card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write cis peptide card
               */
-            void ResolveCISPeptideCard(std::ofstream& stream);
+            void ResolveCISPeptideCards(std::ofstream& stream);
             /*! \fn
               * A function to write back site card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write site card
               */
-            void ResolveSiteCard(std::ofstream& stream);
+            void ResolveSiteCards(std::ofstream& stream);
             /*! \fn
               * A function to write back crystallography card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write crystallography card
@@ -1032,12 +1096,12 @@ namespace PdbFileSpace
               * A function to write back matrix card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write matrix card
               */
-            void ResolveMatrixCard(std::ofstream& stream);
+            void ResolveMatrixCards(std::ofstream& stream);
             /*! \fn
               * A function to write back model card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write model card
               */
-            void ResolveModelCard(std::ofstream& stream);
+            void ResolveModelCards(std::ofstream& stream);
             /*! \fn
               * A function to write back model card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write model card
@@ -1048,7 +1112,7 @@ namespace PdbFileSpace
               * A function to write back connectivity card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write connectivity card
               */
-            void ResolveConnectivityCard(std::ofstream& stream);
+            void ResolveConnectivityCards(std::ofstream& stream);
             /*! \fn
               * A function to write back master card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write master card
@@ -1076,27 +1140,29 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             std::string path_;                                      /*!< Path of the given pdb file >*/
             PdbHeaderCard* header_;                                 /*!< Header card >*/
-            PdbTitleCard* title_;                                   /*!< Title carde >*/
-            PdbCompoundCard* compound_;                             /*!< Compound card >*/
+            PdbObsoleteSection* obsolete_;                          /*!<Obsolete section>*/
+            PdbTitleSection* title_;                                   /*!< Title section >*/
+            PdbCompoundSection* compound_;                             /*!< Compound section >*/
             PdbNumModelCard* number_of_models_;                     /*!< Number of models card >*/
-            PdbModelTypeCard* model_type_;                          /*!< Model type card >*/
-            PdbResidueSequenceCard* residues_sequence_;             /*!< Residue sequence card >*/
-            PdbResidueModificationCard* residue_modification_;      /*!< Residue modification card >*/
-            PdbHeterogenCard* heterogens_;                          /*!< Heterogen card >*/
-            PdbHeterogenNameCard* heterogens_name_;                 /*!< Heterogen name card >*/
-            PdbHeterogenSynonymCard* heterogen_synonyms_;           /*!< Heterogen synonym card >*/
-            PdbFormulaCard* formulas_;                              /*!< Formula card >*/
-            PdbHelixCard* helixes_;                                 /*!< Helix card >*/
-            PdbSheetCard* sheets_;                                  /*!< Sheet card >*/
-            PdbDisulfideBondCard* disulfide_bonds_;                 /*!< Disulfide bond card >*/
-            PdbLinkCard* links_;                                    /*!< Link card >*/
-            PdbSiteCard* sites_;                                    /*!< Site card >*/
+            PdbModelTypeSection* model_type_;                          /*!< Model type section >*/
+            PdbRemarkSection* remark_cards_;                                /*!< Remarks section>*/
+            PdbResidueSequenceSection* residues_sequence_;             /*!< Residue sequence section >*/
+            PdbResidueModificationSection* residue_modification_cards_;      /*!< Residue modification section >*/
+            PdbHeterogenSection* heterogen_cards_;                          /*!< Heterogen section >*/
+            PdbHeterogenNameSection* heterogen_name_cards_;                 /*!< Heterogen name section >*/
+            PdbHeterogenSynonymSection* heterogen_synonym_cards_;           /*!< Heterogen synonym section >*/
+            PdbFormulaSection* formulas_;                              /*!< Formula section >*/
+            PdbHelixSection* helix_cards_;                                 /*!< Helix section >*/
+            PdbSheetSection* sheet_cards_;                                  /*!< Sheet section >*/
+            PdbDisulfideBondSection* disulfide_bonds_;                 /*!< Disulfide bond section >*/
+            PdbLinkSection* link_cards_;                                    /*!< Link section >*/
+            PdbSiteSection* site_cards_;                                    /*!< Site section >*/
             PdbCrystallographicCard* crystallography_;              /*!< Crystallography card >*/
-            PdbOriginXnCard* origins_;                              /*!< Origin card >*/
-            PdbScaleNCard* scales_;                                 /*!< Scale card >*/
-            PdbMatrixNCard* matrices_;                              /*!< Matrix card >*/
-            PdbModelCard* models_;                                  /*!< Model card >*/
-            PdbConnectCard* connectivities_;                        /*!< Connectivity card >*/
+            PdbOriginXnSection* origins_;                              /*!< Origin section >*/
+            PdbScaleNSection* scales_;                                 /*!< Scale section >*/
+            PdbMatrixNSection* matrices_;                              /*!< Matrix section >*/
+            PdbModelSection* models_;                                  /*!< Model section >*/
+            PdbConnectSection* connectivities_;                        /*!< Connectivity section >*/
             PdbSerialNumberMapping serial_number_mapping_;          /*!< A map that keeps track of serial numbers that have been changed during a process >*/
             PdbSequenceNumberMapping sequence_number_mapping_;      /*!< A map that keeps track of sequence numbers that have been changed during a process >*/
     };

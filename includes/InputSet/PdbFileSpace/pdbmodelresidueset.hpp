@@ -11,8 +11,8 @@
 
 namespace PdbFileSpace
 {
-    class PdbAtomCard;
-    class PdbHeterogenAtomCard;
+    class PdbAtomSection;
+    class PdbHeterogenAtomSection;
 
     class PdbModelResidueSet
     {
@@ -23,11 +23,11 @@ namespace PdbFileSpace
             /*! \typedef
               * List of atom cards in a model residue set
               */
-            typedef std::vector<PdbAtomCard*> AtomCardVector;
+            typedef std::vector<PdbAtomSection*> AtomCardVector;
             /*! \typedef
               * List of heterogen atom cards
               */
-            typedef std::vector<PdbHeterogenAtomCard*> HeterogenAtomCardVector;
+            typedef std::vector<PdbHeterogenAtomSection*> HeterogenAtomCardVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -52,12 +52,12 @@ namespace PdbFileSpace
               * An accessor function in order to access to the atoms in a model residue set
               * @return atoms_ attribute of the current object of this class
               */
-            AtomCardVector GetAtoms();
+            AtomCardVector GetAtomCards();
             /*! \fn
               * An accessor function in order to access to the heterogen atoms in a model residue set
               * @return heterogen_atoms_ attribute of the current object of this class
               */
-            HeterogenAtomCardVector GetHeterogenAtoms();
+            HeterogenAtomCardVector GetHeterogenAtomCards();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -70,13 +70,13 @@ namespace PdbFileSpace
               * Set the atoms_ attribute of the current model residue set
               * @param atoms The atoms attribute of the current object
               */
-            void SetAtoms(AtomCardVector atoms);
+            void SetAtomCards(AtomCardVector atoms);
             /*! \fn
               * A function in order to add the atom to the current object
               * Set the atom_ attribute of the current model residue set
               * @param atom The atom attribute of the current object
               */
-            void AddAtom(PdbAtomCard* atom);
+            void AddAtom(PdbAtomSection* atom);
             /*! \fn
               * A mutator function in order to set the heterogen atoms of the current object
               * Set the heterogen_atoms_ attribute of the current model residue set
@@ -88,7 +88,7 @@ namespace PdbFileSpace
               * Set the heterogen_atom_ attribute of the current model residue set
               * @param heterogen_atom The heterogen atom attribute of the current object
               */
-            void AddHeterogenAtom(PdbHeterogenAtomCard* heterogen_atom);
+            void AddHeterogenAtom(PdbHeterogenAtomSection* heterogen_atom);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

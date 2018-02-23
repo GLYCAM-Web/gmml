@@ -1,69 +1,110 @@
-#include "../../../includes/InputSet/PdbFileSpace/pdboriginxn.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdboriginxncard.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
 using namespace std;
 using namespace PdbFileSpace;
+using namespace GeometryTopology;
 using namespace gmml;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbOriginXnCard::PdbOriginXnCard() {}
+PdbOriginXnCard::PdbOriginXnCard():origin_() {}
 
-PdbOriginXnCard::PdbOriginXnCard(stringstream &stream_block)
+PdbOriginXnCard::PdbOriginXnCard(stringstream& stream_block)
 {
     string line;
+    origin_=Coordinate();
     getline(stream_block, line);
     string temp = line;
     while (!Trim(temp).empty())
     {
-        stringstream ss;
-        ss << line << endl;
-        PdbOriginXn* origin = new PdbOriginXn(ss);
-        AddOriginXN(origin);
+        record_name_ = line.substr(0,5);
+        Trim(record_name_);
+        if(line.substr(5,1) == " ")
+            n_ = iNotSet;
+        else
+            n_ = ConvertString<int>(line.substr(5,1));
+        if(line.substr(10,10) == "          ")
+            origin_.SetX(dNotSet);
+        else
+            origin_.SetX( ConvertString<double>(line.substr(10,10)));
+        if(line.substr(20, 10) == "          ")
+            origin_.SetY(dNotSet);
+        else
+            origin_.SetY( ConvertString<double>(line.substr(20,10)));
+        if(line.substr(30, 10) == "          ")
+            origin_.SetZ(dNotSet);
+        else
+            origin_.SetZ( ConvertString<double>(line.substr(30,10)));
+        if(line.substr(45, 10) == "          ")
+            t_ = dNotSet;
+        else
+            t_ = ConvertString<double>(line.substr(45,10));
+
         getline(stream_block, line);
         temp = line;
     }
 }
 
+
 //////////////////////////////////////////////////////////
-//                         ACCESSOR                     //
+//                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-PdbOriginXnCard::OriginXnVector PdbOriginXnCard::GetOriginXN(){
-    return origin_x_n_;
+string PdbOriginXnCard::GetRecordName(){
+    return record_name_;
+}
+
+int PdbOriginXnCard::GetN(){
+    return n_;
+}
+
+GeometryTopology::Coordinate PdbOriginXnCard::GetOrigin(){
+    return origin_;
+}
+
+double PdbOriginXnCard::GetT(){
+    return t_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbOriginXnCard::SetOriginXN(OriginXnVector origin_x_n){
-    origin_x_n_.clear();
-    for(OriginXnVector::iterator it = origin_x_n.begin(); it != origin_x_n.end(); it++)
-    {
-        origin_x_n_.push_back(*it);
-    }
+void PdbOriginXnCard::SetRecordName(const string record_name){
+    record_name_ = record_name;
 }
 
-void PdbOriginXnCard::AddOriginXN(PdbOriginXn *origin)
-{
-    origin_x_n_.push_back(origin);
+void PdbOriginXnCard::SetN(int n){
+    n_ = n;
+}
+
+void PdbOriginXnCard::SetOrigin(GeometryTopology::Coordinate origin){
+    origin_ = origin;
+}
+
+void PdbOriginXnCard::SetT(double t){
+    t_ = t;
 }
 
 //////////////////////////////////////////////////////////
-//                        FUNCTIONS                     //
-//////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////
-//                      DISPLAY FUNCTION                //
+//                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
 void PdbOriginXnCard::Print(ostream &out)
 {
-    for(PdbOriginXnCard::OriginXnVector::iterator it = origin_x_n_.begin(); it != origin_x_n_.end(); it++)
-    {
-        (*it)->Print(out);
-    }
+    out << "Record Name: " << record_name_;
+    if(n_ != iNotSet)
+        out << n_;
+    else
+        out << " ";
+    out << ", Origin: ";
+    origin_.Print(out);
+    out << ", T: ";
+    if(t_ != dNotSet)
+        out << t_;
+    else
+        out << " ";
     out << endl;
 }

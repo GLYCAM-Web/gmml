@@ -203,4 +203,3 @@ void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoM
              (S-A.translation()).cwiseAbs().maxCoeff() > 1e-13)
             throw "Could not determine the affine transform accurately enough";
     }*/
-

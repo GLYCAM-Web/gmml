@@ -1,27 +1,20 @@
 // Created by: Alireza Khatamian
-// Modified by: Alireza Khatamian, Delaram Rahbarinia
+// Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
 #ifndef PDBHETEROGENNAMECARD_HPP
 #define PDBHETEROGENNAMECARD_HPP
 
 #include <string>
-#include <map>
-#include <sstream>
 #include <iostream>
 
 namespace PdbFileSpace
 {
-    class PdbHeterogenName;
     class PdbHeterogenNameCard
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            /*! \typedef
-              * Mapping between heterogen identifier and heterogen name
-              */
-            typedef std::map<std::string, PdbHeterogenName*> HeterogenNameMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -32,14 +25,15 @@ namespace PdbFileSpace
             PdbHeterogenNameCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
+              * @param heterogen_identifier
+              * @param heterogen_name
               */
-            PdbHeterogenNameCard(const std::string& record_name);
+            PdbHeterogenNameCard(const std::string& heterogen_identifier, const std::string& heterogen_name);
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param specification_block
               */
-            PdbHeterogenNameCard(std::stringstream& stream_block);
+            PdbHeterogenNameCard(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -48,15 +42,15 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * An accessor function in order to access to the record name in a heterogen name card
-              * @return record_name_ attribute of the current object of this class
+              * An accessor function in order to access to the heterogen identifier in a heterogen name class
+              * @return heterogen_identifier_ attribute of the current object of this class
               */
-            std::string GetRecordName();
+            std::string GetHeterogenIdentifier();
             /*! \fn
-              * An accessor function in order to access to the heterogen names in a heterogen name card
-              * @return heterogen_names_ attribute of the current object of this class
+              * An accessor function in order to access to the heterogen name in a heterogen name class
+              * @return heterogen_name_ attribute of the current object of this class
               */
-            HeterogenNameMap GetHeterogenNames();
+            std::string GetHeterogenName();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
@@ -65,12 +59,18 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current heterogen name card
-              * @param record_name The record name of the current object
+              * A mutator function in order to set the heterogen identifier of the current object
+              * Set the heterogen_identifier_ attribute of the current heterogen name
+              * @param heterogen_identifier The heterogen identifier of the current object
               */
-            void SetRecordName(const std::string record_name);
-/** @*/
+            void SetHeterogenIdentifier(const std::string heterogen_identifier);
+            /*! \fn
+              * A mutator function in order to set the heterogen name of the current object
+              * Set the heterogen_name_ attribute of the current heterogen name
+              * @param heterogen_name The heterogen name of the current object
+              */
+            void SetHeterogenName(const std::string heterogen_name);
+/** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ namespace PdbFileSpace
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the heterogen name card contents in a structural format
+              * A function to print out the heterogen name contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -89,9 +89,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;           /*!< Record name of heterogen name card in a pdb file >*/
-            HeterogenNameMap heterogen_names_;  /*!< Heterogen name map >*/
+            std::string heterogen_identifier_;      /*!< Heterogen identifier >*/
+            std::string heterogen_name_;            /*!< Heterogen name >*/
     };
 }
-
 #endif // PDBHETEROGENNAMECARD_HPP

@@ -1,17 +1,34 @@
 // Created by: Alireza Khatamian
-// Modified by: Alireza Khatamian, Delaram Rahbarinia
+// Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
 #ifndef PDBHELIXCARD_HPP
 #define PDBHELIXCARD_HPP
 
 #include <string>
-#include <map>
-#include <sstream>
+#include <vector>
 #include <iostream>
 
 namespace PdbFileSpace
 {
-    class PdbHelix;
+/*! \enum
+  * Pdb helix class enumerator
+  */
+    enum PdbHelixClass
+    {
+        RIGHT_HANDED_ALPHA = 1,
+        RIGHT_HANDED_OMEGA = 2,
+        RIGHT_HANDED_PI = 3,
+        RIGHT_HANDED_GAMMA = 4,
+        RIGHT_HANDED_310 = 5,
+        LEFT_HANDED_ALPHA = 6,
+        LEFT_HANDED_OMEGA_ = 7,
+        LEFT_HANDED_GAMMA_ = 8,
+        RIBBON_27 = 9,
+        POLYPROLINE = 10,
+        UnknownHelix
+    };
+
+    class PdbHelixResidue;
     class PdbHelixCard
     {
         public:
@@ -19,9 +36,9 @@ namespace PdbFileSpace
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             /*! \typedef
-              * Mapping between helix identifier and helix itself
+              * List of helix residues
               */
-            typedef std::map<std::string, PdbHelix*> HelixMap;
+            typedef std::vector<PdbHelixResidue*> HelixResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -32,10 +49,16 @@ namespace PdbFileSpace
             PdbHelixCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
+              * @param helix_id Helix identifier
+              * @param helix_serial_number Serial number of the helix
+              * @param helix_residues List of residues in the helix
+              * @param helix_class Classification of the helix
+              * @param comment Comment
+              * @param helix_length Length of the helix
               */
-            PdbHelixCard(const std::string& record_name);
-            /*! \fn
+            PdbHelixCard(const std::string& helix_id, int helix_serial_number, HelixResidueVector helix_residues,
+                     PdbHelixClass helix_class, const std::string& comment, double helix_length);
+            /*! \fnhelix_cards_
               * Constructor with required parameters
               * @param stream_block
               */
@@ -48,15 +71,35 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * An accessor function in order to access to the record name in a helix card
-              * @return record_name_ attribute of the current object of this class
+              * An accessor function in order to access to the helix id in a helix class
+              * @return helix_id_ attribute of the current object of this class
               */
-            std::string GetRecordName();
+            std::string GetHelixId();
             /*! \fn
-              * An accessor function in order to access to the helixes in a helix card
-              * @return helixes_ attribute of the current object of this class
+              * An accessor function in order to access to the helix serial number in a helix class
+              * @return helix_serial_number_ attribute of the current object of this class
               */
-            HelixMap GetHelixes();
+            int GetHelixSerialNumber();
+            /*! \fn
+              * An accessor function in order to access to the helix residues in a helix class
+              * @return helix_residues_ attribute of the current object of this class
+              */
+            HelixResidueVector GetHelixResidues();
+            /*! \fn
+              * An accessor function in order to access to the helix class in a helix class
+              * @return helix_class_ attribute of the current object of this class
+              */
+            PdbHelixClass GetHelixClass();
+            /*! \fn
+              * An accessor function in order to access to the comment in a helix class
+              * @return comment_ attribute of the current object of this class
+              */
+            std::string GetComment();
+            /*! \fn
+              * An accessor function in order to access to the helix length in a helix class
+              * @return helix_length_ attribute of the current object of this class
+              */
+            double GetHelixLength();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
@@ -65,11 +108,47 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current helix card
-              * @param record_name The record name of the current object
+              * A mutator function in order to set the helix id of the current object
+              * Set the helix_id_ attribute of the current helix
+              * @param helix_id The helix id of the current object
               */
-            void SetRecordName(const std::string record_name);
+            void SetHelixId(const std::string helix_id);
+            /*! \fn
+              * A mutator function in order to set the helix serial number of the current object
+              * Set the helix_serial_number_ attribute of the current helix
+              * @param helix_serial_number The helix serial number of the current object
+              */
+            void SetHelixSerialNumber(int helix_serial_number);
+            /*! \fn
+              * A mutator function in order to set the helix residues of the current object
+              * Set the helix_residues_ attribute of the current helix
+              * @param helix_residues The helix residues of the current object
+              */
+            void SetHelixResidues(const HelixResidueVector helix_residues);
+            /*! \fn
+              * A function in order to add the helix residue to the current object
+              * Set the helix_residue_ attribute of the current helix
+              * @param helix_residue The helix residue of the current object
+              */
+            void AddHelixResidue(PdbHelixResidue* helix_residue);
+            /*! \fnhelix_cards_
+              * A mutator function in order to set the helix class of the current object
+              * Set the helix_class_ attribute of the current helix
+              * @param helix_class The helix class of the current object
+              */
+            void SetHelixClass(PdbHelixClass helix_class);
+            /*! \fn
+              * A mutator function in order to sehelix_cards_t the comment of the current object
+              * Set the comment_ attribute of the current helix
+              * @param comment The commentd of the current object
+              */
+            void SetComment(const std::string& comment);
+            /*! \fn
+              * A mutator function in order to set the helix length of the current object
+              * Set the helix_length_ attribute of the current helix
+              * @param helix_length The helix length of the current object
+              */
+            void SetHelixLength(double helix_length);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -79,7 +158,7 @@ namespace PdbFileSpace
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the helix card contents in a structural format
+              * A function to print out the helix contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -89,8 +168,13 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;       /*!< Record name of helix card in a pdb file >*/
-            HelixMap helixes_;              /*!< Mapping of helix with helix identifier as key >*/
+            std::string helix_id_;                  /*!< Helix identifier >*/
+            int helix_serial_number_;               /*!< Helix serial number >*/
+            HelixResidueVector helix_residues_;     /*!< List of helix residues >*/
+            PdbHelixClass helix_class_;             /*!< Classification of the helix >*/
+            std::string comment_;                   /*!< Comment >*/
+            double helix_length_;                   /*!< Length of the helix >*/
     };
 }
+
 #endif // PDBHELIXCARD_HPP

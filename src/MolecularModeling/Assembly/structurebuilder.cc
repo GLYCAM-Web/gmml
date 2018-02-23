@@ -29,17 +29,17 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblink.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkresidue.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
@@ -677,17 +677,17 @@ void Assembly::BuildStructureByPDBFileInformation()
             atom_node->SetAtom(atom);
             atom_node->SetId(i);
             i++;
-            PdbAtom* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
+            PdbAtomCard* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
             if(pdb_atom != NULL)
             {
                 int atom_serial_number = pdb_atom->GetAtomSerialNumber();
-                PdbConnectCard* connectivities = pdb_file->GetConnectivities();
-                PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
+                PdbConnectSection* connectivities = pdb_file->GetConnectivities();
+                PdbConnectSection::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
                 vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
                 for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
                 {
                     int bonded_atom_serial_number = *it1;
-                    PdbAtom* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
+                    PdbAtomCard* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
                     stringstream sss;
                     sss << pdb_bonded_atom->GetAtomName() << "_" << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName()
                         << "_" << pdb_bonded_atom->GetAtomChainId() << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber()

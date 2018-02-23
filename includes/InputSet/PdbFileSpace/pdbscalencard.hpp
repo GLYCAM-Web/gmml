@@ -1,31 +1,23 @@
 // Created by: Delaram Rahbarinia
-// Modified by: Alireza Khatamian, Delaram Rahbarinia
+// Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
 #ifndef PDBSCALENCARD_HPP
 #define PDBSCALENCARD_HPP
 
 #include <string>
-#include <vector>
 #include <sstream>
 #include <iostream>
 
+#include "../../GeometryTopology/coordinate.hpp"
+
 namespace PdbFileSpace
 {
-    class PdbScaleN;
-
     class PdbScaleNCard
     {
         public:
-            //////////////////////////////////////////////////////////
-            //                       TYPE DEFINITION                //
-            //////////////////////////////////////////////////////////
-            /*! \typedef
-              * Vector of scales
-              */
-            typedef std::vector< PdbScaleN* > ScaleNVector;
 
             //////////////////////////////////////////////////////////
-            //                       CONSTRUCTOR                    //
+            //                       Constructor                    //
             //////////////////////////////////////////////////////////
             /*! \fn
               * Default constructor
@@ -44,10 +36,25 @@ namespace PdbFileSpace
                * @{
                */
             /*! \fn
-              * An accessor function in order to access to the scale n in a scale n card
-              * @return scale_n_ attribute of the current object of this class
+              * An accessor function in order to access to the record name in a scale n
+              * @return record_name_ attribute of the current object of this class
               */
-            ScaleNVector GetScaleN();
+            std::string GetRecordName();
+            /*! \fn
+              * An accessor function in order to access to the N attribute in a scale n
+              * @return n_ attribute of the current object of this class
+              */
+            int GetN();
+            /*! \fn
+              * An accessor function in order to access to the sclae vector in a scale n
+              * @return scale_vector_ attribute of the current object of this class
+              */
+            GeometryTopology::Coordinate GetScaleVector();
+            /*! \fn
+              * An accessor function in order to access to the U attribute in a scale n
+              * @return u_ attribute of the current object of this class
+              */
+            double GetU();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -56,27 +63,35 @@ namespace PdbFileSpace
                * @{
                */
             /*! \fn
-              * A mutator function in order to set the scale n attribute of the current object
-              * Set the scale_n_ attribute of the current scale n card
-              * @param scale_n The scale n attribute of the current object
+              * A mutator function in order to set the record name attribute of the current object
+              * Set the record_name_ attribute of the current scale n
+              * @param record_name The record name of the current object
               */
-            void SetScaleN(ScaleNVector scale_n);
+            void SetRecordName(const std::string record_name);
             /*! \fn
-              * A function in order to add the record name to the current object
-              * Set the scale_ attribute of the current scale n card
-              * @param scale The scale attribute of the current object
+              * A mutator function in order to set the scale N attribute of the current object
+              * Set the n_ attribute of the current scale n card
+              * @param n The N attribute of the current object
               */
-            void AddScaleN(PdbScaleN* scale);
+            void SetN(int n);
+            /*! \fn
+              * A mutator function in order to set the scale vector of the current object
+              * Set the scale_vector_ attribute of the current scale n card
+              * @param scale_vector The scale vector attribute of the current object
+              */
+            void SetScaleVector(GeometryTopology::Coordinate scale_vector);
+            /*! \fn
+              * A mutator function in order to set the U attribute of the current object
+              * Set the u_ attribute of the current scale n card
+              * @param u The U attribute of the current object
+              */
+            void SetU(double u);
 /** @}*/
-            //////////////////////////////////////////////////////////
-            //                        FUNCTIONS                     //
-            //////////////////////////////////////////////////////////
-
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the pdb scale n card contents in a structural format
+              * A function to print out the pdb scale n contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -86,8 +101,10 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            ScaleNVector scale_n_;      /*!< Vector of scales are in scalen card of a pdb file >*/
-
+            std::string record_name_;               /*!< Name of scale record that appears in the first column of each line of a pdb file >*/
+            int n_;                                 /*!< n >*/
+            GeometryTopology::Coordinate scale_vector_;     /*!< Scale vector which is displayed in a coordinate >*/
+            double u_;                              /*!< u value of a scale >*/
     };
 }
 

@@ -1,4 +1,4 @@
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
@@ -10,78 +10,69 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbModelCard::PdbModelCard() : record_name_("MODEL") {}
+PdbModelCard::PdbModelCard() {}
 
-PdbModelCard::PdbModelCard(stringstream &stream_block)
+PdbModelCard::PdbModelCard(stringstream &model_block)
 {
     string line;
-    bool is_record_name_set = false;
-    getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    stringstream residue_set_block;
+    getline(model_block, line);
+    if(line.find("MODEL") != string::npos)
     {
-        if(line.find("MODEL") != string::npos)
-        {
-            if(!is_record_name_set){
-                record_name_ = line.substr(0,6);
-                Trim(record_name_);
-                is_record_name_set=true;
-            }
-            stringstream model_block;
-            while(line.find("MODEL") != string::npos || line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
-                    || line.find("TER") != string::npos || line.find("HETATM") != string::npos || line.find("ENDMDL") != string::npos)
-            {
-                model_block << line << endl;
-                getline(stream_block,line);
-                temp = line;
-            }
-            PdbModel* pdb_model = new PdbModel(model_block);
-            models_[pdb_model->GetModelSerialNumber()] = pdb_model;
-        }
+        if(line.substr(10, 4) == "    ")
+            model_serial_number_ = iNotSet;
         else
+            model_serial_number_ = ConvertString<int>(line.substr(10,4));
+        getline(model_block,line);
+        string temp = line;
+        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
+              || line.find("TER") != string::npos || line.find("HETATM") != string::npos)
         {
-            if(!is_record_name_set){
-                record_name_ = "MODEL ";
-                Trim(record_name_);
-                is_record_name_set = true;
-            }
-            stringstream model_block;
-            while(line.find("MODEL") != string::npos || line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
-                    || line.find("TER") != string::npos || line.find("HETATM") != string::npos || line.find("ENDMDL") != string::npos)
-            {
-                model_block << line << endl;
-                getline(stream_block,line);
-                temp = line;
-            }
-//            cout << model_block.str() << endl;
-            PdbModel* pdb_model = new PdbModel(model_block);
-            models_[pdb_model->GetModelSerialNumber()] = pdb_model;
+            residue_set_block << line << endl;
+            getline(model_block, line);
+            temp = line;
         }
+        model_residue_set_ = new PdbModelResidueSet(residue_set_block);
     }
+    else
+    {
+        model_serial_number_ = 1;
+        string temp = line;
+        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
+              || line.find("TER") != string::npos || line.find("HETATM") != string::npos)
+        {
+            residue_set_block << line << endl;
+            getline(model_block, line);
+            temp = line;
+        }
+//        cout << residue_set_block.str() << endl;
+        model_residue_set_ = new PdbModelResidueSet(residue_set_block);
+    }
+
 }
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-string PdbModelCard::GetRecordName(){
-    return record_name_;
+int PdbModelCard::GetModelSerialNumber(){
+    return model_serial_number_;
 }
 
-PdbModelCard::PdbModelMap PdbModelCard::GetModels(){
-    return models_;
+PdbModelResidueSet* PdbModelCard::GetModelResidueSet(){
+    return model_residue_set_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbModelCard::SetRecordName(const string record_name){
-    record_name_ = record_name;
+void PdbModelCard::SetModelSerialNumber(int model_serial_number){
+    model_serial_number_ = model_serial_number;
 }
 
-void PdbModelCard::SetModels(PdbModelMap models){
-    models_ = models;
+void PdbModelCard::SetModelResidueSet(PdbModelResidueSet* model_residue_set){
+    model_residue_set_ = model_residue_set;
 }
 
 //////////////////////////////////////////////////////////
@@ -93,16 +84,13 @@ void PdbModelCard::SetModels(PdbModelMap models){
 //////////////////////////////////////////////////////////
 void PdbModelCard::Print(ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "================= Models =================" << endl;
-    for(PdbModelCard::PdbModelMap::iterator it = models_.begin(); it != models_.end(); it++)
-    {
-        out << "Model Serial Number: ";
-        if((it)->first != iNotSet)
-            out << (it)->first << endl;
-        else
-            out << " " << endl;
-        (it)->second->Print();
-        out << endl;
-    }
+    out << "Model Serial Number: ";
+    if(model_serial_number_ != iNotSet)
+        out << model_serial_number_;
+    else
+        out << " ";
+    out << endl
+        << "====================== Residue Set =====================" << endl;
+    model_residue_set_->Print(out);
+    out << endl;
 }

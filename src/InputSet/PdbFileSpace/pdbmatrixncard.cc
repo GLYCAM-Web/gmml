@@ -1,88 +1,132 @@
-#include "../../../includes/InputSet/PdbFileSpace/pdbmatrixn.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmatrixncard.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
 using namespace std;
-using namespace PdbFileSpace;
 using namespace gmml;
+using namespace PdbFileSpace;
+using namespace GeometryTopology;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbMatrixNCard::PdbMatrixNCard() {}
-PdbMatrixNCard::PdbMatrixNCard(stringstream &stream_block)
-{
-    string line;
-    getline(stream_block, line);
-    string temp = line;
-    MatrixNVector matrix_1, matrix_2, matrix_3;
-    while (!Trim(temp).empty())
-    {
-        int index;
-        if(line.substr(5,1) == " ")
-            index = iNotSet;
-        else
-            index = ConvertString<int>(line.substr(5, 1));
-        PdbMatrixN* matrix = new PdbMatrixN(line);
-        switch (index) {
-            case 1 :
-                matrix_1.push_back(matrix);
-                break;
-            case 2:
-                matrix_2.push_back(matrix);
-                break;
-            case 3:
-                matrix_3.push_back(matrix);
-                break;
-            case iNotSet:
-                break;
-        }
-        getline(stream_block, line);
-        temp = line;
-    }
-    this->AddMatrixN(matrix_1);
-    this->AddMatrixN(matrix_2);
-    this->AddMatrixN(matrix_3);
+PdbMatrixNCard::PdbMatrixNCard(string &line) {
+    record_name_ = line.substr(0, 5);
+    Trim(record_name_);
+    if(line.substr(5, 1) == " ")
+        n_ = iNotSet;
+    else
+        n_ = ConvertString<int>(line.substr(5, 1));
+    if(line.substr(7, 3) == "   ")
+        serial_number_ = iNotSet;
+    else
+        serial_number_ = ConvertString<int>(line.substr(7, 3));
+    if(line.substr(10,10) == "          ")
+        transfomration_vector_.SetX(dNotSet);
+    else
+        transfomration_vector_.SetX(ConvertString<double>(line.substr(10, 10)));
+    if(line.substr(20, 10) == "          ")
+        transfomration_vector_.SetY(dNotSet);
+    else
+        transfomration_vector_.SetY(ConvertString<double>(line.substr(20, 10)));
+    if(line.substr(30, 10) == "          ")
+        transfomration_vector_.SetZ(dNotSet);
+    else
+        transfomration_vector_.SetZ(ConvertString<double>(line.substr(30, 10)));
+    if(line.substr(45, 10) == "          ")
+        v_ = dNotSet;
+    else
+        v_ = ConvertString<double>(line.substr(45, 10));
+    if(line.substr(59, 1) == " ")
+        i_given_ = iNotSet;
+    else
+        i_given_ = ConvertString<int>(line.substr(59, 1));
 }
 
+
 //////////////////////////////////////////////////////////
-//                         ACCESSOR                     //
+//                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-PdbMatrixNCard::MatrixNVectorVector PdbMatrixNCard::GetMatrixN(){
-    return matrix_n_;
+string PdbMatrixNCard::GetRecordName(){
+    return record_name_;
+}
+
+int PdbMatrixNCard::GetN(){
+    return n_;
+}
+
+int PdbMatrixNCard::GetSerialNumber(){
+    return serial_number_;
+}
+
+GeometryTopology::Coordinate PdbMatrixNCard::GetTransformationVector(){
+    return transfomration_vector_;
+}
+
+double PdbMatrixNCard::GetV(){
+    return v_;
+}
+
+int PdbMatrixNCard::GetIGiven(){
+    return i_given_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbMatrixNCard::SetMatrixN(MatrixNVector matrix_n){
-    matrix_n_.clear();
-    for(MatrixNVector::iterator it = matrix_n.begin(); it != matrix_n.end(); it++)
-    {
-        matrix_n.push_back(*it);
-    }
+
+void PdbMatrixNCard::SetRecordName(const string record_name){
+    record_name_ = record_name;
 }
 
-void PdbMatrixNCard::AddMatrixN(MatrixNVector matrix)
-{
-    matrix_n_.push_back(matrix);
+void PdbMatrixNCard::SetN(int n){
+    n_ = n;
+}
+
+void PdbMatrixNCard::SetSerialNumber(int serial_number){
+    serial_number_ = serial_number;
+}
+
+void PdbMatrixNCard::SetTransformationVector(GeometryTopology::Coordinate transfomration_vector){
+    transfomration_vector_ = transfomration_vector;
+}
+
+void PdbMatrixNCard::SetV(double v){
+    v_ = v;
+}
+
+void PdbMatrixNCard::SetIGiven(int i_given){
+    i_given_ = i_given;
 }
 
 //////////////////////////////////////////////////////////
-//                        FUNCTIONS                     //
-//////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////
-//                      DISPLAY FUNCTION                //
+//                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
 void PdbMatrixNCard::Print(ostream &out)
 {
-    for(unsigned int i = 0; i < matrix_n_.size(); i++)
-    {
-        for(MatrixNVector::iterator it = matrix_n_.at(i).begin(); it != matrix_n_.at(i).end(); it++)
-            (*it)->Print(out);
-    }
+    out << "Record Name: " << record_name_;
+    if(n_ != iNotSet)
+        out << n_;
+    else
+        out << " ";
+    out << ", Serial Number: ";
+    if(serial_number_ != iNotSet)
+        out << serial_number_;
+    else
+        out << " ";
+    out << ", Transformation Vector: ";
+    transfomration_vector_.Print(out);
+    out << ", V: ";
+    if(v_ != dNotSet)
+        out << v_;
+    else
+        out << " ";
+    out << ", I Given: ";
+    if(i_given_ != iNotSet)
+        out << i_given_;
+    else
+        out << " ";
     out << endl;
 }
