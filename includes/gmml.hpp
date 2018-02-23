@@ -134,4 +134,11 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
 
+typedef std::vector<Atom*> AtomVector;
+typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
+typedef std::vector<Residue*> ResidueVector;
+typedef std::vector<Assembly*> AssemblyVector;
+typedef GeometryTopology::Coordinate Vector;
+typedef std::vector<std::string> StringVector;
+
 #endif // GMML_HPP

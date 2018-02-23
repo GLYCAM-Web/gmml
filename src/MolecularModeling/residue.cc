@@ -470,10 +470,16 @@ bool Residue::CheckIfWater() {
 
 GeometryTopology::Coordinate Residue::GetGeometricCenter()
 {
-    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
     AtomVector atoms = this->GetAtoms();
-    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    if(atoms.size() == 0)
+    {
+        std::cout << "Problem in Residue::GetGeometricCenter(), the residue " << this->GetId() << " contains no atoms." << std::endl;
+    }
+
+    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
+    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); ++atom)
     {   
+       // std::cout << "atoms size is " << atoms.size() << " for " << (*atom)->GetId() << std::endl;
         sumX += (*atom)->GetCoordinates().at(0)->GetX();
         sumY += (*atom)->GetCoordinates().at(0)->GetY();
         sumZ += (*atom)->GetCoordinates().at(0)->GetZ();

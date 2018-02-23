@@ -247,6 +247,12 @@ namespace MolecularModeling
               */
             void AddResidue(Residue* residue);
             /*! \fn
+              * A function in order to remove the residue from the current object
+              * Set the residues_ attribute of the current assembly
+              * @param residue The residue of the current object
+              */
+            void RemoveResidue(Residue *residue);
+            /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current assembly
               * @param chemical_type The chemical_type attribute of the current object
