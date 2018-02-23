@@ -62,6 +62,8 @@
 #include "InputSet/PdbFileSpace/pdbrevisiondatacard.hpp"
 #include "InputSet/PdbFileSpace/pdbscalensection.hpp"
 #include "InputSet/PdbFileSpace/pdbscalencard.hpp"
+#include "InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
+#include "InputSet/PdbFileSpace/pdbsequenceadvancedcard.hpp"
 #include "InputSet/PdbFileSpace/pdbsheetsection.hpp"
 #include "InputSet/PdbFileSpace/pdbsheetcard.hpp"
 #include "InputSet/PdbFileSpace/pdbsheetstrand.hpp"

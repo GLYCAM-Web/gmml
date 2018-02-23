@@ -227,7 +227,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the sequence_advanced of the current object
               * @return sequence_advanced_ attribute of the current object of this class
               */
-            // PdbSequenceAdvancedSection* GetSequenceAdvanced();
+            PdbSequenceAdvancedSection* GetSequenceAdvanced();
             /*! \fn
               * An accessor function in order to access to the residue sequence attribute of the current object
               * @return residue_sequence_ attribute of the current object of this class
@@ -528,7 +528,7 @@ namespace PdbFileSpace
               * Set the sequence_advanced_ attribute of the current pdb file
               * @param sequence_advanced The sequence_advanced attribute of the current object
               */
-            // void SetSequenceAdvanced(PdbSequenceAdvancedSection* sequence_advanced);
+            void SetSequenceAdvanced(PdbSequenceAdvancedSection* sequence_advanced);
             /*! \fn
               * A mutator function in order to set the residues sequence card of the current object
               * Set the residues_sequence_ attribute of the current pdb file

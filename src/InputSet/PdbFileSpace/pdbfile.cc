@@ -31,7 +31,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
-// #include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduemodificationsection.hpp"
@@ -153,7 +153,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     journal_ = NULL;
     remark_cards_ = NULL;
     database_reference_ = NULL;
-    // sequence_advanced_ = NULL;
+    sequence_advanced_ = NULL;
     residues_sequence_ = NULL;
     residue_modification_cards_ = NULL;
     heterogen_cards_ = NULL;
@@ -331,10 +331,10 @@ PdbDatabaseReferenceSection* PdbFile::GetDatabaseReferences()
     return database_reference_;
 }
 
-// PdbSequenceAdvancedSection* PdbFile::GetSequenceAdvanced()
-// {
-//     return sequence_advanced_;
-// }
+PdbSequenceAdvancedSection* PdbFile::GetSequenceAdvanced()
+{
+    return sequence_advanced_;
+}
 
 PdbResidueSequenceSection* PdbFile::GetResiduesSequence()
 {
@@ -1042,11 +1042,11 @@ void PdbFile::SetDatabaseReferences(PdbDatabaseReferenceSection *database_refere
     database_reference_ = new PdbDatabaseReferenceSection();
     database_reference_ = database_reference;
 }
-// void PdbFile::SetSequenceAdvanced(PdbSequenceAdvancedSection *sequence_advanced)
-// {
-//     sequence_advanced_ = new PdbSequenceAdvancedSection();
-//     sequence_advanced_ = sequence_advanced;
-// }
+void PdbFile::SetSequenceAdvanced(PdbSequenceAdvancedSection *sequence_advanced)
+{
+    sequence_advanced_ = new PdbSequenceAdvancedSection();
+    sequence_advanced_ = sequence_advanced;
+}
 void PdbFile::SetResiduesSequence(PdbResidueSequenceSection *residues_sequence)
 {
     residues_sequence_ = new PdbResidueSequenceSection();
@@ -4227,7 +4227,7 @@ bool PdbFile::ParseSequenceAdvancedSection(std::ifstream& stream, string& line)
             return false;
         }
     }
-    // sequence_advanced_ = new PdbSequenceAdvancedSection(stream_block);
+    sequence_advanced_ = new PdbSequenceAdvancedSection(stream_block);
     return true;
 }
 
@@ -7514,7 +7514,7 @@ void PdbFile::Print(ostream &out)
     if(sequence_advanced_ != NULL)
     {
         out << "*************************** SEQUENCE ADVANCED **************************" << endl;
-        // sequence_advanced_->Print(out);
+        sequence_advanced_->Print(out);
     }
     if(residues_sequence_ != NULL)
     {
