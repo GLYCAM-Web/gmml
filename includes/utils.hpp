@@ -724,7 +724,6 @@ namespace gmml
       */
     inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "log.log")
     {
-        std::cout << "Something went wrong: " << file_path << ":" << line << ":" << level << ":" << msg << ":" << out_file_name << std::endl; // Added by OG to stop ALL THE WARNINGS
 //        std::ofstream file;
 //        file.open(out_file_name.c_str(), std::ios_base::app);
 
