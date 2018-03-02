@@ -449,13 +449,13 @@ Atom* Residue::GetAtom(unsigned long long query_index)
     return return_atom; // may be unset
 }
 
-Atom* Residue::GetAtom(int query_id)
+Atom* Residue::GetAtomWithId(std::string query_id)
 {
     Atom* return_atom;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
-        if ((*it)->GetId() == query_id)
+        if ((*it)->GetId().compare(query_id)==0)
         {
             return_atom = (*it);
         }

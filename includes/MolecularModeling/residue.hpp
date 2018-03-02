@@ -207,7 +207,7 @@ namespace MolecularModeling
             GeometryTopology::Coordinate GetGeometricCenter();
             Atom* GetAtom(std::string query_name);
             Atom* GetAtom(unsigned long long query_index);
-            Atom* GetAtom(int query_id);
+            Atom* GetAtomWithId(std::string query_id);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
