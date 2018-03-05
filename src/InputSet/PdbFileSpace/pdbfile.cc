@@ -4553,7 +4553,7 @@ bool PdbFile::ParseSheetSection(std::ifstream& stream, string& line)
         }
     }
     sheet_cards_ = new PdbSheetSection(stream_block);
-    sheet_cards_->Print();
+    // sheet_cards_->Print();
     return true;
 }
 
