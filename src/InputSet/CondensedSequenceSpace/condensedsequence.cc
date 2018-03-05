@@ -445,8 +445,8 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
             vector<pair<string, vector<string> > > possible_rotamers = vector<pair<string, vector<string> > >();
             vector<pair<string, vector<string> > > selected_rotamers = vector<pair<string, vector<string> > >();
             vector<pair<string, double> > enabled_glycosidic_angles = vector<pair<string, double> >();
-            enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
-            enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+            enabled_glycosidic_angles.push_back(make_pair("phi", dNotSet));
+            enabled_glycosidic_angles.push_back(make_pair("psi", dNotSet));
             if(ring_letter == 'p')
             {
                 if(parent > 0)
@@ -478,7 +478,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                 rot1.push_back("gt");
                                 selected_rotamers.push_back(make_pair("omega", rot1));
 
-                                enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                enabled_glycosidic_angles.push_back(make_pair("omega", dNotSet));
                             }
                             break;
                         case 14:
@@ -495,7 +495,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                 possible_rotamers.push_back(make_pair("omega", rot));
                                 selected_rotamers.push_back(make_pair("omega", rot));
 
-                                enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                enabled_glycosidic_angles.push_back(make_pair("omega", dNotSet));
                             }
                             break;
                         case 23:
@@ -521,7 +521,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                         rot1.push_back("gt");
                                         selected_rotamers.push_back(make_pair("omega", rot1));
 
-                                        enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                        enabled_glycosidic_angles.push_back(make_pair("omega", dNotSet));
                                     }
                                     break;
                                 case 14:
@@ -538,7 +538,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                         possible_rotamers.push_back(make_pair("omega", rot));
                                         selected_rotamers.push_back(make_pair("omega", rot));
 
-                                        enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                        enabled_glycosidic_angles.push_back(make_pair("omega", dNotSet));
                                     }
                                     break;
                             }
@@ -567,8 +567,8 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                 vector<pair<string, vector<string> > > der_possible_rotamers = vector<pair<string, vector<string> > >();
                 vector<pair<string, vector<string> > > der_selected_rotamers = vector<pair<string, vector<string> > >();
                 vector<pair<string, double> > der_enabled_glycosidic_angles = vector<pair<string, double> >();
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+                der_enabled_glycosidic_angles.push_back(make_pair("phi", dNotSet));
+                der_enabled_glycosidic_angles.push_back(make_pair("psi", dNotSet));
                 CondensedSequenceResidue::DerivativeMap derivatives = residue->GetDerivatives();
                 for(CondensedSequenceResidue::DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++)
                 {
@@ -595,7 +595,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                 rot1.push_back("gt");
                                 der_selected_rotamers.push_back(make_pair("omega", rot1));
 
-                                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                der_enabled_glycosidic_angles.push_back(make_pair("omega", dNotSet));
                             }
                             break;
                         case 14:
@@ -612,7 +612,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                 der_possible_rotamers.push_back(make_pair("omega", rot));
                                 der_selected_rotamers.push_back(make_pair("omega", rot));
 
-                                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                der_enabled_glycosidic_angles.push_back(make_pair("omega", dNotSet));
                             }
                             break;
                     }
@@ -651,8 +651,8 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                 vector<pair<string, vector<string> > > der_possible_rotamers = vector<pair<string, vector<string> > >();
                 vector<pair<string, vector<string> > > der_selected_rotamers = vector<pair<string, vector<string> > >();
                 vector<pair<string, double> > der_enabled_glycosidic_angles = vector<pair<string, double> >();
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+                der_enabled_glycosidic_angles.push_back(make_pair("phi", dNotSet));
+                der_enabled_glycosidic_angles.push_back(make_pair("psi", dNotSet));
                 CondensedSequenceResidue::DerivativeMap derivatives = residue->GetDerivatives();
                 for(CondensedSequenceResidue::DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++)
                 {
@@ -1057,7 +1057,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                 cout << mapper[i].at(j).at(k);
                 (k < mapper[i].at(j).size() - 1) ? cout << ", " : cout << " ";
             }
-            cout << ">";            
+            cout << ">";
         }*/
         stringstream ss;
         for(unsigned int j = 0; j < mapper[i].size(); j++)
@@ -1084,8 +1084,3 @@ void CondensedSequence::Print(ostream &out)
 {
 
 }
-
-
-
-
-

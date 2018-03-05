@@ -8,7 +8,7 @@
 #include "../../includes/common.hpp"
 #include <algorithm>    // std::any_of
 
-using namespace std;
+//using namespace std; // It is forbidden.
 using namespace MolecularModeling;
 using namespace gmml;
 //////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ using namespace gmml;
 //////////////////////////////////////////////////////////
 Residue::Residue() {}
 
-Residue::Residue(Assembly *assembly, string name)
+Residue::Residue(Assembly *assembly, std::string name)
 {
     assembly_ = assembly;
     name_ = name;
@@ -83,11 +83,11 @@ Assembly* Residue::GetAssembly()
 {
     return assembly_;
 }
-string Residue::GetName()
+std::string Residue::GetName()
 {
     return name_;
 }
-string Residue::GetNumber()
+std::string Residue::GetNumber()
 {
     StringVector id = gmml::Split(id_, "_");
     return id.at(2); // This is silly, why not add residue number to class? OG: I know right?
@@ -104,15 +104,15 @@ Residue::AtomVector Residue::GetTailAtoms()
 {
     return tail_atoms_;
 }
-string Residue::GetChemicalType()
+std::string Residue::GetChemicalType()
 {
     return chemical_type_;
 }
-string Residue::GetDescription()
+std::string Residue::GetDescription()
 {
     return description_;
 }
-string Residue::GetId()
+std::string Residue::GetId()
 {
     return id_;
 }
@@ -130,7 +130,7 @@ void Residue::SetAssembly(Assembly *assembly)
 {
     assembly_ = assembly;
 }
-void Residue::SetName(string name)
+void Residue::SetName(std::string name)
 {
     name_ = name;
 }
@@ -186,15 +186,15 @@ void Residue::AddTailAtom(Atom *tail_atom)
 {
     tail_atoms_.push_back(tail_atom);
 }
-void Residue::SetChemicalType(string chemical_type)
+void Residue::SetChemicalType(std::string chemical_type)
 {
     chemical_type_ = chemical_type;
 }
-void Residue::SetDescription(string description)
+void Residue::SetDescription(std::string description)
 {
     description_ = description;
 }
-void Residue::SetId(string id)
+void Residue::SetId(std::string id)
 {
     id_ = id;
 }
@@ -261,7 +261,7 @@ bool Residue::GraphElementLabeling()
 
 bool Residue::GraphSymbolBasedElementLabeling()
 {
-    cout << "Labeling residue nodes based on elements' symbol ... " << endl;
+    std::cout << "Labeling residue nodes based on elements' symbol ... " << std::endl;
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -280,7 +280,7 @@ bool Residue::GraphSymbolBasedElementLabeling()
 
 bool Residue::GraphParameterBasedElementLabeling()
 {
-    cout << "Labeling residue nodes based on atom type and parameter file" << endl;
+    std::cout << "Labeling residue nodes based on atom type and parameter file" << std::endl;
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -288,7 +288,7 @@ bool Residue::GraphParameterBasedElementLabeling()
         AtomNode* atom_node = atom->GetNode();
         if(atom_node != NULL)
         {
-            string element_symbol = gmml::AtomTypesLookup(atom->GetAtomType()).element_symbol_;
+            std::string element_symbol = gmml::AtomTypesLookup(atom->GetAtomType()).element_symbol_;
             if(element_symbol != "")
                 atom_node->SetElementLabel(element_symbol);
             else
@@ -308,7 +308,7 @@ bool Residue::GraphParameterBasedElementLabeling()
 
 bool Residue::GraphPredictionBasedElementLabeling()
 {
-    cout << "Labeling residue nodes based on first letter prediction ... " << endl;
+    std::cout << "Labeling residue nodes based on first letter prediction ... " << std::endl;
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -358,10 +358,6 @@ double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
     return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
 }
 
-// Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
-// Your wish is my command. ;o) The Proteins are now defined as a const std::string in the common.hpp.
-//  This allows for easy modification of it and also if someone else wants to use it somewhere else it
-//  is now available to them.
 bool Residue::CheckIfProtein()
 {
     if( std::find( PROTEINS, ( PROTEINS + PROTEINSSIZE ), this->GetName() ) != ( PROTEINS + PROTEINSSIZE ) )
@@ -377,72 +373,6 @@ bool Residue::CheckIfWater() {
 	}
 	return false;
 }
-
-// bool Residue::CheckIfProtein()
-// {
-//     std::string resname = this->GetName();
-//     if(resname.compare("ALA")==0)
-//         return true;
-//     else if (resname.compare("ASP")==0)
-//         return true;
-//     else if (resname.compare("ASN")==0)
-//         return true;
-//     else if (resname.compare("ASP")==0)
-//         return true;
-//     else if (resname.compare("ARG")==0)
-//         return true;
-//     else if (resname.compare("GLY")==0)
-//         return true;
-//     else if (resname.compare("GLU")==0)
-//         return true;
-//     else if (resname.compare("GLN")==0)
-//         return true;
-//     else if (resname.compare("PRO")==0)
-//         return true;
-//     else if (resname.compare("HIS")==0)
-//         return true;
-//     else if (resname.compare("ASP")==0)
-//         return true;
-//     else if (resname.compare("VAL")==0)
-//         return true;
-//     else if (resname.compare("LEU")==0)
-//         return true;
-//     else if (resname.compare("THR")==0)
-//         return true;
-//     else if (resname.compare("SER")==0)
-//         return true;
-//     else if (resname.compare("LYS")==0)
-//         return true;
-//     else if (resname.compare("MET")==0)
-//         return true;
-//     else if (resname.compare("TYR")==0)
-//         return true;
-//     else if (resname.compare("TRP")==0)
-//         return true;
-//     else if (resname.compare("PHE")==0)
-//         return true;
-//     else if (resname.compare("SEC")==0)
-//         return true;
-//     else if (resname.compare("ILE")==0)
-//         return true;
-//     else if (resname.compare("CYX")==0)
-//         return true;
-//     else if (resname.compare("HID")==0)
-//         return true;
-//     else if (resname.compare("HIE")==0)
-//         return true;
-//     else if (resname.compare("NLN")==0)
-//         return true;
-//     else if (resname.compare("OLT")==0)
-//         return true;
-//     else if (resname.compare("OLS")==0)
-//         return true;
-//     else if (resname.compare("OLY")==0)
-//         return true;
-//     else
-//         return false;
-// }
-
 
 /*GeometryTopology::Coordinate Residue::GetRingCenter() // Disabled by OG; GetIsRing returns true for all atoms even when IsRing wasn't set. 
 {
@@ -470,10 +400,16 @@ bool Residue::CheckIfWater() {
 
 GeometryTopology::Coordinate Residue::GetGeometricCenter()
 {
-    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
     AtomVector atoms = this->GetAtoms();
-    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    if(atoms.size() == 0)
+    {
+        std::cout << "Problem in Residue::GetGeometricCenter(), the residue " << this->GetId() << " contains no atoms." << std::endl;
+    }
+
+    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
+    for(Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); ++atom)
     {   
+       // std::cout << "atoms size is " << atoms.size() << " for " << (*atom)->GetId() << std::endl;
         sumX += (*atom)->GetCoordinates().at(0)->GetX();
         sumY += (*atom)->GetCoordinates().at(0)->GetY();
         sumZ += (*atom)->GetCoordinates().at(0)->GetZ();
@@ -485,15 +421,56 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
     return center;
 }
 
+Atom* Residue::GetAtom(std::string query_name)
+{
+    Atom* return_atom;
+    AtomVector atoms = this->GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
+    {
+        if ((*it)->GetName().compare(query_name)==0)
+        {
+            return_atom = (*it);
+        }
+    }
+    return return_atom; // may be unset
+}
+
+Atom* Residue::GetAtom(unsigned long long query_index)
+{
+    Atom* return_atom;
+    AtomVector atoms = this->GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
+    {
+        if ((*it)->GetIndex() == query_index)
+        {
+            return_atom = (*it);
+        }
+    }
+    return return_atom; // may be unset
+}
+
+Atom* Residue::GetAtomWithId(std::string query_id)
+{
+    Atom* return_atom;
+    AtomVector atoms = this->GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
+    {
+        if ((*it)->GetId().compare(query_id)==0)
+        {
+            return_atom = (*it);
+        }
+    }
+    return return_atom; // may be unset
+}
 
 
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Residue::Print(ostream &out)
+void Residue::Print(std::ostream &out)
 {
-    out << "------------------------ " << name_ << " --------------------------" << endl;
+    out << "------------------------ " << name_ << " --------------------------" << std::endl;
     out << "Head atoms: ";
     for(AtomVector::iterator it = head_atoms_.begin(); it != head_atoms_.end(); it++)
     {
@@ -501,7 +478,7 @@ void Residue::Print(ostream &out)
 //        out << atom->GetResidue()->GetName() << ":" << atom->GetName() << "; ";
         out << atom->GetId() << "; ";
     }
-    out << endl;
+    out << std::endl;
     out << "Tail atoms: ";
     for(AtomVector::iterator it = tail_atoms_.begin(); it != tail_atoms_.end(); it++)
     {
@@ -509,7 +486,7 @@ void Residue::Print(ostream &out)
 //        out << atom->GetResidue()->GetName() << ":" << atom->GetName() << "; ";
         out << atom->GetId() << "; ";
     }
-    out << endl;
+    out << std::endl;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         Atom* atom = *it;
@@ -517,13 +494,13 @@ void Residue::Print(ostream &out)
     }
 }
 
-void Residue::PrettyPrintHet(ostream &out)
+void Residue::PrettyPrintHet(std::ostream &out)
 {
-    out << "------------------------ " << "Residue " << " --------------------------" << endl;
-    out << " ID: " << id_ << endl;
-    out << " Name: " << name_ << endl;
-//    out << " Chemical type: " << chemical_type_ << endl;
-//    out << " Description: " << description_ << endl;
+    out << "------------------------ " << "Residue " << " --------------------------" << std::endl;
+    out << " ID: " << id_ << std::endl;
+    out << " Name: " << name_ << std::endl;
+//    out << " Chemical type: " << chemical_type_ << std::endl;
+//    out << " Description: " << description_ << std::endl;
     out << " ATOMS: ";
 
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
@@ -532,20 +509,20 @@ void Residue::PrettyPrintHet(ostream &out)
         out << atom->GetId() << ", ";
     }
 
-    out << endl;
+    out << std::endl;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         Atom* atom = *it;
-        out << "------------------------ " << "Atom" << " --------------------------" << endl;
-        out << " ID: " << atom->GetId() << endl;
-        out << " Name: " << atom->GetName() << endl;
-        out << " Atom type: " << atom->GetAtomType() << endl;
-        out << " Charge: " << atom->GetCharge() << endl;
-//        out << " Chemical Type: " << atom->GetChemicalType() << endl;
-//        out << " Description: " << atom->GetDescription() << endl;
-        out << " Mass: " << atom->GetMass() << endl;
+        out << "------------------------ " << "Atom" << " --------------------------" << std::endl;
+        out << " ID: " << atom->GetId() << std::endl;
+        out << " Name: " << atom->GetName() << std::endl;
+        out << " Atom type: " << atom->GetAtomType() << std::endl;
+        out << " Charge: " << atom->GetCharge() << std::endl;
+//        out << " Chemical Type: " << atom->GetChemicalType() << std::endl;
+//        out << " Description: " << atom->GetDescription() << std::endl;
+        out << " Mass: " << atom->GetMass() << std::endl;
         GeometryTopology::Coordinate* coords = atom->GetCoordinates().at(0);
-        out << " Coordinates" <<  " X: " << coords->GetX() << ", Y: " << coords->GetY() << ", Z: " << coords->GetZ() << endl;
+        out << " Coordinates" <<  " X: " << coords->GetX() << ", Y: " << coords->GetY() << ", Z: " << coords->GetZ() << std::endl;
         out << " Neighbors: ";
         AtomNode* node = atom->GetNode();
         AtomVector neighbors = node->GetNodeNeighbors();
@@ -554,12 +531,12 @@ void Residue::PrettyPrintHet(ostream &out)
             Atom* neighbor = *it1;
             out << neighbor->GetId() << ", ";
         }
-        out << endl;
+        out << std::endl;
         atom->PrintHet(out);
     }
 }
 
-void Residue::PrintHetResidues(ostream &out)
+void Residue::PrintHetResidues(std::ostream &out)
 {
     out << id_ << ";" << name_ << ";";
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
@@ -567,10 +544,10 @@ void Residue::PrintHetResidues(ostream &out)
         Atom* atom = *it;
         out << atom->GetId() << ",";
     }
-    out << endl;
+    out << std::endl;
 }
 
-void Residue::PrintHetAtoms(ostream &out)
+void Residue::PrintHetAtoms(std::ostream &out)
 {
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -586,11 +563,11 @@ void Residue::PrintHetAtoms(ostream &out)
             Atom* neighbor = *it1;
             out << neighbor->GetId() << ",";
         }
-        out << endl;
+        out << std::endl;
     }
 }
 
-void Residue::WriteHetResidues(ofstream& out)
+void Residue::WriteHetResidues(std::ofstream& out)
 {
     out << id_ << ";" << name_ << ";";
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
@@ -601,10 +578,10 @@ void Residue::WriteHetResidues(ofstream& out)
         else
             out << atom->GetId() << ",";
     }
-    out << endl;
+    out << std::endl;
 }
 
-void Residue::WriteHetAtoms(ofstream& out)
+void Residue::WriteHetAtoms(std::ofstream& out)
 {
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -623,6 +600,6 @@ void Residue::WriteHetAtoms(ofstream& out)
             else
                 out << neighbor->GetId() << ",";
         }
-        out << endl;
+        out << std::endl;
     }
 }
