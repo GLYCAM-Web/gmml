@@ -26,12 +26,15 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatacard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereference.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduemodificationsection.hpp"
@@ -58,6 +61,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbcispeptidecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsitesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsitecard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp"
@@ -3622,6 +3626,7 @@ bool PdbFile::ParseObsoleteSection(std::ifstream& stream, string& line)
     }
 
     obsolete_= new PdbObsoleteSection(stream_block);
+    // obsolete_->Print();
     return true;
 }
 
@@ -3699,6 +3704,7 @@ bool PdbFile::ParseSplitSection(std::ifstream& stream, string& line)
         }
     }
     split_ = new PdbSplitSection(stream_block);
+    // split_->Print();
     return true;
 }
 
@@ -3737,6 +3743,7 @@ bool PdbFile::ParseCaveatSection(std::ifstream& stream, string& line)
         }
     }
     caveat_ = new PdbCaveatSection(stream_block);
+    // caveat_->Print();
     return true;
 }
 
@@ -3814,6 +3821,7 @@ bool PdbFile::ParseSourceSection(std::ifstream& stream, string& line)
         }
     }
     source_ = new PdbSourceSection(stream_block);
+    // source_->Print();
     return true;
 }
 
@@ -3852,6 +3860,7 @@ bool PdbFile::ParseKeywordsSection(std::ifstream& stream, string& line)
         }
     }
     keywords_ =  new PdbKeywordsSection(stream_block);
+    // keywords_->Print();
     return true;
 }
 
@@ -3890,6 +3899,7 @@ bool PdbFile::ParseExperimentalDataSection(std::ifstream& stream, string& line)
         }
     }
     experimental_data_ = new PdbExperimentalDataSection(stream_block);
+    // experimental_data_->Print();
     return true;
 }
 
@@ -4004,6 +4014,7 @@ bool PdbFile::ParseAuthorSection(std::ifstream& stream, string& line)
         }
     }
     author_ = new PdbAuthorSection(stream_block);
+    // author_->Print();
     return true;
 }
 
@@ -4042,6 +4053,7 @@ bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, string& line)
         }
     }
     revision_data_ = new PdbRevisionDataSection(stream_block);
+    // revision_data_->Print();
     return true;
 }
 
@@ -4080,6 +4092,7 @@ bool PdbFile::ParseSupersededEntriesSection(std::ifstream& stream, string& line)
         }
     }
     superseded_entries_ = new PdbSupersededEntriesSection(stream_block);
+    // superseded_entries_->Print();
     return true;
 }
 
@@ -4118,6 +4131,7 @@ bool PdbFile::ParseJournalSection(std::ifstream& stream, string& line)
         }
     }
     journal_ = new PdbJournalSection(stream_block);
+    // journal_->Print();
     return true;
 }
 
@@ -4156,6 +4170,7 @@ bool PdbFile::ParseRemarkSection(std::ifstream& stream, string& line)
         }
     }
     remark_cards_ = new PdbRemarkSection(stream_block);
+    // remark_cards_->Print();
     return true;
 }
 
@@ -4194,6 +4209,7 @@ bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, string& line)
         }
     }
     database_reference_ = new PdbDatabaseReferenceSection(stream_block);
+    // database_reference_->Print();
     return true;
 }
 
@@ -4232,6 +4248,7 @@ bool PdbFile::ParseSequenceAdvancedSection(std::ifstream& stream, string& line)
         }
     }
     sequence_advanced_ = new PdbSequenceAdvancedSection(stream_block);
+    // sequence_advanced_->Print();
     return true;
 }
 
@@ -4536,6 +4553,7 @@ bool PdbFile::ParseSheetSection(std::ifstream& stream, string& line)
         }
     }
     sheet_cards_ = new PdbSheetSection(stream_block);
+    sheet_cards_->Print();
     return true;
 }
 
@@ -4650,6 +4668,7 @@ bool PdbFile::ParseCISPeptideSection(std::ifstream& stream, string& line)
         }
     }
     cis_peptide_ = new PdbCISPeptideSection(stream_block);
+    // cis_peptide_->Print();
     return true;
 }
 
@@ -5412,12 +5431,81 @@ void PdbFile::ResolveTitleCards(std::ofstream& stream)
 
 void PdbFile::ResolveSplitCards(std::ofstream& stream)
 {
+     const int MAX_SPLIT_ID_IN_LINE = 79;
+     stream << left << setw(6) << split_->GetRecordName()
+            << left << setw(2) << " ";
+     if((int)split_->GetSplit().length() > MAX_SPLIT_ID_IN_LINE)
+     {
+         stream << left << setw(79) << split_->GetSplit().substr(0,MAX_SPLIT_ID_IN_LINE)
+                << endl;
 
+         int counter = ceil((double)(split_->GetSplit().length()) / MAX_SPLIT_ID_IN_LINE);
+         for(int i = 2; i <= counter; i++)
+         {
+             if(i != counter)
+             {
+                 stream << left << setw(6) << split_->GetRecordName()
+                        << left << setw(2) << " "
+                        << right << setw(2) << i
+                        << left << setw(79) << split_->GetSplit().substr(MAX_SPLIT_ID_IN_LINE*(i-1), MAX_SPLIT_ID_IN_LINE)
+                        << endl;
+             }
+             else
+             {
+                 stream << left << setw(6) << split_->GetRecordName()
+                        << left << setw(2) << " "
+                        << right << setw(2) << i
+                        << left << setw(79) << split_->GetSplit().substr(MAX_SPLIT_ID_IN_LINE*(i-1), split_->GetSplit().length()-MAX_SPLIT_ID_IN_LINE*(i-1))
+                        << endl;
+             }
+         }
+     }
+     else
+     {
+         stream << right << setw(2) << " "
+                << left << setw(79) << split_->GetSplit()
+                << endl;
+     }
 }
 
 void PdbFile::ResolveCaveatCards(std::ofstream& stream)
 {
+    const int MAX_CAVEAT_LENGTH_IN_LINE = 70;
+    stream << left << setw(6) << caveat_->GetRecordName()
+           << left << setw(2) << " "
+           << left << setw(4) << header_->GetIdentifierCode();
+    if((int)caveat_->GetCaveat().length() > MAX_CAVEAT_LENGTH_IN_LINE)
+    {
+        stream << left << setw(70) << caveat_->GetCaveat().substr(0,MAX_CAVEAT_LENGTH_IN_LINE)
+               << endl;
 
+        int counter = ceil((double)(caveat_->GetCaveat().length()) / MAX_CAVEAT_LENGTH_IN_LINE);
+        for(int i = 2; i <= counter; i++)
+        {
+            if(i != counter)
+            {
+                stream << left << setw(6) << caveat_->GetRecordName()
+                       << left << setw(2) << " "
+                       << right << setw(2) << i
+                       << left << setw(70) << caveat_->GetCaveat().substr(MAX_CAVEAT_LENGTH_IN_LINE*(i-1), MAX_CAVEAT_LENGTH_IN_LINE)
+                       << endl;
+            }
+            else
+            {
+                stream << left << setw(6) << caveat_->GetRecordName()
+                       << left << setw(2) << " "
+                       << right << setw(2) << i
+                       << left << setw(70) << caveat_->GetCaveat().substr(MAX_CAVEAT_LENGTH_IN_LINE*(i-1), caveat_->GetCaveat().length()-MAX_CAVEAT_LENGTH_IN_LINE*(i-1))
+                       << endl;
+            }
+        }
+    }
+    else
+    {
+        stream << right << setw(2) << " "
+               << left << setw(70) << caveat_->GetCaveat()
+               << endl;
+    }
 }
 
 void PdbFile::ResolveCompoundCards(std::ofstream& stream)
@@ -5730,7 +5818,7 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
         if(compound_specification->GetIsEngineered())
         {
             stringstream ss;
-            ss << " ENGINEERED: YES;";
+            ss << " ENGINEERED: YES";
             stream << left << setw(6) << compound_->GetRecordName()
                    << left << setw(1) << " "
                    << right << setw(3) << counter
@@ -5803,17 +5891,106 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
 
 void PdbFile::ResolveSourceCards(std::ofstream& stream)
 {
-
+  int SOURCE_COUNT = 1;
+  SourceCardVector source_cards = source_->GetSourceCards();
+  for (SourceCardVector::iterator it = source_cards.begin(); it != source_cards.end(); it++)
+  {
+    if (SOURCE_COUNT ==1)
+    {
+      stream << left << setw(6) << (*it)->GetRecordName()
+             << left << setw(4) << " "
+             << left << setw(69) << (*it)->GetToken() +":"+ (*it)->GetValue()
+             << endl;
+      SOURCE_COUNT ++;
+    }
+    else
+    {
+      stream << left << setw(6) << (*it)->GetRecordName()
+             << right << setw(4) << SOURCE_COUNT
+             << left << setw(68) << (*it)->GetToken() +":"+ (*it)->GetValue()
+             << endl;
+      SOURCE_COUNT ++;
+    }
+  }
 }
 
 void PdbFile::ResolveKeywordCards(std::ofstream& stream)
 {
+  const int MAX_KEYWORDS_LENGTH_IN_LINE = 70;
+  stream << left << setw(6) << keywords_->GetRecordName()
+         << left << setw(2) << " ";
+  if((int)keywords_->GetKeywords().length() > MAX_KEYWORDS_LENGTH_IN_LINE)
+  {
+      stream << left << setw(2) << " "
+             << left << setw(70) << keywords_->GetKeywords().substr(0,MAX_KEYWORDS_LENGTH_IN_LINE)
+             << endl;
 
+      int counter = ceil((double)(keywords_->GetKeywords().length()) / MAX_KEYWORDS_LENGTH_IN_LINE);
+      for(int i = 2; i <= counter; i++)
+      {
+          if(i != counter)
+          {
+              stream << left << setw(6) << keywords_->GetRecordName()
+                     << left << setw(2) << " "
+                     << right << setw(2) << i
+                     << left << setw(70) << keywords_->GetKeywords().substr(MAX_KEYWORDS_LENGTH_IN_LINE*(i-1), MAX_KEYWORDS_LENGTH_IN_LINE)
+                     << endl;
+          }
+          else
+          {
+              stream << left << setw(6) << keywords_->GetRecordName()
+                     << left << setw(2) << " "
+                     << right << setw(2) << i
+                     << left << setw(70) << keywords_->GetKeywords().substr(MAX_KEYWORDS_LENGTH_IN_LINE*(i-1), keywords_->GetKeywords().length()-MAX_KEYWORDS_LENGTH_IN_LINE*(i-1))
+                     << endl;
+          }
+      }
+  }
+  else
+  {
+      stream << right << setw(2) << " "
+             << left << setw(70) << keywords_->GetKeywords()
+             << endl;
+  }
 }
 
 void PdbFile::ResolveExperimentalDataCards(std::ofstream& stream)
 {
+  const int MAX_EXPDTA_LENGTH_IN_LINE = 70;
+  stream << left << setw(6) << experimental_data_->GetRecordName()
+         << left << setw(2) << " ";
+  if((int)experimental_data_->GetExperimentalData().length() > MAX_EXPDTA_LENGTH_IN_LINE)
+  {
+      stream << left << setw(70) << experimental_data_->GetExperimentalData().substr(0,MAX_EXPDTA_LENGTH_IN_LINE)
+             << endl;
 
+      int counter = ceil((double)(experimental_data_->GetExperimentalData().length()) / MAX_EXPDTA_LENGTH_IN_LINE);
+      for(int i = 2; i <= counter; i++)
+      {
+          if(i != counter)
+          {
+              stream << left << setw(6) << experimental_data_->GetRecordName()
+                     << left << setw(2) << " "
+                     << right << setw(2) << i
+                     << left << setw(70) << experimental_data_->GetExperimentalData().substr(MAX_EXPDTA_LENGTH_IN_LINE*(i-1), MAX_EXPDTA_LENGTH_IN_LINE)
+                     << endl;
+          }
+          else
+          {
+              stream << left << setw(6) << experimental_data_->GetRecordName()
+                     << left << setw(2) << " "
+                     << right << setw(2) << i
+                     << left << setw(70) << experimental_data_->GetExperimentalData().substr(MAX_EXPDTA_LENGTH_IN_LINE*(i-1), experimental_data_->GetExperimentalData().length()-MAX_EXPDTA_LENGTH_IN_LINE*(i-1))
+                     << endl;
+          }
+      }
+  }
+  else
+  {
+      stream << right << setw(2) << " "
+             << left << setw(70) << experimental_data_->GetExperimentalData()
+             << endl;
+  }
 }
 
 void PdbFile::ResolveNumModelCard(std::ofstream& stream)
@@ -5881,11 +6058,89 @@ void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
 
 void PdbFile::ResolveAuthorCards(std::ofstream& stream)
 {
+  const int MAX_AUTHOR_LENGTH_IN_LINE = 70;
+  stream << left << setw(6) << author_->GetRecordName()
+         << left << setw(2) << " ";
+  if((int)author_->GetAuthor().length() > MAX_AUTHOR_LENGTH_IN_LINE)
+  {
+      stream << left << setw(70) << author_->GetAuthor().substr(0,MAX_AUTHOR_LENGTH_IN_LINE)
+             << endl;
 
+      int counter = ceil((double)(author_->GetAuthor().length()) / MAX_AUTHOR_LENGTH_IN_LINE);
+      for(int i = 2; i <= counter; i++)
+      {
+          if(i != counter)
+          {
+              stream << left << setw(6) << author_->GetRecordName()
+                     << left << setw(2) << " "
+                     << right << setw(2) << i
+                     << left << setw(70) << author_->GetAuthor().substr(MAX_AUTHOR_LENGTH_IN_LINE*(i-1), MAX_AUTHOR_LENGTH_IN_LINE)
+                     << endl;
+          }
+          else
+          {
+              stream << left << setw(6) << author_->GetRecordName()
+                     << left << setw(2) << " "
+                     << right << setw(2) << i
+                     << left << setw(70) << author_->GetAuthor().substr(MAX_AUTHOR_LENGTH_IN_LINE*(i-1), author_->GetAuthor().length()-MAX_AUTHOR_LENGTH_IN_LINE*(i-1))
+                     << endl;
+          }
+      }
+  }
+  else
+  {
+      stream << right << setw(2) << " "
+             << left << setw(70) << author_->GetAuthor()
+             << endl;
+  }
 }
 
 void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
 {
+  int REVDAT_COUNT = 1;
+  int REVDAT_NUM = 0;
+  RevisionDataCardVector revision_data_cards = revision_data_->GetRevisionDataCards();
+  for (RevisionDataCardVector::iterator it = revision_data_cards.begin(); it != revision_data_cards.end(); it++)
+  {
+    if (REVDAT_NUM != (*it)->GetModificationNumber())
+    {
+      REVDAT_COUNT = 1;
+    }
+    if (REVDAT_COUNT == 1)
+    {
+      stream << left << setw(6) << (*it)->GetRecordName()
+             << left << setw(1) << " "
+             << right << setw(3) << (*it)->GetModificationNumber()
+             << right << setw(3) << " "
+             << left << setw(9) << (*it)->GetModificationDate()
+             << left << setw(1) << " "
+             << left << setw(4) << (*it)->GetModificationID()
+             << left << setw(4) << " "
+             << left << setw(1) << (*it)->GetModificationType()
+             << left << setw(7) << " "
+             << left << setw(27) << (*it)->GetModificationDetails()
+             << endl;
+    }
+    else if (REVDAT_NUM == (*it)->GetModificationNumber())
+    {
+      stream << left << setw(6) << (*it)->GetRecordName()
+             << left << setw(1) << " "
+             << right << setw(3) << (*it)->GetModificationNumber()
+             << right << setw(2) << REVDAT_COUNT
+             << left << setw(1) << " "
+             << left << setw(9) << (*it)->GetModificationDate()
+             << left << setw(1) << " "
+             << left << setw(4) << (*it)->GetModificationID()
+             << left << setw(4) << " "
+             << left << setw(1) << (*it)->GetModificationType()
+             << left << setw(7) << " "
+             << left << setw(27) << (*it)->GetModificationDetails()
+             << endl;
+      REVDAT_COUNT ++;
+    }
+
+    REVDAT_NUM = (*it)->GetModificationNumber();
+  }
 
 }
 
@@ -5896,22 +6151,140 @@ void PdbFile::ResolveSupersededEntriesCards(std::ofstream& stream)
 
 void PdbFile::ResolveJournalCards(std::ofstream& stream)
 {
+  const int MAX_JOURNAL_LENGTH_IN_LINE = 67;
+  stream << left << setw(6) << journal_->GetRecordName()
+         << left << setw(6) << " ";
+  if((int)journal_->GetText().length() > MAX_JOURNAL_LENGTH_IN_LINE)
+  {
+      stream << left << setw(67) << journal_->GetText().substr(0,MAX_JOURNAL_LENGTH_IN_LINE)
+             << endl;
 
+      int counter = ceil((double)(journal_->GetText().length()) / MAX_JOURNAL_LENGTH_IN_LINE);
+      for(int i = 2; i <= counter; i++)
+      {
+          if(i != counter)
+          {
+              stream << left << setw(6) << journal_->GetRecordName()
+                     << left << setw(6) << " "
+                     << left << setw(67) << journal_->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), MAX_JOURNAL_LENGTH_IN_LINE)
+                     << endl;
+          }
+          else
+          {
+              stream << left << setw(6) << journal_->GetRecordName()
+                     << left << setw(6) << " "
+                     << left << setw(67) << journal_->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), journal_->GetText().length()-MAX_JOURNAL_LENGTH_IN_LINE*(i-1))
+                     << endl;
+          }
+      }
+  }
+  else
+  {
+      stream << right << setw(6) << " "
+             << left << setw(67) << journal_->GetText()
+             << endl;
+  }
 }
 
 void PdbFile::ResolveRemarkCards(std::ofstream& stream)
 {
-
+  stream << left << remark_cards_->GetRemarks();
 }
 
 void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
 {
+  DatabaseReferenceVector database_reference_cards = database_reference_->GetDatabaseReferences();
+  for (DatabaseReferenceVector::iterator it = database_reference_cards.begin(); it != database_reference_cards.end(); it++)
+  {
+    if ((*it)->GetRecordName() == "DBREF ")
+    {
+      stream << left << setw(6) << (*it)->GetRecordName()
+             << left << setw(1) << " "
+             << left << setw(4) << (*it)->GetIDCode()
+             << left << setw(1) << " "
+             << left << setw(1) << (*it)->GetChainID()
+             << left << setw(1) << " "
+             << right << setw(4) << (*it)->GetSeqBegin()
+             << right << setw(1) << (*it)->GetInsertBegin()
+             << left << setw(1) << " "
+             << right << setw(4) << (*it)->GetSeqEnd()
+             << right << setw(1) << (*it)->GetInsertEnd()
+             << left << setw(1) << " "
+             << left << setw(6) << (*it)->GetDatabase()
+             << left << setw(1) << " "
+             << left << setw(8) << (*it)->GetDatabaseAccession()
+             << left << setw(1) << " "
+             << left << setw(12) << (*it)->GetDatabaseIDCode()
+             << left << setw(1) << " "
+             << right << setw(5) << (*it)->GetDatabaseSeqBegin()
+             << right << setw(1) << (*it)->GetDatabaseInsBegin()
+             << left << setw(1) << " "
+             << right << setw(5) << (*it)->GetDatabaseSeqEnd()
+             << right << setw(1) << (*it)->GetDatabaseInsEnd()
+             << endl;
+    }
+    else if (((*it)->GetRecordName() == "DBREF1"))
+    {
+      stream << left << setw(6) << (*it)->GetRecordName()
+             << left << setw(1) << " "
+             << left << setw(4) << (*it)->GetIDCode()
+             << left << setw(1) << " "
+             << left << setw(1) << (*it)->GetChainID()
+             << left << setw(1) << " "
+             << right << setw(4) << (*it)->GetSeqBegin()
+             << right << setw(1) << (*it)->GetInsertBegin()
+             << left << setw(1) << " "
+             << right << setw(4) << (*it)->GetSeqEnd()
+             << right << setw(1) << (*it)->GetInsertEnd()
+             << left << setw(1) << " "
+             << left << setw(6) << (*it)->GetDatabase()
+             << left << setw(16) << " "
+             << left << setw(15) << (*it)->GetDatabaseIDCode()
+             << endl
+             << left << setw(6) << "DBREF2"
+             << left << setw(1) << " "
+             << left << setw(4) << (*it)->GetIDCode()
+             << left << setw(1) << " "
+             << left << setw(1) << (*it)->GetChainID()
+             << left << setw(6) << " "
+             << left << setw(22) << (*it)->GetDatabaseAccession()
+             << left << setw(5) << " "
+             << right << setw(10) << (*it)->GetDatabaseSeqBegin()
+             << left << setw(2) << " "
+             << right << setw(10) << (*it)->GetDatabaseSeqEnd()
+             << endl;
+    }
 
+  }
 }
 
 void PdbFile::ResolveSequenceAdvancedCards(std::ofstream& stream)
 {
-
+  SequenceAdvancedCardVector sequence_advanced_cards = sequence_advanced_->GetSequenceAdvancedCards();
+  for (SequenceAdvancedCardVector::iterator it = sequence_advanced_cards.begin(); it != sequence_advanced_cards.end(); it++)
+  {
+    stream << left << setw(6) << (*it)->GetRecordName()
+           << left << setw(1) << " "
+           << right << setw(3) << (*it)->GetIdentifierCode()
+           << left << setw(1) << " "
+           << left << setw(3) << (*it)->GetResidueName()
+           << left << setw(1) << " "
+           << left << setw(1) << (*it)->GetChainId()
+           << left << setw(1) << " "
+           << right << setw(4) << (*it)->GetSequenceNumber()
+           << left << setw(1) << (*it)->GetInsertionCode()
+           << left << setw(1) << " "
+           << left << setw(4) << (*it)->GetDatabase()
+           << left << setw(1) << " "
+           << left << setw(9) << (*it)->GetDatabaseAccession()
+           << left << setw(1) << " "
+           << right << setw(3) << (*it)->GetDatabaseResidue()
+           << left << setw(1) << " "
+           << right << setw(5) << (*it)->GetDatabaseSequence()
+           << left << setw(1) << " "
+           << left << setw(30) << (*it)->GetConflict()
+           << endl;
+  }
 }
 
 void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
@@ -6384,8 +6757,8 @@ void PdbFile::ResolveSheetCards(std::ofstream& stream)
                     stream << right << setw(2) << strand->GetSense();
                 else
                     stream << right << setw(2) << " ";
-                stream << left << setw(1) << " "
-                       << left << setw(4) << strand->GetCurrentAtom()
+                stream << left << setw(2) << " "
+                       << left << setw(3) << strand->GetCurrentAtom()
                        << right << setw(3) << strand_residues.at(2)->GetResidueName()
                        << left << setw(1) << " "
                        << right << setw(1) << strand_residues.at(2)->GetResidueChainId();
@@ -6573,7 +6946,32 @@ void PdbFile::ResolveLinkCards(std::ofstream& stream)
 
 void PdbFile::ResolveCISPeptideCards(std::ofstream& stream)
 {
-
+  CISPeptideCardVector cis_peptide_cards = cis_peptide_->GetCISPeptideCards();
+  for (CISPeptideCardVector::iterator it = cis_peptide_cards.begin(); it != cis_peptide_cards.end(); it++)
+  {
+    stream << left << setw(6) << (*it)->GetRecordName()
+           << left << setw(1) << " "
+           << right << setw(3) << (*it)->GetSerialNumber()
+           << left << setw(1) << " "
+           << left << setw(3) << (*it)->GetPeptide1ResidueName()
+           << left << setw(1) << " "
+           << left << setw(1) << (*it)->GetPeptide1ChainId()
+           << left << setw(1) << " "
+           << right << setw(4) << (*it)->GetPeptide1SequenceNumber()
+           << left << setw(1) << (*it)->GetPeptide1InsertionCode()
+           << left << setw(3) << " "
+           << left << setw(3) << (*it)->GetPeptide2ResidueName()
+           << left << setw(1) << " "
+           << left << setw(1) << (*it)->GetPeptide2ChainId()
+           << left << setw(1) << " "
+           << right << setw(4) << (*it)->GetPeptide2SequenceNumber()
+           << left << setw(1) << (*it)->GetPeptide2InsertionCode()
+           << left << setw(7) << " "
+           << right << setw(3) << (*it)->GetModelNumber()
+           << left << setw(7) << " "
+           << right << setw(6) << (*it)->GetMeasure()
+           << endl;
+  }
 }
 
 void PdbFile::ResolveSiteCards(std::ofstream& stream)
@@ -7421,7 +7819,21 @@ void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
 
 void PdbFile::ResolveMasterCards(std::ofstream& stream)
 {
-
+  stream << left << setw(6) << master_->GetRecordName()
+         << right << setw(4) << " "
+         << right << setw(5) << master_->GetNumRemark()
+         << right << setw(5) << 0
+         << right << setw(5) << master_->GetNumHet()
+         << right << setw(5) << master_->GetNumHelix()
+         << right << setw(5) << master_->GetNumSheet()
+         << right << setw(5) << 0
+         << right << setw(5) << master_->GetNumSite()
+         << right << setw(5) << master_->GetNumXForm()
+         << right << setw(5) << master_->GetNumCoord()
+         << right << setw(5) << master_->GetNumTer()
+         << right << setw(5) << master_->GetNumConnect()
+         << right << setw(5) << master_->GetNumSeq()
+         << endl;
 }
 
 void PdbFile::ResolveEndCard(std::ofstream& stream)

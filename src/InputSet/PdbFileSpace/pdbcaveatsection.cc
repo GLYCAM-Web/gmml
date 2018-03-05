@@ -38,7 +38,7 @@ PdbCaveatSection::PdbCaveatSection(stringstream& stream_block)
         temp = line;
     }
     caveat_ = ss.str();
-    Trim(caveat_);
+    // Trim(caveat_);
 }
 
 //////////////////////////////////////////////////////////

@@ -9,7 +9,18 @@
 #include <vector>
 #include <map>
 
-namespace PdbFileSpace
+namespace PdbFileSpace// const int MAX_REVDAT_LENGTH_IN_LINE = 27;
+  // stream << left << setw(6) << revision_data_->GetRecordName()
+  //        << left << setw(1) << " "
+  //        << right << setw(3) << revision_data_->GetModificationNumber()
+  //        << left << setw(3) << " "
+  //        << left << setw(9) << revision_data_->GetModificationDate()
+  //        << left << setw(1) << " "
+  //        << left << setw(4) << revision_data_-GetModificationID()
+  //        << left << setw(4) << " "
+  //        << left << setw(1) << revision_data_->GetModificationType()
+  // if((int)revision_data_->GetModificationDetails().length() > MAX_REVDAT_LENGTH_IN_LINE)
+  // {
 {
     //Title Section
     class PdbHeaderCard;
@@ -19,19 +30,23 @@ namespace PdbFileSpace
     class PdbCaveatSection;
     class PdbCompoundSection;
     class PdbSourceSection;
+    class PdbSourceCard;
     class PdbKeywordsSection;
     class PdbExperimentalDataSection;
     class PdbNumModelCard;
     class PdbModelTypeSection;
     class PdbAuthorSection;
     class PdbRevisionDataSection;
+    class PdbRevisionDataCard;
     class PdbSupersededEntriesSection;
     class PdbJournalSection;
     class PdbRemarkSection;
 
     //Primary Structure Section
     class PdbDatabaseReferenceSection;
+    class PdbDatabaseReference;
     class PdbSequenceAdvancedSection;
+    class PdbSequenceAdvancedCard;
     class PdbResidueSequenceSection;
     class PdbResidueModificationSection;
     class PdbResidue;
@@ -51,6 +66,7 @@ namespace PdbFileSpace
     class PdbLinkCard;
     class PdbLinkSection;
     class PdbCISPeptideSection;
+    class PdbCISPeptideCard;
 
     //Miscellaneous Features Section
     class PdbSiteSection;
@@ -83,6 +99,26 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
+            /*! \typedef
+              * List of sources
+              */
+            typedef std::vector<PdbSourceCard*> SourceCardVector;
+            /*! \typedef
+              * List of sequence advanced cards
+              */
+            typedef std::vector<PdbSequenceAdvancedCard*> SequenceAdvancedCardVector;
+            /*! \typedef
+              * List of revision_datas
+              */
+            typedef std::vector<PdbRevisionDataCard*> RevisionDataCardVector;
+            /*! \typedef
+              * List of CIS peptide cards
+              */
+            typedef std::vector<PdbCISPeptideCard*> CISPeptideCardVector;
+            /*! \typedef
+              * List of database references
+              */
+            typedef std::vector<PdbDatabaseReference*> DatabaseReferenceVector;
             /*! \typedef
               * List of residues
               */

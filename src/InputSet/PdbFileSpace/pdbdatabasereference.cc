@@ -22,11 +22,11 @@ PdbDatabaseReference::PdbDatabaseReference(string &line)
 
       chain_id_ = line.substr(12,1);
 
-      seq_begin_ = atoi(line.substr(14,4).c_str());
+      seq_begin_ = ConvertString<int>(line.substr(14,4));
 
       insert_begin_ = line.substr(18,1);
 
-      seq_end_ = atoi(line.substr(20,4).c_str());
+      seq_end_ = ConvertString<int>(line.substr(20,4));
 
       insert_end_ = line.substr(24,1);
 
@@ -38,11 +38,11 @@ PdbDatabaseReference::PdbDatabaseReference(string &line)
 
         db_id_code_ = line.substr(42,12);
 
-        db_seq_begin_ = atoi(line.substr(55,5).c_str());
+        db_seq_begin_ = ConvertString<int>(line.substr(55,5));
 
         db_ins_beg_ = line.substr(60,1);
 
-        db_seq_end_ = atoi(line.substr(62,5).c_str());
+        db_seq_end_ = ConvertString<int>(line.substr(62,5));
 
         db_ins_end_ = line.substr(67,1);
       }
@@ -57,11 +57,11 @@ PdbDatabaseReference::PdbDatabaseReference(string &line)
 
              db_id_code_ = line.substr(47,15);
 
-             db_seq_begin_ = atoi(dbref2.substr(45,10).c_str());
+             db_seq_begin_ = ConvertString<int>(dbref2.substr(45,10));
 
              db_ins_beg_ = ' ';
 
-             db_seq_end_ = atoi(line.substr(57,10).c_str());
+             db_seq_end_ = ConvertString<int>(line.substr(57,10));
 
              db_ins_end_ = ' ';
            }

@@ -13,18 +13,19 @@ using namespace PdbFileSpace;
 PdbSourceCard::PdbSourceCard() {}
 PdbSourceCard::PdbSourceCard(string &line)
 {
-    record_name_ = line.substr(0, 6);
-    Trim(record_name_);
 
-    if (!Trim(line).empty())
+    // Trim(record_name_);
+    string temp = line;
+    if (!Trim(temp).empty())
     {
+      record_name_ = line.substr(0, 6);
       std::size_t position = line.find(":");
       if (position!=std::string::npos)
          {
            token_ = line.substr(10,position-10);
-           Trim(token_);
+           // Trim(token_);
            value_ = line.substr(position+1, 78-position);
-           Trim(value_);
+           // Trim(value_);
          }
     }
 }

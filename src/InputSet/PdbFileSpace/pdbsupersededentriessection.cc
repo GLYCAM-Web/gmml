@@ -16,11 +16,11 @@ PdbSupersededEntriesSection::PdbSupersededEntriesSection(stringstream &stream_bl
     string line;
     getline(stream_block, line);
     string temp = line;
-    SupersededEntriesCardVector superseded_entries_cards;
     while (!Trim(temp).empty())
     {
         PdbSupersededEntriesCard* superseded_entries = new PdbSupersededEntriesCard(line);
         AddSupersededEntriesCards(superseded_entries);
+        this->Print();
         getline(stream_block, line);
         temp = line;
     }

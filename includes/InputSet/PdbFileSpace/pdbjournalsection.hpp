@@ -77,6 +77,11 @@ namespace PdbFileSpace
               * @return doi_ attribute of the current object of this class
               */
             std::string GetDOI();
+            /*! \fn
+              * An accessor function in order to access to the text in a journal section
+              * @return text_ attribute of the current object of this class
+              */
+            std::string GetText();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -138,6 +143,12 @@ namespace PdbFileSpace
               * @param doi The doi of the current object
               */
             void SetDOI(const std::string doi);
+            /*! \fn
+              * A mutator function in order to set the text of the current object
+              * Set the text_ attribute of the current journal section
+              * @param text The text of the current object
+              */
+            void SetText(const std::string text);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -166,7 +177,7 @@ namespace PdbFileSpace
             std::vector<std::string> reference_nums_; /*!< List of reference numbers that appear in Journal record of a pdb file >*/
             std::string pmid_;                        /*!< Pub Med ID number that appears in Journal record of a pdb file >*/
             std::string doi_;                         /*!< DOI number that appears in Journal record of a pdb file >*/
-
+            std::string text_;                        /*!< Text in a Journal Section >*/
 
 
     };

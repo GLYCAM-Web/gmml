@@ -14,24 +14,22 @@ PdbRevisionDataCard::PdbRevisionDataCard() {}
 PdbRevisionDataCard::PdbRevisionDataCard(string &line)
 {
     record_name_ = line.substr(0, 6);
-    Trim(record_name_);
+    // Trim(record_name_);
 
-    string num = line.substr(7,3);
-    Trim(num);
-    mod_num_ = ConvertString<int>(num);
+    mod_num_ = ConvertString<int>(line.substr(7,3));
 
     mod_date_ = line.substr(13,9);
-    Trim(mod_date_);
+    // Trim(mod_date_);
 
     mod_id_  = line.substr(23, 4);
-    Trim(mod_id_);
+    // Trim(mod_id_);
 
-    string type = line.substr(32,1);
-    mod_type_ = ConvertString<int>(type);
+    mod_type_ = ConvertString<int>(line.substr(31,1));
+    // mod_type_ = ConvertString<int>(type);
 
-    mod_detail_ = line.substr(39, 40);
-    Trim(mod_detail_);
-    
+    mod_detail_ = line.substr(39, 27);
+    // Trim(mod_detail_);
+
 }
 
 
@@ -97,10 +95,10 @@ void PdbRevisionDataCard::SetModificationDetails(const string mod_detail){
 void PdbRevisionDataCard::Print(ostream &out)
 {
     out << "Record Name: " << record_name_;
-    out << "Modification Number:" << mod_num_;
-    out << "Modification Date:" << mod_date_;
-    out << "Modification ID:" << mod_id_;
-    out << "Modification Type:" << mod_type_;
-    out << "Modification Details:" << mod_detail_;
+    out << ", Modification Number: " << mod_num_;
+    out << ", Modification Date: " << mod_date_;
+    out << ", Modification ID: " << mod_id_;
+    out << ", Modification Type: " << mod_type_;
+    out << ", Modification Details: " << mod_detail_;
     out << endl;
 }

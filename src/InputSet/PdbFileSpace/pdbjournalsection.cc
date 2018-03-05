@@ -32,19 +32,25 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
             Trim(record_name_);
             is_record_name_set=true;
         }
+        text_.append(line.substr(12, 67));
         string subrecord = line.substr(12,4);
         Trim(subrecord);
         if(subrecord == "AUTH")
         {
           std::size_t start_position = 19;
           std::size_t end_position = line.find(",");
-          while (end_position!=std::string::npos)
+          if (end_position!=std::string::npos)
              {
-               string new_author = line.substr(start_position,end_position);
+               string new_author = line.substr(start_position,end_position-start_position);
                authors_.push_back(new_author);
                start_position = end_position;
                end_position = line.find(",",start_position+1);
              }
+          else
+          {
+            string new_author = line.substr(start_position,79-start_position);
+            authors_.push_back(new_author);
+          }
         }
         else if(subrecord == "TITL")
         {
@@ -69,7 +75,7 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
           std::size_t end_position = line.find(",");
           while (end_position!=std::string::npos)
              {
-               string new_editor = line.substr(start_position,end_position);
+               string new_editor = line.substr(start_position,end_position-start_position);
                editors_.push_back(new_editor);
                start_position = end_position;
                end_position = line.find(",",start_position+1);
@@ -126,6 +132,8 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
           Trim(new_doi);
           doi_.append(new_doi);
         }
+    getline(stream_block, line);
+    temp = line;
     }
 }
 
@@ -177,6 +185,10 @@ string PdbJournalSection::GetDOI()
     return doi_;
 }
 
+string PdbJournalSection::GetText()
+{
+    return text_;
+}
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
@@ -225,6 +237,11 @@ void PdbJournalSection::SetDOI(const string doi)
     doi_ = doi;
 }
 
+void PdbJournalSection::SetText(const string text)
+{
+    text_ = text;
+}
+
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
@@ -235,7 +252,7 @@ void PdbJournalSection::SetDOI(const string doi)
 void PdbJournalSection::Print(ostream &out)
 {
     out << "Record Name: " << record_name_ << endl;
-    out << ", Authors: ";
+    out << "Authors: ";
     for(vector<string>::iterator it = authors_.begin(); it != authors_.end(); it++)
     {
       out << *it << " ";

@@ -28,10 +28,10 @@ PdbSheetStrand::PdbSheetStrand(const SheetStrandResidueVector strand_residues, P
 PdbSheetStrand::PdbSheetStrand(string &line)
 {
     int sense;
-    if(line.substr(38, 2).compare("  ") == 0)
-        sense = iNotSet;
-    else
-        sense = ConvertString<int>(line.substr(38,2));
+    // if(line.substr(38, 2).c_str() == "  ")
+    //     sense = iNotSet;
+    // else
+        sense = ConvertString<int>(line.substr(38,2).c_str());
     switch(sense)
     {
         case -1:
@@ -43,7 +43,7 @@ PdbSheetStrand::PdbSheetStrand(string &line)
         case 1:
             sense_ = PARALLEL;
             break;
-        case iNotSet:
+        default:
             sense_ = UnknownStrand;
             break;
     }

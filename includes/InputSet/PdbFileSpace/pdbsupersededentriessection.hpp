@@ -49,7 +49,7 @@ namespace PdbFileSpace
             SupersededEntriesCardVector GetSupersededEntriesCards();
 /** @}*/
             //////////////////////////////////////////////////////////
-            //                       MUTATOR                 PdbSupersededEntriesSection       //
+            //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
 /** \addtogroup Manipulators
               * @{

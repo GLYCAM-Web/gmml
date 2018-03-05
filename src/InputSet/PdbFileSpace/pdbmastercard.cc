@@ -19,16 +19,16 @@ PdbMasterCard::PdbMasterCard(stringstream& stream_block)
     while (!Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
-        num_remark_ = atoi(line.substr(10,5).c_str());
-        num_het_ = atoi(line.substr(20,5).c_str());
-        num_helix_ = atoi(line.substr(25,5).c_str());
-        num_sheet_ = atoi(line.substr(30,5).c_str());
-        num_site_ = atoi(line.substr(40,5).c_str());
-        num_x_form_ = atoi(line.substr(45,5).c_str());
-        num_coord_ = atoi(line.substr(50,5).c_str());
-        num_ter_ = atoi(line.substr(55,5).c_str());
-        num_connect_ = atoi(line.substr(60,5).c_str());
-        num_seq_ = atoi(line.substr(65,5).c_str());
+        num_remark_ = ConvertString<int>(line.substr(10,5));
+        num_het_ = ConvertString<int>(line.substr(20,5));
+        num_helix_ = ConvertString<int>(line.substr(25,5));
+        num_sheet_ = ConvertString<int>(line.substr(30,5));
+        num_site_ = ConvertString<int>(line.substr(40,5));
+        num_x_form_ = ConvertString<int>(line.substr(45,5));
+        num_coord_ = ConvertString<int>(line.substr(50,5));
+        num_ter_ = ConvertString<int>(line.substr(55,5));
+        num_connect_ = ConvertString<int>(line.substr(60,5));
+        num_seq_ = ConvertString<int>(line.substr(65,5));
         getline(stream_block, line);
         temp = line;
     }

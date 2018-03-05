@@ -21,10 +21,11 @@ PdbRevisionDataSection::PdbRevisionDataSection(stringstream &stream_block)
     {
         PdbRevisionDataCard* revision_data = new PdbRevisionDataCard(line);
         AddRevisionDataCards(revision_data);
+
         getline(stream_block, line);
         temp = line;
     }
-    }
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -60,6 +61,9 @@ void PdbRevisionDataSection::AddRevisionDataCards(PdbRevisionDataCard *revision_
 void PdbRevisionDataSection::Print(ostream &out)
 {
     for(RevisionDataCardVector::iterator it = revision_data_.begin(); it != revision_data_.end(); it++)
-            (*it)->Print(out);
-    out << endl;
+    {
+      (*it)->Print(out);
+      out << endl;
+    }
+
 }

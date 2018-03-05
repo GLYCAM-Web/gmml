@@ -16,17 +16,17 @@ PdbCISPeptideCard::PdbCISPeptideCard(string &line)
     if (!Trim(line).empty())
     {
       record_name_ = line.substr(0, 6);
-      serial_number_ = atoi(line.substr(7, 3).c_str());
+      serial_number_ = ConvertString<int>(line.substr(7, 3));
       pep_1_ = line.substr(11, 3);
       chain_id_1_ = line.substr(15, 1);
-      seq_num_1_ = atoi(line.substr(17, 4).c_str());
+      seq_num_1_ = ConvertString<int>(line.substr(17, 4));
       i_code_1_ = line.substr(21, 1);
       pep_2_ = line.substr(25, 3);
       chain_id_2_ = line.substr(29, 1);
-      seq_num_2_ = atoi(line.substr(31, 4).c_str());
+      seq_num_2_ = ConvertString<int>(line.substr(31, 4));
       i_code_2_ = line.substr(35, 1);
-      mod_num_ = atoi(line.substr(43, 3).c_str());
-      measure_ = atof(line.substr(53, 6).c_str());
+      mod_num_ = ConvertString<int>(line.substr(43, 3));
+      measure_ = ConvertString<float>(line.substr(53, 6));
     }
 }
 

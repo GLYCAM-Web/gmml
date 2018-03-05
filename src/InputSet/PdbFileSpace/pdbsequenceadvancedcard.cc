@@ -19,13 +19,13 @@ PdbSequenceAdvancedCard::PdbSequenceAdvancedCard(string &line)
       id_code_ = line.substr(7, 4);
       residue_name_ = line.substr(12, 3);
       chain_id_ = line.substr(16, 1);
-      seq_num_ = atoi(line.substr(18, 4).c_str());
+      seq_num_ = ConvertString<int>(line.substr(18, 4));
       i_code_ = line.substr(22, 1);
       database_ = line.substr(24, 4);
       db_accession_ = line.substr(29, 9);
       db_res_ = line.substr(39, 3);
-      db_seq_ = atoi(line.substr(43, 5).c_str());
-      conflict_ = line.substr(49, 21);
+      db_seq_ = ConvertString<int>(line.substr(43, 5));
+      conflict_ = line.substr(49, 30);
     }
 }
 
