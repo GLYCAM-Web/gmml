@@ -4,33 +4,31 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbhelixsection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbHelixSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbHelixSection::PdbHelixSection() : record_name_("HELIX") {}
 
-PdbHelixSection::PdbHelixSection(const string &record_name) : record_name_(record_name) {}
+PdbHelixSection::PdbHelixSection(const std::string &record_name) : record_name_(record_name) {}
 
-PdbHelixSection::PdbHelixSection(stringstream& stream_block)
+PdbHelixSection::PdbHelixSection(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
 
-        stringstream ss;
-        ss << line << endl;
+        std::stringstream ss;
+        ss << line << std::endl;
         PdbHelixCard* helix = new PdbHelixCard(ss);
         helix_cards_[helix->GetHelixId()] = helix;
         getline(stream_block, line);
@@ -41,7 +39,7 @@ PdbHelixSection::PdbHelixSection(stringstream& stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbHelixSection::GetRecordName()
+std::string PdbHelixSection::GetRecordName()
 {
     return record_name_;
 }
@@ -54,7 +52,7 @@ PdbHelixSection::HelixCardMap PdbHelixSection::GetHelixCards()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHelixSection::SetRecordName(const string record_name)
+void PdbHelixSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -66,14 +64,14 @@ void PdbHelixSection::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHelixSection::Print(ostream &out)
+void PdbHelixSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "============= Helixes ===========" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "============= Helixes ===========" << std::endl;
     for(PdbHelixSection::HelixCardMap::iterator it = helix_cards_.begin(); it != helix_cards_.end(); it++)
     {
-        out << "Helix ID: " << (it)->first << endl;
+        out << "Helix ID: " << (it)->first << std::endl;
         (it)->second->Print();
-        out << endl;
+        out << std::endl;
     }
 }

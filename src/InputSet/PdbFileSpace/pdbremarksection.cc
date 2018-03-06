@@ -4,10 +4,7 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbRemarkSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -20,26 +17,26 @@ PdbRemarkSection::PdbRemarkSection(const std::string& record_name, const std::st
     remark_cards_ = remark_cards;
 }
 
-PdbRemarkSection::PdbRemarkSection(stringstream &stream_block)
+PdbRemarkSection::PdbRemarkSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
-        if(line.find("REMARK") != string::npos)
+        if(line.find("REMARK") != std::string::npos)
         {
             if(!is_record_name_set)
             {
                 record_name_ = line.substr(0,6);
-                Trim(record_name_);
+                gmml::Trim(record_name_);
                 is_record_name_set=true;
             }
-            stringstream remark_cardstream;
-            while(line.find("REMARK") != string::npos)
+            std::stringstream remark_cardstream;
+            while(line.find("REMARK") != std::string::npos)
             {
-                remark_cardstream << line << endl;
+                remark_cardstream << line << std::endl;
                 getline(stream_block,line);
                 temp = line;
             }
@@ -53,11 +50,11 @@ PdbRemarkSection::PdbRemarkSection(stringstream &stream_block)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-string PdbRemarkSection::GetRecordName(){
+std::string PdbRemarkSection::GetRecordName(){
     return record_name_;
 }
 
-string PdbRemarkSection::GetRemarks(){
+std::string PdbRemarkSection::GetRemarks(){
     return remark_cards_;
 }
 
@@ -65,11 +62,11 @@ string PdbRemarkSection::GetRemarks(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbRemarkSection::SetRecordName(const string record_name){
+void PdbRemarkSection::SetRecordName(const std::string record_name){
     record_name_ = record_name;
 }
 
-void PdbRemarkSection::SetRemarks(const string remark_cards){
+void PdbRemarkSection::SetRemarks(const std::string remark_cards){
     remark_cards_ = remark_cards;
 }
 
@@ -80,19 +77,19 @@ void PdbRemarkSection::SetRemarks(const string remark_cards){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbRemarkSection::Print(ostream &out)
+void PdbRemarkSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           remark_cards_ << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           remark_cards_ << std::endl;
 
     // for(PdbRemarkSection::PdbRemarkMap::iterator it = remark_cards_.begin(); it != remark_cards_.end(); it++)
     // {
     //     out << "Remark Serial Number: ";
     //     if((it)->first != iNotSet)
-    //         out << (it)->first << endl;
+    //         out << (it)->first << std::endl;
     //     else
-    //         out << " " << endl;
+    //         out << " " << std::endl;
     //     (it)->second->Print();
-    //     out << endl;
+    //     out << std::endl;
     // }
 }

@@ -1,5 +1,6 @@
 #include "../../includes/MolecularModeling/atom.hpp"
 
+using MolecularModeling::Atom;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTORS                   //
 //////////////////////////////////////////////////////////
@@ -10,7 +11,7 @@ Atom::Atom()
 	this->SetAttributes(NULL, "", CoordinateVector(), "", "", "", NULL, "", false, "");
 } // end Default Constructor
 
-Atom::Atom(Residue* residue, std::string name, CoordinateVector coordinates)
+Atom::Atom(MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates)
 {
 	this->index_ = this->generateAtomIndex();
 	std::stringstream ss;
@@ -19,7 +20,7 @@ Atom::Atom(Residue* residue, std::string name, CoordinateVector coordinates)
 	this->SetAttributes(residue, name, coordinates, "", "", "", NULL, ss.str(), false, "");
 } // end Constructor
 
-Atom::Atom(Residue* residue, std::string name, GeometryTopology::Coordinate coordinate)
+Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate coordinate)
 {
 	this->index_ = this->generateAtomIndex();
 	std::stringstream ss;
@@ -67,7 +68,7 @@ Atom::Atom(const Atom& atom)
 //////////////////////////////////////////////////////////
 //                         ACCESSORS                    //
 //////////////////////////////////////////////////////////
-Residue* Atom::GetResidue() const
+MolecularModeling::Residue* Atom::GetResidue() const
 {
 	return this->residue_;
 } // end GetResidue
@@ -97,7 +98,7 @@ std::string Atom::GetElementSymbol() const
 	return this->element_symbol_;
 } // end GetElementSymbol
 
-AtomNode* Atom::GetNode() const
+MolecularModeling::AtomNode* Atom::GetNode() const
 {
 	return this->node_;
 } // end GetNode
@@ -127,7 +128,7 @@ std::string Atom::GetAtomType() const
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void Atom::SetResidue(Residue* residue)
+void Atom::SetResidue(MolecularModeling::Residue* residue)
 {
 	this->residue_ = residue;
 } // end SetResidue
@@ -175,7 +176,7 @@ void Atom::SetElementSymbol(std::string element_symbol)
 	this->element_symbol_ = element_symbol;
 } // end SetElementSymbol
 
-void Atom::SetNode(AtomNode* node)
+void Atom::SetNode(MolecularModeling::AtomNode* node)
 {
 	this->node_ = node;
 } // end SetNode
@@ -280,13 +281,13 @@ void Atom::Copy(const Atom* atom)
 	this->SetIsRing(atom->GetIsRing());
 	this->SetAtomType(atom->GetAtomType());
 	// Deep Copy objects
-	// this->residue_ = new Residue(atom->GetResidue());
+	// this->residue_ = new MolecularModeling::Residue(atom->GetResidue());
 	this->SetResidue(atom->GetResidue());
 	if(this->node_ != NULL)
 	{
 		delete this->node_;
 	}
-	this->node_ = new AtomNode(atom->GetNode());
+	this->node_ = new MolecularModeling::AtomNode(atom->GetNode());
 	CoordinateVector atomCoordinates = atom->GetCoordinates();
 	for(CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )
 	{
@@ -295,9 +296,9 @@ void Atom::Copy(const Atom* atom)
 	}
 } // end Copy
 
-void Atom::SetAttributes(	Residue* residue, std::string name, CoordinateVector coordinates,
+void Atom::SetAttributes(	MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates,
 							std::string chemical_type, std::string description, std::string element_symbol,
-							AtomNode* node, std::string id, bool is_ring, std::string atom_type)
+							MolecularModeling::AtomNode* node, std::string id, bool is_ring, std::string atom_type)
 {
 	// Having this function call the Setter functions for everything allows for
 	//	simple error handling and debugging because the setting of the variables

@@ -1,7 +1,6 @@
 #include "../../includes/MolecularModeling/quantommechanicatom.hpp"
 
-using namespace std;
-using namespace MolecularModeling;
+using MolecularModeling::QuantomMechanicAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

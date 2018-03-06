@@ -30,13 +30,10 @@
 #include "../Glycan/oligosaccharide.hpp"
 #include "../Glycan/note.hpp"
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "molecule.hpp"
 
 namespace MolecularModeling
 {
-    class Residue;
-    class Atom;
-    class Molecule;
-    class ResidueNode;
     class Assembly
     {
         public:
@@ -1137,13 +1134,13 @@ namespace MolecularModeling
             * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            void ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern, std::string output_file_type = "csv");
+            void ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern/*, std::string output_file_type = "csv"*/);
             /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
             * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            void ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern, std::string output_file_type = "csv");
+            void ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern/*, std::string output_file_type = "csv"*/);
             /*! \fn
             * A function in order to calculate torsion angles based on the result of the query for extracting cooridnates from ontology
             */
@@ -1491,7 +1488,7 @@ namespace MolecularModeling
               * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxC_N(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
+            std::string CheckxC_N(Atom* target, std::string cycle_atoms_str/*, AtomVector& pattern_atoms*/);
             /*! \fn
               * A function in order to check if the target atom is attached to a derivative with the pattern xC-O-C=OCH3 or xC-N-C=OCH3
               * @param target_atom The atom which will be checked for a derivative
@@ -1545,7 +1542,7 @@ namespace MolecularModeling
               * @param pattern_atoms The list of atoms that involved in the pattern
               * @return pattern The discovered pattern of the attached derivative
               */
-            std::string CheckxCOO(Atom* target, std::string cycle_atoms_str, AtomVector& pattern_atoms);
+            std::string CheckxCOO(Atom* target, std::string cycle_atoms_str/*, AtomVector& pattern_atoms*/);
 /** @}*/
             void AddIon(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
             void AddSolvent(double extension, double closeness, Assembly* solvent_component_assembly, std::string lib_file );
@@ -1630,7 +1627,6 @@ namespace MolecularModeling
             NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
             ResidueNodeVector residuenodes_;                /*!< List of residuenodes present in the current object of assembly >*/     //Added by ayush on 11/16/17 for residuenodes in assembly
             MoleculeVector molecules_;                      /*!< List of molecules present in the current object of assembly >*/        //Added by ayush on 11/12/17 for molecules in assembly
-            // PdbFile* pdb_file_;                             /*!< A pointer back to the PdbFile object >*/
     };
 
     struct DistanceCalculationThreadArgument{

@@ -1141,12 +1141,12 @@ namespace PdbFileSpace
             std::string path_;                                      /*!< Path of the given pdb file >*/
             PdbHeaderCard* header_;                                 /*!< Header card >*/
             PdbObsoleteSection* obsolete_;                          /*!<Obsolete section>*/
-            PdbTitleSection* title_;                                   /*!< Title section >*/
-            PdbCompoundSection* compound_;                             /*!< Compound section >*/
+            PdbTitleSection* title_;                                /*!< Title section >*/
+            PdbCompoundSection* compound_;                          /*!< Compound section >*/
             PdbNumModelCard* number_of_models_;                     /*!< Number of models card >*/
-            PdbModelTypeSection* model_type_;                          /*!< Model type section >*/
-            PdbRemarkSection* remark_cards_;                                /*!< Remarks section>*/
-            PdbResidueSequenceSection* residues_sequence_;             /*!< Residue sequence section >*/
+            PdbModelTypeSection* model_type_;                       /*!< Model type section >*/
+            PdbRemarkSection* remark_cards_;                        /*!< Remarks section>*/
+            PdbResidueSequenceSection* residues_sequence_;          /*!< Residue sequence section >*/
             PdbResidueModificationSection* residue_modification_cards_;      /*!< Residue modification section >*/
             PdbHeterogenSection* heterogen_cards_;                          /*!< Heterogen section >*/
             PdbHeterogenNameSection* heterogen_name_cards_;                 /*!< Heterogen name section >*/

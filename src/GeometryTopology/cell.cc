@@ -1,11 +1,9 @@
-#include "../../includes/common.hpp"
 #include "../../includes/GeometryTopology/cell.hpp"
 #include "../../includes/GeometryTopology/coordinate.hpp"
 #include "../../includes/MolecularModeling/assembly.hpp"
 
-using namespace gmml;
-using namespace GeometryTopology;
-using namespace MolecularModeling;
+using GeometryTopology::Cell;	// Do we want to completely exclude "using" statements?
+
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
@@ -18,7 +16,7 @@ Cell::Cell()
     grid_ = NULL;
 }
 
-Cell::Cell(Coordinate* min, Coordinate* max)
+Cell::Cell(GeometryTopology::Coordinate* min, GeometryTopology::Coordinate* max)
 {
     min_corner_ = new Coordinate(min->GetX(), min->GetY(), min->GetZ());
     max_corner_ = new Coordinate(max->GetX(), max->GetY(), max->GetZ());
@@ -27,7 +25,7 @@ Cell::Cell(Coordinate* min, Coordinate* max)
     grid_ = NULL;
 }
 
-Cell::Cell(Grid *grid, Coordinate *min, Coordinate *max)
+Cell::Cell(GeometryTopology::Grid* grid, GeometryTopology::Coordinate *min, GeometryTopology::Coordinate *max)
 {
     min_corner_ = new Coordinate(min->GetX(), min->GetY(), min->GetZ());
     max_corner_ = new Coordinate(max->GetX(), max->GetY(), max->GetZ());
@@ -45,7 +43,7 @@ Cell::Cell(Coordinate* min, Coordinate* max, double charge, double potential_ene
     grid_ = NULL;
 }
 
-Cell::Cell(Grid *grid, Coordinate *min, Coordinate *max, double charge, double potential_energy)
+Cell::Cell(GeometryTopology::Grid* grid, Coordinate *min, Coordinate *max, double charge, double potential_energy)
 {
     min_corner_ = new Coordinate(min->GetX(), min->GetY(), min->GetZ());
     max_corner_ = new Coordinate(max->GetX(), max->GetY(), max->GetZ());
@@ -92,7 +90,7 @@ double Cell::GetCellHeight()
     max_corner_->GetZ() - min_corner_->GetZ();
 }
 
-Grid* Cell::GetGrid()
+GeometryTopology::Grid* Cell::GetGrid()
 {
     return grid_;
 }
@@ -124,7 +122,7 @@ void Cell::SetCellPotentialEnergy(double potential_energy)
     cell_potential_energy_ = potential_energy;
 }
 
-void Cell::SetGrid(Grid *grid)
+void Cell::SetGrid(GeometryTopology::Grid* grid)
 {
     grid_ = grid;
 }
@@ -142,17 +140,17 @@ GeometryTopology::Coordinate* Cell::GetCellCenter()
 void Cell::CalculateCellCharge()
 {
     double charge = 0.0;
-    Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
-    for(Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if(atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX() <= this->GetMaxCorner()->GetX() &&
             atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetY() <= this->GetMaxCorner()->GetY() &&
             atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ() <= this->GetMaxCorner()->GetZ() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX() > this->GetMinCorner()->GetX() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetY() > this->GetMinCorner()->GetY() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ() > this->GetMinCorner()->GetZ())
-            charge += (atom->MolecularDynamicAtom::GetCharge() != dNotSet) ? atom->MolecularDynamicAtom::GetCharge() : 0.0;
+            charge += (atom->MolecularDynamicAtom::GetCharge() != gmml::dNotSet) ? atom->MolecularDynamicAtom::GetCharge() : 0.0;
     }
     cell_charge_ = charge;
 }
@@ -160,11 +158,11 @@ void Cell::CalculateCellCharge()
 void Cell::CalculateCellPotentialEnergy(double ion_radius)
 {
     double potential_energy = 0.0;
-    Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
     Coordinate* center_of_cell = this->GetCellCenter();
-    for(Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         double dist = sqrt((center_of_cell->GetX() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX()) *
                            (center_of_cell->GetX() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX()) +
                            (center_of_cell->GetY() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetY()) *
@@ -172,8 +170,8 @@ void Cell::CalculateCellPotentialEnergy(double ion_radius)
                            (center_of_cell->GetZ() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ()) *
                            (center_of_cell->GetZ() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ()));
 
-        double radius = (atom->MolecularDynamicAtom::GetRadius() != dNotSet) ? atom->MolecularDynamicAtom::GetRadius() : MINIMUM_RADIUS;
-        if(dist < radius + GRID_OFFSET + ion_radius)
+        double radius = (atom->MolecularDynamicAtom::GetRadius() != gmml::dNotSet) ? atom->MolecularDynamicAtom::GetRadius() : gmml::MINIMUM_RADIUS;
+        if(dist < radius + gmml::GRID_OFFSET + ion_radius)
         {
             potential_energy = INFINITY;
             break;
@@ -181,7 +179,7 @@ void Cell::CalculateCellPotentialEnergy(double ion_radius)
         else if(potential_energy == INFINITY)
             break;
         else
-            potential_energy += ((atom->MolecularDynamicAtom::GetCharge() != dNotSet) ? atom->MolecularDynamicAtom::GetCharge() / dist : 0.0);
+            potential_energy += ((atom->MolecularDynamicAtom::GetCharge() != gmml::dNotSet) ? atom->MolecularDynamicAtom::GetCharge() / dist : 0.0);
     }
     cell_potential_energy_ = potential_energy;
 }
@@ -189,17 +187,17 @@ void Cell::CalculateCellPotentialEnergy(double ion_radius)
 void Cell::CalculateBoxCharge()
 {
     double charge = 0.0;
-    Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
-    for(Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if(atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX() <= this->GetMaxCorner()->GetX() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetY() <= this->GetMaxCorner()->GetY() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ() <= this->GetMaxCorner()->GetZ() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX() > this->GetMinCorner()->GetX() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetY() > this->GetMinCorner()->GetY() &&
                 atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ() > this->GetMinCorner()->GetZ())
-        charge += (atom->MolecularDynamicAtom::GetCharge() != dNotSet) ? atom->MolecularDynamicAtom::GetCharge() : 0.0;
+        charge += (atom->MolecularDynamicAtom::GetCharge() != gmml::dNotSet) ? atom->MolecularDynamicAtom::GetCharge() : 0.0;
     }
     cell_charge_ = charge;
 }
@@ -207,11 +205,11 @@ void Cell::CalculateBoxCharge()
 void Cell::CalculateBoxPotentialEnergy()
 {
     double potential_energy = 0.0;
-    Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
     Coordinate* center_of_cell = this->GetCellCenter();
-    for(Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         double dist = sqrt((center_of_cell->GetX() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX()) *
                            (center_of_cell->GetX() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX()) +
                            (center_of_cell->GetY() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetY()) *
@@ -219,9 +217,9 @@ void Cell::CalculateBoxPotentialEnergy()
                            (center_of_cell->GetZ() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ()) *
                            (center_of_cell->GetZ() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetZ()));
         if(dist == 0.0)
-            dist = DIST_EPSILON;
+            dist = gmml::DIST_EPSILON;
         else
-            potential_energy += ((atom->MolecularDynamicAtom::GetCharge() != dNotSet) ? atom->MolecularDynamicAtom::GetCharge() / dist : 0.0);
+            potential_energy += ((atom->MolecularDynamicAtom::GetCharge() != gmml::dNotSet) ? atom->MolecularDynamicAtom::GetCharge() / dist : 0.0);
     }
     cell_potential_energy_ = potential_energy;
 }
@@ -231,4 +229,5 @@ void Cell::CalculateBoxPotentialEnergy()
 //////////////////////////////////////////////////////////
 void Cell::Print(std::ostream &out)
 {
+	out << "";
 }

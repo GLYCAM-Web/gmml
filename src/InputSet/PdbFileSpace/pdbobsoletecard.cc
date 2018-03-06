@@ -3,31 +3,29 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbObsoleteCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbObsoleteCard::PdbObsoleteCard() : replacement_date_(""), identifier_codes_() {}
-PdbObsoleteCard::PdbObsoleteCard(const string &replacement_date,
+PdbObsoleteCard::PdbObsoleteCard(const std::string &replacement_date,
                                 const std::vector<std::string> &identifier_codes) :
                                 replacement_date_(replacement_date),
                                 identifier_codes_(identifier_codes) {}
 
-PdbObsoleteCard::PdbObsoleteCard(stringstream& obsolete_block)
+PdbObsoleteCard::PdbObsoleteCard(std::stringstream& obsolete_block)
 {
-    string line;
+    std::string line;
     bool is_replacement_date_set = false;
-    stringstream ss;
+    std::stringstream ss;
     getline(obsolete_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_replacement_date_set){
             replacement_date_ = line.substr(12,8);
-            Trim(replacement_date_);
+            gmml::Trim(replacement_date_);
             is_replacement_date_set = true;
         }
         ss << line.substr(21,54);
@@ -35,7 +33,7 @@ PdbObsoleteCard::PdbObsoleteCard(stringstream& obsolete_block)
         getline(obsolete_block, line);
         temp = line;
     }
-    string all_identifier_codes_ = ss.str();
+    std::string all_identifier_codes_ = ss.str();
     std::size_t pos = 0, found;
     while ((found = all_identifier_codes_.find_first_of('      ', pos)) != std::string::npos)
     {
@@ -47,12 +45,12 @@ PdbObsoleteCard::PdbObsoleteCard(stringstream& obsolete_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbObsoleteCard::GetReplacementDate()
+std::string PdbObsoleteCard::GetReplacementDate()
 {
     return replacement_date_;
 }
 
-vector<std::string> PdbObsoleteCard::GetIdentifierCodes()
+std::vector<std::string> PdbObsoleteCard::GetIdentifierCodes()
 {
     return identifier_codes_;
 }
@@ -60,12 +58,12 @@ vector<std::string> PdbObsoleteCard::GetIdentifierCodes()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbObsoleteCard::SetReplacementDate(const string replacement_date)
+void PdbObsoleteCard::SetReplacementDate(const std::string replacement_date)
 {
     replacement_date_ = replacement_date;
 }
 
-void PdbObsoleteCard::SetIdentifierCodes(const vector<std::string> identifier_codes)
+void PdbObsoleteCard::SetIdentifierCodes(const std::vector<std::string> identifier_codes)
 {
     identifier_codes_ = identifier_codes;
 }
@@ -77,7 +75,7 @@ void PdbObsoleteCard::SetIdentifierCodes(const vector<std::string> identifier_co
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void  PdbObsoleteCard::Print(ostream &out)
+void  PdbObsoleteCard::Print(std::ostream &out)
 {
     out << "Replacement Date: " << replacement_date_
         << " ";

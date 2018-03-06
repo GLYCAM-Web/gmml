@@ -3,9 +3,7 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbqtFileSpace;
+using PdbqtFileSpace::PdbqtRootCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -15,44 +13,44 @@ PdbqtRootCard::PdbqtRootCard() : record_name_("ROOT")
     root_atoms_ = NULL;
 }
 
-PdbqtRootCard::PdbqtRootCard(stringstream &root_block)
+PdbqtRootCard::PdbqtRootCard(std::stringstream &root_block)
 {
     root_atoms_ = NULL;
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(root_block, line);
-    string temp = line;
-    if(line.find("ROOT") != string::npos)
+    std::string temp = line;
+    if(line.find("ROOT") != std::string::npos)
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
     }
 
     getline(root_block,line);
-    stringstream stream_block;
-    while(line.find("ATOM") != string::npos || line.find("HETATOM") != string::npos)
+    std::stringstream stream_block;
+    while(line.find("ATOM") != std::string::npos || line.find("HETATOM") != std::string::npos)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         getline(root_block,line);
         temp = line;
     }
-    if(line.find("ENDROOT") != string::npos)
+    if(line.find("ENDROOT") != std::string::npos)
     {
-        root_atoms_ = new PdbqtAtomCard(stream_block);
+        root_atoms_ = new PdbqtFileSpace::PdbqtAtomCard(stream_block);
     }
 }
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbqtRootCard::GetRecordName()
+std::string PdbqtRootCard::GetRecordName()
 {
     return record_name_;
 }
-PdbqtAtomCard* PdbqtRootCard::GetRootAtoms()
+PdbqtFileSpace::PdbqtAtomCard* PdbqtRootCard::GetRootAtoms()
 {
     return root_atoms_;
 }
@@ -60,14 +58,14 @@ PdbqtAtomCard* PdbqtRootCard::GetRootAtoms()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbqtRootCard::SetRecordName(const string record_name)
+void PdbqtRootCard::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbqtRootCard::SetRootAtoms(PdbqtAtomCard* root_atoms)
-{    
-    root_atoms_ = new PdbqtAtomCard();
+void PdbqtRootCard::SetRootAtoms(PdbqtFileSpace::PdbqtAtomCard* root_atoms)
+{
+    root_atoms_ = new PdbqtFileSpace::PdbqtAtomCard();
     root_atoms_->SetRecordName(root_atoms->GetRecordName());
     root_atoms_->SetAtoms(root_atoms->GetAtoms());
 }
@@ -79,10 +77,8 @@ void PdbqtRootCard::SetRootAtoms(PdbqtAtomCard* root_atoms)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtRootCard::Print(ostream &out)
+void PdbqtRootCard::Print(std::ostream &out)
 {
     if(root_atoms_ != NULL)
         root_atoms_->Print(out);
 }
-
-

@@ -3,10 +3,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbobsoletesection.hpp"
 #include "../../../includes/utils.hpp"
 
-
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
+using PdbFileSpace::PdbObsoleteSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -25,34 +22,34 @@ PdbObsoleteSection::PdbObsoleteSection(const std::string& record_name,
                                         replacement_date_(replacement_date),
                                         identifier_codes_(identifier_codes) {}
 
-PdbObsoleteSection::PdbObsoleteSection(stringstream &stream_block)
+PdbObsoleteSection::PdbObsoleteSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     bool is_continuation_set = false;
     getline(stream_block, line);
-    string temp = line;
+    std::string temp = line;
     int i = 0;
-    while (!Trim(temp).empty())
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
         if(!is_continuation_set){
             continuation_ = line.substr(8,2);
-            Trim(continuation_);
+            gmml::Trim(continuation_);
             is_continuation_set=true;
         }
-        stringstream obsolete_block;
-        obsolete_block << line << endl;
+        std::stringstream obsolete_block;
+        obsolete_block << line << std::endl;
         getline(stream_block, line);
         temp = line;
         PdbObsoleteCard* obsolete_card = new PdbObsoleteCard(obsolete_block);
         obsolete_cards_[i] = obsolete_card;
         replacement_date_ = obsolete_cards_[i]->GetReplacementDate();
-        vector<string> IDcodes = obsolete_cards_[i]->GetIdentifierCodes();
+        std::vector<std::string> IDcodes = obsolete_cards_[i]->GetIdentifierCodes();
         identifier_codes_.insert(identifier_codes_.end(), IDcodes.begin(), IDcodes.end());
         i++;
     }
@@ -62,22 +59,22 @@ PdbObsoleteSection::PdbObsoleteSection(stringstream &stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbObsoleteSection::GetRecordName()
+std::string PdbObsoleteSection::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbObsoleteSection::GetContinuation()
+std::string PdbObsoleteSection::GetContinuation()
 {
     return continuation_;
 }
 
-string PdbObsoleteSection::GetReplacementDate()
+std::string PdbObsoleteSection::GetReplacementDate()
 {
     return replacement_date_;
 }
 
-vector<string> PdbObsoleteSection::GetIdentifierCodes()
+std::vector<std::string> PdbObsoleteSection::GetIdentifierCodes()
 {
     return identifier_codes_;
 }
@@ -90,7 +87,7 @@ PdbObsoleteSection::ObsoleteCardVector PdbObsoleteSection::GetObsoleteCards()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbObsoleteSection::SetRecordName(const string record_name)
+void PdbObsoleteSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -102,14 +99,14 @@ void PdbObsoleteSection::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbObsoleteSection::Print(ostream &out)
+void PdbObsoleteSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "=========== Obsolete =============" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "=========== Obsolete =============" << std::endl;
     for(PdbObsoleteSection::ObsoleteCardVector::iterator it = obsolete_cards_.begin(); it != obsolete_cards_.end(); it++)
     {
         out << "Obsolete Card: ";
         (*it)->Print(out);
-        out << endl;
+        out << std::endl;
     }
 }

@@ -2,9 +2,7 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbqtFileSpace;
+using PdbqtFileSpace::PdbqtRemarkCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -12,7 +10,7 @@ using namespace PdbqtFileSpace;
 
 PdbqtRemarkCard::PdbqtRemarkCard() : record_name_("REMARK"){}
 
-PdbqtRemarkCard::PdbqtRemarkCard(string line)
+PdbqtRemarkCard::PdbqtRemarkCard(std::string line)
 {
     record_name_ = line.substr(0,6);
     value_ = line.substr(10);
@@ -21,12 +19,12 @@ PdbqtRemarkCard::PdbqtRemarkCard(string line)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbqtRemarkCard::GetRecordName()
+std::string PdbqtRemarkCard::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbqtRemarkCard::GetValue()
+std::string PdbqtRemarkCard::GetValue()
 {
     return value_;
 }
@@ -34,12 +32,12 @@ string PdbqtRemarkCard::GetValue()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbqtRemarkCard::SetRecordName(const string record_name)
+void PdbqtRemarkCard::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbqtRemarkCard::SetValue(const string value)
+void PdbqtRemarkCard::SetValue(const std::string value)
 {
     value_ = value;
 }
@@ -51,8 +49,7 @@ void PdbqtRemarkCard::SetValue(const string value)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtRemarkCard::Print(ostream &out)
+void PdbqtRemarkCard::Print(std::ostream &out)
 {
-    out << "REMARK: " << value_ << endl;
+    out << "REMARK: " << value_ << std::endl;
 }
-

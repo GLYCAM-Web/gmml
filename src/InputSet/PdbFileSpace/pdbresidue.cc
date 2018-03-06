@@ -1,15 +1,18 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbresidue.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
+using PdbFileSpace::PdbResidue;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbResidue::PdbResidue() {}
 
-PdbResidue::PdbResidue(string residue_name, char chain_id, int sequence_number, char insertion_code, char residue_alternate_location) :
-    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(insertion_code), residue_alternate_location_(residue_alternate_location) {}
+PdbResidue::PdbResidue( std::string residue_name, char chain_id,
+                        int sequence_number, char insertion_code,
+                        char residue_alternate_location) :
+    residue_chain_id_(chain_id), residue_name_(residue_name), 
+    residue_sequence_number_(sequence_number), residue_insertion_code_(insertion_code),
+    residue_alternate_location_(residue_alternate_location) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -18,7 +21,7 @@ char PdbResidue::GetResidueChainId()
 {
     return residue_chain_id_;
 }
-string PdbResidue::GetResidueName()
+std::string PdbResidue::GetResidueName()
 {
     return residue_name_;
 }
@@ -42,7 +45,7 @@ void PdbResidue::SetResidueChainId(char residue_chain_id)
 {
     residue_chain_id_ = residue_chain_id;
 }
-void PdbResidue::SetResidueName(const string residue_name)
+void PdbResidue::SetResidueName(const std::string residue_name)
 {
     residue_name_ = residue_name;
 }
@@ -62,20 +65,11 @@ void PdbResidue::SetResidueAlternateLocation(char residue_alternate_location)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbResidue::Print(ostream &out)
+void PdbResidue::Print(std::ostream &out)
 {
     out << "Residue name: " << residue_name_
          << ", Chain id: " << residue_chain_id_
          << ", Sequence number: " << residue_sequence_number_
          << ", Insertion code: " << residue_insertion_code_
-         << ", Alternate location: " << residue_alternate_location_ << endl;
+         << ", Alternate location: " << residue_alternate_location_ << std::endl;
 }
-
-
-
-
-
-
-
-
-

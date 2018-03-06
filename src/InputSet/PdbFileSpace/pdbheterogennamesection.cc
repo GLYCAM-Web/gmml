@@ -4,42 +4,40 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbheterogennamesection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbHeterogenNameSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbHeterogenNameSection::PdbHeterogenNameSection() : record_name_("HETNAM") {}
-PdbHeterogenNameSection::PdbHeterogenNameSection(const string &record_name) : record_name_(record_name) {}
+PdbHeterogenNameSection::PdbHeterogenNameSection(const std::string &record_name) : record_name_(record_name) {}
 
-PdbHeterogenNameSection::PdbHeterogenNameSection(stringstream &stream_block)
+PdbHeterogenNameSection::PdbHeterogenNameSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
-        stringstream heterogen_name_block;
-        heterogen_name_block << line << endl;
-        string heterogen_id = line.substr(11,3);
+        std::stringstream heterogen_name_block;
+        heterogen_name_block << line << std::endl;
+        std::string heterogen_id = line.substr(11,3);
 
         getline(stream_block, line);
         temp = line;
-        while (!Trim(temp).empty() && line.substr(11,3) == heterogen_id){
-            heterogen_name_block << line << endl;
+        while (!gmml::Trim(temp).empty() && line.substr(11,3) == heterogen_id){
+            heterogen_name_block << line << std::endl;
             getline(stream_block, line);
             temp = line;
         }
         PdbHeterogenNameCard* heterogen_name = new PdbHeterogenNameCard(heterogen_name_block);
-        heterogen_id = Trim(heterogen_id);
+        heterogen_id = gmml::Trim(heterogen_id);
         heterogen_name_cards_[heterogen_id] = heterogen_name;
     }
 }
@@ -47,7 +45,7 @@ PdbHeterogenNameSection::PdbHeterogenNameSection(stringstream &stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbHeterogenNameSection::GetRecordName()
+std::string PdbHeterogenNameSection::GetRecordName()
 {
     return record_name_;
 }
@@ -60,7 +58,7 @@ PdbHeterogenNameSection::HeterogenNameCardMap PdbHeterogenNameSection::GetHetero
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameSection::SetRecordName(const string record_name)
+void PdbHeterogenNameSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -72,14 +70,14 @@ void PdbHeterogenNameSection::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameSection::Print(ostream &out)
+void PdbHeterogenNameSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "========== Heterogen Names ==========" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "========== Heterogen Names ==========" << std::endl;
     for(PdbHeterogenNameSection::HeterogenNameCardMap::iterator it = heterogen_name_cards_.begin(); it != heterogen_name_cards_.end(); it++)
     {
-        out << "Heterogen ID: " << (it)->first << endl;
+        out << "Heterogen ID: " << (it)->first << std::endl;
         (it)->second->Print();
-        out << endl;
+        out << std::endl;
     }
 }

@@ -5,17 +5,15 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbHelixCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHelixCard::PdbHelixCard() : helix_id_(""), helix_serial_number_(dNotSet), helix_class_(POLYPROLINE), comment_(""), helix_length_(dNotSet) {}
+PdbHelixCard::PdbHelixCard() : helix_id_(""), helix_serial_number_(gmml::dNotSet), helix_class_(POLYPROLINE), comment_(""), helix_length_(gmml::dNotSet) {}
 
-PdbHelixCard::PdbHelixCard(const string &helix_id, int helix_serial_number, HelixResidueVector helix_residues,
-                   PdbHelixClass helix_class, const string &comment, double helix_length)
+PdbHelixCard::PdbHelixCard(const std::string &helix_id, int helix_serial_number, HelixResidueVector helix_residues,
+                   PdbFileSpace::PdbHelixClass helix_class, const std::string &comment, double helix_length)
     : helix_id_(helix_id), helix_serial_number_(helix_serial_number), helix_class_(helix_class), comment_(comment), helix_length_(helix_length)
 {
     helix_residues_.clear();
@@ -25,52 +23,52 @@ PdbHelixCard::PdbHelixCard(const string &helix_id, int helix_serial_number, Heli
     }
 }
 
-PdbHelixCard::PdbHelixCard(stringstream& stream_block)
+PdbHelixCard::PdbHelixCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         helix_id_ = line.substr(11, 3);
-        Trim(helix_id_);
+        gmml::Trim(helix_id_);
         if(line.substr(7, 3) == "   ")
-            helix_serial_number_ = iNotSet;
+            helix_serial_number_ = gmml::iNotSet;
         else
-            helix_serial_number_ = ConvertString<int>(line.substr(7,3));
+            helix_serial_number_ = gmml::ConvertString<int>(line.substr(7,3));
 
-        string temp0;
+        std::string temp0;
         char temp1, temp2;
         int temp3;
         temp0 = line.substr(15, 3);
-        temp0 = Trim(temp0);
+        temp0 = gmml::Trim(temp0);
         if(line.substr(19,1) == " ")
             temp1 = ' ';
         else
-            temp1 = ConvertString<char>(line.substr(19, 1));
+            temp1 = gmml::ConvertString<char>(line.substr(19, 1));
         if(line.substr(25,1) == " ")
             temp2 = ' ';
         else
-            temp2 = ConvertString<char>(line.substr(25, 1));
+            temp2 = gmml::ConvertString<char>(line.substr(25, 1));
         if(line.substr(21, 4) == "    ")
-            temp3 = iNotSet;
+            temp3 = gmml::iNotSet;
         else
-            temp3 = ConvertString<int>(line.substr(21, 4));
+            temp3 = gmml::ConvertString<int>(line.substr(21, 4));
         PdbHelixResidue* initial_residue = new PdbHelixResidue(temp0, temp1, temp3, temp2);
 
         temp0 = line.substr(27,3);
         if(line.substr(31,1) == " ")
             temp1 = ' ';
         else
-            temp1 = ConvertString<char>(line.substr(31, 1));
+            temp1 = gmml::ConvertString<char>(line.substr(31, 1));
         if(line.substr(37,1) == " ")
             temp2 = ' ';
         else
-            temp2 = ConvertString<char>(line.substr(37, 1));
+            temp2 = gmml::ConvertString<char>(line.substr(37, 1));
         if(line.substr(33,4) == "    ")
-            temp3 = iNotSet;
+            temp3 = gmml::iNotSet;
         else
-            temp3 = ConvertString<int>(line.substr(33, 4));
+            temp3 = gmml::ConvertString<int>(line.substr(33, 4));
         PdbHelixResidue* terminal_residue = new PdbHelixResidue(temp0, temp1, temp3, temp2);
 
         helix_residues_.push_back(initial_residue);
@@ -79,9 +77,9 @@ PdbHelixCard::PdbHelixCard(stringstream& stream_block)
 
         int helix_class;
         if(line.substr(38, 2) == "  ")
-            helix_class = iNotSet;
+            helix_class = gmml::iNotSet;
         else
-            helix_class = ConvertString<int>(line.substr(38,2));
+            helix_class = gmml::ConvertString<int>(line.substr(38,2));
         switch(helix_class)
         {
             case 1:
@@ -114,15 +112,15 @@ PdbHelixCard::PdbHelixCard(stringstream& stream_block)
             case 10:
                 helix_class_ = POLYPROLINE;
                 break;
-            case iNotSet:
+            case gmml::iNotSet:
                 helix_class_ = UnknownHelix;
         }
         comment_ = line.substr(40, 30);
-        Trim(comment_);
+        gmml::Trim(comment_);
         if(line.substr(71, 5) == "     ")
-            helix_length_ = dNotSet;
+            helix_length_ = gmml::dNotSet;
         else
-            helix_length_ = ConvertString<double>(line.substr(71,5));
+            helix_length_ = gmml::ConvertString<double>(line.substr(71,5));
 
         getline(stream_block, line);
         temp = line;
@@ -133,7 +131,7 @@ PdbHelixCard::PdbHelixCard(stringstream& stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbHelixCard::GetHelixId()
+std::string PdbHelixCard::GetHelixId()
 {
     return helix_id_;
 }
@@ -148,12 +146,12 @@ PdbHelixCard::HelixResidueVector PdbHelixCard::GetHelixResidues()
     return helix_residues_;
 }
 
-PdbHelixClass PdbHelixCard::GetHelixClass()
+PdbFileSpace::PdbHelixClass PdbHelixCard::GetHelixClass()
 {
     return helix_class_;
 }
 
-string PdbHelixCard::GetComment()
+std::string PdbHelixCard::GetComment()
 {
     return comment_;
 }
@@ -166,7 +164,7 @@ double PdbHelixCard::GetHelixLength()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHelixCard::SetHelixId(const string helix_id)
+void PdbHelixCard::SetHelixId(const std::string helix_id)
 {
     helix_id_ = helix_id;
 }
@@ -190,12 +188,12 @@ void PdbHelixCard::AddHelixResidue(PdbHelixResidue *helix_residue)
     helix_residues_.push_back(helix_residue);
 }
 
-void PdbHelixCard::SetHelixClass(PdbHelixClass helix_class)
+void PdbHelixCard::SetHelixClass(PdbFileSpace::PdbHelixClass helix_class)
 {
     helix_class_ = helix_class;
 }
 
-void PdbHelixCard::SetComment(const string &comment)
+void PdbHelixCard::SetComment(const std::string &comment)
 {
     comment_ = comment;
 }
@@ -212,16 +210,16 @@ void PdbHelixCard::SetHelixLength(double helix_length)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHelixCard::Print(ostream &out)
+void PdbHelixCard::Print(std::ostream &out)
 {
     out << "Helix ID: " << helix_id_
         << ", Helix Serial Number: ";
-    if(helix_serial_number_ != iNotSet)
+    if(helix_serial_number_ != gmml::iNotSet)
         out << helix_serial_number_;
     else
         out << " ";
-    out << endl
-        << "=============== Helix Residues ==============" << endl;
+    out << std::endl
+        << "=============== Helix Residues ==============" << std::endl;
     for(PdbHelixCard::HelixResidueVector::iterator it = helix_residues_.begin(); it != helix_residues_.end(); it++)
     {
         (*it)->Print(out);
@@ -233,9 +231,9 @@ void PdbHelixCard::Print(ostream &out)
         out << " ";
     out << ", Comments: " << comment_
         << "Helix Length: ";
-    if(helix_length_ != dNotSet)
+    if(helix_length_ != gmml::dNotSet)
         out << helix_length_ ;
     else
         out << " ";
-    out << endl << endl;
+    out << std::endl << std::endl;
 }

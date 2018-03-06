@@ -1,8 +1,7 @@
 
 #include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyDihedralType;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -76,7 +75,7 @@ void TopologyDihedralType::SetForceConstant(double force_constant)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyDihedralType::Print(ostream &out)
+void TopologyDihedralType::Print(std::ostream &out)
 {
     out << "Dihedral index: " << index_
          << ", Periodicity: " << periodicity_
@@ -85,6 +84,3 @@ void TopologyDihedralType::Print(ostream &out)
          << ", SCNB: " << scnb_
          << ", Force constant: " << force_constant_;
 }
-
-
-

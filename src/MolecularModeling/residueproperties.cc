@@ -1,8 +1,7 @@
 #include "../../includes/MolecularModeling/residueproperties.hpp"
 
+using MolecularModeling::ResidueProperties;
 
-using namespace std;
-using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -35,9 +34,8 @@ void ResidueProperties::SetIsResidueSolvent(bool is_residue_solvent)
 //////////////////////////////////////////////////////////
 
 
-void ResidueProperties::Print(ostream &out)
+void ResidueProperties::Print(std::ostream &out)
 {
-     out << "------------------------ Residue Properties --------------------------" << endl;
-     out<<"Is Residue Solvent : "<< is_residue_solvent_<<endl;
+     out << "------------------------ Residue Properties --------------------------" << std::endl;
+     out << "Is Residue Solvent : " << is_residue_solvent_ << std::endl;
 }
-

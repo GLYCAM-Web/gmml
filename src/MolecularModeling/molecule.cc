@@ -1,14 +1,13 @@
-#include "../../includes/MolecularModeling/Molecule.hpp"
+#include "../../includes/MolecularModeling/molecule.hpp"
 
+using MolecularModeling::Molecule;
 
-using namespace std;
-using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 Molecule::Molecule(){
 
-    cout<<"Molecule class is called"<<endl;
+    std::cout<<"Molecule class is called"<<std::endl;
 }
 
 //////////////////////////////////////////////////////////
@@ -60,8 +59,7 @@ void Molecule::SetMoleculeResidues(ResidueVector molecule_residues)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Molecule::Print(ostream &out)
+void Molecule::Print(std::ostream &out)
 {
-        out<<"Printing molecule details"<<endl;
+        out<<"Printing molecule details"<<std::endl;
 }
-

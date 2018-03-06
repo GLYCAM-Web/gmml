@@ -2,23 +2,22 @@
 #include "../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyDihedral;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 TopologyDihedral::TopologyDihedral() {}
 
-TopologyDihedral::TopologyDihedral(vector<string> dihedral_atoms, vector<string> residue_names)
+TopologyDihedral::TopologyDihedral(std::vector<std::string> dihedral_atoms, std::vector<std::string> residue_names)
 {
     dihedrals_.clear();
-    for(vector<string>::iterator it = dihedral_atoms.begin(); it != dihedral_atoms.end(); it++)
+    for(std::vector<std::string>::iterator it = dihedral_atoms.begin(); it != dihedral_atoms.end(); it++)
     {
         dihedrals_.push_back(*it);
     }
     residue_names_.clear();
-    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    for(std::vector<std::string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
     {
         residue_names_.push_back(*it);
     }
@@ -27,11 +26,11 @@ TopologyDihedral::TopologyDihedral(vector<string> dihedral_atoms, vector<string>
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-vector<string> TopologyDihedral::GetDihedrals()
+std::vector<std::string> TopologyDihedral::GetDihedrals()
 {
     return dihedrals_;
 }
-TopologyDihedralType* TopologyDihedral::GetDihedralType()
+TopologyFileSpace::TopologyDihedralType* TopologyDihedral::GetDihedralType()
 {
     return dihedral_type_;
 }
@@ -47,7 +46,7 @@ bool TopologyDihedral::GetIncludingHydrogen()
 {
     return including_hydrogen_;
 }
-vector<string> TopologyDihedral::GetResidueNames()
+std::vector<std::string> TopologyDihedral::GetResidueNames()
 {
     return residue_names_;
 }
@@ -55,15 +54,15 @@ vector<string> TopologyDihedral::GetResidueNames()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyDihedral::SetDihedrals(vector<string> dihedrals)
+void TopologyDihedral::SetDihedrals(std::vector<std::string> dihedrals)
 {
     dihedrals_.clear();
-    for(vector<string>::iterator it = dihedrals.begin(); it != dihedrals.end(); it++)
+    for(std::vector<std::string>::iterator it = dihedrals.begin(); it != dihedrals.end(); it++)
     {
         dihedrals_.push_back(*it);
     }
 }
-void TopologyDihedral::SetDihedralType(TopologyDihedralType* dihedral_type)
+void TopologyDihedral::SetDihedralType(TopologyFileSpace::TopologyDihedralType* dihedral_type)
 {
     dihedral_type_ = dihedral_type;
 }
@@ -79,10 +78,10 @@ void TopologyDihedral::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
-void TopologyDihedral::SetResidueNames(vector<string> residue_names)
+void TopologyDihedral::SetResidueNames(std::vector<std::string> residue_names)
 {
     residue_names_.clear();
-    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    for(std::vector<std::string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
     {
         residue_names_.push_back(*it);
     }
@@ -95,10 +94,10 @@ void TopologyDihedral::SetResidueNames(vector<string> residue_names)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyDihedral::Print(ostream &out)
+void TopologyDihedral::Print(std::ostream &out)
 {
     out << "Dihedral: " << residue_names_.at(0) << ":" << dihedrals_.at(0) << "-" << residue_names_.at(1) << ":" << dihedrals_.at(1) << "-" <<  residue_names_.at(3) << ":"  <<
-           dihedrals_.at(2) << "-" << residue_names_.at(3) << ":" << dihedrals_.at(3) << endl;
+           dihedrals_.at(2) << "-" << residue_names_.at(3) << ":" << dihedrals_.at(3) << std::endl;
     out << "\t ";
     dihedral_type_->Print(out);
     out << ", Including Hydrogen: ";
@@ -116,10 +115,5 @@ void TopologyDihedral::Print(ostream &out)
         out << "YES";
     else
         out << "NO";
-    out << endl;
+    out << std::endl;
 }
-
-
-
-
-

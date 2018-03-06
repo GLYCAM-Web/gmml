@@ -3,34 +3,32 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace CondensedSequenceSpace;
+using CondensedSequenceSpace::CondensedSequenceGlycam06Residue;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 CondensedSequenceGlycam06Residue::CondensedSequenceGlycam06Residue(){}
 
-CondensedSequenceGlycam06Residue::CondensedSequenceGlycam06Residue(string name) : name_(name), parent_id_(-1), is_derivative_(false) {} //has_parent_(false){}
+CondensedSequenceGlycam06Residue::CondensedSequenceGlycam06Residue(std::string name) : name_(name), is_derivative_(false), parent_id_(-1) {} //has_parent_(false){}
 
-CondensedSequenceGlycam06Residue::CondensedSequenceGlycam06Residue(string name, string anomeric_carbon, string parent_oxygen, bool is_derivative) :
-    name_(name), anomeric_carbon_(anomeric_carbon), parent_oxygen_(parent_oxygen), parent_id_(0), is_derivative_(is_derivative) {}
+CondensedSequenceGlycam06Residue::CondensedSequenceGlycam06Residue(std::string name, std::string anomeric_carbon, std::string parent_oxygen, bool is_derivative) :
+    name_(name), anomeric_carbon_(anomeric_carbon), parent_oxygen_(parent_oxygen), is_derivative_(is_derivative), parent_id_(0) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string CondensedSequenceGlycam06Residue::GetName()
+std::string CondensedSequenceGlycam06Residue::GetName()
 {
     return name_;
 }
 
-string CondensedSequenceGlycam06Residue::GetAnomericCarbon()
+std::string CondensedSequenceGlycam06Residue::GetAnomericCarbon()
 {
     return anomeric_carbon_;
 }
 
-string CondensedSequenceGlycam06Residue::GetParentOxygen()
+std::string CondensedSequenceGlycam06Residue::GetParentOxygen()
 {
     return parent_oxygen_;
 }
@@ -48,17 +46,17 @@ int CondensedSequenceGlycam06Residue::GetParentId()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void CondensedSequenceGlycam06Residue::SetName(string name)
+void CondensedSequenceGlycam06Residue::SetName(std::string name)
 {
     name_ = name;
 }
 
-void CondensedSequenceGlycam06Residue::SetAnomericCarbon(string anomeric_carbon)
+void CondensedSequenceGlycam06Residue::SetAnomericCarbon(std::string anomeric_carbon)
 {
     anomeric_carbon_ = anomeric_carbon;
 }
 
-void CondensedSequenceGlycam06Residue::SetParentOxygen(string parent_oxygen)
+void CondensedSequenceGlycam06Residue::SetParentOxygen(std::string parent_oxygen)
 {
     parent_oxygen_ = parent_oxygen;
 }
@@ -80,11 +78,7 @@ void CondensedSequenceGlycam06Residue::SetParentId(int parent_id)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void CondensedSequenceGlycam06Residue::Print(ostream &out)
-{}
-
-
-
-
-
-
+void CondensedSequenceGlycam06Residue::Print(std::ostream &out)
+{
+    out << "";
+}

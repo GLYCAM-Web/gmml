@@ -1,30 +1,28 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbModelTypeSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbModelTypeSection::PdbModelTypeSection() : record_name_("MDLTYP") {}
 
-PdbModelTypeSection::PdbModelTypeSection(const string &record_name, const vector<string> &comments) : record_name_(record_name), comments_(comments) {}
+PdbModelTypeSection::PdbModelTypeSection(const std::string &record_name, const std::vector<std::string> &comments) : record_name_(record_name), comments_(comments) {}
 
-PdbModelTypeSection::PdbModelTypeSection(stringstream& stream_block)
+PdbModelTypeSection::PdbModelTypeSection(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
-    stringstream ss;
-    string temp_comments;
+    std::stringstream ss;
+    std::string temp_comments;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
         ss << line.substr(10,70);
@@ -33,22 +31,22 @@ PdbModelTypeSection::PdbModelTypeSection(stringstream& stream_block)
         temp = line;
     }
     temp_comments = ss.str();
-    comments_ = Split(temp_comments, ",");
-    for(vector<string>::iterator it = comments_.begin(); it != comments_.end(); it++)
+    comments_ = gmml::Split(temp_comments, ",");
+    for(std::vector<std::string>::iterator it = comments_.begin(); it != comments_.end(); it++)
     {
-        Trim(*it);
+        gmml::Trim(*it);
     }
 }
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbModelTypeSection::GetRecordName()
+std::string PdbModelTypeSection::GetRecordName()
 {
     return record_name_;
 }
 
-vector<string> PdbModelTypeSection::GetComments()
+std::vector<std::string> PdbModelTypeSection::GetComments()
 {
     return comments_;
 }
@@ -56,15 +54,15 @@ vector<string> PdbModelTypeSection::GetComments()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbModelTypeSection::SetRecordName(const string record_name)
+void PdbModelTypeSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbModelTypeSection::SetComments(const vector<string> comments)
+void PdbModelTypeSection::SetComments(const std::vector<std::string> comments)
 {
     comments_.clear();
-    for(vector<string>::const_iterator it = comments.begin(); it != comments.end(); it++)
+    for(std::vector<std::string>::const_iterator it = comments.begin(); it != comments.end(); it++)
     {
         comments_.push_back(*it);
     }
@@ -77,12 +75,12 @@ void PdbModelTypeSection::SetComments(const vector<string> comments)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbModelTypeSection::Print(ostream &out)
+void PdbModelTypeSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl << "Comments: ";
-    for(vector<string>::iterator it = comments_.begin(); it != comments_.end(); it++)
+    out << "Record Name: " << record_name_ << std::endl << "Comments: ";
+    for(std::vector<std::string>::iterator it = comments_.begin(); it != comments_.end(); it++)
     {
         out << (*it) << ", ";
     }
-    out << endl << endl;
+    out << std::endl << std::endl;
 }

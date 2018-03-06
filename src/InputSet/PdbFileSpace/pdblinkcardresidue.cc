@@ -3,17 +3,15 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbLinkCardResidue;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbLinkCardResidue::PdbLinkCardResidue() : atom_name_(""), alternate_location_indicator_(' '), residue_name_(""), residue_chain_id_(' '),
-    residue_sequence_number_(iNotSet), residue_insertion_code_(' '), symmetry_operator_(iNotSet) {}
+    residue_sequence_number_(gmml::iNotSet), residue_insertion_code_(' '), symmetry_operator_(gmml::iNotSet) {}
 
-PdbLinkCardResidue::PdbLinkCardResidue(const string &atom_name, char alternate_location_indicator, const string &residue_name,
+PdbLinkCardResidue::PdbLinkCardResidue(const std::string &atom_name, char alternate_location_indicator, const std::string &residue_name,
                                char residue_chain_id, int residue_sequence_number, char residue_insertion_code, int symmetry_operator)
     : atom_name_(atom_name), alternate_location_indicator_(alternate_location_indicator), residue_name_(residue_name),
       residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code),
@@ -32,7 +30,7 @@ char PdbLinkCardResidue::GetAlternateLocationIndicator()
     return alternate_location_indicator_;
 }
 
-string PdbLinkCardResidue::GetResidueName()
+std::string PdbLinkCardResidue::GetResidueName()
 {
     return residue_name_;
 }
@@ -60,7 +58,7 @@ int PdbLinkCardResidue::GetSymmetryOperator()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbLinkCardResidue::SetAtomName(const string atom_name)
+void PdbLinkCardResidue::SetAtomName(const std::string atom_name)
 {
     atom_name_ = atom_name;
 }
@@ -70,7 +68,7 @@ void PdbLinkCardResidue::SetAlternateLocationIndicator(char alternate_location_i
     alternate_location_indicator_ = alternate_location_indicator;
 }
 
-void PdbLinkCardResidue::SetResidueName(const string residue_name)
+void PdbLinkCardResidue::SetResidueName(const std::string residue_name)
 {
     residue_name_ = residue_name;
 }
@@ -102,22 +100,22 @@ void PdbLinkCardResidue::SetSymmetryOperator(int symmetry_operator)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbLinkCardResidue::Print(ostream &out)
+void PdbLinkCardResidue::Print(std::ostream &out)
 {
     out << "Atom Name: " << atom_name_
         << ", Alterante Location Identifier: " << alternate_location_indicator_
         << ", Residue Name: " << residue_name_
         << ", Residue Chain Identifier: " << residue_chain_id_
         << ", Residue Sequence Number: ";
-    if(residue_sequence_number_ != iNotSet)
+    if(residue_sequence_number_ != gmml::iNotSet)
         out << residue_sequence_number_;
     else
         out << " ";
     out << ", Residue Insertion Code: " << residue_insertion_code_
         << ", Symmetry Operator: ";
-    if(symmetry_operator_ != iNotSet)
+    if(symmetry_operator_ != gmml::iNotSet)
         out << symmetry_operator_;
     else
         out << " ";
-    out << endl << endl;
+    out << std::endl << std::endl;
 }

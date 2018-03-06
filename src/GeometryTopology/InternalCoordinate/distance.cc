@@ -1,7 +1,6 @@
 #include "../../../includes/GeometryTopology/InternalCoordinate/distance.hpp"
 
-using namespace std;
-using namespace GeometryTopology;
+using GeometryTopology::Distance;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -43,9 +42,7 @@ void Distance::SetLenght(double length)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Distance::Print(ostream &out)
+void Distance::Print(std::ostream &out)
 {
+    out << "";
 }
-
-
-

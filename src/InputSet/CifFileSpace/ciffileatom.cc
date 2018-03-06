@@ -2,9 +2,7 @@
 #include "../../../includes/InputSet/CifFileSpace/ciffileatom.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace CifFileSpace;
-using namespace gmml;
+using CifFileSpace::CifFileAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -14,15 +12,15 @@ CifFileAtom::CifFileAtom() {}
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string CifFileAtom::GetAtomName()
+std::string CifFileAtom::GetAtomName()
 {
     return atom_name_;
 }
-string CifFileAtom::GetAlternateAtomName()
+std::string CifFileAtom::GetAlternateAtomName()
 {
     return alternate_atom_name_;
 }
-string CifFileAtom::GetElementSymbol()
+std::string CifFileAtom::GetElementSymbol()
 {
     return element_symbol_;
 }
@@ -44,11 +42,11 @@ GeometryTopology::Coordinate* CifFileAtom::GetCoordinateIdeal()
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void CifFileAtom::SetAtomName(string atom_name)
+void CifFileAtom::SetAtomName(std::string atom_name)
 {
     atom_name_ = atom_name;
 }
-void CifFileAtom::SetAlternateAtomName(string alternate_atom_name)
+void CifFileAtom::SetAlternateAtomName(std::string alternate_atom_name)
 {
     alternate_atom_name_ = alternate_atom_name;
 }
@@ -56,7 +54,7 @@ void CifFileAtom::SetCharge(double charge)
 {
     charge_ = charge;
 }
-void CifFileAtom::SetElementSymbol(string element_symbol)
+void CifFileAtom::SetElementSymbol(std::string element_symbol)
 {
     element_symbol_ = element_symbol;
 }
@@ -72,8 +70,7 @@ void CifFileAtom::SetCoordinateIdeal(GeometryTopology::Coordinate *coordinate_id
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void CifFileAtom::Print(ostream &out)
+void CifFileAtom::Print(std::ostream &out)
 {
+    out << "";
 }
-
-

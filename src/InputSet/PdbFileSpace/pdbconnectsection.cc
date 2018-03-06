@@ -2,9 +2,7 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbConnectSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -14,38 +12,38 @@ PdbConnectSection::PdbConnectSection() : record_name_("CONECT")
     bonded_atom_serial_numbers_ = BondedAtomsSerialNumbersMap();
 }
 
-PdbConnectSection::PdbConnectSection(stringstream &stream_block)
+PdbConnectSection::PdbConnectSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
 
         int atom_serial_number;
         if(line.substr(6, 5) != "     ")
-            atom_serial_number = ConvertString<int>(line.substr(6,5));
+            atom_serial_number = gmml::ConvertString<int>(line.substr(6,5));
         else
-            atom_serial_number = iNotSet;
-        vector<int> bonded_atom_serial_numbers;
+            atom_serial_number = gmml::iNotSet;
+        std::vector<int> bonded_atom_serial_numbers;
         if(line.substr(11,5) != "     ")
-            bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(11,5)));
+            bonded_atom_serial_numbers.push_back(gmml::ConvertString<int>(line.substr(11,5)));
         if(line.substr(16,5) != "     ")
-            bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(16,5)));
+            bonded_atom_serial_numbers.push_back(gmml::ConvertString<int>(line.substr(16,5)));
         if(line.substr(21,5) != "     ")
-            bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(21,5)));
+            bonded_atom_serial_numbers.push_back(gmml::ConvertString<int>(line.substr(21,5)));
         if(line.substr(26,5) != "     ")
-            bonded_atom_serial_numbers.push_back(ConvertString<int>(line.substr(26,5)));
+            bonded_atom_serial_numbers.push_back(gmml::ConvertString<int>(line.substr(26,5)));
         BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers_.find(atom_serial_number);
         if(it->first == atom_serial_number)
         {
-            for(vector<int>::iterator it = bonded_atom_serial_numbers.begin(); it != bonded_atom_serial_numbers.end(); it++)
+            for(std::vector<int>::iterator it = bonded_atom_serial_numbers.begin(); it != bonded_atom_serial_numbers.end(); it++)
                 bonded_atom_serial_numbers_.find(atom_serial_number)->second.push_back((*it));
         }
         else
@@ -60,7 +58,7 @@ PdbConnectSection::PdbConnectSection(stringstream &stream_block)
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbConnectSection::GetRecordName()
+std::string PdbConnectSection::GetRecordName()
 {
     return record_name_;
 }
@@ -73,7 +71,7 @@ PdbConnectSection::BondedAtomsSerialNumbersMap PdbConnectSection::GetBondedAtoms
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbConnectSection::SetRecordName(const string record_name)
+void PdbConnectSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -84,7 +82,7 @@ void PdbConnectSection::SetBondedAtomsSerialNumbers(BondedAtomsSerialNumbersMap 
     for(BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers.begin(); it != bonded_atom_serial_numbers.end(); it++)
     {
         int source_serial_number = (*it).first;
-        vector<int> bonded_serial_numbers = (*it).second;
+        std::vector<int> bonded_serial_numbers = (*it).second;
         bonded_atom_serial_numbers_[source_serial_number] = bonded_serial_numbers;
     }
 }
@@ -92,22 +90,22 @@ void PdbConnectSection::SetBondedAtomsSerialNumbers(BondedAtomsSerialNumbersMap 
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbConnectSection::Print(ostream &out)
+void PdbConnectSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "================= Bonded Atoms Serial Numbers ================" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "================= Bonded Atoms Serial Numbers ================" << std::endl;
     for(PdbConnectSection::BondedAtomsSerialNumbersMap::iterator it = bonded_atom_serial_numbers_.begin(); it != bonded_atom_serial_numbers_.end(); it++)
     {
         out << "Atom Serial Number: ";
-        if((it)->first != iNotSet)
-            out << (it)->first << endl;
+        if((it)->first != gmml::iNotSet)
+            out << (it)->first << std::endl;
         else
-            out << " " << endl;
+            out << " " << std::endl;
         for(unsigned int i = 0; i < (it)->second.size(); i++)
         {
             out << (it)->second.at(i) << ", ";
         }
-        out << endl;
+        out << std::endl;
     }
-    out << endl;
+    out << std::endl;
 }

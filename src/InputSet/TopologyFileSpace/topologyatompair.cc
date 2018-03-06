@@ -1,21 +1,20 @@
 
 #include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyAtomPair;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 TopologyAtomPair::TopologyAtomPair() {}
 
-TopologyAtomPair::TopologyAtomPair(string pair_type, double coefficient_a, double coefficient_b, int index) :
+TopologyAtomPair::TopologyAtomPair(std::string pair_type, double coefficient_a, double coefficient_b, int index) :
     pair_type_(pair_type), coefficient_a_(coefficient_a), coefficient_b_(coefficient_b), index_(index) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string TopologyAtomPair::GetPairType()
+std::string TopologyAtomPair::GetPairType()
 {
     return pair_type_;
 }
@@ -35,7 +34,7 @@ int TopologyAtomPair::GetIndex()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAtomPair::SetPairType(string pair_type)
+void TopologyAtomPair::SetPairType(std::string pair_type)
 {
     pair_type_ = pair_type;
 }
@@ -59,8 +58,7 @@ void TopologyAtomPair::SetIndex(int index)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyAtomPair::Print(ostream &out)
+void TopologyAtomPair::Print(std::ostream &out)
 {
-    out << pair_type_ << ": a = " << coefficient_a_ << "; b = " << coefficient_b_ << endl;
+    out << pair_type_ << ": a = " << coefficient_a_ << "; b = " << coefficient_b_ << std::endl;
 }
-

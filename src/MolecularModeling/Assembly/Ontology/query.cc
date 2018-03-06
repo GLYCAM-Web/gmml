@@ -68,31 +68,19 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string stereo_condensed_name, string name, string condensed_name, string output_file_type)
+void Assembly::ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_condensed_name, std::string name, std::string condensed_name, std::string output_file_type)
 {
     if(stereo_name.compare("") == 0 && stereo_condensed_name.compare("") == 0 && name.compare("") == 0 && condensed_name.compare("") == 0)
     {
-        cout << "Please specify at least one of the arguments and set the others as \"\" " << endl;
+        std::cout << "Please specify at least one of the arguments and set the others as \"\" " << std::endl;
         return;
     }
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?residue_id ?stereo_name ?stereo_condensed_name ?name ?condensed_name ?shape " << Ontology::WHERE_CLAUSE;
     query << "?pdb_file     :hasOligo   ?oligo.\n";
     query << "?oligo        :hasCore    ?mono.\n";
@@ -121,14 +109,14 @@ void Assembly::ExtractOntologyInfoByNameOfGlycan(string stereo_name, string ster
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring_type, string configuration, string output_file_type)
+void Assembly::ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration, std::string output_file_type)
 {
     if(isomer.compare("") == 0 && ring_type.compare("") == 0 && configuration.compare("") == 0)
     {
-        cout << "Please specify at least one of the arguments and set the others as \"\" " << endl;
+        std::cout << "Please specify at least one of the arguments and set the others as \"\" " << std::endl;
         return;
     }
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?stereo_name ?stereo_condensed_name ?name ?condensed_name ?shape " << Ontology::WHERE_CLAUSE;
     query << "?pdb_file     :hasOligo   ?oligo.\n";
     query << "?oligo        :hasCore    ?mono.\n";
@@ -155,14 +143,14 @@ void Assembly::ExtractOntologyInfoByNamePartsOfGlycan(string isomer, string ring
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByPDBID(string pdb_id, string output_file_type)
+void Assembly::ExtractOntologyInfoByPDBID(std::string pdb_id, std::string output_file_type)
 {
     if(pdb_id.compare("") == 0)
     {
-        cout << "Please specify the input argument." << endl;
+        std::cout << "Please specify the input argument." << std::endl;
         return;
     }
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
     query <<  ":" << pdb_id << "    :hasOligo   ?oligo.\n";
     query << "?oligo    :oligoName 	?oligo_sequence.\n";
@@ -178,14 +166,14 @@ void Assembly::ExtractOntologyInfoByPDBID(string pdb_id, string output_file_type
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code, string output_file_type)
+void Assembly::ExtractOntologyInfoByStringChemicalCode(std::string chemical_code, std::string output_file_type)
 {
     if(chemical_code.compare("") == 0)
     {
-        cout << "Please specify the input argument." << endl;
+        std::cout << "Please specify the input argument." << std::endl;
         return;
     }
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?name ?short_name ?stereo_name ?stereo_short_name " << Ontology::WHERE_CLAUSE;
     query << "?mono         :stereochemistryChemicalCode	   \"" << chemical_code << "\".\n";
     query << "?pdb_file     :hasOligo	?oligo.\n";
@@ -201,9 +189,9 @@ void Assembly::ExtractOntologyInfoByStringChemicalCode(string chemical_code, str
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_name, string output_file_type)
+void Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(std::string oligo_name, std::string output_file_type)
 {
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
 
     query << "?pdb_file     :hasOligo	?oligo.\n";
@@ -213,7 +201,7 @@ void Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_nam
     query << "?linkage      :glycosidicLinkage    ?glycosidic_linkage.}\n";
     query << "?pdb_file     :identifier   ?pdb.\n";
 
-    ///To DO: string manipulation: split the oligo_name by _ and for each of them write the following to represent the names of the monos:
+    ///To DO: std::string manipulation: split the oligo_name by _ and for each of them write the following to represent the names of the monos:
     //    query << "?oligo	:hasCore	?mono.\n";
     //    query << "?mono     :hasSugarName	?sn.\n";
     //    query << "?sn       :monosaccharideName 	?name.\n";
@@ -225,31 +213,31 @@ void Assembly::ExtractOntologyInfoByOligosaccharideNameSequence(string oligo_nam
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string oligo_name_pattern, string output_file_type)
+void Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::string oligo_name_pattern, std::string output_file_type)
 {
-    FindReplaceString(oligo_name_pattern, "[", "\\\\[");
-    FindReplaceString(oligo_name_pattern, "]", "\\\\]");
+    gmml::FindReplaceString(oligo_name_pattern, "[", "\\\\[");
+    gmml::FindReplaceString(oligo_name_pattern, "]", "\\\\]");
     if(oligo_name_pattern.compare("") == 0)
     {
-        cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << endl;
+        std::cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << std::endl;
         return;
     }
     if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') > 3)
     {
-        cout << "Wrong name pattern format. Please use only up tp three * in the input argument." << endl;
+        std::cout << "Wrong name pattern format. Please use only up tp three * in the input argument." << std::endl;
         return;
     }
 
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
     query << "?oligo        :oligoName	?oligo_sequence.\n";
 
     size_t first = oligo_name_pattern.find_first_of("*");
     size_t last = oligo_name_pattern.find_last_of("*");
 
-    string filter1 = oligo_name_pattern.substr(0, first);
-    string filter2 = oligo_name_pattern.substr(first + 1, last - 1);
-    string filter3 = oligo_name_pattern.substr(last + 1, oligo_name_pattern.size() - 1);
+    std::string filter1 = oligo_name_pattern.substr(0, first);
+    std::string filter2 = oligo_name_pattern.substr(first + 1, last - 1);
+    std::string filter3 = oligo_name_pattern.substr(last + 1, oligo_name_pattern.size() - 1);
     if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 0) ///No *
         query << "?oligo	:oligoName	\"" << oligo_name_pattern << "\".\n";
     else if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 1) ///Only one *
@@ -272,7 +260,7 @@ void Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string ol
     }
     else
     {
-        vector<string> pattern_tokens = Split(filter2, "*");
+        std::vector<std::string> pattern_tokens = gmml::Split(filter2, "*");
         query << "FILTER regex(?oligo_sequence, \"" << pattern_tokens.at(0) << ".+" << pattern_tokens.at(1) << "\", \"i\")\n";
     }
 
@@ -287,15 +275,15 @@ void Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(string ol
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string anomeric_orientation, string minus_one_orientation, string index_two_orientation, string index_three_orientation,
-                                                    string index_four_orientation, string plus_one_orientation, string output_file_type)
+void Assembly::ExtractOntologyInfoByGlycanStructure(std::string ring_type, std::string anomeric_orientation, std::string minus_one_orientation, std::string index_two_orientation, std::string index_three_orientation,
+                                                    std::string index_four_orientation, std::string plus_one_orientation, std::string output_file_type)
 {
     if(ring_type.compare("") == 0)
     {
-        cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << endl;
+        std::cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << std::endl;
         return;
     }
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?stereo_name ?stereo_condensed_name ?condensed_name ?name ?oligo_sequence ?residue_links ?glycosidic_linkage " << Ontology::WHERE_CLAUSE;
     query << "?pdb_file     :hasOligo       ?oligo.\n";
     query << "?oligo	    :hasCore        ?mono.\n";
@@ -374,19 +362,19 @@ void Assembly::ExtractOntologyInfoByGlycanStructure(string ring_type, string ano
 
 }
 
-void Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type, DerivativeModificationMap derivative_modification_map, string output_file_type)
+void Assembly::ExtractOntologyInfoByDerivativeModificationMap(std::string ring_type, DerivativeModificationMap derivative_modification_map, std::string output_file_type)
 {
     if(ring_type.compare("") == 0)
     {
-        cout << "Please specify the ring type as the first argument of the function as either \"P\" or \"F\" " << endl;
+        std::cout << "Please specify the ring type as the first argument of the function as either \"P\" or \"F\" " << std::endl;
         return;
     }
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << "?pdb ?stereo_name ?stereo_condensed_name ?condensed_name " << Ontology::WHERE_CLAUSE;
     for(DerivativeModificationMap::iterator it = derivative_modification_map.begin(); it != derivative_modification_map.end(); it++)
     {
-        string index = (*it).first;
-        string pattern = (*it).second;
+        std::string index = (*it).first;
+        std::string pattern = (*it).second;
         query << "?mono	       :hasRingAtom    ?ring_atom.\n";
         if(index.compare("-1") != 0 && index.compare("+1") != 0)
         {
@@ -423,29 +411,29 @@ void Assembly::ExtractOntologyInfoByDerivativeModificationMap(string ring_type, 
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures, string output_file_type)
+void Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStructuresVector attached_structures, std::string output_file_type)
 {
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?linkage_indices ?stereo_short_name0 ?short_name0 ?stereo_short_name1 ?short_name1 ?oligo_sequence ?residue_links "
           << Ontology::WHERE_CLAUSE;
-    int i = 0;
-    vector<string> oligos = vector<string>();
+    unsigned int i = 0;
+    std::vector<std::string> oligos = std::vector<std::string>();
     for(AttachedGlycanStructuresVector::iterator it = attached_structures.begin(); it != attached_structures.end(); it++)
     {
-        vector<string> structure = (*it);
+        std::vector<std::string> structure = (*it);
         if(structure.size() < 7)
         {
-            cout << "Missing arguments! All should be set even as an empty value (for empty values set \"\")" << endl;
+            std::cout << "Missing arguments! All should be set even as an empty value (for empty values set \"\")" << std::endl;
             return;
         }
         if(structure.at(0).compare("") == 0)
         {
-            cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << endl;
+            std::cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << std::endl;
             return;
         }
-        stringstream oligo;
+        std::stringstream oligo;
         oligo << "?oligo" << i;
-        stringstream mono;
+        std::stringstream mono;
         mono << "?mono" << i;
         query << oligo.str() << "		:hasCore	" << mono.str() << ".\n";
 
@@ -453,8 +441,8 @@ void Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStruc
         {
             if(structure.at(j).compare("") != 0)
             {
-                stringstream ring_atom;
-                stringstream side_atom;
+                std::stringstream ring_atom;
+                std::stringstream side_atom;
                 switch (j)///anomeric, -1 and +1 are special cases
                 {
                     case 1:///anomeric
@@ -542,9 +530,9 @@ void Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStruc
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByNote(string pdb_id, string note_type, string note_category, string output_file_type)
+void Assembly::ExtractOntologyInfoByNote(std::string pdb_id, std::string note_type, std::string note_category, std::string output_file_type)
 {
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?note_type ?note_category ?description "<< Ontology::WHERE_CLAUSE;
 
     if(pdb_id.compare("") != 0)
@@ -570,50 +558,50 @@ void Assembly::ExtractOntologyInfoByNote(string pdb_id, string note_type, string
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractOntologyInfoByCustomQuery(string query_file, string output_file_type)
+void Assembly::ExtractOntologyInfoByCustomQuery(std::string query_file, std::string output_file_type)
 {
-    string line;
-    stringstream query;
-    ifstream in(query_file.c_str());
+    std::string line;
+    std::stringstream query;
+    std::ifstream in(query_file.c_str());
 
     if (!in.is_open())
     {
-        cout << "Error in reading the query file" << endl;
+        std::cout << "Error in reading the query file" << std::endl;
         return;
     }
 
     while (getline (in, line))
     {
-        query << line << endl;
+        query << line << std::endl;
     }
     in.close();
 
     FormulateCURL(output_file_type, query.str());
 }
 
-void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string disaccharide_pattern, string output_file_type)
+void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(std::string disaccharide_pattern/*, std::string output_file_type*/)
 {
 
     int link_index = disaccharide_pattern.find_first_of("-");
-    string child_mono = disaccharide_pattern.substr(0, link_index - 1); /// e.g DNeupNAca in DNeupNAca2-3DGalpb
-    string parent_mono = disaccharide_pattern.substr(link_index + 2, disaccharide_pattern.size()); /// e.g DGalpb in DNeupNAca2-3DGalpb
-    string linkage_indeces = disaccharide_pattern.substr(link_index - 1, 3); /// e.g 2-3 in DNeupNAca2-3DGalpb
+    std::string child_mono = disaccharide_pattern.substr(0, link_index - 1); /// e.g DNeupNAca in DNeupNAca2-3DGalpb
+    std::string parent_mono = disaccharide_pattern.substr(link_index + 2, disaccharide_pattern.size()); /// e.g DGalpb in DNeupNAca2-3DGalpb
+    std::string linkage_indeces = disaccharide_pattern.substr(link_index - 1, 3); /// e.g 2-3 in DNeupNAca2-3DGalpb
     bool omega = false;
-    if(linkage_indeces.find("6") != string::npos || linkage_indeces.find("7") != string::npos
-             || linkage_indeces.find("8") != string::npos || linkage_indeces.find("9") != string::npos) /// Disaccharides with any of 1-6, 1-7, 2-6, and 2-7 linkages might have omega torsion angles
+    if(linkage_indeces.find("6") != std::string::npos || linkage_indeces.find("7") != std::string::npos
+             || linkage_indeces.find("8") != std::string::npos || linkage_indeces.find("9") != std::string::npos) /// Disaccharides with any of 1-6, 1-7, 2-6, and 2-7 linkages might have omega torsion angles
         omega = true;
 
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?O5_crd ?C1_crd ?Ox_crd ?Cx ?Cx_crd ?Cx_neighbor ?Cx_neighbor_crd ?O5_prime_crd "<< Ontology::WHERE_CLAUSE;
 
     if(child_mono.compare("*") == 0)
         query <<  "?oligo1        :hasCore    ?mono1. \n";
     else
     {
-        if(child_mono.find("*") != string::npos)
+        if(child_mono.find("*") != std::string::npos)
         {
             query <<  "?sn1           :monosaccharideShortName    ?short_name1. \n";
-            query << "FILTER regex(?short_name1, \"" << Split(child_mono, "*").at(0) << "\", \"i\")\n";
+            query << "FILTER regex(?short_name1, \"" << gmml::Split(child_mono, "*").at(0) << "\", \"i\")\n";
         }
         else
             query <<  "?sn1           :monosaccharideShortName    \"" << child_mono << "\". \n";
@@ -625,10 +613,10 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string dis
         query <<  "?oligo2        :hasCore    ?mono2. \n";
     else
     {
-        if(parent_mono.find("*") != string::npos)
+        if(parent_mono.find("*") != std::string::npos)
         {
             query <<  "?sn2           :monosaccharideShortName    ?short_name2. \n";
-            query << "FILTER regex(?short_name2, \"" << Split(parent_mono, "*").at(0) << "\", \"i\")\n";
+            query << "FILTER regex(?short_name2, \"" << gmml::Split(parent_mono, "*").at(0) << "\", \"i\")\n";
         }
         else
             query <<  "?sn2           :monosaccharideShortName    \"" << parent_mono << "\". \n";
@@ -639,12 +627,12 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string dis
     query <<  "?link          :hasParent   ?oligo2. \n";
     query <<  "?link          :hasChild    ?oligo1. \n";
 
-    if(linkage_indeces.find("?") == string::npos)
+    if(linkage_indeces.find("?") == std::string::npos)
         query <<  "?link          :linkageIndeces   \"" << linkage_indeces << "\". \n";
-    else if(linkage_indeces.compare("?-?") != 0 && linkage_indeces.find("?") != string::npos)
+    else if(linkage_indeces.compare("?-?") != 0 && linkage_indeces.find("?") != std::string::npos)
     {
         query <<  "?link          :linkageIndeces   ?linkage_indeces. \n";
-        query << "FILTER regex(?linkage_indeces, \"" << Split(linkage_indeces, "?").at(0) << "\", \"i\")\n";
+        query << "FILTER regex(?linkage_indeces, \"" << gmml::Split(linkage_indeces, "?").at(0) << "\", \"i\")\n";
     }
 
     query <<  "?pdb           :hasOligo    ?oligo1. \n";
@@ -674,28 +662,28 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologySlow(string dis
     }
 
     query << Ontology::END_WHERE_CLAUSE;
-    stringstream curl;
+    std::stringstream curl;
     curl << Ontology::CURL_PREFIX;
     curl << Ontology::CSV_OUTPUT_FORMAT;
 
     curl << Ontology::DATA_STORE_ADDRESS << Ontology::QUERY_PREFIX << query.str() << Ontology::QUERY_POSTFIX << " \\>\\> result.txt";   //Has ewarning: unknown escape sequence: '\>' [enabled by default] so changed \>\> to \\>\\> by Ayush on 06/22/2017
-    string tmp = curl.str();
+    std::string tmp = curl.str();
     const char* cstr = tmp.c_str();
     system(cstr);
 }
 
-void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(string disaccharide_pattern, string output_file_type)
+void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(std::string disaccharide_pattern/*, std::string output_file_type*/)
 {
     int link_index = disaccharide_pattern.find_first_of("-");
 
-    string child_mono = disaccharide_pattern.substr(0, link_index - 1); /// e.g DNeupNAca in DNeupNAca2-3DGalpb
-    string parent_mono = disaccharide_pattern.substr(link_index + 2, disaccharide_pattern.size()); /// e.g DGalpb in DNeupNAca2-3DGalpb
-    string linkage_indeces = disaccharide_pattern.substr(link_index - 1, 3);
+    std::string child_mono = disaccharide_pattern.substr(0, link_index - 1); /// e.g DNeupNAca in DNeupNAca2-3DGalpb
+    std::string parent_mono = disaccharide_pattern.substr(link_index + 2, disaccharide_pattern.size()); /// e.g DGalpb in DNeupNAca2-3DGalpb
+    std::string linkage_indeces = disaccharide_pattern.substr(link_index - 1, 3);
     bool omega = false;
-    if(linkage_indeces.find("-6") != string::npos || linkage_indeces.find("-7") != string::npos)
+    if(linkage_indeces.find("-6") != std::string::npos || linkage_indeces.find("-7") != std::string::npos)
         omega = true;
 
-    stringstream query;
+    std::stringstream query;
     query << "sparql PREFIX : <http://gmmo.uga.edu/#> " <<
              "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " <<
              "PREFIX owl: <http://www.w3.org/2002/07/owl#> " <<
@@ -744,41 +732,41 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(string dis
     query << "};";
 
     std::ofstream sparql;
-    sparql.open("sparql.sparql", fstream::app);
+    sparql.open("sparql.sparql", std::fstream::app);
     sparql << query.str() ;
     sparql.close();
 
-//    stringstream ss;
+//    std::stringstream ss;
 //    ss << "/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< sparql.sparql \>  result.txt";
-//    cout << ss.str() << endl;
-//    string tmp = ss.str();
+//    std::cout << ss.str() << std::endl;
+//    std::string tmp = ss.str();
 //    const char* cstr = tmp.c_str();
  //   system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< sparql.sparql \>  result.txt");
    // remove("sparql.sparql");
 
-//    stringstream curl;
+//    std::stringstream curl;
 //    curl << Ontology::CURL_PREFIX;
 //    curl << Ontology::CSV_OUTPUT_FORMAT;
 
 //    curl << Ontology::DATA_STORE_ADDRESS << Ontology::QUERY_PREFIX << query.str() << Ontology::QUERY_POSTFIX << " >> result.txt";
-//    string tmp = curl.str();
+//    std::string tmp = curl.str();
 //    const char* cstr = tmp.c_str();
 //    system(cstr);
-//    cout << endl;
+//    std::cout << std::endl;
 
 
 
  /*   int link_index = disaccharide_pattern.find_first_of("-");
 
-    string child_mono = disaccharide_pattern.substr(0, link_index - 1); /// e.g DNeupNAca in DNeupNAca2-3DGalpb
-    string parent_mono = disaccharide_pattern.substr(link_index + 2, disaccharide_pattern.size()); /// e.g DGalpb in DNeupNAca2-3DGalpb
-    string linkage_indeces = disaccharide_pattern.substr(link_index - 1, 3);
+    std::string child_mono = disaccharide_pattern.substr(0, link_index - 1); /// e.g DNeupNAca in DNeupNAca2-3DGalpb
+    std::string parent_mono = disaccharide_pattern.substr(link_index + 2, disaccharide_pattern.size()); /// e.g DGalpb in DNeupNAca2-3DGalpb
+    std::string linkage_indeces = disaccharide_pattern.substr(link_index - 1, 3);
     bool omega = false;
-    if(linkage_indeces.find("6") != string::npos || linkage_indeces.find("7") != string::npos
-             || linkage_indeces.find("8") != string::npos || linkage_indeces.find("9") != string::npos)
+    if(linkage_indeces.find("6") != std::string::npos || linkage_indeces.find("7") != std::string::npos
+             || linkage_indeces.find("8") != std::string::npos || linkage_indeces.find("9") != std::string::npos)
         omega = true;
 
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?RA1 ?RA1_crd ?SA1 ?SA1_crd ?RA2 ?RA2_crd ?SA2 ?SA2_crd "<< Ontology::WHERE_CLAUSE;
     query << "?sn1           :monosaccharideShortName    \"" << child_mono << "\".\n";
     query << "?mono1         :hasSugarName    ?sn1.\n";
@@ -814,118 +802,118 @@ void Assembly::ExtractAtomCoordinatesForTorsionAnglesFromOntologyFast(string dis
 void Assembly::ExtractTorsionAnglesFromSlowQueryResult()
 {
 
-    ///Uncomment the following section and substitute cout with out_file in order to write the results into a file
+    ///Uncomment the following section and substitute std::cout with out_file in order to write the results into a file
     /*
     ///Open file to append
     std::ofstream out_file;
-    out_file.open("torsions.txt", fstream::app);
+    out_file.open("torsions.txt", std::fstream::app);
 
     ///If the file is empty, write the titles
-    ifstream check_file("torsions.txt");
+    std::ifstream check_file("torsions.txt");
     size_t out_file_size = 0;
     check_file.seekg(0,ios_base::end);
     out_file_size = check_file.tellg();
     check_file.close();
     if(out_file_size == 0)
     {
-        out_file << "ϕ (O5′-C1′-Ox-Cx)" << endl;
-        out_file << "ψ (C1′-Ox-Cx-Cx−1)" << endl;
-        out_file << "Ω (O1-C6′-C5′-O5′)" << endl;
-        out_file << left << setw(15) << "PDB" << setw(15) << "Phi Angle" << setw(15) << "Psi Angle" << setw(15) << "Omega Angle" << endl;
+        out_file << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
+        out_file << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
+        out_file << "Ω (O1-C6′-C5′-O5′)" << std::endl;
+        out_file << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
     } */
 
 
     ///Outputting the result in std out. In order to write the results into a file comment the following section
-    cout << "ϕ (O5′-C1′-Ox-Cx)" << endl;
-    cout << "ψ (C1′-Ox-Cx-Cx−1)" << endl;
-    cout << "Ω (O1-C6′-C5′-O5′)" << endl;
-    cout << left << setw(15) << "PDB" << setw(15) << "Phi Angle" << setw(15) << "Psi Angle" << setw(15) << "Omega Angle" << endl;
+    std::cout << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
+    std::cout << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
+    std::cout << "Ω (O1-C6′-C5′-O5′)" << std::endl;
+    std::cout << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
 
     ///Read query result file
-    string line;
-    ifstream in("result.txt");
+    std::string line;
+    std::ifstream in("result.txt");
 
     while (getline (in, line))
     {
-        if(line.find("\"pdb\",\"O5_crd\",\"C1_crd\",\"Ox_crd\",\"Cx\",\"Cx_crd\",\"Cx_neighbor\",\"Cx_neighbor_crd\",\"O5_prime_crd\"") != string::npos)
+        if(line.find("\"pdb\",\"O5_crd\",\"C1_crd\",\"Ox_crd\",\"Cx\",\"Cx_crd\",\"Cx_neighbor\",\"Cx_neighbor_crd\",\"O5_prime_crd\"") != std::string::npos)
             break;
     }
-    string last_Cx = "";
+    std::string last_Cx = "";
 
-    Coordinate* O5_crd = new Coordinate();
-    Coordinate* C1_crd = new Coordinate();
-    Coordinate* Ox_crd = new Coordinate();
-    Coordinate* Cx_crd = new Coordinate();
-    Coordinate* Cx_neighbor_crd = new Coordinate();
-    Coordinate* O5_prime_crd = NULL;
-    string Cx_id = "";
-    string Cx_neighbor_id = "";
+    GeometryTopology::Coordinate* O5_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* C1_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* Ox_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* Cx_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* Cx_neighbor_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* O5_prime_crd = NULL;
+    std::string Cx_id = "";
+    std::string Cx_neighbor_id = "";
     double phi_angle = 0.0;
     double psi_angle = 0.0;
     double omega_angle = 0.0;
 
     while (getline (in, line))
     {
-        vector<string> line_tokens = Split(line, ",");
+        std::vector<std::string> line_tokens = gmml::Split(line, ",");
 
         if(last_Cx.compare("") == 0 || last_Cx.compare(line_tokens.at(10)) != 0)//If it is the first line or the line with info about a new oligosaccharide
         {
             ///e.g. "0.686, -15.194, 26.371" --after splits--> x=0.686 y=-15.194 z=26.371
-            O5_crd->SetX(ConvertString<double>(Split(line_tokens.at(1), "\"").at(0)));
-            O5_crd->SetY(ConvertString<double>(Split(line_tokens.at(2), " ").at(0)));
-            O5_crd->SetZ(ConvertString<double>(Split(line_tokens.at(3), " \"").at(0)));
+            O5_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(1), "\"").at(0)));
+            O5_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(2), " ").at(0)));
+            O5_crd->SetZ(gmml::ConvertString<double>(gmml::Split(line_tokens.at(3), " \"").at(0)));
 
-            C1_crd->SetX(ConvertString<double>(Split(line_tokens.at(4), "\"").at(0)));
-            C1_crd->SetY(ConvertString<double>(Split(line_tokens.at(5), " ").at(0)));
-            C1_crd->SetZ(ConvertString<double>(Split(line_tokens.at(6), " \"").at(0)));
+            C1_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(4), "\"").at(0)));
+            C1_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(5), " ").at(0)));
+            C1_crd->SetZ(gmml::ConvertString<double>(gmml::Split(line_tokens.at(6), " \"").at(0)));
 
-            Ox_crd->SetX(ConvertString<double>(Split(line_tokens.at(7), "\"").at(0)));
-            Ox_crd->SetY(ConvertString<double>(Split(line_tokens.at(8), " ").at(0)));
-            Ox_crd->SetZ(ConvertString<double>(Split(line_tokens.at(9), " \"").at(0)));
+            Ox_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(7), "\"").at(0)));
+            Ox_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(8), " ").at(0)));
+            Ox_crd->SetZ(gmml::ConvertString<double>(gmml::Split(line_tokens.at(9), " \"").at(0)));
 
-            Cx_crd->SetX(ConvertString<double>(Split(line_tokens.at(11), "\"").at(0)));
-            Cx_crd->SetY(ConvertString<double>(Split(line_tokens.at(12), " ").at(0)));
-            Cx_crd->SetZ(ConvertString<double>(Split(line_tokens.at(13), " \"").at(0)));
+            Cx_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(11), "\"").at(0)));
+            Cx_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(12), " ").at(0)));
+            Cx_crd->SetZ(gmml::ConvertString<double>(gmml::Split(line_tokens.at(13), " \"").at(0)));
 
             if(line_tokens.size() > 18)
             {
-                O5_prime_crd = new Coordinate();
-                O5_prime_crd->SetX(ConvertString<double>(Split(line_tokens.at(18), "\"").at(0)));
-                O5_prime_crd->SetY(ConvertString<double>(Split(line_tokens.at(19), " ").at(0)));
-                O5_prime_crd->SetZ(ConvertString<double>(Split(line_tokens.at(20), " \"").at(0)));
+                O5_prime_crd = new GeometryTopology::Coordinate();
+                O5_prime_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(18), "\"").at(0)));
+                O5_prime_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(19), " ").at(0)));
+                O5_prime_crd->SetZ(gmml::ConvertString<double>(gmml::Split(line_tokens.at(20), " \"").at(0)));
             }
 
-            Cx_id = Split(line_tokens.at(10), "#").at(1); ///e.g. spliting 5BO9_C3_4773_GAL_A_410_n_n_1 from http://gmmo.uga.edu/#5BO9_C3_4773_GAL_A_410_n_n_1
+            Cx_id = gmml::Split(line_tokens.at(10), "#").at(1); ///e.g. spliting 5BO9_C3_4773_GAL_A_410_n_n_1 from http://gmmo.uga.edu/#5BO9_C3_4773_GAL_A_410_n_n_1
         }
 
         last_Cx = line_tokens.at(10);
-        Cx_neighbor_id = Split(line_tokens.at(14), "#").at(1);
+        Cx_neighbor_id = gmml::Split(line_tokens.at(14), "#").at(1);
 
-        if(Split(Cx_neighbor_id, "_").at(1).find("C") != string::npos)///If the neighbor is a carbon
+        if(gmml::Split(Cx_neighbor_id, "_").at(1).find("C") != std::string::npos)///If the neighbor is a carbon
         {
             /// e.g. removing C * , and ' from the atom name to get the index
-            int Cx_index = ConvertString<int>(Split(Split(Cx_id, "_").at(1), "C*,\'").at(0)); ///e.g. 5BO9_C3_4773_GAL_A_410_n_n_1 -split-> C3 -split-> 3
-            int Cx_neighbor_index = ConvertString<int>(Split(Split(Cx_neighbor_id, "_").at(1), "C*,\'").at(0));
+            int Cx_index = gmml::ConvertString<int>(gmml::Split(gmml::Split(Cx_id, "_").at(1), "C*,\'").at(0)); ///e.g. 5BO9_C3_4773_GAL_A_410_n_n_1 -split-> C3 -split-> 3
+            int Cx_neighbor_index = gmml::ConvertString<int>(gmml::Split(gmml::Split(Cx_neighbor_id, "_").at(1), "C*,\'").at(0));
 
             if(Cx_index > Cx_neighbor_index) ///if the neighbor is Cx-1
             {
-                Cx_neighbor_crd->SetX(ConvertString<double>(Split(line_tokens.at(15), "\"").at(0)));
-                Cx_neighbor_crd->SetY(ConvertString<double>(Split(line_tokens.at(16), " ").at(0)));
-                Cx_neighbor_crd->SetZ(ConvertString<double>(Split(line_tokens.at(17), "\"").at(0)));
+                Cx_neighbor_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(15), "\"").at(0)));
+                Cx_neighbor_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(16), " ").at(0)));
+                Cx_neighbor_crd->SetZ(gmml::ConvertString<double>(gmml::Split(line_tokens.at(17), "\"").at(0)));
 
                 phi_angle = CalculateTorsionAngleByCoordinates(O5_crd, C1_crd, Ox_crd, Cx_crd); /// ϕ (O5′-C1′-Ox-Cx)
                 psi_angle = CalculateTorsionAngleByCoordinates(C1_crd, Ox_crd, Cx_crd,Cx_neighbor_crd); /// ψ (C1′-Ox-Cx-Cx−1)
 
-                cout << left << setw(15) << Split(Split(line_tokens.at(0), "#").at(1), "\"").at(0)
-                         << setw(15) << ConvertRadian2Degree(phi_angle) << setw(15)
-                         << ConvertRadian2Degree(psi_angle);
+                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
+                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
+                         << gmml::ConvertRadian2Degree(psi_angle);
 
                 if(O5_prime_crd != NULL)
                 {
                     omega_angle = CalculateTorsionAngleByCoordinates(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd); /// Ω (O1-C6′-C5′-O5′)
-                    cout << setw(15) << ConvertRadian2Degree(omega_angle);
+                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
                 }
-                cout << endl;
+                std::cout << std::endl;
             }
         }
     }
@@ -939,117 +927,117 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
 
      */
 
-    ///Uncomment the following section and substitute cout with out_file in order to write the results into a file
+    ///Uncomment the following section and substitute std::cout with out_file in order to write the results into a file
     /*
     ///Open file to append
     std::ofstream out_file;
-    out_file.open("torsions.txt", fstream::app);
+    out_file.open("torsions.txt", std::fstream::app);
 
     ///If the file is empty, write the titles
-    ifstream check_file("torsions.txt");
+    std::ifstream check_file("torsions.txt");
     size_t out_file_size = 0;
     check_file.seekg(0,ios_base::end);
     out_file_size = check_file.tellg();
     check_file.close();
     if(out_file_size == 0)
     {
-        out_file << "ϕ (O5′-C1′-Ox-Cx)" << endl;
-        out_file << "ψ (C1′-Ox-Cx-Cx−1)" << endl;
-        out_file << "Ω (O1-C6′-C5′-O5′)" << endl;
-        out_file << left << setw(15) << "PDB" << setw(15) << "Phi Angle" << setw(15) << "Psi Angle" << setw(15) << "Omega Angle" << endl;
+        out_file << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
+        out_file << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
+        out_file << "Ω (O1-C6′-C5′-O5′)" << std::endl;
+        out_file << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
     } */
 
 
     ///Outputting the result in std out. In order to write the results into a file comment the following section
-    cout << "ϕ (O5′-C1′-Ox-Cx)" << endl;
-    cout << "ψ (C1′-Ox-Cx-Cx−1)" << endl;
-    cout << "Ω (O1-C6′-C5′-O5′)" << endl;
-    cout << left << setw(15) << "PDB" << setw(15) << "Phi Angle" << setw(15) << "Psi Angle" << setw(15) << "Omega Angle" << endl;
+    std::cout << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
+    std::cout << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
+    std::cout << "Ω (O1-C6′-C5′-O5′)" << std::endl;
+    std::cout << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
 
     ///Read query result file
-    string line;
-    ifstream in("result.txt");
+    std::string line;
+    std::ifstream in("result.txt");
 
     while (getline (in, line))
     {
-        if(line.find("http://gmmo.uga.edu/") != string::npos)
+        if(line.find("http://gmmo.uga.edu/") != std::string::npos)
             break;
     }
-    string last_Cx = "";
+    std::string last_Cx = "";
 
-    Coordinate* O5_crd = new Coordinate();
-    Coordinate* C1_crd = new Coordinate();
-    Coordinate* Ox_crd = new Coordinate();
-    Coordinate* Cx_crd = new Coordinate();
-    Coordinate* Cx_neighbor_crd = new Coordinate();
-    Coordinate* O5_prime_crd = NULL;
-    string Cx_id = "";
-    string Cx_neighbor_id = "";
+    GeometryTopology::Coordinate* O5_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* C1_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* Ox_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* Cx_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* Cx_neighbor_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* O5_prime_crd = NULL;
+    std::string Cx_id = "";
+    std::string Cx_neighbor_id = "";
     double phi_angle = 0.0;
     double psi_angle = 0.0;
     double omega_angle = 0.0;
 
     do
     {
-        vector<string> line_tokens = Split(line, " ");
+        std::vector<std::string> line_tokens = gmml::Split(line, " ");
         if(last_Cx.compare("") == 0 || last_Cx.compare(line_tokens.at(10)) != 0)//If it is the first line or the line with info about a new oligosaccharide
         {
             ///e.g. "0.686, -15.194, 26.371" --after splits--> x=0.686 y=-15.194 z=26.371
 
-            O5_crd->SetX(ConvertString<double>(Split(line_tokens.at(1), ",").at(0)));
-            O5_crd->SetY(ConvertString<double>(Split(line_tokens.at(2), ",").at(0)));
-            O5_crd->SetZ(ConvertString<double>(line_tokens.at(3)));
+            O5_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(1), ",").at(0)));
+            O5_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(2), ",").at(0)));
+            O5_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(3)));
 
-            C1_crd->SetX(ConvertString<double>(Split(line_tokens.at(4), ",").at(0)));
-            C1_crd->SetY(ConvertString<double>(Split(line_tokens.at(5), ",").at(0)));
-            C1_crd->SetZ(ConvertString<double>(line_tokens.at(6)));
+            C1_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(4), ",").at(0)));
+            C1_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(5), ",").at(0)));
+            C1_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(6)));
 
-            Ox_crd->SetX(ConvertString<double>(Split(line_tokens.at(7), ",").at(0)));
-            Ox_crd->SetY(ConvertString<double>(Split(line_tokens.at(8), ",").at(0)));
-            Ox_crd->SetZ(ConvertString<double>(line_tokens.at(9)));
+            Ox_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(7), ",").at(0)));
+            Ox_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(8), ",").at(0)));
+            Ox_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(9)));
 
-            Cx_crd->SetX(ConvertString<double>(Split(line_tokens.at(11), ",").at(0)));
-            Cx_crd->SetY(ConvertString<double>(Split(line_tokens.at(12), ",").at(0)));
-            Cx_crd->SetZ(ConvertString<double>(line_tokens.at(13)));
+            Cx_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(11), ",").at(0)));
+            Cx_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(12), ",").at(0)));
+            Cx_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(13)));
 
             if(line_tokens.at(18).compare("") != 0)
             {
-                O5_prime_crd->SetX(ConvertString<double>(Split(line_tokens.at(18), ",").at(0)));
-                O5_prime_crd->SetY(ConvertString<double>(Split(line_tokens.at(19), ",").at(0)));
-                O5_prime_crd->SetZ(ConvertString<double>(line_tokens.at(20)));
+                O5_prime_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(18), ",").at(0)));
+                O5_prime_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(19), ",").at(0)));
+                O5_prime_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(20)));
             }
 
-            Cx_id = Split(line_tokens.at(10), "#").at(1); ///e.g. spliting 5BO9_C3_4773_GAL_A_410_n_n_1 from http://gmmo.uga.edu/#5BO9_C3_4773_GAL_A_410_n_n_1
+            Cx_id = gmml::Split(line_tokens.at(10), "#").at(1); ///e.g. spliting 5BO9_C3_4773_GAL_A_410_n_n_1 from http://gmmo.uga.edu/#5BO9_C3_4773_GAL_A_410_n_n_1
         }
 
         last_Cx = line_tokens.at(10);
-        Cx_neighbor_id = Split(line_tokens.at(14), "#").at(1);
+        Cx_neighbor_id = gmml::Split(line_tokens.at(14), "#").at(1);
 
-        if(Split(Cx_neighbor_id, "_").at(1).find("C") != string::npos)///If the neighbor is a carbon
+        if(gmml::Split(Cx_neighbor_id, "_").at(1).find("C") != std::string::npos)///If the neighbor is a carbon
         {
             /// e.g. removing C * , and ' from the atom name to get the index
-            int Cx_index = ConvertString<int>(Split(Split(Cx_id, "_").at(1), "C*,\'").at(0)); ///e.g. 5BO9_C3_4773_GAL_A_410_n_n_1 -split-> C3 -split-> 3
-            int Cx_neighbor_index = ConvertString<int>(Split(Split(Cx_neighbor_id, "_").at(1), "C*,\'").at(0));
+            int Cx_index = gmml::ConvertString<int>(gmml::Split(gmml::Split(Cx_id, "_").at(1), "C*,\'").at(0)); ///e.g. 5BO9_C3_4773_GAL_A_410_n_n_1 -split-> C3 -split-> 3
+            int Cx_neighbor_index = gmml::ConvertString<int>(gmml::Split(gmml::Split(Cx_neighbor_id, "_").at(1), "C*,\'").at(0));
 
             if(Cx_index > Cx_neighbor_index) ///if the neighbor is Cx-1
             {
-                Cx_neighbor_crd->SetX(ConvertString<double>(Split(line_tokens.at(15), ",").at(0)));
-                Cx_neighbor_crd->SetY(ConvertString<double>(Split(line_tokens.at(16), ",").at(0)));
-                Cx_neighbor_crd->SetZ(ConvertString<double>(line_tokens.at(17)));
+                Cx_neighbor_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(15), ",").at(0)));
+                Cx_neighbor_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(16), ",").at(0)));
+                Cx_neighbor_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(17)));
 
                 phi_angle = CalculateTorsionAngleByCoordinates(O5_crd, C1_crd, Ox_crd, Cx_crd); /// ϕ (O5′-C1′-Ox-Cx)
                 psi_angle = CalculateTorsionAngleByCoordinates(C1_crd, Ox_crd, Cx_crd,Cx_neighbor_crd); /// ψ (C1′-Ox-Cx-Cx−1)
 
-                cout << left << setw(15) << Split(Split(line_tokens.at(0), "#").at(1), "\"").at(0)
-                         << setw(15) << ConvertRadian2Degree(phi_angle) << setw(15)
-                         << ConvertRadian2Degree(psi_angle);
+                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
+                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
+                         << gmml::ConvertRadian2Degree(psi_angle);
 
                 if(O5_prime_crd != NULL)
                 {
                     omega_angle = CalculateTorsionAngleByCoordinates(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd); /// Ω (O1-C6′-C5′-O5′)
-                    cout << setw(15) << ConvertRadian2Degree(omega_angle);
+                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
                 }
-                cout << endl;
+                std::cout << std::endl;
             }
         }
     }
@@ -1057,9 +1045,9 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
     in.close();
 }
 
-string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceGF(string oligo_name, string output_file_type)
+std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceGF(std::string oligo_name, std::string output_file_type)
 {
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?residue_links " << Ontology::WHERE_CLAUSE;
 
     query << "?pdb_file     :hasOligo	?oligo.\n";
@@ -1067,7 +1055,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceGF(string oligo
     query << "OPTIONAL { ?oligo        :oligoResidueLinks	?residue_links.}\n";
     query << "?pdb_file     :identifier   ?pdb.\n";
 
-    ///To DO: string manipulation: split the oligo_name by _ and for each of them write the following to represent the names of the monos:
+    ///To DO: std::string manipulation: split the oligo_name by _ and for each of them write the following to represent the names of the monos:
     //    query << "?oligo	:hasCore	?mono.\n";
     //    query << "?mono     :hasSugarName	?sn.\n";
     //    query << "?sn       :monosaccharideName 	?name.\n";
@@ -1078,32 +1066,32 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceGF(string oligo
     return FormulateCURLGF(output_file_type, query.str());
 }
 
-string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(string oligo_name_pattern, string output_file_type)
+std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string output_file_type)
 {
-    FindReplaceString(oligo_name_pattern, "[", "\\\\[");
-    FindReplaceString(oligo_name_pattern, "]", "\\\\]");
-    FindReplaceString(oligo_name_pattern, "-OH", "-ROH");
+    gmml::FindReplaceString(oligo_name_pattern, "[", "\\\\[");
+    gmml::FindReplaceString(oligo_name_pattern, "]", "\\\\]");
+    gmml::FindReplaceString(oligo_name_pattern, "-OH", "-ROH");
     if(oligo_name_pattern.compare("") == 0)
     {
-        cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << endl;
+        std::cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << std::endl;
         return "Please specify the input argument. (you can use up to two * in the name pattern)";
     }
     if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') > 3)
     {
-        cout << "Wrong name pattern format. Please use only up to three * in the input argument." << endl;
+        std::cout << "Wrong name pattern format. Please use only up to three * in the input argument." << std::endl;
         return "Wrong name pattern format. Please use only up to three * in the input argument.";
     }
 
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?pdb ?oligo_sequence ?residue_links " << Ontology::WHERE_CLAUSE;
     query << "?oligo        :oligoName	?oligo_sequence.\n";
 
     size_t first = oligo_name_pattern.find_first_of("*");
     size_t last = oligo_name_pattern.find_last_of("*");
 
-    string filter1 = oligo_name_pattern.substr(0, first);
-    string filter2 = oligo_name_pattern.substr(first + 1, last - 1);
-    string filter3 = oligo_name_pattern.substr(last + 1, oligo_name_pattern.size() - 1);
+    std::string filter1 = oligo_name_pattern.substr(0, first);
+    std::string filter2 = oligo_name_pattern.substr(first + 1, last - 1);
+    std::string filter3 = oligo_name_pattern.substr(last + 1, oligo_name_pattern.size() - 1);
     if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 0) ///No *
         query << "?oligo	:oligoName	\"" << oligo_name_pattern << "\".\n";
     else if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') == 1) ///Only one *
@@ -1126,7 +1114,7 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
     }
     else
     {
-        vector<string> pattern_tokens = Split(filter2, "*");
+        std::vector<std::string> pattern_tokens = gmml::Split(filter2, "*");
         query << "FILTER regex(?oligo_sequence, \"" << pattern_tokens.at(0) << ".+" << pattern_tokens.at(1) << "\")\n";
     }
 
@@ -1139,14 +1127,14 @@ string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(strin
     return FormulateCURLGF(output_file_type, query.str());
 }
 
-string Assembly::ExtractOntologyInfoByPDBIDGF(string pdb_id, string output_file_type)
+std::string Assembly::ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string output_file_type)
 {
     if(pdb_id.compare("") == 0)
     {
-        cout << "Please specify the input argument." << endl;
+        std::cout << "Please specify the input argument." << std::endl;
         return "Please specify the input argument.";
     }
-    stringstream query;
+    std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE << " ?oligo_sequence ?residue_links " << Ontology::WHERE_CLAUSE;
     query <<  ":" << pdb_id << "    :hasOligo   ?oligo.\n";
     query << "?oligo    :oligoName 	?oligo_sequence.\n";

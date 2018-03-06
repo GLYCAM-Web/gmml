@@ -69,45 +69,33 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+typedef std::vector<MolecularModeling::Atom*> AtomVector;
 
-typedef std::vector<Atom*> AtomVector;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::SetDerivativeAngle(Residue *residue, Residue *parent_residue, int branch_index)
+void Assembly::SetDerivativeAngle(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index)
 {
-    Atom* atom3 = residue->GetHeadAtoms().at(0);
-    Atom* atom2 = parent_residue->GetTailAtoms().at(branch_index);
-    Atom* atom1 = NULL;
+    MolecularModeling::Atom* atom3 = residue->GetHeadAtoms().at(0);
+    MolecularModeling::Atom* atom2 = parent_residue->GetTailAtoms().at(branch_index);
+    MolecularModeling::Atom* atom1 = NULL;
     if(atom2 != NULL)
     {
         int atom2_index = 1;
         if(atom2->GetName().size() > 1 && isdigit(atom2->GetName().at(1)))
-            atom2_index = ConvertString<int>(ConvertT<char>(atom2->GetName().at(1)));
+            atom2_index = gmml::ConvertString<int>(gmml::ConvertT<char>(atom2->GetName().at(1)));
 
         AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
         for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
         {
-            Atom* neighbor = *it;
+            MolecularModeling::Atom* neighbor = *it;
             if(neighbor->GetId().compare(atom3->GetId()) != 0)
             {
                 if(neighbor->GetName().at(0) == 'C' &&
                         (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                         ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == atom2_index))
+                         gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == atom2_index))
                 {
                     atom1 = neighbor;
                     break;
@@ -120,19 +108,19 @@ void Assembly::SetDerivativeAngle(Residue *residue, Residue *parent_residue, int
     }
 }
 
-void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue, int branch_index, string parameter_file)
+void Assembly::SetAttachedResidueBond(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index, std::string parameter_file)
 {
-    ParameterFile* parameter = new ParameterFile(parameter_file);
-    ParameterFile::BondMap parameter_bonds = parameter->GetBonds();
-    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
-    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+    ParameterFileSpace::ParameterFile* parameter = new ParameterFileSpace::ParameterFile(parameter_file);
+    ParameterFileSpace::ParameterFile::BondMap parameter_bonds = parameter->GetBonds();
+    MolecularModeling::Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    MolecularModeling::Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
     AtomVector residue_head_atom_adjacent_atoms = AtomVector();
     AtomVector parent_target_atom_adjacent_atoms = AtomVector();
-    double bond_length = BOND_LENGTH;
-    vector<string> bond = vector<string>();
+    double bond_length = gmml::BOND_LENGTH;
+    std::vector<std::string> bond = std::vector<std::string>();
     bond.push_back(residue_head_atom->GetAtomType());
     bond.push_back(parent_target_atom->GetAtomType());
-    vector<string> reverse_bond = vector<string>();
+    std::vector<std::string> reverse_bond = std::vector<std::string>();
     reverse_bond.push_back(parent_target_atom->GetAtomType());
     reverse_bond.push_back(residue_head_atom->GetAtomType());
     if(parameter_bonds.find(bond) != parameter_bonds.end())
@@ -144,13 +132,13 @@ void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue,
     residue_head_atom_adjacent_atoms = residue_head_atom->GetNode()->GetNodeNeighbors();
     parent_target_atom_adjacent_atoms = parent_target_atom->GetNode()->GetNodeNeighbors();
 
-    Coordinate* residue_direction = new Coordinate();
+    GeometryTopology::Coordinate* residue_direction = new GeometryTopology::Coordinate();
     for(AtomVector::iterator it = residue_head_atom_adjacent_atoms.begin(); it != residue_head_atom_adjacent_atoms.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if(atom->GetId().compare(parent_target_atom->GetId()) != 0)
         {
-            Coordinate* dist = new Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
+            GeometryTopology::Coordinate* dist = new GeometryTopology::Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
             dist->operator -(*atom->GetCoordinates().at(model_index_));
             dist->Normalize();
             residue_direction->operator +(*dist);
@@ -163,8 +151,8 @@ void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue,
 
     residue_direction->operator +(*residue_head_atom->GetCoordinates().at(model_index_));
 
-    Coordinate* oxygen_position = new Coordinate(residue_direction->GetX(), residue_direction->GetY(), residue_direction->GetZ());
-    Coordinate* offset = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+    GeometryTopology::Coordinate* oxygen_position = new GeometryTopology::Coordinate(residue_direction->GetX(), residue_direction->GetY(), residue_direction->GetZ());
+    GeometryTopology::Coordinate* offset = new GeometryTopology::Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
     offset->operator -(*oxygen_position);
 
     AtomVector atomsToTranslate = AtomVector();
@@ -177,20 +165,20 @@ void Assembly::SetAttachedResidueBond(Residue *residue, Residue *parent_residue,
     }
 }
 
-void Assembly::SetAttachedResidueAngle(Residue *residue, Residue *parent_residue, int branch_index, string parameter_file)
+void Assembly::SetAttachedResidueAngle(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index, std::string parameter_file)
 {
-    ParameterFile* parameter = new ParameterFile(parameter_file);
-    ParameterFile::BondMap parameter_bonds = parameter->GetBonds();
-    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
-    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+    ParameterFileSpace::ParameterFile* parameter = new ParameterFileSpace::ParameterFile(parameter_file);
+    ParameterFileSpace::ParameterFile::BondMap parameter_bonds = parameter->GetBonds();
+    MolecularModeling::Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    MolecularModeling::Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
     AtomVector residue_head_atom_adjacent_atoms = AtomVector();
     AtomVector parent_target_atom_adjacent_atoms = AtomVector();
 
-    double bond_length = BOND_LENGTH;
-    vector<string> bond = vector<string>();
+    double bond_length = gmml::BOND_LENGTH;
+    std::vector<std::string> bond = std::vector<std::string>();
     bond.push_back(residue_head_atom->GetAtomType());
     bond.push_back(parent_target_atom->GetAtomType());
-    vector<string> reverse_bond = vector<string>();
+    std::vector<std::string> reverse_bond = std::vector<std::string>();
     reverse_bond.push_back(parent_target_atom->GetAtomType());
     reverse_bond.push_back(residue_head_atom->GetAtomType());
     if(parameter_bonds.find(bond) != parameter_bonds.end())
@@ -200,13 +188,13 @@ void Assembly::SetAttachedResidueAngle(Residue *residue, Residue *parent_residue
     residue_head_atom_adjacent_atoms = residue_head_atom->GetNode()->GetNodeNeighbors();
     parent_target_atom_adjacent_atoms = parent_target_atom->GetNode()->GetNodeNeighbors();
 
-    Coordinate* carbon_direction = new Coordinate();
+    GeometryTopology::Coordinate* carbon_direction = new GeometryTopology::Coordinate();
     for(AtomVector::iterator it = parent_target_atom_adjacent_atoms.begin(); it != parent_target_atom_adjacent_atoms.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if(atom->GetId().compare(residue_head_atom->GetId()) != 0)
         {
-            Coordinate* dist = new Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
+            GeometryTopology::Coordinate* dist = new GeometryTopology::Coordinate(*parent_target_atom->GetCoordinates().at(model_index_));
             dist->operator -(*atom->GetCoordinates().at(model_index_));
             dist->Normalize();
             carbon_direction->operator +(*dist);
@@ -218,21 +206,21 @@ void Assembly::SetAttachedResidueAngle(Residue *residue, Residue *parent_residue
     carbon_direction->operator *(bond_length);
     carbon_direction->operator +(*parent_target_atom->GetCoordinates().at(model_index_));
 
-    Coordinate* carbon_position = new Coordinate(*carbon_direction);
+    GeometryTopology::Coordinate* carbon_position = new GeometryTopology::Coordinate(*carbon_direction);
 
-    Coordinate* carbon_target = new Coordinate(*carbon_position);
+    GeometryTopology::Coordinate* carbon_target = new GeometryTopology::Coordinate(*carbon_position);
     carbon_target->operator -(*parent_target_atom->GetCoordinates().at(model_index_));
 
-    Coordinate* head_target = new Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
+    GeometryTopology::Coordinate* head_target = new GeometryTopology::Coordinate(*residue_head_atom->GetCoordinates().at(model_index_));
     head_target->operator -(*parent_target_atom->GetCoordinates().at(model_index_));
 
-    double angle = acos((carbon_target->DotProduct(*head_target)) / (carbon_target->length() * head_target->length() + DIST_EPSILON));
-    double rotation_angle = ConvertDegree2Radian(PI_DEGREE - ROTATION_ANGLE) - angle;
+    double angle = acos((carbon_target->DotProduct(*head_target)) / (carbon_target->length() * head_target->length() + gmml::DIST_EPSILON));
+    double rotation_angle = gmml::ConvertDegree2Radian(gmml::PI_DEGREE - gmml::ROTATION_ANGLE) - angle;
 
-    Coordinate* direction = new Coordinate(*carbon_target);
+    GeometryTopology::Coordinate* direction = new GeometryTopology::Coordinate(*carbon_target);
     direction->CrossProduct(*head_target);
     direction->Normalize();
-    double** rotation_matrix = GenerateRotationMatrix(direction, parent_target_atom->GetCoordinates().at(model_index_), rotation_angle);
+    double** rotation_matrix = gmml::GenerateRotationMatrix(direction, parent_target_atom->GetCoordinates().at(model_index_), rotation_angle);
 
     AtomVector atomsToRotate = AtomVector();
     atomsToRotate.push_back(parent_target_atom);
@@ -240,8 +228,8 @@ void Assembly::SetAttachedResidueAngle(Residue *residue, Residue *parent_residue
 
     for(AtomVector::iterator it = atomsToRotate.begin() + 1; it != atomsToRotate.end(); it++)
     {
-        Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
-        Coordinate* result = new Coordinate();
+        GeometryTopology::Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+        GeometryTopology::Coordinate* result = new GeometryTopology::Coordinate();
         result->SetX(rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
                 rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3]);
         result->SetY(rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
@@ -255,15 +243,15 @@ void Assembly::SetAttachedResidueAngle(Residue *residue, Residue *parent_residue
     }
 }
 
-void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_residue, int branch_index)
+void Assembly::SetAttachedResidueTorsion(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index)
 {
-    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
-    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+    MolecularModeling::Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    MolecularModeling::Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
 
-    Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
+    MolecularModeling::Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
     if(carbon != NULL)
     {
-        Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
+        MolecularModeling::Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
         if(oxygen != NULL)
         {
             ///i: parent residue oxygen atom index from which the new residue is attached to the parent residue
@@ -283,19 +271,19 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
 
             int oxygen_index = 1;
             if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
-                oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+                oxygen_index = gmml::ConvertString<int>(gmml::ConvertT<char>(oxygen->GetName().at(1)));
 
             if(oxygen_index == 5 || oxygen_index == 6)
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = NULL;
-                Atom* atom3 = oxygen;
-                Atom* atom4 = carbon;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = NULL;
+                MolecularModeling::Atom* atom3 = oxygen;
+                MolecularModeling::Atom* atom4 = carbon;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C')
@@ -310,7 +298,7 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
                     AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C')
@@ -326,15 +314,15 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
             }
             else
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = NULL;
-                Atom* atom3 = oxygen;
-                Atom* atom4 = carbon;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = NULL;
+                MolecularModeling::Atom* atom3 = oxygen;
+                MolecularModeling::Atom* atom4 = carbon;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C')
@@ -349,7 +337,7 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
                     AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'H')
@@ -367,15 +355,15 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
 
             if(oxygen->GetResidue()->GetName().compare("ROH") == 0)
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = oxygen;
-                Atom* atom3 = carbon;
-                Atom* atom4 = NULL;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = oxygen;
+                MolecularModeling::Atom* atom3 = carbon;
+                MolecularModeling::Atom* atom4 = NULL;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'H')
@@ -388,7 +376,7 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
                 AtomVector carbon_neighbors = carbon->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = carbon_neighbors.begin(); it != carbon_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C')
@@ -404,15 +392,15 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
             }
             else
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = oxygen;
-                Atom* atom3 = carbon;
-                Atom* atom4 = NULL;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = oxygen;
+                MolecularModeling::Atom* atom3 = carbon;
+                MolecularModeling::Atom* atom4 = NULL;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C')
@@ -425,7 +413,7 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
                 AtomVector carbon_neighbors = carbon->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = carbon_neighbors.begin(); it != carbon_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C')
@@ -442,15 +430,15 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
 
             if(oxygen_index == 6)
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = NULL;
-                Atom* atom3 = NULL;
-                Atom* atom4 = oxygen;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = NULL;
+                MolecularModeling::Atom* atom3 = NULL;
+                MolecularModeling::Atom* atom4 = oxygen;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C')
@@ -465,7 +453,7 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
                     AtomVector atom3_neighbors = atom3->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C')
@@ -481,7 +469,7 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
                         AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
                         for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                         {
-                            Atom* neighbor = *it;
+                            MolecularModeling::Atom* neighbor = *it;
                             if(neighbor->GetId().compare(atom3->GetId()) != 0)
                             {
                                 if(neighbor->GetName().at(0) == 'O')
@@ -501,39 +489,39 @@ void Assembly::SetAttachedResidueTorsion(Residue *residue, Residue *parent_resid
     }
 }
 
-void Assembly::SetPhiTorsion(Residue *residue, Residue *parent_residue, int branch_index, double torsion)
+void Assembly::SetPhiTorsion(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index, double torsion)
 {
-    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
-    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+    MolecularModeling::Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    MolecularModeling::Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
 
-    Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
+    MolecularModeling::Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
     if(carbon != NULL)
     {
-        Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
+        MolecularModeling::Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
         if(oxygen != NULL)
         {
             int oxygen_index = 1;
             if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
-                oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+                oxygen_index = gmml::ConvertString<int>(gmml::ConvertT<char>(oxygen->GetName().at(1)));
 
             int carbon_index = 1;
             if(carbon->GetName().size() > 1 && isdigit(carbon->GetName().at(1)))
-                carbon_index = ConvertString<int>(ConvertT<char>(carbon->GetName().at(1)));
+                carbon_index = gmml::ConvertString<int>(gmml::ConvertT<char>(carbon->GetName().at(1)));
 
-            Atom* atom1 = NULL;
-            Atom* atom2 = carbon;
-            Atom* atom3 = oxygen;
-            Atom* atom4 = NULL;
+            MolecularModeling::Atom* atom1 = NULL;
+            MolecularModeling::Atom* atom2 = carbon;
+            MolecularModeling::Atom* atom3 = oxygen;
+            MolecularModeling::Atom* atom4 = NULL;
 
             AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
             {
-                Atom* neighbor = *it;
+                MolecularModeling::Atom* neighbor = *it;
                 if(neighbor->GetId().compare(carbon->GetId()) != 0)
                 {
                     if(neighbor->GetName().at(0) == 'C' &&
                             (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                             ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                             gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                     {
                         atom4 = neighbor;
                         break;
@@ -543,12 +531,12 @@ void Assembly::SetPhiTorsion(Residue *residue, Residue *parent_residue, int bran
             AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
             {
-                Atom* neighbor = *it;
+                MolecularModeling::Atom* neighbor = *it;
                 if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                 {
                     if(neighbor->GetName().at(0) == 'C' &&
                             (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                             ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == carbon_index - 1))
+                             gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == carbon_index - 1))
                     {
                         atom1 = neighbor;
                         break;
@@ -563,35 +551,35 @@ void Assembly::SetPhiTorsion(Residue *residue, Residue *parent_residue, int bran
     }
 }
 
-void Assembly::SetPsiTorsion(Residue *residue, Residue *parent_residue, int branch_index, double torsion, bool crystallographic_definition)
+void Assembly::SetPsiTorsion(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index, double torsion, bool crystallographic_definition)
 {
-    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
-    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+    MolecularModeling::Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    MolecularModeling::Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
 
-    Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
+    MolecularModeling::Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
     if(carbon != NULL)
     {
-        Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
+        MolecularModeling::Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
         if(oxygen != NULL)
         {
             int oxygen_index = 1;
             if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
-                oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+                oxygen_index = gmml::ConvertString<int>(gmml::ConvertT<char>(oxygen->GetName().at(1)));
 
-            Atom* atom1 = carbon;
-            Atom* atom2 = oxygen;
-            Atom* atom3 = NULL;
-            Atom* atom4 = NULL;
+            MolecularModeling::Atom* atom1 = carbon;
+            MolecularModeling::Atom* atom2 = oxygen;
+            MolecularModeling::Atom* atom3 = NULL;
+            MolecularModeling::Atom* atom4 = NULL;
 
             AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
             {
-                Atom* neighbor = *it;
+                MolecularModeling::Atom* neighbor = *it;
                 if(neighbor->GetId().compare(carbon->GetId()) != 0)
                 {
                     if(neighbor->GetName().at(0) == 'C' &&
                             (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                             ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                             gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                     {
                         atom3 = neighbor;
                         break;
@@ -603,14 +591,14 @@ void Assembly::SetPsiTorsion(Residue *residue, Residue *parent_residue, int bran
                 AtomVector atom3_neighbors = atom3->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                     {
                         if(crystallographic_definition)
                         {
                             if(neighbor->GetName().at(0) == 'C' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index + 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index + 1))
                             {
                                 atom4 = neighbor;
                                 break;
@@ -620,7 +608,7 @@ void Assembly::SetPsiTorsion(Residue *residue, Residue *parent_residue, int bran
                         {
                             if(neighbor->GetName().at(0) == 'H' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                             {
                                 atom4 = neighbor;
                                 break;
@@ -638,36 +626,36 @@ void Assembly::SetPsiTorsion(Residue *residue, Residue *parent_residue, int bran
     }
 }
 
-void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int branch_index, double torsion, int type)
+void Assembly::SetOmegaTorsion(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index, double torsion, int type)
 {
-    Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
-    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+    MolecularModeling::Atom* residue_head_atom = residue->GetHeadAtoms().at(0);
+    MolecularModeling::Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
 
-    Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
+    MolecularModeling::Atom* carbon = residue_head_atom; ///The carbon atom of the new residue that is attached to the parent residue
     if(carbon != NULL)
     {
-        Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
+        MolecularModeling::Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
         if(oxygen != NULL)
         {
             int oxygen_index = 1;
             if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
-                oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+                oxygen_index = gmml::ConvertString<int>(gmml::ConvertT<char>(oxygen->GetName().at(1)));
             if(oxygen_index == 6 && type == 6)
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = NULL;
-                Atom* atom3 = NULL;
-                Atom* atom4 = oxygen;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = NULL;
+                MolecularModeling::Atom* atom3 = NULL;
+                MolecularModeling::Atom* atom4 = oxygen;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C' &&
                                 (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                                 gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                         {
                             atom3 = neighbor;
                             break;
@@ -679,12 +667,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom3_neighbors = atom3->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                             {
                                 atom2 = neighbor;
                                 break;
@@ -697,12 +685,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(atom3->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'O' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                             {
                                 atom1 = neighbor;
                                 break;
@@ -717,21 +705,21 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
             }
             if(oxygen_index == 8 && type == 7)
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = NULL;
-                Atom* atom3 = NULL;
-                Atom* atom4 = NULL;
-                Atom* atom5 = NULL;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = NULL;
+                MolecularModeling::Atom* atom3 = NULL;
+                MolecularModeling::Atom* atom4 = NULL;
+                MolecularModeling::Atom* atom5 = NULL;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C' &&
                                 (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                                 gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                         {
                             atom5 = neighbor;
                             break;
@@ -743,12 +731,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom5_neighbors = atom5->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom5_neighbors.begin(); it != atom5_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                             {
                                 atom2 = neighbor;
                                 break;
@@ -761,12 +749,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(atom5->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'H' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                             {
                                 atom1 = neighbor;
                                 break;
@@ -775,12 +763,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     }
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(atom5->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 2))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 2))
                             {
                                 atom3 = neighbor;
                                 break;
@@ -793,12 +781,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom3_neighbors = atom3->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(atom2->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'H' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 2))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 2))
                             {
                                 atom4 = neighbor;
                                 break;
@@ -813,20 +801,20 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
             }
             if(oxygen_index == 8 && type == 8)
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = NULL;
-                Atom* atom3 = NULL;
-                Atom* atom4 = NULL;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = NULL;
+                MolecularModeling::Atom* atom3 = NULL;
+                MolecularModeling::Atom* atom4 = NULL;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C' &&
                                 (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                                 gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                         {
                             atom2 = neighbor;
                             break;
@@ -838,12 +826,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'H' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                             {
                                 atom1 = neighbor;
                                 break;
@@ -852,12 +840,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     }
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                             {
                                 atom3 = neighbor;
                                 break;
@@ -870,12 +858,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom3_neighbors = atom3->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(atom2->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'H' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                             {
                                 atom4 = neighbor;
                                 break;
@@ -890,20 +878,20 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
             }
             if(oxygen_index == 8 && type == 9)
             {
-                Atom* atom1 = NULL;
-                Atom* atom2 = NULL;
-                Atom* atom3 = NULL;
-                Atom* atom4 = NULL;
+                MolecularModeling::Atom* atom1 = NULL;
+                MolecularModeling::Atom* atom2 = NULL;
+                MolecularModeling::Atom* atom3 = NULL;
+                MolecularModeling::Atom* atom4 = NULL;
 
                 AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(carbon->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C' &&
                                 (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                                 gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                         {
                             atom3 = neighbor;
                             break;
@@ -915,12 +903,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom3_neighbors = atom3->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                             {
                                 atom4 = neighbor;
                                 break;
@@ -929,12 +917,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     }
                     for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'C' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index + 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index + 1))
                             {
                                 atom2 = neighbor;
                                 break;
@@ -947,12 +935,12 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
                     AtomVector atom2_neighbors = atom2->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                     {
-                        Atom* neighbor = *it;
+                        MolecularModeling::Atom* neighbor = *it;
                         if(neighbor->GetId().compare(atom3->GetId()) != 0)
                         {
                             if(neighbor->GetName().at(0) == 'O' &&
                                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index + 1))
+                                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index + 1))
                             {
                                 atom1 = neighbor;
                                 break;
@@ -969,31 +957,31 @@ void Assembly::SetOmegaTorsion(Residue *residue, Residue *parent_residue, int br
     }
 }
 
-void Assembly::SetOmegaDerivativeTorsion(Residue *residue, Residue *parent_residue, int branch_index, double torsion)
+void Assembly::SetOmegaDerivativeTorsion(MolecularModeling::Residue *residue, MolecularModeling::Residue *parent_residue, int branch_index, double torsion)
 {
-    string residue_name = residue->GetName();
-    Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
+    std::string residue_name = residue->GetName();
+    MolecularModeling::Atom* parent_target_atom = parent_residue->GetTailAtoms().at(branch_index);
 
-    Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
+    MolecularModeling::Atom* oxygen = parent_target_atom; ///The oxygen atom of the parent residue that is attached to the new residue
     if(oxygen != NULL)
     {
         int oxygen_index = 1;
         if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
-            oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+            oxygen_index = gmml::ConvertString<int>(gmml::ConvertT<char>(oxygen->GetName().at(1)));
         if(residue_name.compare("SO3") == 0 && oxygen_index == 6)
         {
-            Atom* atom1 = NULL;
-            Atom* atom2 = NULL;
-            Atom* atom3 = NULL;
-            Atom* atom4 = oxygen;
+            MolecularModeling::Atom* atom1 = NULL;
+            MolecularModeling::Atom* atom2 = NULL;
+            MolecularModeling::Atom* atom3 = NULL;
+            MolecularModeling::Atom* atom4 = oxygen;
 
             AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
             for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
             {
-                Atom* neighbor = *it;
+                MolecularModeling::Atom* neighbor = *it;
                 if(neighbor->GetName().at(0) == 'C' &&
                         (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                         ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                         gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
                 {
                     atom3 = neighbor;
                     break;
@@ -1005,12 +993,12 @@ void Assembly::SetOmegaDerivativeTorsion(Residue *residue, Residue *parent_resid
                 AtomVector atom2_neighbors = atom3->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = atom2_neighbors.begin(); it != atom2_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(oxygen->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'C' &&
                                 (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                 gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                         {
                             atom2 = neighbor;
                             break;
@@ -1023,12 +1011,12 @@ void Assembly::SetOmegaDerivativeTorsion(Residue *residue, Residue *parent_resid
                 AtomVector atom3_neighbors = atom2->GetNode()->GetNodeNeighbors();
                 for(AtomVector::iterator it = atom3_neighbors.begin(); it != atom3_neighbors.end(); it++)
                 {
-                    Atom* neighbor = *it;
+                    MolecularModeling::Atom* neighbor = *it;
                     if(neighbor->GetId().compare(atom3->GetId()) != 0)
                     {
                         if(neighbor->GetName().at(0) == 'O' &&
                                 (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                                 ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
+                                 gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index - 1))
                         {
                             atom1 = neighbor;
                             break;
@@ -1044,35 +1032,35 @@ void Assembly::SetOmegaDerivativeTorsion(Residue *residue, Residue *parent_resid
     }
 }
 
-void Assembly::SetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, double torsion)
+void Assembly::SetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4, double torsion)
 {
     double current_dihedral = 0.0;
-    Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
-    Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
-    Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
-    Coordinate* a4 = atom4->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(model_index_);
 
-    Coordinate* b1 = new Coordinate(*a2);
+    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*a2);
     b1->operator -(*a1);
-    Coordinate* b2 = new Coordinate(*a3);
+    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*a3);
     b2->operator -(*a2);
-    Coordinate* b3 = new Coordinate(*a4);
+    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*a4);
     b3->operator -(*a3);
-    Coordinate* b4 = new Coordinate(*b2);
+    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
     b4->operator *(-1);
 
-    Coordinate* b2xb3 = new Coordinate(*b2);
+    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
     b2xb3->CrossProduct(*b3);
 
-    Coordinate* b1_m_b2n = new Coordinate(*b1);
+    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
     b1_m_b2n->operator *(b2->length());
 
-    Coordinate* b1xb2 = new Coordinate(*b1);
+    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
     b1xb2->CrossProduct(*b2);
 
     current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
 
-    double** torsion_matrix = GenerateRotationMatrix(b4, a2, current_dihedral - ConvertDegree2Radian(torsion));
+    double** torsion_matrix = gmml::GenerateRotationMatrix(b4, a2, current_dihedral - gmml::ConvertDegree2Radian(torsion));
 
     AtomVector atomsToRotate = AtomVector();
     atomsToRotate.push_back(atom2);
@@ -1080,8 +1068,8 @@ void Assembly::SetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, d
 
     for(AtomVector::iterator it = atomsToRotate.begin(); it != atomsToRotate.end(); it++)
     {
-        Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
-        Coordinate* result = new Coordinate();
+        GeometryTopology::Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+        GeometryTopology::Coordinate* result = new GeometryTopology::Coordinate();
         result->SetX(torsion_matrix[0][0] * atom_coordinate->GetX() + torsion_matrix[0][1] * atom_coordinate->GetY() +
                 torsion_matrix[0][2] * atom_coordinate->GetZ() + torsion_matrix[0][3]);
         result->SetY(torsion_matrix[1][0] * atom_coordinate->GetX() + torsion_matrix[1][1] * atom_coordinate->GetY() +
@@ -1095,25 +1083,25 @@ void Assembly::SetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, d
     }
 }
 
-void Assembly::SetAngle(Atom* atom1, Atom* atom2, Atom* atom3, double angle)
+void Assembly::SetAngle(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2, MolecularModeling::Atom* atom3, double angle)
 {
     double current_angle = 0.0;
-    Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
-    Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
-    Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
 
-    Coordinate* b1 = new Coordinate(*a1);
+    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*a1);
     b1->operator -(*a2);
-    Coordinate* b2 = new Coordinate(*a3);
+    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*a3);
     b2->operator -(*a2);
 
-    current_angle = acos((b1->DotProduct(*b2)) / (b1->length() * b2->length() + DIST_EPSILON));
-    double rotation_angle = ConvertDegree2Radian(angle) - current_angle;
+    current_angle = acos((b1->DotProduct(*b2)) / (b1->length() * b2->length() + gmml::DIST_EPSILON));
+    double rotation_angle = gmml::ConvertDegree2Radian(angle) - current_angle;
 
-    Coordinate* direction = new Coordinate(*b1);
+    GeometryTopology::Coordinate* direction = new GeometryTopology::Coordinate(*b1);
     direction->CrossProduct(*b2);
     direction->Normalize();
-    double** rotation_matrix = GenerateRotationMatrix(direction, a2, rotation_angle);
+    double** rotation_matrix = gmml::GenerateRotationMatrix(direction, a2, rotation_angle);
 
     AtomVector atomsToRotate = AtomVector();
     atomsToRotate.push_back(atom2);
@@ -1121,8 +1109,8 @@ void Assembly::SetAngle(Atom* atom1, Atom* atom2, Atom* atom3, double angle)
 
     for(AtomVector::iterator it = atomsToRotate.begin() + 1; it != atomsToRotate.end(); it++)
     {
-        Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
-        Coordinate* result = new Coordinate();
+        GeometryTopology::Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
+        GeometryTopology::Coordinate* result = new GeometryTopology::Coordinate();
         result->SetX(rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
                 rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3]);
         result->SetY(rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
@@ -1136,105 +1124,105 @@ void Assembly::SetAngle(Atom* atom1, Atom* atom2, Atom* atom3, double angle)
     }
 }
 
-double Assembly::CalculateBondAngleByCoordinates(Coordinate* atom1_crd, Coordinate* atom2_crd, Coordinate* atom3_crd)
+double Assembly::CalculateBondAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd, GeometryTopology::Coordinate* atom3_crd)
 {
-    Coordinate* b1 = new Coordinate(*atom1_crd);
+    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*atom1_crd);
     b1->operator -(*atom2_crd);
-    Coordinate* b2 = new Coordinate(*atom3_crd);
+    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*atom3_crd);
     b2->operator -(*atom2_crd);
 
     return acos(b1->DotProduct((*b2)) / b1->length() / b2->length());
 
 }
 
-double Assembly::CalculateBondAngleByAtoms(Atom *atom1, Atom *atom2, Atom *atom3)
+double Assembly::CalculateBondAngleByAtoms(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3)
 {
-    Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
-    Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
-    Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
 
-    Coordinate* b1 = new Coordinate(*a1);
+    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*a1);
     b1->operator -(*a2);
-    Coordinate* b2 = new Coordinate(*a3);
+    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*a3);
     b2->operator -(*a2);
 
     return acos(b1->DotProduct((*b2)) / b1->length() / b2->length());
 }
 
-double Assembly::CalculateTorsionAngleByCoordinates(Coordinate* atom1_crd, Coordinate* atom2_crd, Coordinate* atom3_crd, Coordinate* atom4_crd)
+double Assembly::CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd, GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd)
 {
     double current_dihedral = 0.0;
 
-    Coordinate* b1 = new Coordinate(*atom2_crd);
+    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*atom2_crd);
     b1->operator -(*atom1_crd);
-    Coordinate* b2 = new Coordinate(*atom3_crd);
+    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*atom3_crd);
     b2->operator -(*atom2_crd);
-    Coordinate* b3 = new Coordinate(*atom4_crd);
+    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*atom4_crd);
     b3->operator -(*atom3_crd);
-    Coordinate* b4 = new Coordinate(*b2);
+    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
     b4->operator *(-1);
 
-    Coordinate* b2xb3 = new Coordinate(*b2);
+    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
     b2xb3->CrossProduct(*b3);
 
-    Coordinate* b1_m_b2n = new Coordinate(*b1);
+    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
     b1_m_b2n->operator *(b2->length());
 
-    Coordinate* b1xb2 = new Coordinate(*b1);
+    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
     b1xb2->CrossProduct(*b2);
 
     current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
     return current_dihedral;
 }
 
-double Assembly::CalculateTorsionAngleByAtoms(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4)
+double Assembly::CalculateTorsionAngleByAtoms(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4)
 {
     double current_dihedral = 0.0;
-    Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
-    Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
-    Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
-    Coordinate* a4 = atom4->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(model_index_);
 
-    Coordinate* b1 = new Coordinate(*a2);
+    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*a2);
     b1->operator -(*a1);
-    Coordinate* b2 = new Coordinate(*a3);
+    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*a3);
     b2->operator -(*a2);
-    Coordinate* b3 = new Coordinate(*a4);
+    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*a4);
     b3->operator -(*a3);
-    Coordinate* b4 = new Coordinate(*b2);
+    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
     b4->operator *(-1);
 
-    Coordinate* b2xb3 = new Coordinate(*b2);
+    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
     b2xb3->CrossProduct(*b3);
 
-    Coordinate* b1_m_b2n = new Coordinate(*b1);
+    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
     b1_m_b2n->operator *(b2->length());
 
-    Coordinate* b1xb2 = new Coordinate(*b1);
+    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
     b1xb2->CrossProduct(*b2);
 
     current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
     return current_dihedral;
 }
 
-void Assembly::GetCenterOfMass(Coordinate *center_of_mass)
+void Assembly::GetCenterOfMass(GeometryTopology::Coordinate *center_of_mass)
 {
-    //    center_of_mass = new Coordinate();
+    //    center_of_mass = new GeometryTopology::Coordinate();
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         center_of_mass->Translate(atom->MolecularDynamicAtom::GetMass() * atom->GetCoordinates().at(model_index_)->GetX(),
                                   atom->MolecularDynamicAtom::GetMass() * atom->GetCoordinates().at(model_index_)->GetY(),
                                   atom->MolecularDynamicAtom::GetMass() * atom->GetCoordinates().at(model_index_)->GetZ());
     }
     double total_mass = this->GetTotalMass();
-    center_of_mass->operator /(Coordinate(center_of_mass->GetX() / total_mass,
+    center_of_mass->operator /(GeometryTopology::Coordinate(center_of_mass->GetX() / total_mass,
                                           center_of_mass->GetY() / total_mass,
                                           center_of_mass->GetZ() / total_mass));
 }
 
-void Assembly::GetCenterOfGeometry(Coordinate *center_of_geometry)
+void Assembly::GetCenterOfGeometry(GeometryTopology::Coordinate *center_of_geometry)
 {
     double sumX = 0.0;
     double sumY = 0.0;
@@ -1252,10 +1240,10 @@ void Assembly::GetCenterOfGeometry(Coordinate *center_of_geometry)
     center_of_geometry->SetZ( (sumZ / all_coords.size()) );
 }
 
-void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper_right_front_corner)
+void Assembly::GetBoundary(GeometryTopology::Coordinate* lower_left_back_corner, GeometryTopology::Coordinate* upper_right_front_corner)
 {
-    //    lower_left_back_corner = new Coordinate(-INFINITY, -INFINITY, -INFINITY);
-    //    upper_right_front_corner = new Coordinate(INFINITY, INFINITY, INFINITY);
+    //    lower_left_back_corner = new GeometryTopology::Coordinate(-INFINITY, -INFINITY, -INFINITY);
+    //    upper_right_front_corner = new GeometryTopology::Coordinate(INFINITY, INFINITY, INFINITY);
     lower_left_back_corner->SetX(INFINITY);
     lower_left_back_corner->SetY(INFINITY);
     lower_left_back_corner->SetZ(INFINITY);
@@ -1265,13 +1253,13 @@ void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
-        Atom* atom = *it;
-        if(atom->MolecularDynamicAtom::GetRadius() == dNotSet)
+        MolecularModeling::Atom* atom = *it;
+        if(atom->MolecularDynamicAtom::GetRadius() == gmml::dNotSet)
         {
             //            gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no information of the atom type/radius/charge of the atoms in the given library/parameter file");
             //            cout << "There is no information of the atom type/radius/charge of the atoms in the given library/parameter file" << endl;
-            atom->MolecularDynamicAtom::SetRadius(DEFAULT_RADIUS);
-            //            stringstream ss;
+            atom->MolecularDynamicAtom::SetRadius(gmml::DEFAULT_RADIUS);
+            //            std::stringstream ss;
             //            ss << "The default value has been set for " << atom->GetId();
             //            gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
             //            cout << ss.str() << endl;
@@ -1309,31 +1297,31 @@ void Assembly::GetBoundary(Coordinate* lower_left_back_corner, Coordinate* upper
     }
 }
 
-string Assembly::CalculateRSOrientations(Atom *prev_atom, Atom *target, Atom *next_atom)
+std::string Assembly::CalculateRSOrientations(MolecularModeling::Atom *prev_atom, MolecularModeling::Atom *target, MolecularModeling::Atom *next_atom)
 {
-    string orientation = "";
+    std::string orientation = "";
     ///Calculating the plane based on the two ring neighbors of the current atom
-    Coordinate prev_atom_coord = Coordinate(*prev_atom->GetCoordinates().at(model_index_));
-    Coordinate current_atom_coord = Coordinate(*target->GetCoordinates().at(model_index_));
-    Coordinate next_atom_coord = Coordinate(*next_atom->GetCoordinates().at(model_index_));
+    GeometryTopology::Coordinate prev_atom_coord = GeometryTopology::Coordinate(*prev_atom->GetCoordinates().at(model_index_));
+    GeometryTopology::Coordinate current_atom_coord = GeometryTopology::Coordinate(*target->GetCoordinates().at(model_index_));
+    GeometryTopology::Coordinate next_atom_coord = GeometryTopology::Coordinate(*next_atom->GetCoordinates().at(model_index_));
     prev_atom_coord.operator -(current_atom_coord) ;
     next_atom_coord.operator -(current_atom_coord) ;
-    Plane plane = Plane();
+    GeometryTopology::Plane plane = GeometryTopology::Plane();
     plane.SetV1(prev_atom_coord);
     plane.SetV2(next_atom_coord);
-    Coordinate normal_v = plane.GetUnitNormalVector();
+    GeometryTopology::Coordinate normal_v = plane.GetUnitNormalVector();
 
-    AtomNode* node = target->GetNode();
+    MolecularModeling::AtomNode* node = target->GetNode();
     AtomVector neighbors = node->GetNodeNeighbors();
     for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
     {
-        Atom* neighbor = (*it1);
+        MolecularModeling::Atom* neighbor = (*it1);
         if(neighbor->GetId().at(0) == 'O')
         {
-            Coordinate side_atom_coord = Coordinate(*neighbor->GetCoordinates().at(model_index_));
+            GeometryTopology::Coordinate side_atom_coord = GeometryTopology::Coordinate(*neighbor->GetCoordinates().at(model_index_));
             side_atom_coord.operator -(current_atom_coord);
             side_atom_coord.Normalize();
-            Coordinate normal_v_x_side_atom = normal_v;
+            GeometryTopology::Coordinate normal_v_x_side_atom = normal_v;
             normal_v_x_side_atom.CrossProduct(side_atom_coord); ///cross product (perpendicular vector to plan's normal vector and the normal vector of side atom oxygen)
             double sin_theta = normal_v_x_side_atom.length()/(normal_v.length()*side_atom_coord.length());
 
@@ -1368,7 +1356,7 @@ AtomVector Assembly::GetAllAtomsOfAssemblyWithinXAngstromOf(GeometryTopology::Co
     AtomVector assemblyAtoms = this->GetAllAtomsOfAssembly();
     for(AtomVector::iterator it = assemblyAtoms.begin(); it != assemblyAtoms.end(); ++it)
     {
-        Atom *atom = *it;
+        MolecularModeling::Atom *atom = *it;
         if (atom->GetDistanceToCoordinate(coordinate) <= distance)
         {
             returnAtoms.push_back(atom);

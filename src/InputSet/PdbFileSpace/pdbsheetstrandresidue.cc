@@ -3,23 +3,21 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbsheetstrandresidue.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbSheetStrandResidue;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbSheetStrandResidue::PdbSheetStrandResidue() : residue_name_(""), residue_chain_id_(' '), residue_sequence_number_(dNotSet), residue_insertion_code_(' ') {}
+PdbSheetStrandResidue::PdbSheetStrandResidue() : residue_name_(""), residue_chain_id_(' '), residue_sequence_number_(gmml::dNotSet), residue_insertion_code_(' ') {}
 
-PdbSheetStrandResidue::PdbSheetStrandResidue(const string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code)
+PdbSheetStrandResidue::PdbSheetStrandResidue(const std::string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code)
     : residue_name_(residue_name), residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number),
       residue_insertion_code_(residue_insertion_code) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbSheetStrandResidue::GetResidueName()
+std::string PdbSheetStrandResidue::GetResidueName()
 {
     return residue_name_;
 }
@@ -42,7 +40,7 @@ char PdbSheetStrandResidue::GetResidueInsertionCode()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbSheetStrandResidue::SetResidueName(const string residue_name)
+void PdbSheetStrandResidue::SetResidueName(const std::string residue_name)
 {
     residue_name_ = residue_name;
 }
@@ -69,15 +67,15 @@ void PdbSheetStrandResidue::SetResidueInsertionCode(char residue_insertion_code)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSheetStrandResidue::Print(ostream &out)
+void PdbSheetStrandResidue::Print(std::ostream &out)
 {
     out << "Residue Name: " << residue_name_
         << ", Residue Cahin Identifier: " << residue_chain_id_
         << ", Residue Sequence Number: ";
-    if( residue_sequence_number_ != iNotSet)
+    if( residue_sequence_number_ != gmml::iNotSet)
         out << residue_sequence_number_;
     else
         out << " ";
     out << ", Residue Insertion Code: " << residue_insertion_code_
-        << endl;
+        << std::endl;
 }

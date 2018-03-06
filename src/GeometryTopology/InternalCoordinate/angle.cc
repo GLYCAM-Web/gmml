@@ -1,7 +1,6 @@
 #include "../../../includes/GeometryTopology/InternalCoordinate/angle.hpp"
 
-using namespace std;
-using namespace GeometryTopology;
+using GeometryTopology::Angle;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -43,10 +42,7 @@ void Angle::SetAngle(double angle)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Angle::Print(ostream &out)
+void Angle::Print(std::ostream &out)
 {
+    out << "";
 }
-
-
-
-

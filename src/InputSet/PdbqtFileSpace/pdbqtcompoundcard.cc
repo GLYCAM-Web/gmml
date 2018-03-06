@@ -2,9 +2,7 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbqtFileSpace;
+using PdbqtFileSpace::PdbqtCompoundCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -12,9 +10,9 @@ using namespace PdbqtFileSpace;
 
 PdbqtCompoundCard::PdbqtCompoundCard() : record_name_("COMPND"){}
 
-PdbqtCompoundCard::PdbqtCompoundCard(string line)
+PdbqtCompoundCard::PdbqtCompoundCard(std::string line)
 {
-    vector<string> tokens = Split(line, " ");
+    std::vector<std::string> tokens = gmml::Split(line, " ");
     record_name_ = tokens.at(0);
     value_ = tokens.at(1);
 }
@@ -22,12 +20,12 @@ PdbqtCompoundCard::PdbqtCompoundCard(string line)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbqtCompoundCard::GetRecordName()
+std::string PdbqtCompoundCard::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbqtCompoundCard::GetValue()
+std::string PdbqtCompoundCard::GetValue()
 {
     return value_;
 }
@@ -35,12 +33,12 @@ string PdbqtCompoundCard::GetValue()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbqtCompoundCard::SetRecordName(const string record_name)
+void PdbqtCompoundCard::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbqtCompoundCard::SetValue(const string value)
+void PdbqtCompoundCard::SetValue(const std::string value)
 {
     value_ = value;
 }
@@ -52,9 +50,7 @@ void PdbqtCompoundCard::SetValue(const string value)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtCompoundCard::Print(ostream &out)
+void PdbqtCompoundCard::Print(std::ostream &out)
 {
-    out << record_name_ << "   " << value_ << endl;
+    out << record_name_ << "   " << value_ << std::endl;
 }
-
-
