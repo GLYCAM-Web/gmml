@@ -1339,12 +1339,12 @@ double Assembly::CalculateAtomicOverlaps(Assembly *assemblyB)
 {
     AtomVector assemblyBAtoms = assemblyB->GetAllAtomsOfAssembly();
     AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
-    gmml::CalculateAtomicOverlaps(assemblyAAtoms, assemblyBAtoms);
+    return gmml::CalculateAtomicOverlaps(assemblyAAtoms, assemblyBAtoms);
 }
 double Assembly::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 {
     AtomVector assemblyAAtoms = this->GetAllAtomsOfAssembly();
-    gmml::CalculateAtomicOverlaps(assemblyAAtoms, assemblyBAtoms);
+    return gmml::CalculateAtomicOverlaps(assemblyAAtoms, assemblyBAtoms);
 }
 
 

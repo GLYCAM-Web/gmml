@@ -34,15 +34,15 @@ Residue::Residue(Residue *residue)
     atoms_ = AtomVector();
     AtomVector atoms = residue->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
-        atoms_.push_back(new Atom(*it));
+        atoms_.push_back(new MolecularModeling::Atom(*it));
     head_atoms_ = AtomVector();
     AtomVector head_atoms = residue->GetHeadAtoms();
     for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
-        head_atoms_.push_back(new Atom(*it));
+        head_atoms_.push_back(new MolecularModeling::Atom(*it));
     tail_atoms_ = AtomVector();
     AtomVector tail_atoms = residue->GetTailAtoms();
     for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
-        tail_atoms_.push_back(new Atom(*it));
+        tail_atoms_.push_back(new MolecularModeling::Atom(*it));
     chemical_type_ = residue->GetChemicalType();
     description_ = residue->GetDescription();
     id_ = residue->GetId();
@@ -58,17 +58,17 @@ Residue::Residue(Residue& residue){
 
     AtomVector atoms = residue.GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
-        atoms_.push_back(new Atom(*it));
+        atoms_.push_back(new MolecularModeling::Atom(*it));
 
     this->head_atoms_ = AtomVector();
     AtomVector head_atoms = residue.GetHeadAtoms();
     for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
-        head_atoms_.push_back(new Atom(*it));
+        head_atoms_.push_back(new MolecularModeling::Atom(*it));
 
     this->tail_atoms_ = AtomVector();
     AtomVector tail_atoms = residue.GetTailAtoms();
     for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
-        tail_atoms_.push_back(new Atom(*it));
+        tail_atoms_.push_back(new MolecularModeling::Atom(*it));
 
     this->chemical_type_ = residue.GetChemicalType();
     this->description_ = residue.GetDescription();
@@ -141,16 +141,16 @@ void Residue::SetAtoms(AtomVector atoms)
         atoms_.push_back(*it);
     }
 }
-void Residue::AddAtom(Atom *atom)
+void Residue::AddAtom(MolecularModeling::Atom *atom)
 {
     atoms_.push_back(atom);
 }
-void Residue::RemoveAtom(Atom *atom)
+void Residue::RemoveAtom(MolecularModeling::Atom *atom)
 {
     AtomVector newAtoms = AtomVector();
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* a = *it;
+        MolecularModeling::Atom* a = *it;
         if(a->GetId().compare(atom->GetId()) != 0)
         {
             if(a->GetNode() != NULL)
@@ -169,7 +169,7 @@ void Residue::SetHeadAtoms(AtomVector head_atoms)
         head_atoms_.push_back(*it);
     }
 }
-void Residue::AddHeadAtom(Atom *head_atom)
+void Residue::AddHeadAtom(MolecularModeling::Atom *head_atom)
 {
     head_atoms_.push_back(head_atom);
 }
@@ -181,7 +181,7 @@ void Residue::SetTailAtoms(AtomVector tail_atoms)
         tail_atoms_.push_back(*it);
     }
 }
-void Residue::AddTailAtom(Atom *tail_atom)
+void Residue::AddTailAtom(MolecularModeling::Atom *tail_atom)
 {
     tail_atoms_.push_back(tail_atom);
 }
@@ -201,10 +201,10 @@ void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
 {
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); ++it)
     {
-        Atom *atom = (*it);
+        MolecularModeling::Atom *atom = (*it);
         for(AtomVector::iterator itt = newAtoms->begin(); itt != newAtoms->end(); ++itt)
         {
-            Atom *atom1 = (*itt);
+            MolecularModeling::Atom *atom1 = (*itt);
             //std::std::cout << "Comparing with " << atom1->GetName() << std::std::endl;
             if (atom->GetName() == atom1->GetName() )
             {
@@ -231,7 +231,7 @@ bool Residue::CheckSymbolBasedElementLabeling()
 {
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if(atom->GetElementSymbol().compare("") == 0)
             return false;
     }
@@ -242,7 +242,7 @@ bool Residue::CheckParameterBasedElementLabeling()
 {
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if(atom->GetAtomType().compare("UNK") == 0 || atom->GetAtomType().compare("") == 0)
             return false;
     }
@@ -264,8 +264,8 @@ bool Residue::GraphSymbolBasedElementLabeling()
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
-        AtomNode* atom_node = atom->GetNode();
+        MolecularModeling::Atom* atom = *it;
+        MolecularModeling::AtomNode* atom_node = atom->GetNode();
         if(atom_node != NULL)
             atom_node->SetElementLabel(atom->GetElementSymbol());
         else
@@ -283,8 +283,8 @@ bool Residue::GraphParameterBasedElementLabeling()
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
-        AtomNode* atom_node = atom->GetNode();
+        MolecularModeling::Atom* atom = *it;
+        MolecularModeling::AtomNode* atom_node = atom->GetNode();
         if(atom_node != NULL)
         {
             std::string element_symbol = gmml::AtomTypesLookup(atom->GetAtomType()).element_symbol_;
@@ -311,8 +311,8 @@ bool Residue::GraphPredictionBasedElementLabeling()
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
-        AtomNode* atom_node = atom->GetNode();
+        MolecularModeling::Atom* atom = *it;
+        MolecularModeling::AtomNode* atom_node = atom->GetNode();
         if(atom_node != NULL)
             atom_node->SetElementLabel(isdigit(atom->GetName().at(0)) ? atom->GetName().at(1) + "" : atom->GetName().at(0) + "");
         else
@@ -330,14 +330,14 @@ Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
     AtomVector lowest_degree_atoms = AtomVector();
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         int current = atom->GetNode()->GetIntraEdgeDegree();
         if(current < degree)
             current = degree;
     }
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if(atom->GetNode()->GetIntraEdgeDegree() == degree)
             lowest_degree_atoms.push_back(atom);
     }
@@ -357,10 +357,6 @@ double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
     return gmml::CalculateAtomicOverlaps(residueAtoms, assemblyBAtoms);
 }
 
-// Not C++98 compliant. If you want this, push for a modern standard. Oliver supports you.
-// Your wish is my command. ;o) The Proteins are now defined as a const std::string in the common.hpp.
-//  This allows for easy modification of it and also if someone else wants to use it somewhere else it
-//  is now available to them.
 bool Residue::CheckIfProtein()
 {
     if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), this->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
@@ -469,10 +465,16 @@ bool Residue::CheckIfWater() {
 
 GeometryTopology::Coordinate Residue::GetGeometricCenter()
 {
-    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
     AtomVector atoms = this->GetAtoms();
-    for(MolecularModeling::Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    if(atoms.size() == 0)
     {
+        std::cout << "Problem in Residue::GetGeometricCenter(), the residue " << this->GetId() << " contains no atoms." << std::endl;
+    }
+
+    double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
+    for(MolecularModeling::Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); ++atom)
+    {
+       // std::cout << "atoms size is " << atoms.size() << " for " << (*atom)->GetId() << std::endl;
         sumX += (*atom)->GetCoordinates().at(0)->GetX();
         sumY += (*atom)->GetCoordinates().at(0)->GetY();
         sumZ += (*atom)->GetCoordinates().at(0)->GetZ();
@@ -484,6 +486,47 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
     return center;
 }
 
+MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
+{
+    MolecularModeling::Atom* return_atom;
+    AtomVector atoms = this->GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
+    {
+        if ((*it)->GetName().compare(query_name)==0)
+        {
+            return_atom = (*it);
+        }
+    }
+    return return_atom; // may be unset
+}
+
+MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
+{
+    MolecularModeling::Atom* return_atom;
+    AtomVector atoms = this->GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
+    {
+        if ((*it)->GetIndex() == query_index)
+        {
+            return_atom = (*it);
+        }
+    }
+    return return_atom; // may be unset
+}
+
+MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
+{
+    MolecularModeling::Atom* return_atom;
+    AtomVector atoms = this->GetAtoms();
+    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
+    {
+        if ((*it)->GetId().compare(query_id)==0)
+        {
+            return_atom = (*it);
+        }
+    }
+    return return_atom; // may be unset
+}
 
 
 
@@ -496,7 +539,7 @@ void Residue::Print(std::ostream &out)
     out << "Head atoms: ";
     for(AtomVector::iterator it = head_atoms_.begin(); it != head_atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
 //        out << atom->GetResidue()->GetName() << ":" << atom->GetName() << "; ";
         out << atom->GetId() << "; ";
     }
@@ -504,14 +547,14 @@ void Residue::Print(std::ostream &out)
     out << "Tail atoms: ";
     for(AtomVector::iterator it = tail_atoms_.begin(); it != tail_atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
 //        out << atom->GetResidue()->GetName() << ":" << atom->GetName() << "; ";
         out << atom->GetId() << "; ";
     }
     out << std::endl;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         atom->Print(out);
     }
 }
@@ -527,14 +570,14 @@ void Residue::PrettyPrintHet(std::ostream &out)
 
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         out << atom->GetId() << ", ";
     }
 
     out << std::endl;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         out << "------------------------ " << "Atom" << " --------------------------" << std::endl;
         out << " ID: " << atom->GetId() << std::endl;
         out << " Name: " << atom->GetName() << std::endl;
@@ -546,11 +589,11 @@ void Residue::PrettyPrintHet(std::ostream &out)
         GeometryTopology::Coordinate* coords = atom->GetCoordinates().at(0);
         out << " Coordinates" <<  " X: " << coords->GetX() << ", Y: " << coords->GetY() << ", Z: " << coords->GetZ() << std::endl;
         out << " Neighbors: ";
-        AtomNode* node = atom->GetNode();
+        MolecularModeling::AtomNode* node = atom->GetNode();
         AtomVector neighbors = node->GetNodeNeighbors();
         for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
         {
-            Atom* neighbor = *it1;
+            MolecularModeling::Atom* neighbor = *it1;
             out << neighbor->GetId() << ", ";
         }
         out << std::endl;
@@ -563,7 +606,7 @@ void Residue::PrintHetResidues(std::ostream &out)
     out << id_ << ";" << name_ << ";";
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         out << atom->GetId() << ",";
     }
     out << std::endl;
@@ -573,16 +616,16 @@ void Residue::PrintHetAtoms(std::ostream &out)
 {
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         out << atom->GetId() << ";" << atom->GetName() << ";" << atom->GetAtomType() << ";" << atom->GetCharge() << ";" << atom->GetMass() << ";";
         GeometryTopology::Coordinate* coords = atom->GetCoordinates().at(0);
         out << coords->GetX() << "," << coords->GetY() << "," << coords->GetZ() << ";";
 
-        AtomNode* node = atom->GetNode();
+        MolecularModeling::AtomNode* node = atom->GetNode();
         AtomVector neighbors = node->GetNodeNeighbors();
         for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
         {
-            Atom* neighbor = *it1;
+            MolecularModeling::Atom* neighbor = *it1;
             out << neighbor->GetId() << ",";
         }
         out << std::endl;
@@ -594,7 +637,7 @@ void Residue::WriteHetResidues(std::ofstream& out)
     out << id_ << ";" << name_ << ";";
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         if (it == (atoms_.end() - 1) )
             out << atom->GetId();
         else
@@ -607,16 +650,16 @@ void Residue::WriteHetAtoms(std::ofstream& out)
 {
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
         out << atom->GetId() << ";" << atom->GetName() << ";" << atom->GetAtomType() << ";" << atom->GetCharge() << ";" << atom->GetMass() << ";";
         GeometryTopology::Coordinate* coords = atom->GetCoordinates().at(0);
         out << coords->GetX() << "," << coords->GetY() << "," << coords->GetZ() << ";";
 
-        AtomNode* node = atom->GetNode();
+        MolecularModeling::AtomNode* node = atom->GetNode();
         AtomVector neighbors = node->GetNodeNeighbors();
         for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
         {
-            Atom* neighbor = *it1;
+            MolecularModeling::Atom* neighbor = *it1;
             if(it1 == (neighbors.end() - 1))
                 out << neighbor->GetId();
             else

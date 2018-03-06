@@ -42,6 +42,7 @@ PdbSheetStrand::PdbSheetStrand(std::string &line)
             sense_ = PARALLEL;
             break;
         case gmml::iNotSet:
+        default:
             sense_ = UnknownStrand;
             break;
     }

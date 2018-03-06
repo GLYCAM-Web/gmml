@@ -9,10 +9,16 @@
 #include "InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
 #include "InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "InputSet/PdbFileSpace/pdbauthorsection.hpp"
+#include "InputSet/PdbFileSpace/pdbcaveatsection.hpp"
+#include "InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
+#include "InputSet/PdbFileSpace/pdbcispeptidecard.hpp"
 #include "InputSet/PdbFileSpace/pdbcompoundsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
 #include "InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "InputSet/PdbFileSpace/pdbcrystallographiccard.hpp"
+#include "InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
+#include "InputSet/PdbFileSpace/pdbdatabasereference.hpp"
 #include "InputSet/PdbFileSpace/pdbdisulfidebondsection.hpp"
 #include "InputSet/PdbFileSpace/pdbdisulfideresidue.hpp"
 #include "InputSet/PdbFileSpace/pdbdisulfideresiduebond.hpp"
@@ -31,9 +37,13 @@
 #include "InputSet/PdbFileSpace/pdbheterogennamecard.hpp"
 #include "InputSet/PdbFileSpace/pdbheterogensynonymsection.hpp"
 #include "InputSet/PdbFileSpace/pdbheterogensynonymcard.hpp"
+#include "InputSet/PdbFileSpace/pdbjournalsection.hpp"
+#include "InputSet/PdbFileSpace/pdbkeywordssection.hpp"
+#include "InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
 #include "InputSet/PdbFileSpace/pdblinksection.hpp"
 #include "InputSet/PdbFileSpace/pdblinkcard.hpp"
 #include "InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
+#include "InputSet/PdbFileSpace/pdbmastercard.hpp"
 #include "InputSet/PdbFileSpace/pdbmatrixnsection.hpp"
 #include "InputSet/PdbFileSpace/pdbmatrixncard.hpp"
 #include "InputSet/PdbFileSpace/pdbmodelsection.hpp"
@@ -51,8 +61,12 @@
 #include "InputSet/PdbFileSpace/pdbresiduemodificationcard.hpp"
 #include "InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
 #include "InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
+#include "InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
+#include "InputSet/PdbFileSpace/pdbrevisiondatacard.hpp"
 #include "InputSet/PdbFileSpace/pdbscalensection.hpp"
 #include "InputSet/PdbFileSpace/pdbscalencard.hpp"
+#include "InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
+#include "InputSet/PdbFileSpace/pdbsequenceadvancedcard.hpp"
 #include "InputSet/PdbFileSpace/pdbsheetsection.hpp"
 #include "InputSet/PdbFileSpace/pdbsheetcard.hpp"
 #include "InputSet/PdbFileSpace/pdbsheetstrand.hpp"
@@ -60,6 +74,11 @@
 #include "InputSet/PdbFileSpace/pdbsitesection.hpp"
 #include "InputSet/PdbFileSpace/pdbsitecard.hpp"
 #include "InputSet/PdbFileSpace/pdbsiteresidue.hpp"
+#include "InputSet/PdbFileSpace/pdbsourcecard.hpp"
+#include "InputSet/PdbFileSpace/pdbsourcesection.hpp"
+#include "InputSet/PdbFileSpace/pdbsplitsection.hpp"
+#include "InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
+#include "InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
 #include "InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "InputSet/PdbqtFileSpace/pdbqtatom.hpp"
 #include "InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
@@ -136,5 +155,12 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
+
+typedef std::vector<MolecularModeling::Atom*> AtomVector;
+typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
+typedef std::vector<MolecularModeling::Residue*> ResidueVector;
+typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
+typedef GeometryTopology::Coordinate Vector;
+typedef std::vector<std::string> StringVector;
 
 #endif // GMML_HPP

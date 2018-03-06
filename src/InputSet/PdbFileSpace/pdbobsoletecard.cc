@@ -79,7 +79,7 @@ void  PdbObsoleteCard::Print(std::ostream &out)
 {
     out << "Replacement Date: " << replacement_date_
         << " ";
-    for (int i = 0; i < identifier_codes_.size(); i++)
+    for (unsigned int i = 0; i < identifier_codes_.size(); i++)
     {
       out << "Identifier Codes: " << identifier_codes_[i] << ", ";
     }

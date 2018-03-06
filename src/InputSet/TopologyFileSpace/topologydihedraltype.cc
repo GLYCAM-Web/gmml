@@ -8,8 +8,11 @@ using TopologyFileSpace::TopologyDihedralType;
 //////////////////////////////////////////////////////////
 TopologyDihedralType::TopologyDihedralType() {}
 
-TopologyDihedralType::TopologyDihedralType(int index, double force_constant, double periodicity, double phase, double scee, double scnb) :
-    index_(index), force_constant_(force_constant), periodicity_(periodicity), phase_(phase), scee_(scee), scnb_(scnb) {}
+TopologyDihedralType::TopologyDihedralType(
+        int index, double force_constant, double periodicity, double phase,
+        double scee, double scnb) :
+    index_(index), periodicity_(periodicity), phase_(phase),
+    scee_(scee), scnb_(scnb), force_constant_(force_constant) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
