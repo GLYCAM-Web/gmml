@@ -2,21 +2,18 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
-
+using PdbFileSpace::PdbRevisionDataCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbRevisionDataCard::PdbRevisionDataCard() {}
-PdbRevisionDataCard::PdbRevisionDataCard(string &line)
+PdbRevisionDataCard::PdbRevisionDataCard(std::string &line)
 {
     record_name_ = line.substr(0, 6);
     // Trim(record_name_);
 
-    mod_num_ = ConvertString<int>(line.substr(7,3));
+    mod_num_ = gmml::ConvertString<int>(line.substr(7,3));
 
     mod_date_ = line.substr(13,9);
     // Trim(mod_date_);
@@ -24,8 +21,8 @@ PdbRevisionDataCard::PdbRevisionDataCard(string &line)
     mod_id_  = line.substr(23, 4);
     // Trim(mod_id_);
 
-    mod_type_ = ConvertString<int>(line.substr(31,1));
-    // mod_type_ = ConvertString<int>(type);
+    mod_type_ = gmml::ConvertString<int>(line.substr(31,1));
+    // mod_type_ = gmml::ConvertString<int>(type);
 
     mod_detail_ = line.substr(39, 27);
     // Trim(mod_detail_);
@@ -37,7 +34,7 @@ PdbRevisionDataCard::PdbRevisionDataCard(string &line)
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbRevisionDataCard::GetRecordName(){
+std::string PdbRevisionDataCard::GetRecordName(){
     return record_name_;
 }
 
@@ -45,11 +42,11 @@ int PdbRevisionDataCard::GetModificationNumber(){
     return mod_num_;
 }
 
-string PdbRevisionDataCard::GetModificationDate(){
+std::string PdbRevisionDataCard::GetModificationDate(){
     return mod_date_;
 }
 
-string PdbRevisionDataCard::GetModificationID(){
+std::string PdbRevisionDataCard::GetModificationID(){
     return mod_id_;
 }
 
@@ -57,7 +54,7 @@ int PdbRevisionDataCard::GetModificationType(){
     return mod_type_;
 }
 
-string PdbRevisionDataCard::GetModificationDetails(){
+std::string PdbRevisionDataCard::GetModificationDetails(){
     return mod_detail_;
 }
 
@@ -65,7 +62,7 @@ string PdbRevisionDataCard::GetModificationDetails(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbRevisionDataCard::SetRecordName(const string record_name){
+void PdbRevisionDataCard::SetRecordName(const std::string record_name){
     record_name_ = record_name;
 }
 
@@ -73,11 +70,11 @@ void PdbRevisionDataCard::SetModificationNumber(const int mod_num){
     mod_num_ = mod_num;
 }
 
-void PdbRevisionDataCard::SetModificationDate(const string mod_date){
+void PdbRevisionDataCard::SetModificationDate(const std::string mod_date){
     mod_date_ = mod_date;
 }
 
-void PdbRevisionDataCard::SetModificationID(const string mod_id){
+void PdbRevisionDataCard::SetModificationID(const std::string mod_id){
     mod_id_ = mod_id;
 }
 
@@ -85,14 +82,14 @@ void PdbRevisionDataCard::SetModificationType(const int mod_type){
     mod_type_ = mod_type;
 }
 
-void PdbRevisionDataCard::SetModificationDetails(const string mod_detail){
+void PdbRevisionDataCard::SetModificationDetails(const std::string mod_detail){
     mod_detail_ = mod_detail;
 }
 
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbRevisionDataCard::Print(ostream &out)
+void PdbRevisionDataCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_;
     out << ", Modification Number: " << mod_num_;
@@ -100,5 +97,5 @@ void PdbRevisionDataCard::Print(ostream &out)
     out << ", Modification ID: " << mod_id_;
     out << ", Modification Type: " << mod_type_;
     out << ", Modification Details: " << mod_detail_;
-    out << endl;
+    out << std::endl;
 }

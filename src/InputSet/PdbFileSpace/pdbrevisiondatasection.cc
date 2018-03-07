@@ -3,21 +3,19 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbRevisionDataSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbRevisionDataSection::PdbRevisionDataSection() {}
-PdbRevisionDataSection::PdbRevisionDataSection(stringstream &stream_block)
+PdbRevisionDataSection::PdbRevisionDataSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
+    std::string temp = line;
     RevisionDataCardVector revision_data_cards;
-    while (!Trim(temp).empty())
+    while (!gmml::Trim(temp).empty())
     {
         PdbRevisionDataCard* revision_data = new PdbRevisionDataCard(line);
         AddRevisionDataCards(revision_data);
@@ -58,12 +56,12 @@ void PdbRevisionDataSection::AddRevisionDataCards(PdbRevisionDataCard *revision_
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbRevisionDataSection::Print(ostream &out)
+void PdbRevisionDataSection::Print(std::ostream &out)
 {
     for(RevisionDataCardVector::iterator it = revision_data_.begin(); it != revision_data_.end(); it++)
     {
       (*it)->Print(out);
-      out << endl;
+      out << std::endl;
     }
 
 }

@@ -3,20 +3,19 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+
+using PdbFileSpace::PdbSupersededEntriesSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbSupersededEntriesSection::PdbSupersededEntriesSection() {}
-PdbSupersededEntriesSection::PdbSupersededEntriesSection(stringstream &stream_block)
+PdbSupersededEntriesSection::PdbSupersededEntriesSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         PdbSupersededEntriesCard* superseded_entries = new PdbSupersededEntriesCard(line);
         AddSupersededEntriesCards(superseded_entries);
@@ -57,9 +56,9 @@ void PdbSupersededEntriesSection::AddSupersededEntriesCards(PdbSupersededEntries
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSupersededEntriesSection::Print(ostream &out)
+void PdbSupersededEntriesSection::Print(std::ostream &out)
 {
     for(SupersededEntriesCardVector::iterator it = superseded_entries_.begin(); it != superseded_entries_.end(); it++)
             (*it)->Print(out);
-    out << endl;
+    out << std::endl;
 }
