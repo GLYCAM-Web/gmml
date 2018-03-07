@@ -3,22 +3,20 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbDatabaseReferenceSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbDatabaseReferenceSection::PdbDatabaseReferenceSection() {}
-PdbDatabaseReferenceSection::PdbDatabaseReferenceSection(stringstream &stream_block)
+PdbDatabaseReferenceSection::PdbDatabaseReferenceSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
-        string record_name = line.substr(0, 6);
+        std::string record_name = line.substr(0, 6);
         if(record_name == "DBREF1")
         { //This gets this line and the next line, as DBREF1&2 are two line references
           PdbDatabaseReference* database_reference = new PdbDatabaseReference(line);
@@ -69,9 +67,9 @@ void PdbDatabaseReferenceSection::AddDatabaseReferences(PdbDatabaseReference *da
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbDatabaseReferenceSection::Print(ostream &out)
+void PdbDatabaseReferenceSection::Print(std::ostream &out)
 {
     for(DatabaseReferenceVector::iterator it = database_reference_.begin(); it != database_reference_.end(); it++)
             (*it)->Print(out);
-    out << endl;
+    out << std::endl;
 }

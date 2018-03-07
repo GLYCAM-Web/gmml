@@ -4,39 +4,37 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbResidueSequenceSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbResidueSequenceSection::PdbResidueSequenceSection() : record_name_("SEQRES") {}
 
-PdbResidueSequenceSection::PdbResidueSequenceSection(const string &record_name) : record_name_(record_name) {}
+PdbResidueSequenceSection::PdbResidueSequenceSection(const std::string &record_name) : record_name_(record_name) {}
 
-PdbResidueSequenceSection::PdbResidueSequenceSection(stringstream &stream_block)
+PdbResidueSequenceSection::PdbResidueSequenceSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
-        stringstream residue_sequence_block;
-        residue_sequence_block << line << endl;
-        char chain_id = ConvertString<char>(line.substr(11,1));
+        std::stringstream residue_sequence_block;
+        residue_sequence_block << line << std::endl;
+        char chain_id = gmml::ConvertString<char>(line.substr(11,1));
 
         getline(stream_block, line);
         temp = line;
 
-        while (!Trim(temp).empty() && ConvertString<char>(line.substr(11,1)) == chain_id){
-            residue_sequence_block << line << endl;
+        while (!gmml::Trim(temp).empty() && gmml::ConvertString<char>(line.substr(11,1)) == chain_id){
+            residue_sequence_block << line << std::endl;
             getline(stream_block, line);
             temp = line;
         }
@@ -48,7 +46,7 @@ PdbResidueSequenceSection::PdbResidueSequenceSection(stringstream &stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbResidueSequenceSection::GetRecordName()
+std::string PdbResidueSequenceSection::GetRecordName()
 {
     return record_name_;
 }
@@ -61,7 +59,7 @@ PdbResidueSequenceSection::ResidueSequenceCardMap PdbResidueSequenceSection::Get
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbResidueSequenceSection::SetRecordName(const string record_name)
+void PdbResidueSequenceSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -73,14 +71,14 @@ void PdbResidueSequenceSection::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbResidueSequenceSection::Print(ostream &out)
+void PdbResidueSequenceSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "============= Residue Sequence Chain =============" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "============= Residue Sequence Chain =============" << std::endl;
     for(PdbResidueSequenceSection::ResidueSequenceCardMap::iterator it = residue_sequence_chains_.begin(); it != residue_sequence_chains_.end(); it++)
     {
-        out << "Chain ID: " << (it)->first << endl;
+        out << "Chain ID: " << (it)->first << std::endl;
         (it)->second->Print();
-        out << endl;
+        out << std::endl;
     }
 }

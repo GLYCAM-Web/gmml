@@ -3,33 +3,37 @@
 #include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 TopologyAtom::TopologyAtom()
 {
-    index_ = iNotSet;
+    index_ = gmml::iNotSet;
     atom_name_ = "";
     type_ = "";
-    atom_charge_ = dNotSet;
-    atomic_number_ = iNotSet;
-    atom_mass_ = dNotSet;
+    atom_charge_ = gmml::dNotSet;
+    atomic_number_ = gmml::iNotSet;
+    atom_mass_ = gmml::dNotSet;
     excluded_atoms_ = ExcludedAtomNames();
-    number_of_excluded_atoms_ = iNotSet;
-    radii_ = dNotSet;
-    screen_ = dNotSet;
+    number_of_excluded_atoms_ = gmml::iNotSet;
+    radii_ = gmml::dNotSet;
+    screen_ = gmml::dNotSet;
     tree_chain_classification_ = "";
     residue_name_ = "";
 }
 
-TopologyAtom::TopologyAtom(int atom_index, string atom_name, string type, double atom_charge, int atomic_number, double atom_mass, ExcludedAtomNames excluded_atoms,
-                           int number_of_excluded_atoms, double radii, double screen, string tree_chain_classification, string residue_name) :
-    index_(atom_index), atom_name_(atom_name), type_(type), atom_charge_(atom_charge), atomic_number_(atomic_number), atom_mass_(atom_mass), number_of_excluded_atoms_(number_of_excluded_atoms),
-    radii_(radii), screen_(screen), tree_chain_classification_(tree_chain_classification), residue_name_(residue_name)
+TopologyAtom::TopologyAtom( int atom_index, std::string atom_name, std::string type,
+                            double atom_charge, int atomic_number, double atom_mass,
+                            ExcludedAtomNames excluded_atoms, int number_of_excluded_atoms,
+                            double radii, double screen, std::string tree_chain_classification,
+                            std::string residue_name) :
+    atom_name_(atom_name), atom_charge_(atom_charge), atomic_number_(atomic_number),
+    atom_mass_(atom_mass), radii_(radii), screen_(screen),
+    tree_chain_classification_(tree_chain_classification),
+    number_of_excluded_atoms_(number_of_excluded_atoms),
+    type_(type), index_(atom_index), residue_name_(residue_name)
 {
     excluded_atoms_.clear();
     for(ExcludedAtomNames::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
@@ -41,7 +45,7 @@ TopologyAtom::TopologyAtom(int atom_index, string atom_name, string type, double
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string TopologyAtom::GetAtomName()
+std::string TopologyAtom::GetAtomName()
 {
     return atom_name_;
 }
@@ -57,7 +61,7 @@ double TopologyAtom::GetAtomMass()
 {
     return atom_mass_;
 }
-vector<string> TopologyAtom::GetExcludedAtoms()
+std::vector<std::string> TopologyAtom::GetExcludedAtoms()
 {
     return excluded_atoms_;
 }
@@ -69,7 +73,7 @@ double TopologyAtom::GetScreen()
 {
     return screen_;
 }
-string TopologyAtom::GetTreeChainClassification()
+std::string TopologyAtom::GetTreeChainClassification()
 {
     return tree_chain_classification_;
 }
@@ -77,7 +81,7 @@ int TopologyAtom::GetNumberOfExcludedAtoms()
 {
     return number_of_excluded_atoms_;
 }
-string TopologyAtom::GetType()
+std::string TopologyAtom::GetType()
 {
     return type_;
 }
@@ -85,7 +89,7 @@ int TopologyAtom::GetIndex()
 {
     return index_;
 }
-string TopologyAtom::GetResidueName()
+std::string TopologyAtom::GetResidueName()
 {
     return residue_name_;
 }
@@ -93,7 +97,7 @@ string TopologyAtom::GetResidueName()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAtom::SetAtomName(const string atom_name)
+void TopologyAtom::SetAtomName(const std::string atom_name)
 {
     atom_name_ = atom_name;
 }
@@ -109,15 +113,15 @@ void TopologyAtom::SetAtomMass(double atom_mass)
 {
     atom_mass_ = atom_mass;
 }
-void TopologyAtom::SetExcludedAtoms(vector<string> excluded_atoms)
+void TopologyAtom::SetExcludedAtoms(std::vector<std::string> excluded_atoms)
 {
     excluded_atoms_.clear();
-    for(vector<string>::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
+    for(std::vector<std::string>::iterator it = excluded_atoms.begin(); it != excluded_atoms.end(); it++)
     {
         excluded_atoms_.push_back(*it);
     }
 }
-void TopologyAtom::AddExcludedAtom(string excluded_atom)
+void TopologyAtom::AddExcludedAtom(std::string excluded_atom)
 {
         excluded_atoms_.push_back(excluded_atom);
 }
@@ -137,7 +141,7 @@ void TopologyAtom::SetNumberOfExcludedAtoms(int number_of_excluded_atoms)
 {
     number_of_excluded_atoms_ = number_of_excluded_atoms;
 }
-void TopologyAtom::SetType(string type)
+void TopologyAtom::SetType(std::string type)
 {
     type_ = type;
 }
@@ -145,7 +149,7 @@ void TopologyAtom::SetIndex(int index)
 {
     index_ = index;
 }
-void TopologyAtom::SetResidueName(string residue_name)
+void TopologyAtom::SetResidueName(std::string residue_name)
 {
     residue_name_ = residue_name;
 }
@@ -157,26 +161,24 @@ void TopologyAtom::SetResidueName(string residue_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyAtom::Print(ostream &out)
+void TopologyAtom::Print(std::ostream &out)
 {
-    out << "Index: " << index_ << endl
-           << "Residue Name: " << residue_name_ << endl
-        << "Atom Name: " << atom_name_ << endl
-        << "Charge: " << scientific << setprecision(8) << atom_charge_  << endl
-        << "Atomic Number: " << atomic_number_ << endl
-        << "Mass: " << scientific << setprecision(8) << atom_mass_ << endl
+    out << "Index: " << index_ << std::endl
+           << "Residue Name: " << residue_name_ << std::endl
+        << "Atom Name: " << atom_name_ << std::endl
+        << "Charge: " << std::scientific << std::setprecision(8) << atom_charge_  << std::endl
+        << "Atomic Number: " << atomic_number_ << std::endl
+        << "Mass: " << std::scientific << std::setprecision(8) << atom_mass_ << std::endl
         << "Excluded Atoms: ";
-    for(vector<string>::iterator it = excluded_atoms_.begin(); it != excluded_atoms_.end(); it++)
+    for(std::vector<std::string>::iterator it = excluded_atoms_.begin(); it != excluded_atoms_.end(); it++)
     {
-        string atom_name = (*it);
+        std::string atom_name = (*it);
         out << atom_name << "; ";
     }
-    out << endl
-        << "Radii: " << scientific << setprecision(8) << radii_ << endl
-        << "Screen: " << scientific << setprecision(8) << screen_ << endl
-        << "Tree Chain Classification: " << tree_chain_classification_ << endl
-        << "Number of Excluded Atoms: " << number_of_excluded_atoms_ << endl
-        << "Atom Type: " << type_ << endl << endl;
+    out << std::endl
+        << "Radii: " << std::scientific << std::setprecision(8) << radii_ << std::endl
+        << "Screen: " << std::scientific << std::setprecision(8) << screen_ << std::endl
+        << "Tree Chain Classification: " << tree_chain_classification_ << std::endl
+        << "Number of Excluded Atoms: " << number_of_excluded_atoms_ << std::endl
+        << "Atom Type: " << type_ << std::endl << std::endl;
 }
-
-

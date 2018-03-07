@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Manually change this number as you add tests:
-number_of_tests=4
+number_of_tests=5
 tests_passed=0
 
 # Required for compiling
@@ -73,6 +73,17 @@ else
     printf "Test FAILED!.\n"
 fi
 rm overlaps overlaps.txt > /dev/null 2>&1
+
+###################### Test 05 ######################
+printf "Testing to make sure there are no using namespace declarations... "
+namespace_count=$( grep -r --exclude-dir=Eigen_Algebra_Template_Library "using namespace" ../includes/ ../src/ | wc -l )
+if [[ $namespace_count -eq 0 ]]; then
+	printf "Test passed!\n"
+	((tests_passed++))
+else
+	printf "Test FAILED!\n"
+fi
+
 
 
 ############# Allow git push ########################

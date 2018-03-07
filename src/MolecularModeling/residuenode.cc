@@ -2,12 +2,10 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/MolecularModeling/residuenode.hpp"
 
-
 #include <cstddef>
 #include <iostream>
 
-using namespace std;
-using namespace MolecularModeling;
+using MolecularModeling::ResidueNode;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -24,7 +22,7 @@ ResidueNode::ResidueNode() : isVisited_(false)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-Residue* ResidueNode::GetResidue()
+MolecularModeling::Residue* ResidueNode::GetResidue()
 {
     return residue_;
 }
@@ -55,7 +53,7 @@ bool ResidueNode::GetIsVisited()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void ResidueNode::SetResidue(Residue* residue)
+void ResidueNode::SetResidue(MolecularModeling::Residue* residue)
 {
     residue_ = residue;
 }
@@ -96,7 +94,7 @@ void ResidueNode::SetIsVisited(bool isVisited)
 
 void ResidueNode::AddResidueNodeConnectingAtom(Atom* connecting_atom)
 {
-    residuenode_connecting_atoms_.push_back(connecting_atom); 
+    residuenode_connecting_atoms_.push_back(connecting_atom);
 }
 
 
@@ -132,26 +130,25 @@ void ResidueNode::RemoveNodeNeighbor(ResidueNode* residuenode_neighbor)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void ResidueNode::Print(ostream &out)
+void ResidueNode::Print(std::ostream &out)
 {
-    out << "Residue Name:" << residue_->GetName() << endl;
-    out << "Residuenode ID:"<<id_<<endl;
-    out <<  "Visit Flag:"<<isVisited_<<endl;
-    out <<  "ResidueNode Neighbors:\t id  \t residue name"<<endl;
+    out << "Residue Name:" << residue_->GetName() << std::endl;
+    out << "Residuenode ID:" << id_ << std::endl;
+    out <<  "Visit Flag:" << isVisited_ << std::endl;
+    out <<  "ResidueNode Neighbors:\t id  \t residue name" << std::endl;
     for(ResidueNodeVector::iterator it = residuenode_neighbors_.begin(); it != residuenode_neighbors_.end(); it++)
     {
          ResidueNode* current_residuenode = (*it);
         out<<"\t \t \t"<< current_residuenode->GetId()<<"  ";
-        out<< "\t"<<current_residuenode->GetResidue()->GetName()<<endl;
+        out<< "\t"<<current_residuenode->GetResidue()->GetName()<<std::endl;
     }
 
 
-    out <<  "Residue Connecting Atoms: \t \t id  \t \t atom name"<<endl;
+    out <<  "Residue Connecting Atoms: \t \t id  \t \t atom name"<<std::endl;
     for(ResidueNodeConnectingAtomVector::iterator it = residuenode_connecting_atoms_.begin(); it != residuenode_connecting_atoms_.end(); it++)
     {
          Atom* connecting_atom = (*it);
-         out<<"\t \t \t \t"<< connecting_atom->GetId()<<"  ";
-         out<< "\t"<< connecting_atom->GetName()<<endl;
+         out << "\t \t \t \t" << connecting_atom->GetId() << "  ";
+         out << "\t" << connecting_atom->GetName() << std::endl;
     }
 }
-

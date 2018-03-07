@@ -2,23 +2,21 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbscalencard.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbScaleNSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbScaleNSection::PdbScaleNSection() {}
-PdbScaleNSection::PdbScaleNSection(stringstream &stream_block)
+PdbScaleNSection::PdbScaleNSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
-        stringstream ss;
-        ss << line << endl;
+        std::stringstream ss;
+        ss << line << std::endl;
         PdbScaleNCard* scale = new PdbScaleNCard(ss);
         AddScaleNCard(scale);
         getline(stream_block, line);
@@ -57,11 +55,11 @@ void PdbScaleNSection::AddScaleNCard(PdbScaleNCard *scale)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbScaleNSection::Print(ostream &out)
+void PdbScaleNSection::Print(std::ostream &out)
 {
     for(PdbScaleNSection::ScaleNCardVector::iterator it = scale_n_.begin(); it != scale_n_.end(); it++)
     {
         (*it)->Print(out);
     }
-    out << endl;
+    out << std::endl;
 }

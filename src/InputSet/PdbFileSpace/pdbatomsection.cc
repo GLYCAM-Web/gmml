@@ -4,34 +4,32 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
+using PdbFileSpace::PdbAtomSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbAtomSection::PdbAtomSection() : record_name_("ATOM") {}
 
-PdbAtomSection::PdbAtomSection(stringstream &stream_block, string index)
+PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string index)
 {
     atom_cards_ = PdbAtomMap();
     ordered_atom_cards_ = PdbAtomCardOrderVector();
-    string line;
+    std::string line;
     bool is_record_name_set = false;
-//    cout << stream_block.str() << endl;
+//    cout << stream_block.str() << std::endl;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
 //            record_name_ = line.substr(0,6);
             record_name_ = "ATOM";
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
 
-        PdbAtomCard* atom_card = new PdbAtomCard(line);
+        PdbFileSpace::PdbAtomCard* atom_card = new PdbFileSpace::PdbAtomCard(line);
         //int ch = 65 + ConvertString<int>(Split(index, "_")[1]);
         atom_card->SetAtomCardIndexInResidueSet(index);
         //atom->SetAtomChainId((char)ch);
@@ -46,7 +44,7 @@ PdbAtomSection::PdbAtomSection(stringstream &stream_block, string index)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbAtomSection::GetRecordName()
+std::string PdbAtomSection::GetRecordName()
 {
     return record_name_;
 }
@@ -62,7 +60,7 @@ PdbAtomSection::PdbAtomCardOrderVector PdbAtomSection::GetOrderedAtomCards()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbAtomSection::SetRecordName(const string record_name)
+void PdbAtomSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -72,7 +70,7 @@ void PdbAtomSection::SetAtomCards(PdbAtomMap atom_cards)
     atom_cards_.clear();
     for(PdbAtomMap::iterator it = atom_cards.begin(); it != atom_cards.end(); it++)
     {
-        PdbAtomCard* atom_card = (*it).second;
+        PdbFileSpace::PdbAtomCard* atom_card = (*it).second;
         int serial_number = (*it).first;
         atom_cards_[serial_number] = atom_card;
     }
@@ -82,7 +80,7 @@ void PdbAtomSection::SetOrderedAtomCards(PdbAtomCardOrderVector ordered_atom_car
     ordered_atom_cards_.clear();
     for(PdbAtomCardOrderVector::iterator it = ordered_atom_cards.begin(); it != ordered_atom_cards.end(); it++)
     {
-        PdbAtomCard* atom_card = (*it);
+        PdbFileSpace::PdbAtomCard* atom_card = (*it);
         ordered_atom_cards_.push_back(atom_card);
     }
 }
@@ -94,19 +92,19 @@ void PdbAtomSection::SetOrderedAtomCards(PdbAtomCardOrderVector ordered_atom_car
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbAtomSection::Print(ostream &out)
+void PdbAtomSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "_________________ Atoms _______________" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "_________________ Atoms _______________" << std::endl;
     for(PdbAtomSection::PdbAtomMap::iterator it = atom_cards_.begin(); it != atom_cards_.end(); it++)
     {
         out << "Atom Serial Number: ";
-        if((it)->first != iNotSet)
-            out << (it)->first << endl;
+        if((it)->first != gmml::iNotSet)
+            out << (it)->first << std::endl;
         else
-            out << " " << endl;
+            out << " " << std::endl;
         (it)->second->Print();
-        out << endl;
+        out << std::endl;
     }
-    out << endl;
+    out << std::endl;
 }

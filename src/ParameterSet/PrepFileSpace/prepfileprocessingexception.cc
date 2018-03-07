@@ -5,14 +5,13 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 
-using namespace gmml;
-using namespace PrepFileSpace;
+using PrepFileSpace::PrepFileProcessingException;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 PrepFileProcessingException::PrepFileProcessingException(const std::string &message)
-    : line_number_(dNotSet), message_(message) {}
+    : line_number_(gmml::dNotSet), message_(message) {}
 
 PrepFileProcessingException::PrepFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -24,7 +23,7 @@ PrepFileProcessingException::PrepFileProcessingException(int line_number, const 
 const char* PrepFileProcessingException::what() const throw()
 {
     what_ = "PrepFile: " + message_;
-    if (line_number_ != dNotSet)
+    if (line_number_ != gmml::dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)

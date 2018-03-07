@@ -3,37 +3,35 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbFormulaCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbFormulaCard::PdbFormulaCard() : heterogen_identifier_(""), component_number_(dNotSet), chemical_formula_("") {}
-PdbFormulaCard::PdbFormulaCard(const string &heterogen_identifier, int component_number, const string &chemical_formula)
+PdbFormulaCard::PdbFormulaCard() : heterogen_identifier_(""), component_number_(gmml::dNotSet), chemical_formula_("") {}
+PdbFormulaCard::PdbFormulaCard(const std::string &heterogen_identifier, int component_number, const std::string &chemical_formula)
     : heterogen_identifier_(heterogen_identifier), component_number_(component_number), chemical_formula_(chemical_formula) {}
 
-PdbFormulaCard::PdbFormulaCard(stringstream& stream_block)
+PdbFormulaCard::PdbFormulaCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_heterogen_identifier_set = false, is_component_number_set = false;
-    stringstream ss;
+    std::stringstream ss;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_heterogen_identifier_set){
             heterogen_identifier_ = line.substr(12,3);
-            Trim(heterogen_identifier_);
+            gmml::Trim(heterogen_identifier_);
             is_heterogen_identifier_set = true;
         }
 
         if(!is_component_number_set){
             if(line.substr(8, 2) == "  ")
-                component_number_ = iNotSet;
+                component_number_ = gmml::iNotSet;
             else
-                component_number_ = ConvertString<int>(line.substr(8,2));
+                component_number_ = gmml::ConvertString<int>(line.substr(8,2));
             is_component_number_set = true;
         }
 
@@ -43,12 +41,12 @@ PdbFormulaCard::PdbFormulaCard(stringstream& stream_block)
         temp = line;
     }
     chemical_formula_ = ss.str();
-    chemical_formula_ = Trim(chemical_formula_);
+    chemical_formula_ = gmml::Trim(chemical_formula_);
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbFormulaCard::GetHeterogenIdentifier()
+std::string PdbFormulaCard::GetHeterogenIdentifier()
 {
     return heterogen_identifier_;
 }
@@ -58,7 +56,7 @@ int PdbFormulaCard::GetComponentNumber()
     return component_number_;
 }
 
-string PdbFormulaCard::GetChemicalFormula()
+std::string PdbFormulaCard::GetChemicalFormula()
 {
     return chemical_formula_;
 }
@@ -66,7 +64,7 @@ string PdbFormulaCard::GetChemicalFormula()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbFormulaCard::SetHeterogenIdentifier(const string heterogen_identifier)
+void PdbFormulaCard::SetHeterogenIdentifier(const std::string heterogen_identifier)
 {
     heterogen_identifier_ = heterogen_identifier;
 }
@@ -76,7 +74,7 @@ void PdbFormulaCard::SetComponentNumber(int component_number)
     component_number_ = component_number;
 }
 
-void PdbFormulaCard::SetChemicalFormula(const string chemical_formula)
+void PdbFormulaCard::SetChemicalFormula(const std::string chemical_formula)
 {
     chemical_formula_ = chemical_formula;
 }
@@ -88,13 +86,13 @@ void PdbFormulaCard::SetChemicalFormula(const string chemical_formula)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void  PdbFormulaCard::Print(ostream &out)
+void  PdbFormulaCard::Print(std::ostream &out)
 {
     out << "Heterogen ID: " << heterogen_identifier_
         << ", Component Number: ";
-    if(component_number_ != iNotSet)
+    if(component_number_ != gmml::iNotSet)
         out << component_number_;
     else
         out << " ";
-    out << "Chemical Formula: " << chemical_formula_ << endl;
+    out << "Chemical Formula: " << chemical_formula_ << std::endl;
 }

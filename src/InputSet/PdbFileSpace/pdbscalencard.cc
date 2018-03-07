@@ -2,46 +2,43 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace GeometryTopology;
-using namespace gmml;
+using PdbFileSpace::PdbScaleNCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbScaleNCard::PdbScaleNCard():scale_vector_() {}
 
-PdbScaleNCard::PdbScaleNCard(stringstream& stream_block)
+PdbScaleNCard::PdbScaleNCard(std::stringstream& stream_block)
 {
-    string line;
-    scale_vector_=Coordinate();
+    std::string line;
+    scale_vector_=GeometryTopology::Coordinate();
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         record_name_ = line.substr(0,5);
-        Trim(record_name_);
+        gmml::Trim(record_name_);
         if(line.substr(5,1) == " ")
-            n_ = iNotSet;
+            n_ = gmml::iNotSet;
         else
-            n_ = ConvertString<int>(line.substr(5,1));
+            n_ = gmml::ConvertString<int>(line.substr(5,1));
         if(line.substr(10,10) == "          ")
-            scale_vector_.SetX(dNotSet);
+            scale_vector_.SetX(gmml::dNotSet);
         else
-            scale_vector_.SetX( ConvertString<double>(line.substr(10,10)));
+            scale_vector_.SetX( gmml::ConvertString<double>(line.substr(10,10)));
         if(line.substr(20, 10) == "          ")
-            scale_vector_.SetY(dNotSet);
+            scale_vector_.SetY(gmml::dNotSet);
         else
-            scale_vector_.SetY( ConvertString<double>(line.substr(20,10)));
+            scale_vector_.SetY( gmml::ConvertString<double>(line.substr(20,10)));
         if(line.substr(30, 10) == "          ")
-            scale_vector_.SetZ(dNotSet);
+            scale_vector_.SetZ(gmml::dNotSet);
         else
-            scale_vector_.SetZ( ConvertString<double>(line.substr(30,10)));
+            scale_vector_.SetZ( gmml::ConvertString<double>(line.substr(30,10)));
         if(line.substr(45, 10) == "          ")
-            u_ = dNotSet;
+            u_ = gmml::dNotSet;
         else
-            u_ = ConvertString<double>(line.substr(45,10));
+            u_ = gmml::ConvertString<double>(line.substr(45,10));
 
         getline(stream_block, line);
         temp = line;
@@ -51,7 +48,7 @@ PdbScaleNCard::PdbScaleNCard(stringstream& stream_block)
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbScaleNCard::GetRecordName(){
+std::string PdbScaleNCard::GetRecordName(){
     return record_name_;
 }
 
@@ -71,7 +68,7 @@ double PdbScaleNCard::GetU(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbScaleNCard::SetRecordName(const string record_name){
+void PdbScaleNCard::SetRecordName(const std::string record_name){
     record_name_ = record_name;
 }
 
@@ -90,19 +87,19 @@ void PdbScaleNCard::SetU(double u){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbScaleNCard::Print(ostream &out)
+void PdbScaleNCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_;
-    if(n_ != iNotSet)
+    if(n_ != gmml::iNotSet)
         out << n_;
     else
         out << " ";
     out << ", Origin: ";
     scale_vector_.Print(out);
     out << ", U: ";
-    if(u_ != dNotSet)
+    if(u_ != gmml::dNotSet)
         out << u_;
     else
         out << " ";
-    out << endl;
+    out << std::endl;
 }

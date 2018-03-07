@@ -3,33 +3,31 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbkeywordssection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbKeywordsSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbKeywordsSection::PdbKeywordsSection() : record_name_("KEYWDS"), keywords_(""){}
 
-PdbKeywordsSection::PdbKeywordsSection(const string &record_name, const string &keywords)
+PdbKeywordsSection::PdbKeywordsSection(const std::string &record_name, const std::string &keywords)
 {
     record_name_ = record_name;
     keywords_ = keywords;
 }
 
-PdbKeywordsSection::PdbKeywordsSection(stringstream& stream_block)
+PdbKeywordsSection::PdbKeywordsSection(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
-    stringstream ss;
+    std::stringstream ss;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
         ss << line.substr(10,70);
@@ -38,18 +36,18 @@ PdbKeywordsSection::PdbKeywordsSection(stringstream& stream_block)
         temp = line;
     }
     keywords_ = ss.str();
-    Trim(keywords_);
+    gmml::Trim(keywords_);
 }
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbKeywordsSection::GetRecordName()
+std::string PdbKeywordsSection::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbKeywordsSection::GetKeywords()
+std::string PdbKeywordsSection::GetKeywords()
 {
     return keywords_;
 }
@@ -57,12 +55,12 @@ string PdbKeywordsSection::GetKeywords()
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbKeywordsSection::SetRecordName(const string record_name)
+void PdbKeywordsSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbKeywordsSection::SetKeywords(const string keywords)
+void PdbKeywordsSection::SetKeywords(const std::string keywords)
 {
     keywords_ = keywords;
 }
@@ -74,7 +72,7 @@ void PdbKeywordsSection::SetKeywords(const string keywords)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbKeywordsSection::Print(ostream &out)
+void PdbKeywordsSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << ", Keywords: " << keywords_ << endl << endl;
+    out << "Record Name: " << record_name_ << ", Keywords: " << keywords_ << std::endl << std::endl;
 }

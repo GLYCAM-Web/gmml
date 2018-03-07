@@ -3,29 +3,27 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbheterogennamecard.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbHeterogenNameCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbHeterogenNameCard::PdbHeterogenNameCard() : heterogen_identifier_(""), heterogen_name_("") {}
-PdbHeterogenNameCard::PdbHeterogenNameCard(const string &heterogen_identifier, const string &heterogen_name) :
+PdbHeterogenNameCard::PdbHeterogenNameCard(const std::string &heterogen_identifier, const std::string &heterogen_name) :
     heterogen_identifier_(heterogen_identifier), heterogen_name_(heterogen_name) {}
 
-PdbHeterogenNameCard::PdbHeterogenNameCard(stringstream& stream_block)
+PdbHeterogenNameCard::PdbHeterogenNameCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_heterogen_identifier_set = false;
-    stringstream ss;
+    std::stringstream ss;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_heterogen_identifier_set){
             heterogen_identifier_ = line.substr(11,3);
-            Trim(heterogen_identifier_);
+            gmml::Trim(heterogen_identifier_);
             is_heterogen_identifier_set = true;
         }
 
@@ -35,18 +33,18 @@ PdbHeterogenNameCard::PdbHeterogenNameCard(stringstream& stream_block)
         temp = line;
     }
     heterogen_name_ = ss.str();
-    heterogen_name_ = Trim(heterogen_name_);
+    heterogen_name_ = gmml::Trim(heterogen_name_);
 }
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbHeterogenNameCard::GetHeterogenIdentifier()
+std::string PdbHeterogenNameCard::GetHeterogenIdentifier()
 {
     return heterogen_identifier_;
 }
 
-string PdbHeterogenNameCard::GetHeterogenName()
+std::string PdbHeterogenNameCard::GetHeterogenName()
 {
     return heterogen_name_;
 }
@@ -54,12 +52,12 @@ string PdbHeterogenNameCard::GetHeterogenName()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameCard::SetHeterogenIdentifier(const string heterogen_identifier)
+void PdbHeterogenNameCard::SetHeterogenIdentifier(const std::string heterogen_identifier)
 {
     heterogen_identifier_ = heterogen_identifier;
 }
 
-void PdbHeterogenNameCard::SetHeterogenName(const string heterogen_name)
+void PdbHeterogenNameCard::SetHeterogenName(const std::string heterogen_name)
 {
     heterogen_name_ = heterogen_name;
 }
@@ -71,7 +69,7 @@ void PdbHeterogenNameCard::SetHeterogenName(const string heterogen_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameCard::Print(ostream &out)
+void PdbHeterogenNameCard::Print(std::ostream &out)
 {
-    out << "Heterogen ID: " << heterogen_identifier_ << ", Heterogen Name: " << heterogen_name_ << endl;
+    out << "Heterogen ID: " << heterogen_identifier_ << ", Heterogen Name: " << heterogen_name_ << std::endl;
 }

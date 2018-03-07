@@ -3,29 +3,27 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
+using PdbFileSpace::PdbHeterogenAtomSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbHeterogenAtomSection::PdbHeterogenAtomSection() : record_name_("HETATM") {}
 
-PdbHeterogenAtomSection::PdbHeterogenAtomSection(stringstream &stream_block, string index)
+PdbHeterogenAtomSection::PdbHeterogenAtomSection(std::stringstream &stream_block, std::string index)
 {
     heterogen_atom_cards_ = PdbHeterogenAtomCardMap();
     ordered_heterogen_atom_cards_ = PdbHeterogenAtomOrderVector();
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
 //            record_name_ = line.substr(0,6);
             record_name_ = "HETATM";
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
 
@@ -44,7 +42,7 @@ PdbHeterogenAtomSection::PdbHeterogenAtomSection(stringstream &stream_block, str
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbHeterogenAtomSection::GetRecordName()
+std::string PdbHeterogenAtomSection::GetRecordName()
 {
     return record_name_;
 }
@@ -62,7 +60,7 @@ PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector PdbHeterogenAtomSection::Ge
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHeterogenAtomSection::SetRecordName(const string record_name)
+void PdbHeterogenAtomSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -94,18 +92,18 @@ void PdbHeterogenAtomSection::SetOrderedHeterogenAtoms(PdbHeterogenAtomOrderVect
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenAtomSection::Print(ostream &out)
+void PdbHeterogenAtomSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "________________ Heterogen Atoms ___________________" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "________________ Heterogen Atoms ___________________" << std::endl;
     for(PdbHeterogenAtomSection::PdbHeterogenAtomCardMap::iterator it = heterogen_atom_cards_.begin(); it != heterogen_atom_cards_.end(); it++)
     {
         out << "Atom Serial Number: ";
-        if((it)->first != iNotSet)
-            out << (it)->first << endl;
+        if((it)->first != gmml::iNotSet)
+            out << (it)->first << std::endl;
         else
-            out << " " << endl;
+            out << " " << std::endl;
         (it)->second->Print();
-        out << endl;
+        out << std::endl;
     }
 }

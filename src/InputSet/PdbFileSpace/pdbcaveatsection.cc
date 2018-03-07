@@ -3,33 +3,31 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbcaveatsection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbCaveatSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbCaveatSection::PdbCaveatSection() : record_name_("CAVEAT"), caveat_(""){}
 
-PdbCaveatSection::PdbCaveatSection(const string &record_name, const string &caveat)
+PdbCaveatSection::PdbCaveatSection(const std::string &record_name, const std::string &caveat)
 {
     record_name_ = record_name;
     caveat_ = caveat;
 }
 
-PdbCaveatSection::PdbCaveatSection(stringstream& stream_block)
+PdbCaveatSection::PdbCaveatSection(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
-    stringstream ss;
+    std::stringstream ss;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
         ss << line.substr(20,70);
@@ -38,18 +36,18 @@ PdbCaveatSection::PdbCaveatSection(stringstream& stream_block)
         temp = line;
     }
     caveat_ = ss.str();
-    // Trim(caveat_);
+    // gmml::Trim(caveat_);
 }
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbCaveatSection::GetRecordName()
+std::string PdbCaveatSection::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbCaveatSection::GetCaveat()
+std::string PdbCaveatSection::GetCaveat()
 {
     return caveat_;
 }
@@ -57,12 +55,12 @@ string PdbCaveatSection::GetCaveat()
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbCaveatSection::SetRecordName(const string record_name)
+void PdbCaveatSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbCaveatSection::SetCaveat(const string caveat)
+void PdbCaveatSection::SetCaveat(const std::string caveat)
 {
     caveat_ = caveat;
 }
@@ -74,7 +72,7 @@ void PdbCaveatSection::SetCaveat(const string caveat)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbCaveatSection::Print(ostream &out)
+void PdbCaveatSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << ", Caveat: " << caveat_ << endl << endl;
+    out << "Record Name: " << record_name_ << ", Caveat: " << caveat_ << std::endl << std::endl;
 }

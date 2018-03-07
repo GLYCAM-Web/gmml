@@ -3,9 +3,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbJournalSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -15,40 +13,40 @@ PdbJournalSection::PdbJournalSection() /*: record_name_("JRNL"), authors_(""),
                                          publisher_(""), reference_nums_(""),
                                          pmid_(""), doi_("")*/{}
 
-PdbJournalSection::PdbJournalSection(stringstream& stream_block)
+PdbJournalSection::PdbJournalSection(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     bool is_title_started = false;
     bool is_reference_started = false;
     bool is_publisher_started = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set)
         {
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
         text_.append(line.substr(12, 67));
-        string subrecord = line.substr(12,4);
-        Trim(subrecord);
+        std::string subrecord = line.substr(12,4);
+        gmml::Trim(subrecord);
         if(subrecord == "AUTH")
         {
           std::size_t start_position = 19;
           std::size_t end_position = line.find(",");
           if (end_position!=std::string::npos)
              {
-               string new_author = line.substr(start_position,end_position-start_position);
+               std::string new_author = line.substr(start_position,end_position-start_position);
                authors_.push_back(new_author);
                start_position = end_position;
                end_position = line.find(",",start_position+1);
              }
           else
           {
-            string new_author = line.substr(start_position,79-start_position);
+            std::string new_author = line.substr(start_position,79-start_position);
             authors_.push_back(new_author);
           }
         }
@@ -57,16 +55,16 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
           if(!is_title_started)
           {
             title_ = line.substr(19,59);
-            Trim(title_);
+            gmml::Trim(title_);
             is_title_started = true;
           }
           else
           {
-            string titl = line.substr(19,59);
-            Trim(titl);
+            std::string titl = line.substr(19,59);
+            gmml::Trim(titl);
             title_.append(" ");
             title_.append(titl);
-            Trim(title_);
+            gmml::Trim(title_);
           }
         }
         else if(subrecord == "EDIT")
@@ -75,7 +73,7 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
           std::size_t end_position = line.find(",");
           while (end_position!=std::string::npos)
              {
-               string new_editor = line.substr(start_position,end_position-start_position);
+               std::string new_editor = line.substr(start_position,end_position-start_position);
                editors_.push_back(new_editor);
                start_position = end_position;
                end_position = line.find(",",start_position+1);
@@ -86,16 +84,16 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
           if(!is_reference_started)
           {
             reference_ = line.substr(19,59);
-            Trim(reference_);
+            gmml::Trim(reference_);
             is_reference_started = true;
           }
           else
           {
-            string ref = line.substr(19,59);
-            Trim(ref);
+            std::string ref = line.substr(19,59);
+            gmml::Trim(ref);
             reference_.append(" ");
             reference_.append(ref);
-            Trim(reference_);
+            gmml::Trim(reference_);
           }
         }
         else if(subrecord == "PUBL")
@@ -103,33 +101,33 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
           if(!is_publisher_started)
           {
             publisher_ = line.substr(19,59);
-            Trim(publisher_);
+            gmml::Trim(publisher_);
             is_publisher_started = true;
           }
           else
           {
-            string publ = line.substr(19,59);
-            Trim(publ);
+            std::string publ = line.substr(19,59);
+            gmml::Trim(publ);
             publisher_.append(" ");
             publisher_.append(publ);
           }
         }
         else if(subrecord == "REFN")
         {
-          string refn = line.substr(35,29);
-          Trim(refn);
+          std::string refn = line.substr(35,29);
+          gmml::Trim(refn);
           reference_nums_.push_back(refn);
         }
         else if(subrecord == "PMID")
         {
-            string new_pmid = line.substr(19,59);
-            Trim(new_pmid);
+            std::string new_pmid = line.substr(19,59);
+            gmml::Trim(new_pmid);
             pmid_.append(new_pmid);
         }
         else if(subrecord == "DOI")
         {
-          string new_doi = line.substr(19,59);
-          Trim(new_doi);
+          std::string new_doi = line.substr(19,59);
+          gmml::Trim(new_doi);
           doi_.append(new_doi);
         }
     getline(stream_block, line);
@@ -140,104 +138,104 @@ PdbJournalSection::PdbJournalSection(stringstream& stream_block)
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbJournalSection::GetRecordName()
+std::string PdbJournalSection::GetRecordName()
 {
     return record_name_;
 }
 
-std::vector<string> PdbJournalSection::GetAuthors()
+std::vector<std::string> PdbJournalSection::GetAuthors()
 {
     return authors_;
 }
 
-string PdbJournalSection::GetTitle()
+std::string PdbJournalSection::GetTitle()
 {
     return title_;
 }
 
-std::vector<string> PdbJournalSection::GetEditors()
+std::vector<std::string> PdbJournalSection::GetEditors()
 {
     return editors_;
 }
 
-string PdbJournalSection::GetReference()
+std::string PdbJournalSection::GetReference()
 {
     return reference_;
 }
 
-string PdbJournalSection::GetPublisher()
+std::string PdbJournalSection::GetPublisher()
 {
     return publisher_;
 }
 
-std::vector<string> PdbJournalSection::GetReferenceNumbers()
+std::vector<std::string> PdbJournalSection::GetReferenceNumbers()
 {
     return reference_nums_;
 }
 
-string PdbJournalSection::GetPMID()
+std::string PdbJournalSection::GetPMID()
 {
     return pmid_;
 }
 
-string PdbJournalSection::GetDOI()
+std::string PdbJournalSection::GetDOI()
 {
     return doi_;
 }
 
-string PdbJournalSection::GetText()
+std::string PdbJournalSection::GetText()
 {
     return text_;
 }
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbJournalSection::SetRecordName(const string record_name)
+void PdbJournalSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbJournalSection::SetAuthors(std::vector<string> authors)
+void PdbJournalSection::SetAuthors(std::vector<std::string> authors)
 {
     authors_ = authors;
 }
 
-void PdbJournalSection::SetTitle(const string title)
+void PdbJournalSection::SetTitle(const std::string title)
 {
     title_ = title;
 }
 
-void PdbJournalSection::SetEditors(std::vector<string> editors)
+void PdbJournalSection::SetEditors(std::vector<std::string> editors)
 {
     editors_ = editors;
 }
 
-void PdbJournalSection::SetReference(const string reference)
+void PdbJournalSection::SetReference(const std::string reference)
 {
     reference_ = reference;
 }
 
-void PdbJournalSection::SetPublisher(const string publisher)
+void PdbJournalSection::SetPublisher(const std::string publisher)
 {
     publisher_ = publisher;
 }
 
-void PdbJournalSection::SetReferenceNumbers(std::vector<string> reference_nums)
+void PdbJournalSection::SetReferenceNumbers(std::vector<std::string> reference_nums)
 {
     reference_nums_ = reference_nums;
 }
 
-void PdbJournalSection::SetPMID(const string pmid)
+void PdbJournalSection::SetPMID(const std::string pmid)
 {
     pmid_ = pmid;
 }
 
-void PdbJournalSection::SetDOI(const string doi)
+void PdbJournalSection::SetDOI(const std::string doi)
 {
     doi_ = doi;
 }
 
-void PdbJournalSection::SetText(const string text)
+void PdbJournalSection::SetText(const std::string text)
 {
     text_ = text;
 }
@@ -249,31 +247,31 @@ void PdbJournalSection::SetText(const string text)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbJournalSection::Print(ostream &out)
+void PdbJournalSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl;
+    out << "Record Name: " << record_name_ << std::endl;
     out << "Authors: ";
-    for(vector<string>::iterator it = authors_.begin(); it != authors_.end(); it++)
+    for(std::vector<std::string>::iterator it = authors_.begin(); it != authors_.end(); it++)
     {
       out << *it << " ";
     }
-    out << endl;
-    out << "Title: " << title_ << endl;
+    out << std::endl;
+    out << "Title: " << title_ << std::endl;
     out << "Editors: ";
-    for(vector<string>::iterator it = editors_.begin(); it != editors_.end(); it++)
+    for(std::vector<std::string>::iterator it = editors_.begin(); it != editors_.end(); it++)
     {
       out << *it << " ";
     }
-    out << endl;
-    out << "Reference: " << reference_ << endl;
-    out << "Publisher: " << publisher_ << endl;
+    out << std::endl;
+    out << "Reference: " << reference_ << std::endl;
+    out << "Publisher: " << publisher_ << std::endl;
     out << "Reference Numbers: ";
-    for(vector<string>::iterator it = reference_nums_.begin();
+    for(std::vector<std::string>::iterator it = reference_nums_.begin();
         it != reference_nums_.end(); it++)
     {
       out << *it << " ";
     }
-    out << endl;
-    out << "PMID: " << pmid_ << endl;
-    out << "DOI: " << doi_ << endl;
+    out << std::endl;
+    out << "PMID: " << pmid_ << std::endl;
+    out << "DOI: " << doi_ << std::endl;
 }

@@ -157,10 +157,10 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
 
-typedef std::vector<Atom*> AtomVector;
+typedef std::vector<MolecularModeling::Atom*> AtomVector;
 typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
-typedef std::vector<Residue*> ResidueVector;
-typedef std::vector<Assembly*> AssemblyVector;
+typedef std::vector<MolecularModeling::Residue*> ResidueVector;
+typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
 typedef GeometryTopology::Coordinate Vector;
 typedef std::vector<std::string> StringVector;
 

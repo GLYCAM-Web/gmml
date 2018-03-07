@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <cstddef>
+#include <iostream>
 
 namespace MolecularModeling
 {
@@ -15,7 +17,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<Atom*> AtomVector;
+            typedef std::vector<MolecularModeling::Atom*> AtomVector;
             typedef std::vector<bool> BooleanVector;
 
             //////////////////////////////////////////////////////////

@@ -1,12 +1,9 @@
-#include <math.h>
-
 #include "../../includes/GeometryTopology/coordinate.hpp"
 #include "../../includes/common.hpp"
 #include "../../includes/utils.hpp"
 
-using namespace GeometryTopology;
-using namespace gmml;
-using namespace std;
+using GeometryTopology::Coordinate;
+
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
@@ -181,13 +178,13 @@ void Coordinate::RotateAngularAll(CoordinateVector coordinate_set, double angle,
     Coordinate* b2 = new Coordinate(*a3);
     b2->operator -(*a2);
 
-    current_angle = acos((b1->DotProduct(*b2)) / (b1->length() * b2->length() + DIST_EPSILON));
-    double rotation_angle = ConvertDegree2Radian(angle) - current_angle;
+    current_angle = acos((b1->DotProduct(*b2)) / (b1->length() * b2->length() + gmml::DIST_EPSILON));
+    double rotation_angle = gmml::ConvertDegree2Radian(angle) - current_angle;
 
     Coordinate* direction = new Coordinate(*b1);
     direction->CrossProduct(*b2);
     direction->Normalize();
-    double** rotation_matrix = GenerateRotationMatrix(direction, a2, rotation_angle);
+    double** rotation_matrix = gmml::GenerateRotationMatrix(direction, a2, rotation_angle);
 
     if(pos == 1)
     {
@@ -269,7 +266,7 @@ void Coordinate::RotateTorsionalAll(CoordinateVector coordinate_set, double tors
 
     current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
 
-    double** torsion_matrix = GenerateRotationMatrix(b4, a2, current_dihedral - ConvertDegree2Radian(torsion));
+    double** torsion_matrix = gmml::GenerateRotationMatrix(b4, a2, current_dihedral - gmml::ConvertDegree2Radian(torsion));
 
 
     if(pos == 1)
@@ -315,10 +312,8 @@ void Coordinate::RotateTorsionalAll(CoordinateVector coordinate_set, double tors
 //////////////////////////////////////////////////////////
 void Coordinate::Print(std::ostream& out)
 {
-    if(this->CompareTo(Coordinate(dNotSet, dNotSet, dNotSet)) == true)
+    if(this->CompareTo(Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == true)
         out << std::setw(10) << " " << ", " << std::setw(10) << " " << ", " << std::setw(10) << " ";
     else
         out << std::setw(10) << x_ << ", " << std::setw(10) << y_ << ", " << std::setw(10) << z_;
 }
-
-

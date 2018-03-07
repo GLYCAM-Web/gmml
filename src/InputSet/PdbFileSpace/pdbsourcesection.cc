@@ -3,21 +3,19 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbSourceSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbSourceSection::PdbSourceSection() {}
-PdbSourceSection::PdbSourceSection(stringstream &stream_block)
+PdbSourceSection::PdbSourceSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
+    std::string temp = line;
     SourceCardVector source_cards;
-    while (!Trim(temp).empty())
+    while (!gmml::Trim(temp).empty())
     {
         PdbSourceCard* source = new PdbSourceCard(line);
         AddSourceCards(source);
@@ -57,9 +55,9 @@ void PdbSourceSection::AddSourceCards(PdbSourceCard *source)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSourceSection::Print(ostream &out)
+void PdbSourceSection::Print(std::ostream &out)
 {
     for(SourceCardVector::iterator it = source_.begin(); it != source_.end(); it++)
             (*it)->Print(out);
-    out << endl;
+    out << std::endl;
 }

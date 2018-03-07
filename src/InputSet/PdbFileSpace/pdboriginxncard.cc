@@ -2,46 +2,43 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace GeometryTopology;
-using namespace gmml;
+using PdbFileSpace::PdbOriginXnCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbOriginXnCard::PdbOriginXnCard():origin_() {}
 
-PdbOriginXnCard::PdbOriginXnCard(stringstream& stream_block)
+PdbOriginXnCard::PdbOriginXnCard(std::stringstream& stream_block)
 {
-    string line;
-    origin_=Coordinate();
+    std::string line;
+    origin_=GeometryTopology::Coordinate();
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         record_name_ = line.substr(0,5);
-        Trim(record_name_);
+        gmml::Trim(record_name_);
         if(line.substr(5,1) == " ")
-            n_ = iNotSet;
+            n_ = gmml::iNotSet;
         else
-            n_ = ConvertString<int>(line.substr(5,1));
+            n_ = gmml::ConvertString<int>(line.substr(5,1));
         if(line.substr(10,10) == "          ")
-            origin_.SetX(dNotSet);
+            origin_.SetX(gmml::dNotSet);
         else
-            origin_.SetX( ConvertString<double>(line.substr(10,10)));
+            origin_.SetX( gmml::ConvertString<double>(line.substr(10,10)));
         if(line.substr(20, 10) == "          ")
-            origin_.SetY(dNotSet);
+            origin_.SetY(gmml::dNotSet);
         else
-            origin_.SetY( ConvertString<double>(line.substr(20,10)));
+            origin_.SetY( gmml::ConvertString<double>(line.substr(20,10)));
         if(line.substr(30, 10) == "          ")
-            origin_.SetZ(dNotSet);
+            origin_.SetZ(gmml::dNotSet);
         else
-            origin_.SetZ( ConvertString<double>(line.substr(30,10)));
+            origin_.SetZ( gmml::ConvertString<double>(line.substr(30,10)));
         if(line.substr(45, 10) == "          ")
-            t_ = dNotSet;
+            t_ = gmml::dNotSet;
         else
-            t_ = ConvertString<double>(line.substr(45,10));
+            t_ = gmml::ConvertString<double>(line.substr(45,10));
 
         getline(stream_block, line);
         temp = line;
@@ -53,7 +50,7 @@ PdbOriginXnCard::PdbOriginXnCard(stringstream& stream_block)
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbOriginXnCard::GetRecordName(){
+std::string PdbOriginXnCard::GetRecordName(){
     return record_name_;
 }
 
@@ -73,7 +70,7 @@ double PdbOriginXnCard::GetT(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbOriginXnCard::SetRecordName(const string record_name){
+void PdbOriginXnCard::SetRecordName(const std::string record_name){
     record_name_ = record_name;
 }
 
@@ -92,19 +89,19 @@ void PdbOriginXnCard::SetT(double t){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbOriginXnCard::Print(ostream &out)
+void PdbOriginXnCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_;
-    if(n_ != iNotSet)
+    if(n_ != gmml::iNotSet)
         out << n_;
     else
         out << " ";
     out << ", Origin: ";
     origin_.Print(out);
     out << ", T: ";
-    if(t_ != dNotSet)
+    if(t_ != gmml::dNotSet)
         out << t_;
     else
         out << " ";
-    out << endl;
+    out << std::endl;
 }

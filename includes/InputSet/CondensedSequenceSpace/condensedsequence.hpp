@@ -52,7 +52,7 @@ namespace CondensedSequenceSpace
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
-            //////////////////////////////////////////////////////////         
+            //////////////////////////////////////////////////////////
             /*! \typedef
               * List of condensed sequence residues
               */
@@ -65,7 +65,7 @@ namespace CondensedSequenceSpace
 //            typedef std::vector<std::pair<CondensedSequenceGlycam06Residue*, int> > CondensedSequenceGlycam06ResidueTree;
 
             typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueTree;
-            typedef std::vector<CondensedSequenceGlycam06Residue*> CondensedSequenceGlycam06ResidueTree;       
+            typedef std::vector<CondensedSequenceGlycam06Residue*> CondensedSequenceGlycam06ResidueTree;
             typedef std::pair<std::string, RotamersAndGlycosidicAnglesInfo*> RotamerNameInfoPair;
             typedef std::vector<RotamerNameInfoPair> CondensedSequenceRotamersAndGlycosidicAnglesInfo;
             typedef std::map<int, std::vector<std::vector<double> > > IndexLinkageConfigurationMap;
@@ -123,7 +123,7 @@ namespace CondensedSequenceSpace
                * @{
                */
             std::string GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
-            std::string GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences, std::string parent_name);
+            std::string GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences);
             std::string GetFirstLetterOfGlycam06ResidueCode(std::bitset<10> open_valences_check);
             std::string GetSecondLetterOfGlycam06ResidueCode(std::string residue_name, std::string isomer);
             std::string GetThirdLetterOfGlycam06ResidueCode(std::string configuration, std::string ring_type);

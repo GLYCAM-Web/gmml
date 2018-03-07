@@ -2,24 +2,22 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdboriginxncard.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbOriginXnSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbOriginXnSection::PdbOriginXnSection() {}
 
-PdbOriginXnSection::PdbOriginXnSection(stringstream &stream_block)
+PdbOriginXnSection::PdbOriginXnSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
-        stringstream ss;
-        ss << line << endl;
+        std::stringstream ss;
+        ss << line << std::endl;
         PdbOriginXnCard* origin = new PdbOriginXnCard(ss);
         AddOriginXN(origin);
         getline(stream_block, line);
@@ -59,11 +57,11 @@ void PdbOriginXnSection::AddOriginXN(PdbOriginXnCard *origin)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbOriginXnSection::Print(ostream &out)
+void PdbOriginXnSection::Print(std::ostream &out)
 {
     for(PdbOriginXnSection::OriginXnCardVector::iterator it = origin_x_n_.begin(); it != origin_x_n_.end(); it++)
     {
         (*it)->Print(out);
     }
-    out << endl;
+    out << std::endl;
 }

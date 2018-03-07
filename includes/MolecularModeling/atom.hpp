@@ -14,12 +14,10 @@
 #include "atomnode.hpp"
 #include "residue.hpp"
 
-using namespace MolecularModeling;
-
 namespace MolecularModeling
 {
-    class Residue;
-    class AtomNode;
+    // class Residue;
+    // class AtomNode;
     class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom
     {
         public:
@@ -98,7 +96,7 @@ namespace MolecularModeling
             * An accessor function in order to access to the node
             * @return node_ attribute of the current object of this class
             */
-            AtomNode* GetNode() const;
+            MolecularModeling::AtomNode* GetNode() const;
             /*! \fn
             * An accessor function in order to access to the id
             * @return id_ attribute of the current object of this class
@@ -173,7 +171,7 @@ namespace MolecularModeling
             * Set the node_ attribute of the current atom
             * @param node The node attribute of the current object
             */
-            void SetNode(AtomNode* node);
+            void SetNode(MolecularModeling::AtomNode* node);
             /*! \fn
             * A mutator function in order to set the id of the current object
             * Set the id_ attribute of the current atom
@@ -246,7 +244,7 @@ namespace MolecularModeling
             std::string chemical_type_;        /*!< A descriptor to determines the chemical type of the atom >*/
             std::string description_;          /*!< Short description of the atom >*/
             std::string element_symbol_;       /*!< Element symbol of the atom >*/
-            AtomNode* node_;                   /*!< A Pointer to a node of the graph structure that indicates this atom >*/
+            MolecularModeling::AtomNode* node_;                   /*!< A Pointer to a node of the graph structure that indicates this atom >*/
             std::string id_;                   /*!< An identifier for an atom which is generated based on the type of the input file from which the structure has to be built
                     			Mostly it is like "residue_name:atom_name" >*/
             bool is_ring_;                     /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/

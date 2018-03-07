@@ -3,20 +3,18 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbSequenceAdvancedSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbSequenceAdvancedSection::PdbSequenceAdvancedSection() {}
-PdbSequenceAdvancedSection::PdbSequenceAdvancedSection(stringstream &stream_block)
+PdbSequenceAdvancedSection::PdbSequenceAdvancedSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         PdbSequenceAdvancedCard* sequence_advanced = new PdbSequenceAdvancedCard(line);
         AddSequenceAdvancedCards(sequence_advanced);
@@ -58,9 +56,9 @@ void PdbSequenceAdvancedSection::AddSequenceAdvancedCards(PdbSequenceAdvancedCar
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSequenceAdvancedSection::Print(ostream &out)
+void PdbSequenceAdvancedSection::Print(std::ostream &out)
 {
     for(SequenceAdvancedCardVector::iterator it = sequence_advanced_.begin(); it != sequence_advanced_.end(); it++)
             (*it)->Print(out);
-    out << endl;
+    out << std::endl;
 }

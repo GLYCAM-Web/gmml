@@ -2,30 +2,27 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
-
+using PdbFileSpace::PdbSourceCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbSourceCard::PdbSourceCard() {}
-PdbSourceCard::PdbSourceCard(string &line)
+PdbSourceCard::PdbSourceCard(std::string &line)
 {
 
-    // Trim(record_name_);
-    string temp = line;
-    if (!Trim(temp).empty())
+    // gmml::Trim(record_name_);
+    std::string temp = line;
+    if (!gmml::Trim(temp).empty())
     {
       record_name_ = line.substr(0, 6);
       std::size_t position = line.find(":");
       if (position!=std::string::npos)
          {
            token_ = line.substr(10,position-10);
-           // Trim(token_);
+           // gmml::Trim(token_);
            value_ = line.substr(position+1, 78-position);
-           // Trim(value_);
+           // gmml::Trim(value_);
          }
     }
 }
@@ -35,15 +32,15 @@ PdbSourceCard::PdbSourceCard(string &line)
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbSourceCard::GetRecordName(){
+std::string PdbSourceCard::GetRecordName(){
     return record_name_;
 }
 
-string PdbSourceCard::GetToken(){
+std::string PdbSourceCard::GetToken(){
     return token_;
 }
 
-string PdbSourceCard::GetValue(){
+std::string PdbSourceCard::GetValue(){
     return value_;
 }
 
@@ -51,15 +48,15 @@ string PdbSourceCard::GetValue(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbSourceCard::SetRecordName(const string record_name){
+void PdbSourceCard::SetRecordName(const std::string record_name){
     record_name_ = record_name;
 }
 
-void PdbSourceCard::SetToken(const string token){
+void PdbSourceCard::SetToken(const std::string token){
     token_ = token;
 }
 
-void PdbSourceCard::SetValue(const string value){
+void PdbSourceCard::SetValue(const std::string value){
     value_ = value;
 }
 
@@ -67,10 +64,10 @@ void PdbSourceCard::SetValue(const string value){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbSourceCard::Print(ostream &out)
+void PdbSourceCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_;
     out << "Token:" << token_;
     out << "Value:" << value_;
-    out << endl;
+    out << std::endl;
 }

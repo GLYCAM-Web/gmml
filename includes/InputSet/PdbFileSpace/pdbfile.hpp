@@ -9,9 +9,6 @@
 #include <iostream>
 #include <vector>
 #include <map>
-// using namespace gmml;
-// using namespace MolecularModeling;
-
 
 namespace PdbFileSpace
 {

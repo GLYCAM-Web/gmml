@@ -25,7 +25,10 @@ namespace PdbPreprocessorSpace
               * @param residue_insertion_code Insertion code of the unrecognized residue
               * @param residue_alternate_location Alternated location of the unrecognized residue
               */
-            PdbPreprocessorUnrecognizedResidue(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code, char residue_alternate_location, bool middle_of_chain);
+            PdbPreprocessorUnrecognizedResidue(
+                std::string residue_name, char chain_id, int sequence_number,
+                char residue_insertion_code, char residue_alternate_location,
+                bool middle_of_chain);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

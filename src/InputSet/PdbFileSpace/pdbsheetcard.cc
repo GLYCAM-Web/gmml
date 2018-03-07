@@ -8,16 +8,14 @@
 
 #include <iostream>
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbSheetCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbSheetCard::PdbSheetCard() :  sheet_id_(""), number_of_strands_(dNotSet) {}
+PdbSheetCard::PdbSheetCard() :  sheet_id_(""), number_of_strands_(gmml::dNotSet) {}
 
-PdbSheetCard::PdbSheetCard(const string &sheet_id, int number_of_strands, const SheetStrandVector strands)
+PdbSheetCard::PdbSheetCard(const std::string &sheet_id, int number_of_strands, const SheetStrandVector strands)
     : sheet_id_(sheet_id), number_of_strands_(number_of_strands)
 {
     strands_.clear();
@@ -27,26 +25,26 @@ PdbSheetCard::PdbSheetCard(const string &sheet_id, int number_of_strands, const 
     }
 }
 
-PdbSheetCard::PdbSheetCard(stringstream& stream_block)
+PdbSheetCard::PdbSheetCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     bool is_sheet_id_set = false, is_number_of_strands_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_sheet_id_set)
         {
             sheet_id_ = line.substr(11, 3);
-            Trim(sheet_id_);
+            gmml::Trim(sheet_id_);
             is_sheet_id_set = true;
         }
         if(!is_number_of_strands_set)
         {
             if(line.substr(14, 2).compare("  ") == 0)
-                number_of_strands_ = iNotSet;
+                number_of_strands_ = gmml::iNotSet;
             else
-                number_of_strands_ = ConvertString<int>(line.substr(14,2));
+                number_of_strands_ = gmml::ConvertString<int>(line.substr(14,2));
             is_number_of_strands_set = true;
         }
 
@@ -63,7 +61,7 @@ PdbSheetCard::PdbSheetCard(stringstream& stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbSheetCard::GetSheetId()
+std::string PdbSheetCard::GetSheetId()
 {
     return sheet_id_;
 }
@@ -81,7 +79,7 @@ PdbSheetCard::SheetStrandVector PdbSheetCard::GetStrands()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbSheetCard::SetSheetId(const string sheet_id)
+void PdbSheetCard::SetSheetId(const std::string sheet_id)
 {
     sheet_id_ = sheet_id;
 }
@@ -112,19 +110,19 @@ void PdbSheetCard::AddStrand(PdbSheetStrand *strand)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSheetCard::Print(ostream &out)
+void PdbSheetCard::Print(std::ostream &out)
 {
     out << "Sheet ID: " << sheet_id_
         << ", Number of Strands: ";
-    if(number_of_strands_ != iNotSet)
+    if(number_of_strands_ != gmml::iNotSet)
         out << number_of_strands_;
     else
         out << " ";
-    out << endl << "------------------- Strands ------------------" << endl;
+    out << std::endl << "------------------- Strands ------------------" << std::endl;
     for(PdbSheetCard::SheetStrandVector::iterator it = strands_.begin(); it != strands_.end(); it++)
     {
         (*it)->Print(out);
-        out << endl;
+        out << std::endl;
     }
-    out << endl;
+    out << std::endl;
 }

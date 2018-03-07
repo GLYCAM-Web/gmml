@@ -4,14 +4,13 @@
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace ParameterFileSpace;
-using namespace gmml;
+using ParameterFileSpace::ParameterFileBond;
 
 ///////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileBond::ParameterFileBond()
-    : types_(), force_constant_(dNotSet), length_(dNotSet), dscr_("") {}
+    : types_(), force_constant_(gmml::dNotSet), length_(gmml::dNotSet), dscr_("") {}
 
 ParameterFileBond::ParameterFileBond(const std::vector<std::string> &types, double force_constant, double length, const std::string &dscr)
     : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr) {}
@@ -106,12 +105,12 @@ void ParameterFileBond::Print(std::ostream& out)
             out << std::setw(4) << (*it);
     }
 
-    if(force_constant_ == dNotSet)
+    if(force_constant_ == gmml::dNotSet)
         out << std::setw(15) << "--";
     else
         out << std::setw(15) << force_constant_;
 
-    if(length_ == dNotSet)
+    if(length_ == gmml::dNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << length_;

@@ -4,34 +4,32 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbheterogensection.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbHeterogenSection;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbHeterogenSection::PdbHeterogenSection() : record_name_("HET") {}
 
-PdbHeterogenSection::PdbHeterogenSection(const string &record_name) : record_name_(record_name) {}
+PdbHeterogenSection::PdbHeterogenSection(const std::string &record_name) : record_name_(record_name) {}
 
-PdbHeterogenSection::PdbHeterogenSection(stringstream &stream_block)
+PdbHeterogenSection::PdbHeterogenSection(std::stringstream &stream_block)
 {
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
-        stringstream ss;
-        ss << line << endl;
+        std::stringstream ss;
+        ss << line << std::endl;
         PdbHeterogenCard* heterogen = new PdbHeterogenCard(ss);
-        stringstream key;
+        std::stringstream key;
         key << heterogen->GetChainId() << "_" << heterogen->GetSequenceNumber() << "_" << heterogen->GetInsertionCode();
         heterogen_cards_[key.str()] = heterogen;
         getline(stream_block, line);
@@ -55,7 +53,7 @@ PdbHeterogenSection::HeterogenCardMap PdbHeterogenSection::GetHeterogenCards()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHeterogenSection::SetRecordName(const string record_name)
+void PdbHeterogenSection::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -67,14 +65,14 @@ void PdbHeterogenSection::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenSection::Print(ostream &out)
+void PdbHeterogenSection::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "=============== Heterogen ==============" << endl;
+    out << "Record Name: " << record_name_ << std::endl <<
+           "=============== Heterogen ==============" << std::endl;
     for(PdbHeterogenSection::HeterogenCardMap::iterator it = heterogen_cards_.begin(); it != heterogen_cards_.end(); it++)
     {
-        out << "Heterogen ID: " << (it)->first << endl;
+        out << "Heterogen ID: " << (it)->first << std::endl;
         (it)->second->Print();
-        out << endl;
+        out << std::endl;
     }
 }

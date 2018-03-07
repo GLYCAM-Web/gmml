@@ -86,9 +86,7 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/coordinate.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbFile;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -184,7 +182,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     if(std::ifstream(pdb_file.c_str()))
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "Opening PDB file ...");
-        cout << "Opening PDB file ..." << endl;
+        std::cout << "Opening PDB file ..." << std::endl;
         in_file.open(pdb_file.c_str());
     }
     else
@@ -192,9 +190,9 @@ PdbFile::PdbFile(const std::string &pdb_file)
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
-    string line = "";
-    string temp = "";
-    stringstream ss;
+    std::string line = "";
+    std::string temp = "";
+    std::stringstream ss;
     while(!in_file.eof())
     {
         if(!getline(in_file, line))
@@ -202,15 +200,15 @@ PdbFile::PdbFile(const std::string &pdb_file)
         else
         {
             temp = line.substr(0,6);
-            temp = Trim(temp);
-            if(temp.find("END") != string::npos || temp.compare("END") == 0)
+            temp = gmml::Trim(temp);
+            if(temp.find("END") != std::string::npos || temp.compare("END") == 0)
                 break;
             else if(!line.empty())
-                ss << line << endl;
+                ss << line << std::endl;
         }
     }
     in_file.close();
-    if(temp.find("END") == string::npos || temp.compare("END") != 0)
+    if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
     {
         std::ofstream out_file;
         out_file.open(pdb_file.c_str());
@@ -245,187 +243,187 @@ PdbFile* PdbFile::LoadPdbFile(const std::string &pdb_file)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbFile::GetPath()
+std::string PdbFile::GetPath()
 {
     return path_;
 }
 
-PdbHeaderCard* PdbFile::GetHeader()
+PdbFileSpace::PdbHeaderCard* PdbFile::GetHeader()
 {
     return header_;
 }
 
-PdbObsoleteSection* PdbFile::GetObsoleteCards()
+PdbFileSpace::PdbObsoleteSection* PdbFile::GetObsoleteCards()
 {
     return obsolete_;
 }
 
-PdbTitleSection* PdbFile::GetTitle()
+PdbFileSpace::PdbTitleSection* PdbFile::GetTitle()
 {
     return title_;
 }
 
-PdbSplitSection* PdbFile::GetSplit()
+PdbFileSpace::PdbSplitSection* PdbFile::GetSplit()
 {
     return split_;
 }
 
-PdbCaveatSection* PdbFile::GetCaveat()
+PdbFileSpace::PdbCaveatSection* PdbFile::GetCaveat()
 {
     return caveat_;
 }
 
-PdbCompoundSection* PdbFile::GetCompound()
+PdbFileSpace::PdbCompoundSection* PdbFile::GetCompound()
 {
     return compound_;
 }
 
-PdbSourceSection* PdbFile::GetSourceCards()
+PdbFileSpace::PdbSourceSection* PdbFile::GetSourceCards()
 {
     return source_;
 }
 
-PdbKeywordsSection* PdbFile::GetKeywords()
+PdbFileSpace::PdbKeywordsSection* PdbFile::GetKeywords()
 {
     return keywords_;
 }
 
-PdbExperimentalDataSection* PdbFile::GetExperimentalData()
+PdbFileSpace::PdbExperimentalDataSection* PdbFile::GetExperimentalData()
 {
     return experimental_data_;
 }
 
-PdbNumModelCard* PdbFile::GetNumberOfModels()
+PdbFileSpace::PdbNumModelCard* PdbFile::GetNumberOfModels()
 {
     return number_of_models_;
 }
 
-PdbModelTypeSection* PdbFile::GetModelType()
+PdbFileSpace::PdbModelTypeSection* PdbFile::GetModelType()
 {
     return model_type_;
 }
 
-PdbAuthorSection* PdbFile::GetAuthor()
+PdbFileSpace::PdbAuthorSection* PdbFile::GetAuthor()
 {
     return author_;
 }
 
-PdbRevisionDataSection* PdbFile::GetRevisionDataCards()
+PdbFileSpace::PdbRevisionDataSection* PdbFile::GetRevisionDataCards()
 {
     return revision_data_;
 }
 
-PdbSupersededEntriesSection* PdbFile::GetSupersededEntriesCards()
+PdbFileSpace::PdbSupersededEntriesSection* PdbFile::GetSupersededEntriesCards()
 {
     return superseded_entries_;
 }
 
-PdbJournalSection* PdbFile::GetJournal()
+PdbFileSpace::PdbJournalSection* PdbFile::GetJournal()
 {
     return journal_;
 }
 
-PdbRemarkSection* PdbFile::GetRemarks()
+PdbFileSpace::PdbRemarkSection* PdbFile::GetRemarks()
 {
     return remark_cards_;
 }
 
-PdbDatabaseReferenceSection* PdbFile::GetDatabaseReferences()
+PdbFileSpace::PdbDatabaseReferenceSection* PdbFile::GetDatabaseReferences()
 {
     return database_reference_;
 }
 
-PdbSequenceAdvancedSection* PdbFile::GetSequenceAdvanced()
+PdbFileSpace::PdbSequenceAdvancedSection* PdbFile::GetSequenceAdvanced()
 {
     return sequence_advanced_;
 }
 
-PdbResidueSequenceSection* PdbFile::GetResiduesSequence()
+PdbFileSpace::PdbResidueSequenceSection* PdbFile::GetResiduesSequence()
 {
     return residues_sequence_;
 }
 
-PdbResidueModificationSection* PdbFile::GetResidueModification()
+PdbFileSpace::PdbResidueModificationSection* PdbFile::GetResidueModification()
 {
     return residue_modification_cards_;
 }
 
-PdbHeterogenSection* PdbFile::GetHeterogenCards()
+PdbFileSpace::PdbHeterogenSection* PdbFile::GetHeterogenCards()
 {
     return heterogen_cards_;
 }
 
-PdbHeterogenNameSection* PdbFile::GetHeterogenNameCards()
+PdbFileSpace::PdbHeterogenNameSection* PdbFile::GetHeterogenNameCards()
 {
     return heterogen_name_cards_;
 }
 
-PdbHeterogenSynonymSection* PdbFile::GetHeterogenSynonymCards()
+PdbFileSpace::PdbHeterogenSynonymSection* PdbFile::GetHeterogenSynonymCards()
 {
     return heterogen_synonym_cards_;
 }
 
-PdbFormulaSection* PdbFile::GetFormulaCards()
+PdbFileSpace::PdbFormulaSection* PdbFile::GetFormulaCards()
 {
     return formulas_;
 }
 
-PdbHelixSection* PdbFile::GetHelixCards()
+PdbFileSpace::PdbHelixSection* PdbFile::GetHelixCards()
 {
     return helix_cards_;
 }
 
-PdbSheetSection* PdbFile::GetSheets()
+PdbFileSpace::PdbSheetSection* PdbFile::GetSheets()
 {
     return sheet_cards_;
 }
 
-PdbDisulfideBondSection* PdbFile::GetDisulfideBonds()
+PdbFileSpace::PdbDisulfideBondSection* PdbFile::GetDisulfideBonds()
 {
     return disulfide_bonds_;
 }
 
-PdbLinkSection* PdbFile::GetResidueLinkCards()
+PdbFileSpace::PdbLinkSection* PdbFile::GetResidueLinkCards()
 {
     return link_cards_;
 }
 
-PdbCISPeptideSection* PdbFile::GetCISPeptide()
+PdbFileSpace::PdbCISPeptideSection* PdbFile::GetCISPeptide()
 {
     return cis_peptide_;
 }
 
-PdbSiteSection* PdbFile::GetSites()
+PdbFileSpace::PdbSiteSection* PdbFile::GetSites()
 {
     return site_cards_;
 }
 
-PdbCrystallographicCard* PdbFile::GetCrystallography()
+PdbFileSpace::PdbCrystallographicCard* PdbFile::GetCrystallography()
 {
     return crystallography_;
 }
 
-PdbOriginXnSection* PdbFile::GetOrigins()
+PdbFileSpace::PdbOriginXnSection* PdbFile::GetOrigins()
 {
     return origins_;
 }
 
-PdbScaleNSection* PdbFile::GetScales()
+PdbFileSpace::PdbScaleNSection* PdbFile::GetScales()
 {
     return scales_;
 }
 
-PdbMatrixNSection* PdbFile::GetMatrices()
+PdbFileSpace::PdbMatrixNSection* PdbFile::GetMatrices()
 {
     return matrices_;
 }
 
-PdbModelSection* PdbFile::GetModels()
+PdbFileSpace::PdbModelSection* PdbFile::GetModels()
 {
     return models_;
 }
 
-PdbConnectSection* PdbFile::GetConnectivities()
+PdbFileSpace::PdbConnectSection* PdbFile::GetConnectivities()
 {
     return connectivities_;
 }
@@ -443,7 +441,7 @@ PdbFile::PdbSerialNumberMapping PdbFile::GetSequenceNumberMapping()
 PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
 {
     PdbPairVectorAtomNamePositionFlag residue_names;
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -453,22 +451,22 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
         PdbAtomSection::PdbAtomCardOrderVector atoms = atom_card->GetOrderedAtomCards();
         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            int dist = distance(atoms.begin(), it2);
-            string atom_residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            unsigned int dist = distance(atoms.begin(), it2);
+            std::string atom_residue_name = atom->GetAtomResidueName();
             if(dist == 0)
             {
-                pair<string, string> pair_residue_position = make_pair(atom_residue_name, "S");
+                std::pair<std::string, std::string> pair_residue_position = std::make_pair(atom_residue_name, "S");
                 if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(pair_residue_position);
             }
             else if(dist == atoms.size() - 1)
             {
-                pair<string, string> pair_residue_position = make_pair(atom_residue_name, "E");
+                std::pair<std::string, std::string> pair_residue_position = std::make_pair(atom_residue_name, "E");
                 if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(pair_residue_position);
             }
-            pair<string, string> pair_residue_position = make_pair(atom_residue_name, " ");
+            std::pair<std::string, std::string> pair_residue_position = std::make_pair(atom_residue_name, " ");
             if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                 residue_names.push_back(pair_residue_position);
         }
@@ -480,9 +478,9 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
         PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
         for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string atom_residue_name = atom->GetAtomResidueName();
-            pair<string, string> pair_residue_position = make_pair(atom_residue_name, " ");
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string atom_residue_name = atom->GetAtomResidueName();
+            std::pair<std::string, std::string> pair_residue_position = std::make_pair(atom_residue_name, " ");
             if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
             {
                 residue_names.push_back(pair_residue_position);
@@ -495,7 +493,7 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNames()
 PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNamesFromAtomSection()
 {
     PdbPairVectorAtomNamePositionFlag residue_names;
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -505,24 +503,24 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNamesFromAtomSe
         PdbAtomSection::PdbAtomCardOrderVector atoms = atom_card->GetOrderedAtomCards();
         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            int dist = distance(atoms.begin(), it2);
-            string atom_residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            unsigned int dist = distance(atoms.begin(), it2);
+            std::string atom_residue_name = atom->GetAtomResidueName();
             if(dist == 0)
             {
-                pair<string, string> pair_residue_position = make_pair(atom_residue_name, "S");
+                std::pair<std::string, std::string> pair_residue_position = std::make_pair(atom_residue_name, "S");
                 if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(pair_residue_position);
             }
             else if(dist == atoms.size() - 1)
             {
-                pair<string, string> pair_residue_position = make_pair(atom_residue_name, "E");
+                std::pair<std::string, std::string> pair_residue_position = std::make_pair(atom_residue_name, "E");
                 if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(pair_residue_position);
             }
             else
             {
-                pair<string, string> pair_residue_position = make_pair(atom_residue_name, " ");
+                std::pair<std::string, std::string> pair_residue_position = std::make_pair(atom_residue_name, " ");
                 if(find(residue_names.begin(), residue_names.end(), pair_residue_position) == residue_names.end())
                     residue_names.push_back(pair_residue_position);
             }
@@ -535,8 +533,8 @@ PdbFile::PdbPairVectorAtomNamePositionFlag PdbFile::GetAllResidueNamesFromAtomSe
 PdbFile::PdbResidueVector PdbFile::GetAllResidues()
 {
     PdbFile::PdbResidueVector residues;
-    map<string, bool> inserted_residues;
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    std::map<std::string, bool> inserted_residues;
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -546,15 +544,15 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
         PdbAtomSection::PdbAtomCardOrderVector atoms = atom_card->GetOrderedAtomCards();
         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
+            std::stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
+            std::string key = ss.str();
             if(!inserted_residues[key])
             {
                 PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_location);
@@ -570,15 +568,15 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
         PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
         for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
+            std::stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
+            std::string key = ss.str();
             if(!inserted_residues[key])
             {
                 PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_location);
@@ -593,8 +591,8 @@ PdbFile::PdbResidueVector PdbFile::GetAllResidues()
 PdbFile::PdbResidueVector PdbFile::GetAllResiduesFromAtomSection()
 {
     PdbFile::PdbResidueVector residues = PdbFile::PdbResidueVector();
-    map<string, bool> inserted_residues = map<string, bool>();
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    std::map<std::string, bool> inserted_residues = std::map<std::string, bool>();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -604,15 +602,15 @@ PdbFile::PdbResidueVector PdbFile::GetAllResiduesFromAtomSection()
         PdbAtomSection::PdbAtomCardOrderVector atoms = atom_card->GetOrderedAtomCards();
         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
+            std::stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
+            std::string key = ss.str();
             if(!inserted_residues[key])
             {
                 PdbResidue* res = new PdbResidue(residue_name, chain_id, sequence_number, insertion_code, alternate_location);
@@ -626,17 +624,17 @@ PdbFile::PdbResidueVector PdbFile::GetAllResiduesFromAtomSection()
 
 PdbFile::PdbAtomCardVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
 {
-    string target_residue_name = residue->GetResidueName();
+    std::string target_residue_name = residue->GetResidueName();
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
     char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
 
     PdbAtomCardVector atoms_of_residue;
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -646,15 +644,15 @@ PdbFile::PdbAtomCardVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
         PdbAtomSection::PdbAtomCardOrderVector atoms = atom_card->GetOrderedAtomCards();
         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream sss;
+            std::stringstream sss;
             sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = sss.str();
+            std::string key = sss.str();
             if(target_key.compare(key) == 0)
             {
                 atoms_of_residue.push_back(atom);
@@ -668,15 +666,15 @@ PdbFile::PdbAtomCardVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
         PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
         for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream sss;
+            std::stringstream sss;
             sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = sss.str();
+            std::string key = sss.str();
             if(target_key.compare(key) == 0)
             {
                 atoms_of_residue.push_back(atom);
@@ -689,8 +687,8 @@ PdbFile::PdbAtomCardVector PdbFile::GetAllAtomsOfResidue(PdbResidue *residue)
 PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
 {
     PdbFile::PdbResidueAtomsMap residue_atom_map;
-    map<string, bool> inserted_residues;
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    std::map<std::string, bool> inserted_residues;
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -700,18 +698,18 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
         PdbAtomSection::PdbAtomCardOrderVector atoms = atom_card->GetOrderedAtomCards();
         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
+            std::stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
+            std::string key = ss.str();
             if(!inserted_residues[key])
             {
-                residue_atom_map[key] = new vector<PdbAtomCard*>();
+                residue_atom_map[key] = new std::vector<PdbFileSpace::PdbAtomCard*>();
                 inserted_residues[key] = true;
             }
             residue_atom_map[key]->push_back(atom);
@@ -725,18 +723,18 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
         PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
         for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
+            std::stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
+            std::string key = ss.str();
             if(!inserted_residues[key])
             {
-                residue_atom_map[key] = new vector<PdbAtomCard*>();
+                residue_atom_map[key] = new std::vector<PdbFileSpace::PdbAtomCard*>();
                 inserted_residues[key] = true;
             }
             residue_atom_map[key]->push_back(atom);
@@ -745,11 +743,11 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsOfResidues()
     return residue_atom_map;
 }
 
-PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(vector<string>& key_order)
+PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(std::vector<std::string>& key_order)
 {
     PdbFile::PdbResidueAtomsMap residue_atom_map;
-    map<string, bool> inserted_residues;
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    std::map<std::string, bool> inserted_residues;
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -759,18 +757,18 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(vector<string>& key_orde
         PdbAtomSection::PdbAtomCardOrderVector atoms = atom_card->GetOrderedAtomCards();
         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
+            std::stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
+            std::string key = ss.str();
             if(!inserted_residues[key])
             {
-                residue_atom_map[key] = new vector<PdbAtomCard*>();
+                residue_atom_map[key] = new std::vector<PdbFileSpace::PdbAtomCard*>();
                 inserted_residues[key] = true;
                 key_order.push_back(key);
             }
@@ -785,18 +783,18 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(vector<string>& key_orde
         PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
         for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
         {
-            PdbAtomCard* atom = (*it2);
-            string residue_name = atom->GetAtomResidueName();
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
+            std::string residue_name = atom->GetAtomResidueName();
             char chain_id = atom->GetAtomChainId();
             int sequence_number = atom->GetAtomResidueSequenceNumber();
             char insertion_code = atom->GetAtomInsertionCode();
             char alternate_location = atom->GetAtomAlternateLocation();
-            stringstream ss;
+            std::stringstream ss;
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-            string key = ss.str();
+            std::string key = ss.str();
             if(!inserted_residues[key])
             {
-                residue_atom_map[key] = new vector<PdbAtomCard*>();
+                residue_atom_map[key] = new std::vector<PdbFileSpace::PdbAtomCard*>();
                 inserted_residues[key] = true;
                 key_order.push_back(key);
             }
@@ -806,45 +804,45 @@ PdbFile::PdbResidueAtomsMap PdbFile::GetAllAtomsInOrder(vector<string>& key_orde
     return residue_atom_map;
 }
 
-PdbFileSpace::PdbAtomCard* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, string atom_name, PdbFile::PdbResidueAtomsMap residue_atom_map)
+PdbFileSpace::PdbAtomCard* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, std::string atom_name, PdbFile::PdbResidueAtomsMap residue_atom_map)
 {
-    string target_residue_name = residue->GetResidueName();
+    std::string target_residue_name = residue->GetResidueName();
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
     char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
     PdbAtomCardVector* atoms = residue_atom_map[target_key];
 
     for(PdbAtomCardVector::iterator it = atoms->begin(); it != atoms->end(); it++)
     {
-        PdbAtomCard* atom = (*it);
+        PdbFileSpace::PdbAtomCard* atom = (*it);
         if(atom->GetAtomName().compare(atom_name) == 0)
             return atom;
     }
     return NULL;
 }
 
-PdbFileSpace::PdbAtomCard* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, string atom_name)
+PdbFileSpace::PdbAtomCard* PdbFile::GetAtomOfResidueByName(PdbResidue *residue, std::string atom_name)
 {
     PdbAtomCardVector atoms = GetAllAtomsOfResidue(residue);
 
     for(PdbAtomCardVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
-        PdbAtomCard* atom = (*it);
+        PdbFileSpace::PdbAtomCard* atom = (*it);
         if(atom->GetAtomName().compare(atom_name) == 0)
             return atom;
     }
     return NULL;
 }
 
-PdbAtomCard* PdbFile::GetAtomOfResidueByAtomKey(string atom_key)
+PdbFileSpace::PdbAtomCard* PdbFile::GetAtomOfResidueByAtomKey(std::string atom_key)
 {
-    vector<string> key_tokens = Split(atom_key, "_");
+    std::vector<std::string> key_tokens = gmml::Split(atom_key, "_");
     int serial_number = gmml::ConvertString<int>(key_tokens.at(1));
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -866,9 +864,9 @@ PdbAtomCard* PdbFile::GetAtomOfResidueByAtomKey(string atom_key)
     return NULL;
 }
 
-PdbAtomCard* PdbFile::GetAtomBySerialNumber(int serial_number)
+PdbFileSpace::PdbAtomCard* PdbFile::GetAtomBySerialNumber(int serial_number)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     PdbModelCard* model = (*models.begin()).second;
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
@@ -890,58 +888,58 @@ PdbAtomCard* PdbFile::GetAtomBySerialNumber(int serial_number)
     return NULL;
 }
 
-vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue, PdbFile::PdbResidueAtomsMap residue_atom_map)
+std::vector<std::string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue, PdbFile::PdbResidueAtomsMap residue_atom_map)
 {
-    string target_residue_name = residue->GetResidueName();
+    std::string target_residue_name = residue->GetResidueName();
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
     char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
     PdbAtomCardVector* atoms = residue_atom_map[target_key];
 
-    vector<string> atom_names;
+    std::vector<std::string> atom_names;
     for(PdbAtomCardVector::iterator it = atoms->begin(); it != atoms->end(); it++)
     {
-        PdbAtomCard* atom = (*it);
+        PdbFileSpace::PdbAtomCard* atom = (*it);
         atom_names.push_back(atom->GetAtomName());
     }
     return atom_names;
 }
 
-vector<string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue)
+std::vector<std::string> PdbFile::GetAllAtomNamesOfResidue(PdbResidue *residue)
 {
     PdbAtomCardVector atoms = GetAllAtomsOfResidue(residue);
 
-    vector<string> atom_names;
+    std::vector<std::string> atom_names;
     for(PdbAtomCardVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
-        PdbAtomCard* atom = (*it);
+        PdbFileSpace::PdbAtomCard* atom = (*it);
         atom_names.push_back(atom->GetAtomName());
     }
     return atom_names;
 }
 
-PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(vector<string> glycam_residue_names)
+PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(std::vector<std::string> glycam_residue_names)
 {
-    vector<pair<char, int> > ter_card_positions = vector<pair<char, int> >();
+    std::vector<std::pair<char, int> > ter_card_positions = std::vector<std::pair<char, int> >();
     // After residues that has no tails or has more than or equal two tails
     PdbFile::PdbResidueVector residues = this->GetAllResiduesFromAtomSection();
     for(PdbFile::PdbResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
     {
-        int dist = distance(residues.begin(), it);
+        unsigned int dist = distance(residues.begin(), it);
         if(dist != residues.size() - 1)
         {
             PdbResidue* residue = (*it);
-            string residue_name = residue->GetResidueName();
+            std::string residue_name = residue->GetResidueName();
             if(find(glycam_residue_names.begin(), glycam_residue_names.end(), residue_name) != glycam_residue_names.end())
             {
                 // No tail || has more than or equal two tails
                 if(residue_name[0] == '0' || isalpha(residue_name[0]))
                 {
-                    ter_card_positions.push_back(make_pair(residue->GetResidueChainId(), residue->GetResidueSequenceNumber() + 1));
+                    ter_card_positions.push_back(std::make_pair(residue->GetResidueChainId(), residue->GetResidueSequenceNumber() + 1));
                 }
             }
         }
@@ -949,196 +947,196 @@ PdbFile::PdbPairVectorTerCardPositions PdbFile::GetAllTerCardPositions(vector<st
     return ter_card_positions;
 }
 
-PdbMasterCard* PdbFile::GetMasterCard()
+PdbFileSpace::PdbMasterCard* PdbFile::GetMasterCard()
 {
   return master_;
 }
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbFile::SetPath(string pdb_path)
+void PdbFile::SetPath(std::string pdb_path)
 {
     path_ = pdb_path;
 }
-void PdbFile::SetHeader(PdbHeaderCard *header)
+void PdbFile::SetHeader(PdbFileSpace::PdbHeaderCard *header)
 {
-    header_ = new PdbHeaderCard();
+    header_ = new PdbFileSpace::PdbHeaderCard();
     header_ = header;
 
 }
-void PdbFile::SetObsolete(PdbObsoleteSection *obsolete)
+void PdbFile::SetObsolete(PdbFileSpace::PdbObsoleteSection *obsolete)
 {
-    obsolete_ = new PdbObsoleteSection();
+    obsolete_ = new PdbFileSpace::PdbObsoleteSection();
     obsolete_ = obsolete;
 }
-void PdbFile::SetTitle(PdbTitleSection *title)
+void PdbFile::SetTitle(PdbFileSpace::PdbTitleSection *title)
 {
-    title_ = new PdbTitleSection();
+    title_ = new PdbFileSpace::PdbTitleSection();
     title_ = title;
 }
-void PdbFile::SetSplit(PdbSplitSection *split)
+void PdbFile::SetSplit(PdbFileSpace::PdbSplitSection *split)
 {
-    split_ = new PdbSplitSection();
+    split_ = new PdbFileSpace::PdbSplitSection();
     split_ = split;
 }
-void PdbFile::SetCaveat(PdbCaveatSection *caveat)
+void PdbFile::SetCaveat(PdbFileSpace::PdbCaveatSection *caveat)
 {
-    caveat_ = new PdbCaveatSection();
+    caveat_ = new PdbFileSpace::PdbCaveatSection();
     caveat_ = caveat;
 }
-void PdbFile::SetCompound(PdbCompoundSection *compound)
+void PdbFile::SetCompound(PdbFileSpace::PdbCompoundSection *compound)
 {
-    compound_ = new PdbCompoundSection();
+    compound_ = new PdbFileSpace::PdbCompoundSection();
     compound_ = compound;
 }
-void PdbFile::SetSourceCards(PdbSourceSection *source)
+void PdbFile::SetSourceCards(PdbFileSpace::PdbSourceSection *source)
 {
-    source_ = new PdbSourceSection();
+    source_ = new PdbFileSpace::PdbSourceSection();
     source_ = source;
 }
-void PdbFile::SetKeywords(PdbKeywordsSection *keywords)
+void PdbFile::SetKeywords(PdbFileSpace::PdbKeywordsSection *keywords)
 {
-    keywords_ = new PdbKeywordsSection();
+    keywords_ = new PdbFileSpace::PdbKeywordsSection();
     keywords_ = keywords;
 }
-void PdbFile::SetExperimentalData(PdbExperimentalDataSection *experimental_data)
+void PdbFile::SetExperimentalData(PdbFileSpace::PdbExperimentalDataSection *experimental_data)
 {
-    experimental_data_ = new PdbExperimentalDataSection();
+    experimental_data_ = new PdbFileSpace::PdbExperimentalDataSection();
     experimental_data_ = experimental_data;
 }
-void PdbFile::SetNumberOfModels(PdbNumModelCard *number_of_models)
+void PdbFile::SetNumberOfModels(PdbFileSpace::PdbNumModelCard *number_of_models)
 {
-    number_of_models_ = new PdbNumModelCard();
+    number_of_models_ = new PdbFileSpace::PdbNumModelCard();
     number_of_models_ = number_of_models;
 }
-void PdbFile::SetModelType(PdbModelTypeSection *model_type)
+void PdbFile::SetModelType(PdbFileSpace::PdbModelTypeSection *model_type)
 {
-    model_type_ = new PdbModelTypeSection();
+    model_type_ = new PdbFileSpace::PdbModelTypeSection();
     model_type_ = model_type;
 }
-void PdbFile::SetAuthor(PdbAuthorSection *author)
+void PdbFile::SetAuthor(PdbFileSpace::PdbAuthorSection *author)
 {
-    author_ = new PdbAuthorSection();
+    author_ = new PdbFileSpace::PdbAuthorSection();
     author_ = author;
 }
-void PdbFile::SetRevisionDataCards(PdbRevisionDataSection *revision_data)
+void PdbFile::SetRevisionDataCards(PdbFileSpace::PdbRevisionDataSection *revision_data)
 {
-    revision_data_ = new PdbRevisionDataSection();
+    revision_data_ = new PdbFileSpace::PdbRevisionDataSection();
     revision_data_ = revision_data;
 }
-void PdbFile::SetSupersededEntriesCards(PdbSupersededEntriesSection *superseded_entries)
+void PdbFile::SetSupersededEntriesCards(PdbFileSpace::PdbSupersededEntriesSection *superseded_entries)
 {
-    superseded_entries_ = new PdbSupersededEntriesSection();
+    superseded_entries_ = new PdbFileSpace::PdbSupersededEntriesSection();
     superseded_entries_ = superseded_entries;
 }
-void PdbFile::SetJournal(PdbJournalSection *journal)
+void PdbFile::SetJournal(PdbFileSpace::PdbJournalSection *journal)
 {
-    journal_ = new PdbJournalSection();
+    journal_ = new PdbFileSpace::PdbJournalSection();
     journal_ = journal;
 }
-void PdbFile::SetRemarks(PdbRemarkSection *remark_cards)
+void PdbFile::SetRemarks(PdbFileSpace::PdbRemarkSection *remark_cards)
 {
-    remark_cards_ = new PdbRemarkSection();
+    remark_cards_ = new PdbFileSpace::PdbRemarkSection();
     remark_cards_ = remark_cards;
 }
-void PdbFile::SetDatabaseReferences(PdbDatabaseReferenceSection *database_reference)
+void PdbFile::SetDatabaseReferences(PdbFileSpace::PdbDatabaseReferenceSection *database_reference)
 {
-    database_reference_ = new PdbDatabaseReferenceSection();
+    database_reference_ = new PdbFileSpace::PdbDatabaseReferenceSection();
     database_reference_ = database_reference;
 }
-void PdbFile::SetSequenceAdvanced(PdbSequenceAdvancedSection *sequence_advanced)
+void PdbFile::SetSequenceAdvanced(PdbFileSpace::PdbSequenceAdvancedSection *sequence_advanced)
 {
-    sequence_advanced_ = new PdbSequenceAdvancedSection();
+    sequence_advanced_ = new PdbFileSpace::PdbSequenceAdvancedSection();
     sequence_advanced_ = sequence_advanced;
 }
-void PdbFile::SetResiduesSequence(PdbResidueSequenceSection *residues_sequence)
+void PdbFile::SetResiduesSequence(PdbFileSpace::PdbResidueSequenceSection *residues_sequence)
 {
-    residues_sequence_ = new PdbResidueSequenceSection();
+    residues_sequence_ = new PdbFileSpace::PdbResidueSequenceSection();
     residues_sequence_ = residues_sequence;
 }
-void PdbFile::SetResidueModification(PdbResidueModificationSection *residue_modification_cards)
+void PdbFile::SetResidueModification(PdbFileSpace::PdbResidueModificationSection *residue_modification_cards)
 {
-    residue_modification_cards_ = new PdbResidueModificationSection();
+    residue_modification_cards_ = new PdbFileSpace::PdbResidueModificationSection();
     residue_modification_cards_ = residue_modification_cards;
 }
-void PdbFile::SetHeterogens(PdbHeterogenSection *heterogen_cards)
+void PdbFile::SetHeterogens(PdbFileSpace::PdbHeterogenSection *heterogen_cards)
 {
-    heterogen_cards_ = new PdbHeterogenSection();
+    heterogen_cards_ = new PdbFileSpace::PdbHeterogenSection();
     heterogen_cards_ = heterogen_cards;
 }
-void PdbFile::SetHeterogensName(PdbHeterogenNameSection *heterogens_name)
+void PdbFile::SetHeterogensName(PdbFileSpace::PdbHeterogenNameSection *heterogens_name)
 {
-    heterogen_name_cards_ = new PdbHeterogenNameSection();
+    heterogen_name_cards_ = new PdbFileSpace::PdbHeterogenNameSection();
     heterogen_name_cards_ = heterogens_name;
 }
-void PdbFile::SetHeterogenSynonyms(PdbHeterogenSynonymSection *heterogen_synonym_cards)
+void PdbFile::SetHeterogenSynonyms(PdbFileSpace::PdbHeterogenSynonymSection *heterogen_synonym_cards)
 {
-    heterogen_synonym_cards_ = new PdbHeterogenSynonymSection();
+    heterogen_synonym_cards_ = new PdbFileSpace::PdbHeterogenSynonymSection();
     heterogen_synonym_cards_ = heterogen_synonym_cards;
 }
-void PdbFile::SetFormulas(PdbFormulaSection *formulas)
+void PdbFile::SetFormulas(PdbFileSpace::PdbFormulaSection *formulas)
 {
-    formulas_ = new PdbFormulaSection();
+    formulas_ = new PdbFileSpace::PdbFormulaSection();
     formulas_ = formulas;
 }
-void PdbFile::SetHelixes(PdbHelixSection *helixes)
+void PdbFile::SetHelixes(PdbFileSpace::PdbHelixSection *helixes)
 {
-    helix_cards_ = new PdbHelixSection();
+    helix_cards_ = new PdbFileSpace::PdbHelixSection();
     helix_cards_ = helixes;
 }
-void PdbFile::SetSheets(PdbSheetSection *sheet_cards)
+void PdbFile::SetSheets(PdbFileSpace::PdbSheetSection *sheet_cards)
 {
-    sheet_cards_ = new PdbSheetSection();
+    sheet_cards_ = new PdbFileSpace::PdbSheetSection();
     sheet_cards_ = sheet_cards;
 }
-void PdbFile::SetDisulfideBonds(PdbDisulfideBondSection *disulfide_bonds)
+void PdbFile::SetDisulfideBonds(PdbFileSpace::PdbDisulfideBondSection *disulfide_bonds)
 {
-    disulfide_bonds_ = new PdbDisulfideBondSection();\
+    disulfide_bonds_ = new PdbFileSpace::PdbDisulfideBondSection();\
     disulfide_bonds_ = disulfide_bonds;
 }
-void PdbFile::SetLinks(PdbLinkSection *links)
+void PdbFile::SetLinks(PdbFileSpace::PdbLinkSection *links)
 {
-    link_cards_ = new PdbLinkSection();
+    link_cards_ = new PdbFileSpace::PdbLinkSection();
     link_cards_ = links;
 }
-void PdbFile::SetCISPeptide(PdbCISPeptideSection *cis_peptide)
+void PdbFile::SetCISPeptide(PdbFileSpace::PdbCISPeptideSection *cis_peptide)
 {
-    cis_peptide_ = new PdbCISPeptideSection();
+    cis_peptide_ = new PdbFileSpace::PdbCISPeptideSection();
     cis_peptide_ = cis_peptide;
 }
-void PdbFile::SetSites(PdbSiteSection *site_cards)
+void PdbFile::SetSites(PdbFileSpace::PdbSiteSection *site_cards)
 {
-    site_cards_ = new PdbSiteSection();
+    site_cards_ = new PdbFileSpace::PdbSiteSection();
     site_cards_ = site_cards;
 }
-void PdbFile::SetCrystallography(PdbCrystallographicCard *crystallography)
+void PdbFile::SetCrystallography(PdbFileSpace::PdbCrystallographicCard *crystallography)
 {
-    crystallography_ = new PdbCrystallographicCard();
+    crystallography_ = new PdbFileSpace::PdbCrystallographicCard();
     crystallography_ = crystallography;
 }
-void PdbFile::SetOrigins(PdbOriginXnSection *origins)
+void PdbFile::SetOrigins(PdbFileSpace::PdbOriginXnSection *origins)
 {
-    origins_ = new PdbOriginXnSection();
+    origins_ = new PdbFileSpace::PdbOriginXnSection();
     origins_ = origins;
 }
-void PdbFile::SetScales(PdbScaleNSection *scales)
+void PdbFile::SetScales(PdbFileSpace::PdbScaleNSection *scales)
 {
-    scales_ = new PdbScaleNSection();
+    scales_ = new PdbFileSpace::PdbScaleNSection();
     scales_ = scales;
 }
-void PdbFile::SetMatrices(PdbMatrixNSection *matrices)
+void PdbFile::SetMatrices(PdbFileSpace::PdbMatrixNSection *matrices)
 {
-    matrices_ = new PdbMatrixNSection();
+    matrices_ = new PdbFileSpace::PdbMatrixNSection();
     matrices_ = matrices;
 }
-void PdbFile::SetModels(PdbModelSection *models)
+void PdbFile::SetModels(PdbFileSpace::PdbModelSection *models)
 {
-    models_ = new PdbModelSection();
+    models_ = new PdbFileSpace::PdbModelSection();
     models_ = models;
 }
-void PdbFile::SetConnectivities(PdbConnectSection *connectivities)
+void PdbFile::SetConnectivities(PdbFileSpace::PdbConnectSection *connectivities)
 {
-    connectivities_ = new PdbConnectSection();
+    connectivities_ = new PdbFileSpace::PdbConnectSection();
     connectivities_ = connectivities;
 }
 void PdbFile::SetSerialNumberMapping(PdbSerialNumberMapping serial_number_mapping)
@@ -1164,17 +1162,17 @@ void PdbFile::SetSequenceNumberMapping(PdbSequenceNumberMapping sequence_number_
 
 void PdbFile::DeleteResidue(PdbResidue *residue)
 {
-    string target_residue_name = residue->GetResidueName();
+    std::string target_residue_name = residue->GetResidueName();
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
     char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -1190,15 +1188,15 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1232,15 +1230,15 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << heterogen_atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1272,23 +1270,23 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
 
 void PdbFile::DeleteResidues(PdbResidueVector target_residues)
 {
-    map<string, PdbResidue* > pdb_residue_map = map<string, PdbResidue* >();
+    std::map<std::string, PdbResidue* > pdb_residue_map = std::map<std::string, PdbResidue* >();
     for(PdbResidueVector::iterator it = target_residues.begin(); it != target_residues.end(); it++)
     {
         PdbResidue* residue = (*it);
-        string target_residue_name = residue->GetResidueName();
+        std::string target_residue_name = residue->GetResidueName();
         char target_residue_chain_id = residue->GetResidueChainId();
         int target_residue_sequence_number = residue->GetResidueSequenceNumber();
         char target_residue_insertion_code = residue->GetResidueInsertionCode();
         char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-        stringstream ss;
+        std::stringstream ss;
         ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-        string target_key = ss.str();
+        std::string target_key = ss.str();
         pdb_residue_map[target_key] = residue;
     }
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -1304,15 +1302,15 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_residue_map.find(key) == pdb_residue_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1345,15 +1343,15 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << heterogen_atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_residue_map.find(key) == pdb_residue_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1385,16 +1383,16 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
 
 void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int model_number)
 {
-    string target_residue_name = residue->GetResidueName();
+    std::string target_residue_name = residue->GetResidueName();
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
     char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
@@ -1411,15 +1409,15 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1452,15 +1450,15 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << heterogen_atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1493,22 +1491,22 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
 
 void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_residues, int model_number)
 {
-    map<string, PdbResidue* > pdb_residue_map = map<string, PdbResidue* >();
+    std::map<std::string, PdbResidue* > pdb_residue_map = std::map<std::string, PdbResidue* >();
     for(PdbResidueVector::iterator it = target_residues.begin(); it != target_residues.end(); it++)
     {
         PdbResidue* residue = (*it);
-        string target_residue_name = residue->GetResidueName();
+        std::string target_residue_name = residue->GetResidueName();
         char target_residue_chain_id = residue->GetResidueChainId();
         int target_residue_sequence_number = residue->GetResidueSequenceNumber();
         char target_residue_insertion_code = residue->GetResidueInsertionCode();
         char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-        stringstream ss;
+        std::stringstream ss;
         ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-        string target_key = ss.str();
+        std::string target_key = ss.str();
         pdb_residue_map[target_key] = residue;
     }
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
@@ -1525,15 +1523,15 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_residue_map.find(key) == pdb_residue_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1566,15 +1564,15 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << heterogen_atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_residue_map.find(key) == pdb_residue_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1605,19 +1603,19 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
     }
 }
 
-void PdbFile::DeleteAtom(PdbAtomCard* target_atom)
+void PdbFile::DeleteAtom(PdbFileSpace::PdbAtomCard* target_atom)
 {
-    string target_residue_name = target_atom->GetAtomResidueName();
+    std::string target_residue_name = target_atom->GetAtomResidueName();
     char target_residue_chain_id = target_atom->GetAtomChainId();
     int target_residue_sequence_number = target_atom->GetAtomResidueSequenceNumber();
     char target_residue_insertion_code = target_atom->GetAtomInsertionCode();
     char target_residue_alternate_location = target_atom->GetAtomAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -1634,15 +1632,15 @@ void PdbFile::DeleteAtom(PdbAtomCard* target_atom)
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1653,7 +1651,7 @@ void PdbFile::DeleteAtom(PdbAtomCard* target_atom)
                 }
                 else
                 {
-                    string atom_name = atom->GetAtomName();
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1687,15 +1685,15 @@ void PdbFile::DeleteAtom(PdbAtomCard* target_atom)
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1706,7 +1704,7 @@ void PdbFile::DeleteAtom(PdbAtomCard* target_atom)
                 }
                 else
                 {
-                    string atom_name = atom->GetAtomName();
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1739,23 +1737,23 @@ void PdbFile::DeleteAtom(PdbAtomCard* target_atom)
 
 void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
 {
-    map<string, PdbAtomCard* > pdb_atom_map = map<string, PdbAtomCard* >();
+    std::map<std::string, PdbFileSpace::PdbAtomCard* > pdb_atom_map = std::map<std::string, PdbFileSpace::PdbAtomCard* >();
     for(PdbAtomCardVector::iterator it = target_atoms.begin(); it != target_atoms.end(); it++)
     {
-        PdbAtomCard* target_atom = (*it);
-        string target_residue_name = target_atom->GetAtomResidueName();
+        PdbFileSpace::PdbAtomCard* target_atom = (*it);
+        std::string target_residue_name = target_atom->GetAtomResidueName();
         char target_residue_chain_id = target_atom->GetAtomChainId();
         int target_residue_sequence_number = target_atom->GetAtomResidueSequenceNumber();
         char target_residue_insertion_code = target_atom->GetAtomInsertionCode();
         char target_residue_alternate_location = target_atom->GetAtomAlternateLocation();
-        stringstream ss;
+        std::stringstream ss;
         ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-        string target_key = ss.str();
+        std::string target_key = ss.str();
         pdb_atom_map[target_key] = target_atom;
     }
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -1772,15 +1770,15 @@ void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_atom_map.find(key) == pdb_atom_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1791,8 +1789,8 @@ void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
                 }
                 else
                 {
-                    PdbAtomCard* target_atom = pdb_atom_map[key];
-                    string atom_name = atom->GetAtomName();
+                    PdbFileSpace::PdbAtomCard* target_atom = pdb_atom_map[key];
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1826,15 +1824,15 @@ void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_atom_map.find(key) == pdb_atom_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1845,8 +1843,8 @@ void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
                 }
                 else
                 {
-                    PdbAtomCard* target_atom = pdb_atom_map[key];
-                    string atom_name = atom->GetAtomName();
+                    PdbFileSpace::PdbAtomCard* target_atom = pdb_atom_map[key];
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1877,18 +1875,18 @@ void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
     this->UpdateConnectCard();
 }
 
-void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtomCard* target_atom, int model_number)
+void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbFileSpace::PdbAtomCard* target_atom, int model_number)
 {
-    string target_residue_name = target_atom->GetAtomResidueName();
+    std::string target_residue_name = target_atom->GetAtomResidueName();
     char target_residue_chain_id = target_atom->GetAtomChainId();
     int target_residue_sequence_number = target_atom->GetAtomResidueSequenceNumber();
     char target_residue_insertion_code = target_atom->GetAtomInsertionCode();
     char target_residue_alternate_location = target_atom->GetAtomAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
@@ -1906,15 +1904,15 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtomCard* target_atom, int mo
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1925,7 +1923,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtomCard* target_atom, int mo
                 }
                 else
                 {
-                    string atom_name = atom->GetAtomName();
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1959,15 +1957,15 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtomCard* target_atom, int mo
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) != 0)
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -1978,7 +1976,7 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtomCard* target_atom, int mo
                 }
                 else
                 {
-                    string atom_name = atom->GetAtomName();
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -2011,22 +2009,22 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbAtomCard* target_atom, int mo
 
 void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms, int model_number)
 {
-    map<string, PdbAtomCard* > pdb_atom_map = map<string, PdbAtomCard* >();
+    std::map<std::string, PdbFileSpace::PdbAtomCard* > pdb_atom_map = std::map<std::string, PdbFileSpace::PdbAtomCard* >();
     for(PdbAtomCardVector::iterator it = target_atoms.begin(); it != target_atoms.end(); it++)
     {
-        PdbAtomCard* target_atom = (*it);
-        string target_residue_name = target_atom->GetAtomResidueName();
+        PdbFileSpace::PdbAtomCard* target_atom = (*it);
+        std::string target_residue_name = target_atom->GetAtomResidueName();
         char target_residue_chain_id = target_atom->GetAtomChainId();
         int target_residue_sequence_number = target_atom->GetAtomResidueSequenceNumber();
         char target_residue_insertion_code = target_atom->GetAtomInsertionCode();
         char target_residue_alternate_location = target_atom->GetAtomAlternateLocation();
-        stringstream ss;
+        std::stringstream ss;
         ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-        string target_key = ss.str();
+        std::string target_key = ss.str();
         pdb_atom_map[target_key] = target_atom;
     }
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
@@ -2044,15 +2042,15 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms,
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_atom_map.find(key) == pdb_atom_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -2063,8 +2061,8 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms,
                 }
                 else
                 {
-                    PdbAtomCard* target_atom = pdb_atom_map[key];
-                    string atom_name = atom->GetAtomName();
+                    PdbFileSpace::PdbAtomCard* target_atom = pdb_atom_map[key];
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -2098,15 +2096,15 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms,
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(pdb_atom_map.find(key) == pdb_atom_map.end())
                 {
                     serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -2117,8 +2115,8 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms,
                 }
                 else
                 {
-                    PdbAtomCard* target_atom = pdb_atom_map[key];
-                    string atom_name = atom->GetAtomName();
+                    PdbFileSpace::PdbAtomCard* target_atom = pdb_atom_map[key];
+                    std::string atom_name = atom->GetAtomName();
                     if(atom_name.compare(target_atom->GetAtomName()) != 0)
                     {
                         serial_number_mapping_[atom->GetAtomSerialNumber()] = serial_number;
@@ -2149,19 +2147,19 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms,
     }
 }
 
-void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name)
+void PdbFile::UpdateResidueName(PdbResidue *residue, std::string updated_residue_name)
 {
-    string target_residue_name = residue->GetResidueName();
+    std::string target_residue_name = residue->GetResidueName();
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
     char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin();it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -2176,15 +2174,15 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) == 0)
                 {
                     atom->SetAtomResidueName(updated_residue_name);
@@ -2212,15 +2210,15 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << heterogen_atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) == 0)
                 {
                     atom->SetAtomResidueName(updated_residue_name);
@@ -2245,18 +2243,18 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, string updated_residue_name
     models_->SetModels(models);
 }
 
-void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, string updated_residue_name, int model_number)
+void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, std::string updated_residue_name, int model_number)
 {
-    string target_residue_name = residue->GetResidueName();
+    std::string target_residue_name = residue->GetResidueName();
     char target_residue_chain_id = residue->GetResidueChainId();
     int target_residue_sequence_number = residue->GetResidueSequenceNumber();
     char target_residue_insertion_code = residue->GetResidueInsertionCode();
     char target_residue_alternate_location = residue->GetResidueAlternateLocation();
-    stringstream ss;
+    std::stringstream ss;
     ss << target_residue_name << "_" << target_residue_chain_id << "_" << target_residue_sequence_number << "_" << target_residue_insertion_code << "_" << target_residue_alternate_location;
-    string target_key = ss.str();
+    std::string target_key = ss.str();
 
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
@@ -2272,15 +2270,15 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) == 0)
                 {
                     atom->SetAtomResidueName(updated_residue_name);
@@ -2308,15 +2306,15 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int heterogen_atom_sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream sss;
+                std::stringstream sss;
                 sss << residue_name << "_" << chain_id << "_" << heterogen_atom_sequence_number << "_" << insertion_code << "_" << alternate_location;
-                string key = sss.str();
+                std::string key = sss.str();
                 if(target_key.compare(key) == 0)
                 {
                     atom->SetAtomResidueName(updated_residue_name);
@@ -2344,9 +2342,9 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, stri
 
 void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    PdbModelSection::PdbModelCardMap updated_models;
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelCard* updated_model = new PdbModelCard();
@@ -2369,19 +2367,19 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
             bool located = true;
 
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_of_residue = residue->GetOrderedAtomCards();
-            PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
+            PdbFileSpace::PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
                     if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtomCard* previous_atom = (*(--it2));
+                        PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2406,9 +2404,9 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                         base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, -1);
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtomCard* atom_of_residue = (*it3);
+                            PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
                             int index = distance(ordered_atoms_of_residue.begin(), it3);
-                            PdbAtomCard* new_atom = new PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
@@ -2417,14 +2415,14 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;
                         }
-                        sequence_number_mapping_[sequence_number] = iNotSet;
+                        sequence_number_mapping_[sequence_number] = gmml::iNotSet;
                         sequence_number++;
                         offset++;
                         located = false;
                     }
                     if(!located)
                     {
-                        PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                        PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
@@ -2439,7 +2437,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                     if(it2 != ordered_atoms.begin())
                     {
 
-                        PdbAtomCard* previous_atom = (*(--it2));
+                        PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2452,7 +2450,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                     }
                     else
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
@@ -2479,8 +2477,8 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* heterogen_atom = (*it2);
-                PdbAtomCard* updated_heterogen_atom = new PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
+                PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
+                PdbFileSpace::PdbAtomCard* updated_heterogen_atom = new PdbFileSpace::PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
@@ -2503,11 +2501,11 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
 
 void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue, int model_number)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
-        PdbModelSection::PdbModelCardMap updated_models;
+        PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
         PdbModelCard* updated_model = new PdbModelCard();
         updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -2528,19 +2526,19 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
             bool located = true;
 
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_of_residue = residue->GetOrderedAtomCards();
-            PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
+            PdbFileSpace::PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
                     if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtomCard* previous_atom = (*(--it2));
+                        PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2565,9 +2563,9 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                         base_coordinate->RotateTorsionalAll(coordinate_set, 180.0, -1);
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtomCard* atom_of_residue = (*it3);
+                            PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
                             int index = distance(ordered_atoms_of_residue.begin(), it3);
-                            PdbAtomCard* new_atom = new PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
@@ -2576,14 +2574,14 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;
                         }
-                        sequence_number_mapping_[sequence_number] = iNotSet;
+                        sequence_number_mapping_[sequence_number] = gmml::iNotSet;
                         sequence_number++;
                         offset++;
                         located = false;
                     }
                     if(!located)
                     {
-                        PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                        PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
@@ -2598,7 +2596,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                     if(it2 != ordered_atoms.begin())
                     {
 
-                        PdbAtomCard* previous_atom = (*(--it2));
+                        PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2611,7 +2609,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                     }
                     else
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
@@ -2638,8 +2636,8 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector  updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* heterogen_atom = (*it2);
-                PdbAtomCard* updated_heterogen_atom = new PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
+                PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
+                PdbFileSpace::PdbAtomCard* updated_heterogen_atom = new PdbFileSpace::PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
@@ -2663,9 +2661,9 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
 
 void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    PdbModelSection::PdbModelCardMap updated_models;
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelCard* updated_model = new PdbModelCard();
@@ -2688,19 +2686,19 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
             bool located = false;
 
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_of_residue = residue->GetOrderedAtomCards();
-            PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
+            PdbFileSpace::PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
                     if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtomCard* previous_atom = (*(--it2));
+                        PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2715,7 +2713,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                     {
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                     }
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
@@ -2740,9 +2738,9 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                         sequence_number++;
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtomCard* atom_of_residue = (*it3);
+                            PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
                             int index = distance(ordered_atoms_of_residue.begin(), it3);
-                            PdbAtomCard* new_atom = new PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
@@ -2751,7 +2749,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;
                         }
-                        sequence_number_mapping_[sequence_number] = iNotSet;
+                        sequence_number_mapping_[sequence_number] = gmml::iNotSet;
                         sequence_number++;
                         offset++;
                         located = false;
@@ -2760,7 +2758,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                     {
                         if(it2 != ordered_atoms.begin())
                         {
-                            PdbAtomCard* previous_atom = (*(--it2));
+                            PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                             it2++;
                             if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                             {
@@ -2775,7 +2773,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                         {
                             sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                         }
-                        PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                        PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
@@ -2798,9 +2796,9 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                     sequence_number++;
                     for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                     {
-                        PdbAtomCard* atom_of_residue = (*it3);
+                        PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
                         int index = distance(ordered_atoms_of_residue.begin(), it3);
-                        PdbAtomCard* new_atom = new PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                        PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                         atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
@@ -2809,7 +2807,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                         updated_atoms_vector.push_back(new_atom);
                         serial_number++;
                     }
-                    sequence_number_mapping_[sequence_number] = iNotSet;
+                    sequence_number_mapping_[sequence_number] = gmml::iNotSet;
                     located = false;
                     sequence_number++;
                     offset++;
@@ -2832,8 +2830,8 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* heterogen_atom = (*it2);
-                PdbAtomCard* updated_heterogen_atom = new PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
+                PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
+                PdbFileSpace::PdbAtomCard* updated_heterogen_atom = new PdbFileSpace::PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
@@ -2856,11 +2854,11 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
 
 void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue, int model_number)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
-        PdbModelSection::PdbModelCardMap updated_models;
+        PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
         PdbModelCard* updated_model = new PdbModelCard();
         updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -2881,19 +2879,19 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
             bool located = false;
 
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_of_residue = residue->GetOrderedAtomCards();
-            PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
+            PdbFileSpace::PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
             char residue_chain_id = first_atom_in_residue->GetAtomChainId();
             int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
 
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
 
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
                     if(it2 != ordered_atoms.begin())
                     {
-                        PdbAtomCard* previous_atom = (*(--it2));
+                        PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                         it2++;
                         if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                         {
@@ -2908,7 +2906,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                     {
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                     }
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     updated_atoms[serial_number] = updated_atom;
@@ -2933,9 +2931,9 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                         sequence_number++;
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
-                            PdbAtomCard* atom_of_residue = (*it3);
+                            PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
                             int index = distance(ordered_atoms_of_residue.begin(), it3);
-                            PdbAtomCard* new_atom = new PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
@@ -2952,7 +2950,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                     {
                         if(it2 != ordered_atoms.begin())
                         {
-                            PdbAtomCard* previous_atom = (*(--it2));
+                            PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
                             it2++;
                             if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
                             {
@@ -2967,7 +2965,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                         {
                             sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                         }
-                        PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                        PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                             atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                         updated_atoms[serial_number] = updated_atom;
@@ -2990,9 +2988,9 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                     sequence_number++;
                     for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                     {
-                        PdbAtomCard* atom_of_residue = (*it3);
+                        PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
                         int index = distance(ordered_atoms_of_residue.begin(), it3);
-                        PdbAtomCard* new_atom = new PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                        PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                         atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
@@ -3001,7 +2999,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                         updated_atoms_vector.push_back(new_atom);
                         serial_number++;
                     }
-                    sequence_number_mapping_[sequence_number] = iNotSet;
+                    sequence_number_mapping_[sequence_number] = gmml::iNotSet;
                     located = false;
                     sequence_number++;
                     offset++;
@@ -3024,8 +3022,8 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
             PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* heterogen_atom = (*it2);
-                PdbAtomCard* updated_heterogen_atom = new PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
+                PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
+                PdbFileSpace::PdbAtomCard* updated_heterogen_atom = new PdbFileSpace::PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
@@ -3047,9 +3045,9 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
 }
 void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_point_sequence_number)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    PdbModelSection::PdbModelCardMap updated_models;
-    for(PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
+    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
     {
         PdbModelCard* model = (*it).second;
         PdbModelCard* updated_model = new PdbModelCard();
@@ -3075,7 +3073,7 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
             bool located = false;
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
                 char residue_chain_id = atom->GetAtomChainId();
                 int residue_sequence_number = atom->GetAtomResidueSequenceNumber();
 
@@ -3086,7 +3084,7 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
                 if(located)
                 {
                     serial_number++;
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_second_part[serial_number] = updated_atom;
@@ -3094,7 +3092,7 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
                 }
                 if(!located)
                 {
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_first_part[serial_number] = updated_atom;
@@ -3129,10 +3127,10 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
 
 void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_chain_id, int split_point_sequence_number, int model_number)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
-        PdbModelSection::PdbModelCardMap updated_models;
+        PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
         PdbModelCard* model = models[model_number];
         PdbModelCard* updated_model = new PdbModelCard();
         updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
@@ -3157,7 +3155,7 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
             bool located = false;
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2);
+                PdbFileSpace::PdbAtomCard* atom = (*it2);
                 char residue_chain_id = atom->GetAtomChainId();
                 int residue_sequence_number = atom->GetAtomResidueSequenceNumber();
 
@@ -3168,7 +3166,7 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
                 if(located)
                 {
                     serial_number++;
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_second_part[serial_number] = updated_atom;
@@ -3176,7 +3174,7 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
                 }
                 if(!located)
                 {
-                    PdbAtomCard* updated_atom = new PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                    PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
                                                         atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
                     atoms_first_part[serial_number] = updated_atom;
@@ -3213,17 +3211,17 @@ void PdbFile::UpdateConnectCard()
 {
     if(connectivities_ != NULL)
     {
-        PdbConnectSection::BondedAtomsSerialNumbersMap bondedAtomsSerialNumbersMap = connectivities_->GetBondedAtomsSerialNumbers();
-        PdbConnectSection::BondedAtomsSerialNumbersMap new_bonded_atoms_serial_numbers_map = PdbConnectSection::BondedAtomsSerialNumbersMap();
-        for(PdbConnectSection::BondedAtomsSerialNumbersMap::iterator it = bondedAtomsSerialNumbersMap.begin(); it != bondedAtomsSerialNumbersMap.end(); it++)
+        PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap bondedAtomsSerialNumbersMap = connectivities_->GetBondedAtomsSerialNumbers();
+        PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap new_bonded_atoms_serial_numbers_map = PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap();
+        for(PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap::iterator it = bondedAtomsSerialNumbersMap.begin(); it != bondedAtomsSerialNumbersMap.end(); it++)
         {
             int source_serial_number = (*it).first;
-            vector<int> bonded_serial_numbers = (*it).second;
+            std::vector<int> bonded_serial_numbers = (*it).second;
             if(serial_number_mapping_.find(source_serial_number) != serial_number_mapping_.end())
             {
                 int new_source_serial_number = serial_number_mapping_[source_serial_number];
-                new_bonded_atoms_serial_numbers_map[new_source_serial_number] = vector<int>();
-                for(vector<int>::iterator it1 = bonded_serial_numbers.begin(); it1 != bonded_serial_numbers.end(); it1++)
+                new_bonded_atoms_serial_numbers_map[new_source_serial_number] = std::vector<int>();
+                for(std::vector<int>::iterator it1 = bonded_serial_numbers.begin(); it1 != bonded_serial_numbers.end(); it1++)
                 {
                     int bonded_serial_number = (*it1);
                     if(serial_number_mapping_.find(bonded_serial_number) != serial_number_mapping_.end())
@@ -3237,292 +3235,293 @@ void PdbFile::UpdateConnectCard()
         connectivities_->SetBondedAtomsSerialNumbers(new_bonded_atoms_serial_numbers_map);
     }
 }
-void PdbFile::SetMasterCard(PdbMasterCard *master)
+void PdbFile::SetMasterCard(PdbFileSpace::PdbMasterCard *master)
 {
-    master_ = new PdbMasterCard();
+    master_ = new PdbFileSpace::PdbMasterCard();
     master_ = master;
 }
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
-bool PdbFile::Read(ifstream &in_file)
+bool PdbFile::Read(std::ifstream &in_file)
 {
     if(!this->ParseCards(in_file))
         return false;
+	return true;
 }
 
-bool PdbFile::ParseCards(ifstream &in_stream)
+bool PdbFile::ParseCards(std::ifstream &in_stream)
 {
-    string line;
+    std::string line;
 
     /// Unable to read file
     if (!getline(in_stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         throw PdbFileProcessingException("Error reading file");
     }
 
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("HEADER") == 0)
     {
         if(!ParseHeaderCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("OBSLTE") == 0)
     {
         if(!ParseObsoleteSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("TITLE") == 0)
     {
         if(!ParseTitleSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SPLIT") == 0)
     {
         if(!ParseSplitSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("CAVEAT") == 0)
     {
         if(!ParseCaveatSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("COMPND") == 0)
     {
         if(!ParseCompoundSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SOURCE") == 0)
     {
         if(!ParseSourceSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("KEYWDS") == 0)
     {
         if(!ParseKeywordsSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("EXPDTA") == 0)
     {
         if(!ParseExperimentalDataSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("NUMMDL") == 0)
     {
         if(!ParseNumModelCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("MDLTYP") == 0)
     {
         if(!ParseModelTypeSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("AUTHOR") == 0)
     {
         if(!ParseAuthorSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("REVDAT") == 0)
     {
         if(!ParseRevisionDataSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SPRSDE") == 0)
     {
         if(!ParseSupersededEntriesSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("JRNL") == 0)
     {
         if(!ParseJournalSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("REMARK") == 0)
     {
         if(!ParseRemarkSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
-    if(record_name.find("DBREF") != string::npos)
+    record_name = gmml::Trim(record_name);
+    if(record_name.find("DBREF") != std::string::npos)
     {
         if(!ParseDatabaseReferenceSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SEQADV") == 0)
     {
         if(!ParseSequenceAdvancedSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SEQRES") == 0)
     {
         if(!ParseResidueSequenceSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("MODRES") == 0)
     {
         if(!ParseResidueModificationSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("HET") == 0)
     {
         if(!ParseHeterogenSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("HETNAM") == 0)
     {
         if(!ParseHeterogenNameSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("HETSYN") == 0)
     {
         if(!ParseHeterogenSynonymSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("FORMUL") == 0)
     {
         if(!ParseFormulaSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("HELIX") == 0)
     {
         if(!ParseHelixSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SHEET") == 0)
     {
         if(!ParseSheetSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SSBOND") == 0)
     {
         if(!ParseDisulfideBondSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("LINK") == 0)
     {
         if(!ParseLinkSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("CISPEP") == 0)
     {
         if(!ParseCISPeptideSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("SITE") == 0)
     {
         if(!ParseSiteSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("CRYST1") == 0)
     {
         if(!ParseCrystallographyCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
-    if(record_name.find("ORIGX") != string::npos)
+    record_name = gmml::Trim(record_name);
+    if(record_name.find("ORIGX") != std::string::npos)
     {
         if(!ParseOriginCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
-    if(record_name.find("SCALE") != string::npos)
+    record_name = gmml::Trim(record_name);
+    if(record_name.find("SCALE") != std::string::npos)
     {
         if(!ParseScaleCard(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
-    if(record_name.find("MTRIX") != string::npos)
+    record_name = gmml::Trim(record_name);
+    if(record_name.find("MTRIX") != std::string::npos)
     {
         if(!ParseMatrixSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("HETATM") == 0)
     {
         if(!ParseModelSection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("CONECT") == 0)
     {
         if(!ParseConnectivitySection(in_stream, line))
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    record_name = gmml::Trim(record_name);
 
     if(record_name.compare("MODEL") == 0)
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Multiple connect card between model cards --> Unexpected entry");
-        cout << "Multiple connect card between model cards --> Unexpected entry" << endl;
+        std::cout << "Multiple connect card between model cards --> Unexpected entry" << std::endl;
         return false;
     }
     if(record_name.compare("MASTER") == 0)
@@ -3531,8 +3530,8 @@ bool PdbFile::ParseCards(ifstream &in_stream)
             return false;
     }
     record_name = line.substr(0,6);
-    record_name = Trim(record_name);
-    if(record_name.find("END") != string::npos || record_name.compare("END") == 0)
+    record_name = gmml::Trim(record_name);
+    if(record_name.find("END") != std::string::npos || record_name.compare("END") == 0)
     {
         if(!ParseEndCard(in_stream, line))
             return false;
@@ -3541,1467 +3540,1467 @@ bool PdbFile::ParseCards(ifstream &in_stream)
     else
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        cout << "Wrong input file format" << endl;
-        stringstream ss;
+        std::cout << "Wrong input file format" << std::endl;
+        std::stringstream ss;
         ss << record_name << " is an Unknown record name.";
         gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
-        cout << ss.str() << endl;
+        std::cout << ss.str() << std::endl;
         return false;
     }
     return true;
 }
 
-bool PdbFile::ParseHeaderCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeaderCard(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Header card corupption");
-        cout << "Header card corruption" << endl;
+        std::cout << "Header card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("HEADER") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Header card corruption");
-            cout << "Header card corruption" << endl;
+            std::cout << "Header card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
 
-    header_ = new PdbHeaderCard(stream_block);
+    header_ = new PdbFileSpace::PdbHeaderCard(stream_block);
     return true;
 }
 
-bool PdbFile::ParseObsoleteSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseObsoleteSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Obsolete card corruption");
-        cout << "Obsolete card corruption" << endl;
+        std::cout << "Obsolete card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("OBSLTE") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Obsolete card corruption");
-            cout << "Obsolete card corruption" << endl;
+            std::cout << "Obsolete card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
 
-    obsolete_= new PdbObsoleteSection(stream_block);
+    obsolete_= new PdbFileSpace::PdbObsoleteSection(stream_block);
     // obsolete_->Print();
     return true;
 }
 
-bool PdbFile::ParseTitleSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseTitleSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Title card corruption");
-        cout << "Title card corruption" << endl;
+        std::cout << "Title card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("TITLE") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Title card corruption");
-            cout << "Title card corruption" << endl;
+            std::cout << "Title card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
 
-    title_ = new PdbTitleSection(stream_block);
+    title_ = new PdbFileSpace::PdbTitleSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseSplitSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseSplitSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Split card corruption" );
-        cout << "Split card corruption" << endl;
+        std::cout << "Split card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SPLIT") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Split card corruption" );
-            cout << "Split card corruption" << endl;
+            std::cout << "Split card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    split_ = new PdbSplitSection(stream_block);
+    split_ = new PdbFileSpace::PdbSplitSection(stream_block);
     // split_->Print();
     return true;
 }
 
-bool PdbFile::ParseCaveatSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseCaveatSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Caveat card corruption" );
-        cout << "Caveat card corruption" << endl;
+        std::cout << "Caveat card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("CAVEAT") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Caveat card corruption" );
-            cout << "Caveat card corruption" << endl;
+            std::cout << "Caveat card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    caveat_ = new PdbCaveatSection(stream_block);
+    caveat_ = new PdbFileSpace::PdbCaveatSection(stream_block);
     // caveat_->Print();
     return true;
 }
 
-bool PdbFile::ParseCompoundSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseCompoundSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Compound card corruption" );
-        cout << "Compound card corruption" << endl;
+        std::cout << "Compound card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("COMPND") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Compound card corruption" );
-            cout << "Compound card corruption" << endl;
+            std::cout << "Compound card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
 
-    compound_ = new PdbCompoundSection(stream_block);
+    compound_ = new PdbFileSpace::PdbCompoundSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseSourceSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseSourceSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Source card corruption" );
-        cout << "Source card corruption" << endl;
+        std::cout << "Source card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SOURCE") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Source card corruption" );
-            cout << "Source card corruption" << endl;
+            std::cout << "Source card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    source_ = new PdbSourceSection(stream_block);
+    source_ = new PdbFileSpace::PdbSourceSection(stream_block);
     // source_->Print();
     return true;
 }
 
-bool PdbFile::ParseKeywordsSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseKeywordsSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Keyword card corruption" );
-        cout << "Keyword card corruption" << endl;
+        std::cout << "Keyword card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("KEYWDS") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Keyword card corruption" );
-            cout << "Keyword card corruption" << endl;
+            std::cout << "Keyword card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    keywords_ =  new PdbKeywordsSection(stream_block);
+    keywords_ =  new PdbFileSpace::PdbKeywordsSection(stream_block);
     // keywords_->Print();
     return true;
 }
 
-bool PdbFile::ParseExperimentalDataSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseExperimentalDataSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Experimental data card corruption" );
-        cout << "Experimental data card corruption" << endl;
+        std::cout << "Experimental data card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("EXPDTA") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Experimental data card corruption" );
-            cout << "Experimental data card corruption" << endl;
+            std::cout << "Experimental data card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    experimental_data_ = new PdbExperimentalDataSection(stream_block);
+    experimental_data_ = new PdbFileSpace::PdbExperimentalDataSection(stream_block);
     // experimental_data_->Print();
     return true;
 }
 
-bool PdbFile::ParseNumModelCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseNumModelCard(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Number of model card corruption" );
-        cout << "Number of model card corruption" << endl;
+        std::cout << "Number of model card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("NUMMDL") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Number of model card corruption" );
-            cout << "Number of model card corruption" << endl;
+            std::cout << "Number of model card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    number_of_models_ = new PdbNumModelCard(stream_block);
+    number_of_models_ = new PdbFileSpace::PdbNumModelCard(stream_block);
     return true;
 }
 
-bool PdbFile::ParseModelTypeSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseModelTypeSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model type card corruption" );
-        cout << "Model type card corruption" << endl;
+        std::cout << "Model type card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("MDLTYP") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model type card corruption" );
-            cout << "Model type card corruption" << endl;
+            std::cout << "Model type card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    model_type_ = new PdbModelTypeSection(stream_block);
+    model_type_ = new PdbFileSpace::PdbModelTypeSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseAuthorSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseAuthorSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Author card corruption" );
-        cout << "Author card corruption" << endl;
+        std::cout << "Author card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("AUTHOR") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Author card corruption" );
-            cout << "Author card corruption" << endl;
+            std::cout << "Author card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    author_ = new PdbAuthorSection(stream_block);
+    author_ = new PdbFileSpace::PdbAuthorSection(stream_block);
     // author_->Print();
     return true;
 }
 
-bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision data card corruption" );
-        cout << "Revision data card corruption" << endl;
+        std::cout << "Revision data card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("REVDAT") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision data card corruption" );
-            cout << "Revision data card corruption" << endl;
+            std::cout << "Revision data card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    revision_data_ = new PdbRevisionDataSection(stream_block);
+    revision_data_ = new PdbFileSpace::PdbRevisionDataSection(stream_block);
     // revision_data_->Print();
     return true;
 }
 
-bool PdbFile::ParseSupersededEntriesSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseSupersededEntriesSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Superseded entries card corruption" );
-        cout << "Superseded entries card corruption" << endl;
+        std::cout << "Superseded entries card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SPRSDE") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Superseded entries card corruption" );
-            cout << "Superseded entries card corruption" << endl;
+            std::cout << "Superseded entries card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    superseded_entries_ = new PdbSupersededEntriesSection(stream_block);
+    superseded_entries_ = new PdbFileSpace::PdbSupersededEntriesSection(stream_block);
     // superseded_entries_->Print();
     return true;
 }
 
-bool PdbFile::ParseJournalSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseJournalSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Journal card corruption" );
-        cout << "Journal card corruption" << endl;
+        std::cout << "Journal card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("JRNL") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Journal card corruption" );
-            cout << "Journal card corruption" << endl;
+            std::cout << "Journal card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    journal_ = new PdbJournalSection(stream_block);
+    journal_ = new PdbFileSpace::PdbJournalSection(stream_block);
     // journal_->Print();
     return true;
 }
 
-bool PdbFile::ParseRemarkSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseRemarkSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Remark card corruption" );
-        cout << "Remark card corruption" << endl;
+        std::cout << "Remark card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("REMARK") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Remark card corruption" );
-            cout << "Remark card corruption" << endl;
+            std::cout << "Remark card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    remark_cards_ = new PdbRemarkSection(stream_block);
+    remark_cards_ = new PdbFileSpace::PdbRemarkSection(stream_block);
     // remark_cards_->Print();
     return true;
 }
 
-bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "database reference card corruption" );
-        cout << "database reference card corruption" << endl;
+        std::cout << "database reference card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("DBREF") == 0 || record_name.compare("DBREF1") == 0 ||record_name.compare("DBREF2") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "database reference card corruption" );
-            cout << "database reference card corruption" << endl;
+            std::cout << "database reference card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    database_reference_ = new PdbDatabaseReferenceSection(stream_block);
+    database_reference_ = new PdbFileSpace::PdbDatabaseReferenceSection(stream_block);
     // database_reference_->Print();
     return true;
 }
 
-bool PdbFile::ParseSequenceAdvancedSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseSequenceAdvancedSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence advanced card corruption" );
-        cout << "Sequence advanced card corruption" << endl;
+        std::cout << "Sequence advanced card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SEQADV") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence advanced card corruption" );
-            cout << "Sequence advanced card corruption" << endl;
+            std::cout << "Sequence advanced card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    sequence_advanced_ = new PdbSequenceAdvancedSection(stream_block);
+    sequence_advanced_ = new PdbFileSpace::PdbSequenceAdvancedSection(stream_block);
     // sequence_advanced_->Print();
     return true;
 }
 
-bool PdbFile::ParseResidueSequenceSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseResidueSequenceSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence residue card corruption" );
-        cout << "Sequence residue card corruption" << endl;
+        std::cout << "Sequence residue card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SEQRES") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence residue card corruption" );
-            cout << "Sequence residue card corruption" << endl;
+            std::cout << "Sequence residue card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    residues_sequence_ = new PdbResidueSequenceSection(stream_block);
+    residues_sequence_ = new PdbFileSpace::PdbResidueSequenceSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseResidueModificationSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseResidueModificationSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Modification residue card corruption" );
-        cout << "Modification residue card corruption" << endl;
+        std::cout << "Modification residue card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("MODRES") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Modification residue card corruption" );
-            cout << "Modification residue card corruption" << endl;
+            std::cout << "Modification residue card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    residue_modification_cards_ = new PdbResidueModificationSection(stream_block);
+    residue_modification_cards_ = new PdbFileSpace::PdbResidueModificationSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseHeterogenSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeterogenSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen card corruption" );
-        cout << "Heterogen card corruption" << endl;
+        std::cout << "Heterogen card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("HET") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen card corruption" );
-            cout << "Heterogen card corruption" << endl;
+            std::cout << "Heterogen card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    heterogen_cards_ = new PdbHeterogenSection(stream_block);
+    heterogen_cards_ = new PdbFileSpace::PdbHeterogenSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseHeterogenNameSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeterogenNameSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen name card corruption" );
-        cout << "Heterogen name card corruption" << endl;
+        std::cout << "Heterogen name card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("HETNAM") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen name card corruption" );
-            cout << "Heterogen name card corruption" << endl;
+            std::cout << "Heterogen name card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    heterogen_name_cards_ = new PdbHeterogenNameSection(stream_block);
+    heterogen_name_cards_ = new PdbFileSpace::PdbHeterogenNameSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseHeterogenSynonymSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseHeterogenSynonymSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen synonym card corruption" );
-        cout << "Heterogen synonym card corruption" << endl;
+        std::cout << "Heterogen synonym card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("HETSYN") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen synonym card corruption" );
-            cout << "Heterogen synonym card corruption" << endl;
+            std::cout << "Heterogen synonym card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    heterogen_synonym_cards_ = new PdbHeterogenSynonymSection(stream_block);
+    heterogen_synonym_cards_ = new PdbFileSpace::PdbHeterogenSynonymSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseFormulaSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseFormulaSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Formula card corruption" );
-        cout << "Formula card corruption" << endl;
+        std::cout << "Formula card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("FORMUL") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Formula card corruption" );
-            cout << "Formula card corruption" << endl;
+            std::cout << "Formula card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    formulas_ = new PdbFormulaSection(stream_block);
+    formulas_ = new PdbFileSpace::PdbFormulaSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseHelixSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseHelixSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Helix card corruption" );
-        cout << "Helix card corruption" << endl;
+        std::cout << "Helix card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("HELIX") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Helix card corruption" );
-            cout << "Helix card corruption" << endl;
+            std::cout << "Helix card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    helix_cards_ = new PdbHelixSection(stream_block);
+    helix_cards_ = new PdbFileSpace::PdbHelixSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseSheetSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseSheetSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sheet card corruption" );
-        cout << "Sheet card corruption" << endl;
+        std::cout << "Sheet card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SHEET") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sheet card corruption" );
-            cout << "Sheet card corruption" << endl;
+            std::cout << "Sheet card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    sheet_cards_ = new PdbSheetSection(stream_block);
+    sheet_cards_ = new PdbFileSpace::PdbSheetSection(stream_block);
     // sheet_cards_->Print();
     return true;
 }
 
-bool PdbFile::ParseDisulfideBondSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseDisulfideBondSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Disulfide bond card corruption" );
-        cout << "Disulfide bond card corruption" << endl;
+        std::cout << "Disulfide bond card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SSBOND") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Disulfide bond card corruption" );
-            cout << "Disulfide bond card corruption" << endl;
+            std::cout << "Disulfide bond card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    disulfide_bonds_ = new PdbDisulfideBondSection(stream_block);
+    disulfide_bonds_ = new PdbFileSpace::PdbDisulfideBondSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseLinkSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseLinkSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Link card corruption" );
-        cout << "Link card corruption" << endl;
+        std::cout << "Link card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("LINK") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Link card corruption" );
-            cout << "Link card corruption" << endl;
+            std::cout << "Link card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    link_cards_ = new PdbLinkSection(stream_block);
+    link_cards_ = new PdbFileSpace::PdbLinkSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseCISPeptideSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseCISPeptideSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "CIS peptide card corruption" );
-        cout << "CIS peptide card corruption" << endl;
+        std::cout << "CIS peptide card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("CISPEP") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "CIS peptide card corruption" );
-            cout << "CIS peptide card corruption" << endl;
+            std::cout << "CIS peptide card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    cis_peptide_ = new PdbCISPeptideSection(stream_block);
+    cis_peptide_ = new PdbFileSpace::PdbCISPeptideSection(stream_block);
     // cis_peptide_->Print();
     return true;
 }
 
-bool PdbFile::ParseSiteSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseSiteSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Site card corruption" );
-        cout << "Site card corruption" << endl;
+        std::cout << "Site card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SITE") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Site card corruption" );
-            cout << "Site card corruption" << endl;
+            std::cout << "Site card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    site_cards_ = new PdbSiteSection(stream_block);
+    site_cards_ = new PdbFileSpace::PdbSiteSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Crystallography card corruption" );
-        cout << "Crystallography card corruption" << endl;
+        std::cout << "Crystallography card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("CRYST1") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Crystallography card corruption" );
-            cout << "Crystallography card corruption" << endl;
+            std::cout << "Crystallography card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    crystallography_ = new PdbCrystallographicCard(stream_block);
+    crystallography_ = new PdbFileSpace::PdbCrystallographicCard(stream_block);
     return true;
 }
 
-bool PdbFile::ParseOriginCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseOriginCard(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Origin card corruption" );
-        cout << "Origin card corruption" << endl;
+        std::cout << "Origin card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,5);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,5);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("ORIGX") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,5);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Origin card corruption" );
-            cout << "Origin card corruption" << endl;
+            std::cout << "Origin card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    origins_ = new PdbOriginXnSection(stream_block);
+    origins_ = new PdbFileSpace::PdbOriginXnSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseScaleCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseScaleCard(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Scale card corruption" );
-        cout << "Scale card corruption" << endl;
+        std::cout << "Scale card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,5);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,5);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("SCALE") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,5);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Scale card corruption" );
-            cout << "Scale card corruption" << endl;
+            std::cout << "Scale card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    scales_ = new PdbScaleNSection(stream_block);
+    scales_ = new PdbFileSpace::PdbScaleNSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseMatrixSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseMatrixSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Matrix card corruption" );
-        cout << "Matrix card corruption" << endl;
+        std::cout << "Matrix card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,5);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,5);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("MTRIX") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,5);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Matrix card corruption" );
-            cout << "Matrix card corruption" << endl;
+            std::cout << "Matrix card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    matrices_ = new PdbMatrixNSection(stream_block);
+    matrices_ = new PdbFileSpace::PdbMatrixNSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseModelSection(std::ifstream& stream, string& line)
+bool PdbFile::ParseModelSection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
-        cout << "Model card corruption" << endl;
+        std::cout << "Model card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("ANISOU") == 0
           || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0)
-        //          || record_name.find("TER") != string::npos || record_name.find("ENDMDL") != string::npos)
+        //          || record_name.find("TER") != std::string::npos || record_name.find("ENDMDL") != std::string::npos)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
-            cout << "Model card corruption" << endl;
+            std::cout << "Model card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
     // Model card
     //    gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str();
-    models_ = new PdbModelSection(stream_block);
+    models_ = new PdbFileSpace::PdbModelSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseConnectivitySection(std::ifstream& stream, string& line)
+bool PdbFile::ParseConnectivitySection(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Connectivity card corruption" );
-        cout << "Connectivity card corruption" << endl;
+        std::cout << "Connectivity card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("CONECT") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Connectivity card corruption" );
-            cout << "Connectivity card corruption" << endl;
+            std::cout << "Connectivity card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    connectivities_ = new PdbConnectSection(stream_block);
+    connectivities_ = new PdbFileSpace::PdbConnectSection(stream_block);
     return true;
 }
 
-bool PdbFile::ParseMasterCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseMasterCard(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Master card corruption" );
-        cout << "Master card corruption" << endl;
+        std::cout << "Master card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        cout << "Wrong input file format" << endl;
+        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
 
     while(record_name.compare("MASTER") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Master card corruption" );
-            cout << "Master card corruption" << endl;
+            std::cout << "Master card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            cout << "Wrong input file format" << endl;
+            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
-    master_ = new PdbMasterCard(stream_block);
+    master_ = new PdbFileSpace::PdbMasterCard(stream_block);
     return true;
 }
 
-bool PdbFile::ParseEndCard(std::ifstream& stream, string& line)
+bool PdbFile::ParseEndCard(std::ifstream& stream, std::string& line)
 {
-    stringstream stream_block;
-    stream_block << line << endl;
+    std::stringstream stream_block;
+    stream_block << line << std::endl;
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "End of file" );
-        cout << "End of file" << endl;
+        std::cout << "End of file" << std::endl;
         return true;
     }
 
-    line = ExpandLine(line, iPdbLineLength);
-    string record_name = line.substr(0,6);
-    record_name = Trim(record_name);
-    while(record_name.find("END") != string::npos || record_name.compare("END") == 0)
+    line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+    std::string record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
+    while(record_name.find("END") != std::string::npos || record_name.compare("END") == 0)
     {
-        stream_block << line << endl;
+        stream_block << line << std::endl;
         if(getline(stream, line))
         {
-            line = ExpandLine(line, iPdbLineLength);
+            line = gmml::ExpandLine(line, gmml::iPdbLineLength);
             record_name = line.substr(0,6);
-            record_name = Trim(record_name);
+            record_name = gmml::Trim(record_name);
         }
         else
         {
@@ -5361,198 +5360,198 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
 
 void PdbFile::ResolveHeaderCard(std::ofstream& stream)
 {
-    stream << left << setw(6) << header_->GetRecordName()
-           << left << setw(4) << " "
-           << left << setw(40) << header_->GetClassification()
-           << left << setw(9) << header_->GetDepositionDate()
-           << left << setw(3) << " "
-           << right << setw(4) << header_->GetIdentifierCode()
-           << left << setw(14) << " "
-           << endl;
+    stream << std::left << std::setw(6) << header_->GetRecordName()
+           << std::left << std::setw(4) << " "
+           << std::left << std::setw(40) << header_->GetClassification()
+           << std::left << std::setw(9) << header_->GetDepositionDate()
+           << std::left << std::setw(3) << " "
+           << std::right << std::setw(4) << header_->GetIdentifierCode()
+           << std::left << std::setw(14) << " "
+           << std::endl;
 }
 
 void PdbFile::ResolveObsoleteCards(std::ofstream& stream)
 {
-    stream << left << setw(6) << obsolete_->GetRecordName()
-          << left << setw(2) << " "
-          << left << setw(2) << obsolete_->GetContinuation()
-          << left << setw(1) << " "
-          << left << setw(9) << obsolete_->GetReplacementDate()
-          << left << setw(1) << " ";
-          vector<string> identifier_codes = obsolete_->GetIdentifierCodes();
-          for (int i = 0; i < identifier_codes.size(); i++)
+    stream << std::left << std::setw(6) << obsolete_->GetRecordName()
+          << std::left << std::setw(2) << " "
+          << std::left << std::setw(2) << obsolete_->GetContinuation()
+          << std::left << std::setw(1) << " "
+          << std::left << std::setw(9) << obsolete_->GetReplacementDate()
+          << std::left << std::setw(1) << " ";
+          std::vector<std::string> identifier_codes = obsolete_->GetIdentifierCodes();
+          for(unsigned int i = 0; i < identifier_codes.size(); i++)
           {
-            stream << left << setw(4) << identifier_codes[i]
-                  << left << setw(5) << "      ";
+            stream << std::left << std::setw(4) << identifier_codes[i]
+                  << std::left << std::setw(5) << "      ";
           }
-          stream << left << setw(14) << " "
-          << endl;
+          stream << std::left << std::setw(14) << " "
+          << std::endl;
 }
 
 void PdbFile::ResolveTitleCards(std::ofstream& stream)
 {
     const int MAX_TITLE_LENGTH_IN_LINE = 70;
-    stream << left << setw(6) << title_->GetRecordName()
-           << left << setw(2) << " ";
+    stream << std::left << std::setw(6) << title_->GetRecordName()
+           << std::left << std::setw(2) << " ";
     if((int)title_->GetTitle().length() > MAX_TITLE_LENGTH_IN_LINE)
     {
-        stream << right << setw(2) << " "
-               << left << setw(70) << title_->GetTitle().substr(0,MAX_TITLE_LENGTH_IN_LINE)
-               << endl;
+        stream << std::right << std::setw(2) << " "
+               << std::left << std::setw(70) << title_->GetTitle().substr(0,MAX_TITLE_LENGTH_IN_LINE)
+               << std::endl;
 
         int counter = ceil((double)(title_->GetTitle().length()) / MAX_TITLE_LENGTH_IN_LINE);
         for(int i = 2; i <= counter; i++)
         {
             if(i != counter)
             {
-                stream << left << setw(6) << title_->GetRecordName()
-                       << left << setw(2) << " "
-                       << right << setw(2) << i
-                       << left << setw(70) << title_->GetTitle().substr(MAX_TITLE_LENGTH_IN_LINE*(i-1), MAX_TITLE_LENGTH_IN_LINE)
-                       << endl;
+                stream << std::left << std::setw(6) << title_->GetRecordName()
+                       << std::left << std::setw(2) << " "
+                       << std::right << std::setw(2) << i
+                       << std::left << std::setw(70) << title_->GetTitle().substr(MAX_TITLE_LENGTH_IN_LINE*(i-1), MAX_TITLE_LENGTH_IN_LINE)
+                       << std::endl;
             }
             else
             {
-                stream << left << setw(6) << title_->GetRecordName()
-                       << left << setw(2) << " "
-                       << right << setw(2) << i
-                       << left << setw(70) << title_->GetTitle().substr(MAX_TITLE_LENGTH_IN_LINE*(i-1), title_->GetTitle().length()-MAX_TITLE_LENGTH_IN_LINE*(i-1))
-                       << endl;
+                stream << std::left << std::setw(6) << title_->GetRecordName()
+                       << std::left << std::setw(2) << " "
+                       << std::right << std::setw(2) << i
+                       << std::left << std::setw(70) << title_->GetTitle().substr(MAX_TITLE_LENGTH_IN_LINE*(i-1), title_->GetTitle().length()-MAX_TITLE_LENGTH_IN_LINE*(i-1))
+                       << std::endl;
             }
         }
     }
     else
     {
-        stream << right << setw(2) << " "
-               << left << setw(70) << title_->GetTitle()
-               << endl;
+        stream << std::right << std::setw(2) << " "
+               << std::left << std::setw(70) << title_->GetTitle()
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveSplitCards(std::ofstream& stream)
 {
      const int MAX_SPLIT_ID_IN_LINE = 79;
-     stream << left << setw(6) << split_->GetRecordName()
-            << left << setw(2) << " ";
+     stream << std::left << std::setw(6) << split_->GetRecordName()
+            << std::left << std::setw(2) << " ";
      if((int)split_->GetSplit().length() > MAX_SPLIT_ID_IN_LINE)
      {
-         stream << left << setw(79) << split_->GetSplit().substr(0,MAX_SPLIT_ID_IN_LINE)
-                << endl;
+         stream << std::left << std::setw(79) << split_->GetSplit().substr(0,MAX_SPLIT_ID_IN_LINE)
+                << std::endl;
 
          int counter = ceil((double)(split_->GetSplit().length()) / MAX_SPLIT_ID_IN_LINE);
          for(int i = 2; i <= counter; i++)
          {
              if(i != counter)
              {
-                 stream << left << setw(6) << split_->GetRecordName()
-                        << left << setw(2) << " "
-                        << right << setw(2) << i
-                        << left << setw(79) << split_->GetSplit().substr(MAX_SPLIT_ID_IN_LINE*(i-1), MAX_SPLIT_ID_IN_LINE)
-                        << endl;
+                 stream << std::left << std::setw(6) << split_->GetRecordName()
+                        << std::left << std::setw(2) << " "
+                        << std::right << std::setw(2) << i
+                        << std::left << std::setw(79) << split_->GetSplit().substr(MAX_SPLIT_ID_IN_LINE*(i-1), MAX_SPLIT_ID_IN_LINE)
+                        << std::endl;
              }
              else
              {
-                 stream << left << setw(6) << split_->GetRecordName()
-                        << left << setw(2) << " "
-                        << right << setw(2) << i
-                        << left << setw(79) << split_->GetSplit().substr(MAX_SPLIT_ID_IN_LINE*(i-1), split_->GetSplit().length()-MAX_SPLIT_ID_IN_LINE*(i-1))
-                        << endl;
+                 stream << std::left << std::setw(6) << split_->GetRecordName()
+                        << std::left << std::setw(2) << " "
+                        << std::right << std::setw(2) << i
+                        << std::left << std::setw(79) << split_->GetSplit().substr(MAX_SPLIT_ID_IN_LINE*(i-1), split_->GetSplit().length()-MAX_SPLIT_ID_IN_LINE*(i-1))
+                        << std::endl;
              }
          }
      }
      else
      {
-         stream << right << setw(2) << " "
-                << left << setw(79) << split_->GetSplit()
-                << endl;
+         stream << std::right << std::setw(2) << " "
+                << std::left << std::setw(79) << split_->GetSplit()
+                << std::endl;
      }
 }
 
 void PdbFile::ResolveCaveatCards(std::ofstream& stream)
 {
     const int MAX_CAVEAT_LENGTH_IN_LINE = 70;
-    stream << left << setw(6) << caveat_->GetRecordName()
-           << left << setw(2) << " "
-           << left << setw(4) << header_->GetIdentifierCode();
+    stream << std::left << std::setw(6) << caveat_->GetRecordName()
+           << std::left << std::setw(2) << " "
+           << std::left << std::setw(4) << header_->GetIdentifierCode();
     if((int)caveat_->GetCaveat().length() > MAX_CAVEAT_LENGTH_IN_LINE)
     {
-        stream << left << setw(70) << caveat_->GetCaveat().substr(0,MAX_CAVEAT_LENGTH_IN_LINE)
-               << endl;
+        stream << std::left << std::setw(70) << caveat_->GetCaveat().substr(0,MAX_CAVEAT_LENGTH_IN_LINE)
+               << std::endl;
 
         int counter = ceil((double)(caveat_->GetCaveat().length()) / MAX_CAVEAT_LENGTH_IN_LINE);
         for(int i = 2; i <= counter; i++)
         {
             if(i != counter)
             {
-                stream << left << setw(6) << caveat_->GetRecordName()
-                       << left << setw(2) << " "
-                       << right << setw(2) << i
-                       << left << setw(70) << caveat_->GetCaveat().substr(MAX_CAVEAT_LENGTH_IN_LINE*(i-1), MAX_CAVEAT_LENGTH_IN_LINE)
-                       << endl;
+                stream << std::left << std::setw(6) << caveat_->GetRecordName()
+                       << std::left << std::setw(2) << " "
+                       << std::right << std::setw(2) << i
+                       << std::left << std::setw(70) << caveat_->GetCaveat().substr(MAX_CAVEAT_LENGTH_IN_LINE*(i-1), MAX_CAVEAT_LENGTH_IN_LINE)
+                       << std::endl;
             }
             else
             {
-                stream << left << setw(6) << caveat_->GetRecordName()
-                       << left << setw(2) << " "
-                       << right << setw(2) << i
-                       << left << setw(70) << caveat_->GetCaveat().substr(MAX_CAVEAT_LENGTH_IN_LINE*(i-1), caveat_->GetCaveat().length()-MAX_CAVEAT_LENGTH_IN_LINE*(i-1))
-                       << endl;
+                stream << std::left << std::setw(6) << caveat_->GetRecordName()
+                       << std::left << std::setw(2) << " "
+                       << std::right << std::setw(2) << i
+                       << std::left << std::setw(70) << caveat_->GetCaveat().substr(MAX_CAVEAT_LENGTH_IN_LINE*(i-1), caveat_->GetCaveat().length()-MAX_CAVEAT_LENGTH_IN_LINE*(i-1))
+                       << std::endl;
             }
         }
     }
     else
     {
-        stream << right << setw(2) << " "
-               << left << setw(70) << caveat_->GetCaveat()
-               << endl;
+        stream << std::right << std::setw(2) << " "
+               << std::left << std::setw(70) << caveat_->GetCaveat()
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveCompoundCards(std::ofstream& stream)
 {
     const int MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE = 70;
-    stream << left << setw(6) << compound_->GetRecordName()
-           << left << setw(1) << " "
-           << right << setw(3) << " ";
+    stream << std::left << std::setw(6) << compound_->GetRecordName()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(3) << " ";
 
-    PdbCompoundSection::PdbCompoundSpecificationMap compound_specification_map = compound_->GetCompoundSpecifications();
+    PdbFileSpace::PdbCompoundSection::PdbCompoundSpecificationMap compound_specification_map = compound_->GetCompoundSpecifications();
     if((*(compound_specification_map.begin())).second->GetMoleculeId() != "")
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << "MOL_ID: " << (*(compound_specification_map.begin())).second->GetMoleculeId() << ";";
-        stream << left << setw(70) << ss.str() << endl;
+        stream << std::left << std::setw(70) << ss.str() << std::endl;
     }
     else
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << " UNKNOWN;";
-        stream << left << setw(70) << ss.str() << endl;
+        stream << std::left << std::setw(70) << ss.str() << std::endl;
     }
     bool first = true;
     int counter = 2;
-    for(PdbCompoundSection::PdbCompoundSpecificationMap::iterator it = compound_specification_map.begin(); it != compound_specification_map.end(); it++)
+    for(PdbFileSpace::PdbCompoundSection::PdbCompoundSpecificationMap::iterator it = compound_specification_map.begin(); it != compound_specification_map.end(); it++)
     {
         PdbCompoundSpecification* compound_specification = (*it).second;
         if(!first)
         {
             if(compound_specification->GetMoleculeId() != "")
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << " MOL_ID: " << compound_specification->GetMoleculeId() << ";";
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
             else
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << " UNKNOWN;";
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
         }
@@ -5560,18 +5559,18 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
         /// Molecule name specification
         if(compound_specification->GetMoleculeName() != "")
         {
-            stringstream molecule_name;
+            std::stringstream molecule_name;
             molecule_name << " MOLECULE: " << compound_specification->GetMoleculeName() << ";";
             int length = molecule_name.str().length();
 
             if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << molecule_name.str();
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
             else
@@ -5582,24 +5581,24 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
                 {
                     if(i != number_of_lines)
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << molecule_name.str().substr((i-1)*(MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE), MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str()
-                               << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str()
+                               << std::endl;
                         counter++;
                     }
                     else
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << molecule_name.str().substr((i-1)*(MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE), length - (i-1)*(MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE));
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str()
-                               << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str()
+                               << std::endl;
                         counter++;
                     }
                 }
@@ -5610,10 +5609,10 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
         /// Molecule chain ids specification
         if(compound_specification->GetChainIds().size() > 0)
         {
-            vector<string> chain_ids = compound_specification->GetChainIds();
-            stringstream chain_id;
+            std::vector<std::string> chain_ids = compound_specification->GetChainIds();
+            std::stringstream chain_id;
             chain_id << " CHAIN: ";
-            for(vector<string>::iterator it1 = chain_ids.begin(); it1 != chain_ids.end(); it1++)
+            for(std::vector<std::string>::iterator it1 = chain_ids.begin(); it1 != chain_ids.end(); it1++)
             {
                 if(it1 < chain_ids.end()-1)
                     chain_id << (*it1) << ",";
@@ -5624,12 +5623,12 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
             int length = chain_id.str().length();
             if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << chain_id.str();
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
             else
@@ -5639,22 +5638,22 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
                 {
                     if(i != number_of_lines)
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << chain_id.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                     else
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << chain_id.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                 }
@@ -5664,17 +5663,17 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
         /// Fragment specification
         if(compound_specification->GetFragment() != "")
         {
-            stringstream fragment;
+            std::stringstream fragment;
             fragment << " FRAGMENT: " << compound_specification->GetFragment() << ";";
             int length = fragment.str().length();
             if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << ss.str();
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
             else
@@ -5684,22 +5683,22 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
                 {
                     if(i != number_of_lines)
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << ss.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                     else
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << ss.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                 }
@@ -5709,10 +5708,10 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
         /// Molecule synonyms specification
         if(compound_specification->GetMoleculeSynonyms().size() > 0)
         {
-            vector<string> molecule_synonyms = compound_specification->GetMoleculeSynonyms();
-            stringstream synonyms;
+            std::vector<std::string> molecule_synonyms = compound_specification->GetMoleculeSynonyms();
+            std::stringstream synonyms;
             synonyms << " SYNONYM: ";
-            for(vector<string>::iterator it1 = molecule_synonyms.begin(); it1 != molecule_synonyms.end(); it1++)
+            for(std::vector<std::string>::iterator it1 = molecule_synonyms.begin(); it1 != molecule_synonyms.end(); it1++)
             {
                 if(it1 < molecule_synonyms.end()-1)
                     synonyms << (*it1) << ",";
@@ -5723,12 +5722,12 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
             int length = synonyms.str().length();
             if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << synonyms.str();
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
             else
@@ -5738,22 +5737,22 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
                 {
                     if(i != number_of_lines)
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << synonyms.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                     else
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << synonyms.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                 }
@@ -5763,10 +5762,10 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
         /// Enzyme commission numbers specification
         if(compound_specification->GetEnzymeCommissionNumbers().size() > 0)
         {
-            vector<string> enzyme_commission_numbers = compound_specification->GetEnzymeCommissionNumbers();
-            stringstream commission_numbers;
+            std::vector<std::string> enzyme_commission_numbers = compound_specification->GetEnzymeCommissionNumbers();
+            std::stringstream commission_numbers;
             commission_numbers << " EC: ";
-            for(vector<string>::iterator it1 = enzyme_commission_numbers.begin(); it1 != enzyme_commission_numbers.end(); it1++)
+            for(std::vector<std::string>::iterator it1 = enzyme_commission_numbers.begin(); it1 != enzyme_commission_numbers.end(); it1++)
             {
                 if(it1 < enzyme_commission_numbers.end()-1)
                     commission_numbers << (*it1) << ",";
@@ -5777,12 +5776,12 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
             int length = commission_numbers.str().length();
             if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << commission_numbers.str();
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
             else
@@ -5792,22 +5791,22 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
                 {
                     if(i != number_of_lines)
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << commission_numbers.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                     else
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << commission_numbers.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                 }
@@ -5817,41 +5816,41 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
         /// Engineered specification
         if(compound_specification->GetIsEngineered())
         {
-            stringstream ss;
+            std::stringstream ss;
             ss << " ENGINEERED: YES";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
+            stream << std::left << std::setw(6) << compound_->GetRecordName()
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << counter
+                   << std::left << std::setw(70) << ss.str() << std::endl;
             counter++;
         }
 
         /// Mutation specification
         if(compound_specification->GetHasMutation())
         {
-            stringstream ss;
+            std::stringstream ss;
             ss << " MUTATION: YES;";
-            stream << left << setw(6) << compound_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << counter
-                   << left << setw(70) << ss.str() << endl;
+            stream << std::left << std::setw(6) << compound_->GetRecordName()
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << counter
+                   << std::left << std::setw(70) << ss.str() << std::endl;
             counter++;
         }
 
         /// Other comments specification
         if(compound_specification->GetComments() != "")
         {
-            stringstream comments;
+            std::stringstream comments;
             comments << " OTHER_DETAILS: " << compound_specification->GetComments() << ";";
             int length = comments.str().length();
             if(length <= MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE)
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << comments.str();
-                stream << left << setw(6) << compound_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << counter
-                       << left << setw(70) << ss.str() << endl;
+                stream << std::left << std::setw(6) << compound_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << counter
+                       << std::left << std::setw(70) << ss.str() << std::endl;
                 counter++;
             }
             else
@@ -5861,22 +5860,22 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
                 {
                     if(i != number_of_lines)
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << comments.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                     else
                     {
-                        stringstream ss;
+                        std::stringstream ss;
                         ss << comments.str().substr((i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE, length - (i-1)*MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE);
-                        stream << left << setw(6) << compound_->GetRecordName()
-                               << left << setw(1) << " "
-                               << right << setw(3) << counter
-                               << left << setw(70) << ss.str() << endl;
+                        stream << std::left << std::setw(6) << compound_->GetRecordName()
+                               << std::left << std::setw(1) << " "
+                               << std::right << std::setw(3) << counter
+                               << std::left << std::setw(70) << ss.str() << std::endl;
                         counter++;
                     }
                 }
@@ -5897,18 +5896,18 @@ void PdbFile::ResolveSourceCards(std::ofstream& stream)
   {
     if (SOURCE_COUNT ==1)
     {
-      stream << left << setw(6) << (*it)->GetRecordName()
-             << left << setw(4) << " "
-             << left << setw(69) << (*it)->GetToken() +":"+ (*it)->GetValue()
-             << endl;
+      stream << std::left << std::setw(6) << (*it)->GetRecordName()
+             << std::left << std::setw(4) << " "
+             << std::left << std::setw(69) << (*it)->GetToken() +":"+ (*it)->GetValue()
+             << std::endl;
       SOURCE_COUNT ++;
     }
     else
     {
-      stream << left << setw(6) << (*it)->GetRecordName()
-             << right << setw(4) << SOURCE_COUNT
-             << left << setw(68) << (*it)->GetToken() +":"+ (*it)->GetValue()
-             << endl;
+      stream << std::left << std::setw(6) << (*it)->GetRecordName()
+             << std::right << std::setw(4) << SOURCE_COUNT
+             << std::left << std::setw(68) << (*it)->GetToken() +":"+ (*it)->GetValue()
+             << std::endl;
       SOURCE_COUNT ++;
     }
   }
@@ -5917,100 +5916,100 @@ void PdbFile::ResolveSourceCards(std::ofstream& stream)
 void PdbFile::ResolveKeywordCards(std::ofstream& stream)
 {
   const int MAX_KEYWORDS_LENGTH_IN_LINE = 70;
-  stream << left << setw(6) << keywords_->GetRecordName()
-         << left << setw(2) << " ";
+  stream << std::left << std::setw(6) << keywords_->GetRecordName()
+         << std::left << std::setw(2) << " ";
   if((int)keywords_->GetKeywords().length() > MAX_KEYWORDS_LENGTH_IN_LINE)
   {
-      stream << left << setw(2) << " "
-             << left << setw(70) << keywords_->GetKeywords().substr(0,MAX_KEYWORDS_LENGTH_IN_LINE)
-             << endl;
+      stream << std::left << std::setw(2) << " "
+             << std::left << std::setw(70) << keywords_->GetKeywords().substr(0,MAX_KEYWORDS_LENGTH_IN_LINE)
+             << std::endl;
 
       int counter = ceil((double)(keywords_->GetKeywords().length()) / MAX_KEYWORDS_LENGTH_IN_LINE);
       for(int i = 2; i <= counter; i++)
       {
           if(i != counter)
           {
-              stream << left << setw(6) << keywords_->GetRecordName()
-                     << left << setw(2) << " "
-                     << right << setw(2) << i
-                     << left << setw(70) << keywords_->GetKeywords().substr(MAX_KEYWORDS_LENGTH_IN_LINE*(i-1), MAX_KEYWORDS_LENGTH_IN_LINE)
-                     << endl;
+              stream << std::left << std::setw(6) << keywords_->GetRecordName()
+                     << std::left << std::setw(2) << " "
+                     << std::right << std::setw(2) << i
+                     << std::left << std::setw(70) << keywords_->GetKeywords().substr(MAX_KEYWORDS_LENGTH_IN_LINE*(i-1), MAX_KEYWORDS_LENGTH_IN_LINE)
+                     << std::endl;
           }
           else
           {
-              stream << left << setw(6) << keywords_->GetRecordName()
-                     << left << setw(2) << " "
-                     << right << setw(2) << i
-                     << left << setw(70) << keywords_->GetKeywords().substr(MAX_KEYWORDS_LENGTH_IN_LINE*(i-1), keywords_->GetKeywords().length()-MAX_KEYWORDS_LENGTH_IN_LINE*(i-1))
-                     << endl;
+              stream << std::left << std::setw(6) << keywords_->GetRecordName()
+                     << std::left << std::setw(2) << " "
+                     << std::right << std::setw(2) << i
+                     << std::left << std::setw(70) << keywords_->GetKeywords().substr(MAX_KEYWORDS_LENGTH_IN_LINE*(i-1), keywords_->GetKeywords().length()-MAX_KEYWORDS_LENGTH_IN_LINE*(i-1))
+                     << std::endl;
           }
       }
   }
   else
   {
-      stream << right << setw(2) << " "
-             << left << setw(70) << keywords_->GetKeywords()
-             << endl;
+      stream << std::right << std::setw(2) << " "
+             << std::left << std::setw(70) << keywords_->GetKeywords()
+             << std::endl;
   }
 }
 
 void PdbFile::ResolveExperimentalDataCards(std::ofstream& stream)
 {
   const int MAX_EXPDTA_LENGTH_IN_LINE = 70;
-  stream << left << setw(6) << experimental_data_->GetRecordName()
-         << left << setw(2) << " ";
+  stream << std::left << std::setw(6) << experimental_data_->GetRecordName()
+         << std::left << std::setw(2) << " ";
   if((int)experimental_data_->GetExperimentalData().length() > MAX_EXPDTA_LENGTH_IN_LINE)
   {
-      stream << left << setw(70) << experimental_data_->GetExperimentalData().substr(0,MAX_EXPDTA_LENGTH_IN_LINE)
-             << endl;
+      stream << std::left << std::setw(70) << experimental_data_->GetExperimentalData().substr(0,MAX_EXPDTA_LENGTH_IN_LINE)
+             << std::endl;
 
       int counter = ceil((double)(experimental_data_->GetExperimentalData().length()) / MAX_EXPDTA_LENGTH_IN_LINE);
       for(int i = 2; i <= counter; i++)
       {
           if(i != counter)
           {
-              stream << left << setw(6) << experimental_data_->GetRecordName()
-                     << left << setw(2) << " "
-                     << right << setw(2) << i
-                     << left << setw(70) << experimental_data_->GetExperimentalData().substr(MAX_EXPDTA_LENGTH_IN_LINE*(i-1), MAX_EXPDTA_LENGTH_IN_LINE)
-                     << endl;
+              stream << std::left << std::setw(6) << experimental_data_->GetRecordName()
+                     << std::left << std::setw(2) << " "
+                     << std::right << std::setw(2) << i
+                     << std::left << std::setw(70) << experimental_data_->GetExperimentalData().substr(MAX_EXPDTA_LENGTH_IN_LINE*(i-1), MAX_EXPDTA_LENGTH_IN_LINE)
+                     << std::endl;
           }
           else
           {
-              stream << left << setw(6) << experimental_data_->GetRecordName()
-                     << left << setw(2) << " "
-                     << right << setw(2) << i
-                     << left << setw(70) << experimental_data_->GetExperimentalData().substr(MAX_EXPDTA_LENGTH_IN_LINE*(i-1), experimental_data_->GetExperimentalData().length()-MAX_EXPDTA_LENGTH_IN_LINE*(i-1))
-                     << endl;
+              stream << std::left << std::setw(6) << experimental_data_->GetRecordName()
+                     << std::left << std::setw(2) << " "
+                     << std::right << std::setw(2) << i
+                     << std::left << std::setw(70) << experimental_data_->GetExperimentalData().substr(MAX_EXPDTA_LENGTH_IN_LINE*(i-1), experimental_data_->GetExperimentalData().length()-MAX_EXPDTA_LENGTH_IN_LINE*(i-1))
+                     << std::endl;
           }
       }
   }
   else
   {
-      stream << right << setw(2) << " "
-             << left << setw(70) << experimental_data_->GetExperimentalData()
-             << endl;
+      stream << std::right << std::setw(2) << " "
+             << std::left << std::setw(70) << experimental_data_->GetExperimentalData()
+             << std::endl;
   }
 }
 
 void PdbFile::ResolveNumModelCard(std::ofstream& stream)
 {
-    stream << left << setw(6) << number_of_models_->GetRecordName()
-           << left << setw(4) << " ";
-    if(number_of_models_->GetNumberOfModels() != iNotSet)
-        stream << right << setw(4) << number_of_models_->GetNumberOfModels();
+    stream << std::left << std::setw(6) << number_of_models_->GetRecordName()
+           << std::left << std::setw(4) << " ";
+    if(number_of_models_->GetNumberOfModels() != gmml::iNotSet)
+        stream << std::right << std::setw(4) << number_of_models_->GetNumberOfModels();
     else
-        stream << right << setw(4) << " ";
-    stream << left << setw(66) << " "
-           << endl;
+        stream << std::right << std::setw(4) << " ";
+    stream << std::left << std::setw(66) << " "
+           << std::endl;
 }
 
 void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
 {
-    stream << left << setw(6) << model_type_->GetRecordName()
-           << left << setw(2) << " ";
-    stringstream ss;
-    for(vector<string>::iterator it = model_type_->GetComments().begin(); it != model_type_->GetComments().end(); it++)
+    stream << std::left << std::setw(6) << model_type_->GetRecordName()
+           << std::left << std::setw(2) << " ";
+    std::stringstream ss;
+    for(std::vector<std::string>::iterator it = model_type_->GetComments().begin(); it != model_type_->GetComments().end(); it++)
     {
         if(it != model_type_->GetComments().end() - 1)
         {
@@ -6023,75 +6022,75 @@ void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
     }
     if(ss.str().length() > 70)
     {
-        stream << right << setw(2) << " "
-               << left << setw(70) << ss.str().substr(0,70)
-               << endl;
+        stream << std::right << std::setw(2) << " "
+               << std::left << std::setw(70) << ss.str().substr(0,70)
+               << std::endl;
 
         int counter = ceil((double)(ss.str().length()) / 70);
         for(int i = 2; i <= counter; i++)
         {
             if(i != counter)
             {
-                stream << left << setw(6) << model_type_->GetRecordName()
-                       << left << setw(2) << " "
-                       << right << setw(2) << i
-                       << left << setw(70) << ss.str().substr(70*(i-1), 70)
-                       << endl;
+                stream << std::left << std::setw(6) << model_type_->GetRecordName()
+                       << std::left << std::setw(2) << " "
+                       << std::right << std::setw(2) << i
+                       << std::left << std::setw(70) << ss.str().substr(70*(i-1), 70)
+                       << std::endl;
             }
             else
             {
-                stream << left << setw(6) << model_type_->GetRecordName()
-                       << left << setw(2) << " "
-                       << right << setw(2) << i
-                       << left << setw(70) << ss.str().substr(70*(i-1), ss.str().length() - (i-1)*70)
-                       << endl;
+                stream << std::left << std::setw(6) << model_type_->GetRecordName()
+                       << std::left << std::setw(2) << " "
+                       << std::right << std::setw(2) << i
+                       << std::left << std::setw(70) << ss.str().substr(70*(i-1), ss.str().length() - (i-1)*70)
+                       << std::endl;
             }
         }
     }
     else
     {
-        stream << right << setw(2) << " "
-               << left << setw(70) << ss.str()
-               << endl;
+        stream << std::right << std::setw(2) << " "
+               << std::left << std::setw(70) << ss.str()
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveAuthorCards(std::ofstream& stream)
 {
   const int MAX_AUTHOR_LENGTH_IN_LINE = 70;
-  stream << left << setw(6) << author_->GetRecordName()
-         << left << setw(2) << " ";
+  stream << std::left << std::setw(6) << author_->GetRecordName()
+         << std::left << std::setw(2) << " ";
   if((int)author_->GetAuthor().length() > MAX_AUTHOR_LENGTH_IN_LINE)
   {
-      stream << left << setw(70) << author_->GetAuthor().substr(0,MAX_AUTHOR_LENGTH_IN_LINE)
-             << endl;
+      stream << std::left << std::setw(70) << author_->GetAuthor().substr(0,MAX_AUTHOR_LENGTH_IN_LINE)
+             << std::endl;
 
       int counter = ceil((double)(author_->GetAuthor().length()) / MAX_AUTHOR_LENGTH_IN_LINE);
       for(int i = 2; i <= counter; i++)
       {
           if(i != counter)
           {
-              stream << left << setw(6) << author_->GetRecordName()
-                     << left << setw(2) << " "
-                     << right << setw(2) << i
-                     << left << setw(70) << author_->GetAuthor().substr(MAX_AUTHOR_LENGTH_IN_LINE*(i-1), MAX_AUTHOR_LENGTH_IN_LINE)
-                     << endl;
+              stream << std::left << std::setw(6) << author_->GetRecordName()
+                     << std::left << std::setw(2) << " "
+                     << std::right << std::setw(2) << i
+                     << std::left << std::setw(70) << author_->GetAuthor().substr(MAX_AUTHOR_LENGTH_IN_LINE*(i-1), MAX_AUTHOR_LENGTH_IN_LINE)
+                     << std::endl;
           }
           else
           {
-              stream << left << setw(6) << author_->GetRecordName()
-                     << left << setw(2) << " "
-                     << right << setw(2) << i
-                     << left << setw(70) << author_->GetAuthor().substr(MAX_AUTHOR_LENGTH_IN_LINE*(i-1), author_->GetAuthor().length()-MAX_AUTHOR_LENGTH_IN_LINE*(i-1))
-                     << endl;
+              stream << std::left << std::setw(6) << author_->GetRecordName()
+                     << std::left << std::setw(2) << " "
+                     << std::right << std::setw(2) << i
+                     << std::left << std::setw(70) << author_->GetAuthor().substr(MAX_AUTHOR_LENGTH_IN_LINE*(i-1), author_->GetAuthor().length()-MAX_AUTHOR_LENGTH_IN_LINE*(i-1))
+                     << std::endl;
           }
       }
   }
   else
   {
-      stream << right << setw(2) << " "
-             << left << setw(70) << author_->GetAuthor()
-             << endl;
+      stream << std::right << std::setw(2) << " "
+             << std::left << std::setw(70) << author_->GetAuthor()
+             << std::endl;
   }
 }
 
@@ -6108,34 +6107,34 @@ void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
     }
     if (REVDAT_COUNT == 1)
     {
-      stream << left << setw(6) << (*it)->GetRecordName()
-             << left << setw(1) << " "
-             << right << setw(3) << (*it)->GetModificationNumber()
-             << right << setw(3) << " "
-             << left << setw(9) << (*it)->GetModificationDate()
-             << left << setw(1) << " "
-             << left << setw(4) << (*it)->GetModificationID()
-             << left << setw(4) << " "
-             << left << setw(1) << (*it)->GetModificationType()
-             << left << setw(7) << " "
-             << left << setw(27) << (*it)->GetModificationDetails()
-             << endl;
+      stream << std::left << std::setw(6) << (*it)->GetRecordName()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(3) << (*it)->GetModificationNumber()
+             << std::right << std::setw(3) << " "
+             << std::left << std::setw(9) << (*it)->GetModificationDate()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(4) << (*it)->GetModificationID()
+             << std::left << std::setw(4) << " "
+             << std::left << std::setw(1) << (*it)->GetModificationType()
+             << std::left << std::setw(7) << " "
+             << std::left << std::setw(27) << (*it)->GetModificationDetails()
+             << std::endl;
     }
     else if (REVDAT_NUM == (*it)->GetModificationNumber())
     {
-      stream << left << setw(6) << (*it)->GetRecordName()
-             << left << setw(1) << " "
-             << right << setw(3) << (*it)->GetModificationNumber()
-             << right << setw(2) << REVDAT_COUNT
-             << left << setw(1) << " "
-             << left << setw(9) << (*it)->GetModificationDate()
-             << left << setw(1) << " "
-             << left << setw(4) << (*it)->GetModificationID()
-             << left << setw(4) << " "
-             << left << setw(1) << (*it)->GetModificationType()
-             << left << setw(7) << " "
-             << left << setw(27) << (*it)->GetModificationDetails()
-             << endl;
+      stream << std::left << std::setw(6) << (*it)->GetRecordName()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(3) << (*it)->GetModificationNumber()
+             << std::right << std::setw(2) << REVDAT_COUNT
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(9) << (*it)->GetModificationDate()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(4) << (*it)->GetModificationID()
+             << std::left << std::setw(4) << " "
+             << std::left << std::setw(1) << (*it)->GetModificationType()
+             << std::left << std::setw(7) << " "
+             << std::left << std::setw(27) << (*it)->GetModificationDetails()
+             << std::endl;
       REVDAT_COUNT ++;
     }
 
@@ -6146,49 +6145,49 @@ void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
 
 void PdbFile::ResolveSupersededEntriesCards(std::ofstream& stream)
 {
-
+	stream << "";
 }
 
 void PdbFile::ResolveJournalCards(std::ofstream& stream)
 {
   const int MAX_JOURNAL_LENGTH_IN_LINE = 67;
-  stream << left << setw(6) << journal_->GetRecordName()
-         << left << setw(6) << " ";
+  stream << std::left << std::setw(6) << journal_->GetRecordName()
+         << std::left << std::setw(6) << " ";
   if((int)journal_->GetText().length() > MAX_JOURNAL_LENGTH_IN_LINE)
   {
-      stream << left << setw(67) << journal_->GetText().substr(0,MAX_JOURNAL_LENGTH_IN_LINE)
-             << endl;
+      stream << std::left << std::setw(67) << journal_->GetText().substr(0,MAX_JOURNAL_LENGTH_IN_LINE)
+             << std::endl;
 
       int counter = ceil((double)(journal_->GetText().length()) / MAX_JOURNAL_LENGTH_IN_LINE);
       for(int i = 2; i <= counter; i++)
       {
           if(i != counter)
           {
-              stream << left << setw(6) << journal_->GetRecordName()
-                     << left << setw(6) << " "
-                     << left << setw(67) << journal_->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), MAX_JOURNAL_LENGTH_IN_LINE)
-                     << endl;
+              stream << std::left << std::setw(6) << journal_->GetRecordName()
+                     << std::left << std::setw(6) << " "
+                     << std::left << std::setw(67) << journal_->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), MAX_JOURNAL_LENGTH_IN_LINE)
+                     << std::endl;
           }
           else
           {
-              stream << left << setw(6) << journal_->GetRecordName()
-                     << left << setw(6) << " "
-                     << left << setw(67) << journal_->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), journal_->GetText().length()-MAX_JOURNAL_LENGTH_IN_LINE*(i-1))
-                     << endl;
+              stream << std::left << std::setw(6) << journal_->GetRecordName()
+                     << std::left << std::setw(6) << " "
+                     << std::left << std::setw(67) << journal_->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), journal_->GetText().length()-MAX_JOURNAL_LENGTH_IN_LINE*(i-1))
+                     << std::endl;
           }
       }
   }
   else
   {
-      stream << right << setw(6) << " "
-             << left << setw(67) << journal_->GetText()
-             << endl;
+      stream << std::right << std::setw(6) << " "
+             << std::left << std::setw(67) << journal_->GetText()
+             << std::endl;
   }
 }
 
 void PdbFile::ResolveRemarkCards(std::ofstream& stream)
 {
-  stream << left << remark_cards_->GetRemarks();
+  stream << std::left << remark_cards_->GetRemarks();
 }
 
 void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
@@ -6198,61 +6197,61 @@ void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
   {
     if ((*it)->GetRecordName() == "DBREF ")
     {
-      stream << left << setw(6) << (*it)->GetRecordName()
-             << left << setw(1) << " "
-             << left << setw(4) << (*it)->GetIDCode()
-             << left << setw(1) << " "
-             << left << setw(1) << (*it)->GetChainID()
-             << left << setw(1) << " "
-             << right << setw(4) << (*it)->GetSeqBegin()
-             << right << setw(1) << (*it)->GetInsertBegin()
-             << left << setw(1) << " "
-             << right << setw(4) << (*it)->GetSeqEnd()
-             << right << setw(1) << (*it)->GetInsertEnd()
-             << left << setw(1) << " "
-             << left << setw(6) << (*it)->GetDatabase()
-             << left << setw(1) << " "
-             << left << setw(8) << (*it)->GetDatabaseAccession()
-             << left << setw(1) << " "
-             << left << setw(12) << (*it)->GetDatabaseIDCode()
-             << left << setw(1) << " "
-             << right << setw(5) << (*it)->GetDatabaseSeqBegin()
-             << right << setw(1) << (*it)->GetDatabaseInsBegin()
-             << left << setw(1) << " "
-             << right << setw(5) << (*it)->GetDatabaseSeqEnd()
-             << right << setw(1) << (*it)->GetDatabaseInsEnd()
-             << endl;
+      stream << std::left << std::setw(6) << (*it)->GetRecordName()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(4) << (*it)->GetIDCode()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(1) << (*it)->GetChainID()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(4) << (*it)->GetSeqBegin()
+             << std::right << std::setw(1) << (*it)->GetInsertBegin()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(4) << (*it)->GetSeqEnd()
+             << std::right << std::setw(1) << (*it)->GetInsertEnd()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(6) << (*it)->GetDatabase()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(8) << (*it)->GetDatabaseAccession()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(12) << (*it)->GetDatabaseIDCode()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(5) << (*it)->GetDatabaseSeqBegin()
+             << std::right << std::setw(1) << (*it)->GetDatabaseInsBegin()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(5) << (*it)->GetDatabaseSeqEnd()
+             << std::right << std::setw(1) << (*it)->GetDatabaseInsEnd()
+             << std::endl;
     }
     else if (((*it)->GetRecordName() == "DBREF1"))
     {
-      stream << left << setw(6) << (*it)->GetRecordName()
-             << left << setw(1) << " "
-             << left << setw(4) << (*it)->GetIDCode()
-             << left << setw(1) << " "
-             << left << setw(1) << (*it)->GetChainID()
-             << left << setw(1) << " "
-             << right << setw(4) << (*it)->GetSeqBegin()
-             << right << setw(1) << (*it)->GetInsertBegin()
-             << left << setw(1) << " "
-             << right << setw(4) << (*it)->GetSeqEnd()
-             << right << setw(1) << (*it)->GetInsertEnd()
-             << left << setw(1) << " "
-             << left << setw(6) << (*it)->GetDatabase()
-             << left << setw(16) << " "
-             << left << setw(15) << (*it)->GetDatabaseIDCode()
-             << endl
-             << left << setw(6) << "DBREF2"
-             << left << setw(1) << " "
-             << left << setw(4) << (*it)->GetIDCode()
-             << left << setw(1) << " "
-             << left << setw(1) << (*it)->GetChainID()
-             << left << setw(6) << " "
-             << left << setw(22) << (*it)->GetDatabaseAccession()
-             << left << setw(5) << " "
-             << right << setw(10) << (*it)->GetDatabaseSeqBegin()
-             << left << setw(2) << " "
-             << right << setw(10) << (*it)->GetDatabaseSeqEnd()
-             << endl;
+      stream << std::left << std::setw(6) << (*it)->GetRecordName()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(4) << (*it)->GetIDCode()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(1) << (*it)->GetChainID()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(4) << (*it)->GetSeqBegin()
+             << std::right << std::setw(1) << (*it)->GetInsertBegin()
+             << std::left << std::setw(1) << " "
+             << std::right << std::setw(4) << (*it)->GetSeqEnd()
+             << std::right << std::setw(1) << (*it)->GetInsertEnd()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(6) << (*it)->GetDatabase()
+             << std::left << std::setw(16) << " "
+             << std::left << std::setw(15) << (*it)->GetDatabaseIDCode()
+             << std::endl
+             << std::left << std::setw(6) << "DBREF2"
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(4) << (*it)->GetIDCode()
+             << std::left << std::setw(1) << " "
+             << std::left << std::setw(1) << (*it)->GetChainID()
+             << std::left << std::setw(6) << " "
+             << std::left << std::setw(22) << (*it)->GetDatabaseAccession()
+             << std::left << std::setw(5) << " "
+             << std::right << std::setw(10) << (*it)->GetDatabaseSeqBegin()
+             << std::left << std::setw(2) << " "
+             << std::right << std::setw(10) << (*it)->GetDatabaseSeqEnd()
+             << std::endl;
     }
 
   }
@@ -6263,111 +6262,111 @@ void PdbFile::ResolveSequenceAdvancedCards(std::ofstream& stream)
   SequenceAdvancedCardVector sequence_advanced_cards = sequence_advanced_->GetSequenceAdvancedCards();
   for (SequenceAdvancedCardVector::iterator it = sequence_advanced_cards.begin(); it != sequence_advanced_cards.end(); it++)
   {
-    stream << left << setw(6) << (*it)->GetRecordName()
-           << left << setw(1) << " "
-           << right << setw(3) << (*it)->GetIdentifierCode()
-           << left << setw(1) << " "
-           << left << setw(3) << (*it)->GetResidueName()
-           << left << setw(1) << " "
-           << left << setw(1) << (*it)->GetChainId()
-           << left << setw(1) << " "
-           << right << setw(4) << (*it)->GetSequenceNumber()
-           << left << setw(1) << (*it)->GetInsertionCode()
-           << left << setw(1) << " "
-           << left << setw(4) << (*it)->GetDatabase()
-           << left << setw(1) << " "
-           << left << setw(9) << (*it)->GetDatabaseAccession()
-           << left << setw(1) << " "
-           << right << setw(3) << (*it)->GetDatabaseResidue()
-           << left << setw(1) << " "
-           << right << setw(5) << (*it)->GetDatabaseSequence()
-           << left << setw(1) << " "
-           << left << setw(30) << (*it)->GetConflict()
-           << endl;
+    stream << std::left << std::setw(6) << (*it)->GetRecordName()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(3) << (*it)->GetIdentifierCode()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(3) << (*it)->GetResidueName()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(1) << (*it)->GetChainId()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(4) << (*it)->GetSequenceNumber()
+           << std::left << std::setw(1) << (*it)->GetInsertionCode()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(4) << (*it)->GetDatabase()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(9) << (*it)->GetDatabaseAccession()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(3) << (*it)->GetDatabaseResidue()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(5) << (*it)->GetDatabaseSequence()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(30) << (*it)->GetConflict()
+           << std::endl;
   }
 }
 
 void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
 {
-    PdbResidueSequenceSection::ResidueSequenceCardMap residue_sequence_map = residues_sequence_->GetResidueSequenceChain();
-    for(PdbResidueSequenceSection::ResidueSequenceCardMap::iterator it = residue_sequence_map.begin(); it != residue_sequence_map.end(); it++)
+    PdbFileSpace::PdbResidueSequenceSection::ResidueSequenceCardMap residue_sequence_map = residues_sequence_->GetResidueSequenceChain();
+    for(PdbFileSpace::PdbResidueSequenceSection::ResidueSequenceCardMap::iterator it = residue_sequence_map.begin(); it != residue_sequence_map.end(); it++)
     {
 
         PdbResidueSequenceCard* residue_sequence = (*it).second;
         int serial_number = 1;
         const int MAX_RESIDUE_IN_SINGLE_LINE = 13;
-        vector<string> residue_names = residue_sequence->GetResidueNames();
+        std::vector<std::string> residue_names = residue_sequence->GetResidueNames();
         if(residue_sequence->GetNumberOfResidues() <= MAX_RESIDUE_IN_SINGLE_LINE)
         {
-            stringstream ss;
-            for(vector<string>::iterator it1 = residue_names.begin(); it1 != residue_names.end(); it1++)
+            std::stringstream ss;
+            for(std::vector<std::string>::iterator it1 = residue_names.begin(); it1 != residue_names.end(); it1++)
             {
-                ss << right << setw(1) << " "
-                   << right << setw(3) << (*it1);
+                ss << std::right << std::setw(1) << " "
+                   << std::right << std::setw(3) << (*it1);
             }
             for(int i = 0; i < MAX_RESIDUE_IN_SINGLE_LINE - residue_sequence->GetNumberOfResidues(); i++)
             {
-                ss << right << setw(1) << " "
-                   << right << setw(3) << " ";
+                ss << std::right << std::setw(1) << " "
+                   << std::right << std::setw(3) << " ";
             }
-            stream << left << setw(6) << residues_sequence_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << serial_number
-                   << right << setw(1) << " "
-                   << right << setw(1) << residue_sequence->GetChainId()
-                   << right << setw(1) << " ";
-            if(residue_sequence->GetNumberOfResidues() != iNotSet)
-                stream << right << setw(4) << residue_sequence->GetNumberOfResidues();
+            stream << std::left << std::setw(6) << residues_sequence_->GetRecordName()
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << serial_number
+                   << std::right << std::setw(1) << " "
+                   << std::right << std::setw(1) << residue_sequence->GetChainId()
+                   << std::right << std::setw(1) << " ";
+            if(residue_sequence->GetNumberOfResidues() != gmml::iNotSet)
+                stream << std::right << std::setw(4) << residue_sequence->GetNumberOfResidues();
             else
-                stream << right << setw(4) << " ";
-            stream << right << setw(1) << " "
-                   << right << setw(52) << ss.str()
-                   << right << setw(10) << " "
-                   << endl;
+                stream << std::right << std::setw(4) << " ";
+            stream << std::right << std::setw(1) << " "
+                   << std::right << std::setw(52) << ss.str()
+                   << std::right << std::setw(10) << " "
+                   << std::endl;
         }
         else
         {
             int number_of_lines = ceil((double)(residue_sequence->GetNumberOfResidues()) / MAX_RESIDUE_IN_SINGLE_LINE);
             for(int i = 0; i < number_of_lines; i++)
             {
-                stringstream ss;
+                std::stringstream ss;
                 if(i != number_of_lines - 1)
                 {
-                    for(vector<string>::iterator it1 = residue_names.begin() + i * MAX_RESIDUE_IN_SINGLE_LINE;
+                    for(std::vector<std::string>::iterator it1 = residue_names.begin() + i * MAX_RESIDUE_IN_SINGLE_LINE;
                         it1 != residue_names.begin() + (i+1) * MAX_RESIDUE_IN_SINGLE_LINE; it1++)
                     {
-                        ss << right << setw(1) << " "
-                           << right << setw(3) << (*it1);
+                        ss << std::right << std::setw(1) << " "
+                           << std::right << std::setw(3) << (*it1);
                     }
                 }
                 else
                 {
-                    for(vector<string>::iterator it1 = residue_names.begin() + i * MAX_RESIDUE_IN_SINGLE_LINE;
+                    for(std::vector<std::string>::iterator it1 = residue_names.begin() + i * MAX_RESIDUE_IN_SINGLE_LINE;
                         it1 != residue_names.end(); it1++)
                     {
-                        ss << right << setw(1) << " "
-                           << right << setw(3) << (*it1);
+                        ss << std::right << std::setw(1) << " "
+                           << std::right << std::setw(3) << (*it1);
                     }
                     for(int i = 0; i < MAX_RESIDUE_IN_SINGLE_LINE - residue_sequence->GetNumberOfResidues() % MAX_RESIDUE_IN_SINGLE_LINE; i++)
                     {
-                        ss << right << setw(1) << " "
-                           << right << setw(3) << " ";
+                        ss << std::right << std::setw(1) << " "
+                           << std::right << std::setw(3) << " ";
                     }
                 }
-                stream << left << setw(6) << residues_sequence_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << serial_number
-                       << right << setw(1) << " "
-                       << right << setw(1) << residue_sequence->GetChainId()
-                       << right << setw(1) << " ";
-                if(residue_sequence->GetNumberOfResidues() != iNotSet)
-                    stream << right << setw(4) << residue_sequence->GetNumberOfResidues();
+                stream << std::left << std::setw(6) << residues_sequence_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << serial_number
+                       << std::right << std::setw(1) << " "
+                       << std::right << std::setw(1) << residue_sequence->GetChainId()
+                       << std::right << std::setw(1) << " ";
+                if(residue_sequence->GetNumberOfResidues() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << residue_sequence->GetNumberOfResidues();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << " "
-                       << right << setw(52) << ss.str()
-                       << right << setw(10) << " "
-                       << endl;
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << " "
+                       << std::right << std::setw(52) << ss.str()
+                       << std::right << std::setw(10) << " "
+                       << std::endl;
                 serial_number++;
             }
         }
@@ -6377,132 +6376,132 @@ void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
 
 void PdbFile::ResolveModificationResidueCards(std::ofstream& stream)
 {
-    PdbResidueModificationSection::ResidueModificationCardMap residue_modification_cards_map = residue_modification_cards_->GetResidueModificationCards();
-    for(PdbResidueModificationSection::ResidueModificationCardMap::iterator it = residue_modification_cards_map.begin(); it != residue_modification_cards_map.end(); it++)
+    PdbFileSpace::PdbResidueModificationSection::ResidueModificationCardMap residue_modification_cards_map = residue_modification_cards_->GetResidueModificationCards();
+    for(PdbFileSpace::PdbResidueModificationSection::ResidueModificationCardMap::iterator it = residue_modification_cards_map.begin(); it != residue_modification_cards_map.end(); it++)
     {
         PdbResidueModificationCard* residue_modification_cards = (*it).second;
-        stream << left << setw(6) << residue_modification_cards_->GetRecordName()
-               << left << setw(1) << " "
-               << right << setw(4) << residue_modification_cards->GetIdCode()
-               << left << setw(1) << " "
-               << right << setw(3) << residue_modification_cards->GetResidueName()
-               << left << setw(1) << " "
-               << right << setw(1) << residue_modification_cards->GetChainId()
-               << left << setw(1) << " ";
-        if(residue_modification_cards->GetSequenceNumber() != iNotSet)
-            stream << right << setw(4) << residue_modification_cards->GetSequenceNumber();
+        stream << std::left << std::setw(6) << residue_modification_cards_->GetRecordName()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(4) << residue_modification_cards->GetIdCode()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(3) << residue_modification_cards->GetResidueName()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(1) << residue_modification_cards->GetChainId()
+               << std::left << std::setw(1) << " ";
+        if(residue_modification_cards->GetSequenceNumber() != gmml::iNotSet)
+            stream << std::right << std::setw(4) << residue_modification_cards->GetSequenceNumber();
         else
-            stream << right << setw(4) << " ";
-        stream << right << setw(1) << residue_modification_cards->GetInsertionCode()
-               << left << setw(1) << " "
-               << right << setw(3) << residue_modification_cards->GetStandardResidueName()
-               << left << setw(2) << " "
-               << left << setw(41) << residue_modification_cards->GetDscr()
-               << left << setw(10) << " "
-               << endl;
+            stream << std::right << std::setw(4) << " ";
+        stream << std::right << std::setw(1) << residue_modification_cards->GetInsertionCode()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(3) << residue_modification_cards->GetStandardResidueName()
+               << std::left << std::setw(2) << " "
+               << std::left << std::setw(41) << residue_modification_cards->GetDscr()
+               << std::left << std::setw(10) << " "
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveHeterogenCards(std::ofstream& stream)
 {
-    PdbHeterogenSection::HeterogenCardMap heterogen_map = heterogen_cards_->GetHeterogenCards();
-    for(PdbHeterogenSection::HeterogenCardMap::iterator it = heterogen_map.begin(); it != heterogen_map.end(); it++)
+    PdbFileSpace::PdbHeterogenSection::HeterogenCardMap heterogen_map = heterogen_cards_->GetHeterogenCards();
+    for(PdbFileSpace::PdbHeterogenSection::HeterogenCardMap::iterator it = heterogen_map.begin(); it != heterogen_map.end(); it++)
     {
 
         PdbHeterogenCard* heterogen = (*it).second;
-        stream << left << setw(6) << heterogen_cards_->GetRecordName()
-               << left << setw(1) << " "
-               << right << setw(3) << heterogen->GetHeterogenId()
-               << left << setw(2) << " "
-               << right << setw(1) << heterogen->GetChainId();
-        if(heterogen->GetSequenceNumber() != iNotSet)
-            stream << right << setw(4) << heterogen->GetSequenceNumber();
+        stream << std::left << std::setw(6) << heterogen_cards_->GetRecordName()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(3) << heterogen->GetHeterogenId()
+               << std::left << std::setw(2) << " "
+               << std::right << std::setw(1) << heterogen->GetChainId();
+        if(heterogen->GetSequenceNumber() != gmml::iNotSet)
+            stream << std::right << std::setw(4) << heterogen->GetSequenceNumber();
         else
-            stream << right << setw(4) << " ";
-        stream << right << setw(1) << heterogen->GetInsertionCode()
-               << left << setw(2) << " ";
-        if(heterogen->GetNumberOfHeterogenAtoms() != iNotSet)
-            stream << right << setw(5) << heterogen->GetNumberOfHeterogenAtoms();
+            stream << std::right << std::setw(4) << " ";
+        stream << std::right << std::setw(1) << heterogen->GetInsertionCode()
+               << std::left << std::setw(2) << " ";
+        if(heterogen->GetNumberOfHeterogenAtoms() != gmml::iNotSet)
+            stream << std::right << std::setw(5) << heterogen->GetNumberOfHeterogenAtoms();
         else
-            stream << right << setw(5) << " ";
-        stream << left << setw(5) << " "
-               << left << setw(40) << heterogen->GetDscr()
-               << left << setw(10) << " "
-               << endl;
+            stream << std::right << std::setw(5) << " ";
+        stream << std::left << std::setw(5) << " "
+               << std::left << std::setw(40) << heterogen->GetDscr()
+               << std::left << std::setw(10) << " "
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveHeterogenNameCards(std::ofstream& stream)
 {
-    PdbHeterogenNameSection::HeterogenNameCardMap heterogen_name_map = heterogen_name_cards_->GetHeterogenNameCards();
-    for(PdbHeterogenNameSection::HeterogenNameCardMap::iterator it = heterogen_name_map.begin(); it != heterogen_name_map.end(); it++)
+    PdbFileSpace::PdbHeterogenNameSection::HeterogenNameCardMap heterogen_name_map = heterogen_name_cards_->GetHeterogenNameCards();
+    for(PdbFileSpace::PdbHeterogenNameSection::HeterogenNameCardMap::iterator it = heterogen_name_map.begin(); it != heterogen_name_map.end(); it++)
     {
         PdbHeterogenNameCard* heterogen_name = (*it).second;
         const int MAX_NAME_LENGTH_IN_LINE = 55;
         if((int)heterogen_name->GetHeterogenName().length() > MAX_NAME_LENGTH_IN_LINE)
         {
-            stream << left << setw(6) << heterogen_name_cards_->GetRecordName()
-                   << left << setw(2) << " "
-                   << right << setw(2) << " "
-                   << left << setw(1) << " "
-                   << right << setw(3) << heterogen_name->GetHeterogenIdentifier()
-                   << left << setw(1) << " "
-                   << left << setw(55) << heterogen_name->GetHeterogenName().substr(0,MAX_NAME_LENGTH_IN_LINE)
-                   << left << setw(10) << " "
-                   << endl;
+            stream << std::left << std::setw(6) << heterogen_name_cards_->GetRecordName()
+                   << std::left << std::setw(2) << " "
+                   << std::right << std::setw(2) << " "
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << heterogen_name->GetHeterogenIdentifier()
+                   << std::left << std::setw(1) << " "
+                   << std::left << std::setw(55) << heterogen_name->GetHeterogenName().substr(0,MAX_NAME_LENGTH_IN_LINE)
+                   << std::left << std::setw(10) << " "
+                   << std::endl;
             int counter = ceil((double)(heterogen_name->GetHeterogenName().length()) / MAX_NAME_LENGTH_IN_LINE);
             for(int i = 2; i <= counter; i++)
             {
                 if(i != counter)
                 {
-                    stream << left << setw(6) << heterogen_name_cards_->GetRecordName()
-                           << left << setw(2) << " "
-                           << right << setw(2) << i
-                           << left << setw(1) << " "
-                           << right << setw(3) << heterogen_name->GetHeterogenIdentifier()
-                           << left << setw(1) << " "
-                           << left << setw(55) << heterogen_name->GetHeterogenName().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),MAX_NAME_LENGTH_IN_LINE)
-                           << left << setw(10) << " "
-                           << endl;
+                    stream << std::left << std::setw(6) << heterogen_name_cards_->GetRecordName()
+                           << std::left << std::setw(2) << " "
+                           << std::right << std::setw(2) << i
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << heterogen_name->GetHeterogenIdentifier()
+                           << std::left << std::setw(1) << " "
+                           << std::left << std::setw(55) << heterogen_name->GetHeterogenName().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),MAX_NAME_LENGTH_IN_LINE)
+                           << std::left << std::setw(10) << " "
+                           << std::endl;
                 }
                 else
                 {
-                    stream << left << setw(6) << heterogen_name_cards_->GetRecordName()
-                           << left << setw(2) << " "
-                           << right << setw(2) << i
-                           << left << setw(1) << " "
-                           << right << setw(3) << heterogen_name->GetHeterogenIdentifier()
-                           << left << setw(1) << " "
-                           << left << setw(55) << heterogen_name->GetHeterogenName().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),heterogen_name->GetHeterogenName().length()-MAX_NAME_LENGTH_IN_LINE*(i-1))
-                           << left << setw(10) << " "
-                           << endl;
+                    stream << std::left << std::setw(6) << heterogen_name_cards_->GetRecordName()
+                           << std::left << std::setw(2) << " "
+                           << std::right << std::setw(2) << i
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << heterogen_name->GetHeterogenIdentifier()
+                           << std::left << std::setw(1) << " "
+                           << std::left << std::setw(55) << heterogen_name->GetHeterogenName().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),heterogen_name->GetHeterogenName().length()-MAX_NAME_LENGTH_IN_LINE*(i-1))
+                           << std::left << std::setw(10) << " "
+                           << std::endl;
                 }
             }
         }
         else
         {
-            stream << left << setw(6) << heterogen_name_cards_->GetRecordName()
-                   << left << setw(2) << " "
-                   << right << setw(2) << " "
-                   << left << setw(1) << " "
-                   << right << setw(3) << heterogen_name->GetHeterogenIdentifier()
-                   << left << setw(1) << " "
-                   << left << setw(55) << heterogen_name->GetHeterogenName()
-                   << left << setw(10) << " "
-                   << endl;
+            stream << std::left << std::setw(6) << heterogen_name_cards_->GetRecordName()
+                   << std::left << std::setw(2) << " "
+                   << std::right << std::setw(2) << " "
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << heterogen_name->GetHeterogenIdentifier()
+                   << std::left << std::setw(1) << " "
+                   << std::left << std::setw(55) << heterogen_name->GetHeterogenName()
+                   << std::left << std::setw(10) << " "
+                   << std::endl;
         }
     }
 }
 
 void PdbFile::ResolveHeterogenSynonymCards(std::ofstream& stream)
 {
-    PdbHeterogenSynonymSection::HeterogenSynonymCardMap heterogen_synonym_map = heterogen_synonym_cards_->GetHeterogensSynonymCards();
-    for(PdbHeterogenSynonymSection::HeterogenSynonymCardMap::iterator it = heterogen_synonym_map.begin(); it != heterogen_synonym_map.end(); it++)
+    PdbFileSpace::PdbHeterogenSynonymSection::HeterogenSynonymCardMap heterogen_synonym_map = heterogen_synonym_cards_->GetHeterogensSynonymCards();
+    for(PdbFileSpace::PdbHeterogenSynonymSection::HeterogenSynonymCardMap::iterator it = heterogen_synonym_map.begin(); it != heterogen_synonym_map.end(); it++)
     {
         PdbHeterogenSynonymCard* heterogen_synonym_card = (*it).second;
-        stringstream ss;
-        vector<string> synonyms = heterogen_synonym_card->GetHeterogenSynonymCards();
-        for(vector<string>::iterator it = synonyms.begin(); it != synonyms.end(); it++)
+        std::stringstream ss;
+        std::vector<std::string> synonyms = heterogen_synonym_card->GetHeterogenSynonymCards();
+        for(std::vector<std::string>::iterator it = synonyms.begin(); it != synonyms.end(); it++)
         {
             if(it != synonyms.end() - 1)
             {
@@ -6516,195 +6515,195 @@ void PdbFile::ResolveHeterogenSynonymCards(std::ofstream& stream)
         const int MAX_SYNONYM_LENGTH_IN_LINE = 55;
         if((int)ss.str().length() > MAX_SYNONYM_LENGTH_IN_LINE)
         {
-            stream << left << setw(6) << heterogen_synonym_cards_->GetRecordName()
-                   << left << setw(2) << " "
-                   << right << setw(2) << " "
-                   << left << setw(1) << " "
-                   << right << setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
-                   << left << setw(1) << " "
-                   << left << setw(55) << ss.str().substr(0,MAX_SYNONYM_LENGTH_IN_LINE)
-                   << left << setw(10) << " "
-                   << endl;
+            stream << std::left << std::setw(6) << heterogen_synonym_cards_->GetRecordName()
+                   << std::left << std::setw(2) << " "
+                   << std::right << std::setw(2) << " "
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
+                   << std::left << std::setw(1) << " "
+                   << std::left << std::setw(55) << ss.str().substr(0,MAX_SYNONYM_LENGTH_IN_LINE)
+                   << std::left << std::setw(10) << " "
+                   << std::endl;
             int counter = ceil((double)(ss.str().length()) / MAX_SYNONYM_LENGTH_IN_LINE);
             for(int i = 2; i <= counter; i++)
             {
                 if(i != counter)
                 {
-                    stream << left << setw(6) << heterogen_synonym_cards_->GetRecordName()
-                           << left << setw(2) << " "
-                           << right << setw(2) << i
-                           << left << setw(1) << " "
-                           << right << setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
-                           << left << setw(1) << " "
-                           << left << setw(55) << ss.str().substr(MAX_SYNONYM_LENGTH_IN_LINE*(i-1),MAX_SYNONYM_LENGTH_IN_LINE)
-                           << left << setw(10) << " "
-                           << endl;
+                    stream << std::left << std::setw(6) << heterogen_synonym_cards_->GetRecordName()
+                           << std::left << std::setw(2) << " "
+                           << std::right << std::setw(2) << i
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
+                           << std::left << std::setw(1) << " "
+                           << std::left << std::setw(55) << ss.str().substr(MAX_SYNONYM_LENGTH_IN_LINE*(i-1),MAX_SYNONYM_LENGTH_IN_LINE)
+                           << std::left << std::setw(10) << " "
+                           << std::endl;
                 }
                 else
                 {
-                    stream << left << setw(6) << heterogen_synonym_cards_->GetRecordName()
-                           << left << setw(2) << " "
-                           << right << setw(2) << i
-                           << left << setw(1) << " "
-                           << right << setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
-                           << left << setw(1) << " "
-                           << left << setw(55) << ss.str().substr(MAX_SYNONYM_LENGTH_IN_LINE*(i-1),ss.str().length()-MAX_SYNONYM_LENGTH_IN_LINE*(i-1))
-                           << left << setw(10) << " "
-                           << endl;
+                    stream << std::left << std::setw(6) << heterogen_synonym_cards_->GetRecordName()
+                           << std::left << std::setw(2) << " "
+                           << std::right << std::setw(2) << i
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
+                           << std::left << std::setw(1) << " "
+                           << std::left << std::setw(55) << ss.str().substr(MAX_SYNONYM_LENGTH_IN_LINE*(i-1),ss.str().length()-MAX_SYNONYM_LENGTH_IN_LINE*(i-1))
+                           << std::left << std::setw(10) << " "
+                           << std::endl;
                 }
             }
         }
         else
         {
-            stream << left << setw(6) << heterogen_synonym_cards_->GetRecordName()
-                   << left << setw(2) << " "
-                   << right << setw(2) << " "
-                   << left << setw(1) << " "
-                   << right << setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
-                   << left << setw(1) << " "
-                   << left << setw(55) << ss.str()
-                   << left << setw(10) << " "
-                   << endl;
+            stream << std::left << std::setw(6) << heterogen_synonym_cards_->GetRecordName()
+                   << std::left << std::setw(2) << " "
+                   << std::right << std::setw(2) << " "
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << heterogen_synonym_card->GetHeterogenIdentifier()
+                   << std::left << std::setw(1) << " "
+                   << std::left << std::setw(55) << ss.str()
+                   << std::left << std::setw(10) << " "
+                   << std::endl;
         }
     }
 }
 
 void PdbFile::ResolveFormulaCards(std::ofstream& stream)
 {
-    PdbFormulaSection::FormulaCardMap formula_map = formulas_->GetFormulaCards();
-    for(PdbFormulaSection::FormulaCardMap::iterator it = formula_map.begin(); it != formula_map.end(); it++)
+    PdbFileSpace::PdbFormulaSection::FormulaCardMap formula_map = formulas_->GetFormulaCards();
+    for(PdbFileSpace::PdbFormulaSection::FormulaCardMap::iterator it = formula_map.begin(); it != formula_map.end(); it++)
     {
         PdbFormulaCard* formula = (*it).second;
         const int MAX_NAME_LENGTH_IN_LINE = 51;
         if((int)formula->GetChemicalFormula().length() > MAX_NAME_LENGTH_IN_LINE)
         {
-            stream << left << setw(6) << formulas_->GetRecordName()
-                   << left << setw(2) << " ";
-            if(formula->GetComponentNumber() != iNotSet)
-                stream << right << setw(2) << formula->GetComponentNumber();
+            stream << std::left << std::setw(6) << formulas_->GetRecordName()
+                   << std::left << std::setw(2) << " ";
+            if(formula->GetComponentNumber() != gmml::iNotSet)
+                stream << std::right << std::setw(2) << formula->GetComponentNumber();
             else
-                stream << right << setw(2) << " ";
-            stream << left << setw(2) << " "
-                   << right << setw(3) << formula->GetHeterogenIdentifier()
-                   << left << setw(1) << " "
-                   << right << setw(2) << " "
-                   << left << setw(1) << " "
-                   << left << setw(51) << formula->GetChemicalFormula().substr(0,MAX_NAME_LENGTH_IN_LINE)
-                   << left << setw(10) << " "
-                   << endl;
+                stream << std::right << std::setw(2) << " ";
+            stream << std::left << std::setw(2) << " "
+                   << std::right << std::setw(3) << formula->GetHeterogenIdentifier()
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(2) << " "
+                   << std::left << std::setw(1) << " "
+                   << std::left << std::setw(51) << formula->GetChemicalFormula().substr(0,MAX_NAME_LENGTH_IN_LINE)
+                   << std::left << std::setw(10) << " "
+                   << std::endl;
             int counter = ceil((double)(formula->GetChemicalFormula().length()) / MAX_NAME_LENGTH_IN_LINE);
             for(int i = 2; i <= counter; i++)
             {
                 if(i != counter)
                 {
-                    stream << left << setw(6) << formulas_->GetRecordName()
-                           << left << setw(2) << " ";
-                    if(formula->GetComponentNumber() != iNotSet)
-                        stream << right << setw(2) << formula->GetComponentNumber();
+                    stream << std::left << std::setw(6) << formulas_->GetRecordName()
+                           << std::left << std::setw(2) << " ";
+                    if(formula->GetComponentNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(2) << formula->GetComponentNumber();
                     else
-                        stream << right << setw(2) << " ";
-                    stream << left << setw(2) << " "
-                           << right << setw(3) << formula->GetHeterogenIdentifier()
-                           << left << setw(1) << " "
-                           << right << setw(2) << i
-                           << left << setw(1) << " "
-                           << left << setw(51) << formula->GetChemicalFormula().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),MAX_NAME_LENGTH_IN_LINE)
-                           << left << setw(10) << " "
-                           << endl;
+                        stream << std::right << std::setw(2) << " ";
+                    stream << std::left << std::setw(2) << " "
+                           << std::right << std::setw(3) << formula->GetHeterogenIdentifier()
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(2) << i
+                           << std::left << std::setw(1) << " "
+                           << std::left << std::setw(51) << formula->GetChemicalFormula().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),MAX_NAME_LENGTH_IN_LINE)
+                           << std::left << std::setw(10) << " "
+                           << std::endl;
                 }
                 else
                 {
-                    stream << left << setw(6) << formulas_->GetRecordName()
-                           << left << setw(2) << " ";
-                    if(formula->GetComponentNumber()!= iNotSet)
-                        stream << right << setw(2) << formula->GetComponentNumber();
+                    stream << std::left << std::setw(6) << formulas_->GetRecordName()
+                           << std::left << std::setw(2) << " ";
+                    if(formula->GetComponentNumber()!= gmml::iNotSet)
+                        stream << std::right << std::setw(2) << formula->GetComponentNumber();
                     else
-                        stream << right << setw(2) << " ";
-                    stream << left << setw(2) << " "
-                           << right << setw(3) << formula->GetHeterogenIdentifier()
-                           << left << setw(1) << " "
-                           << right << setw(2) << i
-                           << left << setw(1) << " "
-                           << left << setw(51) << formula->GetChemicalFormula().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),formula->GetChemicalFormula().length()-MAX_NAME_LENGTH_IN_LINE*(i-1))
-                           << left << setw(10) << " "
-                           << endl;
+                        stream << std::right << std::setw(2) << " ";
+                    stream << std::left << std::setw(2) << " "
+                           << std::right << std::setw(3) << formula->GetHeterogenIdentifier()
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(2) << i
+                           << std::left << std::setw(1) << " "
+                           << std::left << std::setw(51) << formula->GetChemicalFormula().substr(MAX_NAME_LENGTH_IN_LINE*(i-1),formula->GetChemicalFormula().length()-MAX_NAME_LENGTH_IN_LINE*(i-1))
+                           << std::left << std::setw(10) << " "
+                           << std::endl;
                 }
             }
         }
         else
         {
-            stream << left << setw(6) << formulas_->GetRecordName()
-                   << left << setw(2) << " ";
-            if(formula->GetComponentNumber() != iNotSet)
-                stream << right << setw(2) << formula->GetComponentNumber();
+            stream << std::left << std::setw(6) << formulas_->GetRecordName()
+                   << std::left << std::setw(2) << " ";
+            if(formula->GetComponentNumber() != gmml::iNotSet)
+                stream << std::right << std::setw(2) << formula->GetComponentNumber();
             else
-                stream << right << setw(2) << " ";
-            stream << left << setw(2) << " "
-                   << right << setw(3) << formula->GetHeterogenIdentifier()
-                   << left << setw(1) << " "
-                   << right << setw(2) << " "
-                   << left << setw(1) << " "
-                   << left << setw(51) << formula->GetChemicalFormula().substr(0,MAX_NAME_LENGTH_IN_LINE)
-                   << left << setw(10) << " "
-                   << endl;
+                stream << std::right << std::setw(2) << " ";
+            stream << std::left << std::setw(2) << " "
+                   << std::right << std::setw(3) << formula->GetHeterogenIdentifier()
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(2) << " "
+                   << std::left << std::setw(1) << " "
+                   << std::left << std::setw(51) << formula->GetChemicalFormula().substr(0,MAX_NAME_LENGTH_IN_LINE)
+                   << std::left << std::setw(10) << " "
+                   << std::endl;
         }
     }
 }
 
 void PdbFile::ResolveHelixCards(std::ofstream& stream)
 {
-    PdbHelixSection::HelixCardMap helix_map = helix_cards_->GetHelixCards();
+    PdbFileSpace::PdbHelixSection::HelixCardMap helix_map = helix_cards_->GetHelixCards();
     int counter = helix_map.size();
     int serial_number = 1;
     while(serial_number <= counter)
     {
-        for(PdbHelixSection::HelixCardMap::iterator it = helix_map.begin(); it != helix_map.end(); it++)
+        for(PdbFileSpace::PdbHelixSection::HelixCardMap::iterator it = helix_map.begin(); it != helix_map.end(); it++)
         {
 
             PdbHelixCard* helix = (*it).second;
             PdbHelixCard::HelixResidueVector helix_residues = helix->GetHelixResidues();
             if(helix->GetHelixSerialNumber() == serial_number)
             {
-                stream << left << setw(6) << helix_cards_->GetRecordName()
-                       << left << setw(1) << " ";
-                if(helix->GetHelixSerialNumber() != iNotSet)
-                    stream << right << setw(3) << helix->GetHelixSerialNumber();
+                stream << std::left << std::setw(6) << helix_cards_->GetRecordName()
+                       << std::left << std::setw(1) << " ";
+                if(helix->GetHelixSerialNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(3) << helix->GetHelixSerialNumber();
                 else
-                    stream << right << setw(3) << " ";
-                stream << left << setw(1) << " "
-                       << right << setw(3) << helix->GetHelixId()
-                       << left << setw(1) << " "
-                       << right << setw(3) << helix_residues.at(0)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << helix_residues.at(0)->GetResidueChainId()
-                       << left << setw(1) << " ";
-                if(helix_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << helix_residues.at(0)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(3) << " ";
+                stream << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << helix->GetHelixId()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << helix_residues.at(0)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << helix_residues.at(0)->GetResidueChainId()
+                       << std::left << std::setw(1) << " ";
+                if(helix_residues.at(0)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << helix_residues.at(0)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << helix_residues.at(0)->GetResidueInsertionCode()
-                       << left << setw(1) << " "
-                       << right << setw(3) << helix_residues.at(1)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << helix_residues.at(1)->GetResidueChainId()
-                       << left << setw(1) << " ";
-                if(helix_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << helix_residues.at(1)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << helix_residues.at(0)->GetResidueInsertionCode()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << helix_residues.at(1)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << helix_residues.at(1)->GetResidueChainId()
+                       << std::left << std::setw(1) << " ";
+                if(helix_residues.at(1)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << helix_residues.at(1)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << helix_residues.at(1)->GetResidueInsertionCode();
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << helix_residues.at(1)->GetResidueInsertionCode();
                 if(helix->GetHelixClass() != UnknownHelix)
-                    stream << right << setw(2) << helix->GetHelixClass();
+                    stream << std::right << std::setw(2) << helix->GetHelixClass();
                 else
-                    stream << right << setw(2) << " ";
-                stream << left << setw(30) << helix->GetComment()
-                       << left << setw(1) << " ";
-                if(helix->GetHelixLength() != dNotSet)
-                    stream << right << setw(5) << helix->GetHelixLength();
+                    stream << std::right << std::setw(2) << " ";
+                stream << std::left << std::setw(30) << helix->GetComment()
+                       << std::left << std::setw(1) << " ";
+                if(helix->GetHelixLength() != gmml::dNotSet)
+                    stream << std::right << std::setw(5) << helix->GetHelixLength();
                 else
-                    stream << right << setw(5) << " ";
-                stream << left << setw(4) << " "
-                       << endl;
+                    stream << std::right << std::setw(5) << " ";
+                stream << std::left << std::setw(4) << " "
+                       << std::endl;
                 break;
             }
         }
@@ -6714,8 +6713,8 @@ void PdbFile::ResolveHelixCards(std::ofstream& stream)
 
 void PdbFile::ResolveSheetCards(std::ofstream& stream)
 {
-    PdbSheetSection::SheetCardMap sheet_map = sheet_cards_->GetSheets();
-    for(PdbSheetSection::SheetCardMap::iterator it = sheet_map.begin(); it != sheet_map.end(); it++)
+    PdbFileSpace::PdbSheetSection::SheetCardMap sheet_map = sheet_cards_->GetSheets();
+    for(PdbFileSpace::PdbSheetSection::SheetCardMap::iterator it = sheet_map.begin(); it != sheet_map.end(); it++)
     {
         PdbSheetCard* sheet = (*it).second;
         PdbSheetCard::SheetStrandVector strands = sheet->GetStrands();
@@ -6726,95 +6725,95 @@ void PdbFile::ResolveSheetCards(std::ofstream& stream)
             PdbSheetStrand::SheetStrandResidueVector strand_residues = strand->GetStrandResidues();
             if(strand->GetSense() != 0)
             {
-                stream << left << setw(6) << sheet_cards_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << serial_number
-                       << left << setw(1) << " "
-                       << right << setw(3) << sheet->GetSheetId();
-                if(sheet->GetNumberOfStrands() != iNotSet)
-                    stream << right << setw(2) << sheet->GetNumberOfStrands();
+                stream << std::left << std::setw(6) << sheet_cards_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << serial_number
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << sheet->GetSheetId();
+                if(sheet->GetNumberOfStrands() != gmml::iNotSet)
+                    stream << std::right << std::setw(2) << sheet->GetNumberOfStrands();
                 else
-                    stream << right << setw(2) << " ";
-                stream << left << setw(1) << " "
-                       << right << setw(3) << strand_residues.at(0)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(0)->GetResidueChainId();
-                if(strand_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << strand_residues.at(0)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(2) << " ";
+                stream << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << strand_residues.at(0)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << strand_residues.at(0)->GetResidueChainId();
+                if(strand_residues.at(0)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << strand_residues.at(0)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
-                       << left << setw(1) << " "
-                       << right << setw(3) << strand_residues.at(1)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(1)->GetResidueChainId();
-                if(strand_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << strand_residues.at(1)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << strand_residues.at(1)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << strand_residues.at(1)->GetResidueChainId();
+                if(strand_residues.at(1)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << strand_residues.at(1)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << strand_residues.at(1)->GetResidueInsertionCode();
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << strand_residues.at(1)->GetResidueInsertionCode();
                 if(strand->GetSense() != UnknownStrand)
-                    stream << right << setw(2) << strand->GetSense();
+                    stream << std::right << std::setw(2) << strand->GetSense();
                 else
-                    stream << right << setw(2) << " ";
-                stream << left << setw(2) << " "
-                       << left << setw(3) << strand->GetCurrentAtom()
-                       << right << setw(3) << strand_residues.at(2)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(2)->GetResidueChainId();
-                if(strand_residues.at(2)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << strand_residues.at(2)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(2) << " ";
+                stream << std::left << std::setw(2) << " "
+                       << std::left << std::setw(3) << strand->GetCurrentAtom()
+                       << std::right << std::setw(3) << strand_residues.at(2)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << strand_residues.at(2)->GetResidueChainId();
+                if(strand_residues.at(2)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << strand_residues.at(2)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << strand_residues.at(2)->GetResidueInsertionCode()
-                       << left << setw(1) << " "
-                       << left << setw(4) << strand->GetPreviousAtom()
-                       << right << setw(3) << strand_residues.at(3)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(3)->GetResidueChainId();
-                if(strand_residues.at(3)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << strand_residues.at(3)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << strand_residues.at(2)->GetResidueInsertionCode()
+                       << std::left << std::setw(1) << " "
+                       << std::left << std::setw(4) << strand->GetPreviousAtom()
+                       << std::right << std::setw(3) << strand_residues.at(3)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << strand_residues.at(3)->GetResidueChainId();
+                if(strand_residues.at(3)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << strand_residues.at(3)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << strand_residues.at(3)->GetResidueInsertionCode()
-                       << left << setw(10) << " "
-                       << endl;
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << strand_residues.at(3)->GetResidueInsertionCode()
+                       << std::left << std::setw(10) << " "
+                       << std::endl;
             }
             else
             {
-                stream << left << setw(6) << sheet_cards_->GetRecordName()
-                       << left << setw(1) << " "
-                       << right << setw(3) << serial_number
-                       << left << setw(1) << " "
-                       << right << setw(3) << sheet->GetSheetId();
-                if(sheet->GetNumberOfStrands() != iNotSet)
-                    stream << right << setw(2) << sheet->GetNumberOfStrands();
+                stream << std::left << std::setw(6) << sheet_cards_->GetRecordName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << serial_number
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << sheet->GetSheetId();
+                if(sheet->GetNumberOfStrands() != gmml::iNotSet)
+                    stream << std::right << std::setw(2) << sheet->GetNumberOfStrands();
                 else
-                    stream << right << setw(2) << " ";
-                stream << left << setw(1) << " "
-                       << right << setw(3) << strand_residues.at(0)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(0)->GetResidueChainId();
-                if(strand_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << strand_residues.at(0)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(2) << " ";
+                stream << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << strand_residues.at(0)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << strand_residues.at(0)->GetResidueChainId();
+                if(strand_residues.at(0)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << strand_residues.at(0)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
-                       << left << setw(1) << " "
-                       << right << setw(3) << strand_residues.at(1)->GetResidueName()
-                       << left << setw(1) << " "
-                       << right << setw(1) << strand_residues.at(1)->GetResidueChainId();
-                if(strand_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << strand_residues.at(1)->GetResidueSequenceNumber();
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << strand_residues.at(0)->GetResidueInsertionCode()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(3) << strand_residues.at(1)->GetResidueName()
+                       << std::left << std::setw(1) << " "
+                       << std::right << std::setw(1) << strand_residues.at(1)->GetResidueChainId();
+                if(strand_residues.at(1)->GetResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << strand_residues.at(1)->GetResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                stream << right << setw(1) << strand_residues.at(1)->GetResidueInsertionCode();
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::right << std::setw(1) << strand_residues.at(1)->GetResidueInsertionCode();
                 if(strand->GetSense() != UnknownStrand)
-                    stream << right << setw(2) << strand->GetSense();
+                    stream << std::right << std::setw(2) << strand->GetSense();
                 else
-                    stream << right << setw(2) << " ";
-                stream << left << setw(40) << " "
-                       << endl;
+                    stream << std::right << std::setw(2) << " ";
+                stream << std::left << std::setw(40) << " "
+                       << std::endl;
             }
             serial_number++;
         }
@@ -6824,123 +6823,123 @@ void PdbFile::ResolveSheetCards(std::ofstream& stream)
 
 void PdbFile::ResolveDisulfideBondCards(std::ofstream& stream)
 {
-    PdbDisulfideBondSection::DisulfideResidueBondMap disulfide_bond_map = disulfide_bonds_->GetDisulfideResidueBonds();
-    for(PdbDisulfideBondSection::DisulfideResidueBondMap::iterator it = disulfide_bond_map.begin(); it != disulfide_bond_map.end(); it++)
+    PdbFileSpace::PdbDisulfideBondSection::DisulfideResidueBondMap disulfide_bond_map = disulfide_bonds_->GetDisulfideResidueBonds();
+    for(PdbFileSpace::PdbDisulfideBondSection::DisulfideResidueBondMap::iterator it = disulfide_bond_map.begin(); it != disulfide_bond_map.end(); it++)
     {
         PdbDisulfideResidueBond* disulfide_bonds = (*it).second;
         PdbDisulfideResidueBond::DisulfideResidueVector disulfide_bonds_residues = disulfide_bonds->GetResidues();
-        stream << left << setw(6) << disulfide_bonds_->GetRecordName()
-               << left << setw(1) << " ";
-        if(disulfide_bonds->GetSerialNumber() != iNotSet)
-            stream << right << setw(3) << disulfide_bonds->GetSerialNumber();
+        stream << std::left << std::setw(6) << disulfide_bonds_->GetRecordName()
+               << std::left << std::setw(1) << " ";
+        if(disulfide_bonds->GetSerialNumber() != gmml::iNotSet)
+            stream << std::right << std::setw(3) << disulfide_bonds->GetSerialNumber();
         else
-            stream << right << setw(3) << " ";
-        stream << left << setw(1) << " "
-               << right << setw(3) << disulfide_bonds_residues.at(0)->GetResidueName()
-               << left << setw(1) << " "
-               << right << setw(1) << disulfide_bonds_residues.at(0)->GetResidueChainId()
-               << left << setw(1) << " ";
-        if(disulfide_bonds_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
-            stream << right << setw(4) << disulfide_bonds_residues.at(0)->GetResidueSequenceNumber();
+            stream << std::right << std::setw(3) << " ";
+        stream << std::left << std::setw(1) << " "
+               << std::right << std::setw(3) << disulfide_bonds_residues.at(0)->GetResidueName()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(1) << disulfide_bonds_residues.at(0)->GetResidueChainId()
+               << std::left << std::setw(1) << " ";
+        if(disulfide_bonds_residues.at(0)->GetResidueSequenceNumber() != gmml::iNotSet)
+            stream << std::right << std::setw(4) << disulfide_bonds_residues.at(0)->GetResidueSequenceNumber();
         else
-            stream << right << setw(4) << " ";
-        stream << right << setw(1) << disulfide_bonds_residues.at(0)->GetResidueInsertionCode()
-               << left << setw(3) << " "
-               << right << setw(3) << disulfide_bonds_residues.at(1)->GetResidueName()
-               << left << setw(1) << " "
-               << right << setw(1) << disulfide_bonds_residues.at(1)->GetResidueChainId()
-               << left << setw(1) << " ";
-        if(disulfide_bonds_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
-            stream << right << setw(4) << disulfide_bonds_residues.at(1)->GetResidueSequenceNumber();
+            stream << std::right << std::setw(4) << " ";
+        stream << std::right << std::setw(1) << disulfide_bonds_residues.at(0)->GetResidueInsertionCode()
+               << std::left << std::setw(3) << " "
+               << std::right << std::setw(3) << disulfide_bonds_residues.at(1)->GetResidueName()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(1) << disulfide_bonds_residues.at(1)->GetResidueChainId()
+               << std::left << std::setw(1) << " ";
+        if(disulfide_bonds_residues.at(1)->GetResidueSequenceNumber() != gmml::iNotSet)
+            stream << std::right << std::setw(4) << disulfide_bonds_residues.at(1)->GetResidueSequenceNumber();
         else
-            stream << right << setw(4) << " ";
-        stream << right << setw(1) << disulfide_bonds_residues.at(1)->GetResidueInsertionCode()
-               << left << setw(23) << " ";
-        if(disulfide_bonds_residues.at(0)->GetSymmetryOperator() != iNotSet)
-            stream << right << setw(6) << disulfide_bonds_residues.at(0)->GetSymmetryOperator();
+            stream << std::right << std::setw(4) << " ";
+        stream << std::right << std::setw(1) << disulfide_bonds_residues.at(1)->GetResidueInsertionCode()
+               << std::left << std::setw(23) << " ";
+        if(disulfide_bonds_residues.at(0)->GetSymmetryOperator() != gmml::iNotSet)
+            stream << std::right << std::setw(6) << disulfide_bonds_residues.at(0)->GetSymmetryOperator();
         else
-            stream << right << setw(6) << " ";
-        stream << left << setw(1) << " ";
-        if(disulfide_bonds_residues.at(1)->GetSymmetryOperator() != iNotSet)
-            stream << right << setw(6) << disulfide_bonds_residues.at(1)->GetSymmetryOperator();
+            stream << std::right << std::setw(6) << " ";
+        stream << std::left << std::setw(1) << " ";
+        if(disulfide_bonds_residues.at(1)->GetSymmetryOperator() != gmml::iNotSet)
+            stream << std::right << std::setw(6) << disulfide_bonds_residues.at(1)->GetSymmetryOperator();
         else
-            stream << right << setw(6) << " ";
-        stream << left << setw(1) << " ";
-        if(disulfide_bonds->GetBondLength() != dNotSet)
-            stream << right << setw(5) << fixed << setprecision(2) << disulfide_bonds->GetBondLength();
+            stream << std::right << std::setw(6) << " ";
+        stream << std::left << std::setw(1) << " ";
+        if(disulfide_bonds->GetBondLength() != gmml::dNotSet)
+            stream << std::right << std::setw(5) << std::fixed << std::setprecision(2) << disulfide_bonds->GetBondLength();
         else
-            stream << right << setw(5) << " ";
-        stream << left << setw(2) << " "
-               << endl;
+            stream << std::right << std::setw(5) << " ";
+        stream << std::left << std::setw(2) << " "
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveLinkCards(std::ofstream& stream)
 {
-    PdbLinkSection::LinkCardVector links = link_cards_->GetResidueLinkCards();
-    for(PdbLinkSection::LinkCardVector::iterator it = links.begin(); it != links.end(); it++)
+    PdbFileSpace::PdbLinkSection::LinkCardVector links = link_cards_->GetResidueLinkCards();
+    for(PdbFileSpace::PdbLinkSection::LinkCardVector::iterator it = links.begin(); it != links.end(); it++)
     {
         PdbLinkCard* link = (*it);
         PdbLinkCard::LinkResidueVector link_residues = link->GetResidues();
-        stream << left << setw(6) << link_cards_->GetRecordName()
-               << left << setw(6) << " "
-               << left << setw(4) << link_residues.at(0)->GetAtomName();
-        if(link_residues.at(0)->GetAlternateLocationIndicator() != BLANK_SPACE)
-            stream << right << setw(1) << link_residues.at(0)->GetAlternateLocationIndicator();
+        stream << std::left << std::setw(6) << link_cards_->GetRecordName()
+               << std::left << std::setw(6) << " "
+               << std::left << std::setw(4) << link_residues.at(0)->GetAtomName();
+        if(link_residues.at(0)->GetAlternateLocationIndicator() != gmml::BLANK_SPACE)
+            stream << std::right << std::setw(1) << link_residues.at(0)->GetAlternateLocationIndicator();
         else
-            stream << right << setw(1) << " ";
-        stream << right << setw(3) << link_residues.at(0)->GetResidueName()
-               << left << setw(1) << " ";
-        if(link_residues.at(0)->GetResidueChainId() != BLANK_SPACE)
-            stream << right << setw(1) << link_residues.at(0)->GetResidueChainId();
+            stream << std::right << std::setw(1) << " ";
+        stream << std::right << std::setw(3) << link_residues.at(0)->GetResidueName()
+               << std::left << std::setw(1) << " ";
+        if(link_residues.at(0)->GetResidueChainId() != gmml::BLANK_SPACE)
+            stream << std::right << std::setw(1) << link_residues.at(0)->GetResidueChainId();
         else
-            stream << right << setw(1) << " ";
-        if(link_residues.at(0)->GetResidueSequenceNumber() != iNotSet)
-            stream << right << setw(4) << link_residues.at(0)->GetResidueSequenceNumber();
+            stream << std::right << std::setw(1) << " ";
+        if(link_residues.at(0)->GetResidueSequenceNumber() != gmml::iNotSet)
+            stream << std::right << std::setw(4) << link_residues.at(0)->GetResidueSequenceNumber();
         else
-            stream << right << setw(4) << " ";
-        if(link_residues.at(0)->GetResidueInsertionCode() != BLANK_SPACE)
-            stream << right << setw(1) << link_residues.at(0)->GetResidueInsertionCode();
+            stream << std::right << std::setw(4) << " ";
+        if(link_residues.at(0)->GetResidueInsertionCode() != gmml::BLANK_SPACE)
+            stream << std::right << std::setw(1) << link_residues.at(0)->GetResidueInsertionCode();
         else
-            stream << right << setw(1) << " ";
+            stream << std::right << std::setw(1) << " ";
 
-        stream << left << setw(15) << " "
-               << left << setw(4) << link_residues.at(1)->GetAtomName();
-        if(link_residues.at(1)->GetAlternateLocationIndicator() != BLANK_SPACE)
-            stream << right << setw(1) << link_residues.at(1)->GetAlternateLocationIndicator();
+        stream << std::left << std::setw(15) << " "
+               << std::left << std::setw(4) << link_residues.at(1)->GetAtomName();
+        if(link_residues.at(1)->GetAlternateLocationIndicator() != gmml::BLANK_SPACE)
+            stream << std::right << std::setw(1) << link_residues.at(1)->GetAlternateLocationIndicator();
         else
-            stream << right << setw(1) << " ";
-        stream << right << setw(3) << link_residues.at(1)->GetResidueName()
-               << left << setw(1) << " ";
-        if(link_residues.at(1)->GetResidueChainId() != BLANK_SPACE)
-            stream << right << setw(1) << link_residues.at(1)->GetResidueChainId();
+            stream << std::right << std::setw(1) << " ";
+        stream << std::right << std::setw(3) << link_residues.at(1)->GetResidueName()
+               << std::left << std::setw(1) << " ";
+        if(link_residues.at(1)->GetResidueChainId() != gmml::BLANK_SPACE)
+            stream << std::right << std::setw(1) << link_residues.at(1)->GetResidueChainId();
         else
-            stream << right << setw(1) << " ";
-        if(link_residues.at(1)->GetResidueSequenceNumber() != iNotSet)
-            stream << right << setw(4) << link_residues.at(1)->GetResidueSequenceNumber();
+            stream << std::right << std::setw(1) << " ";
+        if(link_residues.at(1)->GetResidueSequenceNumber() != gmml::iNotSet)
+            stream << std::right << std::setw(4) << link_residues.at(1)->GetResidueSequenceNumber();
         else
-            stream << right << setw(4) << " ";
-        if(link_residues.at(1)->GetResidueInsertionCode() != BLANK_SPACE)
-            stream << right << setw(1) << link_residues.at(1)->GetResidueInsertionCode();
+            stream << std::right << std::setw(4) << " ";
+        if(link_residues.at(1)->GetResidueInsertionCode() != gmml::BLANK_SPACE)
+            stream << std::right << std::setw(1) << link_residues.at(1)->GetResidueInsertionCode();
         else
-            stream << right << setw(1) << " ";
-        stream << left << setw(2) << " ";
-        if(link_residues.at(0)->GetSymmetryOperator() != iNotSet)
-            stream << right << setw(6) << link_residues.at(0)->GetSymmetryOperator();
+            stream << std::right << std::setw(1) << " ";
+        stream << std::left << std::setw(2) << " ";
+        if(link_residues.at(0)->GetSymmetryOperator() != gmml::iNotSet)
+            stream << std::right << std::setw(6) << link_residues.at(0)->GetSymmetryOperator();
         else
-            stream << right << setw(6) << " ";
-        stream << left << setw(1) << " ";
-        if(link_residues.at(1)->GetSymmetryOperator() != iNotSet)
-            stream << right << setw(6) << link_residues.at(1)->GetSymmetryOperator();
+            stream << std::right << std::setw(6) << " ";
+        stream << std::left << std::setw(1) << " ";
+        if(link_residues.at(1)->GetSymmetryOperator() != gmml::iNotSet)
+            stream << std::right << std::setw(6) << link_residues.at(1)->GetSymmetryOperator();
         else
-            stream << right << setw(6) << " ";
-        stream << left << setw(1) << " ";
-        if(link->GetLinkLength() != dNotSet)
-            stream << right << setw(5) << fixed << setprecision(2) << link->GetLinkLength();
+            stream << std::right << std::setw(6) << " ";
+        stream << std::left << std::setw(1) << " ";
+        if(link->GetLinkLength() != gmml::dNotSet)
+            stream << std::right << std::setw(5) << std::fixed << std::setprecision(2) << link->GetLinkLength();
         else
-            stream << right << setw(5) << " ";
-        stream << left << setw(2) << " "
-               << endl;
+            stream << std::right << std::setw(5) << " ";
+        stream << std::left << std::setw(2) << " "
+               << std::endl;
     }
 }
 
@@ -6949,35 +6948,35 @@ void PdbFile::ResolveCISPeptideCards(std::ofstream& stream)
   CISPeptideCardVector cis_peptide_cards = cis_peptide_->GetCISPeptideCards();
   for (CISPeptideCardVector::iterator it = cis_peptide_cards.begin(); it != cis_peptide_cards.end(); it++)
   {
-    stream << left << setw(6) << (*it)->GetRecordName()
-           << left << setw(1) << " "
-           << right << setw(3) << (*it)->GetSerialNumber()
-           << left << setw(1) << " "
-           << left << setw(3) << (*it)->GetPeptide1ResidueName()
-           << left << setw(1) << " "
-           << left << setw(1) << (*it)->GetPeptide1ChainId()
-           << left << setw(1) << " "
-           << right << setw(4) << (*it)->GetPeptide1SequenceNumber()
-           << left << setw(1) << (*it)->GetPeptide1InsertionCode()
-           << left << setw(3) << " "
-           << left << setw(3) << (*it)->GetPeptide2ResidueName()
-           << left << setw(1) << " "
-           << left << setw(1) << (*it)->GetPeptide2ChainId()
-           << left << setw(1) << " "
-           << right << setw(4) << (*it)->GetPeptide2SequenceNumber()
-           << left << setw(1) << (*it)->GetPeptide2InsertionCode()
-           << left << setw(7) << " "
-           << right << setw(3) << (*it)->GetModelNumber()
-           << left << setw(7) << " "
-           << right << setw(6) << (*it)->GetMeasure()
-           << endl;
+    stream << std::left << std::setw(6) << (*it)->GetRecordName()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(3) << (*it)->GetSerialNumber()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(3) << (*it)->GetPeptide1ResidueName()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(1) << (*it)->GetPeptide1ChainId()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(4) << (*it)->GetPeptide1SequenceNumber()
+           << std::left << std::setw(1) << (*it)->GetPeptide1InsertionCode()
+           << std::left << std::setw(3) << " "
+           << std::left << std::setw(3) << (*it)->GetPeptide2ResidueName()
+           << std::left << std::setw(1) << " "
+           << std::left << std::setw(1) << (*it)->GetPeptide2ChainId()
+           << std::left << std::setw(1) << " "
+           << std::right << std::setw(4) << (*it)->GetPeptide2SequenceNumber()
+           << std::left << std::setw(1) << (*it)->GetPeptide2InsertionCode()
+           << std::left << std::setw(7) << " "
+           << std::right << std::setw(3) << (*it)->GetModelNumber()
+           << std::left << std::setw(7) << " "
+           << std::right << std::setw(6) << (*it)->GetMeasure()
+           << std::endl;
   }
 }
 
 void PdbFile::ResolveSiteCards(std::ofstream& stream)
 {
-    PdbSiteSection::PdbSiteCardMap site_map = site_cards_->GetResidueSiteCards();
-    for(PdbSiteSection::PdbSiteCardMap::iterator it = site_map.begin(); it != site_map.end(); it++)
+    PdbFileSpace::PdbSiteSection::PdbSiteCardMap site_map = site_cards_->GetResidueSiteCards();
+    for(PdbFileSpace::PdbSiteSection::PdbSiteCardMap::iterator it = site_map.begin(); it != site_map.end(); it++)
     {
         PdbSiteCard* site = (*it).second;
         PdbSiteCard::SiteResidueVector site_residues = site->GetResidues();
@@ -6993,67 +6992,67 @@ void PdbFile::ResolveSiteCards(std::ofstream& stream)
             {
                 if(sequence_number != number_of_lines)
                 {
-                    stringstream ss;
+                    std::stringstream ss;
                     for(PdbSiteCard::SiteResidueVector::iterator it1 = site_residues.begin()+(sequence_number - 1)*MAX_RESIDUE_IN_LINE;
                         it1 != site_residues.begin()+(sequence_number)*MAX_RESIDUE_IN_LINE; it1++)
                     {
                         PdbSiteResidue* residue = (*it1);
-                        ss << left << setw(1) << " "
-                           << right << setw(3) << residue->GetResidueName()
-                           << left << setw(1) << " "
-                           << right << setw(1) << residue->GetResidueChainId();
-                        if(residue->GetResidueSequenceNumber() != iNotSet)
-                            ss << right << setw(4) << residue->GetResidueSequenceNumber();
+                        ss << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << residue->GetResidueName()
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(1) << residue->GetResidueChainId();
+                        if(residue->GetResidueSequenceNumber() != gmml::iNotSet)
+                            ss << std::right << std::setw(4) << residue->GetResidueSequenceNumber();
                         else
-                            ss << right << setw(4) << " ";
-                        ss << right << setw(1) << residue->GetResidueInsertionCode();
+                            ss << std::right << std::setw(4) << " ";
+                        ss << std::right << std::setw(1) << residue->GetResidueInsertionCode();
                     }
-                    ss << left << setw(19) << " ";
-                    stream << left << setw(6) << site_cards_->GetRecordName()
-                           << left << setw(1) << " "
-                           << right << setw(3) << sequence_number
-                           << left << setw(1) << " "
-                           << right << setw(3) << site->GetSiteId()
-                           << left << setw(1) << " ";
-                    if(site->GetNumberOfResidues() != iNotSet)
-                        stream << right << setw(2) << site->GetNumberOfResidues();
+                    ss << std::left << std::setw(19) << " ";
+                    stream << std::left << std::setw(6) << site_cards_->GetRecordName()
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << sequence_number
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << site->GetSiteId()
+                           << std::left << std::setw(1) << " ";
+                    if(site->GetNumberOfResidues() != gmml::iNotSet)
+                        stream << std::right << std::setw(2) << site->GetNumberOfResidues();
                     else
-                        stream << right << setw(2) << " ";
-                    stream << left << setw(63) << ss.str()
-                           << endl;
+                        stream << std::right << std::setw(2) << " ";
+                    stream << std::left << std::setw(63) << ss.str()
+                           << std::endl;
                 }
                 else
                 {
-                    stringstream ss;
+                    std::stringstream ss;
                     for(PdbSiteCard::SiteResidueVector::iterator it1 = site_residues.begin()+(sequence_number - 1)*MAX_RESIDUE_IN_LINE;
                         it1 != site_residues.end(); it1++)
                     {
                         PdbSiteResidue* residue = (*it1);
-                        ss << left << setw(1) << " "
-                           << right << setw(3) << residue->GetResidueName()
-                           << left << setw(1) << " "
-                           << right << setw(1) << residue->GetResidueChainId();
-                        if(residue->GetResidueSequenceNumber() != iNotSet)
-                            ss << right << setw(4) << residue->GetResidueSequenceNumber();
+                        ss << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << residue->GetResidueName()
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(1) << residue->GetResidueChainId();
+                        if(residue->GetResidueSequenceNumber() != gmml::iNotSet)
+                            ss << std::right << std::setw(4) << residue->GetResidueSequenceNumber();
                         else
-                            ss << right << setw(4) << " ";
-                        ss << right << setw(1) << residue->GetResidueInsertionCode();
+                            ss << std::right << std::setw(4) << " ";
+                        ss << std::right << std::setw(1) << residue->GetResidueInsertionCode();
                     }
                     if((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE != 0)
-                        ss << left << setw((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
-                    ss << left << setw(19) << " ";
-                    stream << left << setw(6) << site_cards_->GetRecordName()
-                           << left << setw(1) << " "
-                           << right << setw(3) << sequence_number
-                           << left << setw(1) << " "
-                           << right << setw(3) << site->GetSiteId()
-                           << left << setw(1) << " ";
-                    if(site->GetNumberOfResidues() != iNotSet)
-                        stream << right << setw(2) << site->GetNumberOfResidues();
+                        ss << std::left << std::setw((sequence_number*MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
+                    ss << std::left << std::setw(19) << " ";
+                    stream << std::left << std::setw(6) << site_cards_->GetRecordName()
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << sequence_number
+                           << std::left << std::setw(1) << " "
+                           << std::right << std::setw(3) << site->GetSiteId()
+                           << std::left << std::setw(1) << " ";
+                    if(site->GetNumberOfResidues() != gmml::iNotSet)
+                        stream << std::right << std::setw(2) << site->GetNumberOfResidues();
                     else
-                        stream << right << setw(2) << " ";
-                    stream << left << setw(63) << ss.str()
-                           << endl;
+                        stream << std::right << std::setw(2) << " ";
+                    stream << std::left << std::setw(63) << ss.str()
+                           << std::endl;
                 }
                 sequence_number++;
             }
@@ -7061,36 +7060,36 @@ void PdbFile::ResolveSiteCards(std::ofstream& stream)
         }
         else
         {
-            stringstream ss;
+            std::stringstream ss;
             for(PdbSiteCard::SiteResidueVector::iterator it1 = site_residues.begin(); it1 != site_residues.end(); it1++)
             {
                 PdbSiteResidue* residue = (*it1);
-                ss << left << setw(1) << " "
-                   << right << setw(3) << residue->GetResidueName()
-                   << left << setw(1) << " "
-                   << right << setw(1) << residue->GetResidueChainId();
-                if(residue->GetResidueSequenceNumber() != iNotSet)
-                    ss << right << setw(4) << residue->GetResidueSequenceNumber();
+                ss << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << residue->GetResidueName()
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(1) << residue->GetResidueChainId();
+                if(residue->GetResidueSequenceNumber() != gmml::iNotSet)
+                    ss << std::right << std::setw(4) << residue->GetResidueSequenceNumber();
                 else
-                    ss << right << setw(4) << " ";
-                ss << right << setw(1) << residue->GetResidueInsertionCode();
+                    ss << std::right << std::setw(4) << " ";
+                ss << std::right << std::setw(1) << residue->GetResidueInsertionCode();
             }
             if((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE != 0)
-                ss << left << setw((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
-            ss << left << setw(19) << " ";
+                ss << std::left << std::setw((MAX_RESIDUE_IN_LINE-number_of_residues)*RESIDUE_LENGHT_IN_LINE) << " ";
+            ss << std::left << std::setw(19) << " ";
 
-            stream << left << setw(6) << site_cards_->GetRecordName()
-                   << left << setw(1) << " "
-                   << right << setw(3) << sequence_number
-                   << left << setw(1) << " "
-                   << right << setw(3) << site->GetSiteId()
-                   << left << setw(1) << " ";
-            if(site->GetNumberOfResidues() != iNotSet)
-                stream << right << setw(2) << site->GetNumberOfResidues();
+            stream << std::left << std::setw(6) << site_cards_->GetRecordName()
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << sequence_number
+                   << std::left << std::setw(1) << " "
+                   << std::right << std::setw(3) << site->GetSiteId()
+                   << std::left << std::setw(1) << " ";
+            if(site->GetNumberOfResidues() != gmml::iNotSet)
+                stream << std::right << std::setw(2) << site->GetNumberOfResidues();
             else
-                stream << right << setw(2) << " ";
-            stream << left << setw(63) << ss.str()
-                   << endl;
+                stream << std::right << std::setw(2) << " ";
+            stream << std::left << std::setw(63) << ss.str()
+                   << std::endl;
             sequence_number++;
         }
     }
@@ -7098,148 +7097,148 @@ void PdbFile::ResolveSiteCards(std::ofstream& stream)
 
 void PdbFile::ResolveCrystallographyCard(std::ofstream& stream)
 {
-    stream << left << setw(6) << crystallography_->GetRecordName();
-    if(crystallography_->GetA() != dNotSet)
-        stream << right << setw(9) << fixed << setprecision(3) << crystallography_->GetA();
+    stream << std::left << std::setw(6) << crystallography_->GetRecordName();
+    if(crystallography_->GetA() != gmml::dNotSet)
+        stream << std::right << std::setw(9) << std::fixed << std::setprecision(3) << crystallography_->GetA();
     else
-        stream << right << setw(9) << " ";
-    if(crystallography_->GetB() != dNotSet)
-        stream << right << setw(9) << fixed << setprecision(3) << crystallography_->GetB();
+        stream << std::right << std::setw(9) << " ";
+    if(crystallography_->GetB() != gmml::dNotSet)
+        stream << std::right << std::setw(9) << std::fixed << std::setprecision(3) << crystallography_->GetB();
     else
-        stream << right << setw(9) << " ";
-    if(crystallography_->GetC() != dNotSet)
-        stream << right << setw(9) << fixed << setprecision(3) << crystallography_->GetC();
+        stream << std::right << std::setw(9) << " ";
+    if(crystallography_->GetC() != gmml::dNotSet)
+        stream << std::right << std::setw(9) << std::fixed << std::setprecision(3) << crystallography_->GetC();
     else
-        stream << right << setw(9) << " ";
-    if(crystallography_->GetAlpha() != dNotSet)
-        stream << right << setw(7) << fixed << setprecision(2) << crystallography_->GetAlpha();
+        stream << std::right << std::setw(9) << " ";
+    if(crystallography_->GetAlpha() != gmml::dNotSet)
+        stream << std::right << std::setw(7) << std::fixed << std::setprecision(2) << crystallography_->GetAlpha();
     else
-        stream << right << setw(7) << " ";
-    if(crystallography_->GetBeta() != dNotSet)
-        stream << right << setw(7) << fixed << setprecision(2) << crystallography_->GetBeta();
+        stream << std::right << std::setw(7) << " ";
+    if(crystallography_->GetBeta() != gmml::dNotSet)
+        stream << std::right << std::setw(7) << std::fixed << std::setprecision(2) << crystallography_->GetBeta();
     else
-        stream << right << setw(7) << " ";
-    if(crystallography_->GetGamma() != dNotSet)
-        stream << right << setw(7) << fixed << setprecision(2) << crystallography_->GetGamma();
+        stream << std::right << std::setw(7) << " ";
+    if(crystallography_->GetGamma() != gmml::dNotSet)
+        stream << std::right << std::setw(7) << std::fixed << std::setprecision(2) << crystallography_->GetGamma();
     else
-        stream << right << setw(7) << " ";
-    stream << left << setw(1) << " "
-           << left << setw(11) << crystallography_->GetSpaceGroup();
-    if(crystallography_->GetZValue() != iNotSet)
-        stream << right << setw(4) << crystallography_->GetZValue();
+        stream << std::right << std::setw(7) << " ";
+    stream << std::left << std::setw(1) << " "
+           << std::left << std::setw(11) << crystallography_->GetSpaceGroup();
+    if(crystallography_->GetZValue() != gmml::iNotSet)
+        stream << std::right << std::setw(4) << crystallography_->GetZValue();
     else
-        stream << right << setw(4) << " ";
-    stream << left << setw(10) << " "
-           << endl;
+        stream << std::right << std::setw(4) << " ";
+    stream << std::left << std::setw(10) << " "
+           << std::endl;
 }
 
 void PdbFile::ResolveOriginCard(std::ofstream& stream)
 {
-    PdbOriginXnSection::OriginXnCardVector origins = origins_->GetOriginXN();
-    for(PdbOriginXnSection::OriginXnCardVector::iterator it = origins.begin(); it != origins.end(); it++)
+    PdbFileSpace::PdbOriginXnSection::OriginXnCardVector origins = origins_->GetOriginXN();
+    for(PdbFileSpace::PdbOriginXnSection::OriginXnCardVector::iterator it = origins.begin(); it != origins.end(); it++)
     {
         PdbOriginXnCard* origin = (*it);
-        stringstream ss;
+        std::stringstream ss;
         ss << origin->GetRecordName() << origin->GetN();
-        stream << left << setw(6) << ss.str()
-               << left << setw(4) << " ";
-        if(origin->GetOrigin().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+        stream << std::left << std::setw(6) << ss.str()
+               << std::left << std::setw(4) << " ";
+        if(origin->GetOrigin().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
         {
-            stream << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetX()
-                   << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetY()
-                   << right << setw(10) << fixed << setprecision(6) << origin->GetOrigin().GetZ();
+            stream << std::right << std::setw(10) << std::fixed << std::setprecision(6) << origin->GetOrigin().GetX()
+                   << std::right << std::setw(10) << std::fixed << std::setprecision(6) << origin->GetOrigin().GetY()
+                   << std::right << std::setw(10) << std::fixed << std::setprecision(6) << origin->GetOrigin().GetZ();
         }
         else
         {
-            stream << right << setw(10) << " "
-                   << right << setw(10) << " "
-                   << right << setw(10) << " ";
+            stream << std::right << std::setw(10) << " "
+                   << std::right << std::setw(10) << " "
+                   << std::right << std::setw(10) << " ";
         }
 
-        stream << left << setw(5) << " ";
-        if(origin->GetT() != dNotSet)
-            stream << right << setw(10) << fixed << setprecision(5) << origin->GetT();
+        stream << std::left << std::setw(5) << " ";
+        if(origin->GetT() != gmml::dNotSet)
+            stream << std::right << std::setw(10) << std::fixed << std::setprecision(5) << origin->GetT();
         else
-            stream << right << setw(10) << " ";
-        stream << left << setw(25) << " "
-               << endl;
+            stream << std::right << std::setw(10) << " ";
+        stream << std::left << std::setw(25) << " "
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveScaleCard(std::ofstream& stream)
 {
-    PdbScaleNSection::ScaleNCardVector scales = scales_->GetScaleNCard();
-    for(PdbScaleNSection::ScaleNCardVector::iterator it = scales.begin(); it != scales.end(); it++)
+    PdbFileSpace::PdbScaleNSection::ScaleNCardVector scales = scales_->GetScaleNCard();
+    for(PdbFileSpace::PdbScaleNSection::ScaleNCardVector::iterator it = scales.begin(); it != scales.end(); it++)
     {
         PdbScaleNCard* scale = (*it);
-        stringstream ss;
+        std::stringstream ss;
         ss << scale->GetRecordName() << scale->GetN();
-        stream << left << setw(6) << ss.str()
-               << left << setw(4) << " ";
-        if(scale->GetScaleVector().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+        stream << std::left << std::setw(6) << ss.str()
+               << std::left << std::setw(4) << " ";
+        if(scale->GetScaleVector().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
         {
-            stream << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetX()
-                   << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetY()
-                   << right << setw(10) << fixed << setprecision(6) << scale->GetScaleVector().GetZ();
+            stream << std::right << std::setw(10) << std::fixed << std::setprecision(6) << scale->GetScaleVector().GetX()
+                   << std::right << std::setw(10) << std::fixed << std::setprecision(6) << scale->GetScaleVector().GetY()
+                   << std::right << std::setw(10) << std::fixed << std::setprecision(6) << scale->GetScaleVector().GetZ();
         }
         else
         {
-            stream << right << setw(10) << " "
-                   << right << setw(10) << " "
-                   << right << setw(10) << " ";
+            stream << std::right << std::setw(10) << " "
+                   << std::right << std::setw(10) << " "
+                   << std::right << std::setw(10) << " ";
         }
-        stream << left << setw(5) << " ";
-        if(scale->GetU() != dNotSet)
-            stream << right << setw(10) << fixed << setprecision(5) << scale->GetU();
+        stream << std::left << std::setw(5) << " ";
+        if(scale->GetU() != gmml::dNotSet)
+            stream << std::right << std::setw(10) << std::fixed << std::setprecision(5) << scale->GetU();
         else
-            stream << right << setw(10) << " ";
-        stream << left << setw(25) << " "
-               << endl;
+            stream << std::right << std::setw(10) << " ";
+        stream << std::left << std::setw(25) << " "
+               << std::endl;
     }
 }
 
 void PdbFile::ResolveMatrixCards(std::ofstream& stream)
 {
-    PdbMatrixNSection::MatrixNVectorVector matrices = matrices_->GetMatrixN();
+    PdbFileSpace::PdbMatrixNSection::MatrixNVectorVector matrices = matrices_->GetMatrixN();
     int number_of_matrix_entries = matrices.at(0).size();
     for(int i = 0; i < number_of_matrix_entries; i++)
     {
         for(unsigned int j = 0; j < 3; j++)
         {
-            PdbMatrixNSection::MatrixNVector matrix_vector = matrices.at(j);
+            PdbFileSpace::PdbMatrixNSection::MatrixNVector matrix_vector = matrices.at(j);
             PdbMatrixNCard* matrix = matrix_vector.at(i);
-            stringstream ss;
+            std::stringstream ss;
             ss << matrix->GetRecordName() << matrix->GetN();
-            stream << left << setw(6) << ss.str()
-                   << left << setw(1) << " ";
-            if(matrix->GetSerialNumber() != iNotSet)
-                stream << right << setw(3) << matrix->GetSerialNumber();
+            stream << std::left << std::setw(6) << ss.str()
+                   << std::left << std::setw(1) << " ";
+            if(matrix->GetSerialNumber() != gmml::iNotSet)
+                stream << std::right << std::setw(3) << matrix->GetSerialNumber();
             else
-                stream << right << setw(3) << " ";
-            if(matrix->GetTransformationVector().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                stream << std::right << std::setw(3) << " ";
+            if(matrix->GetTransformationVector().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
             {
-                stream << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetX()
-                       << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetY()
-                       << right << setw(10) << fixed << setprecision(6) << matrix->GetTransformationVector().GetZ();
+                stream << std::right << std::setw(10) << std::fixed << std::setprecision(6) << matrix->GetTransformationVector().GetX()
+                       << std::right << std::setw(10) << std::fixed << std::setprecision(6) << matrix->GetTransformationVector().GetY()
+                       << std::right << std::setw(10) << std::fixed << std::setprecision(6) << matrix->GetTransformationVector().GetZ();
             }
             else
             {
-                stream << right << setw(10) << " "
-                       << right << setw(10) << " "
-                       << right << setw(10) << " ";
+                stream << std::right << std::setw(10) << " "
+                       << std::right << std::setw(10) << " "
+                       << std::right << std::setw(10) << " ";
             }
-            stream << left << setw(5) << " ";
-            if(matrix->GetV() != dNotSet)
-                stream << right << setw(10) << fixed << setprecision(5) << matrix->GetV();
+            stream << std::left << std::setw(5) << " ";
+            if(matrix->GetV() != gmml::dNotSet)
+                stream << std::right << std::setw(10) << std::fixed << std::setprecision(5) << matrix->GetV();
             else
-                stream << right << setw(10) << " ";
-            stream << left << setw(4) << " ";
-            if(matrix->GetIGiven() != iNotSet)
-                stream << right << setw(1) << matrix->GetIGiven();
+                stream << std::right << std::setw(10) << " ";
+            stream << std::left << std::setw(4) << " ";
+            if(matrix->GetIGiven() != gmml::iNotSet)
+                stream << std::right << std::setw(1) << matrix->GetIGiven();
             else
-                stream << right << setw(1) << " ";
-            stream << left << setw(20) << " "
-                   << endl;
+                stream << std::right << std::setw(1) << " ";
+            stream << std::left << std::setw(20) << " "
+                   << std::endl;
         }
     }
 
@@ -7247,11 +7246,11 @@ void PdbFile::ResolveMatrixCards(std::ofstream& stream)
 
 void PdbFile::ResolveModelCards(std::ofstream& stream)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     int number_of_models = models.size();
     if(number_of_models == 1)
     {
-        for(PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
+        for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
         {
             PdbModelCard* model = (*it).second;
             PdbModelResidueSet* residue_set = model->GetModelResidueSet();
@@ -7260,7 +7259,7 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
             {
                 PdbAtomSection* atom_card = (*it1);
                 int serial_number = 0;
-                string residue_name = "";
+                std::string residue_name = "";
                 char chain_id = ' ';
                 int residue_sequence_number = 0;
                 char insertion_code = ' ';
@@ -7268,57 +7267,57 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
                 int atoms_size = ordered_atoms.size();
                 for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
                 {
-                    PdbAtomCard* atom = (*it2);
-                    stream << left << setw(6) << atom_card->GetRecordName();
-                    if(atom->GetAtomSerialNumber() != iNotSet)
-                        stream << right << setw(5) << atom->GetAtomSerialNumber();
+                    PdbFileSpace::PdbAtomCard* atom = (*it2);
+                    stream << std::left << std::setw(6) << atom_card->GetRecordName();
+                    if(atom->GetAtomSerialNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << atom->GetAtomSerialNumber();
                     else
-                        stream << right << setw(5) << " ";
-                    stream << left << setw(1) << " "
-                           << left << setw(4) << atom->GetAtomName();
-                    if(atom->GetAtomAlternateLocation() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(1) << " "
+                           << std::left << std::setw(4) << atom->GetAtomName();
+                    if(atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << atom->GetAtomAlternateLocation();
-                    stream << right << setw(3) << atom->GetAtomResidueName()
-                           << left << setw(1) << " ";
-                    if(atom->GetAtomChainId() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::left << std::setw(1) << atom->GetAtomAlternateLocation();
+                    stream << std::right << std::setw(3) << atom->GetAtomResidueName()
+                           << std::left << std::setw(1) << " ";
+                    if(atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << atom->GetAtomChainId();
-                    if(atom->GetAtomResidueSequenceNumber() != iNotSet)
-                        stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
+                        stream << std::left << std::setw(1) << atom->GetAtomChainId();
+                    if(atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << atom->GetAtomResidueSequenceNumber();
                     else
-                        stream << right << setw(4) << " ";
-                    if(atom->GetAtomInsertionCode() == BLANK_SPACE)
-                        stream << left << setw(1) <<  ' ';
+                        stream << std::right << std::setw(4) << " ";
+                    if(atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) <<  ' ';
                     else
-                        stream << left << setw(1) << atom->GetAtomInsertionCode();
-                    stream << left << setw(3) << " ";
-                    if(atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                        stream << std::left << std::setw(1) << atom->GetAtomInsertionCode();
+                    stream << std::left << std::setw(3) << " ";
+                    if(atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
                     {
-                        stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
-                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
-                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
+                        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
                     }
                     else
                     {
-                        stream << right << setw(8) << " "
-                               << right << setw(8) << " "
-                               << right << setw(8) << " ";
+                        stream << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " ";
                     }
-                    if(atom->GetAtomOccupancy() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy();
+                    if(atom->GetAtomOccupancy() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomOccupancy();
                     else
-                        stream << right << setw(6) << " ";
-                    if(atom->GetAtomTempretureFactor() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor();
+                        stream << std::right << std::setw(6) << " ";
+                    if(atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomTempretureFactor();
                     else
-                        stream << right << setw(6) << " ";
-                    stream << left << setw(10) << " "
-                           << right << setw(2) << atom->GetAtomElementSymbol()
-                           << left << setw(2) << atom->GetAtomCharge()
-                           << endl;
+                        stream << std::right << std::setw(6) << " ";
+                    stream << std::left << std::setw(10) << " "
+                           << std::right << std::setw(2) << atom->GetAtomElementSymbol()
+                           << std::left << std::setw(2) << atom->GetAtomCharge()
+                           << std::endl;
                     serial_number = atom->GetAtomSerialNumber();
                     residue_name = atom->GetAtomResidueName();
                     chain_id = atom->GetAtomChainId();
@@ -7326,25 +7325,25 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
                 }
                 if(atoms_size != 0)
                 {
-                    stream << left << setw(6) << "TER";
-                    if(serial_number != iNotSet)
-                        stream << right << setw(5) << (serial_number+1);
+                    stream << std::left << std::setw(6) << "TER";
+                    if(serial_number != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << (serial_number+1);
                     else
-                        stream << right << setw(5) << " ";
-                    stream << left << setw(6) << " "
-                           << right << setw(3) << residue_name
-                           << left << setw(1) << " ";
-                    if(chain_id == BLANK_SPACE)
-                        stream << left << setw(1) << " ";
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(6) << " "
+                           << std::right << std::setw(3) << residue_name
+                           << std::left << std::setw(1) << " ";
+                    if(chain_id == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << " ";
                     else
-                        stream << left << setw(1) << chain_id;
-                    if(residue_sequence_number != iNotSet)
-                        stream << right << setw(4) << residue_sequence_number;
+                        stream << std::left << std::setw(1) << chain_id;
+                    if(residue_sequence_number != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << residue_sequence_number;
                     else
-                        stream << right << setw(4) << " ";
-                    stream << left << setw(1) << insertion_code
-                           << left << setw(53) << " "
-                           << endl;
+                        stream << std::right << std::setw(4) << " ";
+                    stream << std::left << std::setw(1) << insertion_code
+                           << std::left << std::setw(53) << " "
+                           << std::endl;
                 }
             }
             PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
@@ -7354,81 +7353,81 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
                 PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
                 for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
                 {
-                    PdbAtomCard* heterogen_atom = (*it2);
-                    stream << left << setw(6) << heterogen_atom_card->GetRecordName();
-                    if(heterogen_atom->GetAtomSerialNumber() != iNotSet)
-                        stream << right << setw(5) << heterogen_atom->GetAtomSerialNumber();
+                    PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
+                    stream << std::left << std::setw(6) << heterogen_atom_card->GetRecordName();
+                    if(heterogen_atom->GetAtomSerialNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << heterogen_atom->GetAtomSerialNumber();
                     else
-                        stream << right << setw(5) << " ";
-                    stream << left << setw(1) << " "
-                           << left << setw(4) << heterogen_atom->GetAtomName();
-                    if(heterogen_atom->GetAtomAlternateLocation() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(1) << " "
+                           << std::left << std::setw(4) << heterogen_atom->GetAtomName();
+                    if(heterogen_atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << heterogen_atom->GetAtomAlternateLocation();
-                    stream << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                           << left << setw(1) << " ";
-                    if(heterogen_atom->GetAtomChainId() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomAlternateLocation();
+                    stream << std::right << std::setw(3) << heterogen_atom->GetAtomResidueName()
+                           << std::left << std::setw(1) << " ";
+                    if(heterogen_atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << heterogen_atom->GetAtomChainId();
-                    if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
-                        stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomChainId();
+                    if(heterogen_atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
                     else
-                        stream << right << setw(4) << " ";
-                    if(heterogen_atom->GetAtomInsertionCode() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::right << std::setw(4) << " ";
+                    if(heterogen_atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode();
-                    stream << left << setw(3) << " ";
-                    if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomInsertionCode();
+                    stream << std::left << std::setw(3) << " ";
+                    if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
                     {
-                        stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
-                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
-                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
+                        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
                     }
                     else
                     {
-                        stream << right << setw(8) << " "
-                               << right << setw(8) << " "
-                               << right << setw(8) << " ";
+                        stream << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " ";
                     }
-                    if(heterogen_atom->GetAtomOccupancy() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy();
+                    if(heterogen_atom->GetAtomOccupancy() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomOccupancy();
                     else
-                        stream << right << setw(6) << " ";
-                    if(heterogen_atom->GetAtomTempretureFactor() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
+                        stream << std::right << std::setw(6) << " ";
+                    if(heterogen_atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
                     else
-                        stream << right << setw(6) << " ";
-                    stream << left << setw(10) << " "
-                           << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
-                           << left << setw(2) << heterogen_atom->GetAtomCharge()
-                           << endl;
+                        stream << std::right << std::setw(6) << " ";
+                    stream << std::left << std::setw(10) << " "
+                           << std::right << std::setw(2) << heterogen_atom->GetAtomElementSymbol()
+                           << std::left << std::setw(2) << heterogen_atom->GetAtomCharge()
+                           << std::endl;
                 }
             }
         }
     }
     else
     {
-        for(PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
+        for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it = models.begin(); it != models.end(); it++)
         {
             PdbModelCard* model = (*it).second;
-            stream << left << setw(6) << models_->GetRecordName()
-                   << left << setw(4) << " ";
-            if(model->GetModelSerialNumber() != iNotSet)
-                stream << right << setw(4) << model->GetModelSerialNumber();
+            stream << std::left << std::setw(6) << models_->GetRecordName()
+                   << std::left << std::setw(4) << " ";
+            if(model->GetModelSerialNumber() != gmml::iNotSet)
+                stream << std::right << std::setw(4) << model->GetModelSerialNumber();
             else
-                stream << right << setw(4) << " ";
-            stream << left << setw(66) << " "
-                   << endl;
+                stream << std::right << std::setw(4) << " ";
+            stream << std::left << std::setw(66) << " "
+                   << std::endl;
             PdbModelResidueSet* residue_set = model->GetModelResidueSet();
             PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
             for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
             {
                 PdbAtomSection* atom_card = (*it1);
                 int serial_number = 0;
-                string residue_name = "";
+                std::string residue_name = "";
                 char chain_id = ' ';
                 int residue_sequence_number = 0;
                 char insertion_code = ' ';
@@ -7436,53 +7435,53 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
                 int atoms_size = ordered_atoms.size();
                 for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
                 {
-                    PdbAtomCard* atom = (*it2);
-                    stream << left << setw(6) << atom_card->GetRecordName();
-                    if(atom->GetAtomSerialNumber() != iNotSet)
-                        stream << right << setw(5) << atom->GetAtomSerialNumber();
+                    PdbFileSpace::PdbAtomCard* atom = (*it2);
+                    stream << std::left << std::setw(6) << atom_card->GetRecordName();
+                    if(atom->GetAtomSerialNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << atom->GetAtomSerialNumber();
                     else
-                        stream << right << setw(5) << " ";
-                    stream << left << setw(1) << " "
-                           << left << setw(4) << atom->GetAtomName();
-                    if(atom->GetAtomAlternateLocation() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(1) << " "
+                           << std::left << std::setw(4) << atom->GetAtomName();
+                    if(atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << atom->GetAtomAlternateLocation();
-                    stream << right << setw(3) << atom->GetAtomResidueName()
-                           << left << setw(1) << " ";
-                    if(atom->GetAtomChainId() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::left << std::setw(1) << atom->GetAtomAlternateLocation();
+                    stream << std::right << std::setw(3) << atom->GetAtomResidueName()
+                           << std::left << std::setw(1) << " ";
+                    if(atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << atom->GetAtomChainId();
-                    if(atom->GetAtomResidueSequenceNumber() != iNotSet)
-                        stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
+                        stream << std::left << std::setw(1) << atom->GetAtomChainId();
+                    if(atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << atom->GetAtomResidueSequenceNumber();
                     else
-                        stream << right << setw(4) << " ";
-                    if(atom->GetAtomInsertionCode() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::right << std::setw(4) << " ";
+                    if(atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << atom->GetAtomInsertionCode();
-                    stream << left << setw(3) << " ";
-                    if(atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
-                        stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
-                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
-                               << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
+                        stream << std::left << std::setw(1) << atom->GetAtomInsertionCode();
+                    stream << std::left << std::setw(3) << " ";
+                    if(atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
+                        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
                     else
-                        stream << right << setw(8) << " "
-                               << right << setw(8) << " "
-                               << right << setw(8) << " ";
-                    if(atom->GetAtomOccupancy() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy();
+                        stream << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " ";
+                    if(atom->GetAtomOccupancy() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomOccupancy();
                     else
-                        stream << right << setw(6) << " ";
-                    if(atom->GetAtomTempretureFactor() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor();
+                        stream << std::right << std::setw(6) << " ";
+                    if(atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomTempretureFactor();
                     else
-                        stream << right << setw(6) << " ";
-                    stream << left << setw(10) << " "
-                           << right << setw(2) << atom->GetAtomElementSymbol()
-                           << left << setw(2) << atom->GetAtomCharge()
-                           << endl;
+                        stream << std::right << std::setw(6) << " ";
+                    stream << std::left << std::setw(10) << " "
+                           << std::right << std::setw(2) << atom->GetAtomElementSymbol()
+                           << std::left << std::setw(2) << atom->GetAtomCharge()
+                           << std::endl;
                     serial_number = atom->GetAtomSerialNumber();
                     residue_name = atom->GetAtomResidueName();
                     chain_id = atom->GetAtomChainId();
@@ -7490,25 +7489,25 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
                 }
                 if(atoms_size != 0)
                 {
-                    stream << left << setw(6) << "TER";
-                    if(serial_number != iNotSet)
-                        stream << right << setw(5) << (serial_number+1);
+                    stream << std::left << std::setw(6) << "TER";
+                    if(serial_number != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << (serial_number+1);
                     else
-                        stream << right << setw(5) << " ";
-                    stream << left << setw(6) << " "
-                           << right << setw(3) << residue_name
-                           << left << setw(1) << " ";
-                    if(chain_id == BLANK_SPACE)
-                        stream << left << setw(1) << " ";
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(6) << " "
+                           << std::right << std::setw(3) << residue_name
+                           << std::left << std::setw(1) << " ";
+                    if(chain_id == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << " ";
                     else
-                        stream << left << setw(1) << chain_id;
-                    if(residue_sequence_number != iNotSet)
-                        stream << right << setw(4) << residue_sequence_number;
+                        stream << std::left << std::setw(1) << chain_id;
+                    if(residue_sequence_number != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << residue_sequence_number;
                     else
-                        stream << right << setw(4) << " ";
-                    stream << left << setw(1) << insertion_code
-                           << left << setw(53) << " "
-                           << endl;
+                        stream << std::right << std::setw(4) << " ";
+                    stream << std::left << std::setw(1) << insertion_code
+                           << std::left << std::setw(53) << " "
+                           << std::endl;
                 }
             }
             PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
@@ -7518,65 +7517,65 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
                 PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
                 for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
                 {
-                    PdbAtomCard* heterogen_atom = (*it2);
-                    stream << left << setw(6) << heterogen_atom_card->GetRecordName();
-                    if(heterogen_atom->GetAtomSerialNumber() != iNotSet)
-                        stream << right << setw(5) << heterogen_atom->GetAtomSerialNumber();
+                    PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
+                    stream << std::left << std::setw(6) << heterogen_atom_card->GetRecordName();
+                    if(heterogen_atom->GetAtomSerialNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << heterogen_atom->GetAtomSerialNumber();
                     else
-                        stream << right << setw(5) << " ";
-                    stream << left << setw(1) << " "
-                           << left << setw(4) << heterogen_atom->GetAtomName();
-                    if(heterogen_atom->GetAtomAlternateLocation() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(1) << " "
+                           << std::left << std::setw(4) << heterogen_atom->GetAtomName();
+                    if(heterogen_atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << heterogen_atom->GetAtomAlternateLocation();
-                    stream << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                           << left << setw(1) << " ";
-                    if(heterogen_atom->GetAtomChainId() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomAlternateLocation();
+                    stream << std::right << std::setw(3) << heterogen_atom->GetAtomResidueName()
+                           << std::left << std::setw(1) << " ";
+                    if(heterogen_atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << heterogen_atom->GetAtomChainId();
-                    if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
-                        stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomChainId();
+                    if(heterogen_atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
                     else
-                        stream << right << setw(4) << " ";
-                    if(heterogen_atom->GetAtomInsertionCode() == BLANK_SPACE)
-                        stream << left << setw(1) << ' ';
+                        stream << std::right << std::setw(4) << " ";
+                    if(heterogen_atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
                     else
-                        stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode();
-                    stream << left << setw(3) << " ";
-                    if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
-                        stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
-                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
-                               << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomInsertionCode();
+                    stream << std::left << std::setw(3) << " ";
+                    if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
+                        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
                     else
-                        stream << right << setw(8) << " "
-                               << right << setw(8) << " "
-                               << right << setw(8) << " ";
-                    if(heterogen_atom->GetAtomOccupancy() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy();
+                        stream << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " ";
+                    if(heterogen_atom->GetAtomOccupancy() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomOccupancy();
                     else
-                        stream << right << setw(6) << " ";
-                    if(heterogen_atom->GetAtomTempretureFactor() != dNotSet)
-                        stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
+                        stream << std::right << std::setw(6) << " ";
+                    if(heterogen_atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
                     else
-                        stream << right << setw(6) << " ";
-                    stream << left << setw(10) << " "
-                           << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
-                           << left << setw(2) << heterogen_atom->GetAtomCharge()
-                           << endl;
+                        stream << std::right << std::setw(6) << " ";
+                    stream << std::left << std::setw(10) << " "
+                           << std::right << std::setw(2) << heterogen_atom->GetAtomElementSymbol()
+                           << std::left << std::setw(2) << heterogen_atom->GetAtomCharge()
+                           << std::endl;
                 }
             }
-            stream << left << setw(6) << "ENDMDL"
-                   << left << setw(74) << " "
-                   << endl;
+            stream << std::left << std::setw(6) << "ENDMDL"
+                   << std::left << std::setw(74) << " "
+                   << std::endl;
         }
     }
 }
 
 void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int model_number)
 {
-    PdbModelSection::PdbModelCardMap models = models_->GetModels();
+    PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
     {
         PdbModelCard* model = models[model_number];
@@ -7586,7 +7585,7 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
         {
             PdbAtomSection* atom_card = (*it1);
             int serial_number = 0;
-            string residue_name = "";
+            std::string residue_name = "";
             char chain_id = ' ';
             int residue_sequence_number = 0;
             char insertion_code = ' ';
@@ -7594,57 +7593,57 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
             int atoms_size = atoms.size();
             for(PdbAtomSection::PdbAtomMap::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
-                PdbAtomCard* atom = (*it2).second;
-                stream << left << setw(6) << atom_card->GetRecordName();
-                if(atom->GetAtomSerialNumber() != iNotSet)
-                    stream << right << setw(5) << atom->GetAtomSerialNumber();
+                PdbFileSpace::PdbAtomCard* atom = (*it2).second;
+                stream << std::left << std::setw(6) << atom_card->GetRecordName();
+                if(atom->GetAtomSerialNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(5) << atom->GetAtomSerialNumber();
                 else
-                    stream << right << setw(5) << " ";
-                stream << left << setw(1) << " "
-                       << left << setw(4) << atom->GetAtomName();
-                if(atom->GetAtomAlternateLocation() == BLANK_SPACE)
-                    stream << left << setw(1) << ' ';
+                    stream << std::right << std::setw(5) << " ";
+                stream << std::left << std::setw(1) << " "
+                       << std::left << std::setw(4) << atom->GetAtomName();
+                if(atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                    stream << std::left << std::setw(1) << ' ';
                 else
-                    stream << left << setw(1) << atom->GetAtomAlternateLocation();
-                stream << right << setw(3) << atom->GetAtomResidueName()
-                       << left << setw(1) << " ";
-                if(atom->GetAtomChainId() == BLANK_SPACE)
-                    stream << left << setw(1) << ' ';
+                    stream << std::left << std::setw(1) << atom->GetAtomAlternateLocation();
+                stream << std::right << std::setw(3) << atom->GetAtomResidueName()
+                       << std::left << std::setw(1) << " ";
+                if(atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                    stream << std::left << std::setw(1) << ' ';
                 else
-                    stream << left << setw(1) << atom->GetAtomChainId();
-                if(atom->GetAtomResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << atom->GetAtomResidueSequenceNumber();
+                    stream << std::left << std::setw(1) << atom->GetAtomChainId();
+                if(atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << atom->GetAtomResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                if(atom->GetAtomInsertionCode() == BLANK_SPACE)
-                    stream << left << setw(1) << ' ';
+                    stream << std::right << std::setw(4) << " ";
+                if(atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                    stream << std::left << std::setw(1) << ' ';
                 else
-                    stream << left << setw(1) << atom->GetAtomInsertionCode();
-                stream << left << setw(3) << " ";
-                if(atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                    stream << std::left << std::setw(1) << atom->GetAtomInsertionCode();
+                stream << std::left << std::setw(3) << " ";
+                if(atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
                 {
-                    stream << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
-                           << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
-                           << right << setw(8) << fixed << setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
+                    stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
                 }
                 else
                 {
-                    stream << right << setw(8) << " "
-                           << right << setw(8) << " "
-                           << right << setw(8) << " ";
+                    stream << std::right << std::setw(8) << " "
+                           << std::right << std::setw(8) << " "
+                           << std::right << std::setw(8) << " ";
                 }
-                if(atom->GetAtomOccupancy() != dNotSet)
-                    stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomOccupancy();
+                if(atom->GetAtomOccupancy() != gmml::dNotSet)
+                    stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomOccupancy();
                 else
-                    stream << right << setw(6) << " ";
-                if(atom->GetAtomTempretureFactor() != dNotSet)
-                    stream << right << setw(6) << fixed << setprecision(2) << atom->GetAtomTempretureFactor();
+                    stream << std::right << std::setw(6) << " ";
+                if(atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                    stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomTempretureFactor();
                 else
-                    stream << right << setw(6) << " ";
-                stream << left << setw(10) << " "
-                       << right << setw(2) << atom->GetAtomElementSymbol()
-                       << left << setw(2) << atom->GetAtomCharge()
-                       << endl;
+                    stream << std::right << std::setw(6) << " ";
+                stream << std::left << std::setw(10) << " "
+                       << std::right << std::setw(2) << atom->GetAtomElementSymbol()
+                       << std::left << std::setw(2) << atom->GetAtomCharge()
+                       << std::endl;
                 serial_number = atom->GetAtomSerialNumber();
                 residue_name = atom->GetAtomResidueName();
                 chain_id = atom->GetAtomChainId();
@@ -7652,25 +7651,25 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
             }
             if(atoms_size != 0)
             {
-                stream << left << setw(6) << "TER";
-                if(serial_number != iNotSet)
-                    stream << right << setw(5) << (serial_number+1);
+                stream << std::left << std::setw(6) << "TER";
+                if(serial_number != gmml::iNotSet)
+                    stream << std::right << std::setw(5) << (serial_number+1);
                 else
-                    stream << right << setw(5) << " ";
-                stream << left << setw(6) << " "
-                       << right << setw(3) << residue_name
-                       << left << setw(1) << " ";
-                if(chain_id == BLANK_SPACE)
-                    stream << left << setw(1) << " ";
+                    stream << std::right << std::setw(5) << " ";
+                stream << std::left << std::setw(6) << " "
+                       << std::right << std::setw(3) << residue_name
+                       << std::left << std::setw(1) << " ";
+                if(chain_id == gmml::BLANK_SPACE)
+                    stream << std::left << std::setw(1) << " ";
                 else
-                    stream << left << setw(1) << chain_id;
-                if(residue_sequence_number != iNotSet)
-                    stream << right << setw(4) << residue_sequence_number;
+                    stream << std::left << std::setw(1) << chain_id;
+                if(residue_sequence_number != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << residue_sequence_number;
                 else
-                    stream << right << setw(4) << " ";
-                stream << left << setw(1) << insertion_code
-                       << left << setw(53) << " "
-                       << endl;
+                    stream << std::right << std::setw(4) << " ";
+                stream << std::left << std::setw(1) << insertion_code
+                       << std::left << std::setw(53) << " "
+                       << std::endl;
             }
         }
         PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
@@ -7680,57 +7679,57 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
             PdbHeterogenAtomSection::PdbHeterogenAtomCardMap heterogen_atoms = heterogen_atom_card->GetHeterogenAtomCards();
             for(PdbHeterogenAtomSection::PdbHeterogenAtomCardMap::iterator it2 = heterogen_atoms.begin(); it2 != heterogen_atoms.end(); it2++)
             {
-                PdbAtomCard* heterogen_atom = (*it2).second;
-                stream << left << setw(6) << heterogen_atom_card->GetRecordName();
-                if(heterogen_atom->GetAtomSerialNumber() != iNotSet)
-                    stream << right << setw(5) << heterogen_atom->GetAtomSerialNumber();
+                PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2).second;
+                stream << std::left << std::setw(6) << heterogen_atom_card->GetRecordName();
+                if(heterogen_atom->GetAtomSerialNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(5) << heterogen_atom->GetAtomSerialNumber();
                 else
-                    stream << right << setw(5) << " ";
-                stream << left << setw(1) << " "
-                       << left << setw(4) << heterogen_atom->GetAtomName();
-                if(heterogen_atom->GetAtomAlternateLocation() == BLANK_SPACE)
-                    stream << left << setw(1) << ' ';
+                    stream << std::right << std::setw(5) << " ";
+                stream << std::left << std::setw(1) << " "
+                       << std::left << std::setw(4) << heterogen_atom->GetAtomName();
+                if(heterogen_atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                    stream << std::left << std::setw(1) << ' ';
                 else
-                    stream << left << setw(1) << heterogen_atom->GetAtomAlternateLocation();
-                stream << right << setw(3) << heterogen_atom->GetAtomResidueName()
-                       << left << setw(1) << " ";
-                if(heterogen_atom->GetAtomChainId() == BLANK_SPACE)
-                    stream << left << setw(1) << ' ';
+                    stream << std::left << std::setw(1) << heterogen_atom->GetAtomAlternateLocation();
+                stream << std::right << std::setw(3) << heterogen_atom->GetAtomResidueName()
+                       << std::left << std::setw(1) << " ";
+                if(heterogen_atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                    stream << std::left << std::setw(1) << ' ';
                 else
-                    stream << left << setw(1) << heterogen_atom->GetAtomChainId();
-                if(heterogen_atom->GetAtomResidueSequenceNumber() != iNotSet)
-                    stream << right << setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
+                    stream << std::left << std::setw(1) << heterogen_atom->GetAtomChainId();
+                if(heterogen_atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                    stream << std::right << std::setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
                 else
-                    stream << right << setw(4) << " ";
-                if(heterogen_atom->GetAtomInsertionCode() == BLANK_SPACE)
-                    stream << left << setw(1) << ' ';
+                    stream << std::right << std::setw(4) << " ";
+                if(heterogen_atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                    stream << std::left << std::setw(1) << ' ';
                 else
-                    stream << left << setw(1) << heterogen_atom->GetAtomInsertionCode();
-                stream << left << setw(3) << " ";
-                if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(dNotSet, dNotSet, dNotSet)) == false)
+                    stream << std::left << std::setw(1) << heterogen_atom->GetAtomInsertionCode();
+                stream << std::left << std::setw(3) << " ";
+                if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
                 {
-                    stream << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
-                           << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
-                           << right << setw(8) << fixed << setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
+                    stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
                 }
                 else
                 {
-                    stream << right << setw(8) << " "
-                           << right << setw(8) << " "
-                           << right << setw(8) << " ";
+                    stream << std::right << std::setw(8) << " "
+                           << std::right << std::setw(8) << " "
+                           << std::right << std::setw(8) << " ";
                 }
-                if(heterogen_atom->GetAtomOccupancy() != dNotSet)
-                    stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomOccupancy();
+                if(heterogen_atom->GetAtomOccupancy() != gmml::dNotSet)
+                    stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomOccupancy();
                 else
-                    stream << right << setw(6) << " ";
-                if(heterogen_atom->GetAtomTempretureFactor() != dNotSet)
-                    stream << right << setw(6) << fixed << setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
+                    stream << std::right << std::setw(6) << " ";
+                if(heterogen_atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                    stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
                 else
-                    stream << right << setw(6) << " ";
-                stream << left << setw(10) << " "
-                       << right << setw(2) << heterogen_atom->GetAtomElementSymbol()
-                       << left << setw(2) << heterogen_atom->GetAtomCharge()
-                       << endl;
+                    stream << std::right << std::setw(6) << " ";
+                stream << std::left << std::setw(10) << " "
+                       << std::right << std::setw(2) << heterogen_atom->GetAtomElementSymbol()
+                       << std::left << std::setw(2) << heterogen_atom->GetAtomCharge()
+                       << std::endl;
             }
         }
     }
@@ -7738,79 +7737,79 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
 
 void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
 {
-    PdbConnectSection::BondedAtomsSerialNumbersMap bonded_atoms = connectivities_->GetBondedAtomsSerialNumbers();
-    for(PdbConnectSection::BondedAtomsSerialNumbersMap::iterator it = bonded_atoms.begin(); it != bonded_atoms.end(); it++)
+    PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap bonded_atoms = connectivities_->GetBondedAtomsSerialNumbers();
+    for(PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap::iterator it = bonded_atoms.begin(); it != bonded_atoms.end(); it++)
     {
-        vector<int> bonded_atoms_serial_number = (*it).second;
+        std::vector<int> bonded_atoms_serial_number = (*it).second;
         int source_atom_serial_number = (*it).first;
         int number_of_bonded_atoms = bonded_atoms_serial_number.size();
         const int MAX_SERIAL_NUMBER_IN_LINE = 4;
         const int SERIAL_NUMBER_LENGTH = 5;
         if(number_of_bonded_atoms <= MAX_SERIAL_NUMBER_IN_LINE)
         {
-            stream << left << setw(6) << connectivities_->GetRecordName();
-            if(source_atom_serial_number != iNotSet)
-                stream << right << setw(5) << source_atom_serial_number;
+            stream << std::left << std::setw(6) << connectivities_->GetRecordName();
+            if(source_atom_serial_number != gmml::iNotSet)
+                stream << std::right << std::setw(5) << source_atom_serial_number;
             else
-                stream << right << setw(5) << " ";
-            for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+                stream << std::right << std::setw(5) << " ";
+            for(std::vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
             {
                 int serial_number = (*it1);
-                if(serial_number != iNotSet)
-                    stream << right << setw(5) << serial_number;
+                if(serial_number != gmml::iNotSet)
+                    stream << std::right << std::setw(5) << serial_number;
                 else
-                    stream << right << setw(5) << " ";
+                    stream << std::right << std::setw(5) << " ";
             }
             if((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH != 0)
-                stream << left << setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
-                       << left << setw(49) << " "
-                       << endl;
+                stream << std::left << std::setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
+                       << std::left << std::setw(49) << " "
+                       << std::endl;
             else
-                stream << left << setw(49) << " "
-                       << endl;
+                stream << std::left << std::setw(49) << " "
+                       << std::endl;
         }
         else
         {
             int number_of_lines = ceil((double)(number_of_bonded_atoms) / MAX_SERIAL_NUMBER_IN_LINE);
             for(int i = 1; i <= number_of_lines; i++)
             {
-                stream << left << setw(6) << connectivities_->GetRecordName();
-                if(source_atom_serial_number != iNotSet)
-                    stream << right << setw(5) << source_atom_serial_number;
+                stream << std::left << std::setw(6) << connectivities_->GetRecordName();
+                if(source_atom_serial_number != gmml::iNotSet)
+                    stream << std::right << std::setw(5) << source_atom_serial_number;
                 else
-                    stream << right << setw(5) << " ";
+                    stream << std::right << std::setw(5) << " ";
                 if(i != number_of_lines)
                 {
-                    for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin() + (i-1) * MAX_SERIAL_NUMBER_IN_LINE;
+                    for(std::vector<int>::iterator it1 = bonded_atoms_serial_number.begin() + (i-1) * MAX_SERIAL_NUMBER_IN_LINE;
                         it1 != bonded_atoms_serial_number.begin() + i * MAX_SERIAL_NUMBER_IN_LINE; it1++)
                     {
                         int serial_number = (*it1);
-                        if(serial_number != iNotSet)
-                            stream << right << setw(5) << serial_number;
+                        if(serial_number != gmml::iNotSet)
+                            stream << std::right << std::setw(5) << serial_number;
                         else
-                            stream << right << setw(5) << " ";
+                            stream << std::right << std::setw(5) << " ";
                     }
-                    stream << left << setw(49) << " "
-                           << endl;
+                    stream << std::left << std::setw(49) << " "
+                           << std::endl;
                 }
                 else
                 {
-                    for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin() + (i-1) * MAX_SERIAL_NUMBER_IN_LINE;
+                    for(std::vector<int>::iterator it1 = bonded_atoms_serial_number.begin() + (i-1) * MAX_SERIAL_NUMBER_IN_LINE;
                         it1 != bonded_atoms_serial_number.end(); it1++)
                     {
                         int serial_number = (*it1);
-                        if(serial_number != iNotSet)
-                            stream << right << setw(5) << serial_number;
+                        if(serial_number != gmml::iNotSet)
+                            stream << std::right << std::setw(5) << serial_number;
                         else
-                            stream << right << setw(5) << " ";
+                            stream << std::right << std::setw(5) << " ";
                     }
                     if((MAX_SERIAL_NUMBER_IN_LINE-(number_of_bonded_atoms-(i-1)*MAX_SERIAL_NUMBER_IN_LINE))*SERIAL_NUMBER_LENGTH != 0)
-                        stream << left << setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
-                               << left << setw(49) << " "
-                               << endl;
+                        stream << std::left << std::setw((MAX_SERIAL_NUMBER_IN_LINE-number_of_bonded_atoms)*SERIAL_NUMBER_LENGTH) << " "
+                               << std::left << std::setw(49) << " "
+                               << std::endl;
                     else
-                        stream << left << setw(49) << " "
-                               << endl;
+                        stream << std::left << std::setw(49) << " "
+                               << std::endl;
                 }
             }
         }
@@ -7819,212 +7818,212 @@ void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
 
 void PdbFile::ResolveMasterCards(std::ofstream& stream)
 {
-  stream << left << setw(6) << master_->GetRecordName()
-         << right << setw(4) << " "
-         << right << setw(5) << master_->GetNumRemark()
-         << right << setw(5) << 0
-         << right << setw(5) << master_->GetNumHet()
-         << right << setw(5) << master_->GetNumHelix()
-         << right << setw(5) << master_->GetNumSheet()
-         << right << setw(5) << 0
-         << right << setw(5) << master_->GetNumSite()
-         << right << setw(5) << master_->GetNumXForm()
-         << right << setw(5) << master_->GetNumCoord()
-         << right << setw(5) << master_->GetNumTer()
-         << right << setw(5) << master_->GetNumConnect()
-         << right << setw(5) << master_->GetNumSeq()
-         << endl;
+  stream << std::left << std::setw(6) << master_->GetRecordName()
+         << std::right << std::setw(4) << " "
+         << std::right << std::setw(5) << master_->GetNumRemark()
+         << std::right << std::setw(5) << 0
+         << std::right << std::setw(5) << master_->GetNumHet()
+         << std::right << std::setw(5) << master_->GetNumHelix()
+         << std::right << std::setw(5) << master_->GetNumSheet()
+         << std::right << std::setw(5) << 0
+         << std::right << std::setw(5) << master_->GetNumSite()
+         << std::right << std::setw(5) << master_->GetNumXForm()
+         << std::right << std::setw(5) << master_->GetNumCoord()
+         << std::right << std::setw(5) << master_->GetNumTer()
+         << std::right << std::setw(5) << master_->GetNumConnect()
+         << std::right << std::setw(5) << master_->GetNumSeq()
+         << std::endl;
 }
 
 void PdbFile::ResolveEndCard(std::ofstream& stream)
 {
-    stream << left << setw(6) << "END" << left << setw(74) << " " << endl;
+    stream << std::left << std::setw(6) << "END" << std::left << std::setw(74) << " " << std::endl;
 }
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 
-void PdbFile::Print(ostream &out)
+void PdbFile::Print(std::ostream &out)
 {
     if(header_ != NULL)
     {
-        out << "******************************* HEADER *******************************" << endl;
+        out << "******************************* HEADER *******************************" << std::endl;
         header_->Print(out);
     }
     if(title_ != NULL)
     {
-        out << "******************************** TITLE *******************************" << endl;
+        out << "******************************** TITLE *******************************" << std::endl;
         title_->Print(out);
     }
     if(split_ != NULL)
     {
-        out << "******************************** SPLIT *******************************" << endl;
+        out << "******************************** SPLIT *******************************" << std::endl;
         split_->Print(out);
     }
     if(caveat_ != NULL)
     {
-        out << "******************************** CAVEAT *******************************" << endl;
+        out << "******************************** CAVEAT *******************************" << std::endl;
         caveat_->Print(out);
     }
     if(compound_ != NULL)
     {
-        out << "****************************** COMPOUND ******************************" << endl;
+        out << "****************************** COMPOUND ******************************" << std::endl;
         compound_->Print(out);
     }
     if(source_ != NULL)
     {
-        out << "******************************** SOURCE *******************************" << endl;
+        out << "******************************** SOURCE *******************************" << std::endl;
         source_->Print(out);
     }
     if(keywords_ != NULL)
     {
-        out << "******************************** KEYWORDS *******************************" << endl;
+        out << "******************************** KEYWORDS *******************************" << std::endl;
         keywords_->Print(out);
     }
     if(experimental_data_ != NULL)
     {
-        out << "*************************** EXPERIMENTAL DATA ****************************" << endl;
+        out << "*************************** EXPERIMENTAL DATA ****************************" << std::endl;
         experimental_data_->Print(out);
     }
     if(number_of_models_ != NULL)
     {
-        out << "************************** NUMBER OF MODELS **************************" << endl;
+        out << "************************** NUMBER OF MODELS **************************" << std::endl;
         number_of_models_->Print(out);
     }
     if(model_type_ != NULL)
     {
-        out << "***************************** MODEL TYPE *****************************" << endl;
+        out << "***************************** MODEL TYPE *****************************" << std::endl;
         model_type_->Print(out);
     }
     if(author_ != NULL)
     {
-        out << "******************************** AUTHOR ******************************" << endl;
+        out << "******************************** AUTHOR ******************************" << std::endl;
         author_->Print(out);
     }
     if(revision_data_ != NULL)
     {
-        out << "**************************** REVISION DATA ***************************" << endl;
+        out << "**************************** REVISION DATA ***************************" << std::endl;
         revision_data_->Print(out);
     }
     if(superseded_entries_ != NULL)
     {
-        out << "************************** SUPERSEDED ENTRIES *************************" << endl;
+        out << "************************** SUPERSEDED ENTRIES *************************" << std::endl;
         superseded_entries_->Print(out);
     }
     if(journal_ != NULL)
     {
-        out << "******************************** JOURNAL *******************************" << endl;
+        out << "******************************** JOURNAL *******************************" << std::endl;
         journal_->Print(out);
     }
     if(remark_cards_ != NULL)
     {
-        out << "****************************** REMARKS *******************************" << endl;
+        out << "****************************** REMARKS *******************************" << std::endl;
         remark_cards_->Print(out);
     }
     if(database_reference_ != NULL)
     {
-        out << "************************** DATABASE REFERENCE *************************" << endl;
+        out << "************************** DATABASE REFERENCE *************************" << std::endl;
         database_reference_->Print(out);
     }
     if(sequence_advanced_ != NULL)
     {
-        out << "*************************** SEQUENCE ADVANCED **************************" << endl;
+        out << "*************************** SEQUENCE ADVANCED **************************" << std::endl;
         sequence_advanced_->Print(out);
     }
     if(residues_sequence_ != NULL)
     {
-        out << "************************** RESIDUE SEQUENCE **************************" << endl;
+        out << "************************** RESIDUE SEQUENCE **************************" << std::endl;
         residues_sequence_->Print(out);
     }
     if(residue_modification_cards_ != NULL)
     {
-        out << "************************ RESIDUE MODIFICATION ************************" << endl;
+        out << "************************ RESIDUE MODIFICATION ************************" << std::endl;
         residue_modification_cards_->Print(out);
     }
     if(heterogen_cards_ != NULL)
     {
-        out << "***************************** HETEROGEN ******************************" << endl;
+        out << "***************************** HETEROGEN ******************************" << std::endl;
         heterogen_cards_->Print(out);
     }
     if(heterogen_name_cards_ != NULL)
     {
-        out << "*************************** HETEROGEN NAME ***************************" << endl;
+        out << "*************************** HETEROGEN NAME ***************************" << std::endl;
         heterogen_name_cards_->Print(out);
     }
     if(heterogen_synonym_cards_ != NULL)
     {
-        out << "************************** HETEROGEN SYNONYM *************************" << endl;
+        out << "************************** HETEROGEN SYNONYM *************************" << std::endl;
         heterogen_synonym_cards_->Print(out);
     }
     if(formulas_ != NULL)
     {
-        out << "******************************* FORMULA ******************************" << endl;
+        out << "******************************* FORMULA ******************************" << std::endl;
         formulas_->Print(out);
     }
     if(helix_cards_ != NULL)
     {
-        out << "******************************** HELIX *******************************" << endl;
+        out << "******************************** HELIX *******************************" << std::endl;
         helix_cards_->Print(out);
     }
     if(sheet_cards_ != NULL)
     {
-        out << "******************************** SHEET *******************************" << endl;
+        out << "******************************** SHEET *******************************" << std::endl;
         sheet_cards_->Print(out);
     }
     if(disulfide_bonds_ != NULL)
     {
-        out << "*************************** DISULFIDE BOND ***************************" << endl;
+        out << "*************************** DISULFIDE BOND ***************************" << std::endl;
         disulfide_bonds_->Print(out);
     }
     if(link_cards_ != NULL)
     {
-        out << "******************************** LINK ********************************" << endl;
+        out << "******************************** LINK ********************************" << std::endl;
         link_cards_->Print(out);
     }
     if(cis_peptide_ != NULL)
     {
-        out << "***************************** CIS PEPTIDE ****************************" << endl;
+        out << "***************************** CIS PEPTIDE ****************************" << std::endl;
         cis_peptide_->Print(out);
     }
     if(site_cards_ != NULL)
     {
-        out << "******************************** SITE ********************************" << endl;
+        out << "******************************** SITE ********************************" << std::endl;
         site_cards_->Print(out);
     }
     if(crystallography_ != NULL)
     {
-        out << "************************** CRYSTALLOGRAPHIC **************************" << endl;
+        out << "************************** CRYSTALLOGRAPHIC **************************" << std::endl;
         crystallography_->Print(out);
     }
     if(origins_ != NULL)
     {
-        out << "******************************* ORIGIN *******************************" << endl;
+        out << "******************************* ORIGIN *******************************" << std::endl;
         origins_->Print(out);
     }
     if(scales_ != NULL)
     {
-        out << "******************************** SCALE *******************************" << endl;
+        out << "******************************** SCALE *******************************" << std::endl;
         scales_->Print(out);
     }
     if(matrices_ != NULL)
     {
-        out << "******************************* MATRIX *******************************" << endl;
+        out << "******************************* MATRIX *******************************" << std::endl;
         matrices_->Print(out);
     }
     if(models_ != NULL)
     {
-        out << "******************************* MODEL ********************************" << endl;
+        out << "******************************* MODEL ********************************" << std::endl;
         models_->Print(out);
     }
     if(connectivities_ != NULL)
     {
-        out << "******************************* CONNECT ******************************" << endl;
+        out << "******************************* CONNECT ******************************" << std::endl;
         connectivities_->Print(out);
     }
     if(master_ != NULL)
     {
-        out << "******************************** MASTER *******************************" << endl;
+        out << "******************************** MASTER *******************************" << std::endl;
         master_->Print(out);
     }
 }

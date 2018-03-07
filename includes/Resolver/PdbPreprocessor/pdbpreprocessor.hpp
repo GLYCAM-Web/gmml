@@ -800,7 +800,7 @@ namespace PdbPreprocessorSpace
               * @param alternate_residue_map
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map, int model_number = 1);
+            void RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorAlternateResidueMap alternate_residue_map/*, int model_number = 1*/);
             /*! \fn
               * A function to do all preprocessing sequentially
               * @param pdb_file Pdb file object that has to be preprocessed

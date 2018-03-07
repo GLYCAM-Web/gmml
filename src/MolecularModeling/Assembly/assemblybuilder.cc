@@ -77,109 +77,97 @@
 #include <string.h>
 #include <iostream>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-bool Assembly::CheckCondensedSequenceSanity(string sequence, CondensedSequence::CondensedSequenceGlycam06ResidueTree& prep_residues)
+bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& prep_residues)
 {
     try
     {
-        CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
+        CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(sequence);
         prep_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
-        for(CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
+        for(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
         {
-            CondensedSequenceGlycam06Residue* glycam06_residue = *it;
-            string glycam06_residue_name = glycam06_residue->GetName();
+            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam06_residue = *it;
+            std::string glycam06_residue_name = glycam06_residue->GetName();
             if(glycam06_residue_name.compare("UNK") == 0)
             {
-                cout << "The input sequence (" << sequence << ") is not valid" << endl;
+                std::cout << "The input sequence (" << sequence << ") is not valid" << std::endl;
                 return false;
             }
         }
     }
-    catch(exception ex)
+    catch(std::exception ex)
     {
-        cout << "The input sequence (" << sequence << ") is not valid" << endl;
+        std::cout << "The input sequence (" << sequence << ") is not valid" << std::endl;
         return false;
     }
 
-    cout << "The input sequence (" << sequence << ") is valid" << endl;
+    std::cout << "The input sequence (" << sequence << ") is valid" << std::endl;
     return true;
 }
 
-void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_file, string parameter_file, bool structure)
+void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)
 {
     try
     {
-        CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
-        CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
-        PrepFile* prep = new PrepFile(prep_file);
-        PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
-        ParameterFile* parameter = NULL;
-        ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+        CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(sequence);
+        CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
+        PrepFileSpace::PrepFile* prep = new PrepFileSpace::PrepFile(prep_file);
+        PrepFileSpace::PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
+        ParameterFileSpace::ParameterFile* parameter = NULL;
+        ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
         if(parameter_file.compare("")!= 0)
         {
-            parameter = new ParameterFile(parameter_file);
+            parameter = new ParameterFileSpace::ParameterFile(parameter_file);
             atom_type_map = parameter->GetAtomTypes();
         }
         ResidueVector parent_residues = ResidueVector();
         ResidueVector branch_residues = ResidueVector();
-        vector<bool> derivatives = vector<bool>();
+        std::vector<bool> derivatives = std::vector<bool>();
         int sequence_number = 0;
         int serial_number = 0;
-        stringstream ss;
-        for(CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
+        std::stringstream ss;
+        for(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
         {
-            CondensedSequenceGlycam06Residue* glycam06_residue = *it;
-            string glycam06_residue_name = glycam06_residue->GetName();
-            string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
+            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam06_residue = *it;
+            std::string glycam06_residue_name = glycam06_residue->GetName();
+            std::string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
 
             if(prep_residue_map.find(glycam06_residue_name) != prep_residue_map.end())
             {
-                PrepFileResidue* prep_residue = prep_residue_map[glycam06_residue_name];
+                PrepFileSpace::PrepFileResidue* prep_residue = prep_residue_map[glycam06_residue_name];
 
                 // Build residue from prep residue
                 sequence_number++;
                 CoordinateVector cartesian_coordinate_list = CoordinateVector();
                 Residue* assembly_residue = new Residue();
                 assembly_residue->SetAssembly(this);
-                string prep_residue_name = prep_residue->GetName();
+                std::string prep_residue_name = prep_residue->GetName();
                 assembly_residue->SetName(prep_residue_name);
-                stringstream id;
+                std::stringstream id;
                 id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
                    << gmml::BLANK_SPACE << "_" << id_;
 
                 assembly_residue->SetId(id.str());
-                if(distance(glycam06_residues.begin(), it) == (int)glycam06_residues.size()-1)
+                if(std::distance(glycam06_residues.begin(), it) == (int)glycam06_residues.size()-1)
                     ss << prep_residue_name;
                 else
                     ss << prep_residue_name << "-";
-                PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-                for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+                PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+                for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
                 {
-                    PrepFileAtom* prep_atom = (*it1);
-                    string atom_name = prep_atom->GetName();
+                    PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
+                    std::string atom_name = prep_atom->GetName();
                     if(prep_atom->GetType() != "DU")
                         serial_number++;
 
                     Atom* assembly_atom = new Atom();
                     assembly_atom->SetResidue(assembly_residue);
                     assembly_atom->SetName(atom_name);
-                    stringstream atom_id;
+                    std::stringstream atom_id;
                     atom_id << atom_name << "_" << serial_number << "_" << id.str();
                     assembly_atom->SetId(atom_id.str());
 
@@ -189,20 +177,20 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     {
                         if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
                         {
-                            ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                            ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
                             assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
                             assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                         }
                         else
                         {
-                            assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                            assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                            assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                            assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                         }
                     }
                     else
                     {
-                        assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                        assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                        assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                        assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                     }
 
                     if(atom_name.at(0) == 'P' && prep_residue_name.compare("PO3") == 0)
@@ -215,30 +203,30 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     {
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
-                    else if(atom_name.find("C1") != string::npos && prep_residue_name.compare("ACX") == 0)
+                    else if(atom_name.find("C1") != std::string::npos && prep_residue_name.compare("ACX") == 0)
                     {
                         assembly_residue->AddHeadAtom(assembly_atom);
                     }
 
                     if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
                     {
-                        vector<Coordinate*> coordinate_list = vector<Coordinate*>();
-                        int index = distance(prep_atoms.begin(), it1);
+                        std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+                        int index = std::distance(prep_atoms.begin(), it1);
                         if(index == 0)
                         {
                         }
                         if(index == 1)
                         {
                             int parent_index = prep_atom->GetBondIndex() - 1;
-                            Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                            GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                             coordinate_list.push_back(parent_coordinate);
                         }
                         if(index == 2)
                         {
                             int grandparent_index = prep_atom->GetAngleIndex() - 1;
                             int parent_index = prep_atom->GetBondIndex() - 1;
-                            Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                            Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                            GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                            GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                             coordinate_list.push_back(grandparent_coordinate);
                             coordinate_list.push_back(parent_coordinate);
                         }
@@ -248,14 +236,14 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                             int grandparent_index = prep_atom->GetAngleIndex() - 1;
                             int parent_index = prep_atom->GetBondIndex() - 1;
 
-                            Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
-                            Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                            Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                            GeometryTopology::Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
+                            GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                            GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                             coordinate_list.push_back(great_grandparent_coordinate);
                             coordinate_list.push_back(grandparent_coordinate);
                             coordinate_list.push_back(parent_coordinate);
                         }
-                        Coordinate* coordinate = new Coordinate();
+                        GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
                         coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
                                                                                          prep_atom->GetAngle(), prep_atom->GetDihedral());
                         cartesian_coordinate_list.push_back(coordinate);
@@ -264,7 +252,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                     }
                     else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
                     {
-                        assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+                        assembly_atom->AddCoordinate(new GeometryTopology::Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
                     }
                     if(assembly_atom->GetAtomType().compare("DU") != 0)
                         assembly_residue->AddAtom(assembly_atom);
@@ -302,7 +290,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
             }
             else
             {
-                cout << "Residue " << glycam06_residue_name << " has not been found in the database" << endl;
+                std::cout << "Residue " << glycam06_residue_name << " has not been found in the database" << std::endl;
             }
         }
 
@@ -311,12 +299,12 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
 
         if(structure)
         {
-            map<Residue*, int> parent_branch_map = map<Residue*, int>();
+            std::map<Residue*, int> parent_branch_map = std::map<Residue*, int>();
             int linkage_index = -1;
             for(ResidueVector::iterator it = parent_residues.begin(); it != parent_residues.end(); it++)
             {
                 Residue* parent_residue = (*it);
-                int parent_index = distance(parent_residues.begin(), it);
+                int parent_index = std::distance(parent_residues.begin(), it);
                 if(parent_branch_map.find(parent_residue) == parent_branch_map.end())
                     parent_branch_map[parent_residue] = 0;
                 else
@@ -337,79 +325,79 @@ void Assembly::BuildAssemblyFromCondensedSequence(string sequence, string prep_f
                 if(linkage_index >= 0)
                 {
                     // 2-8 default rotamer
-                    stringstream linkage_name;
+                    std::stringstream linkage_name;
                     linkage_name << assembly_residue->GetName() << assembly_residue->GetHeadAtoms().at(0)->GetName().at(1) << "-" <<
                                     parent_residue->GetTailAtoms().at(branch_index)->GetName().at(1) << parent_residue->GetName();
-                    if(linkage_name.str().find("0SA2-8") != string::npos ||
-                                                linkage_name.str().find("0SB2-8") != string::npos)
+                    if(linkage_name.str().find("0SA2-8") != std::string::npos ||
+                                                linkage_name.str().find("0SB2-8") != std::string::npos)
                     {
-                        this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][0]);
-                        this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][1], false);
-                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][2], 7);
-                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][3], 8);
-                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, EXTERNAL28LINKAGEROTAMERS[0][4], 9);
+                        this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, gmml::EXTERNAL28LINKAGEROTAMERS[0][0]);
+                        this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, gmml::EXTERNAL28LINKAGEROTAMERS[0][1], false);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, gmml::EXTERNAL28LINKAGEROTAMERS[0][2], 7);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, gmml::EXTERNAL28LINKAGEROTAMERS[0][3], 8);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, gmml::EXTERNAL28LINKAGEROTAMERS[0][4], 9);
                     }
-                    if(linkage_name.str().find("0GL2-8") != string::npos)
+                    if(linkage_name.str().find("0GL2-8") != std::string::npos)
                     {
-                        this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][0]);
-                        this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][1], false);
-                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][2], 7);
-                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][3], 8);
-                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, INTERNAL28LINKAGEROTAMERS[0][4], 9);
+                        this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, gmml::INTERNAL28LINKAGEROTAMERS[0][0]);
+                        this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, gmml::INTERNAL28LINKAGEROTAMERS[0][1], false);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, gmml::INTERNAL28LINKAGEROTAMERS[0][2], 7);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, gmml::INTERNAL28LINKAGEROTAMERS[0][3], 8);
+                        this->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, gmml::INTERNAL28LINKAGEROTAMERS[0][4], 9);
                     }
                 }
                 linkage_index++;
             }
         }
     }
-    catch(exception ex)
+    catch(std::exception ex)
     {
-        cout << "Building assembly from " << sequence << " failed." << endl;
+        std::cout << "Building assembly from " << sequence << " failed." << std::endl;
     }
 
 
 }
 
-Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string sequence, string prep_file, string parameter_file,
-                                                                         CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
-                                                                         CondensedSequence::IndexNameMap& names)
+Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file,
+                                                                         CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
+                                                                         CondensedSequenceSpace::CondensedSequence::IndexNameMap& names)
 {
 
     try
     {
-        CondensedSequence* condensed_sequence = new CondensedSequence(sequence);
+        CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(sequence);
         AssemblyVector structures = AssemblyVector(condensed_sequence->CountAllPossible28LinkagesRotamers(rotamers_glycosidic_angles_info) *
                                                    condensed_sequence->CountAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info));
-        CondensedSequence::IndexLinkageConfigurationMap structure_map = condensed_sequence->CreateIndexLinkageConfigurationMap(
+        CondensedSequenceSpace::CondensedSequence::IndexLinkageConfigurationMap structure_map = condensed_sequence->CreateIndexLinkageConfigurationMap(
                     rotamers_glycosidic_angles_info, names);
-        CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
-        PrepFile* prep = new PrepFile(prep_file);
-        PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
-        ParameterFile* parameter = NULL;
-        ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+        CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
+        PrepFileSpace::PrepFile* prep = new PrepFileSpace::PrepFile(prep_file);
+        PrepFileSpace::PrepFile::ResidueMap prep_residue_map = prep->GetResidues();
+        ParameterFileSpace::ParameterFile* parameter = NULL;
+        ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
         if(parameter_file.compare("") != 0)
         {
-            parameter = new ParameterFile(parameter_file);
+            parameter = new ParameterFileSpace::ParameterFile(parameter_file);
             atom_type_map = parameter->GetAtomTypes();
         }
         for(unsigned int i = 0; i < structures.size(); i++)
         {
             ResidueVector parent_residues = ResidueVector();
             ResidueVector branch_residues = ResidueVector();
-            vector<bool> derivatives = vector<bool>();
+            std::vector<bool> derivatives = std::vector<bool>();
             structures.at(i) = new Assembly();
             int sequence_number = 0;
             int serial_number = 0;
-            stringstream ss;
-            for(CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
+            std::stringstream ss;
+            for(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residues.begin(); it != glycam06_residues.end(); ++it)
             {
-                CondensedSequenceGlycam06Residue* glycam06_residue = *it;
-                string glycam06_residue_name = glycam06_residue->GetName();
-                string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
+                CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam06_residue = *it;
+                std::string glycam06_residue_name = glycam06_residue->GetName();
+                std::string glycam06_residue_parent_oxygen = glycam06_residue->GetParentOxygen();
 
                 if(prep_residue_map.find(glycam06_residue_name) != prep_residue_map.end())
                 {
-                    PrepFileResidue* prep_residue = prep_residue_map[glycam06_residue_name];
+                    PrepFileSpace::PrepFileResidue* prep_residue = prep_residue_map[glycam06_residue_name];
 
                     // Build residue from prep residue
                     sequence_number++;
@@ -417,28 +405,28 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
 
                     Residue* assembly_residue = new Residue();
                     assembly_residue->SetAssembly(structures.at(i));
-                    string prep_residue_name = prep_residue->GetName();
+                    std::string prep_residue_name = prep_residue->GetName();
                     assembly_residue->SetName(prep_residue_name);
-                    stringstream id;
+                    std::stringstream id;
                     id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
                        << gmml::BLANK_SPACE << "_" << id_;
                     assembly_residue->SetId(id.str());
-                    if(distance(glycam06_residues.begin(), it) == (int)glycam06_residues.size()-1)
+                    if(std::distance(glycam06_residues.begin(), it) == (int)glycam06_residues.size()-1)
                         ss << prep_residue_name;
                     else
                         ss << prep_residue_name << "-";
 
-                    PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-                    for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+                    PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+                    for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
                     {
                         Atom* assembly_atom = new Atom();
-                        PrepFileAtom* prep_atom = (*it1);
+                        PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
                         if(prep_atom->GetType() != "DU")
                             serial_number++;
                         assembly_atom->SetResidue(assembly_residue);
-                        string atom_name = prep_atom->GetName();
+                        std::string atom_name = prep_atom->GetName();
                         assembly_atom->SetName(atom_name);
-                        stringstream atom_id;
+                        std::stringstream atom_id;
                         atom_id << atom_name << "_" << serial_number << "_" << id.str();
                         assembly_atom->SetId(atom_id.str());
 
@@ -448,20 +436,20 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         {
                             if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
                             {
-                                ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                                ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
                                 assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
                                 assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                             }
                             else
                             {
-                                assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                                assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                                assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                                assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                             }
                         }
                         else
                         {
-                            assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                            assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                            assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                            assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                         }
 
                         if(atom_name.at(0) == 'P' && prep_residue_name.compare("PO3") == 0)
@@ -474,30 +462,30 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         {
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
-                        else if(atom_name.find("C1") != string::npos && prep_residue_name.compare("ACX") == 0)
+                        else if(atom_name.find("C1") != std::string::npos && prep_residue_name.compare("ACX") == 0)
                         {
                             assembly_residue->AddHeadAtom(assembly_atom);
                         }
 
                         if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
                         {
-                            vector<Coordinate*> coordinate_list = vector<Coordinate*>();
-                            int index = distance(prep_atoms.begin(), it1);
+                            std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+                            int index = std::distance(prep_atoms.begin(), it1);
                             if(index == 0)
                             {
                             }
                             if(index == 1)
                             {
                                 int parent_index = prep_atom->GetBondIndex() - 1;
-                                Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                                GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                                 coordinate_list.push_back(parent_coordinate);
                             }
                             if(index == 2)
                             {
                                 int grandparent_index = prep_atom->GetAngleIndex() - 1;
                                 int parent_index = prep_atom->GetBondIndex() - 1;
-                                Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                                Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                                GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                                GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                                 coordinate_list.push_back(grandparent_coordinate);
                                 coordinate_list.push_back(parent_coordinate);
                             }
@@ -507,14 +495,14 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                                 int grandparent_index = prep_atom->GetAngleIndex() - 1;
                                 int parent_index = prep_atom->GetBondIndex() - 1;
 
-                                Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
-                                Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                                Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                                GeometryTopology::Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grandparent_index);
+                                GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                                GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                                 coordinate_list.push_back(great_grandparent_coordinate);
                                 coordinate_list.push_back(grandparent_coordinate);
                                 coordinate_list.push_back(parent_coordinate);
                             }
-                            Coordinate* coordinate = new Coordinate();
+                            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
                             coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
                                                                                              prep_atom->GetAngle(), prep_atom->GetDihedral());
                             cartesian_coordinate_list.push_back(coordinate);
@@ -523,7 +511,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         }
                         else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
                         {
-                            assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+                            assembly_atom->AddCoordinate(new GeometryTopology::Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
                         }
                         if(assembly_atom->GetAtomType().compare("DU") != 0)
                             assembly_residue->AddAtom(assembly_atom);
@@ -561,7 +549,7 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                 }
                 else
                 {
-                    cout << "Residue " << glycam06_residue_name << " has not been found in the database" << endl;
+                    std::cout << "Residue " << glycam06_residue_name << " has not been found in the database" << std::endl;
                 }
             }
 
@@ -570,12 +558,12 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
 
             if(true)
             {
-                map<Residue*, int> parent_branch_map = map<Residue*, int>();
+                std::map<Residue*, int> parent_branch_map = std::map<Residue*, int>();
                 int linkage_index = -1;
                 for(ResidueVector::iterator it = parent_residues.begin(); it != parent_residues.end(); it++)
                 {
                     Residue* parent_residue = (*it);
-                    int parent_index = distance(parent_residues.begin(), it);
+                    int parent_index = std::distance(parent_residues.begin(), it);
                     if(parent_branch_map.find(parent_residue) == parent_branch_map.end())
                         parent_branch_map[parent_residue] = 0;
                     else
@@ -599,21 +587,21 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                     {
                         if(!derivatives.at(parent_index))
                         {
-                            /*cout << rotamers_glycosidic_angles_info.at(linkage_index).first << " "
+                            /*std::cout << rotamers_glycosidic_angles_info.at(linkage_index).first << " "
                              << assembly_residue->GetName() << "(" << assembly_residue->GetHeadAtoms().at(0)->GetName() << "-"
-                             << parent_residue->GetTailAtoms().at(branch_index)->GetName() << ")" << parent_residue->GetName() << endl;*/
-                            vector<double> phi_psi_omega = structure_map[i].at(linkage_index);
-                            if(phi_psi_omega.at(0) != dNotSet)
+                             << parent_residue->GetTailAtoms().at(branch_index)->GetName() << ")" << parent_residue->GetName() << std::endl;*/
+                            std::vector<double> phi_psi_omega = structure_map[i].at(linkage_index);
+                            if(phi_psi_omega.at(0) != gmml::dNotSet)
                             {
                                 double phi = phi_psi_omega.at(0);
                                 structures.at(i)->SetPhiTorsion(assembly_residue, parent_residue, branch_index, phi);// Set phi angle of assembly_residue-parent_residue to phi
                             }
-                            if(phi_psi_omega.at(1) != dNotSet)
+                            if(phi_psi_omega.at(1) != gmml::dNotSet)
                             {
                                 double psi = phi_psi_omega.at(1);
                                 structures.at(i)->SetPsiTorsion(assembly_residue, parent_residue, branch_index, psi);// Set psi angle of assembly_residue-parent_residue to psi
                             }
-                            if(phi_psi_omega.at(2) != dNotSet)
+                            if(phi_psi_omega.at(2) != gmml::dNotSet)
                             {
                                 double omega = phi_psi_omega.at(2);
                                 structures.at(i)->SetOmegaTorsion(assembly_residue, parent_residue, branch_index, omega);// Set omega angle of assembly_residue-parent_residue to omega
@@ -629,8 +617,8 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
                         }
                         else
                         {
-                            vector<double> phi_psi_omega = structure_map[i].at(linkage_index);
-                            if(phi_psi_omega.at(2) != dNotSet)
+                            std::vector<double> phi_psi_omega = structure_map[i].at(linkage_index);
+                            if(phi_psi_omega.at(2) != gmml::dNotSet)
                             {
                                 double omega = phi_psi_omega.at(2);
                                 structures.at(i)->SetOmegaDerivativeTorsion(assembly_residue, parent_residue, branch_index, omega);
@@ -643,9 +631,9 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
         }
         return structures;
     }
-    catch(exception ex)
+    catch(std::exception ex)
     {
-        cout << "Building assembly from " << sequence << " failed." << endl;
+        std::cout << "Building assembly from " << sequence << " failed." << std::endl;
     }
 }
 
@@ -653,55 +641,55 @@ Assembly::AssemblyVector Assembly::BuildAllRotamersFromCondensedSequence(string 
  *  *          Build from PDB files
  *   * ************************************************************************* **/
 
-void Assembly::BuildAssemblyFromPdbFile(string pdb_file_path, vector<string> amino_lib_files, vector<string> glycam_lib_files,
-                                        vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
+void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
+                                        std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
-    cout << "Building assembly from pdb file ..." << endl;
-//    cout << "Reading PDB file into PdbFile structure." << endl;
-    PdbFile pdb_file;
+    std::cout << "Building assembly from pdb file ..." << std::endl;
+//    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
+    PdbFileSpace::PdbFile pdb_file;
     try
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDB file into PdbFile structure ...");
-        pdb_file = PdbFile(pdb_file_path);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDB file into PdbFileSpace::PdbFile structure ...");
+        pdb_file = PdbFileSpace::PdbFile(pdb_file_path);
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
-        cout << "Generating PdbFile structure from " << pdb_file_path << "failed." << endl;
+        std::cout << "Generating PdbFileSpace::PdbFile structure from " << pdb_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromPdbFile(&pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
 }
 
 
-void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_lib_files, vector<string> glycam_lib_files,
-                                        vector<string> other_lib_files, vector<string> prep_files, string parameter_file)
+void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
+                                        std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
-//    cout << "Building assembly from pdb file ..." << endl;
+//    std::cout << "Building assembly from pdb file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     try
     {
         this->ClearAssembly();
         gmml::log(__LINE__, __FILE__, gmml::INF, "Assembly cleared ...");
         // this->pdb_file_ = pdb_file;
-        ParameterFile* parameter = NULL;
+        ParameterFileSpace::ParameterFile* parameter = NULL;
         gmml::log(__LINE__, __FILE__, gmml::INF, "Parameter File Created ...");
-        ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+        ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
         if(parameter_file.compare("") != 0)
         {
-            parameter = new ParameterFile(parameter_file);
+            parameter = new ParameterFileSpace::ParameterFile(parameter_file);
             atom_type_map = parameter->GetAtomTypes();
         }
 
-        LibraryFile::ResidueMap lib_residues = LibraryFile::ResidueMap();
-        PrepFile::ResidueMap prep_residues = PrepFile::ResidueMap();
-        vector<string> lib_files = vector<string>();
+        LibraryFileSpace::LibraryFile::ResidueMap lib_residues = LibraryFileSpace::LibraryFile::ResidueMap();
+        PrepFileSpace::PrepFile::ResidueMap prep_residues = PrepFileSpace::PrepFile::ResidueMap();
+        std::vector<std::string> lib_files = std::vector<std::string>();
         if(!amino_lib_files.empty())
-            for(vector<string>::iterator it = amino_lib_files.begin(); it != amino_lib_files.end(); it++)
+            for(std::vector<std::string>::iterator it = amino_lib_files.begin(); it != amino_lib_files.end(); it++)
                 lib_files.push_back(*it);
         if(!glycam_lib_files.empty())
-            for(vector<string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
+            for(std::vector<std::string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
                 lib_files.push_back(*it);
         if(!other_lib_files.empty())
-            for(vector<string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
+            for(std::vector<std::string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
                 lib_files.push_back(*it);
 
         if(lib_files.size() != 0)
@@ -710,45 +698,46 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
         if(prep_files.size() != 0)
             prep_residues = GetAllResiduesFromMultiplePrepFilesMap(prep_files);
 
-        vector<string> key_order = vector<string>();
-        PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
+
+        std::vector<std::string> key_order = std::vector<std::string>();
+        PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
         
         input_file_ = pdb_file;
         int testPoly = this->input_file_->GetMasterCard()->GetNumRemarks();
         cout << testPoly << endl;
 
 
-        for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)
+        for(std::vector<std::string>::iterator it = key_order.begin(); it != key_order.end(); it++)
         {
-            string residue_key = *it;
-            PdbFile::PdbAtomCardVector* atoms = residue_atoms_map[residue_key];
+            std::string residue_key = *it;
+            PdbFileSpace::PdbFile::PdbAtomCardVector* atoms = residue_atoms_map[residue_key];
             Residue* residue = new Residue();
             residue->SetAssembly(this);
 
-            for(PdbFile::PdbAtomCardVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
+            for(PdbFileSpace::PdbFile::PdbAtomCardVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
             {
-                PdbAtomCard* atom = (*it1);
-                string residue_name = atom->GetAtomResidueName();
+                PdbFileSpace::PdbAtomCard* atom = (*it1);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream ss;
+                std::stringstream ss;
                 ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
                    << alternate_location << "_" << id_;
-                string key = ss.str();
+                std::string key = ss.str();
                 residue->SetId(key);
 
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
-                string atom_name = atom->GetAtomName();
+                std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
                 if(!lib_residues.empty() || !prep_residues.empty())
                 {
                     if(lib_residues.find(residue_name) != lib_residues.end())
                     {
-                        LibraryFileResidue* lib_residue = lib_residues[residue_name];
-                        LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom_name);
+                        LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue_name];
+                        LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom_name);
                         if(lib_atom != NULL)
                         {
                             new_atom->MolecularDynamicAtom::SetAtomType(lib_atom->GetType());
@@ -758,34 +747,34 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
                             {
                                 if(atom_type_map.find(new_atom->MolecularDynamicAtom::GetAtomType()) != atom_type_map.end())
                                 {
-                                    ParameterFileAtom* parameter_atom = atom_type_map[new_atom->GetAtomType()];
+                                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[new_atom->GetAtomType()];
                                     new_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
                                     new_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                                 }
                                 else
                                 {
-                                    new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                                    new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                                    new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                                    new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                                 }
                             }
                             else
                             {
-                                new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                                new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                                new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                                new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                             }
                         }
                         else
                         {
                             new_atom->MolecularDynamicAtom::SetAtomType("UNK");
-                            new_atom->MolecularDynamicAtom::SetCharge(dNotSet);
-                            new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                            new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                            new_atom->MolecularDynamicAtom::SetCharge(gmml::dNotSet);
+                            new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                            new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                         }
                     }
                     else if(prep_residues.find(residue_name) != prep_residues.end())
                     {
-                        PrepFileResidue* prep_residue = prep_residues[residue_name];
-                        PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom_name);
+                        PrepFileSpace::PrepFileResidue* prep_residue = prep_residues[residue_name];
+                        PrepFileSpace::PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom_name);
                         if(prep_atom != NULL)
                         {
                             new_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
@@ -795,41 +784,41 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
                             {
                                 if(atom_type_map.find(new_atom->MolecularDynamicAtom::GetAtomType()) != atom_type_map.end())
                                 {
-                                    ParameterFileAtom* parameter_atom = atom_type_map[new_atom->GetAtomType()];
+                                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[new_atom->GetAtomType()];
                                     new_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
                                     new_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                                 }
                                 else
                                 {
-                                    new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                                    new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                                    new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                                    new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                                 }
                             }
                             else
                             {
-                                new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                                new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                                new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                                new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                             }
                         }
                         else
                         {
                             new_atom->MolecularDynamicAtom::SetAtomType("UNK");
-                            new_atom->MolecularDynamicAtom::SetCharge(dNotSet);
-                            new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                            new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                            new_atom->MolecularDynamicAtom::SetCharge(gmml::dNotSet);
+                            new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                            new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                         }
                     }
                 }
                 new_atom->SetResidue(residue);
-                stringstream atom_key;
+                std::stringstream atom_key;
                 atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
                 new_atom->SetId(atom_key.str());
-                PdbModelSection* models = pdb_file->GetModels();
-                PdbModelSection::PdbModelCardMap model_maps = models->GetModels();
+                PdbFileSpace::PdbModelSection* models = pdb_file->GetModels();
+                PdbFileSpace::PdbModelSection::PdbModelCardMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
                     new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
-                    vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
+                    std::vector<std::string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
                     if(card_index.at(0).compare("ATOM") == 0)
                     {
                         new_atom->SetDescription("Atom;");
@@ -841,28 +830,28 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
                 }
                 else
                 {
-                    for(PdbModelSection::PdbModelCardMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
+                    for(PdbFileSpace::PdbModelSection::PdbModelCardMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
                     {
-                        PdbModelCard* model = (*it2).second;
-                        PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-                        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-                        vector<string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
+                        PdbFileSpace::PdbModelCard* model = (*it2).second;
+                        PdbFileSpace::PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+                        PdbFileSpace::PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
+                        std::vector<std::string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
                         if(card_index.at(0).compare("ATOM") == 0)
                         {
-                            PdbAtomSection* atom_card = atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
-                            PdbAtomSection::PdbAtomCardOrderVector atom_vector = atom_card->GetOrderedAtomCards();
-                            for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = atom_vector.begin(); it3 != atom_vector.end(); it3++)
+                            PdbFileSpace::PdbAtomSection* atom_card = atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
+                            PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = atom_card->GetOrderedAtomCards();
+                            for(PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = atom_vector.begin(); it3 != atom_vector.end(); it3++)
                             {
-                                PdbAtomCard* matching_atom = *it3;
-                                string matching_residue_name = matching_atom->GetAtomResidueName();
+                                PdbFileSpace::PdbAtomCard* matching_atom = *it3;
+                                std::string matching_residue_name = matching_atom->GetAtomResidueName();
                                 char matching_chain_id = matching_atom->GetAtomChainId();
                                 int matching_sequence_number = matching_atom->GetAtomResidueSequenceNumber();
                                 char matching_insertion_code = matching_atom->GetAtomInsertionCode();
                                 char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
-                                stringstream sss;
+                                std::stringstream sss;
                                 sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
                                     << matching_insertion_code << "_" << matching_alternate_location << "_" << id_;
-                                string matching_key = sss.str();
+                                std::string matching_key = sss.str();
 
                                 if(key.compare(matching_key) == 0)
                                 {
@@ -874,21 +863,21 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
                         }
                         else if(card_index.at(0).compare("HETATOM") == 0)
                         {
-                            PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
-                            PdbHeterogenAtomSection* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
-                            PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector heterogen_atom_vector = heterogen_atom_card->GetOrderedHeterogenAtomCards();
-                            for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it3 = heterogen_atom_vector.begin(); it3 != heterogen_atom_vector.end(); it3++)
+                            PdbFileSpace::PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
+                            PdbFileSpace::PdbHeterogenAtomSection* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
+                            PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector heterogen_atom_vector = heterogen_atom_card->GetOrderedHeterogenAtomCards();
+                            for(PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it3 = heterogen_atom_vector.begin(); it3 != heterogen_atom_vector.end(); it3++)
                             {
-                                PdbAtomCard* matching_heterogen_atom = *it3;
-                                string matching_heterogen_residue_name = matching_heterogen_atom->GetAtomResidueName();
+                                PdbFileSpace::PdbAtomCard* matching_heterogen_atom = *it3;
+                                std::string matching_heterogen_residue_name = matching_heterogen_atom->GetAtomResidueName();
                                 char matching_heterogen_chain_id = matching_heterogen_atom->GetAtomChainId();
                                 int matching_heterogen_sequence_number = matching_heterogen_atom->GetAtomResidueSequenceNumber();
                                 char matching_heterogen_insertion_code = matching_heterogen_atom->GetAtomInsertionCode();
                                 char matching_heterogen_alternate_location = matching_heterogen_atom->GetAtomAlternateLocation();
-                                stringstream ssss;
+                                std::stringstream ssss;
                                 ssss << matching_heterogen_residue_name << "_" << matching_heterogen_chain_id << "_" << matching_heterogen_sequence_number << "_"
                                      << matching_heterogen_insertion_code << "_" << matching_heterogen_alternate_location << "_" << id_;
-                                string matching_heterogen_key = ssss.str();
+                                std::string matching_heterogen_key = ssss.str();
 
                                 if(key.compare(matching_heterogen_key) == 0)
                                 {
@@ -912,64 +901,64 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 /** ***************************************************************************
  *          Build from PDBQT files
  * ************************************************************************* **/
-void Assembly::BuildAssemblyFromPdbqtFile(string pdbqt_file_path, string parameter_file)
+void Assembly::BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path, std::string parameter_file)
 {
-    cout << "Building assembly from pdbqt file ..." << endl;
-    cout << "Reading PDBQT file into PdbqtFile structure." << endl;
-    PdbqtFile pdbqt_file;
+    std::cout << "Building assembly from pdbqt file ..." << std::endl;
+    std::cout << "Reading PDBQT file into PdbqtFileSpace::PdbqtFile structure." << std::endl;
+    PdbqtFileSpace::PdbqtFile pdbqt_file;
     try
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDBQT file into PdbqtFile structure ...");
-        pdbqt_file = PdbqtFile(pdbqt_file_path);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDBQT file into PdbqtFileSpace::PdbqtFile structure ...");
+        pdbqt_file = PdbqtFileSpace::PdbqtFile(pdbqt_file_path);
     }
     catch(PdbqtFileSpace::PdbqtFileProcessingException &ex)
     {
-        cout << "Generating PdbqtFile structure from " << pdbqt_file_path << "failed." << endl;
+        std::cout << "Generating PdbqtFileSpace::PdbqtFile structure from " << pdbqt_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromPdbqtFile(&pdbqt_file, parameter_file);
 }
 
 
-void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string parameter_file)
+void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file, std::string parameter_file)
 {
-    cout << "Building assembly from pdbqt file ..." << endl;
+    std::cout << "Building assembly from pdbqt file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdbqt file ...");
     try
     {
         this->ClearAssembly();
-        ParameterFile* parameter = NULL;
-        ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+        ParameterFileSpace::ParameterFile* parameter = NULL;
+        ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
         if(parameter_file.compare("") != 0)
         {
-            parameter = new ParameterFile(parameter_file);
+            parameter = new ParameterFileSpace::ParameterFile(parameter_file);
             atom_type_map = parameter->GetAtomTypes();
         }
-        vector<string> key_order = vector<string>();
-        PdbqtFile::PdbqtResidueAtomsMap residue_atoms_map = pdbqt_file->GetAllAtomsInOrder(key_order);
-        for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)
+        std::vector<std::string> key_order = std::vector<std::string>();
+        PdbqtFileSpace::PdbqtFile::PdbqtResidueAtomsMap residue_atoms_map = pdbqt_file->GetAllAtomsInOrder(key_order);
+        for(std::vector<std::string>::iterator it = key_order.begin(); it != key_order.end(); it++)
         {
-            string residue_key = *it;
-            PdbqtFile::PdbqtAtomVector* atoms = residue_atoms_map[residue_key];
+            std::string residue_key = *it;
+            PdbqtFileSpace::PdbqtFile::PdbqtAtomVector* atoms = residue_atoms_map[residue_key];
             Residue* residue = new Residue();
             residue->SetAssembly(this);
 
-            for(PdbqtFile::PdbqtAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
+            for(PdbqtFileSpace::PdbqtFile::PdbqtAtomVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
             {
-                PdbqtAtom* atom = (*it1);
-                string residue_name = atom->GetAtomResidueName();
+                PdbqtFileSpace::PdbqtAtom* atom = (*it1);
+                std::string residue_name = atom->GetAtomResidueName();
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
                 char alternate_location = atom->GetAtomAlternateLocation();
-                stringstream ss;
+                std::stringstream ss;
                 ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
                    << alternate_location << "_" << id_;
-                string key = ss.str();
+                std::string key = ss.str();
                 residue->SetId(key);
 
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
-                string atom_name = atom->GetAtomName();
+                std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
                 new_atom->MolecularDynamicAtom::SetCharge(atom->GetAtomCharge());
                 new_atom->MolecularDynamicAtom::SetAtomType(atom->GetAtomType());
@@ -977,27 +966,27 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
                 {
                     if(atom_type_map.find(new_atom->GetAtomType()) != atom_type_map.end())
                     {
-                        ParameterFileAtom* parameter_atom = atom_type_map[new_atom->GetAtomType()];
+                        ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[new_atom->GetAtomType()];
                         new_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
                         new_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                     }
                     else
                     {
-                        new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                        new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                        new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                        new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                     }
                 }
                 else
                 {
-                    new_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                    new_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    new_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                    new_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                 }
                 new_atom->SetResidue(residue);
-                stringstream atom_key;
+                std::stringstream atom_key;
                 atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
                 new_atom->SetId(atom_key.str());
-                PdbqtModelCard* models = pdbqt_file->GetModels();
-                PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
+                PdbqtFileSpace::PdbqtModelCard* models = pdbqt_file->GetModels();
+                PdbqtFileSpace::PdbqtModelCard::PdbqtModelMap model_maps = models->GetModels();
                 if(model_maps.size() == 1)
                 {
                     new_atom->AddCoordinate(new GeometryTopology::Coordinate(atom->GetAtomOrthogonalCoordinate()));
@@ -1012,22 +1001,22 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
                 }
                 else
                 {
-                    for(PdbqtModelCard::PdbqtModelMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
+                    for(PdbqtFileSpace::PdbqtModelCard::PdbqtModelMap::iterator it2 = model_maps.begin(); it2 != model_maps.end(); it2++)
                     {
-                        PdbqtModel* model = (*it2).second;
-                        PdbqtModelResidueSet* residue_set = model->GetModelResidueSet();
-                        PdbqtAtomCard* atom_card = residue_set->GetAtoms();
-                        PdbqtAtomCard::PdbqtAtomMap atom_map = atom_card->GetAtoms();
-                        PdbqtAtom* matching_atom = atom_map[atom->GetAtomSerialNumber()];
-                        string matching_residue_name = matching_atom->GetAtomResidueName();
+                        PdbqtFileSpace::PdbqtModel* model = (*it2).second;
+                        PdbqtFileSpace::PdbqtModelResidueSet* residue_set = model->GetModelResidueSet();
+                        PdbqtFileSpace::PdbqtAtomCard* atom_card = residue_set->GetAtoms();
+                        PdbqtFileSpace::PdbqtAtomCard::PdbqtAtomMap atom_map = atom_card->GetAtoms();
+                        PdbqtFileSpace::PdbqtAtom* matching_atom = atom_map[atom->GetAtomSerialNumber()];
+                        std::string matching_residue_name = matching_atom->GetAtomResidueName();
                         char matching_chain_id = matching_atom->GetAtomChainId();
                         int matching_sequence_number = matching_atom->GetAtomResidueSequenceNumber();
                         char matching_insertion_code = matching_atom->GetAtomInsertionCode();
                         char matching_alternate_location = matching_atom->GetAtomAlternateLocation();
-                        stringstream sss;
+                        std::stringstream sss;
                         sss << matching_residue_name << "_" << matching_chain_id << "_" << matching_sequence_number << "_"
                             << matching_insertion_code << "_" << matching_alternate_location << "_" << id_;
-                        string matching_key = sss.str();
+                        std::string matching_key = sss.str();
 
                         if(key.compare(matching_key) == 0)
                         {
@@ -1057,81 +1046,81 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFile *pdbqt_file, string paramete
  *          Build from AMBER Prmtop files
  * ************************************************************************* **/
 
-void Assembly::BuildAssemblyFromTopologyFile(string topology_file_path, string parameter_file)
+void Assembly::BuildAssemblyFromTopologyFile(std::string topology_file_path, std::string parameter_file)
 {
-    cout << "Building assembly from an AMBER parameter-topology file ..." << endl;
-    cout << "Reading AMBER parameter-topology file into TopologyFile structure." << endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER parameter-topology file into TopologyFile structure.");
-    TopologyFile topology_file;
+    std::cout << "Building assembly from an AMBER parameter-topology file ..." << std::endl;
+    std::cout << "Reading AMBER parameter-topology file into TopologyFileSpace::TopologyFile structure." << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER parameter-topology file into TopologyFileSpace::TopologyFile structure.");
+    TopologyFileSpace::TopologyFile topology_file;
     try
     {
-        topology_file = TopologyFile(topology_file_path);
+        topology_file = TopologyFileSpace::TopologyFile(topology_file_path);
     }
     catch(TopologyFileSpace::TopologyFileProcessingException &ex)
     {
-        cout << "Generating TopologyFile structure from " << topology_file_path << "failed." << endl;
+        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromTopologyFile(&topology_file, parameter_file);
 }
 
-void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string parameter_file)
+void Assembly::BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile *topology_file, std::string parameter_file)
 {
-    cout << "Building assembly from topology file ..." << endl;
+    std::cout << "Building assembly from topology file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology file ...");
     this->ClearAssembly();
-    ParameterFile* parameter = NULL;
-    ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+    ParameterFileSpace::ParameterFile* parameter = NULL;
+    ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
     if(parameter_file.compare("") != 0)
     {
-        parameter = new ParameterFile(parameter_file);
+        parameter = new ParameterFileSpace::ParameterFile(parameter_file);
         atom_type_map = parameter->GetAtomTypes();
     }
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
     int serial_number = 0;
-    TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
-    for(TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    TopologyFileSpace::TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyFileSpace::TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        TopologyResidue* topology_residue = (*it);
-        string residue_name = topology_residue->GetResidueName();
+        TopologyFileSpace::TopologyResidue* topology_residue = (*it);
+        std::string residue_name = topology_residue->GetResidueName();
         assembly_residue->SetName(residue_name);
-        stringstream id;
+        std::stringstream id;
         id << residue_name << "_" << gmml::BLANK_SPACE << "_" << topology_residue->GetIndex()
            << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
-        TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
+        TopologyFileSpace::TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
 
-        for(TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        for(TopologyFileSpace::TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            string atom_name = (*it1)->GetAtomName();
+            std::string atom_name = (*it1)->GetAtomName();
             assembly_atom->SetName(atom_name);
-            stringstream atom_id;
+            std::stringstream atom_id;
             atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
-            TopologyAtom* topology_atom = (*it1);
-            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / CHARGE_DIVIDER);
+            TopologyFileSpace::TopologyAtom* topology_atom = (*it1);
+            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / gmml::CHARGE_DIVIDER);
             assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
             if(parameter != NULL)
             {
                 if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
                 {
-                    ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
                     assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                 }
                 else
                 {
-                    assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                 }
             }
             else
             {
-                assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
             }
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(topology_atom->GetAtomName());
@@ -1147,73 +1136,73 @@ void Assembly::BuildAssemblyFromTopologyFile(TopologyFile *topology_file, string
  *          Build from AMBER Lib/OFF files
  * ************************************************************************* **/
 
-void Assembly::BuildAssemblyFromLibraryFile(string library_file_path, string parameter_file)
+void Assembly::BuildAssemblyFromLibraryFile(std::string library_file_path, std::string parameter_file)
 {
-    cout << "Building assembly from AMBER library/off file ..." << endl;
-    cout << "Reading AMBER library/off file into LibraryFile structure." << endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER library/off file into LibraryFile structure ...");
-    LibraryFile library_file;
+    std::cout << "Building assembly from AMBER library/off file ..." << std::endl;
+    std::cout << "Reading AMBER library/off file into LibraryFileSpace::LibraryFile structure." << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER library/off file into LibraryFileSpace::LibraryFile structure ...");
+    LibraryFileSpace::LibraryFile library_file;
     try
     {
-        library_file = LibraryFile(library_file_path);
+        library_file = LibraryFileSpace::LibraryFile(library_file_path);
     }
     catch(LibraryFileSpace::LibraryFileProcessingException &ex)
     {
-        cout << "Generating LibraryFile structure from " << library_file_path << "failed." << endl;
+        std::cout << "Generating LibraryFileSpace::LibraryFile structure from " << library_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromLibraryFile(&library_file, parameter_file);
 }
 
 
 
-void Assembly::BuildAssemblyFromLibraryFile(LibraryFile *library_file, string parameter_file)
+void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *library_file, std::string parameter_file)
 {
-    cout << "Building assembly from library file ..." << endl;
+    std::cout << "Building assembly from library file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from library file ...");
     this->ClearAssembly();
-    ParameterFile* parameter = NULL;
-    ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+    ParameterFileSpace::ParameterFile* parameter = NULL;
+    ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
     if(parameter_file.compare("") != 0)
     {
-        parameter = new ParameterFile(parameter_file);
+        parameter = new ParameterFileSpace::ParameterFile(parameter_file);
         atom_type_map = parameter->GetAtomTypes();
     }
     sequence_number_ = 1;
-    LibraryFile::ResidueMap library_residues = library_file->GetResidues();
-    stringstream ss;
+    LibraryFileSpace::LibraryFile::ResidueMap library_residues = library_file->GetResidues();
+    std::stringstream ss;
 
     int sequence_number = 0;
     int serial_number = 0;
-    for(LibraryFile::ResidueMap::iterator it = library_residues.begin(); it != library_residues.end(); it++)
+    for(LibraryFileSpace::LibraryFile::ResidueMap::iterator it = library_residues.begin(); it != library_residues.end(); it++)
     {
         sequence_number++;
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        string residue_name = (*it).first;
+        std::string residue_name = (*it).first;
         assembly_residue->SetName(residue_name);
-        stringstream id;
+        std::stringstream id;
         id << residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
            << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
-        LibraryFileResidue* library_residue = (*it).second;
+        LibraryFileSpace::LibraryFileResidue* library_residue = (*it).second;
         int lib_res_tail_atom_index = library_residue->GetTailAtomIndex();
         int lib_res_head_atom_index = library_residue->GetHeadAtomIndex();
-        string library_residue_name = library_residue->GetName();
-        if(distance(library_residues.begin(), it) == (int)library_residues.size()-1)
+        std::string library_residue_name = library_residue->GetName();
+        if(std::distance(library_residues.begin(), it) == (int)library_residues.size()-1)
             ss << library_residue_name;
         else
             ss << library_residue_name << "-";
 
-        LibraryFileResidue::AtomMap library_atoms = library_residue->GetAtoms();
+        LibraryFileSpace::LibraryFileResidue::AtomMap library_atoms = library_residue->GetAtoms();
 
-        for(LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++)
+        for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            LibraryFileAtom* library_atom = (*it1).second;
-            string atom_name = library_atom->GetName();
+            LibraryFileSpace::LibraryFileAtom* library_atom = (*it1).second;
+            std::string atom_name = library_atom->GetName();
             assembly_atom->SetName(atom_name);
-            stringstream atom_id;
+            std::stringstream atom_id;
             atom_id << atom_name << "_" << library_atom->GetAtomOrder() << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
 
@@ -1226,23 +1215,23 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFile *library_file, string pa
             {
                 if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
                 {
-                    ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
                     assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
                     assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                 }
                 else
                 {
-                    assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                    assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                 }
             }
             else
             {
-                assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
             }
 
-            Coordinate* coordinate = new Coordinate(library_atom->GetCoordinate());
+            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(library_atom->GetCoordinate());
             assembly_atom->AddCoordinate(coordinate);
             assembly_residue->AddAtom(assembly_atom);
 
@@ -1260,92 +1249,92 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFile *library_file, string pa
  *          Build from AMBER Prmtop & Inpcrd files
  * ************************************************************************* **/
 
-void Assembly::BuildAssemblyFromTopologyCoordinateFile(string topology_file_path, string coordinate_file_path, string parameter_file)
+void Assembly::BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path, std::string parameter_file)
 {
-    cout << "Building assembly from AMBER parameter-topology and unknown-style coordinate files ..." << endl;
-    cout << "Reading AMBER parameter-topology and unknown-style coordinate files into their file structure." << endl;
+    std::cout << "Building assembly from AMBER parameter-topology and unknown-style coordinate files ..." << std::endl;
+    std::cout << "Reading AMBER parameter-topology and unknown-style coordinate files into their file structure." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER parameter-topology and unknown-style coordinate files into their file structure.");
-    TopologyFile topology_file;
-    CoordinateFile coordinate_file;
+    TopologyFileSpace::TopologyFile topology_file;
+    CoordinateFileSpace::CoordinateFile coordinate_file;
     try
     {
-        topology_file = TopologyFile(topology_file_path);
+        topology_file = TopologyFileSpace::TopologyFile(topology_file_path);
     }
     catch(TopologyFileSpace::TopologyFileProcessingException &ex)
     {
-        cout << "Generating TopologyFile structure from " << topology_file_path << "failed." << endl;
+        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path << "failed." << std::endl;
     }
     try
     {
-        coordinate_file = CoordinateFile(coordinate_file_path);
+        coordinate_file = CoordinateFileSpace::CoordinateFile(coordinate_file_path);
     }
     catch(CoordinateFileSpace::CoordinateFileProcessingException &ex)
     {
-        cout << "Generating CoordinateFile structure from " << coordinate_file_path << "failed." << endl;
+        std::cout << "Generating CoordinateFileSpace::CoordinateFile structure from " << coordinate_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromTopologyCoordinateFile(&topology_file, &coordinate_file, parameter_file);
 }
 
-void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_file, CoordinateFile *coordinate_file, string parameter_file)
+void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile *topology_file, CoordinateFileSpace::CoordinateFile *coordinate_file, std::string parameter_file)
 {
-    cout << "Building assembly from topology and coordinate files ..." << endl;
+    std::cout << "Building assembly from topology and coordinate files ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology and coordinate files ...");
     this->ClearAssembly();
-    ParameterFile* parameter = NULL;
-    ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+    ParameterFileSpace::ParameterFile* parameter = NULL;
+    ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
     if(parameter_file.compare("") != 0)
     {
-        parameter = new ParameterFile(parameter_file);
+        parameter = new ParameterFileSpace::ParameterFile(parameter_file);
         atom_type_map = parameter->GetAtomTypes();
     }
 
     name_ = topology_file->GetTitle();
     sequence_number_ = 1;
     int serial_number = 0;
-    TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
-    for(TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
+    TopologyFileSpace::TopologyAssembly::TopologyResidueVector topology_residues = topology_file->GetAssembly()->GetResidues();
+    for(TopologyFileSpace::TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin(); it != topology_residues.end(); it++)
     {
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        TopologyResidue* topology_residue = (*it);
-        string residue_name = topology_residue->GetResidueName();
+        TopologyFileSpace::TopologyResidue* topology_residue = (*it);
+        std::string residue_name = topology_residue->GetResidueName();
         assembly_residue->SetName(residue_name);
-        stringstream id;
+        std::stringstream id;
         id << residue_name << "_" << gmml::BLANK_SPACE << "_" << topology_residue->GetIndex() << "_" << gmml::BLANK_SPACE << "_"
            << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
 
-        TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
+        TopologyFileSpace::TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
 
-        for(TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
+        for(TopologyFileSpace::TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin(); it1 != topology_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            string atom_name = (*it1)->GetAtomName();
+            std::string atom_name = (*it1)->GetAtomName();
             assembly_atom->SetName(atom_name);
-            stringstream atom_id;
+            std::stringstream atom_id;
             atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
-            TopologyAtom* topology_atom = (*it1);
+            TopologyFileSpace::TopologyAtom* topology_atom = (*it1);
 
-            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / CHARGE_DIVIDER);
+            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / gmml::CHARGE_DIVIDER);
             assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
             assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
             if(parameter != NULL)
             {
                 if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
                 {
-                    ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
                     assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                 }
                 else
                 {
-                    assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                 }
             }
             else
             {
-                assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
             }
 
             int topology_atom_index = topology_atom->GetIndex();
@@ -1353,7 +1342,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(topology_atom->GetAtomName());
 
-            vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            std::vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
             assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
@@ -1365,44 +1354,44 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFile *topology_fi
  *          Build from AMBER Prep files
  * ************************************************************************* **/
 
-void Assembly::BuildAssemblyFromPrepFile(string prep_file_path, string parameter_file)
+void Assembly::BuildAssemblyFromPrepFile(std::string prep_file_path, std::string parameter_file)
 {
-    cout << "Building assembly from prep file ..." << endl;
-    cout << "Reading Prep file into PrepFile structure." << endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading Prep file into PrepFile structure ...");
-    PrepFile prep_file;
+    std::cout << "Building assembly from prep file ..." << std::endl;
+    std::cout << "Reading Prep file into PrepFileSpace::PrepFile structure." << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading Prep file into PrepFileSpace::PrepFile structure ...");
+    PrepFileSpace::PrepFile prep_file;
     try
     {
-        prep_file = PrepFile(prep_file_path);
+        prep_file = PrepFileSpace::PrepFile(prep_file_path);
     }
     catch(PrepFileSpace::PrepFileProcessingException &ex)
     {
-        cout << "Generating PrepFile structure from " << prep_file_path << "failed." << endl;
+        std::cout << "Generating PrepFileSpace::PrepFile structure from " << prep_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromPrepFile(&prep_file, parameter_file);
 }
 
 
 
-void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_file)
+void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std::string parameter_file)
 {
-    cout << "Building assembly from prep file ..." << endl;
+    std::cout << "Building assembly from prep file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from prep file ...");
     this->ClearAssembly();
-    ParameterFile* parameter = NULL;
-    ParameterFile::AtomTypeMap atom_type_map = ParameterFile::AtomTypeMap();
+    ParameterFileSpace::ParameterFile* parameter = NULL;
+    ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
     if(parameter_file.compare("") != 0)
     {
-        parameter = new ParameterFile(parameter_file);
+        parameter = new ParameterFileSpace::ParameterFile(parameter_file);
         atom_type_map = parameter->GetAtomTypes();
     }
     sequence_number_ = 1;
-    PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
-    stringstream ss;
+    PrepFileSpace::PrepFile::ResidueMap prep_residues = prep_file->GetResidues();
+    std::stringstream ss;
 
     int sequence_number = 0;
     int serial_number = 0;
-    for(PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
+    for(PrepFileSpace::PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
     {
         sequence_number++;
         CoordinateVector cartesian_coordinate_list = CoordinateVector();
@@ -1413,30 +1402,30 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
 
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
-        PrepFileResidue* prep_residue = (*it).second;
-	string prep_residue_name = prep_residue->GetName();
+        PrepFileSpace::PrepFileResidue* prep_residue = (*it).second;
+	std::string prep_residue_name = prep_residue->GetName();
         assembly_residue->SetName(prep_residue_name);
-        stringstream id;
+        std::stringstream id;
         id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
            << gmml::BLANK_SPACE << "_" << id_;
         assembly_residue->SetId(id.str());
-        if(distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
+        if(std::distance(prep_residues.begin(), it) == (int)prep_residues.size()-1)
             ss << prep_residue_name;
         else
             ss << prep_residue_name << "-";
-        PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-        PrepFileResidue::PrepFileAtomVector parent_atoms = prep_residue->GetAtomsParentVector();
+        PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+        PrepFileSpace::PrepFileResidue::PrepFileAtomVector parent_atoms = prep_residue->GetAtomsParentVector();
 
-        for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+        for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
-            PrepFileAtom* prep_atom = (*it1);
+            PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
 
             assembly_atom->SetResidue(assembly_residue);
-            string atom_name = prep_atom->GetName();
+            std::string atom_name = prep_atom->GetName();
             assembly_atom->SetName(atom_name);
-            stringstream atom_id;
+            std::stringstream atom_id;
             atom_id << atom_name << "_" << serial_number << "_" << id.str();
             assembly_atom->SetId(atom_id.str());
 
@@ -1446,26 +1435,26 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
             {
                 if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
                 {
-                    ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
+                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
                     assembly_atom->MolecularDynamicAtom::SetMass(parameter_atom->GetMass());
                     assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
                 }
                 else
                 {
-                    assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                    assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                    assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
                 }
             }
             else
             {
-                assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-                assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+                assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+                assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
             }
 
             if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
             {
-                vector<Coordinate*> coordinate_list = vector<Coordinate*>();
-                int index = distance(prep_atoms.begin(), it1);
+                std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+                int index = std::distance(prep_atoms.begin(), it1);
                 if(index == 0)
                 {
 
@@ -1473,15 +1462,15 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
                 if(index == 1)
                 {
                     int parent_index = parent_atoms.at(index)->GetIndex() - 1;
-                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                    GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                     coordinate_list.push_back(parent_coordinate);
                 }
                 if(index == 2)
                 {
                     int parent_index = parent_atoms.at(index)->GetIndex() - 1;
                     int grandparent_index = parent_atoms.at(parent_index)->GetIndex() - 1;
-                    Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                    GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                    GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
                 }
@@ -1490,14 +1479,14 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
                     int parent_index = parent_atoms.at(index)->GetIndex() - 1;
                     int grandparent_index = parent_atoms.at(parent_index)->GetIndex() - 1;
                     int great_grabdparent_index = parent_atoms.at(grandparent_index)->GetIndex() - 1;
-                    Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
-                    Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                    Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                    GeometryTopology::Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
+                    GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                    GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                     coordinate_list.push_back(great_grandparent_coordinate);
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
                 }
-                Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                GeometryTopology::Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
                                                                                              prep_atom->GetAngle(), prep_atom->GetDihedral());
                 cartesian_coordinate_list.push_back(coordinate);
 
@@ -1505,9 +1494,9 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFile *prep_file, string parameter_f
             }
             else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
             {
-                assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+                assembly_atom->AddCoordinate(new GeometryTopology::Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
             }
-            if(prep_atom->GetTopologicalType() == kTopTypeM && prep_atom->GetType().compare(prep_residue->GetDummyAtomType()) != 0)
+            if(prep_atom->GetTopologicalType() == gmml::kTopTypeM && prep_atom->GetType().compare(prep_residue->GetDummyAtomType()) != 0)
             {
                 if(head_atom_index > prep_atom->GetIndex())
                 {

@@ -2,33 +2,31 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbMasterCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbMasterCard::PdbMasterCard() {}
 
-PdbMasterCard::PdbMasterCard(stringstream& stream_block)
+PdbMasterCard::PdbMasterCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
-        num_remark_ = ConvertString<int>(line.substr(10,5));
-        num_het_ = ConvertString<int>(line.substr(20,5));
-        num_helix_ = ConvertString<int>(line.substr(25,5));
-        num_sheet_ = ConvertString<int>(line.substr(30,5));
-        num_site_ = ConvertString<int>(line.substr(40,5));
-        num_x_form_ = ConvertString<int>(line.substr(45,5));
-        num_coord_ = ConvertString<int>(line.substr(50,5));
-        num_ter_ = ConvertString<int>(line.substr(55,5));
-        num_connect_ = ConvertString<int>(line.substr(60,5));
-        num_seq_ = ConvertString<int>(line.substr(65,5));
+        num_remark_ = gmml::ConvertString<int>(line.substr(10,5));
+        num_het_ = gmml::ConvertString<int>(line.substr(20,5));
+        num_helix_ = gmml::ConvertString<int>(line.substr(25,5));
+        num_sheet_ = gmml::ConvertString<int>(line.substr(30,5));
+        num_site_ = gmml::ConvertString<int>(line.substr(40,5));
+        num_x_form_ = gmml::ConvertString<int>(line.substr(45,5));
+        num_coord_ = gmml::ConvertString<int>(line.substr(50,5));
+        num_ter_ = gmml::ConvertString<int>(line.substr(55,5));
+        num_connect_ = gmml::ConvertString<int>(line.substr(60,5));
+        num_seq_ = gmml::ConvertString<int>(line.substr(65,5));
         getline(stream_block, line);
         temp = line;
     }
@@ -39,7 +37,7 @@ PdbMasterCard::PdbMasterCard(stringstream& stream_block)
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbMasterCard::GetRecordName()
+std::string PdbMasterCard::GetRecordName()
 {
     return record_name_;
 }
@@ -98,7 +96,7 @@ int PdbMasterCard::GetNumSeq()
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbMasterCard::SetRecordName(const string record_name)
+void PdbMasterCard::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -156,7 +154,7 @@ void PdbMasterCard::SetNumSeq(int num_seq)
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbMasterCard::Print(ostream &out)
+void PdbMasterCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_;
     out << "REMARK Cards: " << num_remark_;
@@ -169,5 +167,5 @@ void PdbMasterCard::Print(ostream &out)
     out << "TER Cards: " << num_ter_;
     out << "CONECT Cards: " << num_connect_;
     out << "SEQRES Cards: " << num_seq_;
-    out << endl;
+    out << std::endl;
 }

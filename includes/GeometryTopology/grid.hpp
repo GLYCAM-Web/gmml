@@ -6,7 +6,7 @@
 
 namespace GeometryTopology
 {
-    class Coordinate;
+    // class Coordinate;
     class Cell;
     class Grid
     {
@@ -14,7 +14,7 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<Cell*> CellVector;
+            typedef std::vector<GeometryTopology::Cell*> CellVector;
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
@@ -55,7 +55,7 @@ namespace GeometryTopology
             void CalculateCellsPotentialEnergy(double ion_radius);
             void CalculateBoxCharge();
             void CalculateBoxPotentialEnergy();
-            Cell* GetBestBox(Grid* grid, double ion_charge);
+            GeometryTopology::Cell* GetBestBox(Grid* grid, double ion_charge);
             std::vector<Coordinate*> GetBestPositions(double ion_charge);
 /** @}*/
             //////////////////////////////////////////////////////////

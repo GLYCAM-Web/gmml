@@ -2,46 +2,43 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
-using namespace GeometryTopology;
+using PdbFileSpace::PdbMatrixNCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbMatrixNCard::PdbMatrixNCard() {}
-PdbMatrixNCard::PdbMatrixNCard(string &line) {
+PdbMatrixNCard::PdbMatrixNCard(std::string &line) {
     record_name_ = line.substr(0, 5);
-    Trim(record_name_);
+    gmml::Trim(record_name_);
     if(line.substr(5, 1) == " ")
-        n_ = iNotSet;
+        n_ = gmml::iNotSet;
     else
-        n_ = ConvertString<int>(line.substr(5, 1));
+        n_ = gmml::ConvertString<int>(line.substr(5, 1));
     if(line.substr(7, 3) == "   ")
-        serial_number_ = iNotSet;
+        serial_number_ = gmml::iNotSet;
     else
-        serial_number_ = ConvertString<int>(line.substr(7, 3));
+        serial_number_ = gmml::ConvertString<int>(line.substr(7, 3));
     if(line.substr(10,10) == "          ")
-        transfomration_vector_.SetX(dNotSet);
+        transfomration_vector_.SetX(gmml::dNotSet);
     else
-        transfomration_vector_.SetX(ConvertString<double>(line.substr(10, 10)));
+        transfomration_vector_.SetX(gmml::ConvertString<double>(line.substr(10, 10)));
     if(line.substr(20, 10) == "          ")
-        transfomration_vector_.SetY(dNotSet);
+        transfomration_vector_.SetY(gmml::dNotSet);
     else
-        transfomration_vector_.SetY(ConvertString<double>(line.substr(20, 10)));
+        transfomration_vector_.SetY(gmml::ConvertString<double>(line.substr(20, 10)));
     if(line.substr(30, 10) == "          ")
-        transfomration_vector_.SetZ(dNotSet);
+        transfomration_vector_.SetZ(gmml::dNotSet);
     else
-        transfomration_vector_.SetZ(ConvertString<double>(line.substr(30, 10)));
+        transfomration_vector_.SetZ(gmml::ConvertString<double>(line.substr(30, 10)));
     if(line.substr(45, 10) == "          ")
-        v_ = dNotSet;
+        v_ = gmml::dNotSet;
     else
-        v_ = ConvertString<double>(line.substr(45, 10));
+        v_ = gmml::ConvertString<double>(line.substr(45, 10));
     if(line.substr(59, 1) == " ")
-        i_given_ = iNotSet;
+        i_given_ = gmml::iNotSet;
     else
-        i_given_ = ConvertString<int>(line.substr(59, 1));
+        i_given_ = gmml::ConvertString<int>(line.substr(59, 1));
 }
 
 
@@ -49,7 +46,7 @@ PdbMatrixNCard::PdbMatrixNCard(string &line) {
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbMatrixNCard::GetRecordName(){
+std::string PdbMatrixNCard::GetRecordName(){
     return record_name_;
 }
 
@@ -77,7 +74,7 @@ int PdbMatrixNCard::GetIGiven(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbMatrixNCard::SetRecordName(const string record_name){
+void PdbMatrixNCard::SetRecordName(const std::string record_name){
     record_name_ = record_name;
 }
 
@@ -104,29 +101,29 @@ void PdbMatrixNCard::SetIGiven(int i_given){
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbMatrixNCard::Print(ostream &out)
+void PdbMatrixNCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_;
-    if(n_ != iNotSet)
+    if(n_ != gmml::iNotSet)
         out << n_;
     else
         out << " ";
     out << ", Serial Number: ";
-    if(serial_number_ != iNotSet)
+    if(serial_number_ != gmml::iNotSet)
         out << serial_number_;
     else
         out << " ";
     out << ", Transformation Vector: ";
     transfomration_vector_.Print(out);
     out << ", V: ";
-    if(v_ != dNotSet)
+    if(v_ != gmml::dNotSet)
         out << v_;
     else
         out << " ";
     out << ", I Given: ";
-    if(i_given_ != iNotSet)
+    if(i_given_ != gmml::iNotSet)
         out << i_given_;
     else
         out << " ";
-    out << endl;
+    out << std::endl;
 }

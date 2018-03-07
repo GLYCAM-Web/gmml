@@ -9,6 +9,7 @@
 
 #include "GeometryTopology/coordinate.hpp"
 #include "Glycan/sugarname.hpp"
+#include "MolecularModeling/atom.hpp"
 
 namespace gmml
 {
@@ -20,6 +21,7 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
     typedef GeometryTopology::Coordinate Vector;
+	typedef std::vector<MolecularModeling::Atom*> AtomVector;
 
     //*******************************************
 

@@ -2,23 +2,22 @@
 #include "../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyAngle;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 TopologyAngle::TopologyAngle() {}
 
-TopologyAngle::TopologyAngle(vector<string> angle_atoms, vector<string> residue_names)
+TopologyAngle::TopologyAngle(std::vector<std::string> angle_atoms, std::vector<std::string> residue_names)
 {
     angles_.clear();
-    for(vector<string>::iterator it = angle_atoms.begin(); it != angle_atoms.end(); it++)
+    for(std::vector<std::string>::iterator it = angle_atoms.begin(); it != angle_atoms.end(); it++)
     {
         angles_.push_back(*it);
     }
     residue_names_.clear();
-    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    for(std::vector<std::string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
     {
         residue_names_.push_back(*it);
     }
@@ -27,11 +26,11 @@ TopologyAngle::TopologyAngle(vector<string> angle_atoms, vector<string> residue_
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-vector<string> TopologyAngle::GetAngles()
+std::vector<std::string> TopologyAngle::GetAngles()
 {
     return angles_;
 }
-TopologyAngleType* TopologyAngle::GetAngleType()
+TopologyFileSpace::TopologyAngleType* TopologyAngle::GetAngleType()
 {
     return angle_type_;
 }
@@ -39,7 +38,7 @@ bool TopologyAngle::GetIncludingHydrogen()
 {
     return including_hydrogen_;
 }
-vector<string> TopologyAngle::GetResidueNames()
+std::vector<std::string> TopologyAngle::GetResidueNames()
 {
     return residue_names_;
 }
@@ -47,15 +46,15 @@ vector<string> TopologyAngle::GetResidueNames()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAngle::SetAngles(vector<string> angles)
+void TopologyAngle::SetAngles(std::vector<std::string> angles)
 {
     angles_.clear();
-    for(vector<string>::iterator it = angles.begin(); it != angles.end(); it++)
+    for(std::vector<std::string>::iterator it = angles.begin(); it != angles.end(); it++)
     {
         angles_.push_back(*it);
     }
 }
-void TopologyAngle::SetAnlgeType(TopologyAngleType* angle_type)
+void TopologyAngle::SetAnlgeType(TopologyFileSpace::TopologyAngleType* angle_type)
 {
     angle_type_ = angle_type;
 }
@@ -63,10 +62,10 @@ void TopologyAngle::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
-void TopologyAngle::SetResidueNames(vector<string> residue_names)
+void TopologyAngle::SetResidueNames(std::vector<std::string> residue_names)
 {
     residue_names_.clear();
-    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    for(std::vector<std::string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
     {
         residue_names_.push_back(*it);
     }
@@ -79,9 +78,9 @@ void TopologyAngle::SetResidueNames(vector<string> residue_names)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyAngle::Print(ostream &out)
+void TopologyAngle::Print(std::ostream &out)
 {
-    out << "Angle: " << residue_names_.at(0) << ":" << angles_.at(0) << "-" << residue_names_.at(1) << ":" << angles_.at(1) << "-" << residue_names_.at(2) << ":" << angles_.at(2) << endl;
+    out << "Angle: " << residue_names_.at(0) << ":" << angles_.at(0) << "-" << residue_names_.at(1) << ":" << angles_.at(1) << "-" << residue_names_.at(2) << ":" << angles_.at(2) << std::endl;
     out << "\t ";
     angle_type_->Print(out);
     out << ", Including Hydrogen: ";
@@ -89,9 +88,5 @@ void TopologyAngle::Print(ostream &out)
         out << "YES";
     else
         out << "NO";
-    out << endl;
+    out << std::endl;
 }
-
-
-
-

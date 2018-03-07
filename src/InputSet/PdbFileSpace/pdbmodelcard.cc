@@ -3,50 +3,48 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbModelCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbModelCard::PdbModelCard() {}
 
-PdbModelCard::PdbModelCard(stringstream &model_block)
+PdbModelCard::PdbModelCard(std::stringstream &model_block)
 {
-    string line;
-    stringstream residue_set_block;
+    std::string line;
+    std::stringstream residue_set_block;
     getline(model_block, line);
-    if(line.find("MODEL") != string::npos)
+    if(line.find("MODEL") != std::string::npos)
     {
         if(line.substr(10, 4) == "    ")
-            model_serial_number_ = iNotSet;
+            model_serial_number_ = gmml::iNotSet;
         else
-            model_serial_number_ = ConvertString<int>(line.substr(10,4));
+            model_serial_number_ = gmml::ConvertString<int>(line.substr(10,4));
         getline(model_block,line);
-        string temp = line;
-        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
-              || line.find("TER") != string::npos || line.find("HETATM") != string::npos)
+        std::string temp = line;
+        while(line.find("ATOM") != std::string::npos || line.find("ANISOU") != std::string::npos
+              || line.find("TER") != std::string::npos || line.find("HETATM") != std::string::npos)
         {
-            residue_set_block << line << endl;
+            residue_set_block << line << std::endl;
             getline(model_block, line);
             temp = line;
         }
-        model_residue_set_ = new PdbModelResidueSet(residue_set_block);
+        model_residue_set_ = new PdbFileSpace::PdbModelResidueSet(residue_set_block);
     }
     else
     {
         model_serial_number_ = 1;
-        string temp = line;
-        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
-              || line.find("TER") != string::npos || line.find("HETATM") != string::npos)
+        std::string temp = line;
+        while(line.find("ATOM") != std::string::npos || line.find("ANISOU") != std::string::npos
+              || line.find("TER") != std::string::npos || line.find("HETATM") != std::string::npos)
         {
-            residue_set_block << line << endl;
+            residue_set_block << line << std::endl;
             getline(model_block, line);
             temp = line;
         }
-//        cout << residue_set_block.str() << endl;
-        model_residue_set_ = new PdbModelResidueSet(residue_set_block);
+//        cout << residue_set_block.str() << std::endl;
+        model_residue_set_ = new PdbFileSpace::PdbModelResidueSet(residue_set_block);
     }
 
 }
@@ -59,7 +57,7 @@ int PdbModelCard::GetModelSerialNumber(){
     return model_serial_number_;
 }
 
-PdbModelResidueSet* PdbModelCard::GetModelResidueSet(){
+PdbFileSpace::PdbModelResidueSet* PdbModelCard::GetModelResidueSet(){
     return model_residue_set_;
 }
 
@@ -71,7 +69,7 @@ void PdbModelCard::SetModelSerialNumber(int model_serial_number){
     model_serial_number_ = model_serial_number;
 }
 
-void PdbModelCard::SetModelResidueSet(PdbModelResidueSet* model_residue_set){
+void PdbModelCard::SetModelResidueSet(PdbFileSpace::PdbModelResidueSet* model_residue_set){
     model_residue_set_ = model_residue_set;
 }
 
@@ -82,15 +80,15 @@ void PdbModelCard::SetModelResidueSet(PdbModelResidueSet* model_residue_set){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbModelCard::Print(ostream &out)
+void PdbModelCard::Print(std::ostream &out)
 {
     out << "Model Serial Number: ";
-    if(model_serial_number_ != iNotSet)
+    if(model_serial_number_ != gmml::iNotSet)
         out << model_serial_number_;
     else
         out << " ";
-    out << endl
-        << "====================== Residue Set =====================" << endl;
+    out << std::endl
+        << "====================== Residue Set =====================" << std::endl;
     model_residue_set_->Print(out);
-    out << endl;
+    out << std::endl;
 }

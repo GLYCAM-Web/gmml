@@ -2,25 +2,22 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
-
+using PdbFileSpace::PdbSupersededEntriesCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbSupersededEntriesCard::PdbSupersededEntriesCard() {}
-PdbSupersededEntriesCard::PdbSupersededEntriesCard(string &line)
+PdbSupersededEntriesCard::PdbSupersededEntriesCard(std::string &line)
 {
     record_name_ = line.substr(0, 6);
-    Trim(record_name_);
+    gmml::Trim(record_name_);
 
     superseded_date_ = line.substr(11,9);
-    Trim(superseded_date_);
+    gmml::Trim(superseded_date_);
 
     superseded_id_  = line.substr(31, 48);
-    Trim(superseded_id_);
+    gmml::Trim(superseded_id_);
 
 }
 
@@ -29,15 +26,15 @@ PdbSupersededEntriesCard::PdbSupersededEntriesCard(string &line)
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-string PdbSupersededEntriesCard::GetRecordName(){
+std::string PdbSupersededEntriesCard::GetRecordName(){
     return record_name_;
 }
 
-string PdbSupersededEntriesCard::GetSupersededDate(){
+std::string PdbSupersededEntriesCard::GetSupersededDate(){
     return superseded_date_;
 }
 
-string PdbSupersededEntriesCard::GetSupersededID(){
+std::string PdbSupersededEntriesCard::GetSupersededID(){
     return superseded_id_;
 }
 
@@ -45,25 +42,25 @@ string PdbSupersededEntriesCard::GetSupersededID(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbSupersededEntriesCard::SetRecordName(const string record_name){
+void PdbSupersededEntriesCard::SetRecordName(const std::string record_name){
     record_name_ = record_name;
 }
 
-void PdbSupersededEntriesCard::SetSupersededDate(const string superseded_date){
+void PdbSupersededEntriesCard::SetSupersededDate(const std::string superseded_date){
     superseded_date_ = superseded_date;
 }
 
-void PdbSupersededEntriesCard::SetSupersededID(const string superseded_id){
+void PdbSupersededEntriesCard::SetSupersededID(const std::string superseded_id){
     superseded_id_ = superseded_id;
 }
 
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbSupersededEntriesCard::Print(ostream &out)
+void PdbSupersededEntriesCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_;
     out << "Superseded Date:" << superseded_date_;
     out << "Superseded ID:" << superseded_id_;
-    out << endl;
+    out << std::endl;
 }

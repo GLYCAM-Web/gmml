@@ -1,16 +1,14 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbheadercard.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbHeaderCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbHeaderCard::PdbHeaderCard() : record_name_("HEADER"), classification_(""), deposition_date_(""), identifier_code_(""){}
 
-PdbHeaderCard::PdbHeaderCard(const string &record_name, const string &classification, const string &deposition_date, const string &identifier_code)
+PdbHeaderCard::PdbHeaderCard(const std::string &record_name, const std::string &classification, const std::string &deposition_date, const std::string &identifier_code)
 {
     record_name_ = record_name;
     classification_ = classification;
@@ -18,21 +16,21 @@ PdbHeaderCard::PdbHeaderCard(const string &record_name, const string &classifica
     identifier_code_ = identifier_code;
 }
 
-PdbHeaderCard::PdbHeaderCard(stringstream& stream_block)
+PdbHeaderCard::PdbHeaderCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
-        Trim(record_name_);
+        gmml::Trim(record_name_);
         classification_ = line.substr(10,40);
-        Trim(classification_);
+        gmml::Trim(classification_);
         deposition_date_ = line.substr(50, 9);
-        Trim(deposition_date_);
+        gmml::Trim(deposition_date_);
         identifier_code_ = line.substr(62,4);
-        Trim(identifier_code_);
+        gmml::Trim(identifier_code_);
         getline(stream_block, line);
         temp = line;
     }
@@ -41,22 +39,22 @@ PdbHeaderCard::PdbHeaderCard(stringstream& stream_block)
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbHeaderCard::GetRecordName()
+std::string PdbHeaderCard::GetRecordName()
 {
     return record_name_;
 }
 
-string PdbHeaderCard::GetClassification()
+std::string PdbHeaderCard::GetClassification()
 {
     return classification_;
 }
 
-string PdbHeaderCard::GetDepositionDate()
+std::string PdbHeaderCard::GetDepositionDate()
 {
     return deposition_date_;
 }
 
-string PdbHeaderCard::GetIdentifierCode()
+std::string PdbHeaderCard::GetIdentifierCode()
 {
     return identifier_code_;
 }
@@ -64,22 +62,22 @@ string PdbHeaderCard::GetIdentifierCode()
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-void PdbHeaderCard::SetRecordName(const string record_name)
+void PdbHeaderCard::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
 
-void PdbHeaderCard::SetClassification(const string classification)
+void PdbHeaderCard::SetClassification(const std::string classification)
 {
     classification_ = classification;
 }
 
-void PdbHeaderCard::SetDepositionDate(const string deposition_date)
+void PdbHeaderCard::SetDepositionDate(const std::string deposition_date)
 {
     deposition_date_ = deposition_date;
 }
 
-void PdbHeaderCard::SetIdentificationCode(const string identifier_code){
+void PdbHeaderCard::SetIdentificationCode(const std::string identifier_code){
     identifier_code_ = identifier_code;
 }
 
@@ -90,8 +88,8 @@ void PdbHeaderCard::SetIdentificationCode(const string identifier_code){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeaderCard::Print(ostream &out)
+void PdbHeaderCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_ << ", Classification: " << classification_ <<
-           ", Deposition Date: " << deposition_date_ << ", Identifier Code: " << identifier_code_ << endl << endl;
+           ", Deposition Date: " << deposition_date_ << ", Identifier Code: " << identifier_code_ << std::endl << std::endl;
 }

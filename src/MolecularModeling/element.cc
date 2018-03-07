@@ -1,8 +1,6 @@
-
 #include "../../includes/MolecularModeling/element.hpp"
 
-using namespace std;
-using namespace MolecularModeling;
+using MolecularModeling::Element;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -40,11 +38,11 @@ Element :: Element(Element& element)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string Element::GetSymbol()
+std::string Element::GetSymbol()
 {
     return symbol_;
 }
-string Element::GetName()
+std::string Element::GetName()
 {
     return name_;
 }
@@ -88,12 +86,12 @@ double Element::GetMeltingPoint()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void Element::SetSymbol(string symbol)
+void Element::SetSymbol(std::string symbol)
 {
     symbol_ = symbol;
 }
 
-void Element::SetName(string name)
+void Element::SetName(std::string name)
 {
     name_ = name;
 }
@@ -137,20 +135,19 @@ void Element::SetMeltingPoint(double melting_point)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Element::Print(ostream &out)
+void Element::Print(std::ostream &out)
 {
 
-    out << "*******Printing Element :"<<name_<<" *******"<<endl;
-    out << "Element symbol: " << symbol_<< endl;
-    out << "Element name: " << name_<< endl;
-    out << "Element mass: " << mass_<< endl;
-    out << "Element exact mass: " << exact_mass_<< endl;
-    out << "Element ionization energy: " << ionization_energy_<< endl;
-    out << "Element election affinity: " << election_affinity_<< endl;
-    out << "Element election negativity: " << election_negativity_<< endl;
-    out << "Element covalent radius: " << covalent_radius_<< endl;
-    out << "Element van der waals radius: " << van_der_waals_radius_<< endl;
-    out << "Element boiling point: " << boiling_point_<< endl;
-    out << "Element melting point: " << melting_point_<< endl;
+    out << "*******Printing Element :" << name_ << " *******" << std::endl;
+    out << "Element symbol: " << symbol_<< std::endl;
+    out << "Element name: " << name_<< std::endl;
+    out << "Element mass: " << mass_<< std::endl;
+    out << "Element exact mass: " << exact_mass_<< std::endl;
+    out << "Element ionization energy: " << ionization_energy_<< std::endl;
+    out << "Element election affinity: " << election_affinity_<< std::endl;
+    out << "Element election negativity: " << election_negativity_<< std::endl;
+    out << "Element covalent radius: " << covalent_radius_<< std::endl;
+    out << "Element van der waals radius: " << van_der_waals_radius_<< std::endl;
+    out << "Element boiling point: " << boiling_point_<< std::endl;
+    out << "Element melting point: " << melting_point_<< std::endl;
 }
-

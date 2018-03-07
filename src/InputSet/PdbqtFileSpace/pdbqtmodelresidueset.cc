@@ -5,9 +5,7 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbqtFileSpace;
+using PdbqtFileSpace::PdbqtModelResidueSet;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -18,67 +16,67 @@ PdbqtModelResidueSet::PdbqtModelResidueSet()
     atoms_ = NULL;
 }
 
-PdbqtModelResidueSet::PdbqtModelResidueSet(stringstream &residue_set_block)
+PdbqtModelResidueSet::PdbqtModelResidueSet(std::stringstream &residue_set_block)
 {
     roots_ = NULL;
     atoms_ = NULL;
     branches_ = BranchCardVector();
-    string line;
+    std::string line;
     getline(residue_set_block, line);
-    string temp = line;
-    stringstream root_block;
-    stringstream all_atoms_block;
-    if(line.find("ROOT") != string::npos)
+    std::string temp = line;
+    std::stringstream root_block;
+    std::stringstream all_atoms_block;
+    if(line.find("ROOT") != std::string::npos)
     {
-        root_block << line << endl;
+        root_block << line << std::endl;
         getline(residue_set_block, line);
-        while(line.find("ENDROOT") == string::npos)
+        while(line.find("ENDROOT") == std::string::npos)
         {
-            if(line.find("ATOM") != string::npos || line.find("HETATM") != string::npos)
+            if(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
             {
-                root_block << line << endl;
-                all_atoms_block << line << endl;
+                root_block << line << std::endl;
+                all_atoms_block << line << std::endl;
             }
             getline(residue_set_block, line);
         }
-        root_block << line << endl;
+        root_block << line << std::endl;
     }
-    roots_ = new PdbqtRootCard(root_block);
+    roots_ = new PdbqtFileSpace::PdbqtRootCard(root_block);
     getline(residue_set_block, line);
-    while(!Trim(temp).empty())
+    while(!gmml::Trim(temp).empty())
     {
-        stringstream branch_block;
-        if(line.find("BRANCH") != string::npos)
+        std::stringstream branch_block;
+        if(line.find("BRANCH") != std::string::npos)
         {
-            branch_block << line << endl;
-            vector<string> tokens = Split(line, " ");
-            int solid_atom_serial_number = ConvertString<int>(tokens.at(1));
-            int rotatable_atom_serial_number = ConvertString<int>(tokens.at(2));
-            stringstream end_branch_line;
-            end_branch_line << "ENDBRANCH " << setw(3) << solid_atom_serial_number << " " << setw(3) << rotatable_atom_serial_number;
+            branch_block << line << std::endl;
+            std::vector<std::string> tokens = gmml::Split(line, " ");
+            int solid_atom_serial_number = gmml::ConvertString<int>(tokens.at(1));
+            int rotatable_atom_serial_number = gmml::ConvertString<int>(tokens.at(2));
+            std::stringstream end_branch_line;
+            end_branch_line << "ENDBRANCH " << std::setw(3) << solid_atom_serial_number << " " << std::setw(3) << rotatable_atom_serial_number;
             getline(residue_set_block, line);
-            while(line.find(end_branch_line.str()) == string::npos)
+            while(line.find(end_branch_line.str()) == std::string::npos)
             {
-                if(line.find("ATOM") != string::npos || line.find("HETATM") != string::npos)
+                if(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
                 {
-                    all_atoms_block << line << endl;
+                    all_atoms_block << line << std::endl;
                 }
-                branch_block << line << endl;
+                branch_block << line << std::endl;
                 getline(residue_set_block, line);
             }
-            branch_block << line << endl;
+            branch_block << line << std::endl;
         }
         branches_.push_back(new PdbqtBranchCard(branch_block));
         getline(residue_set_block, line);
         if(line.empty())
             break;
     }
-    atoms_ = new PdbqtAtomCard(all_atoms_block);
+    atoms_ = new PdbqtFileSpace::PdbqtAtomCard(all_atoms_block);
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-PdbqtRootCard* PdbqtModelResidueSet::GetRoots()
+PdbqtFileSpace::PdbqtRootCard* PdbqtModelResidueSet::GetRoots()
 {
     return roots_;
 }
@@ -86,7 +84,7 @@ PdbqtModelResidueSet::BranchCardVector PdbqtModelResidueSet::GetBranches()
 {
     return branches_;
 }
-PdbqtAtomCard* PdbqtModelResidueSet::GetAtoms()
+PdbqtFileSpace::PdbqtAtomCard* PdbqtModelResidueSet::GetAtoms()
 {
     return atoms_;
 }
@@ -94,7 +92,7 @@ PdbqtAtomCard* PdbqtModelResidueSet::GetAtoms()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbqtModelResidueSet::SetRoots(PdbqtRootCard* roots)
+void PdbqtModelResidueSet::SetRoots(PdbqtFileSpace::PdbqtRootCard* roots)
 {
     roots_ = roots;
 }
@@ -110,7 +108,7 @@ void PdbqtModelResidueSet::AddBranch(PdbqtBranchCard* branch)
 {
     branches_.push_back(branch);
 }
-void PdbqtModelResidueSet::SetAtoms(PdbqtAtomCard *atoms)
+void PdbqtModelResidueSet::SetAtoms(PdbqtFileSpace::PdbqtAtomCard *atoms)
 {
     atoms_ = atoms;
 }
@@ -122,16 +120,14 @@ void PdbqtModelResidueSet::SetAtoms(PdbqtAtomCard *atoms)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtModelResidueSet::Print(ostream &out)
+void PdbqtModelResidueSet::Print(std::ostream &out)
 {
-    out << "====================== Roots =====================" << endl;
+    out << "====================== Roots =====================" << std::endl;
     if(roots_ != NULL)
         roots_->Print(out);
     for(BranchCardVector::iterator it = branches_.begin(); it != branches_.end(); it++)
     {
-        out << "====================== Main Branch =====================" << endl;
+        out << "====================== Main Branch =====================" << std::endl;
         (*it)->Print(out);
     }
 }
-
-
