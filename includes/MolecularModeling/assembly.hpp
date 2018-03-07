@@ -58,7 +58,7 @@ namespace MolecularModeling
             typedef std::vector<std::vector<std::string> > AttachedGlycanStructuresVector;
             typedef std::vector<Glycan::Note*> NoteVector;
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
-            typedef std::vector<Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
+            typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -1584,7 +1584,7 @@ namespace MolecularModeling
               * A function to add a molecule to the MoleculeVector in an assembly
               * @param molecule a pointer to the molecule object of class Molecule
               */
-            void AddMolecule(Molecule* molecule);
+            void AddMolecule(MolecularModeling::Molecule* molecule);
 
             /*! \fn                                                                             //Added by ayush on 12/7/17 for molecules in assembly
               * A function to generate molecules in an assembly

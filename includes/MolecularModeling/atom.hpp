@@ -42,8 +42,8 @@ namespace MolecularModeling
             /*! \fn
             * Constructors
             */
-            Atom(Residue* residue, std::string name, CoordinateVector coordinates);
-            Atom(Residue* residue, std::string name, GeometryTopology::Coordinate coordinate);
+            Atom(MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates);
+            Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate coordinate);
             /*! \fn
             * Copy constructor(*)
             */
@@ -66,7 +66,7 @@ namespace MolecularModeling
             * An accessor function in order to access to the residue
             * @return residue_ attribute of the current object of this class
             */
-            Residue* GetResidue() const;
+            MolecularModeling::Residue* GetResidue() const;
             /*! \fn
             * An accessor function in order to access to the name
             * @return name_ attribute of the current object of this class
@@ -129,7 +129,7 @@ namespace MolecularModeling
             * Set the residue_ attribute of the current atom
             * @param residue The residue attribute of the current object
             */
-            void SetResidue(Residue* residue);
+            void SetResidue(MolecularModeling::Residue* residue);
             /*! \fn
             * A mutator function in order to set the name of the current object
             * Set the name_ attribute of the current atom
@@ -238,7 +238,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            Residue* residue_;                 /*!< A pointer back to the residue that this atom belongs to >*/
+            MolecularModeling::Residue* residue_;                 /*!< A pointer back to the residue that this atom belongs to >*/
             std::string name_;                 /*!< Name of the atom >*/
             CoordinateVector coordinates_;     /*!< Position of the atom >*/
             std::string chemical_type_;        /*!< A descriptor to determines the chemical type of the atom >*/
@@ -255,7 +255,7 @@ namespace MolecularModeling
             //                   HELPER FUNCTIONS                   //
             //////////////////////////////////////////////////////////
             void Copy(const Atom* atom);
-            void SetAttributes( Residue* residue, std::string name, CoordinateVector coordinates,
+            void SetAttributes( MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates,
                                 std::string chemical_type, std::string description, std::string element_symbol,
                                 AtomNode* atomnode, std::string id, bool is_ring, std::string atom_type);
     };
