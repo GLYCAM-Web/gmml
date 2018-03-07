@@ -30,6 +30,7 @@
 #include "../Glycan/oligosaccharide.hpp"
 #include "../Glycan/note.hpp"
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "../InputSet/PdbFileSpace/inputfile.hpp"
 
 namespace MolecularModeling
 {
@@ -37,6 +38,7 @@ namespace MolecularModeling
     class Atom;
     class Molecule;
     class ResidueNode;
+    // class InputFile;
     class Assembly
     {
         public:
@@ -1636,7 +1638,7 @@ namespace MolecularModeling
             NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
             ResidueNodeVector residuenodes_;                /*!< List of residuenodes present in the current object of assembly >*/     //Added by ayush on 11/16/17 for residuenodes in assembly
             MoleculeVector molecules_;                      /*!< List of molecules present in the current object of assembly >*/        //Added by ayush on 11/12/17 for molecules in assembly
-            // PdbFile* pdb_file_;                             /*!< A pointer back to the PdbFile object >*/
+            PdbFileSpace::InputFile* input_file_;                         /*!< A pointer back to the Input object >*/
     };
 
     struct DistanceCalculationThreadArgument{

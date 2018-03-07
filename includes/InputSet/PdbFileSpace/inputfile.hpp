@@ -1,0 +1,74 @@
+//Author: Dave Montgomery
+#ifndef INPUT_FILE_HPP
+#define INPUT_FILE_HPP
+
+#include "pdbfile.hpp"
+#include "../../common.hpp"
+// #include "../InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+// #include "../InputSet/TopologyFileSpace/topologyfile.hpp"
+// #include "../InputSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "../../utils.hpp"
+#include "pdbmastercard.hpp"
+
+
+
+// using namespace MolecularModeling;
+// using namespace gmml;
+// using namespace PdbFileSpace;
+// using namespace PdbqtFileSpace;
+// using namespace TopologyFileSpace;
+// using namespace CoordinateFileSpace;
+// using namespace CifFileSpace;
+
+namespace PdbFileSpace
+{
+  class InputFile//: public PdbFile //, public PdbqtFile, public TopologyFile, public CoordinateFile//, public CifFile
+{
+  public:
+    //////////////////////////////////////////////////////////
+    //                    TYPE DEFINITION                   //
+    //////////////////////////////////////////////////////////
+    
+    //////////////////////////////////////////////////////////
+    //                       CONSTRUCTORS                   //
+    //////////////////////////////////////////////////////////
+    /*! \fn
+    * Default constructor
+    */
+    InputFile();
+    /*! \fn
+    * Constructors
+    */
+    //////////////////////////////////////////////////////////
+    //                       DESTRUCTOR                     //
+    //////////////////////////////////////////////////////////
+    // ~InputFile();
+    //////////////////////////////////////////////////////////
+    //                       ACCESSORS                      //
+    //////////////////////////////////////////////////////////
+    virtual PdbFileSpace::PdbMasterCard* GetMasterCard()=0;
+    //////////////////////////////////////////////////////////
+    //                       MUTATOR                        //
+    //////////////////////////////////////////////////////////
+    
+    //////////////////////////////////////////////////////////
+    //                       FUNCTIONS                      //
+    //////////////////////////////////////////////////////////
+    
+    //////////////////////////////////////////////////////////
+    //                       DISPLAY FUNCTION               //
+    //////////////////////////////////////////////////////////
+    
+    //////////////////////////////////////////////////////////
+    //                   OVERLOADED OPERATORS               //
+    //////////////////////////////////////////////////////////
+    
+  private:
+    //////////////////////////////////////////////////////////
+    //                       ATTRIBUTES                     //
+    //////////////////////////////////////////////////////////
+    
+  };
+}
+
+#endif // INPUT_FILE_HPP

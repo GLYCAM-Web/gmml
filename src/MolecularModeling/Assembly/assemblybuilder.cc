@@ -6,6 +6,7 @@
 #include <queue>
 #include <stack>
 
+#include "../../../includes/InputSet/PdbFileSpace/inputfile.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/residue.hpp"
 #include "../../../includes/MolecularModeling/atom.hpp"
@@ -45,6 +46,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
@@ -710,8 +712,10 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFile *pdb_file, vector<string> amino_
 
         vector<string> key_order = vector<string>();
         PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
-
-        // pdb_file->GetRemarks()->Print(std::cout);
+        
+        input_file_ = pdb_file;
+        int testPoly = this->input_file_->GetMasterCard()->GetNumRemarks();
+        cout << testPoly << endl;
 
 
         for(vector<string>::iterator it = key_order.begin(); it != key_order.end(); it++)

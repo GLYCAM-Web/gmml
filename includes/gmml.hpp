@@ -3,6 +3,7 @@
 
 #include "common.hpp"
 #include "utils.hpp"
+#include "InputSet/CifFileSpace/ciffile.hpp"
 #include "InputSet/CifFileSpace/ciffileatom.hpp"
 #include "InputSet/CifFileSpace/ciffileprocessingexception.hpp"
 #include "InputSet/CoordinateFileSpace/coordinatefile.hpp"

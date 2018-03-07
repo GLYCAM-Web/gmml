@@ -4,23 +4,16 @@
 #ifndef PDBFILE_HPP
 #define PDBFILE_HPP
 
+#include "inputfile.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
 #include <map>
+// using namespace gmml;
+// using namespace MolecularModeling;
 
-namespace PdbFileSpace// const int MAX_REVDAT_LENGTH_IN_LINE = 27;
-  // stream << left << setw(6) << revision_data_->GetRecordName()
-  //        << left << setw(1) << " "
-  //        << right << setw(3) << revision_data_->GetModificationNumber()
-  //        << left << setw(3) << " "
-  //        << left << setw(9) << revision_data_->GetModificationDate()
-  //        << left << setw(1) << " "
-  //        << left << setw(4) << revision_data_-GetModificationID()
-  //        << left << setw(4) << " "
-  //        << left << setw(1) << revision_data_->GetModificationType()
-  // if((int)revision_data_->GetModificationDetails().length() > MAX_REVDAT_LENGTH_IN_LINE)
-  // {
+
+namespace PdbFileSpace
 {
     //Title Section
     class PdbHeaderCard;
@@ -66,6 +59,7 @@ namespace PdbFileSpace// const int MAX_REVDAT_LENGTH_IN_LINE = 27;
     class PdbLinkCard;
     class PdbLinkSection;
     class PdbCISPeptideSection;
+    
     class PdbCISPeptideCard;
 
     //Miscellaneous Features Section
@@ -91,9 +85,10 @@ namespace PdbFileSpace// const int MAX_REVDAT_LENGTH_IN_LINE = 27;
     //Bookkeeping Section
     class PdbMasterCard;
     // class PdbEndCard;
+  
 
 
-    class PdbFile
+    class PdbFile: public InputFile
     {
         public:
             //////////////////////////////////////////////////////////
