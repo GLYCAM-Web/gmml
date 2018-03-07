@@ -82,7 +82,7 @@ namespace PdbFileSpace
     //Bookkeeping Section
     class PdbMasterCard;
     // class PdbEndCard;
-  
+    
 
 
     class PdbFile: public InputFile

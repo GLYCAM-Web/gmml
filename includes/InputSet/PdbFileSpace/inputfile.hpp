@@ -2,7 +2,7 @@
 #ifndef INPUT_FILE_HPP
 #define INPUT_FILE_HPP
 
-#include "pdbfile.hpp"
+// #include "pdbfile.hpp"
 #include "../../common.hpp"
 // #include "../InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 // #include "../InputSet/TopologyFileSpace/topologyfile.hpp"

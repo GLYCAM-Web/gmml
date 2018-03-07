@@ -702,9 +702,9 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
         std::vector<std::string> key_order = std::vector<std::string>();
         PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
         
-        input_file_ = pdb_file;
-        int testPoly = this->input_file_->GetMasterCard()->GetNumRemarks();
-        cout << testPoly << endl;
+        this->input_file_ = pdb_file;
+        int testPoly = this->input_file_->GetMasterCard()->GetNumRemark();
+        std::cout << testPoly << std::endl;
 
 
         for(std::vector<std::string>::iterator it = key_order.begin(); it != key_order.end(); it++)

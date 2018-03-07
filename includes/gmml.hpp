@@ -8,6 +8,7 @@
 #include "InputSet/CifFileSpace/ciffileprocessingexception.hpp"
 #include "InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
+#include "InputSet/PdbFileSpace/inputfile.hpp"
 #include "InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "InputSet/PdbFileSpace/pdbatomcard.hpp"
 #include "InputSet/PdbFileSpace/pdbauthorsection.hpp"
