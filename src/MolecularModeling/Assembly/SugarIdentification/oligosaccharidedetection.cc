@@ -799,7 +799,7 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
         for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
         {
             MolecularModeling::Atom* atom = (*it1);
-            atom->GetName().find("C") == std::string::npos;
+            if(atom->GetName().find("C") == std::string::npos)
             {
                 all_carbons = false;
                 break;
