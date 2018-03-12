@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm> // added for std::erase remove
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "../GeometryTopology/plane.hpp"
@@ -249,7 +250,7 @@ namespace MolecularModeling
               * Set the residues_ attribute of the current assembly
               * @param residue The residue of the current object
               */
-            void RemoveResidue(Residue *residue);
+            void RemoveResidue(Residue *residue_to_be_removed);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current assembly
