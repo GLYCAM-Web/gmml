@@ -724,7 +724,7 @@ void Assembly::SetMolecules(MoleculeVector molecules)
         molecules_.push_back(*it);
 	}
 }
-void Assembly::MergeAssembly(Assembly *other) // Added by Oliver. He is unsure and this may well cause problems.
+void Assembly::MergeAssembly(Assembly *other) // Added by Oliver. He is unsure and this may well cause problems. Edit: it did.
 {
     ResidueVector residues = other->GetResidues();
     for (ResidueVector::iterator it = residues.begin(); it != residues.end(); ++it)
