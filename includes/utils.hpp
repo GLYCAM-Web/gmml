@@ -32,6 +32,37 @@ namespace gmml
         str.erase(0, str.find_first_not_of(" "));
         return str;
     }
+    
+    /*! \fn
+      * Removes duplicate spaces inside of the string.
+      * @param str String with duplicate spaces
+      * @return Given string without duplicate spaces within the original one
+      */
+    inline std::string& TrimSpaces(std::string& str)
+    {
+          std::string s;
+          bool first = true;
+          bool space = false;
+          std::string::iterator iter;
+          for(iter = str.begin(); iter != str.end(); ++iter){
+              if(*iter == ' '){
+                  if(first == false){
+                      space = true;
+                  }
+              }else{
+                  if(*iter != ',' && *iter != '.'){
+                      if(space){
+                          s.push_back(' ');
+                      }
+                  }
+                  s.push_back(*iter);
+                  space = false;
+                  first = false;
+              }
+          }
+          str = s;
+          return str;
+    }
 
     /*! \fn
       * Removes quotation marks from the begining and the end of the given string

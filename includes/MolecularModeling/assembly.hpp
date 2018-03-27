@@ -993,6 +993,14 @@ namespace MolecularModeling
             */
             void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
             /*! \fn
+            * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
+            * @param s The subject part of the triple
+            * @param p The predicate part of the triple
+            * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
+            * @param stream The output stream which is going to be written in the ontology turtle file
+            */
+            void AddDecimal(std::string s, std::string p, float o, std::stringstream& stream);
+            /*! \fn
             * A function in order to create the an ontology resource based on the given resource type
             * @param resource The resource type e.g. PDB, Residue, Atom
             * @param number The numeric id that shoud be included in the URI resource
@@ -1238,6 +1246,12 @@ namespace MolecularModeling
             * @return high_range The highest number of the range
             */
             void CalculateTorsionStatistics(std::string torsion_file = "", int low_range = -180, int high_range = 180);
+            /*! \fn
+            * A function in order to calculate the average B Factor for an Oligosaccharide
+            * @param oligo The oligosaccharide
+            * @param monos The monosaccharide vector that makes up the oligosaccharide
+            */
+            void CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, std::vector<Glycan::Monosaccharide*> monos);
 
             /*! \fn
               * A function in order to extract and print out all saccharides ring atoms information
@@ -1633,7 +1647,7 @@ namespace MolecularModeling
             NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
             ResidueNodeVector residuenodes_;                /*!< List of residuenodes present in the current object of assembly >*/     //Added by ayush on 11/16/17 for residuenodes in assembly
             MoleculeVector molecules_;                      /*!< List of molecules present in the current object of assembly >*/        //Added by ayush on 11/12/17 for molecules in assembly
-            PdbFileSpace::InputFile* input_file_;                         /*!< A pointer back to the Input object >*/
+            PdbFileSpace::InputFile* input_file_;           /*!< A pointer back to the Input object >*/
     };
 
     struct DistanceCalculationThreadArgument{

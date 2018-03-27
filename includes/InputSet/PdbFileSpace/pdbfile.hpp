@@ -1294,6 +1294,11 @@ namespace PdbFileSpace
               * @param stream Intermediate output stream in order to write end card
               */
             void ResolveEndCard(std::ofstream& stream);
+            /*! \fn
+              * A function to write relevant bits of pdb file into an output stream formatted for the ontology
+              * @param stream output stream in order to write ontology
+              */
+            void PrintOntology(std::stringstream& ont_stream);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //

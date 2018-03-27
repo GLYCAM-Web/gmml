@@ -21,7 +21,7 @@ namespace Glycan
             std::string cycle_atoms_str_;                                       /*!< The string version of atom identifiers of the ring of the monosacchride >*/
             std::string anomeric_status_;                                       /*!< The detection status of the anomeric carbon >*/
             std::string bfmp_ring_conformation_;                                /*!< The ring conformation of the monosaccharide, currently detected by an external program (BFMP) >*/
-
+            float b_factor_;                                                    /*!< The Average B Factor of the monosaccharide >*/
             /*! \fn
               * Default constructor
               */

@@ -131,6 +131,7 @@
 #include "MolecularModeling/residue.hpp"
 #include "MolecularModeling/residuenode.hpp"
 #include "MolecularModeling/superimposition.hpp"
+#include "MolecularModeling/molecule.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp"

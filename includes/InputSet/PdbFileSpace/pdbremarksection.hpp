@@ -59,6 +59,16 @@ namespace PdbFileSpace
               * @return remark_cards_ attribute of the current object of this class
               */
             std::string GetRemarks();
+            /*! \fn
+              * An accessor function in order to access to the Resolution in a Remark card
+              * @return resolution_ attribute of the current object of this class
+              */
+            std::string GetResolution();
+            /*! \fn
+              * An accessor function in order to access to the B Factor in a Remark card
+              * @return b_factor_ attribute of the current object of this class
+              */
+            std::string GetBFactor();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -78,6 +88,18 @@ namespace PdbFileSpace
               * @param remark_cards The remark attribute of the current object
               */
             void SetRemarks(const std::string remark_cards);
+            /*! \fn
+              * A mutator function in order to set the Resolution of the current object
+              * Set the resolution_ attribute of the current remark card
+              * @param resolution The Resolution attribute of the current object
+              */
+            void SetResolution(const std::string resolution);
+            /*! \fn
+              * A mutator function in order to set the B Factor of the current object
+              * Set the b_factor_ attribute of the current remark card
+              * @param b_factor The B Factor attribute of the current object
+              */
+            void SetBFactor(const std::string b_factor);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -98,7 +120,9 @@ namespace PdbFileSpace
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             std::string record_name_;           /*!< Name of remark card record which is in the first column of each line of a pdb file >*/
-            std::string remark_cards_;         /*!< Remarks that are in remark card of a pdb file >*/
+            std::string remark_cards_;          /*!< Remarks that are in remark card of a pdb file >*/
+            std::string resolution_;            /*!< Resolution of PDB >*/
+            std::string b_factor_;              /*!< B Factor of PDB >*/
 
     };
 }

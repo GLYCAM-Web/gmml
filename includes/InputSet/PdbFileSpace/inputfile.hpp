@@ -4,25 +4,14 @@
 
 // #include "pdbfile.hpp"
 #include "../../common.hpp"
-// #include "../InputSet/PdbqtFileSpace/pdbqtfile.hpp"
-// #include "../InputSet/TopologyFileSpace/topologyfile.hpp"
-// #include "../InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../utils.hpp"
-#include "pdbmastercard.hpp"
-
-
-
-// using namespace MolecularModeling;
-// using namespace gmml;
-// using namespace PdbFileSpace;
-// using namespace PdbqtFileSpace;
-// using namespace TopologyFileSpace;
-// using namespace CoordinateFileSpace;
-// using namespace CifFileSpace;
+// #include "pdbmastercard.hpp"
+#include <string>
+#include <iostream>
 
 namespace PdbFileSpace
 {
-  class InputFile//: public PdbFile //, public PdbqtFile, public TopologyFile, public CoordinateFile//, public CifFile
+  class InputFile
 {
   public:
     //////////////////////////////////////////////////////////
@@ -35,7 +24,7 @@ namespace PdbFileSpace
     /*! \fn
     * Default constructor
     */
-    InputFile();
+    // InputFile();
     /*! \fn
     * Constructors
     */
@@ -46,7 +35,8 @@ namespace PdbFileSpace
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
-    virtual PdbFileSpace::PdbMasterCard* GetMasterCard()=0;
+    virtual void PrintOntology(std::stringstream& ont_stream)=0;
+    // virtual PdbMasterCard* GetMasterCard()=0;
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
