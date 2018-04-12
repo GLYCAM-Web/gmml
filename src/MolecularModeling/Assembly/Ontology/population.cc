@@ -880,7 +880,7 @@ void Assembly::FormulateCURL(std::string output_file_type, std::string query)
     std::cout << std::endl;
 }
 
-std::string Assembly::FormulateCURLGF(std::string output_file_type, std::string query)
+std::string Assembly::FormulateCURLGF(std::string output_file_type, std::string query, std::string url)
 {
     std::cout << "GENERATED QUERY:" << std::endl;
     std::cout << query << std::endl;
@@ -894,7 +894,9 @@ std::string Assembly::FormulateCURLGF(std::string output_file_type, std::string 
     else if(output_file_type.compare("json") == 0)
         curl << Ontology::JSON_OUTPUT_FORMAT;
 
-    curl << Ontology::DATA_STORE_ADDRESS_GF << Ontology::QUERY_PREFIX << query << Ontology::QUERY_POSTFIX;
+	// Had to change this from DATA_STORE_ADDRESS_GF to the url parameter to allow for Docker to work.
+	// TODO Functions like this should not be in GMML C++. They should be at the GEMS scripting level.
+    curl << url << Ontology::QUERY_PREFIX << query << Ontology::QUERY_POSTFIX;
     std::string tmp = curl.str();
     //std::cout << std::endl << "RESULTS: " << std::endl;
     // const char* cstr = tmp.c_str();
