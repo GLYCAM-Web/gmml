@@ -1063,10 +1063,10 @@ std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceGF(std::st
     //    query << "?sn       :monosaccharideStereochemName 	?stereo_name.\n";
     //    query << "?sn       :monosaccharideStereochemShortName 	?stereo_short_name.\n";
     query << Ontology::END_WHERE_CLAUSE;
-    return FormulateCURLGF(output_file_type, query.str());
+    return FormulateCURLGF(output_file_type, query.str(), Ontology::DATA_STORE_ADDRESS_GF);
 }
 
-std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string output_file_type)
+std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string url, std::string output_file_type)
 {
     gmml::FindReplaceString(oligo_name_pattern, "[", "\\\\[");
     gmml::FindReplaceString(oligo_name_pattern, "]", "\\\\]");
@@ -1124,7 +1124,7 @@ std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(
 
     query << Ontology::END_WHERE_CLAUSE;
 
-    return FormulateCURLGF(output_file_type, query.str());
+    return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
 std::string Assembly::ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string output_file_type)
@@ -1145,5 +1145,5 @@ std::string Assembly::ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::stri
 
     query << Ontology::END_WHERE_CLAUSE;
 
-    return FormulateCURLGF(output_file_type, query.str());
+    return FormulateCURLGF(output_file_type, query.str(), Ontology::DATA_STORE_ADDRESS_GF);
 }

@@ -1029,7 +1029,7 @@ namespace MolecularModeling
             * @param condensed_name The condensed version of the complete name of the sugar e.g. DManp[2s]b
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string FormulateCURLGF(std::string output_file_type, std::string query);
+            std::string FormulateCURLGF(std::string output_file_type, std::string query, std::string url);
             /*! \fn
             * A function used in GlyFinder project in order to extract information from ontology based on the name of the sugar
             * @param stereo_name The stereochemistry name of the sugar e.g. b-D-mannopyranose
@@ -1099,7 +1099,7 @@ namespace MolecularModeling
             * e.g. DGlcpNAcb1-4DGlc*, *b1-4L*, *GlcpNAcb1-4DGlcpNAcb, DGlcpNAcb*4DGlcpNAca, *DGlcpNAcb1-4DGlc*, DGlcpNAcb*DGlc*, *DManpa1-6[DManpa1-2DManpa1-3]D*
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string output_file_type = "csv");
+            std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string url, std::string output_file_type = "csv");
             /*! \fn
             * A function used in GlyFinder project in order to extract information from ontology based on the orientations of the side atoms of a monosaccharide structure
             * @param ring_type The ring type(p/f) part of the monosacchride name
