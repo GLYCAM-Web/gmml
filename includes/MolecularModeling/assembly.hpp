@@ -232,6 +232,12 @@ namespace MolecularModeling
               * @param assembly The assembly of the current object
               */
             void AddAssembly(Assembly* assembly);
+            /*! \fn
+              * A function in order to remove the assembly from the current object
+              * Deletes from the assemblies_ attribute of this assembly
+              * @param assembly The assembly of the current object
+              */
+            void RemoveAssembly(Assembly *assembly);
             void UpdateIds(std::string new_id);
             /*! \fn
               * A mutator function in order to set the residues of the current object

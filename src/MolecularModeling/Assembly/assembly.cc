@@ -586,6 +586,11 @@ void Assembly::AddAssembly(Assembly *assembly)
     this->assemblies_.push_back(assembly);
 }
 
+void Assembly::RemoveAssembly(Assembly *assembly)
+{
+    assemblies_.erase(std::remove(assemblies_.begin(), assemblies_.end(), assembly), assemblies_.end());
+}
+
 void Assembly::UpdateIds(std::string new_id)
 {
     for(AssemblyVector::iterator  it = assemblies_.begin(); it != assemblies_.end(); it++)
