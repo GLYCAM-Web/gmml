@@ -1127,7 +1127,7 @@ std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
-std::string Assembly::ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string output_file_type)
+std::string Assembly::ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string url, std::string output_file_type)
 {
     if(pdb_id.compare("") == 0)
     {
@@ -1145,5 +1145,5 @@ std::string Assembly::ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::stri
 
     query << Ontology::END_WHERE_CLAUSE;
 
-    return FormulateCURLGF(output_file_type, query.str(), Ontology::DATA_STORE_ADDRESS_GF);
+    return FormulateCURLGF(output_file_type, query.str(), url);
 }
