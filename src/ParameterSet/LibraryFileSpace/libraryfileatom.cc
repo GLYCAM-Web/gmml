@@ -2,9 +2,7 @@
 #include "../../../includes/GeometryTopology/coordinate.hpp"
 #include <iostream>
 
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace std;
+using LibraryFileSpace::LibraryFileAtom;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -12,17 +10,17 @@ using namespace std;
 LibraryFileAtom::LibraryFileAtom() : type_(""), name_(""), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
     atom_order_(0) {}
 
-LibraryFileAtom::LibraryFileAtom(string type, string name, int residue_index, int atom_index, int atomic_number, double charge) :
+LibraryFileAtom::LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index, int atomic_number, double charge) :
     type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge), coordinate_(),
     atom_order_(0) {}
 
-LibraryFileAtom::LibraryFileAtom(string type, string name, int residue_index, int atom_index, int atomic_number, double charge,
-                                 Coordinate coordinate, vector<int> bonded_atoms_indices, int atom_order) :
+LibraryFileAtom::LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index, int atomic_number, double charge,
+                                 GeometryTopology::Coordinate coordinate, std::vector<int> bonded_atoms_indices, int atom_order) :
     type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge),
     coordinate_(coordinate), atom_order_(atom_order)
 {
     bonded_atoms_indices_.clear();
-    for(vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
+    for(std::vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
     {
         bonded_atoms_indices_.push_back(*it);
     }
@@ -32,13 +30,13 @@ LibraryFileAtom::LibraryFileAtom(string type, string name, int residue_index, in
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
 /// Return atom type
-string LibraryFileAtom::GetType()
+std::string LibraryFileAtom::GetType()
 {
     return type_;
 }
 
 /// Return atom name
-string LibraryFileAtom::GetName()
+std::string LibraryFileAtom::GetName()
 {
     return name_;
 }
@@ -68,13 +66,13 @@ double LibraryFileAtom::GetCharge()
 }
 
 /// Return position of the atom
-Coordinate LibraryFileAtom::GetCoordinate()
+GeometryTopology::Coordinate LibraryFileAtom::GetCoordinate()
 {
     return coordinate_;
 }
 
 /// Return all bonded atom indices of the atom
-vector<int> LibraryFileAtom::GetBondedAtomsIndices()
+std::vector<int> LibraryFileAtom::GetBondedAtomsIndices()
 {
     return bonded_atoms_indices_;
 }
@@ -89,13 +87,13 @@ int LibraryFileAtom::GetAtomOrder()
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 /// Set atom type
-void LibraryFileAtom::SetType(const string type)
+void LibraryFileAtom::SetType(const std::string type)
 {
     type_ = type;
 }
 
 /// Set atom name
-void LibraryFileAtom::SetName(const string name)
+void LibraryFileAtom::SetName(const std::string name)
 {
     name_ = name;
 }
@@ -119,7 +117,7 @@ void LibraryFileAtom::SetAtomicNumber(int atomic_number)
 }
 
 /// Set the postion of the atom
-void LibraryFileAtom::SetCoordinate(Coordinate& coordinate)
+void LibraryFileAtom::SetCoordinate(GeometryTopology::Coordinate& coordinate)
 {
     coordinate_.SetX(coordinate.GetX());
     coordinate_.SetY(coordinate.GetY());
@@ -127,10 +125,10 @@ void LibraryFileAtom::SetCoordinate(Coordinate& coordinate)
 }
 
 /// Set all the bonded atom indices to the current atom
-void LibraryFileAtom::SetBondedAtomsIndices(const vector<int> bonded_atoms_indices)
+void LibraryFileAtom::SetBondedAtomsIndices(const std::vector<int> bonded_atoms_indices)
 {
     bonded_atoms_indices_.clear();
-    for(vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
+    for(std::vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
     {
         bonded_atoms_indices_.push_back(*it);
     }
@@ -153,11 +151,11 @@ void LibraryFileAtom::SetAtomOrder(int atom_order)
 //////////////////////////////////////////////////////////
 void LibraryFileAtom::Print(std::ostream& out)
 {
-    out << setw(2) << atom_order_
-        << setw(6) << name_
-        << setw(6) << type_
-        << setw(6) << residue_index_
-        << setw(6) << atom_index_
-        << setw(10) << charge_
-        << setw(15) << coordinate_.GetX() << ", " << setw(15) << coordinate_.GetY() << ", " << setw(15) << coordinate_.GetZ();
+    out << std::setw(2) << atom_order_
+        << std::setw(6) << name_
+        << std::setw(6) << type_
+        << std::setw(6) << residue_index_
+        << std::setw(6) << atom_index_
+        << std::setw(10) << charge_
+        << std::setw(15) << coordinate_.GetX() << ", " << std::setw(15) << coordinate_.GetY() << ", " << std::setw(15) << coordinate_.GetZ();
 }

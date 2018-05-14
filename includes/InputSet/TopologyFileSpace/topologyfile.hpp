@@ -852,6 +852,11 @@ namespace TopologyFileSpace
               */
             void ResolveRadiiSection(std::ofstream& out);
             /*! \fn
+              * A function to write solvent pointer section of the topology file into an output stream
+              * @param out Intermediate output stream in order to write screen section
+              */
+           void ResolveSolventPointersSection(std::ofstream& out);
+            /*! \fn
               * A function to write back screen section of the topology file into an output stream
               * @param out Intermediate output stream in order to write screen section
               */

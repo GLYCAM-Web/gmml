@@ -12,9 +12,7 @@
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace ParameterFileSpace;
+using ParameterFileSpace::ParameterFile;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -32,13 +30,13 @@ ParameterFile::ParameterFile(std::string param_file, int file_type)
     }
     switch(file_type_)
     {
-        case MAIN:
+        case gmml::MAIN:
             ReadMainParameter(in_file);
             break;
-        case MODIFIED:
+        case gmml::MODIFIED:
             ReadModifiedParameter(in_file);
             break;
-        case IONICMOD:
+        case gmml::IONICMOD:
             ReadIonicModifiedParameter(in_file);
             break;
     }
@@ -73,7 +71,7 @@ const ParameterFile::DihedralMap& ParameterFile::GetDihedrals()
 {
     return dihedrals_;
 }
-const int ParameterFile::GetParameterFileType()
+int ParameterFile::GetParameterFileType()
 {
     return file_type_;
 }
@@ -112,11 +110,11 @@ void ParameterFile::SetParameterFileType(int file_type)
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
 /// Read from the given stream and extract into the parameter file data structure
-/// This function reads the stream line-by-line and uses the whole structure of the file to point to the right position for data extraction
+/// This function reads the stream line-by-line and uses the whole structure of the file to point to the std::right position for data extraction
 /// For more information check a sample parameter file to find out how the function works
 void ParameterFile::ReadMainParameter(std::ifstream& in_file)
 {
-    string line;
+    std::string line;
     int line_number = 0;
 
     /// Unable to read file
@@ -126,13 +124,13 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     }
 
     /// Set the title of the parameter file
-    title_ = Trim(line);
+    title_ = gmml::Trim(line);
     line_number++;
 
     /// Atom type section reading
     getline(in_file, line);             /// Read the first line of the atom type section
     line_number++;                      /// Increment line counter
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -148,7 +146,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     /// Hydrophilic atom type section reading
     getline(in_file, line);             /// Read the first line of the hydrophilic atom type section
     line_number++;                      /// Increment line counter
-    while (line.find('-') == string::npos)      /// Process the line until the first line of the bond section gets read
+    while (line.find('-') == std::string::npos)      /// Process the line until the first line of the bond section gets read
     {
         try
         {
@@ -162,7 +160,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     }
 
     /// Bond section reading
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -178,7 +176,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     /// Angle section reading
     getline(in_file, line);             /// Read the first line of the angle section
     line_number++;                      /// Increment line counter
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -194,7 +192,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     /// Dihedral section reading
     getline(in_file, line);             /// Read the first line of the dihedral section
     line_number++;                      /// Increment line counter
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -210,7 +208,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     /// Improper dihedral section reading
     getline(in_file, line);             /// Read the first line of the improper dihedral section
     line_number++;                      /// Increment line counter
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -226,7 +224,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     /// Hydrogen bond section reading
     getline(in_file, line);             /// Read the first line of the hydrogen-bond section
     line_number++;                      /// Increment line counter
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -242,7 +240,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     /// Equivalent symbol section reading
     getline(in_file, line);             /// Read the first line of the equivalent symbol section
     line_number++;                      /// Increment line counter
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -262,7 +260,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
     /// Potential parameter section reading
     getline(in_file, line);         /// Read the first line of the potential parameter section
     line_number++;                  /// Increment line counter
-    while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+    while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
     {
         try
         {
@@ -278,7 +276,7 @@ void ParameterFile::ReadMainParameter(std::ifstream& in_file)
 
 void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
 {
-    string line;
+    std::string line;
     int line_number = 0;
 
     /// Unable to read file
@@ -288,17 +286,17 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     }
 
     /// Set the title of the parameter file
-    title_ = Trim(line);
+    title_ = gmml::Trim(line);
     line_number++;
 
     /// Atom type section reading
     getline(in_file, line);             /// Read the first line of the atom type section
     line_number++;                      /// Increment line counter
-    if(Trim(line).find("MASS") != string::npos)
+    if(gmml::Trim(line).find("MASS") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the atom type section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -315,11 +313,11 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Bond section reading
     getline(in_file, line);             /// Read the first line of the atom type section
     line_number++;                      /// Increment line counter
-    if(Trim(line).find("BOND") != string::npos)
+    if(gmml::Trim(line).find("BOND") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the atom type section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -336,11 +334,11 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Angle section reading
     getline(in_file, line);             /// Read the first line of the angle section
     line_number++;                      /// Increment line counter
-    if(Trim(line).find("ANGL") != string::npos || Trim(line).find("ANGLE") != string::npos)
+    if(gmml::Trim(line).find("ANGL") != std::string::npos || gmml::Trim(line).find("ANGLE") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the angle section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -357,11 +355,11 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Dihedral section reading
     getline(in_file, line);             /// Read the first line of the dihedral section
     line_number++;                      /// Increment line counter
-    if(Trim(line).find("DIHE") != string::npos || Trim(line).find("DIHEDRAL") != string::npos)
+    if(gmml::Trim(line).find("DIHE") != std::string::npos || gmml::Trim(line).find("DIHEDRAL") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the angle section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -378,11 +376,11 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Improper dihedral section reading
     getline(in_file, line);             /// Read the first line of the improper dihedral section
     line_number++;                      /// Increment line counter
-    if(Trim(line).find("IMPR") != string::npos || Trim(line).find("IMPROPER") != string::npos)
+    if(gmml::Trim(line).find("IMPR") != std::string::npos || gmml::Trim(line).find("IMPROPER") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the improper dihedral section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -399,11 +397,11 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
     /// Potential parameter section reading
     getline(in_file, line);         /// Read the first line of the potential parameter section
     line_number++;                  /// Increment line counter
-    if(Trim(line).find("NONB") != string::npos || Trim(line).find("NONBON") != string::npos)
+    if(gmml::Trim(line).find("NONB") != std::string::npos || gmml::Trim(line).find("NONBON") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the improper dihedral section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -420,7 +418,7 @@ void ParameterFile::ReadModifiedParameter(std::ifstream& in_file)
 
 void ParameterFile::ReadIonicModifiedParameter(std::ifstream& in_file)
 {
-    string line;
+    std::string line;
     int line_number = 0;
 
     /// Unable to read file
@@ -430,17 +428,17 @@ void ParameterFile::ReadIonicModifiedParameter(std::ifstream& in_file)
     }
 
     /// Set the title of the parameter file
-    title_ = Trim(line);
+    title_ = gmml::Trim(line);
     line_number++;
 
     /// Atom type section reading
     getline(in_file, line);             /// Read the first line of the atom type section
     line_number++;                      /// Increment line counter
-    if(Trim(line).find("MASS") != string::npos)
+    if(gmml::Trim(line).find("MASS") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the atom type section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -457,11 +455,11 @@ void ParameterFile::ReadIonicModifiedParameter(std::ifstream& in_file)
     /// Potential parameter section reading
     getline(in_file, line);         /// Read the first line of the potential parameter section
     line_number++;                  /// Increment line counter
-    if(Trim(line).find("NONB") != string::npos || Trim(line).find("NONBON") != string::npos)
+    if(gmml::Trim(line).find("NONB") != std::string::npos || gmml::Trim(line).find("NONBON") != std::string::npos)
     {
         getline(in_file, line);             /// Read the first line of the improper dihedral section
         line_number++;                      /// Increment line counter
-        while (!Trim(line).empty())         /// Reading until a blank line which is the end of the section
+        while (!gmml::Trim(line).empty())         /// Reading until a blank line which is the end of the section
         {
             try
             {
@@ -480,18 +478,18 @@ void ParameterFile::ReadIonicModifiedParameter(std::ifstream& in_file)
 void ParameterFile::ProcessAtomType(const std::string& line)
 {
     double mass, polarizability;
-    string type, dscr;
+    std::string type, dscr;
 
-    istringstream in(line);
+    std::istringstream in(line);
     switch(this->file_type_)
     {
-        case MAIN:
-        case MODIFIED:
+        case gmml::MAIN:
+        case gmml::MODIFIED:
             in >> std::setw(2) >> type                          /// Extract type from the line
                >> std::setw(10) >> mass                         /// Extract mass from the line
                >> std::setw(10) >> polarizability;              /// Extract polarizability from the line
             break;
-        case IONICMOD:
+        case gmml::IONICMOD:
             in >> std::setw(3) >> type                          /// Extract type from the line
                >> std::setw(10) >> mass                         /// Extract mass from the line
                >> std::setw(10) >> polarizability;              /// Extract polarizability from the line
@@ -499,8 +497,8 @@ void ParameterFile::ProcessAtomType(const std::string& line)
     }
 
     if(polarizability == 0)
-        polarizability = dNotSet;
-    Trim(type);
+        polarizability = gmml::dNotSet;
+    gmml::Trim(type);
     if (line.size() > 24)               /// Line has description
         dscr = line.substr(24);
 
@@ -511,9 +509,9 @@ void ParameterFile::ProcessAtomType(const std::string& line)
 /// Process the hydrophilic atom type line of the parameter file
 void ParameterFile::ProcessHydrophilicAtomType(const std::string& line)
 {
-    string type;
-    istringstream in(line);             /// Create an stream from the read line
-    while (in >> std::setw(4) >> type && !Trim(type).empty())         /// Iterate on the tokens in the read line
+    std::string type;
+    std::istringstream in(line);             /// Create an stream from the read line
+    while (in >> std::setw(4) >> type && !gmml::Trim(type).empty())         /// Iterate on the tokens in the read line
     {
         if(distance(atom_types_.begin(), atom_types_.find(type)) >= 0)         /// Check for the existing atom type in the map
         {
@@ -526,11 +524,11 @@ void ParameterFile::ProcessHydrophilicAtomType(const std::string& line)
 void ParameterFile::ProcessBond(const std::string& line)
 {
     char c;
-    vector<string> types(2);
-    string dscr;
+    std::vector<std::string> types(2);
+    std::string dscr;
     double force_constant, length;
 
-    istringstream in(line);                 /// Create an stream from the read bond line
+    std::istringstream in(line);                 /// Create an stream from the read bond line
     in >> std::setw(2) >> types[0] >> c
        >> std::setw(2) >> types[1];         /// Tokenize the bond atom types by '-'
     in >> std::setw(10) >> force_constant
@@ -542,7 +540,7 @@ void ParameterFile::ProcessBond(const std::string& line)
         dscr = line.substr(26);
 
     for(unsigned int i = 0; i < types.size(); i++)
-        Trim(types[i]);
+        gmml::Trim(types[i]);
     bonds_[types] = new ParameterFileBond(types, force_constant, length, dscr);          /// Create a new bond and insert into the bond list
 }
 
@@ -550,11 +548,11 @@ void ParameterFile::ProcessBond(const std::string& line)
 void ParameterFile::ProcessAngle(const std::string& line)
 {
     char c;
-    vector<string> types(3);
-    string dscr;
+    std::vector<std::string> types(3);
+    std::string dscr;
     double force_constant, angle;
 
-    istringstream in(line);                 /// Create an stream from the read bond line
+    std::istringstream in(line);                 /// Create an stream from the read bond line
     in >> std::setw(2) >> types[0] >> c
        >> std::setw(2) >> types[1] >> c
        >> std::setw(2) >> types[2];         /// Tokenize the angle atom types by '-'
@@ -567,22 +565,22 @@ void ParameterFile::ProcessAngle(const std::string& line)
         dscr = line.substr(29);
 
     for(unsigned int i = 0; i < types.size(); i++)
-        Trim(types[i]);
+        gmml::Trim(types[i]);
     angles_[types] = new ParameterFileAngle(types, force_constant, angle, dscr);         /// Create a new angle and insert into the angle list
 }
 
 /// Process the dihedral lines of the parameter file
-void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstream &in_file)
+void ParameterFile::ProcessDihedral(std::string &line, int &line_number, std::ifstream &in_file)
 {
     char c;
-    vector<string> types(4);
+    std::vector<std::string> types(4);
     ParameterFileDihedralTerm t;
-    vector<ParameterFileDihedralTerm> terms;
-    string dscr;
+    std::vector<ParameterFileDihedralTerm> terms;
+    std::string dscr;
     double scee, scnb, temp_force_constant, temp_phase, temp_periodicity;
     int temp_factor;
 
-    istringstream in(line);                 /// Create an stream from the read bond line
+    std::istringstream in(line);                 /// Create an stream from the read bond line
     in >> std::setw(2) >> types[0] >> c
        >> std::setw(2) >> types[1] >> c
        >> std::setw(2) >> types[2] >> c
@@ -610,7 +608,7 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
     scnb = ProcessDoubleDihedralDescription(dscr, "SCNB");              /// Extract scnb from the description column of the line
 
     for(unsigned int i = 0; i < types.size(); i++)
-        Trim(types[i]);
+        gmml::Trim(types[i]);
     ParameterFileDihedral *dihedral = new ParameterFileDihedral(types, t, scee, scnb);
     while (dihedral->GetTerms().at(dihedral->GetTerms().size() - 1).GetPeriodicity() < 0)       /// Processing the following lines with the same dihedral;
         /// While the periodicity is negative the following lines are the same dihedrals with different attributes
@@ -619,7 +617,7 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
         line_number++;                              /// Increment the line counter
         ParameterFileDihedralTerm new_term;
 
-        istringstream in2(line.substr(11));         /// Skip the first column of the line which is the same dihedral atom types
+        std::istringstream in2(line.substr(11));         /// Skip the first column of the line which is the same dihedral atom types
         in2 >> std::setw(4) >> temp_factor
             >> std::setw(15) >> temp_force_constant
             >> std::setw(15) >> temp_phase
@@ -644,7 +642,7 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
         dihedral->AddTerm(new_term);
     }
 
-    vector<string> inverse_types(4);                /// Create an inverse vector of atom types for duplicate checking
+    std::vector<std::string> inverse_types(4);                /// Create an inverse std::vector of atom types for duplicate checking
     for(unsigned int i = 0; i < types.size(); i++)
     {
         inverse_types[i] = types[types.size() - (i+1)];
@@ -670,16 +668,16 @@ void ParameterFile::ProcessDihedral(string &line, int &line_number, std::ifstrea
 }
 
 /// Process the improper dihedral lines of the parameter file
-void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std::ifstream &in_file)
+void ParameterFile::ProcessImproperDihedral(std::string &line, int &line_number, std::ifstream &in_file)
 {
     char c;
-    vector<string> types(4);
+    std::vector<std::string> types(4);
     ParameterFileDihedralTerm t;
-    vector<ParameterFileDihedralTerm> terms;
-    string dscr;
+    std::vector<ParameterFileDihedralTerm> terms;
+    std::string dscr;
     double scee, scnb, temp_force_constant, temp_phase, temp_periodicity;
 
-    istringstream in(line);                     /// Create an stream from the read bond line
+    std::istringstream in(line);                     /// Create an stream from the read bond line
     in >> std::setw(2) >> types[0] >> c
        >> std::setw(2) >> types[1] >> c
        >> std::setw(2) >> types[2] >> c
@@ -695,7 +693,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     if (in.fail())                              /// Invalid entry
         throw std::exception();
 
-    t.SetFactor(iNotSet);                        /// Improper dihedral doesn't have factor
+    t.SetFactor(gmml::iNotSet);                        /// Improper dihedral doesn't have factor
 
     if (line.size() > 60)                       /// Line has description
         dscr = line.substr(60);
@@ -707,7 +705,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
     scnb = ProcessDoubleDihedralDescription(dscr, "SCNB");              /// Extract scnb from the description column of the line
 
     for(unsigned int i = 0; i < types.size(); i++)
-        Trim(types[i]);
+        gmml::Trim(types[i]);
     ParameterFileDihedral *dihedral = new ParameterFileDihedral(types, t, scee, scnb);
     while (dihedral->GetTerms().at(dihedral->GetTerms().size() - 1).GetPeriodicity() < 0)       /// Processing the following lines with the same dihedral;
         /// While the periodicity is negative the following lines are the same dihedrals with different attributes
@@ -716,7 +714,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
         line_number++;                              /// Increment the line counter
         ParameterFileDihedralTerm new_term;
 
-        istringstream in2(line.substr(11));             /// Skip the first column of the line which is the same dihedral atom types
+        std::istringstream in2(line.substr(11));             /// Skip the first column of the line which is the same dihedral atom types
         in2 >> std::setw(15) >> temp_force_constant
             >> std::setw(15) >> temp_phase
             >> std::setw(15) >> temp_periodicity;  /// Tokenize the rest of the line into the corresponding variables
@@ -738,7 +736,7 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
         dihedral->AddTerm(new_term);
     }
 
-    vector<string> inverse_types(4);                /// Create an inverse vector of atom types for duplicate checking
+    std::vector<std::string> inverse_types(4);                /// Create an inverse std::vector of atom types for duplicate checking
     for(unsigned int i = 0; i < types.size(); i++)
     {
         inverse_types[i] = types[types.size() - (i+1)];
@@ -762,11 +760,11 @@ void ParameterFile::ProcessImproperDihedral(string &line, int &line_number, std:
 /// Process the hydrogen-bond lines of the parameter file
 void ParameterFile::ProcessHydrogenBond(const std::string& line)
 {
-    vector<string> types(2);
-    vector<double> coefficients(2);
-    string dscr;
+    std::vector<std::string> types(2);
+    std::vector<double> coefficients(2);
+    std::string dscr;
 
-    istringstream in(line);                         /// Create an stream from the read bond line
+    std::istringstream in(line);                         /// Create an stream from the read bond line
     in >> types[0] >> types[1]
        >> coefficients[0] >> coefficients[1];       /// Tokenize the read line to the types and coefficients
 
@@ -777,13 +775,13 @@ void ParameterFile::ProcessHydrogenBond(const std::string& line)
         dscr = line.substr(58);
 
     for(unsigned int i = 0; i < types.size(); i++)
-        Trim(types[i]);
+        gmml::Trim(types[i]);
 
-    vector<string> inverse_types(2);                /// Create an inverse vector of types
+    std::vector<std::string> inverse_types(2);                /// Create an inverse std::vector of types
     inverse_types[0] = types[1];
     inverse_types[1] = types[0];
 
-    vector<double> inverse_coefficients(2);
+    std::vector<double> inverse_coefficients(2);
     inverse_coefficients[0] = coefficients[1];
     inverse_coefficients[1] = coefficients[0];
 
@@ -802,11 +800,11 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
 {
     /// Old style: Create an equivalent list for the first atom in the line
     /**
-    string type, t;
-    istringstream in(line);         // Create an stream from the read line
+    std::string type, t;
+    std::istringstream in(line);         // Create an stream from the read line
     in >> std::setw(4) >> type;     // Extract the first atom type from the line which the equivalent list is created for
-    Trim(type);
-    while (in >> std::setw(4) >> t && !Trim(t).empty())        // Read until the end of the line
+    gmml::Trim(type);
+    while (in >> std::setw(4) >> t && !gmml::Trim(t).empty())        // Read until the end of the line
     {
         if(atom_types_.find(type) != atom_types_.end())         // Check for existing atom type in the atom type map
             atom_types_[type] -> equivalent_list_.push_back(t); // Add the equivalent atom type to the corresponding list of the found atom
@@ -814,11 +812,11 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
     **/
 
     /// New style: Create an equivalent list for all atoms in the line
-    string type;
-    istringstream in(line);         /// Create an stream from the read line
-    vector<string> types;
+    std::string type;
+    std::istringstream in(line);         /// Create an stream from the read line
+    std::vector<std::string> types;
 
-    while (in >> std::setw(4) >> type && !Trim(type).empty())     /// Read until the end of the line
+    while (in >> std::setw(4) >> type && !gmml::Trim(type).empty())     /// Read until the end of the line
     {
         types.push_back(type);;     /// Add the read atom type into the temporary atom list
     }
@@ -827,7 +825,7 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
     {
         if(distance(atom_types_.begin(), atom_types_.find(types[i])) >= 0)     /// Check for the existing atom type in the atom type map
         {
-            vector<string> equivalent_types = types;
+            std::vector<std::string> equivalent_types = types;
             equivalent_types.erase(equivalent_types.begin() + i);           /// Remove the base atom from the list
             atom_types_[types[i]] -> SetEquivalentList(equivalent_types);   /// Assign the equivalent list to the corresponding atom in the map
         }
@@ -837,10 +835,10 @@ void ParameterFile::ProcessEquivalentSymbols(const std::string& line)
 /// Process the potential parameter lines of the parameter file: Furthur information for atom types
 void ParameterFile::ProcessPotentialParameter(const std::string& line)
 {
-    string type, dscr;
+    std::string type, dscr;
     double radius, depth;
 
-    istringstream in(line);             /// Create an stream from the read line
+    std::istringstream in(line);             /// Create an stream from the read line
     in >> type >> radius >> depth;      /// Tokenize the read line into the type, radius and well depth
 
     if (in.fail())                      /// Invalid entry
@@ -849,10 +847,10 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
     if (line.size() > 38)               /// Line has description
         dscr = line.substr(38);
 
-    Trim(type);                         /// Remove spaces from the begining and the end of the string
+    gmml::Trim(type);                         /// Remove spaces from the begining and the end of the std::string
     if (atom_types_.find(type) == atom_types_.end())        /// Check for the existing atom type in the map
     {
-        atom_types_[type] = new ParameterFileAtom(type, dNotSet, dNotSet, radius, depth, dscr); /// Create a new entry in the map for a non-existing atom type in the map
+        atom_types_[type] = new ParameterFileAtom(type, gmml::dNotSet, gmml::dNotSet, radius, depth, dscr); /// Create a new entry in the map for a non-existing atom type in the map
     }
     else
     {
@@ -861,8 +859,8 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
         atom_types_[type]->SetMod4Dscr(dscr);           /// Update mod4 description attribute of the existing atom type in the map
     }
 
-    vector<string>::const_iterator it;
-    vector<string> equivalent_atoms;
+    std::vector<std::string>::const_iterator it;
+    std::vector<std::string> equivalent_atoms;
     if (atom_types_.find(type) != atom_types_.end())    /// Check if the atom type in the map has equivalent list
         equivalent_atoms = atom_types_[type] -> GetEquivalentList();
     else
@@ -872,7 +870,7 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
     {
         if (atom_types_.find(*it) == atom_types_.end())         /// Check for the non-existing atom type in the map
         {
-            atom_types_[*it] = new ParameterFileAtom(*it, dNotSet, dNotSet, radius, depth, dscr);       /// Create a new entry in the map for the non-existing atom type in the map
+            atom_types_[*it] = new ParameterFileAtom(*it, gmml::dNotSet, gmml::dNotSet, radius, depth, dscr);       /// Create a new entry in the map for the non-existing atom type in the map
         }
         else
         {
@@ -887,16 +885,16 @@ void ParameterFile::ProcessPotentialParameter(const std::string& line)
 double ParameterFile::ProcessDoubleDihedralDescription(const std::string& dscr, const std::string& key)
 {
     double val;
-    size_t pos = dscr.find(string(key + "="));      /// Find the starting position of the value of the given key in the given description
-    if (pos == string::npos)                        /// Key is not found
-        return dNotSet;
+    size_t pos = dscr.find(std::string(key + "="));      /// Find the starting position of the value of the given key in the given description
+    if (pos == std::string::npos)                        /// Key is not found
+        return gmml::dNotSet;
     std::istringstream ss(dscr.substr(pos + key.size() + 1));
     ss >> val;                                      /// Extract the value of the key from the found position
     if (ss.fail())
-        return dNotSet;
+        return gmml::dNotSet;
     return val;
 }
-void ParameterFile::Write(const string &parameter_file)
+void ParameterFile::Write(const std::string &parameter_file)
 {
     std::ofstream out_file;
     try
@@ -911,13 +909,13 @@ void ParameterFile::Write(const string &parameter_file)
     {
         switch(file_type_)
         {
-            case MAIN:
+            case gmml::MAIN:
                 this->BuildMainParameterFile(out_file);
                 break;
-            case MODIFIED:
+            case gmml::MODIFIED:
                 this->BuildModifiedParameterFile(out_file);
                 break;
-            case IONICMOD:
+            case gmml::IONICMOD:
                 this->BuildIonicModifiedParameterFile(out_file);
                 break;
         }
@@ -928,9 +926,9 @@ void ParameterFile::Write(const string &parameter_file)
         out_file.close();
     }
 }
-void ParameterFile::BuildMainParameterFile(ofstream& out_stream)
+void ParameterFile::BuildMainParameterFile(std::ofstream& out_stream)
 {
-    out_stream << GetTitle() << endl;
+    out_stream << GetTitle() << std::endl;
     ResolveAtomTypeSection(out_stream);
     ResolveHydrophilicAtomTypeSection(out_stream);
     ResolveBondSection(out_stream);
@@ -943,9 +941,9 @@ void ParameterFile::BuildMainParameterFile(ofstream& out_stream)
     out_stream << "END";
 }
 
-void ParameterFile::BuildModifiedParameterFile(ofstream& out_stream)
+void ParameterFile::BuildModifiedParameterFile(std::ofstream& out_stream)
 {
-    out_stream << GetTitle() << endl;
+    out_stream << GetTitle() << std::endl;
     ResolveAtomTypeSection(out_stream);
     ResolveBondSection(out_stream);
     ResolveAngleSection(out_stream);
@@ -954,49 +952,49 @@ void ParameterFile::BuildModifiedParameterFile(ofstream& out_stream)
     ResolvePotentialParameterSection(out_stream);
 }
 
-void ParameterFile::BuildIonicModifiedParameterFile(ofstream& out_stream)
+void ParameterFile::BuildIonicModifiedParameterFile(std::ofstream& out_stream)
 {
-    out_stream << GetTitle() << endl;
+    out_stream << GetTitle() << std::endl;
     ResolveAtomTypeSection(out_stream);
     ResolvePotentialParameterSection(out_stream);
 }
 
-void ParameterFile::ResolveAtomTypeSection(ofstream& stream)
+void ParameterFile::ResolveAtomTypeSection(std::ofstream& stream)
 {
     switch(file_type_)
     {
-        case MODIFIED:
-            stream << "MASS" << endl;
-        case MAIN:
+        case gmml::MODIFIED:
+            stream << "MASS" << std::endl;
+        case gmml::MAIN:
             for(AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
             {
                 ParameterFileAtom* atom = (*it).second;
-                stream << left << setw(2) << atom->GetType() << " " << right << setw(10) << fixed << setprecision(2) << atom->GetMass() << " " ;
-                if(atom->GetPolarizability() == dNotSet)
-                    stream << right << setw(10) << " ";
+                stream << std::left << std::setw(2) << atom->GetType() << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetMass() << " " ;
+                if(atom->GetPolarizability() == gmml::dNotSet)
+                    stream << std::right << std::setw(10) << " ";
                 else
-                    stream << right << setw(10) << fixed << setprecision(2) << atom->GetPolarizability();
-                stream << " " << left << atom->GetDscr() << endl;
+                    stream << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetPolarizability();
+                stream << " " << std::left << atom->GetDscr() << std::endl;
             }
-            stream << endl;
+            stream << std::endl;
             break;
-        case IONICMOD:
+        case gmml::IONICMOD:
             for(AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
             {
                 ParameterFileAtom* atom = (*it).second;
-                stream << left << setw(3) << atom->GetType() << " " << right << setw(10) << fixed << setprecision(2) << atom->GetMass() << " " ;
-                if(atom->GetPolarizability() == dNotSet)
-                    stream << right << setw(10) << " ";
+                stream << std::left << std::setw(3) << atom->GetType() << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetMass() << " " ;
+                if(atom->GetPolarizability() == gmml::dNotSet)
+                    stream << std::right << std::setw(10) << " ";
                 else
-                    stream << right << setw(10) << fixed << setprecision(2) << atom->GetPolarizability();
-                stream << " " << left << atom->GetDscr() << endl;
+                    stream << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetPolarizability();
+                stream << " " << std::left << atom->GetDscr() << std::endl;
             }
-            stream << endl;
+            stream << std::endl;
             break;
     }
 
 }
-void ParameterFile::ResolveHydrophilicAtomTypeSection(ofstream& stream)
+void ParameterFile::ResolveHydrophilicAtomTypeSection(std::ofstream& stream)
 {
     int count = 0;
     const int MAX_IN_LINE = 20;
@@ -1005,134 +1003,134 @@ void ParameterFile::ResolveHydrophilicAtomTypeSection(ofstream& stream)
         ParameterFileAtom* atom = (*it1).second;
         if(atom->GetIsHydrophilic())
         {
-            stream << left << setw(2) << atom->GetType() << setw(2) << " ";
+            stream << std::left << std::setw(2) << atom->GetType() << std::setw(2) << " ";
             count++;
             if(count == MAX_IN_LINE)
             {
                 count = 0;
-                stream << endl;
+                stream << std::endl;
             }
         }
     }
     if(count < MAX_IN_LINE)
-        stream << endl;
-    stream << endl;
+        stream << std::endl;
+    stream << std::endl;
 }
-void ParameterFile::ResolveBondSection(ofstream& stream)
+void ParameterFile::ResolveBondSection(std::ofstream& stream)
 {
     switch(file_type_)
     {
-        case MODIFIED:
-            stream << "BOND" << endl;
-        case MAIN:
+        case gmml::MODIFIED:
+            stream << "BOND" << std::endl;
+        case gmml::MAIN:
             for(BondMap::iterator it2 = bonds_.begin(); it2 != bonds_.end(); it2++)
             {
-                vector<string> atom_types = (*it2).first;
+                std::vector<std::string> atom_types = (*it2).first;
                 ParameterFileBond* bond = (*it2).second;
-                stream << left << setw(2) << atom_types.at(0) << "-" << left << setw(2) << atom_types.at(1) << " " << right << setw(10) << fixed << setprecision(2) << bond->GetForceConstant()
-                       << " " << right << setw(10) << fixed << setprecision(2) << bond->GetLength() << " " << left << bond->GetDscr() << endl;
+                stream << std::left << std::setw(2) << atom_types.at(0) << "-" << std::left << std::setw(2) << atom_types.at(1) << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << bond->GetForceConstant()
+                       << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << bond->GetLength() << " " << std::left << bond->GetDscr() << std::endl;
             }
-            stream << endl;
+            stream << std::endl;
             break;
     }
 
 }
-void ParameterFile::ResolveAngleSection(ofstream& stream)
+void ParameterFile::ResolveAngleSection(std::ofstream& stream)
 {
     switch(file_type_)
     {
-        case MODIFIED:
-            stream << "ANGL" << endl;
-        case MAIN:
+        case gmml::MODIFIED:
+            stream << "ANGL" << std::endl;
+        case gmml::MAIN:
             for(AngleMap::iterator it3 = angles_.begin(); it3 != angles_.end(); it3++)
             {
-                vector<string> angle_types = (*it3).first;
+                std::vector<std::string> angle_types = (*it3).first;
                 ParameterFileAngle* angle = (*it3).second;
-                stream << left << setw(2) << angle_types.at(0) << "-" << left << setw(2) << angle_types.at(1) << "-" << left << setw(2) << angle_types.at(2)
-                       << " " << right << setw(10) << fixed << setprecision(2) << angle->GetForceConstant() << " " << right << setw(10) << fixed << setprecision(2) << angle->GetAngle()
-                       << " " << left << angle->GetDscr() << endl;
+                stream << std::left << std::setw(2) << angle_types.at(0) << "-" << std::left << std::setw(2) << angle_types.at(1) << "-" << std::left << std::setw(2) << angle_types.at(2)
+                       << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << angle->GetForceConstant() << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << angle->GetAngle()
+                       << " " << std::left << angle->GetDscr() << std::endl;
             }
-            stream << endl;
+            stream << std::endl;
             break;
     }
 
 }
-void ParameterFile::ResolveDihedralSection(ofstream& stream)
+void ParameterFile::ResolveDihedralSection(std::ofstream& stream)
 {
     switch(file_type_)
     {
-        case MODIFIED:
-            stream << "DIHE" << endl;
-        case MAIN:
+        case gmml::MODIFIED:
+            stream << "DIHE" << std::endl;
+        case gmml::MAIN:
             for(DihedralMap::iterator it4 = dihedrals_.begin(); it4 != dihedrals_.end(); it4++)
             {
-                vector<string> dihedral_types = (*it4).first;
+                std::vector<std::string> dihedral_types = (*it4).first;
                 ParameterFileDihedral* dihedral = (*it4).second;
                 if(!dihedral->GetIsImproper())
                 {
-                    vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
-                    for(vector<ParameterFileDihedralTerm>::iterator it5 = dihedral_terms.begin(); it5 != dihedral_terms.end(); it5++)
+                    std::vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
+                    for(std::vector<ParameterFileDihedralTerm>::iterator it5 = dihedral_terms.begin(); it5 != dihedral_terms.end(); it5++)
                     {
                         ParameterFileDihedralTerm dihedral_term = (*it5);
-                        stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
-                               << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3) << " "
-                               << right << setw(4) << dihedral_term.GetFactor() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
-                               << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
-                               << " " << left << dihedral_term.GetDscr() << endl;
+                        stream << std::left << std::setw(2) << dihedral_types.at(0) << "-" << std::left << std::setw(2) << dihedral_types.at(1) << "-"
+                               << std::left << std::setw(2) << dihedral_types.at(2) << "-" << std::left << std::setw(2) << dihedral_types.at(3) << " "
+                               << std::right << std::setw(4) << dihedral_term.GetFactor() << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << dihedral_term.GetForceConstant()
+                               << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << dihedral_term.GetPhase() << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << dihedral_term.GetPeriodicity()
+                               << " " << std::left << dihedral_term.GetDscr() << std::endl;
                     }
                 }
             }
-            stream << endl;
+            stream << std::endl;
             break;
     }
 }
-void ParameterFile::ResolveImproperDihedralSection(ofstream& stream)
+void ParameterFile::ResolveImproperDihedralSection(std::ofstream& stream)
 {
     switch(file_type_)
     {
-        case MODIFIED:
-            stream << "IMPR" << endl;
-        case MAIN:
+        case gmml::MODIFIED:
+            stream << "IMPR" << std::endl;
+        case gmml::MAIN:
             for(DihedralMap::iterator it6 = dihedrals_.begin(); it6 != dihedrals_.end(); it6++)
             {
-                vector<string> dihedral_types = (*it6).first;
+                std::vector<std::string> dihedral_types = (*it6).first;
                 ParameterFileDihedral* dihedral = (*it6).second;
                 if(dihedral->GetIsImproper())
                 {
-                    vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
-                    for(vector<ParameterFileDihedralTerm>::iterator it7 = dihedral_terms.begin(); it7 != dihedral_terms.end(); it7++)
+                    std::vector<ParameterFileDihedralTerm> dihedral_terms = dihedral->GetTerms();
+                    for(std::vector<ParameterFileDihedralTerm>::iterator it7 = dihedral_terms.begin(); it7 != dihedral_terms.end(); it7++)
                     {
                         ParameterFileDihedralTerm dihedral_term = (*it7);
-                        stream << left << setw(2) << dihedral_types.at(0) << "-" << left << setw(2) << dihedral_types.at(1) << "-"
-                               << left << setw(2) << dihedral_types.at(2) << "-" << left << setw(2) << dihedral_types.at(3)
-                               << " " << right << setw(4) << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetForceConstant()
-                               << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPhase() << " " << right << setw(10) << fixed << setprecision(2) << dihedral_term.GetPeriodicity()
-                               << " " << left << dihedral_term.GetDscr() << endl;
+                        stream << std::left << std::setw(2) << dihedral_types.at(0) << "-" << std::left << std::setw(2) << dihedral_types.at(1) << "-"
+                               << std::left << std::setw(2) << dihedral_types.at(2) << "-" << std::left << std::setw(2) << dihedral_types.at(3)
+                               << " " << std::right << std::setw(4) << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << dihedral_term.GetForceConstant()
+                               << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << dihedral_term.GetPhase() << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2) << dihedral_term.GetPeriodicity()
+                               << " " << std::left << dihedral_term.GetDscr() << std::endl;
                     }
                 }
             }
-            stream << endl;
+            stream << std::endl;
             break;
     }
 }
-void ParameterFile::ResolveHydrogenBondSection(ofstream& stream)
+void ParameterFile::ResolveHydrogenBondSection(std::ofstream& stream)
 {
     for(BondMap::iterator it8 = bonds_.begin(); it8 != bonds_.end(); it8++)
     {
-        vector<string> atom_types = (*it8).first;
+        std::vector<std::string> atom_types = (*it8).first;
         ParameterFileBond* bond = (*it8).second;
         if(bond->GetHbondCoefficients().size() != 0)
         {
-            stream << left << setw(2)  << " " << left << setw(2) << atom_types.at(0) << left << setw(2) << " " << left << setw(2) << atom_types.at(1) << left << setw(2) << " "
-                   << right << setw(10) << fixed << setprecision(2) << bond->GetHbondCoefficients().at(0) << " " << right << setw(10) << fixed << setprecision(2)
-                   << bond->GetHbondCoefficients().at(1) << endl;
+            stream << std::left << std::setw(2)  << " " << std::left << std::setw(2) << atom_types.at(0) << std::left << std::setw(2) << " " << std::left << std::setw(2) << atom_types.at(1) << std::left << std::setw(2) << " "
+                   << std::right << std::setw(10) << std::fixed << std::setprecision(2) << bond->GetHbondCoefficients().at(0) << " " << std::right << std::setw(10) << std::fixed << std::setprecision(2)
+                   << bond->GetHbondCoefficients().at(1) << std::endl;
         }
     }
-    stream << endl;
+    stream << std::endl;
 }
-void ParameterFile::ResolveEquivalentSymbolsSection(ofstream& stream)
+void ParameterFile::ResolveEquivalentSymbolsSection(std::ofstream& stream)
 {
-    vector<string> printed = vector<string>();
+    std::vector<std::string> printed = std::vector<std::string>();
     for(AtomTypeMap::iterator it9 = atom_types_.begin(); it9 != atom_types_.end(); it9++)
     {
         ParameterFileAtom* atom = (*it9).second;
@@ -1142,52 +1140,52 @@ void ParameterFile::ResolveEquivalentSymbolsSection(ofstream& stream)
             {}
             else
             {
-                stream << left << setw(2) << atom->GetType() << left << setw(2) << " ";
+                stream << std::left << std::setw(2) << atom->GetType() << std::left << std::setw(2) << " ";
                 for(unsigned int i = 0; i < atom->GetEquivalentList().size(); i++)
                 {
-                    stream << left << setw(2) << atom->GetEquivalentList().at(i) << left << setw(2) << " ";
+                    stream << std::left << std::setw(2) << atom->GetEquivalentList().at(i) << std::left << std::setw(2) << " ";
                     printed.push_back(atom->GetEquivalentList().at(i));
                 }
-                stream << endl;
+                stream << std::endl;
             }
         }
     }
-    stream << endl;
+    stream << std::endl;
 }
-void ParameterFile::ResolvePotentialParameterSection(ofstream& stream)
+void ParameterFile::ResolvePotentialParameterSection(std::ofstream& stream)
 {
     switch(file_type_)
     {
-        case MODIFIED:
-            stream << "NONB" << endl;
+        case gmml::MODIFIED:
+            stream << "NONB" << std::endl;
             break;
-        case MAIN:
-            stream << "MOD4" << endl;
+        case gmml::MAIN:
+            stream << "MOD4" << std::endl;
             break;
     }
     for(AtomTypeMap::iterator it10 = atom_types_.begin(); it10 != atom_types_.end(); it10++)
     {
         ParameterFileAtom* atom = (*it10).second;
-        if(atom->GetRadius() != dNotSet || atom->GetWellDepth() != dNotSet)
+        if(atom->GetRadius() != gmml::dNotSet || atom->GetWellDepth() != gmml::dNotSet)
         {
             switch(this->file_type_)
             {
-                case MAIN:
-                case MODIFIED:
-                    stream << left << setw(2) << " " << left << setw(2) << atom->GetType() << left << setw(6) << " " << left << setw(2) << " " << " "
-                           << right << setw(10) << fixed << setprecision(2) << atom->GetRadius() << " "
-                           << right << setw(10) << fixed << setprecision(2) << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
+                case gmml::MAIN:
+                case gmml::MODIFIED:
+                    stream << std::left << std::setw(2) << " " << std::left << std::setw(2) << atom->GetType() << std::left << std::setw(6) << " " << std::left << std::setw(2) << " " << " "
+                           << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetRadius() << " "
+                           << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetWellDepth() << std::left << atom->GetMod4Dscr() << std::endl;
                     break;
-                case IONICMOD:
-                    stream << left << setw(2) << " " << left << setw(3) << atom->GetType() << left << setw(6) << " " << left << setw(2) << " " << " "
-                           << right << setw(10) << fixed << setprecision(2) << atom->GetRadius() << " "
-                           << right << setw(10) << fixed << setprecision(2) << atom->GetWellDepth() << left << atom->GetMod4Dscr() << endl;
+                case gmml::IONICMOD:
+                    stream << std::left << std::setw(2) << " " << std::left << std::setw(3) << atom->GetType() << std::left << std::setw(6) << " " << std::left << std::setw(2) << " " << " "
+                           << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetRadius() << " "
+                           << std::right << std::setw(10) << std::fixed << std::setprecision(2) << atom->GetWellDepth() << std::left << atom->GetMod4Dscr() << std::endl;
                     break;
             }
 
         }
     }
-    stream << endl;
+    stream << std::endl;
 }
 
 //////////////////////////////////////////////////////////
@@ -1196,59 +1194,59 @@ void ParameterFile::ResolvePotentialParameterSection(ofstream& stream)
 void ParameterFile::Print(std::ostream& out)
 {
     out << "Path: " << path_
-        << endl;
+        << std::endl;
     out << "Title: " << title_
-        << endl;
-    out << setw(60) << "******************** Atom Types ********************"
-        << endl;
-    out << setw(6) << "Type"
-        << setw(6) << "Mass"
-        << setw(16) << "Polarizability"
-        << setw(8) << "Radius"
-        << setw(12) << "Well Depth"
-        << setw(13) << "Hydrophilic"
-        << setw(60) << "Description"
-        << setw(60) << "MOD4 Description"
-        << endl;
+        << std::endl;
+    out << std::setw(60) << "******************** Atom Types ********************"
+        << std::endl;
+    out << std::setw(6) << "Type"
+        << std::setw(6) << "Mass"
+        << std::setw(16) << "Polarizability"
+        << std::setw(8) << "Radius"
+        << std::setw(12) << "Well Depth"
+        << std::setw(13) << "Hydrophilic"
+        << std::setw(60) << "Description"
+        << std::setw(60) << "MOD4 Description"
+        << std::endl;
     for(ParameterFile::AtomTypeMap::iterator it = atom_types_.begin(); it != atom_types_.end(); it++)
     {
         it->second->Print(out);
     }
-    out << setw(60) << "******************** Bonds ********************"
-        << endl;
-    out << setw(12) << "Bond Types"
-        << setw(15) << "Force"
-        << setw(10) << "Length"
-        << setw(60) << "Description"
-        << endl;
+    out << std::setw(60) << "******************** Bonds ********************"
+        << std::endl;
+    out << std::setw(12) << "Bond Types"
+        << std::setw(15) << "Force"
+        << std::setw(10) << "Length"
+        << std::setw(60) << "Description"
+        << std::endl;
     for(ParameterFile::BondMap::iterator it = bonds_.begin(); it != bonds_.end(); it ++)
     {
         it->second->Print(out);
     }
-    out << setw(60) << "******************** Angles ********************"
-        << endl;
-    out << setw(16) << "Angle Types"
-        << setw(15) << "Force"
-        << setw(10) << "Angle"
-        << setw(60) << "Description"
-        << endl;
+    out << std::setw(60) << "******************** Angles ********************"
+        << std::endl;
+    out << std::setw(16) << "Angle Types"
+        << std::setw(15) << "Force"
+        << std::setw(10) << "Angle"
+        << std::setw(60) << "Description"
+        << std::endl;
     for(ParameterFile::AngleMap::iterator it = angles_.begin(); it != angles_.end(); it ++)
     {
         it->second->Print(out);
     }
-    out << setw(60) << "******************** Dihedrals ********************"
-        << endl;
-    out << setw(22) << "Dihedral Types"
-        << setw(10) << "Generic"
-        << setw(10) << "Improper"
-        << setw(6) << "SCEE"
-        << setw(6) << "SCNB"
-        << setw(10) << "Factor"
-        << setw(10) << "Force"
-        << setw(10) << "Phase"
-        << setw(13) << "Periodicity"
-        << setw(60) << "Description"
-        << endl;
+    out << std::setw(60) << "******************** Dihedrals ********************"
+        << std::endl;
+    out << std::setw(22) << "Dihedral Types"
+        << std::setw(10) << "Generic"
+        << std::setw(10) << "Improper"
+        << std::setw(6) << "SCEE"
+        << std::setw(6) << "SCNB"
+        << std::setw(10) << "Factor"
+        << std::setw(10) << "Force"
+        << std::setw(10) << "Phase"
+        << std::setw(13) << "Periodicity"
+        << std::setw(60) << "Description"
+        << std::endl;
     for(ParameterFile::DihedralMap::iterator it = dihedrals_.begin(); it != dihedrals_.end(); it ++)
     {
         it->second->Print(out);

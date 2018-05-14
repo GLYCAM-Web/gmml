@@ -7,9 +7,7 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace CondensedSequenceSpace;
+using CondensedSequenceSpace::CondensedSequence;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -18,7 +16,7 @@ CondensedSequence::CondensedSequence()
 {
 }
 
-CondensedSequence::CondensedSequence(string sequence)
+CondensedSequence::CondensedSequence(std::string sequence)
 {
     residues_ = CondensedSequenceResidueVector();
     tokens_ = CondensedSequenceTokenTypeVector();
@@ -71,7 +69,7 @@ void CondensedSequence::SetTokens(CondensedSequenceTokenTypeVector tokens)
         tokens_.push_back(*it);
     }
 }
-void CondensedSequence::AddToken(CondensedSequenceTokenType token)
+void CondensedSequence::AddToken(gmml::CondensedSequenceTokenType token)
 {
     tokens_.push_back(token);
 }
@@ -81,7 +79,7 @@ void CondensedSequence::AddToken(CondensedSequenceTokenType token)
 //////////////////////////////////////////////////////////
 int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue *condensed_residue, int parent_node_id)
 {
-    if(parent_node_id != -1 && parent_node_id >= condensed_sequence_residue_tree_.size())
+    if(parent_node_id != -1 && parent_node_id >= (int)condensed_sequence_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
 //    condensed_sequence_residue_tree_.push_back(std::make_pair(condensed_residue, parent_node_id));
     condensed_residue->SetParentId(parent_node_id);
@@ -89,9 +87,9 @@ int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenc
     return condensed_sequence_residue_tree_.size() - 1;
 }
 
-int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceGlycam06Residue *condensed_glycam06_residue, int parent_node_id)
+int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_glycam06_residue, int parent_node_id)
 {
-    if(parent_node_id != -1 && parent_node_id >= condensed_sequence_glycam06_residue_tree_.size())
+    if(parent_node_id != -1 && parent_node_id >= (int)condensed_sequence_glycam06_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
 //    condensed_sequence_glycam06_residue_tree_.push_back(std::make_pair(condensed_tree_residue, parent_node_id));
     condensed_glycam06_residue->SetParentId(parent_node_id);
@@ -99,7 +97,7 @@ int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(Condense
     return condensed_sequence_glycam06_residue_tree_.size() - 1;
 }
 
-void CondensedSequence::ParseCondensedSequence(string sequence)
+void CondensedSequence::ParseCondensedSequence(std::string sequence)
 {
     bool reading_residue = true;
     int start_index = 0;
@@ -116,7 +114,7 @@ void CondensedSequence::ParseCondensedSequence(string sequence)
                     terminal = true;
                     end_index--;
                 }
-                string residue = sequence.substr(start_index, end_index - start_index + 1);
+                std::string residue = sequence.substr(start_index, end_index - start_index + 1);
                 residues_.push_back(new CondensedSequenceResidue(residue));
                 if(terminal)
                     start_index = i + 1;
@@ -125,7 +123,7 @@ void CondensedSequence::ParseCondensedSequence(string sequence)
                     start_index = i + 2;
                     i++;
                 }
-                tokens_.push_back(CONDENSED_SEQUENCE_RESIDUE);
+                tokens_.push_back(gmml::CONDENSED_SEQUENCE_RESIDUE);
                 reading_residue = false;
                 break;
             }
@@ -133,7 +131,7 @@ void CondensedSequence::ParseCondensedSequence(string sequence)
             {
                 if(!reading_residue)
                 {
-                    tokens_.push_back(CONDENSED_SEQUENCE_LEFT_BRACKET);
+                    tokens_.push_back(gmml::CONDENSED_SEQUENCE_LEFT_BRACKET);
                     start_index = i + 1;
                 }
                 break;
@@ -142,7 +140,7 @@ void CondensedSequence::ParseCondensedSequence(string sequence)
             {
                 if(!reading_residue)
                 {
-                    tokens_.push_back(CONDENSED_SEQUENCE_RIGHT_BRACKET);
+                    tokens_.push_back(gmml::CONDENSED_SEQUENCE_RIGHT_BRACKET);
                     start_index = i + 1;
                 }
                 break;
@@ -154,11 +152,11 @@ void CondensedSequence::ParseCondensedSequence(string sequence)
             }
         }
     }
-    string terminal_residue = sequence.substr(sequence.find_last_of('-') + 1);
+    std::string terminal_residue = sequence.substr(sequence.find_last_of('-') + 1);
     if(terminal_residue.compare("") != 0)
     {
         residues_.push_back(new CondensedSequenceResidue(terminal_residue));
-        tokens_.push_back(CONDENSED_SEQUENCE_RESIDUE);
+        tokens_.push_back(gmml::CONDENSED_SEQUENCE_RESIDUE);
     }
 }
 
@@ -170,20 +168,20 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
     if(residues_.size() == 0)
         return;
 
-    stack<int> residue_stack;
+    std::stack<int> residue_stack;
     residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue));
     while(++current_token != tokens_.rend())
     {
         switch(*current_token)
         {
-            case CONDENSED_SEQUENCE_LEFT_BRACKET:
+            case gmml::CONDENSED_SEQUENCE_LEFT_BRACKET:
             {
                 if (residue_stack.empty())
                     throw CondensedSequenceProcessingException("Invalid branching in sequence");
                 residue_stack.pop();
                 break;
             }
-            case CONDENSED_SEQUENCE_RIGHT_BRACKET:
+            case gmml::CONDENSED_SEQUENCE_RIGHT_BRACKET:
             {
                 ++current_token;
                 ++current_residue;
@@ -194,7 +192,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
                 residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top()));
                 break;
             }
-            case CONDENSED_SEQUENCE_RESIDUE:
+            case gmml::CONDENSED_SEQUENCE_RESIDUE:
             {
                 current_residue++;
                 if(current_residue == residues_.rend())
@@ -213,7 +211,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
 void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree)
 {
     condensed_sequence_glycam06_residue_tree_ = CondensedSequenceGlycam06ResidueTree();
-    vector<vector<int> > open_valences = vector<vector<int> >(residue_tree.size());
+    std::vector<std::vector<int> > open_valences = std::vector<std::vector<int> >(residue_tree.size());
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
@@ -225,11 +223,11 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
         }
     }
 
-    string terminal = residue_tree.at(0)->GetName();
-    this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceGlycam06Residue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)));
+    std::string terminal = residue_tree.at(0)->GetName();
+    this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)));
 
     int current_derivative_count = 0;
-    vector<int> derivatives = vector<int>(residue_tree.size(), 0);
+    std::vector<int> derivatives = std::vector<int>(residue_tree.size(), 0);
     for(unsigned int i = 1; i < residue_tree.size(); i++)
     {
         derivatives[i] = current_derivative_count;
@@ -237,15 +235,15 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
         int parent = residue_tree.at(i)->GetParentId();
 
 
-        string parent_name = residue_tree.at(parent)->GetName();
-        string anomeric_carbon = "C" + ConvertT<int>(condensed_residue->GetAnomericCarbon());
-        string oxygen_position;
-        (parent_name.compare("OME") == 0) ? oxygen_position = "O" : oxygen_position = "O" + ConvertT<int>(condensed_residue->GetOxygenPosition());
+        std::string parent_name = residue_tree.at(parent)->GetName();
+        std::string anomeric_carbon = "C" + gmml::ConvertT<int>(condensed_residue->GetAnomericCarbon());
+        std::string oxygen_position;
+        (parent_name.compare("OME") == 0) ? oxygen_position = "O" : oxygen_position = "O" + gmml::ConvertT<int>(condensed_residue->GetOxygenPosition());
 
         try
         {
-            CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceGlycam06Residue(this->GetGlycam06ResidueCodeOfCondensedResidue(
-                                                                                                        condensed_residue, open_valences[i], parent_name)
+            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(this->GetGlycam06ResidueCodeOfCondensedResidue(
+                                                                                                        condensed_residue, open_valences[i])
                                                                                                     , anomeric_carbon, oxygen_position);
 
             int residue_index = this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
@@ -253,26 +251,26 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
             CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
             for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
             {
-                string derivative_name = it->second;
+                std::string derivative_name = it->second;
                 int derivative_index = it->first;
                 this->InsertNodeInCondensedSequenceGlycam06ResidueTree(this->GetCondensedSequenceDerivativeGlycam06Residue(derivative_name, derivative_index), residue_index);
                 current_derivative_count++;
             }
         }
-        catch(exception ex)
+        catch(std::exception ex)
         {
-            CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceGlycam06Residue(condensed_residue->GetName().substr(0,3)
+            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(condensed_residue->GetName().substr(0,3)
                                                                                                     , anomeric_carbon, oxygen_position);
 
             this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
 
-            cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << endl;
+            std::cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << std::endl;
             throw CondensedSequenceProcessingException("Invalid residue in the sequence (" + condensed_residue->GetName().substr(0,3) + ")");
         }
     }
 }
 
-string CondensedSequence::GetGlycam06TerminalResidueCodeOfTerminalResidue(string terminal_residue_name)
+std::string CondensedSequence::GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name)
 {
     if(terminal_residue_name.compare("OH") == 0 || terminal_residue_name.compare("ROH") == 0)
         return "ROH";
@@ -280,24 +278,24 @@ string CondensedSequence::GetGlycam06TerminalResidueCodeOfTerminalResidue(string
         return "OME";
     else if(terminal_residue_name.compare("OtBu") == 0 || terminal_residue_name.compare("TBT") == 0)
         return "TBT";
-    else if(AminoacidGlycamLookup(terminal_residue_name).aminoacid_name_.compare("") != 0 ||
-            AminoacidGlycamLookup(terminal_residue_name).glycam_name_.compare("") != 0)
-        return AminoacidGlycamLookup(terminal_residue_name).glycam_name_;
+    else if(gmml::AminoacidGlycamLookup(terminal_residue_name).aminoacid_name_.compare("") != 0 ||
+            gmml::AminoacidGlycamLookup(terminal_residue_name).glycam_name_.compare("") != 0)
+        return gmml::AminoacidGlycamLookup(terminal_residue_name).glycam_name_;
     throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
 }
 
-string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, vector<int> open_valences, string parent_name)
+std::string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, std::vector<int> open_valences)
 {
     if(condensed_residue->GetName().compare("UNK") == 0 || condensed_residue->GetName().compare("Unknown") == 0)
         return "UNK";
-    vector<int> new_valences_list = open_valences;
+    std::vector<int> new_valences_list = open_valences;
     CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
     for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
         new_valences_list.push_back(it->first);
-    string residue_name = condensed_residue->GetName();
-    string isomer = condensed_residue->GetIsomer();
-    string configuration = condensed_residue->GetConfiguration();
-    string ring_type = "P";
+    std::string residue_name = condensed_residue->GetName();
+    std::string isomer = condensed_residue->GetIsomer();
+    std::string configuration = condensed_residue->GetConfiguration();
+    std::string ring_type = "P";
     if(residue_name.size() > 3)
     {
         char ring_letter = residue_name[3];
@@ -309,7 +307,7 @@ string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequ
         }
     }
 
-    bitset<10> open_valences_check = bitset<10>();
+    std::bitset<10> open_valences_check = std::bitset<10>();
     for(unsigned int i = 0; i < open_valences.size(); i ++)
     {
         if(open_valences[i] < 0 || open_valences[i] >= 10)
@@ -317,15 +315,15 @@ string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequ
         open_valences_check.set(open_valences[i]);
     }
 
-    string residue_code = this->GetFirstLetterOfGlycam06ResidueCode(open_valences_check) + this->GetSecondLetterOfGlycam06ResidueCode(residue_name, isomer);
+    std::string residue_code = this->GetFirstLetterOfGlycam06ResidueCode(open_valences_check) + this->GetSecondLetterOfGlycam06ResidueCode(residue_name, isomer);
     if(residue_code.size() < 3)
         residue_code += this->GetThirdLetterOfGlycam06ResidueCode(configuration, ring_type);
     return residue_code;
 }
 
-string CondensedSequence::GetFirstLetterOfGlycam06ResidueCode(bitset<10> open_valences_check)
+std::string CondensedSequence::GetFirstLetterOfGlycam06ResidueCode(std::bitset<10> open_valences_check)
 {
-    bitset<10> open_valences_check_temp = open_valences_check;
+    std::bitset<10> open_valences_check_temp = open_valences_check;
     if (open_valences_check_temp.count() == 4)
     {
         if (open_valences_check_temp[4] && open_valences_check_temp[7] && open_valences_check_temp[8] && open_valences_check_temp[9])
@@ -381,9 +379,9 @@ string CondensedSequence::GetFirstLetterOfGlycam06ResidueCode(bitset<10> open_va
     }
     else if (open_valences_check_temp.count() == 1)
     {
-        for (int i = 1; i < open_valences_check_temp.size(); i++)
+        for (unsigned int i = 1; i < open_valences_check_temp.size(); i++)
             if (open_valences_check_temp[i])
-                return ConvertT<int>(i);
+                return gmml::ConvertT<int>(i);
     }
     else if (open_valences_check_temp.none())
     {
@@ -393,12 +391,12 @@ string CondensedSequence::GetFirstLetterOfGlycam06ResidueCode(bitset<10> open_va
     throw CondensedSequenceProcessingException("There is no code in the GLYCAM code set for residues with open valences at the given positions.");
 }
 
-string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(string residue_name, string isomer)
+std::string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(std::string residue_name, std::string isomer)
 {
     gmml::ResidueCodeName residue_name_code = gmml::ResidueNameCodeLookup(residue_name);
     if(residue_name_code.name_.compare("") != 0)
     {
-        string code = residue_name_code.code_;
+        std::string code = residue_name_code.code_;
         if(isomer.compare("L") == 0)
             std::transform(code.begin(), code.end(), code.begin(), ::tolower);
         return code;
@@ -406,7 +404,7 @@ string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(string residue_na
     throw CondensedSequenceProcessingException(residue_name + " is not a valid residue");
 }
 
-string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(string configuration, string ring_type)
+std::string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(std::string configuration, std::string ring_type)
 {
     if(configuration.compare("X") == 0)
         return "X";
@@ -416,16 +414,16 @@ string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(string configurati
         return (configuration.compare("A") == 0) ? "D" : "U";
 }
 
-CondensedSequenceGlycam06Residue* CondensedSequence::GetCondensedSequenceDerivativeGlycam06Residue(string derivative_name, int derivative_index)
+CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::GetCondensedSequenceDerivativeGlycam06Residue(std::string derivative_name, int derivative_index)
 {
-    string oxygen_name = "O" + ConvertT<int>(derivative_index);
-    string carbon_name = "C" + ConvertT<int>(derivative_index);;
+    std::string oxygen_name = "O" + gmml::ConvertT<int>(derivative_index);
+    std::string carbon_name = "C" + gmml::ConvertT<int>(derivative_index);;
     if(derivative_name.compare("S") == 0)
-        return new CondensedSequenceGlycam06Residue("SO3", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("SO3", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("Me") == 0)
-        return new CondensedSequenceGlycam06Residue("MEX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("MEX", carbon_name, oxygen_name, true);
     else if(derivative_name.compare("A") == 0)
-        return new CondensedSequenceGlycam06Residue("ACX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("ACX", carbon_name, oxygen_name, true);
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
 }
 
@@ -440,24 +438,24 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
         {
             linkage_index++;
             CondensedSequenceResidue* residue = residue_tree.at(i);
-            string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
+            std::string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
             char ring_letter = residue->GetName()[3];
-            vector<pair<string, vector<string> > > possible_rotamers = vector<pair<string, vector<string> > >();
-            vector<pair<string, vector<string> > > selected_rotamers = vector<pair<string, vector<string> > >();
-            vector<pair<string, double> > enabled_glycosidic_angles = vector<pair<string, double> >();
-            enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
-            enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+            std::vector<std::pair<std::string, std::vector<std::string> > > possible_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
+            std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
+            std::vector<std::pair<std::string, double> > enabled_glycosidic_angles = std::vector<std::pair<std::string, double> >();
+            enabled_glycosidic_angles.push_back(std::make_pair("phi", gmml::dNotSet));
+            enabled_glycosidic_angles.push_back(std::make_pair("psi", gmml::dNotSet));
             if(ring_letter == 'p')
             {
                 if(parent > 0)
                 {
 
                     CondensedSequenceResidue* parent_residue = residue_tree.at(parent);
-                    string parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
-                    stringstream rotamers_name;
+                    std::string parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
+                    std::stringstream rotamers_name;
                     rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration() << residue->GetAnomericCarbon() << "-" <<
                                      residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();
-                    switch(ResidueNameIndexLookup(residue_absolute_name).index_)
+                    switch(gmml::ResidueNameIndexLookup(residue_absolute_name).index_)
                     {
                         case 10:
                         case 1:
@@ -467,18 +465,18 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                         case 20:
                             if(residue->GetOxygenPosition() == 6)
                             {
-                                vector<string> rot = vector<string>();
+                                std::vector<std::string> rot = std::vector<std::string>();
                                 rot.push_back("gg");
                                 rot.push_back("gt");
                                 rot.push_back("tg");
-                                possible_rotamers.push_back(make_pair("omega", rot));
+                                possible_rotamers.push_back(std::make_pair("omega", rot));
 
-                                vector<string> rot1 = vector<string>();
+                                std::vector<std::string> rot1 = std::vector<std::string>();
                                 rot1.push_back("gg");
                                 rot1.push_back("gt");
-                                selected_rotamers.push_back(make_pair("omega", rot1));
+                                selected_rotamers.push_back(std::make_pair("omega", rot1));
 
-                                enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                enabled_glycosidic_angles.push_back(std::make_pair("omega", gmml::dNotSet));
                             }
                             break;
                         case 14:
@@ -488,19 +486,19 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                         case 7:
                             if(residue->GetOxygenPosition() == 6)
                             {
-                                vector<string> rot = vector<string>();
+                                std::vector<std::string> rot = std::vector<std::string>();
                                 rot.push_back("gg");
                                 rot.push_back("gt");
                                 rot.push_back("tg");
-                                possible_rotamers.push_back(make_pair("omega", rot));
-                                selected_rotamers.push_back(make_pair("omega", rot));
+                                possible_rotamers.push_back(std::make_pair("omega", rot));
+                                selected_rotamers.push_back(std::make_pair("omega", rot));
 
-                                enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                enabled_glycosidic_angles.push_back(std::make_pair("omega", gmml::dNotSet));
                             }
                             break;
                         case 23:
                         case 24:
-                            switch(ResidueNameIndexLookup(parent_residue_absolute_name).index_)
+                            switch(gmml::ResidueNameIndexLookup(parent_residue_absolute_name).index_)
                             {
                                 case 10:
                                 case 1:
@@ -510,18 +508,18 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                 case 20:
                                     if(residue->GetOxygenPosition() == 6)
                                     {
-                                        vector<string> rot = vector<string>();
+                                        std::vector<std::string> rot = std::vector<std::string>();
                                         rot.push_back("gg");
                                         rot.push_back("gt");
                                         rot.push_back("tg");
-                                        possible_rotamers.push_back(make_pair("omega", rot));
+                                        possible_rotamers.push_back(std::make_pair("omega", rot));
 
-                                        vector<string> rot1 = vector<string>();
+                                        std::vector<std::string> rot1 = std::vector<std::string>();
                                         rot1.push_back("gg");
                                         rot1.push_back("gt");
-                                        selected_rotamers.push_back(make_pair("omega", rot1));
+                                        selected_rotamers.push_back(std::make_pair("omega", rot1));
 
-                                        enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                        enabled_glycosidic_angles.push_back(std::make_pair("omega", gmml::dNotSet));
                                     }
                                     break;
                                 case 14:
@@ -531,50 +529,50 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                                 case 7:
                                     if(residue->GetOxygenPosition() == 6)
                                     {
-                                        vector<string> rot = vector<string>();
+                                        std::vector<std::string> rot = std::vector<std::string>();
                                         rot.push_back("gg");
                                         rot.push_back("gt");
                                         rot.push_back("tg");
-                                        possible_rotamers.push_back(make_pair("omega", rot));
-                                        selected_rotamers.push_back(make_pair("omega", rot));
+                                        possible_rotamers.push_back(std::make_pair("omega", rot));
+                                        selected_rotamers.push_back(std::make_pair("omega", rot));
 
-                                        enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                        enabled_glycosidic_angles.push_back(std::make_pair("omega", gmml::dNotSet));
                                     }
                                     break;
                             }
-                            if(ResidueNameIndexLookup(parent_residue_absolute_name).index_ != 23 &&
-                                    ResidueNameIndexLookup(parent_residue_absolute_name).index_ != 24)
+                            if(gmml::ResidueNameIndexLookup(parent_residue_absolute_name).index_ != 23 &&
+                                    gmml::ResidueNameIndexLookup(parent_residue_absolute_name).index_ != 24)
                             {
-                                vector<string> rot = vector<string>();
+                                std::vector<std::string> rot = std::vector<std::string>();
                                 rot.push_back("t");
                                 rot.push_back("g");
                                 rot.push_back("-g");
-                                possible_rotamers.push_back(make_pair("phi", rot));
+                                possible_rotamers.push_back(std::make_pair("phi", rot));
 
-                                vector<string> rot1 = vector<string>();
+                                std::vector<std::string> rot1 = std::vector<std::string>();
                                 rot1.push_back("t");
                                 rot1.push_back("-g");
-                                selected_rotamers.push_back(make_pair("phi", rot1));
+                                selected_rotamers.push_back(std::make_pair("phi", rot1));
                             }
                             break;
                     }
                     RotamersAndGlycosidicAnglesInfo* info = new RotamersAndGlycosidicAnglesInfo(linkage_index, possible_rotamers, selected_rotamers, enabled_glycosidic_angles);
-                    RotamerNameInfoPair pair_info = make_pair(rotamers_name.str(), info);
+                    RotamerNameInfoPair pair_info = std::make_pair(rotamers_name.str(), info);
 
                     rotamers_glycosidic_angles.push_back(pair_info);
                 }
 
-                vector<pair<string, vector<string> > > der_possible_rotamers = vector<pair<string, vector<string> > >();
-                vector<pair<string, vector<string> > > der_selected_rotamers = vector<pair<string, vector<string> > >();
-                vector<pair<string, double> > der_enabled_glycosidic_angles = vector<pair<string, double> >();
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+                std::vector<std::pair<std::string, std::vector<std::string> > > der_possible_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
+                std::vector<std::pair<std::string, std::vector<std::string> > > der_selected_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
+                std::vector<std::pair<std::string, double> > der_enabled_glycosidic_angles = std::vector<std::pair<std::string, double> >();
+                der_enabled_glycosidic_angles.push_back(std::make_pair("phi", gmml::dNotSet));
+                der_enabled_glycosidic_angles.push_back(std::make_pair("psi", gmml::dNotSet));
                 CondensedSequenceResidue::DerivativeMap derivatives = residue->GetDerivatives();
                 for(CondensedSequenceResidue::DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++)
                 {
                     int derivative_index = (*it).first;
-                    string derivative_name = (*it).second;
-                    switch(ResidueNameIndexLookup(residue_absolute_name).index_)
+                    std::string derivative_name = (*it).second;
+                    switch(gmml::ResidueNameIndexLookup(residue_absolute_name).index_)
                     {
                         case 10:
                         case 1:
@@ -584,18 +582,18 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                         case 20:
                             if(derivative_index == 6 && derivative_name.compare("S") == 0)
                             {
-                                vector<string> rot = vector<string>();
+                                std::vector<std::string> rot = std::vector<std::string>();
                                 rot.push_back("gg");
                                 rot.push_back("gt");
                                 rot.push_back("tg");
-                                der_possible_rotamers.push_back(make_pair("omega", rot));
+                                der_possible_rotamers.push_back(std::make_pair("omega", rot));
 
-                                vector<string> rot1 = vector<string>();
+                                std::vector<std::string> rot1 = std::vector<std::string>();
                                 rot1.push_back("gg");
                                 rot1.push_back("gt");
-                                der_selected_rotamers.push_back(make_pair("omega", rot1));
+                                der_selected_rotamers.push_back(std::make_pair("omega", rot1));
 
-                                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                der_enabled_glycosidic_angles.push_back(std::make_pair("omega", gmml::dNotSet));
                             }
                             break;
                         case 14:
@@ -605,24 +603,24 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                         case 7:
                             if(derivative_index == 6 && derivative_name.compare("S") == 0)
                             {
-                                vector<string> rot = vector<string>();
+                                std::vector<std::string> rot = std::vector<std::string>();
                                 rot.push_back("gg");
                                 rot.push_back("gt");
                                 rot.push_back("tg");
-                                der_possible_rotamers.push_back(make_pair("omega", rot));
-                                der_selected_rotamers.push_back(make_pair("omega", rot));
+                                der_possible_rotamers.push_back(std::make_pair("omega", rot));
+                                der_selected_rotamers.push_back(std::make_pair("omega", rot));
 
-                                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("omega", dNotSet));
+                                der_enabled_glycosidic_angles.push_back(std::make_pair("omega", gmml::dNotSet));
                             }
                             break;
                     }
                     linkage_index++;
-                    stringstream der_rotamers_name;
+                    std::stringstream der_rotamers_name;
                     der_rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration()
                                       << "[" << derivative_index << derivative_name << "]";
                     RotamersAndGlycosidicAnglesInfo* der_info = new RotamersAndGlycosidicAnglesInfo(linkage_index, der_possible_rotamers,
                                                                                                     der_selected_rotamers, der_enabled_glycosidic_angles);
-                    RotamerNameInfoPair der_pair_info = make_pair(der_rotamers_name.str(), der_info);
+                    RotamerNameInfoPair der_pair_info = std::make_pair(der_rotamers_name.str(), der_info);
 
                     rotamers_glycosidic_angles.push_back(der_pair_info);
                 }
@@ -634,13 +632,13 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                 {
 
                     CondensedSequenceResidue* parent_residue = residue_tree.at(parent);
-                    string parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
-                    stringstream rotamers_name;
+                    std::string parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
+                    std::stringstream rotamers_name;
                     rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration() << residue->GetAnomericCarbon() << "-" <<
                                   residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();
 
                     RotamersAndGlycosidicAnglesInfo* info = new RotamersAndGlycosidicAnglesInfo(linkage_index, possible_rotamers, selected_rotamers, enabled_glycosidic_angles);
-                    RotamerNameInfoPair pair_info = make_pair(rotamers_name.str(), info);
+                    RotamerNameInfoPair pair_info = std::make_pair(rotamers_name.str(), info);
 
                     rotamers_glycosidic_angles.push_back(pair_info);
                 }
@@ -648,23 +646,23 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
 
 
 
-                vector<pair<string, vector<string> > > der_possible_rotamers = vector<pair<string, vector<string> > >();
-                vector<pair<string, vector<string> > > der_selected_rotamers = vector<pair<string, vector<string> > >();
-                vector<pair<string, double> > der_enabled_glycosidic_angles = vector<pair<string, double> >();
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("phi", dNotSet));
-                der_enabled_glycosidic_angles.push_back(make_pair<string, double>("psi", dNotSet));
+                std::vector<std::pair<std::string, std::vector<std::string> > > der_possible_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
+                std::vector<std::pair<std::string, std::vector<std::string> > > der_selected_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
+                std::vector<std::pair<std::string, double> > der_enabled_glycosidic_angles = std::vector<std::pair<std::string, double> >();
+                der_enabled_glycosidic_angles.push_back(std::make_pair("phi", gmml::dNotSet));
+                der_enabled_glycosidic_angles.push_back(std::make_pair("psi", gmml::dNotSet));
                 CondensedSequenceResidue::DerivativeMap derivatives = residue->GetDerivatives();
                 for(CondensedSequenceResidue::DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++)
                 {
                     int derivative_index = (*it).first;
-                    string derivative_name = (*it).second;
+                    std::string derivative_name = (*it).second;
                     linkage_index++;
-                    stringstream der_rotamers_name;
+                    std::stringstream der_rotamers_name;
                     der_rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration()
                                       << "[" << derivative_index << derivative_name << "]";
                     RotamersAndGlycosidicAnglesInfo* der_info = new RotamersAndGlycosidicAnglesInfo(linkage_index, der_possible_rotamers,
                                                                                                     der_selected_rotamers, der_enabled_glycosidic_angles);
-                    RotamerNameInfoPair der_pair_info = make_pair(der_rotamers_name.str(), der_info);
+                    RotamerNameInfoPair der_pair_info = std::make_pair(der_rotamers_name.str(), der_info);
 
                     rotamers_glycosidic_angles.push_back(der_pair_info);
                 }
@@ -679,23 +677,23 @@ int CondensedSequence::CountAllPossibleSelectedRotamers(CondensedSequenceRotamer
     int count = 1;
     for(unsigned int i = 0; i < rotamers_glycosidic_angles_info.size(); i++)
     {
-        vector<pair<string, double> > angles = rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_;
-        vector<pair<string, vector<string> > > selected_rotamers = rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_;
+        std::vector<std::pair<std::string, double> > angles = rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_;
+        std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers = rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_;
         int omega_rotamers = 0;
         int phi_rotamers = 0;
         for(unsigned int j = 0; j < selected_rotamers.size(); j++)
         {
-            pair<string, vector<string> > rot = selected_rotamers.at(j);
+            std::pair<std::string, std::vector<std::string> > rot = selected_rotamers.at(j);
             if(rot.first.compare("phi") == 0)
                 phi_rotamers+= rot.second.size();
             if(rot.first.compare("omega") == 0)
                 omega_rotamers += rot.second.size();
         }
-        if(angles.at(0).second == dNotSet) // Phi
+        if(angles.at(0).second == gmml::dNotSet) // Phi
             count *= (phi_rotamers == 0) ? 1 : phi_rotamers;
         if(angles.size() == 3)      // Phi, Psi, Omega
         {
-            if(angles.at(2).second == dNotSet)
+            if(angles.at(2).second == gmml::dNotSet)
                 count *= (omega_rotamers == 0) ? 1 : omega_rotamers;
         }
     }
@@ -708,43 +706,43 @@ int CondensedSequence::CountAllPossible28LinkagesRotamers(CondensedSequenceRotam
     int count = 1;
     for(unsigned int i = 0; i < rotamers_glycosidic_angles_info.size(); i++)
     {
-        string rotamer_name = rotamers_glycosidic_angles_info.at(i).first;
-        if(rotamer_name.find("DNeup5AcA2-8") != string::npos ||
-                rotamer_name.find("DNeup5AcB2-8") != string::npos)
+        std::string rotamer_name = rotamers_glycosidic_angles_info.at(i).first;
+        if(rotamer_name.find("DNeup5AcA2-8") != std::string::npos ||
+                rotamer_name.find("DNeup5AcB2-8") != std::string::npos)
             count *= 6;
-        if(rotamer_name.find("DNeup5GcA2-8") != string::npos)
+        if(rotamer_name.find("DNeup5GcA2-8") != std::string::npos)
             count *= 5;
     }
     return count;
 }
 
-vector<vector<int> > CondensedSequence::CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info)
+std::vector<std::vector<int> > CondensedSequence::CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info)
 {
-    vector<vector<int> > mapper = vector<vector<int> >();
+    std::vector<std::vector<int> > mapper = std::vector<std::vector<int> >();
     for(unsigned int i = 0; i < rotamers_glycosidic_angles_info.size(); i++)
     {
-        vector<pair<string, double> > angles = rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_;
-        vector<pair<string, vector<string> > > selected_rotamers = rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_;
+        std::vector<std::pair<std::string, double> > angles = rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_;
+        std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers = rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_;
         int omega_rotamers = 0;
         int psi_rotamers = 1;
         int phi_rotamers = 0;
         for(unsigned int j = 0; j < selected_rotamers.size(); j++)
         {
-            pair<string, vector<string> > rot = selected_rotamers.at(j);
+            std::pair<std::string, std::vector<std::string> > rot = selected_rotamers.at(j);
             if(rot.first.compare("phi") == 0)
                 phi_rotamers += rot.second.size();
             if(rot.first.compare("omega") == 0)
                 omega_rotamers += rot.second.size();
         }
-        if(angles.at(0).second == dNotSet) // Phi
+        if(angles.at(0).second == gmml::dNotSet) // Phi
             phi_rotamers = (phi_rotamers == 0) ? 1 : phi_rotamers;
         if(angles.size() == 3)      // Phi, Psi, Omega
         {
-            if(angles.at(2).second == dNotSet)
+            if(angles.at(2).second == gmml::dNotSet)
                 omega_rotamers = (omega_rotamers == 0) ? 1 : omega_rotamers;
         }
 
-        vector<int> val = vector<int>();
+        std::vector<int> val = std::vector<int>();
         val.push_back(phi_rotamers);
         val.push_back(psi_rotamers);
         val.push_back(omega_rotamers);
@@ -760,24 +758,24 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
 {
     IndexLinkageConfigurationMap mapper = IndexLinkageConfigurationMap();
     IndexConfigurationNameMap name_mapper = IndexConfigurationNameMap();
-    vector<vector<int> > mapping = this->CreateBaseMapAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info);
-    vector<vector<vector<double> > > phi_psi_omega_vector_map = vector<vector<vector<double> > >();
-    vector<vector<vector<string> > > phi_psi_omega_rt_vector_map = vector<vector<vector<string> > >();
+    std::vector<std::vector<int> > mapping = this->CreateBaseMapAllPossibleSelectedRotamers(rotamers_glycosidic_angles_info);
+    std::vector<std::vector<std::vector<double> > > phi_psi_omega_vector_map = std::vector<std::vector<std::vector<double> > >();
+    std::vector<std::vector<std::vector<std::string> > > phi_psi_omega_rt_vector_map = std::vector<std::vector<std::vector<std::string> > >();
     for(unsigned int i = 0; i < mapping.size(); i++)
     {
-        vector<double> phi = vector<double>();
-        vector<string> phi_rt = vector<string>();
-        // phi => dNotSet in all phi cases means default value
-        if(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(0).second == dNotSet) // value not set
+        std::vector<double> phi = std::vector<double>();
+        std::vector<std::string> phi_rt = std::vector<std::string>();
+        // phi => gmml::dNotSet in all phi cases means default value
+        if(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(0).second == gmml::dNotSet) // value not set
         {
             if(rotamers_glycosidic_angles_info.at(i).second->possible_rotamers_.size() == 0) // no possible rotamer
             {
-                phi.push_back(dNotSet);
+                phi.push_back(gmml::dNotSet);
                 phi_rt.push_back("df");
             }
             else if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.size() == 0) // no selected rotamer
             {
-                phi.push_back(dNotSet);
+                phi.push_back(gmml::dNotSet);
                 phi_rt.push_back("df");
             }
             else
@@ -789,7 +787,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                     {
                         if(rotamers_glycosidic_angles_info.at(i).second->selected_rotamers_.at(j).second.size() == 0)
                         {
-                            phi.push_back(dNotSet);
+                            phi.push_back(gmml::dNotSet);
                             phi_rt.push_back("df");
                         }
                         else
@@ -813,7 +811,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                                 }
                                 else
                                 {
-                                    phi.push_back(dNotSet);
+                                    phi.push_back(gmml::dNotSet);
                                     phi_rt.push_back("df");
                                 }
                             }
@@ -823,7 +821,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                 }
                 if(!phi_check)
                 {
-                    phi.push_back(dNotSet);
+                    phi.push_back(gmml::dNotSet);
                     phi_rt.push_back("df");
                 }
             }
@@ -834,31 +832,31 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
             phi_rt.push_back("cu");
         }
 
-        vector<double> psi = vector<double>();
-        vector<string> psi_rt = vector<string>();
-        if(rotamers_glycosidic_angles_info.at(i).first.find("[") == string::npos)
+        std::vector<double> psi = std::vector<double>();
+        std::vector<std::string> psi_rt = std::vector<std::string>();
+        if(rotamers_glycosidic_angles_info.at(i).first.find("[") == std::string::npos)
         {
-            psi.push_back(dNotSet); // standard psi angle
+            psi.push_back(gmml::dNotSet); // standard psi angle
             psi_rt.push_back("df");
         }
         else
         {
-            psi.push_back(dNotSet);
+            psi.push_back(gmml::dNotSet);
             psi_rt.push_back("df");
         }
 
-        // omega => dNotSet in all omega cases means not applicable
+        // omega => gmml::dNotSet in all omega cases means not applicable
         // for the cases that the angle is not set by any of selecting rotamers or setting the angle, it is set to 180.0
-        vector<double> omega = vector<double>();
-        vector<string> omega_rt = vector<string>();
+        std::vector<double> omega = std::vector<double>();
+        std::vector<std::string> omega_rt = std::vector<std::string>();
         if(mapping.at(i).at(2) == 0)
         {
-            omega.push_back(dNotSet);
+            omega.push_back(gmml::dNotSet);
             omega_rt.push_back("na");
         }
         else
         {
-            if(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(2).second == dNotSet) // value not set
+            if(rotamers_glycosidic_angles_info.at(i).second->enabled_glycosidic_angles_.at(2).second == gmml::dNotSet) // value not set
             {
                 if(rotamers_glycosidic_angles_info.at(i).second->possible_rotamers_.size() == 0) // no possible rotamer, never happens
                 {
@@ -926,49 +924,49 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
         }
 
         // Build all <phi, psi, omega> for each linkage
-        vector<vector<double> > phi_psi_omega = vector<vector<double> >();
-        vector<vector<string> > phi_psi_omega_rt = vector<vector<string> >();
+        std::vector<std::vector<double> > phi_psi_omega = std::vector<std::vector<double> >();
+        std::vector<std::vector<std::string> > phi_psi_omega_rt = std::vector<std::vector<std::string> >();
         for(unsigned int j = 0; j < phi.size(); j++)
         {
             for(unsigned int k = 0; k < psi.size(); k++)
             {
                 for(unsigned int l = 0; l < omega.size(); l++)
                 {
-                    vector<double> combination = vector<double>();
-                    vector<string> combination_rt = vector<string>();
+                    std::vector<double> combination = std::vector<double>();
+                    std::vector<std::string> combination_rt = std::vector<std::string>();
                     combination.push_back(phi.at(j));
                     combination_rt.push_back(phi_rt.at(j));
                     combination.push_back(psi.at(k));
                     combination_rt.push_back(psi_rt.at(k));
                     combination.push_back(omega.at(l));
                     combination_rt.push_back(omega_rt.at(l));
-                    string rotamer_name = rotamers_glycosidic_angles_info.at(i).first;
-                    if(rotamer_name.find("DNeup5AcA2-8") != string::npos ||
-                            rotamer_name.find("DNeup5AcB2-8") != string::npos)
+                    std::string rotamer_name = rotamers_glycosidic_angles_info.at(i).first;
+                    if(rotamer_name.find("DNeup5AcA2-8") != std::string::npos ||
+                            rotamer_name.find("DNeup5AcB2-8") != std::string::npos)
                     {
                         for(int m = 0; m < 6; m++)
                         {
-                            vector<double> new_combination = combination;
-                            vector<string> new_combination_rt = combination_rt;
+                            std::vector<double> new_combination = combination;
+                            std::vector<std::string> new_combination_rt = combination_rt;
                             for(int n = 0; n < 5; n++)
                             {
-                                new_combination.push_back(EXTERNAL28LINKAGEROTAMERS[m][n]);
-                                new_combination_rt.push_back("E" + ConvertT<int>(m) + "/" + ConvertT<int>(n));
+                                new_combination.push_back(gmml::EXTERNAL28LINKAGEROTAMERS[m][n]);
+                                new_combination_rt.push_back("E" + gmml::ConvertT<int>(m) + "/" + gmml::ConvertT<int>(n));
                             }
                             phi_psi_omega.push_back(new_combination);
                             phi_psi_omega_rt.push_back(new_combination_rt);
                         }
                     }
-                    else if(rotamer_name.find("DNeup5GcA2-8") != string::npos)
+                    else if(rotamer_name.find("DNeup5GcA2-8") != std::string::npos)
                     {
                         for(int m = 0; m < 5; m++)
                         {
-                            vector<double> new_combination = combination;
-                            vector<string> new_combination_rt = combination_rt;
+                            std::vector<double> new_combination = combination;
+                            std::vector<std::string> new_combination_rt = combination_rt;
                             for(int n = 0; n < 5; n++)
                             {
-                                new_combination.push_back(INTERNAL28LINKAGEROTAMERS[m][n]);
-                                new_combination_rt.push_back("I" + ConvertT<int>(m) + "/" + ConvertT<int>(n));
+                                new_combination.push_back(gmml::INTERNAL28LINKAGEROTAMERS[m][n]);
+                                new_combination_rt.push_back("I" + gmml::ConvertT<int>(m) + "/" + gmml::ConvertT<int>(n));
                             }
                             phi_psi_omega.push_back(new_combination);
                             phi_psi_omega_rt.push_back(new_combination_rt);
@@ -990,19 +988,19 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
     // Print all rotamers for each linkage
     /*for(unsigned int i = 0; i < phi_psi_omega_vector_map.size(); i++)
     {
-        vector<vector<double> > phi_psi_omega_combination = phi_psi_omega_vector_map.at(i);
+        std::vector<std::vector<double> > phi_psi_omega_combination = phi_psi_omega_vector_map.at(i);
         for(unsigned int j = 0; j < phi_psi_omega_combination.size(); j++)
         {
-            vector<double> phi_psi_omega = phi_psi_omega_combination.at(j);
-            cout << "<";
+            std::vector<double> phi_psi_omega = phi_psi_omega_combination.at(j);
+            std::cout << "<";
             for(unsigned int k = 0; k < phi_psi_omega.size(); k++)
             {
-                cout << phi_psi_omega.at(k);
-                (k < phi_psi_omega.size() - 1) ? cout << ", " : cout << "";
+                std::cout << phi_psi_omega.at(k);
+                (k < phi_psi_omega.size() - 1) ? std::cout << ", " : std::cout << "";
             }
-            cout << ">";
+            std::cout << ">";
         }
-        cout << endl;
+        std::cout << std::endl;
     }*/
 
     // Build all rotamers with combination of each phi_psi_omega value for each linkage with the others
@@ -1017,7 +1015,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
         {
             if(j == 0)
             {
-                mapper[k] = vector<vector<double> >();
+                mapper[k] = std::vector<std::vector<double> >();
                 mapper[k].push_back(phi_psi_omega_vector_map.at(j).at(k));
                 name_mapper[k].push_back(phi_psi_omega_rt_vector_map.at(j).at(k));
             }
@@ -1033,8 +1031,8 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
                 {
                     for(unsigned int i = 0; i < new_mapper.size(); i++)
                     {
-                        vector<vector<double> > res = new_mapper[i];
-                        vector<vector<string> > res_rt = new_name_mapper[i];
+                        std::vector<std::vector<double> > res = new_mapper[i];
+                        std::vector<std::vector<std::string> > res_rt = new_name_mapper[i];
                         res.push_back(phi_psi_omega_vector_map.at(j).at(k));
                         res_rt.push_back(phi_psi_omega_rt_vector_map.at(j).at(k));
                         mapper[new_mapper.size() + counter] = res;
@@ -1046,20 +1044,20 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
         }
     }
 
-    for(int i = 0; i < mapper.size(); i++)
+    for(unsigned int i = 0; i < mapper.size(); i++)
     {
-        /*cout << i << ": ";
+        /*std::cout << i << ": ";
         for(unsigned int j = 0; j < mapper[i].size(); j++)
         {
-            cout << "<";
+            std::cout << "<";
             for(unsigned int k = 0; k < mapper[i].at(j).size(); k++)
             {
-                cout << mapper[i].at(j).at(k);
-                (k < mapper[i].at(j).size() - 1) ? cout << ", " : cout << " ";
+                std::cout << mapper[i].at(j).at(k);
+                (k < mapper[i].at(j).size() - 1) ? std::cout << ", " : std::cout << " ";
             }
-            cout << ">";            
+            std::cout << ">";
         }*/
-        stringstream ss;
+        std::stringstream ss;
         for(unsigned int j = 0; j < mapper[i].size(); j++)
         {
             for(unsigned int k = 0; k < mapper[i].at(j).size(); k++)
@@ -1071,8 +1069,8 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
             }
         }
         names[i] = ss.str().substr(0,ss.str().size()-1);
-        /*cout << "<" << ss.str().substr(0,ss.str().size()-1) << ">";
-        cout << endl;*/
+        /*std::cout << "<" << ss.str().substr(0,ss.str().size()-1) << ">";
+        std::cout << std::endl;*/
     }
     return mapper;
 }
@@ -1080,12 +1078,7 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void CondensedSequence::Print(ostream &out)
+void CondensedSequence::Print(std::ostream &out)
 {
-
+    out << "";
 }
-
-
-
-
-

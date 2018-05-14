@@ -29,17 +29,17 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblink.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkresidue.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
@@ -68,47 +68,35 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::AddSolvent(double extension, double closeness, string lib_file)
+void Assembly::AddSolvent(double extension, double closeness, Assembly* solvent_component_assembly,std::string lib_file)
 {
-    Coordinate* solvent_component_min_boundary = new Coordinate();
-    Coordinate* solvent_component_max_boundary = new Coordinate();
-    Assembly* solvent_component = new Assembly();                   //Box of water (TIP3p | TIP5p)
-    solvent_component->BuildAssemblyFromLibraryFile(lib_file);      //Reading the box of water from library file
-    solvent_component->SetSourceFile(lib_file);
-    solvent_component->BuildStructureByLIBFileInformation();        //Building the structure of the box of water
+
+    GeometryTopology::Coordinate* solvent_component_min_boundary = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* solvent_component_max_boundary = new GeometryTopology::Coordinate();
+    Assembly* solvent_component = solvent_component_assembly;                  //Box of water (TIP3p | TIP5p)
 
     //Bounding box calculation of the water box (TIP3p | TIP5p)
     solvent_component->GetBoundary(solvent_component_min_boundary, solvent_component_max_boundary);
 
     //Reading the exact dimension of the water box from library file
-    LibraryFile* lib = new LibraryFile(lib_file);
-    LibraryFile::ResidueMap lib_residues = lib->GetResidues();
-    LibraryFileResidue* lib_residue  = lib_residues.begin()->second;
+    LibraryFileSpace::LibraryFile* lib = new LibraryFileSpace::LibraryFile(lib_file);
+    LibraryFileSpace::LibraryFile::ResidueMap lib_residues = lib->GetResidues();
+    LibraryFileSpace::LibraryFileResidue* lib_residue  = lib_residues.begin()->second;
+
+
 
     double solvent_length = lib_residue->GetBoxLength();
     double solvent_width = lib_residue->GetBoxWidth();
     double solvent_height = lib_residue->GetBoxHeight();
 
     //Bounding box calculation of the solute
-    Coordinate* solute_min_boundary = new Coordinate();
-    Coordinate* solute_max_boundary = new Coordinate();
+    GeometryTopology::Coordinate* solute_min_boundary = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* solute_max_boundary = new GeometryTopology::Coordinate();
     this->GetBoundary(solute_min_boundary, solute_max_boundary);
     double solute_length = solute_max_boundary->GetX() - solute_min_boundary->GetX();
     double solute_width = solute_max_boundary->GetY() - solute_min_boundary->GetY();
@@ -125,12 +113,12 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
     solvent_box_dimension += extension;
 
     //Center of solute calculation
-    Coordinate* center_of_box = new Coordinate(solute_min_boundary->GetX() + solute_length/2, solute_min_boundary->GetY() + solute_width/2,
+    GeometryTopology::Coordinate* center_of_box = new GeometryTopology::Coordinate(solute_min_boundary->GetX() + solute_length/2, solute_min_boundary->GetY() + solute_width/2,
                                                solute_min_boundary->GetZ() + solute_height/2);
     //Creating the solvent cube around the center of solute
-    Coordinate* solvent_box_min_boundary = new Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
+    GeometryTopology::Coordinate* solvent_box_min_boundary = new GeometryTopology::Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
     solvent_box_min_boundary->operator +(-solvent_box_dimension);
-    Coordinate* solvent_box_max_boundary = new Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
+    GeometryTopology::Coordinate* solvent_box_max_boundary = new GeometryTopology::Coordinate(center_of_box->GetX(), center_of_box->GetY(), center_of_box->GetZ());
     solvent_box_max_boundary->operator +(solvent_box_dimension);
     double solvent_box_length = solvent_box_max_boundary->GetX() - solvent_box_min_boundary->GetX();
     double solvent_box_width = solvent_box_max_boundary->GetY() - solvent_box_min_boundary->GetY();
@@ -149,6 +137,7 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
     int sequence_number = this->GetResidues().size() + 1;
     int serial_number = this->GetAllAtomsOfAssembly().size() + 1;
 
+
     //Filling the solvent cube with water boxes
     for(int i = 0; i < x_copy; i ++)
     {
@@ -159,23 +148,19 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
                 //solute_min/max_with_extension = solute_min/max_boundary + closeness
                 //check coordinate of each atom to see if it's between solute_min/max_with_extension
                 //if so, check distance with all solutes atoms (this)
-                //if < closeness remove else add to to_be_added_atoms vector
-                Coordinate* solute_min_boundary_with_extension = new Coordinate();
-                Coordinate* solute_max_boundary_with_extension = new Coordinate();
+                //if < closeness remove else add to to_be_added_atoms std::vector
+                GeometryTopology::Coordinate* solute_min_boundary_with_extension = new GeometryTopology::Coordinate();
+                GeometryTopology::Coordinate* solute_max_boundary_with_extension = new GeometryTopology::Coordinate();
                 solute_min_boundary_with_extension->SetX(solute_min_boundary->GetX() - closeness);
                 solute_min_boundary_with_extension->SetY(solute_min_boundary->GetY() - closeness);
                 solute_min_boundary_with_extension->SetZ(solute_min_boundary->GetZ() - closeness);
                 solute_max_boundary_with_extension->SetX(solute_max_boundary->GetX() + closeness);
                 solute_max_boundary_with_extension->SetY(solute_max_boundary->GetY() + closeness);
                 solute_max_boundary_with_extension->SetZ(solute_max_boundary->GetZ() + closeness);
-                Assembly* tip_box = new Assembly();
-                tip_box->BuildAssemblyFromLibraryFile(lib_file);
-                tip_box->SetSourceFile(lib_file);
-                tip_box->BuildStructureByLIBFileInformation();
-                //                    tip_box->BuildStructureByDistance();
-                AtomVector all_atoms_of_tip = tip_box->GetAllAtomsOfAssembly();
+
+                AtomVector all_atoms_of_tip = solvent_component->GetAllAtomsOfAssembly();
                 Residue* tip_residue = new Residue();
-                vector<string> removed_atom_id_list = vector<string>();
+                std::vector<std::string> removed_atom_id_list = std::vector<std::string>();
                 for(AtomVector::iterator it = all_atoms_of_tip.begin(); it != all_atoms_of_tip.end(); it++)
                 {
                     (*it)->GetCoordinates().at(model_index_)->Translate(shift_x + i * solvent_length,
@@ -252,21 +237,23 @@ void Assembly::AddSolvent(double extension, double closeness, string lib_file)
                     if(find(removed_atom_id_list.begin(), removed_atom_id_list.end(), tip_atom->GetId()) == removed_atom_id_list.end())
                     {
                         tip_residue->AddAtom(tip_atom);
-                        string residue_name = tip_atom->GetResidue()->GetName().substr(0,4);
+                        std::string residue_name = tip_atom->GetResidue()->GetName().substr(0,4);
                         tip_residue->SetName("HOH");
+
                         tip_atom->SetResidue(tip_residue);
-                        string id = residue_name + "_" + BLANK_SPACE + "_" + ConvertT<int>(sequence_number) + "_" +
-                                BLANK_SPACE + "_" + BLANK_SPACE + "_" + this->GetId();
+                        std::string id = residue_name + "_" + gmml::BLANK_SPACE + "_" + gmml::ConvertT<int>(sequence_number) + "_" +
+                                gmml::BLANK_SPACE + "_" + gmml::BLANK_SPACE + "_" + this->GetId();
                         tip_residue->SetId(id);
-                        string atom_id = tip_atom->GetName() + "_" + ConvertT<int>(serial_number) + "_" + id;
+                        std::string atom_id = tip_atom->GetName() + "_" + gmml::ConvertT<int>(serial_number) + "_" + id;
                         serial_number++;
                         tip_atom->SetId(atom_id);
+                       tip_residue->SetIsResidueSolvent(true); //Setting Residue as solvent uisng flag  --- edited by Ayush on 06/28/2017
                     }
                 }
                 //Add the residue to the assembly
                 this->AddResidue(tip_residue);
                 sequence_number++;
-                //                }
+
             }
         }
     }
@@ -281,6 +268,7 @@ void Assembly::SplitSolvent(Assembly* solvent, Assembly* solute)
     for(ResidueVector::iterator it = this->residues_.begin(); it != this->residues_.end(); it++)
     {
         Residue* residue = *it;
+
         if(residue->GetName().compare("HOH") == 0 || residue->GetName().compare("TP3") == 0 ||
                 residue->GetName().compare("TP5") == 0)
             solvent->AddResidue(residue);
@@ -288,4 +276,3 @@ void Assembly::SplitSolvent(Assembly* solvent, Assembly* solute)
             solute->AddResidue(residue);
     }
 }
-

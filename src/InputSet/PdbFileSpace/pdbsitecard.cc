@@ -1,44 +1,45 @@
-#include "../../../includes/InputSet/PdbFileSpace/pdbsite.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbsitecard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbFileSpace;
+using PdbFileSpace::PdbSiteCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbSiteCard::PdbSiteCard() {}
-
-PdbSiteCard::PdbSiteCard(stringstream &stream_block)
+PdbSiteCard::PdbSiteCard(std::stringstream &site_block)
 {
-    string line;
-    bool is_record_name_set = false;
-    getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string line;
+    bool is_site_id_set = false;
+    getline(site_block, line);
+    std::string temp = line;
+    int residue_counter = 0;
+    while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
-            Trim(record_name_);
-            is_record_name_set=true;
+        if(!is_site_id_set){
+            site_id_ = line.substr(11,3);
+            gmml::Trim(site_id_);
+            is_site_id_set=true;
         }
-        stringstream site_block;
-        site_block << line << endl;
-        string site_id = line.substr(11,3);
+        if(line.substr(15, 2) == "  ")
+            number_of_residues_ = gmml::iNotSet;
+        else
+            number_of_residues_ = gmml::ConvertString<int>(line.substr(15, 2));
 
-        getline(stream_block, line);
+        int residue_counter_per_line = 0;
+        while(residue_counter < number_of_residues_ && residue_counter_per_line < 4)
+        {
+            int index = 18 + (residue_counter%4)*11;
+            PdbSiteResidue *residue = new PdbSiteResidue(line.substr(index, 10));
+            residues_.push_back(residue);
+            residue_counter++;
+            residue_counter_per_line++;
+        }
+
+        getline(site_block, line);
         temp = line;
-
-        while (!Trim(temp).empty() && line.substr(11,3) == site_id){
-            site_block << line << endl;
-            getline(stream_block, line);
-            temp = line;
-        }
-        PdbSite* site = new PdbSite(site_block);
-        site_id = Trim(site_id);
-        residue_sites_[site->GetSiteId()] = site;
     }
 }
 
@@ -46,20 +47,41 @@ PdbSiteCard::PdbSiteCard(stringstream &stream_block)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-string PdbSiteCard::GetRecordName(){
-    return record_name_;
+std::string PdbSiteCard::GetSiteId(){
+    return site_id_;
 }
 
-PdbSiteCard::PdbSiteMap PdbSiteCard::GetResidueSites(){
-    return residue_sites_;
+PdbSiteCard::SiteResidueVector PdbSiteCard::GetResidues(){
+    return residues_;
+}
+
+int PdbSiteCard::GetNumberOfResidues(){
+    return number_of_residues_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbSiteCard::SetRecordName(const string record_name){
-    record_name_ = record_name;
+void PdbSiteCard::SetSiteId(const std::string site_id){
+    site_id_ = site_id;
+}
+
+void PdbSiteCard::SetResidues(SiteResidueVector residues){
+    residues_.clear();
+    for(SiteResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        residues_.push_back(*it);
+    }
+}
+
+void PdbSiteCard::AddResidue(PdbSiteResidue *residue)
+{
+    residues_.push_back(residue);
+}
+
+void PdbSiteCard::SetNumberOfResidues(int number_of_residues){
+    number_of_residues_ = number_of_residues;
 }
 
 //////////////////////////////////////////////////////////
@@ -69,14 +91,19 @@ void PdbSiteCard::SetRecordName(const string record_name){
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSiteCard::Print(ostream &out)
+void PdbSiteCard::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "==================== Residue Site ==============" << endl;
-    for(PdbSiteCard::PdbSiteMap::iterator it = residue_sites_.begin(); it != residue_sites_.end(); it++)
+    out << "Site ID: " << site_id_
+        << ", Number of Residues: ";
+    if(number_of_residues_ != gmml::iNotSet)
+        out << number_of_residues_;
+    else
+        out << " ";
+    out << std::endl << "---------------- Residues ----------------" << std::endl;
+    for(PdbSiteCard::SiteResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        out << "Site ID: " << (it)->first << endl;
-        (it)->second->Print();
-        out << endl;
+        (*it)->Print(out);
+        out << std::endl;
     }
+    out << std::endl;
 }

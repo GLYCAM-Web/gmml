@@ -1,10 +1,12 @@
 #ifndef RESIDUE_HPP
 #define RESIDUE_HPP
 
+
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "residueproperties.hpp"
 #include "../GeometryTopology/coordinate.hpp"
 
 
@@ -12,7 +14,8 @@ namespace MolecularModeling
 {
     class Assembly;
     class Atom;
-    class Residue
+    class ResidueNode;
+    class Residue : public ResidueProperties
     {
         public:
             //////////////////////////////////////////////////////////
@@ -30,6 +33,7 @@ namespace MolecularModeling
             Residue();
             Residue(Assembly* assembly, std::string name);
             Residue(Residue* residue);
+            Residue(Residue& residue);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -82,6 +86,13 @@ namespace MolecularModeling
               * @return id_ attribute of the current object of this class
               */
             std::string GetId();
+
+            /*! \fn                                                                              //Added by ayush on 11/20/17 for residuenodes in assembly
+              * An accessor function in order to access to the node
+              * @return node_ attribute of the current object of this class
+              */
+            ResidueNode* GetNode();
+
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -161,6 +172,14 @@ namespace MolecularModeling
               * @param id The identification attribute of the current object
               */
             void SetId(std::string id);
+
+            /*! \fn                                                                                          //Added by ayush on 11/20/17 for residuenode in assembly
+              * A mutator function in order to set the node of the current object
+              * Set the node_ attribute of the current residue
+              * @param node The node attribute of the current object
+              */
+            void SetNode(ResidueNode* node);
+
             /*! \fn
               * A mutator function that replaces the coordinates of the atoms of the current object
               * Replace the coordinate attribute for atoms of the current residue
@@ -183,8 +202,12 @@ namespace MolecularModeling
             double CalculateAtomicOverlaps(Assembly *assemblyB);
             double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
             bool CheckIfProtein();
-						bool CheckIfWater();
-            GeometryTopology::Coordinate GetRingCenter();
+            bool CheckIfWater();
+            //GeometryTopology::Coordinate GetRingCenter(); disabled by OG. GetIsRing returns true for all atoms even when IsRing wasn't set.
+            GeometryTopology::Coordinate GetGeometricCenter();
+            Atom* GetAtom(std::string query_name);
+            Atom* GetAtom(unsigned long long query_index);
+            Atom* GetAtomWithId(std::string query_id);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -215,7 +238,7 @@ namespace MolecularModeling
             std::string chemical_type_;         /*!< A descriptor in order to describe chemical type of the residue >*/
             std::string description_;           /*!< A short description of the residue >*/
             std::string id_;                    /*!< An identifier for a residue that is generated based on the type of the given file from which the structure has to be built >*/
-
+            ResidueNode* node_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
     };
  }
 

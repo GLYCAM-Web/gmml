@@ -26,7 +26,10 @@ namespace PdbPreprocessorSpace
               * @param residue_alternate_location Alternated location of the unrecognized residue
               * @param residue_charge overal charge of atoms
               */
-            PdbPreprocessorResidueInfo(std::string residue_name, char chain_id, int sequence_number, char residue_insertion_code, char residue_alternate_location_ , double residue_charge);
+            PdbPreprocessorResidueInfo(
+                std::string residue_name, char chain_id, int sequence_number,
+                char residue_insertion_code, char residue_alternate_location_ ,
+                double residue_charge);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

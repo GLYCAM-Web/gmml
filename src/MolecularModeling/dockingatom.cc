@@ -1,7 +1,6 @@
 #include "../../includes/MolecularModeling/dockingatom.hpp"
 
-using namespace std;
-using namespace MolecularModeling;
+using MolecularModeling::DockingAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

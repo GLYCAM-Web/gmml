@@ -3,9 +3,7 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace CondensedSequenceSpace;
+using CondensedSequenceSpace::CondensedSequenceResidue;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -14,10 +12,10 @@ CondensedSequenceResidue::CondensedSequenceResidue()
 {
 }
 
-CondensedSequenceResidue::CondensedSequenceResidue(string residue_string)
+CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string)
 {
-    int dash_index = residue_string.find('-');
-    if(dash_index == string::npos)
+    size_t dash_index = residue_string.find('-');
+    if(dash_index == std::string::npos)
     {
         this->name_ = residue_string;
         this->is_terminal_ = true;
@@ -26,7 +24,7 @@ CondensedSequenceResidue::CondensedSequenceResidue(string residue_string)
     {
         if(residue_string.empty())
             throw CondensedSequenceProcessingException("Invalid residue in sequence");
-        if(residue_string.find("Unknown") != string::npos)
+        if(residue_string.find("Unknown") != std::string::npos)
             this->name_ = "UNK";
         else
         {
@@ -64,20 +62,20 @@ CondensedSequenceResidue::CondensedSequenceResidue(string residue_string)
             else
                 this->oxygen_position_ = 1;
 
-            int left_bracket = residue_string.find('[');
-            int right_bracket = residue_string.find(']');
-            if(left_bracket == string::npos || right_bracket == string::npos)
+            size_t left_bracket = residue_string.find('[');
+            size_t right_bracket = residue_string.find(']');
+            if(left_bracket == std::string::npos || right_bracket == std::string::npos)
                 this->name_ = residue_string.substr(1, dash_index - 3);
             else
             {
                 this->name_ = residue_string.substr(1, left_bracket - 1);
-                string derivatives = residue_string.substr(left_bracket + 1, right_bracket - left_bracket - 1);
-                vector<string> derivatives_tokens = gmml::Split(derivatives, ",");
-                for(vector<string>::iterator it = derivatives_tokens.begin(); it != derivatives_tokens.end(); ++it)
+                std::string derivatives = residue_string.substr(left_bracket + 1, right_bracket - left_bracket - 1);
+                std::vector<std::string> derivatives_tokens = gmml::Split(derivatives, ",");
+                for(std::vector<std::string>::iterator it = derivatives_tokens.begin(); it != derivatives_tokens.end(); ++it)
                 {
                     if(!std::isdigit(it->at(0)))
                         throw CondensedSequenceProcessingException("Invalid derivative position in sequence");
-                    this->derivatives_[ConvertString<int>(ConvertT<char>(it->at(0)))] = it->substr(1);
+                    this->derivatives_[gmml::ConvertString<int>(gmml::ConvertT<char>(it->at(0)))] = it->substr(1);
                 }
             }
         }
@@ -92,15 +90,15 @@ bool CondensedSequenceResidue::GetIsTerminal()
 {
     return is_terminal_;
 }
-string CondensedSequenceResidue::GetIsomer()
+std::string CondensedSequenceResidue::GetIsomer()
 {
     return isomer_;
 }
-string CondensedSequenceResidue::GetConfiguration()
+std::string CondensedSequenceResidue::GetConfiguration()
 {
     return configuration_;
 }
-string CondensedSequenceResidue::GetName()
+std::string CondensedSequenceResidue::GetName()
 {
     return name_;
 }
@@ -128,15 +126,15 @@ void CondensedSequenceResidue::SetIsTerminal(bool is_terminal)
 {
     is_terminal_ = is_terminal;
 }
-void CondensedSequenceResidue::SetIsomer(string isomer)
+void CondensedSequenceResidue::SetIsomer(std::string isomer)
 {
     isomer_ = isomer;
 }
-void CondensedSequenceResidue::SetConfiguration(string configuration)
+void CondensedSequenceResidue::SetConfiguration(std::string configuration)
 {
     configuration_ = configuration;
 }
-void CondensedSequenceResidue::SetName(string name)
+void CondensedSequenceResidue::SetName(std::string name)
 {
     name_ = name;
 }
@@ -154,7 +152,7 @@ void CondensedSequenceResidue::SetDerivatives(DerivativeMap derivatives)
     for(DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++)
     {
         int index = (*it).first;
-        string derivative = (*it).second;
+        std::string derivative = (*it).second;
         derivatives_[index] = derivative;
     }
 }
@@ -170,10 +168,7 @@ void CondensedSequenceResidue::SetParentId(int parent_id)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void CondensedSequenceResidue::Print(ostream &out)
-{}
-
-
-
-
-
+void CondensedSequenceResidue::Print(std::ostream &out)
+{
+    out << "";
+}

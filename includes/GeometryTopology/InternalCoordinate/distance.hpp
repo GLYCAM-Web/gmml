@@ -4,10 +4,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "../coordinate.hpp"
 
 namespace GeometryTopology
 {
-    class Coordinate;
     class Distance
     {
         public:
@@ -17,7 +17,7 @@ namespace GeometryTopology
             /*! \typedef
               * Vector of coordinates
               */
-            typedef std::vector<Coordinate*> CoordinateVector;
+            typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -61,7 +61,7 @@ namespace GeometryTopology
               * Set the coordinates_ attribute of the current distance
               * @param coordinate The coordinate of the current object
               */
-            void AddCoordinate(Coordinate* coordinate);
+            void AddCoordinate(GeometryTopology::Coordinate* coordinate);
             /*! \fn
               * A mutator function in order to set the length of the current object
               * Set the length_ attribute of the current distance

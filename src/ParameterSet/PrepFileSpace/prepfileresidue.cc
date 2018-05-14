@@ -8,15 +8,13 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PrepFileSpace;
+using PrepFileSpace::PrepFileResidue;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-PrepFileResidue::PrepFileResidue() : title_(""), name_(""), coordinate_type_(kINT), output_format_(kFormatted), geometry_type_(kGeometryCorrect),
-    dummy_atom_omission_(kOmit), dummy_atom_type_("DU"), dummy_atom_position_(kPositionBeg), charge_(0.0)
+PrepFileResidue::PrepFileResidue() : title_(""), name_(""), coordinate_type_(PrepFileSpace::kINT), output_format_(PrepFileSpace::kFormatted), geometry_type_(PrepFileSpace::kGeometryCorrect),
+    dummy_atom_omission_(PrepFileSpace::kOmit), dummy_atom_type_("DU"), dummy_atom_position_(PrepFileSpace::kPositionBeg), charge_(0.0)
 {
     atoms_ = PrepFileAtomVector();
     improper_dihedrals_ = DihedralVector();
@@ -45,35 +43,35 @@ int PrepFileResidue::GetAtomIndexByName(const std::string& name)
     return -1;
 }
 
-string PrepFileResidue::GetTitle(){
+std::string PrepFileResidue::GetTitle(){
     return title_;
 }
 
-string PrepFileResidue::GetName(){
+std::string PrepFileResidue::GetName(){
     return name_;
 }
 
-CoordinateType PrepFileResidue::GetCoordinateType(){
+PrepFileSpace::CoordinateType PrepFileResidue::GetCoordinateType(){
     return coordinate_type_;
 }
 
-OutputFormat PrepFileResidue::GetOutputFormat(){
+PrepFileSpace::OutputFormat PrepFileResidue::GetOutputFormat(){
     return output_format_;
 }
 
-GeometryType PrepFileResidue::GetGeometryType(){
+PrepFileSpace::GeometryType PrepFileResidue::GetGeometryType(){
     return geometry_type_;
 }
 
-DummyAtomOmission PrepFileResidue::GetDummyAtomOmission(){
+PrepFileSpace::DummyAtomOmission PrepFileResidue::GetDummyAtomOmission(){
     return dummy_atom_omission_;
 }
 
-string PrepFileResidue::GetDummyAtomType(){
+std::string PrepFileResidue::GetDummyAtomType(){
     return dummy_atom_type_;
 }
 
-DummyAtomPosition PrepFileResidue::GetDummyAtomPosition(){
+PrepFileSpace::DummyAtomPosition PrepFileResidue::GetDummyAtomPosition(){
     return dummy_atom_position_;
 }
 
@@ -92,12 +90,12 @@ PrepFileResidue::DihedralVector PrepFileResidue::GetImproperDihedrals(){
 PrepFileResidue::Loop PrepFileResidue::GetLoops(){
     return loops_;
 }
-PrepFileAtom* PrepFileResidue::GetPrepAtomByName(string atom_name)
+PrepFileSpace::PrepFileAtom* PrepFileResidue::GetPrepAtomByName(std::string atom_name)
 {
     for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        PrepFileAtom* prep_file_atom = (*it);
-        string prep_file_atom_name = prep_file_atom->GetName();
+        PrepFileSpace::PrepFileAtom* prep_file_atom = (*it);
+        std::string prep_file_atom_name = prep_file_atom->GetName();
         if(prep_file_atom_name.compare(atom_name) == 0)
             return prep_file_atom;
     }
@@ -106,8 +104,8 @@ PrepFileAtom* PrepFileResidue::GetPrepAtomByName(string atom_name)
 PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
 {
     BondedAtomIndexMap bonded_atoms_map = BondedAtomIndexMap();
-//    vector<PrepFileAtom*> stack = vector<PrepFileAtom*>();
-//    vector<int> number_of_bonds = vector<int>();
+//    std::vector<PrepFileSpace::PrepFileAtom*> stack = std::vector<PrepFileSpace::PrepFileAtom*>();
+//    std::vector<int> number_of_bonds = std::vector<int>();
 
     PrepFileAtomVector parents = this->GetAtomsParentVector();
     for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
@@ -121,7 +119,7 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
 
     for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        PrepFileAtom* atom = *it;
+        PrepFileSpace::PrepFileAtom* atom = *it;
         int index = distance(atoms_.begin(), it);
         int atom_index = atom->GetIndex();
         int parent_index = parents.at(index)->GetIndex();
@@ -133,30 +131,30 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
     }
 
   /*
-    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        PrepFileAtom* atom = (*it);
+        PrepFileSpace::PrepFileAtom* atom = (*it);
         if(stack.empty())
         {
-            if(atom->GetTopologicalType() == kTopTypeM || atom->GetTopologicalType() == kTopTypeS
-                    || atom->GetTopologicalType() == kTopTypeB || atom->GetTopologicalType() == kTopType3)
+            if(atom->GetTopologicalType() == gmml::kTopTypeM || atom->GetTopologicalType() == gmml::kTopTypeS
+                    || atom->GetTopologicalType() == gmml::kTopTypeB || atom->GetTopologicalType() == gmml::kTopType3)
             {
                 stack.push_back(atom);
-                if(atom->GetTopologicalType() == kTopTypeM)
+                if(atom->GetTopologicalType() == gmml::kTopTypeM)
                     number_of_bonds.push_back(4);
-                if(atom->GetTopologicalType() == kTopTypeS)
+                if(atom->GetTopologicalType() == gmml::kTopTypeS)
                     number_of_bonds.push_back(2);
-                if(atom->GetTopologicalType() == kTopTypeB)
+                if(atom->GetTopologicalType() == gmml::kTopTypeB)
                     number_of_bonds.push_back(3);
-                if(atom->GetTopologicalType() == kTopType3)
+                if(atom->GetTopologicalType() == gmml::kTopType3)
                     number_of_bonds.push_back(4);
             }
         }
         if(!stack.empty())
         {
-            if(atom->GetTopologicalType() == kTopTypeE)
+            if(atom->GetTopologicalType() == gmml::kTopTypeE)
             {
-                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                PrepFileSpace::PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
                 bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
                 bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
@@ -166,10 +164,10 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
                     stack.pop_back();
                 }
             }
-            if(atom->GetTopologicalType() == kTopTypeM)
+            if(atom->GetTopologicalType() == gmml::kTopTypeM)
             {
-                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
-                if(top_of_stack_atom->GetTopologicalType() == kTopTypeM)
+                PrepFileSpace::PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                if(top_of_stack_atom->GetTopologicalType() == gmml::kTopTypeM)
                 {
                     if(top_of_stack_atom->GetType().compare(this->GetDummyAtomType()) == 0)
                     {
@@ -194,8 +192,8 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
                         number_of_bonds.push_back(3);
                     }
                 }
-                if(top_of_stack_atom->GetTopologicalType() == kTopTypeS || top_of_stack_atom->GetTopologicalType() == kTopTypeB
-                        || top_of_stack_atom->GetTopologicalType() == kTopType3)
+                if(top_of_stack_atom->GetTopologicalType() == gmml::kTopTypeS || top_of_stack_atom->GetTopologicalType() == gmml::kTopTypeB
+                        || top_of_stack_atom->GetTopologicalType() == gmml::kTopType3)
                 {
                     bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
                     bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
@@ -209,9 +207,9 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
                     number_of_bonds.push_back(3);
                 }
             }
-            if(atom->GetTopologicalType() == kTopTypeS)
+            if(atom->GetTopologicalType() == gmml::kTopTypeS)
             {
-                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                PrepFileSpace::PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
                 bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
                 bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
@@ -223,9 +221,9 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
                 stack.push_back(atom);
                 number_of_bonds.push_back(1);
             }
-            if(atom->GetTopologicalType() == kTopTypeB)
+            if(atom->GetTopologicalType() == gmml::kTopTypeB)
             {
-                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                PrepFileSpace::PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
                 bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
                 bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
@@ -237,9 +235,9 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
                 stack.push_back(atom);
                 number_of_bonds.push_back(2);
             }
-            if(atom->GetTopologicalType() == kTopType3)
+            if(atom->GetTopologicalType() == gmml::kTopType3)
             {
-                PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
+                PrepFileSpace::PrepFileAtom* top_of_stack_atom = stack.at(stack.size()-1);
                 bonded_atoms_map[top_of_stack_atom->GetIndex()].push_back(atom->GetIndex());
                 bonded_atoms_map[atom->GetIndex()].push_back(top_of_stack_atom->GetIndex());
                 number_of_bonds.at(number_of_bonds.size()-1)--;
@@ -257,215 +255,215 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
 
     return bonded_atoms_map;
 }
-string PrepFileResidue::GetAtomNameByIndex(int atom_index)
+std::string PrepFileResidue::GetAtomNameByIndex(int atom_index)
 {
     for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        PrepFileAtom* prep_file_atom = (*it);
+        PrepFileSpace::PrepFileAtom* prep_file_atom = (*it);
         if(prep_file_atom->GetIndex() == atom_index)
             return prep_file_atom->GetName();
     }
     return NULL;
 }
-string PrepFileResidue::GetStringFormatOfCoordinateType(CoordinateType coordinate_type)
+std::string PrepFileResidue::GetStringFormatOfCoordinateType(PrepFileSpace::CoordinateType coordinate_type)
 {
     switch(coordinate_type)
     {
-        case kINT:
+        case PrepFileSpace::kINT:
             return "INT";
-        case kXYZ:
+        case PrepFileSpace::kXYZ:
             return "XYZ";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfCoordinateType()
+std::string PrepFileResidue::GetStringFormatOfCoordinateType()
 {
     switch(coordinate_type_)
     {
-        case kINT:
+        case PrepFileSpace::kINT:
             return "INT";
-        case kXYZ:
+        case PrepFileSpace::kXYZ:
             return "XYZ";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfOutputFormat(OutputFormat output_format)
+std::string PrepFileResidue::GetStringFormatOfOutputFormat(PrepFileSpace::OutputFormat output_format)
 {
     switch(output_format)
     {
-        case kFormatted:
+        case PrepFileSpace::kFormatted:
             return "FRM";
-        case kBinary:
+        case PrepFileSpace::kBinary:
             return "BIN";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfOutputFormat()
+std::string PrepFileResidue::GetStringFormatOfOutputFormat()
 {
     switch(output_format_)
     {
-        case kFormatted:
+        case PrepFileSpace::kFormatted:
             return "FRM";
-        case kBinary:
+        case PrepFileSpace::kBinary:
             return "BIN";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfGeometryType(GeometryType geometry_type)
+std::string PrepFileResidue::GetStringFormatOfGeometryType(PrepFileSpace::GeometryType geometry_type)
 {
     switch(geometry_type)
     {
-        case kGeometryCorrect:
+        case PrepFileSpace::kGeometryCorrect:
             return "CORRECT";
-        case kGeometryChange:
+        case PrepFileSpace::kGeometryChange:
             return "CHANGE";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfGeometryType()
+std::string PrepFileResidue::GetStringFormatOfGeometryType()
 {
     switch(geometry_type_)
     {
-        case kGeometryCorrect:
+        case PrepFileSpace::kGeometryCorrect:
             return "CORRECT";
-        case kGeometryChange:
+        case PrepFileSpace::kGeometryChange:
             return "CHANGE";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position)
+std::string PrepFileResidue::GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position)
 {
     switch(dummy_atom_position)
     {
-        case kPositionAll:
+        case PrepFileSpace::kPositionAll:
             return "ALL";
-        case kPositionBeg:
+        case PrepFileSpace::kPositionBeg:
             return "BEG";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfDummyAtomPosition()
+std::string PrepFileResidue::GetStringFormatOfDummyAtomPosition()
 {
     switch(dummy_atom_position_)
     {
-        case kPositionAll:
+        case PrepFileSpace::kPositionAll:
             return "ALL";
-        case kPositionBeg:
+        case PrepFileSpace::kPositionBeg:
             return "BEG";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfDummyAtomOmission(DummyAtomOmission dummy_atom_omission)
+std::string PrepFileResidue::GetStringFormatOfDummyAtomOmission(PrepFileSpace::DummyAtomOmission dummy_atom_omission)
 {
     switch(dummy_atom_omission)
     {
-        case kOmit:
+        case PrepFileSpace::kOmit:
             return "OMIT";
-        case kNomit:
+        case PrepFileSpace::kNomit:
             return "NOMIT";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfDummyAtomOmission()
+std::string PrepFileResidue::GetStringFormatOfDummyAtomOmission()
 {
     switch(dummy_atom_omission_)
     {
-        case kOmit:
+        case PrepFileSpace::kOmit:
             return "OMIT";
-        case kNomit:
+        case PrepFileSpace::kNomit:
             return "NOMIT";
         default:
             return "";
     }
 }
-string PrepFileResidue::GetStringFormatOfSectionType(SectionType section_type)
+std::string PrepFileResidue::GetStringFormatOfSectionType(SectionType section_type)
 {
     switch(section_type)
     {
-        case kSectionLoop:
+        case PrepFileSpace::kSectionLoop:
             return "SectionLoop";
-        case kSectionImproper:
+        case PrepFileSpace::kSectionImproper:
             return "SectionImproper";
-        case kSectionDone:
-            return "kSectionDone";
-        case kSectionOther:
+        case PrepFileSpace::kSectionDone:
+            return "PrepFileSpace::kSectionDone";
+        case PrepFileSpace::kSectionOther:
             return "SectionOther";
         default:
             return "";
     }
 }
-CoordinateType PrepFileResidue::GetCoordinateTypeFromString(string coordinate_type)
+PrepFileSpace::CoordinateType PrepFileResidue::GetCoordinateTypeFromString(std::string coordinate_type)
 {
     if(coordinate_type.compare("INT") == 0)
-        return kINT;
+        return PrepFileSpace::kINT;
     if(coordinate_type.compare("XYZ") == 0)
-        return kXYZ;
+        return PrepFileSpace::kXYZ;
     else
-        return kINT;
+        return PrepFileSpace::kINT;
 }
-OutputFormat PrepFileResidue::GetOutputFormatFromString(string output_format)
+PrepFileSpace::OutputFormat PrepFileResidue::GetOutputFormatFromString(std::string output_format)
 {
     if(output_format.compare("Formatted") == 0)
-        return kFormatted;
+        return PrepFileSpace::kFormatted;
     if(output_format.compare("Binary") == 0)
-        return kBinary;
+        return PrepFileSpace::kBinary;
     else
-        return kBinary;
+        return PrepFileSpace::kBinary;
 }
-GeometryType PrepFileResidue::GetGeometryTypeFromString(string geometry_type)
+PrepFileSpace::GeometryType PrepFileResidue::GetGeometryTypeFromString(std::string geometry_type)
 {
     if(geometry_type.compare("GeometryCorrect") == 0)
-        return kGeometryCorrect;
+        return PrepFileSpace::kGeometryCorrect;
     if(geometry_type.compare("GeometryChange") == 0)
-        return kGeometryChange;
+        return PrepFileSpace::kGeometryChange;
     else
-        return kGeometryCorrect;
+        return PrepFileSpace::kGeometryCorrect;
 }
-DummyAtomPosition PrepFileResidue::GetDummyAtomPositionFromString(string dummy_atom_position)
+PrepFileSpace::DummyAtomPosition PrepFileResidue::GetDummyAtomPositionFromString(std::string dummy_atom_position)
 {
     if(dummy_atom_position.compare("PositionAll") == 0)
-        return kPositionAll;
+        return PrepFileSpace::kPositionAll;
     if(dummy_atom_position.compare("PositionBeg") == 0)
-        return kPositionBeg;
+        return PrepFileSpace::kPositionBeg;
     else
-        return kPositionBeg;
+        return PrepFileSpace::kPositionBeg;
 }
-DummyAtomOmission PrepFileResidue::GetDummyAtomOmissionFromString(string dummy_atom_omission)
+PrepFileSpace::DummyAtomOmission PrepFileResidue::GetDummyAtomOmissionFromString(std::string dummy_atom_omission)
 {
     if(dummy_atom_omission.compare("Omit") == 0)
-        return kOmit;
+        return PrepFileSpace::kOmit;
     if(dummy_atom_omission.compare("Nomit") == 0)
-        return kNomit;
+        return PrepFileSpace::kNomit;
     else
-        return kOmit;
+        return PrepFileSpace::kOmit;
 }
-SectionType PrepFileResidue::GetSectionTypeFromString(string section_type)
+PrepFileSpace::SectionType PrepFileResidue::GetSectionTypeFromString(std::string section_type)
 {
     if(section_type.compare("SectionLoop") == 0)
-        return kSectionLoop;
+        return PrepFileSpace::kSectionLoop;
     if(section_type.compare("SectionImproper") == 0)
-        return kSectionImproper;
+        return PrepFileSpace::kSectionImproper;
     if(section_type.compare("SectionDone") == 0)
-        return kSectionDone;
+        return PrepFileSpace::kSectionDone;
     if(section_type.compare("SectionOther") == 0)
-        return kSectionOther;
+        return PrepFileSpace::kSectionOther;
     else
-        return kSectionOther;
+        return PrepFileSpace::kSectionOther;
 }
-PrepFileAtom* PrepFileResidue::GetPrepAtomByAtomName(string atom_name)
+PrepFileSpace::PrepFileAtom* PrepFileResidue::GetPrepAtomByAtomName(std::string atom_name)
 {
     for(PrepFileResidue::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        PrepFileAtom* atom = (*it);
+        PrepFileSpace::PrepFileAtom* atom = (*it);
         if(atom->GetName().compare(atom_name) == 0)
             return atom;
     }
@@ -476,8 +474,8 @@ PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
 {
     PrepFileAtomVector parents = PrepFileAtomVector();
     PrepFileAtomVector stack = PrepFileAtomVector();
-    vector<int> neighbors = vector<int>();
-    for(PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
+    std::vector<int> neighbors = std::vector<int>();
+    for(PrepFileResidue::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
     {
         parents.push_back(*it);
         neighbors.push_back(0);
@@ -490,35 +488,35 @@ PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
         neighbors.at(from - 1) = 1;
         neighbors.at(to - 1) = 1;
     }
-    for(PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
+    for(PrepFileResidue::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
     {
-        PrepFileAtom* atom = *it;
+        PrepFileSpace::PrepFileAtom* atom = *it;
         int index = distance(atoms_.begin(), it);
         if(stack.empty())
         {
             switch(atom->GetTopologicalType())
             {
-                case kTopTypeM:
-                case kTopType4:
-                case kTopType3:
+                case gmml::kTopTypeM:
+                case gmml::kTopType4:
+                case gmml::kTopType3:
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
                     stack.push_back(atom);
                     stack.push_back(atom);
                     stack.push_back(atom);
                     break;
-                case kTopTypeB:
+                case gmml::kTopTypeB:
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
                     stack.push_back(atom);
                     stack.push_back(atom);
                     break;
-                case kTopTypeS:
+                case gmml::kTopTypeS:
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
                     stack.push_back(atom);
                     break;
-                case kTopTypeE:
+                case gmml::kTopTypeE:
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
                     break;
@@ -528,9 +526,9 @@ PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
         {
             switch(atom->GetTopologicalType())
             {
-                case kTopTypeM:
-                case kTopType4:
-                case kTopType3:
+                case gmml::kTopTypeM:
+                case gmml::kTopType4:
+                case gmml::kTopType3:
                     parents.at(index) = stack.at(stack.size() - 1);
                     stack.pop_back();
                     if(neighbors.at(index) == 0)
@@ -538,18 +536,18 @@ PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
                     stack.push_back(atom);
                     stack.push_back(atom);
                     break;
-                case kTopTypeB:
+                case gmml::kTopTypeB:
                     parents.at(index) = stack.at(stack.size() - 1);
                     stack.pop_back();
                     stack.push_back(atom);
                     stack.push_back(atom);
                     break;
-                case kTopTypeS:
+                case gmml::kTopTypeS:
                     parents.at(index) = stack.at(stack.size() - 1);
                     stack.pop_back();
                     stack.push_back(atom);
                     break;
-                case kTopTypeE:
+                case gmml::kTopTypeE:
                     parents.at(index) = stack.at(stack.size() - 1);
                     stack.pop_back();
                     break;
@@ -563,31 +561,31 @@ PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 
-void PrepFileResidue::SetTitle(const string title){
+void PrepFileResidue::SetTitle(const std::string title){
     title_ = title;
 }
 
-void PrepFileResidue::SetName(const string name){
+void PrepFileResidue::SetName(const std::string name){
     name_ = name;
 }
 
-void PrepFileResidue::SetCoordinateType(CoordinateType coordinate_type){
+void PrepFileResidue::SetCoordinateType(PrepFileSpace::CoordinateType coordinate_type){
     coordinate_type_ = coordinate_type;
 }
 
-void PrepFileResidue::SetOutputFormat(OutputFormat output_format){
+void PrepFileResidue::SetOutputFormat(PrepFileSpace::OutputFormat output_format){
     output_format_ = output_format;
 }
 
-void PrepFileResidue::SetGeometryType(GeometryType geometry_type){
+void PrepFileResidue::SetGeometryType(PrepFileSpace::GeometryType geometry_type){
     geometry_type_ = geometry_type;
 }
 
-void PrepFileResidue::SetDummyAtomOmission(DummyAtomOmission dummy_atom_omission){
+void PrepFileResidue::SetDummyAtomOmission(PrepFileSpace::DummyAtomOmission dummy_atom_omission){
     dummy_atom_omission_ = dummy_atom_omission;
 }
 
-void PrepFileResidue::SetDummyAtomType(const string dummy_atom_type){
+void PrepFileResidue::SetDummyAtomType(const std::string dummy_atom_type){
     dummy_atom_type_ = dummy_atom_type;
 }
 
@@ -601,13 +599,13 @@ void PrepFileResidue::SetCharge(double charge){
 
 void PrepFileResidue::SetAtoms(PrepFileAtomVector atoms){
     atoms_.clear();
-    for(PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(PrepFileResidue::PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         atoms_.push_back(*it);
     }
 }
 
-void PrepFileResidue::AddAtom(PrepFileAtom* atom){
+void PrepFileResidue::AddAtom(PrepFileSpace::PrepFileAtom* atom){
     atoms_.push_back(atom);
 }
 
@@ -634,17 +632,17 @@ void PrepFileResidue::SetLoops(Loop loops){
 /// Create a new residue from a given stream
 PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
 {
-    string line, name, dummy_atom_type;
-    istringstream ss;
-    CoordinateType coordinate_type;
-    OutputFormat output_format;
-    GeometryType geometry_type;
-    DummyAtomOmission dummy_atom_omission;
+    std::string line, name, dummy_atom_type;
+    std::istringstream ss;
+    PrepFileSpace::CoordinateType coordinate_type;
+    PrepFileSpace::OutputFormat output_format;
+    PrepFileSpace::GeometryType geometry_type;
+    PrepFileSpace::DummyAtomOmission dummy_atom_omission;
     DummyAtomPosition dummy_atom_position;
     PrepFileResidue *residue = new PrepFileResidue();
 
     getline(in_file, line);             /// Read the first line of a residue section
-    if (Trim(line).find("STOP") != string::npos)           /// End of file
+    if (gmml::Trim(line).find("STOP") != std::string::npos)           /// End of file
         return NULL;
 
     residue->title_ = line;             /// Set title of the residue
@@ -688,12 +686,12 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     getline(in_file, line);             /// Read the next line
 
     /// Residue charge extraction from the read line
-    residue->charge_ = ConvertString<double>(line);
+    residue->charge_ = gmml::ConvertString<double>(line);
 
     /// Process atoms of the residue
-    while (getline(in_file, line) && !Trim(line).empty())
+    while (getline(in_file, line) && !gmml::Trim(line).empty())
     {
-        PrepFileAtom *atom = new PrepFileAtom(line);
+        PrepFileSpace::PrepFileAtom *atom = new PrepFileSpace::PrepFileAtom(line);
         residue->atoms_.push_back(atom);
     }
 
@@ -703,24 +701,24 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
     {
         /// Skip blank lines until to reach to a known section title
         getline(in_file, line);
-        while (Trim(line).empty())
+        while (gmml::Trim(line).empty())
         {
             getline(in_file, line);
         }
         /// Does a corresponding action based on the section title
         switch (ExtractSectionType(line))
         {
-            case kSectionLoop:
+            case PrepFileSpace::kSectionLoop:
                 residue->loops_ = residue->ExtractLoops(in_file);
                 break;
-            case kSectionImproper:
+            case PrepFileSpace::kSectionImproper:
                 residue->improper_dihedrals_ = residue->ExtractImproperDihedral(in_file);
                 break;
-            case kSectionDone:
+            case PrepFileSpace::kSectionDone:
                 done = true;
                 break;
-            case kSectionOther:
-                cout << "Unrecognized section in prep file";
+            case PrepFileSpace::kSectionOther:
+                std::cout << "Unrecognized section in prep file";
                 gmml::log(__LINE__, __FILE__,  gmml::WAR, "Unrecognized section in prep file" );
                 break;
         }
@@ -732,91 +730,91 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
 /// Return residue name from a stream line which is the first column of the 3rd line in each residue section
 std::string PrepFileResidue::ExtractResidueName(std::istream& ss)
 {
-    string name;
+    std::string name;
     ss >> name;
     return name;
 }
 
 /// Return coordinate type from a stream line which is the 2nd column of the 3rd line in each residue section
-CoordinateType PrepFileResidue::ExtractResidueCoordinateType(std::istream &ss)
+PrepFileSpace::CoordinateType PrepFileResidue::ExtractResidueCoordinateType(std::istream &ss)
 {
-    string s;
+    std::string s;
     ss >> s;
     if (s == "XYZ")
-        return kXYZ;
+        return PrepFileSpace::kXYZ;
     else
-        return kINT;
+        return PrepFileSpace::kINT;
 }
 
 /// Return output format from a stream line which is the 3rd column of the 3rd line in each residue section
-OutputFormat PrepFileResidue::ExtractResidueOutputFormat(std::istream& ss)
+PrepFileSpace::OutputFormat PrepFileResidue::ExtractResidueOutputFormat(std::istream& ss)
 {
     int val;
     ss >> val;
     if (val == 1)
-        return kBinary;
+        return PrepFileSpace::kBinary;
     else
-        return kFormatted;
+        return PrepFileSpace::kFormatted;
 }
 
 /// Return geometry type from a stream line which is the first column of the 4th line in each residue section
-GeometryType PrepFileResidue::ExtractResidueGeometryType(std::istream& ss)
+PrepFileSpace::GeometryType PrepFileResidue::ExtractResidueGeometryType(std::istream& ss)
 {
-    string s;
+    std::string s;
     ss >> s;
     if (s == "CHANGE")
-        return kGeometryChange;
+        return PrepFileSpace::kGeometryChange;
     else
-        return kGeometryCorrect;
+        return PrepFileSpace::kGeometryCorrect;
 }
 
 /// Return dummy atom omission from a stream line which is the 2nd column of the 4th line in each residue section
-DummyAtomOmission PrepFileResidue::ExtractResidueDummyAtomOmission(istream &ss)
+PrepFileSpace::DummyAtomOmission PrepFileResidue::ExtractResidueDummyAtomOmission(std::istream &ss)
 {
-    string s;
+    std::string s;
     ss >> s;
     if (s == "NOMIT")
-        return kNomit;
+        return PrepFileSpace::kNomit;
     else
-        return kOmit;
+        return PrepFileSpace::kOmit;
 }
 
 /// Return dummy atom position from a stream line which is the 4th column of the 4th line in each residue section
-DummyAtomPosition PrepFileResidue::ExtractResidueDummyAtomPosition(istream &ss)
+PrepFileSpace::DummyAtomPosition PrepFileResidue::ExtractResidueDummyAtomPosition(std::istream &ss)
 {
-    string s;
+    std::string s;
     ss >> s;
     if (s == "ALL")
-        return kPositionAll;
+        return PrepFileSpace::kPositionAll;
     else
-        return kPositionBeg;
+        return PrepFileSpace::kPositionBeg;
 }
 
 /// Return a corresponding title from a stream line which may appear in each residue section
-SectionType PrepFileResidue::ExtractSectionType(string &line)
+PrepFileSpace::SectionType PrepFileResidue::ExtractSectionType(std::string &line)
 {
     if (line == "LOOP")
-        return kSectionLoop;
+        return PrepFileSpace::kSectionLoop;
     else if (line == "IMPROPER")
-        return kSectionImproper;
+        return PrepFileSpace::kSectionImproper;
     else if (line == "DONE")
-        return kSectionDone;
-    return kSectionOther;
+        return PrepFileSpace::kSectionDone;
+    return PrepFileSpace::kSectionOther;
 }
 
 /// Parse the loop section of each residue section and return a loop map
-PrepFileResidue::Loop PrepFileResidue::ExtractLoops(ifstream &in_file)
+PrepFileResidue::Loop PrepFileResidue::ExtractLoops(std::ifstream &in_file)
 {
     Loop loops;
-    string line;
+    std::string line;
     std::stringstream ss;
 
     getline(in_file, line);
-    while (!Trim(line).empty())                         /// Read file until blank line which determines the end of the section
+    while (!gmml::Trim(line).empty())                         /// Read file until blank line which determines the end of the section
     {
         ss.clear();
         ss.str(line);                                   /// Create a stream from the read line
-        string atom_names[2];
+        std::string atom_names[2];
         ss >> atom_names[0] >> atom_names[1];           /// Extract atom names from the stream
 
         int from = GetAtomIndexByName(atom_names[0]);   /// Extract index of the first atom in the loop
@@ -832,16 +830,16 @@ PrepFileResidue::Loop PrepFileResidue::ExtractLoops(ifstream &in_file)
     return loops;
 }
 
-/// Parse the improper dihedral section of each residue section and return a vector of improper dihedrals
-vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstream &in_file)
+/// Parse the improper dihedral section of each residue section and return a std::vector of improper dihedrals
+std::vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(std::ifstream &in_file)
 {
-    string line;
+    std::string line;
     std::stringstream ss;
-    vector<Dihedral> dihedrals;
+    std::vector<Dihedral> dihedrals;
     getline(in_file, line);
-    while (!Trim(line).empty())                         /// Read file until blank line which determines the end of the section
+    while (!gmml::Trim(line).empty())                         /// Read file until blank line which determines the end of the section
     {
-        string atom_names[4];
+        std::string atom_names[4];
         Dihedral dihedral;
         ss.clear();
         ss.str(line);
@@ -850,12 +848,12 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
            >> atom_names[1]
            >> atom_names[2]
            >> atom_names[3];
-        /// Push all atoms into a vector of atom types
+        /// Push all atoms into a std::vector of atom types
         for(int i = 0; i < 4; i++)
         {
             dihedral.push_back(atom_names[i]);
         }
-        dihedrals.push_back(dihedral);                  /// Create a new dihedral into the vector of dihedrals
+        dihedrals.push_back(dihedral);                  /// Create a new dihedral into the std::vector of dihedrals
         getline(in_file, line);                         /// Read the next line
     }
     return dihedrals;
@@ -870,7 +868,7 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
     double residue_charge = 0.0;
     for(PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
-        PrepFileAtom* atom = (*it);
+        PrepFileSpace::PrepFileAtom* atom = (*it);
         residue_charge += atom->GetCharge();
     }
     return residue_charge;
@@ -882,74 +880,74 @@ vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(ifstr
 void PrepFileResidue::Print(std::ostream& out)
 {
     BondedAtomIndexMap bonded_atoms_map = this->GetBondingsOfResidue();
-    out << "Title: " << title_ << endl;
-    out << setw(10) << "ResName"
-        << setw(10) << "CrdType"
-        << setw(10) << "Output"
-        << setw(10) << "GeoType"
-        << setw(15) << "DummyOmission"
-        << setw(12) << "DummyType"
-        << setw(12) << "DummyPos"
-        << setw(10) << "Charge" << endl;
-    out << setw(10) << name_;
+    out << "Title: " << title_ << std::endl;
+    out << std::setw(10) << "ResName"
+        << std::setw(10) << "CrdType"
+        << std::setw(10) << "Output"
+        << std::setw(10) << "GeoType"
+        << std::setw(15) << "DummyOmission"
+        << std::setw(12) << "DummyType"
+        << std::setw(12) << "DummyPos"
+        << std::setw(10) << "Charge" << std::endl;
+    out << std::setw(10) << name_;
 
-    if(coordinate_type_ == kINT)
-        out << setw(10) << "INT";
-    else if(coordinate_type_ == kXYZ)
-        out << setw(10) << "XYZ";
+    if(coordinate_type_ == PrepFileSpace::kINT)
+        out << std::setw(10) << "INT";
+    else if(coordinate_type_ == PrepFileSpace::kXYZ)
+        out << std::setw(10) << "XYZ";
     else
-        out << setw(10) << "--";
+        out << std::setw(10) << "--";
 
-    if(output_format_ == kBinary)
-        out << setw(10) << "Binary";
-    else if(output_format_ == kFormatted)
-        out << setw(10) << "NBinary";
+    if(output_format_ == PrepFileSpace::kBinary)
+        out << std::setw(10) << "Binary";
+    else if(output_format_ == PrepFileSpace::kFormatted)
+        out << std::setw(10) << "NBinary";
     else
-        out << setw(10) << "--";
+        out << std::setw(10) << "--";
 
-    if(geometry_type_ == kGeometryCorrect)
-        out << setw(10) << "Correct";
-    else if(geometry_type_ == kGeometryChange)
-        out << setw(10) << "Change";
+    if(geometry_type_ == PrepFileSpace::kGeometryCorrect)
+        out << std::setw(10) << "Correct";
+    else if(geometry_type_ == PrepFileSpace::kGeometryChange)
+        out << std::setw(10) << "Change";
     else
-        out << setw(10) << "--";
+        out << std::setw(10) << "--";
 
-    if(dummy_atom_omission_ == kOmit)
-        out << setw(15) << "YES";
-    else if(dummy_atom_omission_ == kNomit)
-        out << setw(15) << "NO";
+    if(dummy_atom_omission_ == PrepFileSpace::kOmit)
+        out << std::setw(15) << "YES";
+    else if(dummy_atom_omission_ == PrepFileSpace::kNomit)
+        out << std::setw(15) << "NO";
     else
-        out << setw(15) << "--";
+        out << std::setw(15) << "--";
 
-    out << setw(12) << dummy_atom_type_;
+    out << std::setw(12) << dummy_atom_type_;
 
-    if(dummy_atom_position_ == kPositionAll)
-        out << setw(12) << "ALL";
-    else if (dummy_atom_position_ == kPositionBeg)
-        out << setw(12) << "BEG";
+    if(dummy_atom_position_ == PrepFileSpace::kPositionAll)
+        out << std::setw(12) << "ALL";
+    else if (dummy_atom_position_ == PrepFileSpace::kPositionBeg)
+        out << std::setw(12) << "BEG";
     else
-        out << setw(12) << "--";
+        out << std::setw(12) << "--";
 
-    out << setw(10) << charge_ << endl << endl;
+    out << std::setw(10) << charge_ << std::endl << std::endl;
 
-    out << setw(3) << "#"
-        << setw(6) << "Name"
-        << setw(6) << "Type"
-        << setw(3) << "TT"
-        << setw(4) << "B#"
-        << setw(4) << "A#"
-        << setw(4) << "D#"
-        << setw(10) << "Bond"
-        << setw(10) << "Angle"
-        << setw(10) << "Dihedral"
-        << setw(10) << "Charge"
-        << setw(10) << "Bonded"
-        << endl;
+    out << std::setw(3) << "#"
+        << std::setw(6) << "Name"
+        << std::setw(6) << "Type"
+        << std::setw(3) << "TT"
+        << std::setw(4) << "B#"
+        << std::setw(4) << "A#"
+        << std::setw(4) << "D#"
+        << std::setw(10) << "Bond"
+        << std::setw(10) << "Angle"
+        << std::setw(10) << "Dihedral"
+        << std::setw(10) << "Charge"
+        << std::setw(10) << "Bonded"
+        << std::endl;
 
-    for(vector<PrepFileAtom*>::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for(std::vector<PrepFileSpace::PrepFileAtom*>::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         (*it)->Print(out);
-        vector<int> bonded_atoms = bonded_atoms_map[(*it)->GetIndex()];
+        std::vector<int> bonded_atoms = bonded_atoms_map[(*it)->GetIndex()];
         out << "\t";
         for(unsigned int i = 0; i < bonded_atoms.size(); i++)
         {
@@ -958,25 +956,25 @@ void PrepFileResidue::Print(std::ostream& out)
             else
                 out << this->GetAtomNameByIndex(bonded_atoms.at(i));
         }
-        out << endl;
+        out << std::endl;
 
     }
 
-    out << endl << "Improper dihedrals" << endl;
-    for(vector<Dihedral>::iterator it = improper_dihedrals_.begin(); it != improper_dihedrals_.end(); it++)
+    out << std::endl << "Improper dihedrals" << std::endl;
+    for(std::vector<Dihedral>::iterator it = improper_dihedrals_.begin(); it != improper_dihedrals_.end(); it++)
     {
         for(Dihedral::iterator it1 = it->begin(); it1 != it->end(); it1++)
         {
-            out << setw(6) << (*it1);
+            out << std::setw(6) << (*it1);
         }
-        out << endl;
+        out << std::endl;
     }
 
-    out << endl << "Loops" << endl;
+    out << std::endl << "Loops" << std::endl;
     for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
     {
-        out << setw(6) << this->GetAtomNameByIndex(it->first) << setw(6) << this->GetAtomNameByIndex(it->second) << endl;
+        out << std::setw(6) << this->GetAtomNameByIndex(it->first) << std::setw(6) << this->GetAtomNameByIndex(it->second) << std::endl;
     }
 
-    out << endl;
+    out << std::endl;
 }

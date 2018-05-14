@@ -1,7 +1,6 @@
 #include "../../../includes/GeometryTopology/InternalCoordinate/dihedral.hpp"
 
-using namespace std;
-using namespace GeometryTopology;
+using GeometryTopology::Dihedral;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -43,11 +42,7 @@ void Dihedral::SetTorsion(double torsion)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Dihedral::Print(ostream &out)
+void Dihedral::Print(std::ostream &out)
 {
+    out << "";
 }
-
-
-
-
-

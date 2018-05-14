@@ -1,67 +1,105 @@
-#include "../../../includes/InputSet/PdbFileSpace/pdbscalen.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbscalencard.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbScaleNCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbScaleNCard::PdbScaleNCard() {}
-PdbScaleNCard::PdbScaleNCard(stringstream &stream_block)
+PdbScaleNCard::PdbScaleNCard():scale_vector_() {}
+
+PdbScaleNCard::PdbScaleNCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
+    scale_vector_=GeometryTopology::Coordinate();
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
-        stringstream ss;
-        ss << line << endl;
-        PdbScaleN* scale = new PdbScaleN(ss);
-        AddScaleN(scale);
+        record_name_ = line.substr(0,5);
+        gmml::Trim(record_name_);
+        if(line.substr(5,1) == " ")
+            n_ = gmml::iNotSet;
+        else
+            n_ = gmml::ConvertString<int>(line.substr(5,1));
+        if(line.substr(10,10) == "          ")
+            scale_vector_.SetX(gmml::dNotSet);
+        else
+            scale_vector_.SetX( gmml::ConvertString<double>(line.substr(10,10)));
+        if(line.substr(20, 10) == "          ")
+            scale_vector_.SetY(gmml::dNotSet);
+        else
+            scale_vector_.SetY( gmml::ConvertString<double>(line.substr(20,10)));
+        if(line.substr(30, 10) == "          ")
+            scale_vector_.SetZ(gmml::dNotSet);
+        else
+            scale_vector_.SetZ( gmml::ConvertString<double>(line.substr(30,10)));
+        if(line.substr(45, 10) == "          ")
+            u_ = gmml::dNotSet;
+        else
+            u_ = gmml::ConvertString<double>(line.substr(45,10));
+
         getline(stream_block, line);
         temp = line;
     }
 }
-
 //////////////////////////////////////////////////////////
-//                         ACCESSOR                     //
+//                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-PdbScaleNCard::ScaleNVector PdbScaleNCard::GetScaleN(){
-    return scale_n_;
+std::string PdbScaleNCard::GetRecordName(){
+    return record_name_;
+}
+
+int PdbScaleNCard::GetN(){
+    return n_;
+}
+
+GeometryTopology::Coordinate PdbScaleNCard::GetScaleVector(){
+    return scale_vector_;
+}
+
+double PdbScaleNCard::GetU(){
+    return u_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbScaleNCard::SetScaleN(ScaleNVector scale_n){
-    scale_n_.clear();
-    for(ScaleNVector::iterator it = scale_n.begin(); it != scale_n.end(); it++)
-    {
-        scale_n_.push_back(*it);
-    }
+
+void PdbScaleNCard::SetRecordName(const std::string record_name){
+    record_name_ = record_name;
 }
 
-void PdbScaleNCard::AddScaleN(PdbScaleN *scale)
-{
-    scale_n_.push_back(scale);
+void PdbScaleNCard::SetN(int n){
+    n_ = n;
+}
+
+void PdbScaleNCard::SetScaleVector(GeometryTopology::Coordinate scale_vector){
+    scale_vector_ = scale_vector;
+}
+
+void PdbScaleNCard::SetU(double u){
+    u_ = u;
 }
 
 //////////////////////////////////////////////////////////
-//                        FUNCTIONS                     //
+//                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////
-//                      DISPLAY FUNCTION                //
-//////////////////////////////////////////////////////////
-void PdbScaleNCard::Print(ostream &out)
+void PdbScaleNCard::Print(std::ostream &out)
 {
-    for(PdbScaleNCard::ScaleNVector::iterator it = scale_n_.begin(); it != scale_n_.end(); it++)
-    {
-        (*it)->Print(out);
-    }
-    out << endl;
+    out << "Record Name: " << record_name_;
+    if(n_ != gmml::iNotSet)
+        out << n_;
+    else
+        out << " ";
+    out << ", Origin: ";
+    scale_vector_.Print(out);
+    out << ", U: ";
+    if(u_ != gmml::dNotSet)
+        out << u_;
+    else
+        out << " ";
+    out << std::endl;
 }

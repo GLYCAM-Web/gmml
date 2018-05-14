@@ -1,19 +1,19 @@
-
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 #include <iomanip>
 
-using namespace std;
-using namespace PdbPreprocessorSpace;
+using PdbPreprocessorSpace::PdbPreprocessorResidueInfo;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbPreprocessorResidueInfo::PdbPreprocessorResidueInfo() {}
 
-PdbPreprocessorResidueInfo::PdbPreprocessorResidueInfo(string residue_name, char chain_id, int sequence_number, char residue_insertion_code,
-                                                                       char residue_alternate_location, double residue_charge) :
-    residue_name_(residue_name), residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_insertion_code_(residue_insertion_code),
-    residue_alternate_location_(residue_alternate_location), residue_charge_(residue_charge) {}
+PdbPreprocessorResidueInfo::PdbPreprocessorResidueInfo(
+        std::string residue_name, char chain_id, int sequence_number,
+        char residue_insertion_code, char residue_alternate_location, double residue_charge) :
+    residue_chain_id_(chain_id), residue_sequence_number_(sequence_number), residue_name_(residue_name), 
+    residue_insertion_code_(residue_insertion_code), residue_alternate_location_(residue_alternate_location),
+    residue_charge_(residue_charge) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -26,7 +26,7 @@ int PdbPreprocessorResidueInfo::GetResidueSequenceNumber()
 {
     return residue_sequence_number_;
 }
-string PdbPreprocessorResidueInfo::GetResidueName()
+std::string PdbPreprocessorResidueInfo::GetResidueName()
 {
     return residue_name_;
 }
@@ -54,7 +54,7 @@ void PdbPreprocessorResidueInfo::SetResidueSequenceNumber(int residue_sequence_n
 {
     residue_sequence_number_ = residue_sequence_number;
 }
-void PdbPreprocessorResidueInfo::SetResidueName(const string residue_name)
+void PdbPreprocessorResidueInfo::SetResidueName(const std::string residue_name)
 {
     residue_name_ = residue_name;
 }
@@ -73,17 +73,13 @@ void PdbPreprocessorResidueInfo::SetResidueCharge(double residue_charge)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbPreprocessorResidueInfo::Print(ostream &out)
+void PdbPreprocessorResidueInfo::Print(std::ostream &out)
 {
     out << "Residue name: " << residue_name_
          << ", Chain id: " << residue_chain_id_
          << ", Sequence number: " << residue_sequence_number_
          << ", Insertion code: " << residue_insertion_code_
          << ", Alternate location: " << residue_alternate_location_
-         << ", Residue charge: " << fixed << std::setprecision(2) << residue_charge_
-         << endl;
+         << ", Residue charge: " << std::fixed << std::setprecision(2) << residue_charge_
+         << std::endl;
 }
-
-
-
-

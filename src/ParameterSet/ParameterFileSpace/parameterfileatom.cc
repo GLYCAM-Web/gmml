@@ -4,17 +4,16 @@
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace ParameterFileSpace;
-using namespace gmml;
+using ParameterFileSpace::ParameterFileAtom;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileAtom::ParameterFileAtom()
-    : type_(""), mass_(dNotSet), polarizability_(dNotSet), dscr_(""), radius_(dNotSet), well_depth_(dNotSet), mod4_dscr_("") {}
+    : type_(""), mass_(gmml::dNotSet), polarizability_(gmml::dNotSet), dscr_(""), radius_(gmml::dNotSet), well_depth_(gmml::dNotSet), mod4_dscr_("") {}
 
 ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, double polarizability, const std::string &dscr)
-    : type_(type), mass_(mass), polarizability_(polarizability),dscr_(dscr), radius_(dNotSet), well_depth_(dNotSet), is_hydrophilic_(false) {}
+    : type_(type), mass_(mass), polarizability_(polarizability),dscr_(dscr), radius_(gmml::dNotSet), well_depth_(gmml::dNotSet), is_hydrophilic_(false) {}
 
 ParameterFileAtom::ParameterFileAtom(const std::string &type, double mass, double polarizability, double radius,
                                      double well_depth, const std::string &dscr, const std::string &mod4_dscr)
@@ -134,22 +133,22 @@ void ParameterFileAtom::SetEquivalentList( std::vector<std::string> equivalent_l
 void ParameterFileAtom::Print(std::ostream& out)
 {
     out << std::setw(6) << type_;
-    if(mass_ == dNotSet)
+    if(mass_ == gmml::dNotSet)
         out << std::setw(6) << "--";
     else
         out << std::setw(6) << mass_;
 
-    if(polarizability_ == dNotSet)
+    if(polarizability_ == gmml::dNotSet)
         out << std::setw(16) << "--";
     else
         out << std::setw(16) << polarizability_;
 
-    if(radius_ == dNotSet)
+    if(radius_ == gmml::dNotSet)
         out << std::setw(8) << "--";
     else
         out << std::setw(8) << radius_;
 
-    if(well_depth_ == dNotSet)
+    if(well_depth_ == gmml::dNotSet)
         out << std::setw(12) << "--";
     else
         out << std::setw(12) << well_depth_;

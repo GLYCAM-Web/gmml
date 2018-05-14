@@ -1,18 +1,24 @@
 #include "../../includes/MolecularModeling/moleculardynamicatom.hpp"
 #include "../../includes/common.hpp"
 
-using namespace std;
-using namespace MolecularModeling;
+using MolecularModeling::MolecularDynamicAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 MolecularDynamicAtom::MolecularDynamicAtom() : atom_type_(""), charge_(gmml::dNotSet), mass_(gmml::dNotSet), radius_(gmml::dNotSet) {}
 
+MolecularDynamicAtom::MolecularDynamicAtom(MolecularDynamicAtom& moleculardynamicatom){
+    this->atom_type_=moleculardynamicatom.GetAtomType();
+    this->charge_=moleculardynamicatom.GetCharge();
+    this->mass_=moleculardynamicatom.GetMass();
+    this->radius_=moleculardynamicatom.GetRadius();
+}
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string MolecularDynamicAtom::GetAtomType()
+std::string MolecularDynamicAtom::GetAtomType()
 {
     return atom_type_;
 }
@@ -32,7 +38,7 @@ double MolecularDynamicAtom::GetRadius()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void MolecularDynamicAtom::SetAtomType(string atom_type)
+void MolecularDynamicAtom::SetAtomType(std::string atom_type)
 {
     atom_type_ = atom_type;
 }
@@ -52,10 +58,15 @@ void MolecularDynamicAtom::SetRadius(double radius)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void MolecularDynamicAtom::Print(ostream &out)
-{    
+void MolecularDynamicAtom::Print(std::ostream &out)
+{
+     out << "------------------------ Atom Type :" << atom_type_ << " --------------------------" << std::endl;
+     out << "Atom Charge :" << charge_ << std::endl;
+     out << "Atom Mass :" << mass_ << std::endl;
+     out << "Atom Radius :" << radius_ << std::endl;
 }
 
-void MolecularDynamicAtom::PrintHet(ostream &out)
+void MolecularDynamicAtom::PrintHet(std::ostream &out)
 {
+    out << "";
 }

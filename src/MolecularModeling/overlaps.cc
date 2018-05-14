@@ -1,7 +1,5 @@
 #include "../includes/MolecularModeling/overlaps.hpp"
 
-using namespace MolecularModeling;
-
 double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
 
     double distance = 0.0, totalOverlap = 0.0;
@@ -10,8 +8,8 @@ double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
     {
         for(AtomVector::iterator it2 = atomsB.begin(); it2 != atomsB.end(); ++it2)
         {
-            Atom *atomA = *it1;
-            Atom *atomB = *it2;
+            MolecularModeling::Atom *atomA = *it1;
+            MolecularModeling::Atom *atomB = *it2;
             if ( (atomA->GetCoordinates().at(0)->GetX() - atomB->GetCoordinates().at(0)->GetX()) < 1.2 ) // This is faster than calulating distance, and rules out tons of atom pairs.
             {
                 distance = atomA->GetDistanceToAtom(atomB);
@@ -25,7 +23,7 @@ double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
     return (totalOverlap / CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 
-double gmml::CalculateAtomicOverlaps(Atom *atomA, Atom *atomB, double radiusA, double radiusB)
+double gmml::CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularModeling::Atom *atomB, double radiusA, double radiusB)
 {
     double distance = atomA->GetDistanceToAtom(atomB);
     if (radiusA == -0.1) // default value is -0.1, but user can provide.

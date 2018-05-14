@@ -3,14 +3,14 @@
 
 #include "../../../includes/common.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
-using namespace gmml;
-using namespace ParameterFileSpace;
+
+using ParameterFileSpace::ParameterFileAngle;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileAngle::ParameterFileAngle()
-    : types_(), force_constant_(dNotSet), angle_(dNotSet), dscr_("") {}
+    : types_(), force_constant_(gmml::dNotSet), angle_(gmml::dNotSet), dscr_("") {}
 
 ParameterFileAngle::ParameterFileAngle(const std::vector<std::string> &types, double force_constant, double angle, const std::string &dscr)
     : types_(types), force_constant_(force_constant), angle_(angle), dscr_(dscr) {}
@@ -86,12 +86,12 @@ void ParameterFileAngle::Print(std::ostream& out)
         else
             out << std::setw(4) << (*it);
     }
-    if (force_constant_ == dNotSet)
+    if (force_constant_ == gmml::dNotSet)
         out << std::setw(15) << "--";
     else
         out << std::setw(15) << force_constant_;
 
-    if(angle_ == dNotSet)
+    if(angle_ == gmml::dNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << angle_;
@@ -99,4 +99,3 @@ void ParameterFileAngle::Print(std::ostream& out)
     out << std::setw(60) << dscr_
         << std::endl;
 }
-
