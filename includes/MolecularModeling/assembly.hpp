@@ -228,10 +228,23 @@ namespace MolecularModeling
               */
             void AddResidue(Residue* residue);
             /*! \fn
+              * A function in order to insert the residue to the current object
+              * Set the residues_ attribute of the current assembly
+              * @param residue The residue of the current object
+              */
+	    void InsertResidue(int distance, Residue *residue);
+            /*! \fn
+              * A function in order to erase a residue from the current object
+              * Set the residues_ attribute of the current assembly
+              * @param distance The distance from beginning of ResidueVector to residue to be removed.
+              */
+	    void EraseResidue(int distance);
+            /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current assembly
               * @param chemical_type The chemical_type attribute of the current object
               */
+	    
             void SetChemicalType(std::string chemical_type);
             /*! \fn
               * A mutator function in order to set the sequence number of the current object
@@ -751,13 +764,17 @@ namespace MolecularModeling
             void CreatePrunedMatchingGraph(Residue *residue, ResidueVector query_residues);
 
             /*! \fn
+            * A wrapper function for the next function. I do this to make the vector of monosaccharides external. I want to do some manipulations to them.
+            */
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
+            /*! \fn
             * A function in order to extract all the saccharide structures
             * @param amino_lib_files The list of paths to amino library files, used for identifying terminal residues
             * @param gyprobity_report A flag to prompt information for glyprobity report
             * @param populate_ontology A flag to prompt ontology population
             * @return oligosaccharides A list of extarcted oligosaccharide structures
             */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false);
             /*! \fn
              * A function in order to extract the BFMP ring conformation of a Monosaccharide object.
              * @param mono The Monosaccharide object
@@ -1300,6 +1317,38 @@ namespace MolecularModeling
               * @return orientations The list of side atoms orinetations
               */
             std::vector<std::string> GetSideGroupOrientations(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
+
+	    /*! \fn
+	      *  A function to start complete side group atoms detection from all side chains detected.
+	      * @param mono A vector of all monosaccharides detected in input file.
+	      */
+	    void InitiateDetectionOfCompleteSideGroupAtoms (std::vector<Glycan::Monosaccharide*> monos);
+	    /*! \fn
+	      * A function in order to check if plus one side atom belongs to the current monosaccharide ,called within GetSideGroupOrientations.
+	      * @param SideAtomArm,a reference to the vector element housing this side chain atoms(i.e. Monosaccharide.side_atoms_).
+	      * @param working_atom The atom whose node neighbors are currently being checked for attached anomeric carbons.
+	      */
+	    bool CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide(AtomVector& SideAtomArm, AtomVector & cycle_atoms, Atom* working_atom);
+	    /*! \fn
+	      * A function in order to obtain complete side group atoms in a monosaccharide,involving recursive calls. Called within GetSideGroupOrientations.
+	      * @param SideAtomArm, a reference to the vector element housing this side chain atoms(i.e. Monosaccharide.side_atoms_).
+	      * @param working_atom, the atom whose node neighbors are currently being checked for new side group atoms.
+	      * @param cycle_atoms, AtomVector of the ring atoms of the current monosaccharide, used to prevent recursion from proceeding towards the ring.
+	      * @param visited_atoms, AtomVector of atoms that have served as working atoms, used to prevent recursion from going backwards.
+	      */
+	    void SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_atom, AtomVector & cycle_atoms, AtomVector & visited_atoms);
+	    /*! \fn
+	      * A function to make all atoms of a monosaccharide a new residue, replacing the corresponding old one in input file. This is to solve the problem wher one residue contains more than one sugar. 
+	      * @param monos a vector of Monosaccharide*, containing all identified monosaccharides in the input files.
+	      */
+	    void UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide*>& monos);
+            /*! \fn
+              * A function in order to check if the current side chain in the previous function is a terminal side chain.
+              * @param starting_atom A pointer to the atom where recursive checking initiates.
+              * @param current_cycle_and_visited_atoms The cycle whose side chains are being extracted.Recursion shall not proceed towards it.
+              */
+            void CheckIfSideChainIsTerminal(Atom* starting_atom, AtomVector & current_cycle_and_visited_atoms, bool & is_terminal);
+
 /** \addtogroup Manipulators
                * @{
                */

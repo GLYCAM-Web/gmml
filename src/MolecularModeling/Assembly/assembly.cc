@@ -634,6 +634,16 @@ void Assembly::AddResidue(Residue *residue)
     residues_.push_back(residue);
 }
 
+void Assembly::InsertResidue(int distance, Residue *residue)
+{
+    residues_.insert(residues_.begin() + distance,residue);
+}
+
+void Assembly::EraseResidue(int distance)
+{
+    residues_.erase(residues_.begin() + distance);
+}
+
 void Assembly::SetChemicalType(string chemical_type)
 {
     chemical_type_ = chemical_type;

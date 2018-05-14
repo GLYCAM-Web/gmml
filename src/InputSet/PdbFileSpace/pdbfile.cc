@@ -4860,10 +4860,10 @@ void PdbFile::ResolveCards(std::ofstream& out_stream)
     {
         this->ResolveNumModelCard(out_stream);
     }
-    if(this->residues_sequence_ != NULL)
+    /*if(this->residues_sequence_ != NULL)
     {
         this->ResolveSequenceResidueCard(out_stream);
-    }
+    }*/
     if(this->residue_modification_ != NULL)
     {
         this->ResolveModificationResidueCard(out_stream);

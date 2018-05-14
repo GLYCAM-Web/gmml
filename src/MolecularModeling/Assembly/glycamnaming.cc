@@ -5,6 +5,10 @@
 #include <set>
 #include <queue>
 #include <stack>
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <cstdlib>
 
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/residue.hpp"
@@ -98,6 +102,7 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
         int index = 0;
         Oligosaccharide* oligo = *it;
         string oligo_name = oligo->oligosaccharide_name_;
+	cout << "oligo_name: " << oligo_name << endl;
         //In case that there is no terminal attached to the reducing end adds a temporary terminal residue to make the sequence parser able to parse the sequence
         if(oligo->terminal_.compare("") == 0)
             oligo_name = oligo_name + "1-OH";
@@ -110,8 +115,18 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
             Atom* anomeric_c = NULL;
             if(oligo->root_->cycle_atoms_.at(0) != NULL)
                 anomeric_c = oligo->root_->cycle_atoms_.at(0);
-            if(oligo->root_->side_atoms_.at(0).at(1) != NULL)
-                anomeric_o = oligo->root_->side_atoms_.at(0).at(1);
+            /*if(oligo->root_->side_atoms_.at(0).at(1) != NULL)
+                anomeric_o = oligo->root_->side_atoms_.at(0).at(1);*/
+	    //Anomeric group has now been removed from sidegroup if it shouldn't be part of oligosaccharide (e.g. NLN nitrogen). So now, find anomeric oxygen from node neighbors of anomeric carbon.
+	    AtomVector anomeric_c_neighbors = anomeric_c->GetNode()->GetNodeNeighbors();
+	    for (int i=0; i< anomeric_c_neighbors.size(); i++){
+		if (!anomeric_c_neighbors[i]-> GetIsCycle() && (anomeric_c_neighbors[i]->GetName().substr(0,1) == "O" || anomeric_c_neighbors[i]->GetName().substr(0,1) == "S" ||
+		      anomeric_c_neighbors[i]->GetName().substr(0,1) == "N") ){
+
+		    anomeric_o = anomeric_c_neighbors[i];
+		}
+	    }
+
             if(anomeric_o != NULL && anomeric_c != NULL)
             {
                 AtomVector terminal_atoms = AtomVector();
@@ -121,6 +136,7 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
                 {
                     //TODO:
                     //Add the residue mismatch into a structure for the Ontology usage
+
                     for(AtomVector::iterator it1 = terminal_atoms.begin(); it1 != terminal_atoms.end(); it1++)
                     {
                         Atom* terminal_atom = *it1;
@@ -129,14 +145,33 @@ GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(vector<Oligosacch
                         if(pdb_glycam_residue_map.find(terminal_atom_id) == pdb_glycam_residue_map.end())
                             pdb_glycam_residue_map[terminal_atom_id] == vector<string>();
                         pdb_glycam_residue_map[terminal_atom_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
+			
                         if(pdb_glycam_residue_map.find(terminal_residue_id) == pdb_glycam_residue_map.end())
                             pdb_glycam_residue_map[terminal_residue_id] = vector<string>();
                         pdb_glycam_residue_map[terminal_residue_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
+
+			if ( !(terminal_atom->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
+			{
+			    cout << "Not protein: " << terminal_atom->GetResidue()->GetName() << ": "<< terminal_atom->GetName() << endl;
+			    ResidueVector AllResiduesInAssembly = this->GetResidues();
+			    Residue* OldResidueForThisAtom = terminal_atom->GetResidue();
+			    string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
+			    Residue* new_terminal_residue = new Residue(this,new_terminal_residue_name);
+			    int DistanceFromStartOfResidueVector = std::distance( AllResiduesInAssembly.begin(), std::find(AllResiduesInAssembly.begin(),AllResiduesInAssembly.end(),
+										OldResidueForThisAtom) );
+
+                            this ->InsertResidue(DistanceFromStartOfResidueVector +1 ,new_terminal_residue);
+			    string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id.
+			    new_terminal_residue->SetId(new_terminal_residue_id);
+                            new_terminal_residue->AddAtom(terminal_atom);
+                            terminal_atom->SetResidue(new_terminal_residue);
+                            OldResidueForThisAtom->RemoveAtom(terminal_atom);
+			}
                     }
+
                 }
             }
-        }
-
+	}
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_glycam06_residue_tree, index);
     }
@@ -277,6 +312,7 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
     PrepFile* prep = new PrepFile(prep_file);
     PrepFile::ResidueMap prep_residues = prep->GetResidues();
     ResidueVector residues = this->GetResidues();
+
     ResidueVector updated_residues = ResidueVector();
     int residue_sequence_number = 0;
     ResidueVector terminal_residues = ResidueVector();
@@ -296,6 +332,7 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
             //Create a map between the current atom names and the corresponding prep atom names when the match is found
             //Add the residue mismatch into a structure for the Ontology usage
             vector<string> glycam_names = residue_glycam_map[residue_id];
+
             GlycamAtomNameMap pdb_glycam_map = GlycamAtomNameMap();
             GlycamAtomNameMap glycam_pdb_map = GlycamAtomNameMap();
             string glycam_name = *glycam_names.begin();
@@ -321,7 +358,6 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
                 //The two residues atom names are matched but the geometry needs to be checked
                 //if GeometryCheck returns true
 //            PatternMatching(residue, query_residues, pdb_glycam_map, glycam_pdb_map);
-
             AtomVector atoms = residue->GetAtoms();
             map<string, Residue*> residue_set = map<string, Residue*>();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
@@ -329,17 +365,39 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
                 Atom* atom = *it1;
                 string atom_id = atom->GetId();
                 //Terminal residue naming
-                if(residue_glycam_map.find(atom_id) != residue_glycam_map.end())
+
+                if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
                 {
                     terminal_residues.at(terminal_residues.size() - 1)->SetAssembly(this);
-                    glycam_name = *residue_glycam_map[atom_id].begin();
+		    if (residue_glycam_map[residue_id].size() == 1) //if residue_id and glycam names is one to one relationship
+		    {
+		        glycam_name = *residue_glycam_map[residue_id].begin();
+		    }
+		    else if (residue_glycam_map[residue_id].size() > 1) // if not one to one
+		    {
+			//prevent residue from being named to its attached aglycones,whose names are also in the name vector
+			std::vector<std::string> known_aglycon_names = std::vector<std::string>();
+			known_aglycon_names.push_back("ROH");
+			known_aglycon_names.push_back("OME");
+			for (std::vector<std::string>::iterator it= residue_glycam_map[residue_id].begin(); it!= residue_glycam_map[residue_id].end(); it++){
+			    string possible_glycam_name = *it;
+			    //if this name is not a known aglycone
+			    if (std::find(known_aglycon_names.begin(),known_aglycon_names.end(),possible_glycam_name) == known_aglycon_names.end()){
+		                glycam_name = possible_glycam_name ;
+
+			    }
+			}
+		    }
                     terminal_residues.at(terminal_residues.size() - 1)->SetName(glycam_name);
                     terminal_residues.at(terminal_residues.size() - 1)->AddAtom(atom);
                     vector<string> residue_id_tokens = Split(residue_id, "_");
-                    string terminal_residue_id = residue_id_tokens.at(0) + "_" + residue_id_tokens.at(1) + "_" + ConvertT<int>(residue_sequence_number) + "_"
+                    //string terminal_residue_id = residue_id_tokens.at(0) + "_" + residue_id_tokens.at(1) + "_" + ConvertT<int>(residue_sequence_number) + "_"
+                            //+ residue_id_tokens.at(3) + "_" + residue_id_tokens.at(4);
+		    string terminal_residue_id = glycam_name + "_" + residue_id_tokens.at(1) + "_" + ConvertT<int>(residue_sequence_number) + "_"
                             + residue_id_tokens.at(3) + "_" + residue_id_tokens.at(4);
                     terminal_residues.at(terminal_residues.size() - 1)->SetId(terminal_residue_id);
                     atom->SetResidue(terminal_residues.at(terminal_residues.size() - 1));
+
                     if(!terminal)
                     {
                         updated_residues.push_back(terminal_residues.at(terminal_residues.size() - 1));
@@ -392,10 +450,12 @@ void Assembly::UpdateResidueName2GlycamName(GlycamResidueNamingMap residue_glyca
             for(map<string, Residue*>::iterator it1 = residue_set.begin(); it1 != residue_set.end(); it1++)
             {
                 updated_residues.push_back((*it1).second);
+		
             }
         }
         else
             updated_residues.push_back(residue);
+
     }
     this->SetResidues(updated_residues);
 }

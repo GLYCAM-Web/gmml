@@ -285,6 +285,16 @@ void Assembly::ExtractPdbLinkCardFromAssembly(PdbLinkCard* link_card, int model_
                     {
                         if(residue->GetId().compare(neighbor_residue->GetId()) != 0)
                         {
+			    //my code
+				if (residue->GetId().empty()) {
+				}
+			    std::vector <std::string> ResidueIdSplit = Split(residue->GetId(),"_");
+			    std::vector <std::string> NeighborResidueIdSplit = Split(neighbor_residue->GetId(),"_");
+			    string ResidueNumber = ResidueIdSplit.at(2);
+			    string NeighborResidueNumber = NeighborResidueIdSplit.at(2);
+			
+			    if (ResidueNumber.compare(NeighborResidueNumber) != 0) // if this pair is not the two partial occupancies of the same residue
+			    {//my code
                             visited_links.push_back(atom->GetId());
                             visited_links.push_back(neighbor->GetId());
                             PdbLinkResidue* link_residue1 = new PdbLinkResidue();
@@ -311,6 +321,7 @@ void Assembly::ExtractPdbLinkCardFromAssembly(PdbLinkCard* link_card, int model_
                             pdb_link->SetLinkLength(distance);
 
                             link_vector.push_back(pdb_link);
+			    }//my code
                         }
                     }
                 }

@@ -95,7 +95,7 @@ namespace gmml
                                       "GLU", "GLN", "PRO", "HIS", "CYS",
                                       "VAL", "LEU", "THR", "SER", "LYS",
                                       "MET", "TYR", "TRP", "PHE", "SEC",
-                                      "ILE", "CYX", "HID", "HIE" };
+                                      "ILE", "CYX", "HID", "HIE", "NLN" };
 
     const int PROTEINSSIZE = ( sizeof( PROTEINS ) / sizeof( PROTEINS[ 0 ] ) );
 

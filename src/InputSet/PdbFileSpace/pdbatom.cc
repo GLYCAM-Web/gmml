@@ -26,6 +26,9 @@ PdbAtom::PdbAtom(string &line)
     }
 
     atom_name_ = line.substr(12, 4);
+    /*if (atom_name_.find("'")!= string::npos ){
+	atom_name_.erase(atom_name_.find("'",1));
+    }*/
     Trim(atom_name_);
 
     temp = line.substr(16,1);
