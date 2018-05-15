@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include <bitset>
+#include <algorithm>
 #include "../../common.hpp"
 
 namespace CondensedSequenceSpace
@@ -15,55 +16,63 @@ namespace CondensedSequenceSpace
     // Options for condensed sequence: rotamers and glycosidic angles
     struct RotamersAndGlycosidicAnglesInfo{
         public:
-            RotamersAndGlycosidicAnglesInfo(int linkage_index, std::vector<std::pair<std::string, std::vector<std::string> > > possible_rotamers,
-                                            std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers,
-                                            std::vector<std::pair<std::string, double> > enabled_glycosidic_angles)
+            RotamersAndGlycosidicAnglesInfo(int linkage_index,
+                                            std::vector<std::pair<std::string,
+                                            std::vector<std::string> > > possible_rotamers,
+                                            std::vector<std::pair<std::string,
+                                            std::vector<std::string> > > selected_rotamers,
+                                            std::vector<std::pair<std::string,
+                                            double> > enabled_glycosidic_angles)
             {
                 linkage_index_ = linkage_index;
                 possible_rotamers_ = possible_rotamers;
                 selected_rotamers_ = selected_rotamers;
                 enabled_glycosidic_angles_ = enabled_glycosidic_angles;
             }
-
             int GetLinkageIndex(){
                 return linkage_index_;
             }
-
             std::vector<std::pair<std::string, std::vector<std::string> > > GetPossibleRotamers(){
                 return possible_rotamers_;
             }
-
             std::vector<std::pair<std::string, std::vector<std::string> > > GetSelectedRotamers(){
                 return selected_rotamers_;
             }
-
             std::vector<std::pair<std::string, double> > GetEnabledGlycosidicAngles(){
                 return enabled_glycosidic_angles_;
             }
-
             int linkage_index_;
             std::vector<std::pair<std::string, std::vector<std::string> > > possible_rotamers_;
             std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers_;
             std::vector<std::pair<std::string, double> > enabled_glycosidic_angles_;
     };
+    struct GraphVizDotConfig {
+        public:
+            bool show_config_labels_;
+            bool show_edge_labels_;
+            bool show_position_labels_;
+            int dpi_;
+            std::string file_name_;
+            std::string svg_directory_path_;
 
+            GraphVizDotConfig()
+            {
+                this->show_edge_labels_ = false;
+                this->show_config_labels_ = true;
+                this->show_position_labels_ = true;
+                this->dpi_ = 72;
+                this->svg_directory_path_ = "/programs/gw_misc/SNFG/V1/";
+                this->file_name_ = "oligosaccharide.dot";
+            }
+    };
     class CondensedSequence
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            /*! \typedef
-              * List of condensed sequence residues
-              */
             typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueVector;
-            /*! \typedef
-              * List of condensed sequence residues
-              */
             typedef std::vector<gmml::CondensedSequenceTokenType> CondensedSequenceTokenTypeVector;
-//            typedef std::vector<std::pair<CondensedSequenceResidue*, int> > CondensedSequenceResidueTree;
-//            typedef std::vector<std::pair<CondensedSequenceGlycam06Residue*, int> > CondensedSequenceGlycam06ResidueTree;
-
             typedef std::vector<CondensedSequenceResidue*> CondensedSequenceResidueTree;
             typedef std::vector<CondensedSequenceGlycam06Residue*> CondensedSequenceGlycam06ResidueTree;
             typedef std::pair<std::string, RotamersAndGlycosidicAnglesInfo*> RotamerNameInfoPair;
@@ -71,57 +80,34 @@ namespace CondensedSequenceSpace
             typedef std::map<int, std::vector<std::vector<double> > > IndexLinkageConfigurationMap;
             typedef std::map<int, std::vector<std::vector<std::string> > > IndexConfigurationNameMap;
             typedef std::map<int, std::string> IndexNameMap;
-
+            typedef std::map<int, std::string> DerivativeMap;
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
-            /*! \fn
-              * Default constructor
-              */
             CondensedSequence();
             CondensedSequence(std::string sequence);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-/** \addtogroup Molecular_Data_Structure
-              * @{
-              */
             CondensedSequenceResidueVector GetResidues();
             CondensedSequenceTokenTypeVector GetTokens();
             CondensedSequenceResidueTree GetCondensedSequenceResidueTree();
             CondensedSequenceGlycam06ResidueTree GetCondensedSequenceGlycam06ResidueTree();
-/** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-/** \addtogroup Manipulators
-              * @{
-              */
             void SetResidues(CondensedSequenceResidueVector residues);
             void AddResidue(CondensedSequenceResidue* residue);
             void SetTokens(CondensedSequenceTokenTypeVector tokens);
             void AddToken(gmml::CondensedSequenceTokenType token);
-
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
             int InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue* condensed_residue, int parent_node_id = -1);
             int InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceGlycam06Residue* condensed_glycam06_residue, int parent_node_id = -1);
-/** @}*/
-            /** \addtogroup Input_Sequence_Parser
-              * @{
-              */
             void ParseCondensedSequence(std::string sequence);
-/** @}*/
-            /** \addtogroup Manipulators
-               * @{
-               */
             void BuildArrayTreeOfCondensedSequenceResidue();
             void BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
-/** @}*/
-            /** \addtogroup Molecular_Data_Structure
-               * @{
-               */
             std::string GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
             std::string GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences);
             std::string GetFirstLetterOfGlycam06ResidueCode(std::bitset<10> open_valences_check);
@@ -134,18 +120,11 @@ namespace CondensedSequenceSpace
             std::vector<std::vector<int> > CreateBaseMapAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
             IndexLinkageConfigurationMap CreateIndexLinkageConfigurationMap(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
                                                                             IndexNameMap& names);
-/** @}*/
-
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
-            /*! \fn
-              * A function to print out the condensed sequence contents in a structural format
-              * Print out the information in a defined structure
-              * @param out An output stream, the print result will be written in the given output stream
-              */
             void Print(std::ostream& out = std::cout);
-
+            void WriteGraphVizDotFile(GraphVizDotConfig& configs);
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
@@ -154,7 +133,6 @@ namespace CondensedSequenceSpace
             CondensedSequenceTokenTypeVector tokens_;
             CondensedSequenceResidueTree condensed_sequence_residue_tree_;
             CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree_;
-
     };
 }
 
