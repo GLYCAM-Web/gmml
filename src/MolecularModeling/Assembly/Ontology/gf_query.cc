@@ -1,44 +1,56 @@
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 
-void MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, std::string output_file_type)
+std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, std::string url, std::string output_file_type)
 {
     std::stringstream query;
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
     query << "?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title"
-             "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI"; 
+             "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI \n"; 
     query << Ontology::WHERE_CLAUSE;
     query << "?oligo        :oligoName              ?oligo_sequence.\n";
     query << "?pdb_file     :identifier             ?pdb.\n";
-    query << "OPTIONAL {";
     query << "?pdb_file     :hasTitle               ?title.\n";
-    query << "?pdb_file     :hasResolution          ?resolution.\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasResolution          ?resolution.}\n";
     query << "?pdb_file     :hasAuthors             ?authors.\n";
-    query << "?pdb_file     :hasJournal             ?journal.\n";
-    query << "?pdb_file     :hasDOI                 ?DOI.\n";
-    query << "?pdb_file     :hasPMID                ?PMID.\n";
-    query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.\n";
-    query << "?oligo        :oligoName              ?oligo_sequence.\n";
-    query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.\n";
-    query << "?pdb_file     :hasOligo	              ?oligo.\n";
-    query << "?oligo        :oligoResidueLinks      ?residue_links.\n";
-    query << "?linkage      :hasParent 	            ?oligo.\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasJournal             ?journal.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasDOI                 ?DOI.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasPMID                ?PMID.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.}\n";
+    query << "OPTIONAL {";
+    query << "?oligo        :oligoName              ?oligo_sequence.}\n";
+    query << "OPTIONAL {";
+    query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasOligo	              ?oligo.}\n";
+    query << "OPTIONAL {";
+    query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
+    query << "OPTIONAL {";
+    query << "?linkage      :hasParent 	            ?oligo.}\n";
+    query << "OPTIONAL {";
     query << "?linkage      :glycosidicLinkage      ?glycosidic_linkage.}\n";
     query << Ontology::END_WHERE_CLAUSE;
-    if(searchType=="PDB")
+    std::stringstream search;
+    search << searchType;
+    if(search.str()=="PDB")
     {
       query<<"VALUES ?pdb { \"" << searchTerm << "\" }\n";
     }
-    else if(searchType=="Condensed_Sequence")
+    else if(search.str()=="Condensed_Sequence")
     {
       query<<"VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
     }
-    else if(searchType=="Oligo_Library")
+    else if(search.str()=="Oligo_Library")
     {
       // query<<"VALUES ?pdb { \"" << searchTerm << "\" }\n";
     }
     
 
-    FormulateCURL(output_file_type, query.str());
+    return FormulateCURLGF(output_file_type, query.str(), url);
 }
 // 
 // PREFIX : <http://gmmo.uga.edu/#>
