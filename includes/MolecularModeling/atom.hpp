@@ -117,6 +117,11 @@ namespace MolecularModeling
             * @return atom_type_ attribute of the current object of this class
             */
             std::string GetAtomType() const;
+            /*! \fn                                     //Added by Dave on 03/23/18 for adding B-Factor into ontology
+            * An accessor function in order to access to the atom b factor
+            * @return b_factor_ attribute of the current object of this class
+            */
+            float GetBFactor() const;
             /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -195,6 +200,13 @@ namespace MolecularModeling
             * A function to generate the index for an Atom.
             */
             unsigned long long generateAtomIndex();
+            //Added by Dave on 03/23/18 for adding B Factor to ontology
+            /*! \fn
+            * A mutator function in order to set the b factor of the current object
+            * Set the b_factor_ attribute of the current atom
+            * @param b_factor The b factor attribute of the current object
+            */
+            void SetBFactor(float b_factor);
             /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -250,6 +262,7 @@ namespace MolecularModeling
             bool is_ring_;                     /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/
             unsigned long long index_;         /*!< A unqiue index for each atom in an assembly >*/
             std::string atom_type_;                /*!< List the atom type in an assembly >*/      //Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
+            float b_factor_;                  /*!< Gives the B Factor for the atom >*/            //Added by Dave on 03/23/18 for adding B Factor to ontology
 
             //////////////////////////////////////////////////////////
             //                   HELPER FUNCTIONS                   //

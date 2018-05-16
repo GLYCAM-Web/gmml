@@ -4,6 +4,7 @@
 #ifndef PDBFILE_HPP
 #define PDBFILE_HPP
 
+#include "inputfile.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -55,6 +56,7 @@ namespace PdbFileSpace
     class PdbLinkCard;
     class PdbLinkSection;
     class PdbCISPeptideSection;
+    
     class PdbCISPeptideCard;
 
     //Miscellaneous Features Section
@@ -80,9 +82,10 @@ namespace PdbFileSpace
     //Bookkeeping Section
     class PdbMasterCard;
     // class PdbEndCard;
+    
 
 
-    class PdbFile
+    class PdbFile: public InputFile
     {
         public:
             //////////////////////////////////////////////////////////
@@ -1291,6 +1294,11 @@ namespace PdbFileSpace
               * @param stream Intermediate output stream in order to write end card
               */
             void ResolveEndCard(std::ofstream& stream);
+            /*! \fn
+              * A function to write relevant bits of pdb file into an output stream formatted for the ontology
+              * @param stream output stream in order to write ontology
+              */
+            void PrintOntology(std::stringstream& ont_stream);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                      DISPLAY FUNCTION                //
