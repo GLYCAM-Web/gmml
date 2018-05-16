@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm> // added for std::erase remove
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "../GeometryTopology/plane.hpp"
@@ -231,6 +232,12 @@ namespace MolecularModeling
               * @param assembly The assembly of the current object
               */
             void AddAssembly(Assembly* assembly);
+            /*! \fn
+              * A function in order to remove the assembly from the current object
+              * Deletes from the assemblies_ attribute of this assembly
+              * @param assembly The assembly of the current object
+              */
+            void RemoveAssembly(Assembly *assembly);
             void UpdateIds(std::string new_id);
             /*! \fn
               * A mutator function in order to set the residues of the current object
@@ -249,7 +256,7 @@ namespace MolecularModeling
               * Set the residues_ attribute of the current assembly
               * @param residue The residue of the current object
               */
-            void RemoveResidue(Residue *residue);
+            void RemoveResidue(Residue *residue_to_be_removed);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current assembly
@@ -1030,7 +1037,7 @@ namespace MolecularModeling
             * @param condensed_name The condensed version of the complete name of the sugar e.g. DManp[2s]b
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string FormulateCURLGF(std::string output_file_type, std::string query);
+            std::string FormulateCURLGF(std::string output_file_type, std::string query, std::string url);
             /*! \fn
             * A function used in GlyFinder project in order to extract information from ontology based on the name of the sugar
             * @param stereo_name The stereochemistry name of the sugar e.g. b-D-mannopyranose
@@ -1061,7 +1068,7 @@ namespace MolecularModeling
             * @param chemical_code The chemical code structure of the sugar e.g. _2^3^4P_a^+1
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string output_file_type = "csv");
+            std::string ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::string url, std::string output_file_type = "csv");
             /*! \fn
             * A function used in GlyFinder project in order to extract information from ontology based on a specific chemical code
             * inspired http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation
@@ -1100,7 +1107,7 @@ namespace MolecularModeling
             * e.g. DGlcpNAcb1-4DGlc*, *b1-4L*, *GlcpNAcb1-4DGlcpNAcb, DGlcpNAcb*4DGlcpNAca, *DGlcpNAcb1-4DGlc*, DGlcpNAcb*DGlc*, *DManpa1-6[DManpa1-2DManpa1-3]D*
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string output_file_type = "csv");
+            std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string url, std::string output_file_type = "csv");
             /*! \fn
             * A function used in GlyFinder project in order to extract information from ontology based on the orientations of the side atoms of a monosaccharide structure
             * @param ring_type The ring type(p/f) part of the monosacchride name

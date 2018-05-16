@@ -586,6 +586,11 @@ void Assembly::AddAssembly(Assembly *assembly)
     this->assemblies_.push_back(assembly);
 }
 
+void Assembly::RemoveAssembly(Assembly *assembly)
+{
+    assemblies_.erase(std::remove(assemblies_.begin(), assemblies_.end(), assembly), assemblies_.end());
+}
+
 void Assembly::UpdateIds(std::string new_id)
 {
     for(AssemblyVector::iterator  it = assemblies_.begin(); it != assemblies_.end(); it++)
@@ -636,26 +641,22 @@ void Assembly::AddResidue(Residue *residue)
     residues_.push_back(residue);
 }
 
-void Assembly::RemoveResidue(Residue *residue)
+void Assembly::RemoveResidue(Residue *residue_to_be_removed)
 {
-    ResidueVector newResidues = ResidueVector();
-    newResidues.resize(residues_.size() - 1); // Resizing each push_back is inefficient, set size to be current - 1.
-    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); ++it)
-    {
-        Residue* r = *it;
-        if(r->GetId().compare(residue->GetId()) != 0)
-        {
-            //if(r->GetNode() != NULL)
-            //{
-            //    r->GetNode()->RemoveNodeNeighbor(residue); // OG to Ayush: make it so.
-            //}
-            newResidues.push_back(r);
-        }
-    }
-    this->SetResidues(newResidues);
-
-    // Next part is cleaner way to do it, but when removing residue node too you'd have to iterate anyway
-    //residues_.erase(std::remove(residues_.begin(), residues_.end(), residue), residues_.end()); // Note need #include <algorithm>
+    // Once ResidueNode is in place, this needs to be uncommented:
+//    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); ++it)
+//    {
+//        Residue* residue = *it;
+//        if(residue->GetId().compare(residue_to_be_removed->GetId()) != 0)
+//        {
+//            //if(residue->GetNode() != NULL)
+//            //{
+//            //    residue->GetNode()->RemoveNodeNeighbor(residue_to_be_removed);
+//            //}
+//
+//        }
+//    }
+    residues_.erase(std::remove(residues_.begin(), residues_.end(), residue_to_be_removed), residues_.end()); // Note need #include <algorithm>
 }
 
 void Assembly::SetChemicalType(std::string chemical_type)
@@ -728,7 +729,7 @@ void Assembly::SetMolecules(MoleculeVector molecules)
         molecules_.push_back(*it);
 	}
 }
-void Assembly::MergeAssembly(Assembly *other) // Added by Oliver. He is unsure and this may well cause problems.
+void Assembly::MergeAssembly(Assembly *other) // Added by Oliver. He is unsure and this may well cause problems. Edit: it did.
 {
     ResidueVector residues = other->GetResidues();
     for (ResidueVector::iterator it = residues.begin(); it != residues.end(); ++it)

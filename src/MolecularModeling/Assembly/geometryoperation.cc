@@ -1065,9 +1065,10 @@ void Assembly::SetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::At
     AtomVector atomsToRotate = AtomVector();
     atomsToRotate.push_back(atom2);
     atom3->FindConnectedAtoms(atomsToRotate);
-
+   // std::cout << "Moving ";
     for(AtomVector::iterator it = atomsToRotate.begin(); it != atomsToRotate.end(); it++)
     {
+   //     std::cout << (*it)->GetName() << ", ";
         GeometryTopology::Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
         GeometryTopology::Coordinate* result = new GeometryTopology::Coordinate();
         result->SetX(torsion_matrix[0][0] * atom_coordinate->GetX() + torsion_matrix[0][1] * atom_coordinate->GetY() +
@@ -1081,6 +1082,7 @@ void Assembly::SetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::At
         (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
         (*it)->GetCoordinates().at(model_index_)->SetZ(result->GetZ());
     }
+ //   std::cout << "\n";
 }
 
 void Assembly::SetAngle(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2, MolecularModeling::Atom* atom3, double angle)
