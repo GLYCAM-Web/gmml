@@ -57,29 +57,29 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
     // in residue GlcNAc. To combat this, the searching will look for GlcNAc first
     // and if it isn't found, it will then look for GlcN.
     std::vector<std::string> svg_residue_names = {
-      "GlcNAc", "GlcA", "GlcN"/* Has some extra code to add. */, "Glc",
-    	"GalA", "GalNAc", "GalN", "Gal",
-    	"ManNAc", "ManA", "ManN", "Man",
-    	"Neu5Ac", "NeuNAc",
-    	"Neu5Gc", "NeuNGc",
-    	"Fuc",
-    	"IdoA",
-    	"KDN",
-    	"Xyl",
-    };
+		"GlcNAc", "GlcA", "GlcN"/* Has some extra code to add. */, "Glc",
+		"GalA", "GalNAc", "GalN", "Gal",
+		"ManNAc", "ManA", "ManN", "Man",
+		"Neu5Ac", "NeuNAc",
+		"Neu5Gc", "NeuNGc",
+		"Fuc",
+		"IdoA",
+		"KDN",
+		"Xyl",
+	};
 
 		// Declare the BOX shape vector.
     std::vector<std::string> box_shape_residue_names = {
-      "OH", "OME", "OtBu",
-      "R", "Fak"
+		"OH", "OME", "OtBu",
+		"R", "Fak"
     };
 
 		// Declare the OTHER shape vector.
     std::vector<std::string> other_shape_residue_names = {
-      "Fru",
-      "Tag",
-      "Psi",
-      "Sor"
+		"Fru",
+		"Tag",
+		"Psi",
+		"Sor"
     };
 
     // Declare an empty std::stringstream, which is used to generate what will go into
@@ -96,125 +96,125 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
 
     // Iterate through the Residues to add their information to the dot file.
     for( unsigned int i = 0; i < this->condensed_sequence_residue_tree_.size(); i++) {
-			CondensedSequenceSpace::CondensedSequenceResidue* residue = this->condensed_sequence_residue_tree_[i];
-			// Need to first get some variables from the current residue.
-			// This could probably be split up into the specific section in the loop,
-			//  but this was easier to track for writing this function.
-      std::string residue_name = residue->GetName();
-    	std::string residue_isomer = residue->GetIsomer();
-      std::string residue_ring_type = "";
-      std::string residue_file_name = residue_name;
-      if(residue_name.length() > 3) {
-        residue_ring_type = residue_name.substr(3, 1);
-        residue_name = residue_name.erase(3, 1);
-      }
-      DerivativeMap derivatives = residue->GetDerivatives();
+		CondensedSequenceSpace::CondensedSequenceResidue* residue = this->condensed_sequence_residue_tree_[i];
+		// Need to first get some variables from the current residue.
+		// This could probably be split up into the specific section in the loop,
+		//  but this was easier to track for writing this function.
+		std::string residue_name = residue->GetName();
+		std::string residue_isomer = residue->GetIsomer();
+		std::string residue_ring_type = "";
+		std::string residue_file_name = residue_name;
+		if(residue_name.length() > 3) {
+			residue_ring_type = residue_name.substr(3, 1);
+			residue_name = residue_name.erase(3, 1);
+		}
+		DerivativeMap derivatives = residue->GetDerivatives();
 
-			// Start to construct the information for the residue.
-			ss << "\t" << i << " ";
+		// Start to construct the information for the residue.
+		ss << "\t" << i << " ";
 
-			// If the residue is in the LABELS vector then we have an svg image for it.
-      if( std::find( svg_residue_names.begin(), svg_residue_names.end(), residue_name ) != svg_residue_names.end() ) {
-				ss << "[label=\"\" image=\"" << configs.svg_directory_path_ << residue_isomer << residue_file_name << ".svg\" height=\"0.7\"]";
-      }
-			// If the residue is not in the LABELS vector, but is in the BOX shape vector.
-			else if( std::find( box_shape_residue_names.begin(), box_shape_residue_names.end(), residue_name ) != box_shape_residue_names.end() ) {
-				// Start to construct the shape information.
-				ss << "[shape=box ";
-        if( residue_name == "R" ) {
-          ss << "fontsize=20 label=\"" << "R";
-        } else if( residue_name == "Fak" ) {
-          ss << "fontsize=22 label=\"" << "R2";
-        } else {
-          ss << "label=\"" << residue_name;
-        }
-				// Close the angle brackets.
-				ss << "\"]";
-      }
-			// If the residue is not in the LABELS or BOX vector, but is in the OTHER shape vector.
-			else if(  std::find( other_shape_residue_names.begin(), other_shape_residue_names.end(), residue_name ) != other_shape_residue_names.end() ||
+		// If the residue is in the LABELS vector then we have an svg image for it.
+      	if( std::find( svg_residue_names.begin(), svg_residue_names.end(), residue_name ) != svg_residue_names.end() ) {
+			ss << "[label=\"\" image=\"" << configs.svg_directory_path_ << residue_isomer << residue_file_name << ".svg\" height=\"0.7\"]";
+      	}
+		// If the residue is not in the LABELS vector, but is in the BOX shape vector.
+		else if( std::find( box_shape_residue_names.begin(), box_shape_residue_names.end(), residue_name ) != box_shape_residue_names.end() ) {
+			// Start to construct the shape information.
+			ss << "[shape=box ";
+		    if( residue_name == "R" ) {
+				ss << "fontsize=20 label=\"" << "R";
+		    } else if( residue_name == "Fak" ) {
+				ss << "fontsize=22 label=\"" << "R2";
+		    } else {
+				ss << "label=\"" << residue_name;
+		    }
+			// Close the angle brackets.
+			ss << "\"]";
+		}
+		// If the residue is not in the LABELS or BOX vector, but is in the OTHER shape vector.
+		else if(  std::find( other_shape_residue_names.begin(), other_shape_residue_names.end(), residue_name ) != other_shape_residue_names.end() ||
                   residue_ring_type == "p" ||
                   residue_ring_type == "f" ) {
 				// If this is a pyranose then the shape is a hexagon.
-        if( residue_ring_type == "p" ) {
-					ss << "[shape=hexagon ";
-          if( residue_isomer == "D" ) {
-            ss << "label=\"";
-          } else if( residue_isomer == "L" ) {
-            ss << "style=dashed label=\"";
-          }
-        }
-				// If this is a furanose then the shape is a pentagon.
-				else if( residue_ring_type == "f" ) {
-					ss << "[shape=pentagon ";
-          if( residue_isomer == "D" ) {
-            ss << "label=\"";
-          } else if( residue_isomer == "L" ) {
-            ss << "style=dashed label=\"";
-          }
-        }
-				// Close the angle brackets.
-				ss << residue_name << "\"]";
-      }
-      ss << std::endl;
-
-			// Need to gather some information if there are derivatives for this residue.
-			if( !derivatives.empty() ) {
-	      std::stringstream derivatives_stream;
-				// Iterate through the derivatives to construct the derivatives label.
-	      for( DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++ ) {
-	        int position = (*it).first;
-	        std::string derivative = (*it).second;
-	        derivatives_stream << position << derivative << " ";
-	      }
-
-				// Turn the stream into a string.
-				std::string derivatives_label = derivatives_stream.str();
-
-				// Start to construct the information to be printed.
-				ss << "\tb" << i << " [shape=\"plaintext\",";
-
-				// If the derivatives label is too long then split it up into two lines.
-				if( derivatives_label.length() > 10 ) {
-					ss << "fontsize=\"9\",forcelabels=\"true\"; height=\"0.3\"; labelloc=b; label=\"" << derivatives_label.substr(0,8) << "\n" << derivatives_label.substr(9) << "\"]" << std::endl;
-				} else {
-					ss << "fontsize=\"12\",forcelabels=\"true\"; height=\"0.3\"; labelloc=b;  label=\"" << derivatives_label << "\"]" << std::endl;
+			if( residue_ring_type == "p" ) {
+				ss << "[shape=hexagon ";
+				if( residue_isomer == "D" ) {
+					ss << "label=\"";
+				} else if( residue_isomer == "L" ) {
+					ss << "style=dashed label=\"";
 				}
-
-				// More derivative information.
-				ss << "\t{rank=\"same\"; b" << i << " " << i << "}" << std::endl;
-				ss << "\t{nodesep=\"0.02\"; b" << i << ";" << i << "}" << std::endl;
-  	    ss << "\tb" << i << "--" << i << " [style=invis];" << std::endl;
 			}
+			// If this is a furanose then the shape is a pentagon.
+			else if( residue_ring_type == "f" ) {
+				ss << "[shape=pentagon ";
+				if( residue_isomer == "D" ) {
+					ss << "label=\"";
+				} else if( residue_isomer == "L" ) {
+					ss << "style=dashed label=\"";
+				}
+			}
+			// Close the angle brackets.
+			ss << residue_name << "\"]";
+		}
+		ss << std::endl;
+
+		// Need to gather some information if there are derivatives for this residue.
+		if( !derivatives.empty() ) {
+			std::stringstream derivatives_stream;
+			// Iterate through the derivatives to construct the derivatives label.
+	      	for( DerivativeMap::iterator it = derivatives.begin(); it != derivatives.end(); it++ ) {
+		        int position = (*it).first;
+		        std::string derivative = (*it).second;
+		        derivatives_stream << position << derivative << " ";
+	      	}
+
+			// Turn the stream into a string.
+			std::string derivatives_label = derivatives_stream.str();
+
+			// Start to construct the information to be printed.
+			ss << "\tb" << i << " [shape=\"plaintext\",";
+
+			// If the derivatives label is too long then split it up into two lines.
+			if( derivatives_label.length() > 10 ) {
+				ss << "fontsize=\"9\",forcelabels=\"true\"; height=\"0.3\"; labelloc=b; label=\"" << derivatives_label.substr(0,8) << "\n" << derivatives_label.substr(9) << "\"]" << std::endl;
+			} else {
+				ss << "fontsize=\"12\",forcelabels=\"true\"; height=\"0.3\"; labelloc=b;  label=\"" << derivatives_label << "\"]" << std::endl;
+			}
+
+			// More derivative information.
+			ss << "\t{rank=\"same\"; b" << i << " " << i << "}" << std::endl;
+			ss << "\t{nodesep=\"0.02\"; b" << i << ";" << i << "}" << std::endl;
+			ss << "\tb" << i << "--" << i << " [style=invis];" << std::endl;
+		}
     }
 
-		for( unsigned int i = 1; i < this->condensed_sequence_residue_tree_.size(); i++ ) {
-			// Get the residue at the index.
-			CondensedSequenceSpace::CondensedSequenceResidue* residue = this->condensed_sequence_residue_tree_[i];
-			// Pull some variables from the residue.
-			int residue_parent_id = residue->GetParentId();
-			std::string residue_configuration = residue->GetConfiguration();
-			int residue_oxygen_position = residue->GetOxygenPosition();
+	for( unsigned int i = 1; i < this->condensed_sequence_residue_tree_.size(); i++ ) {
+		// Get the residue at the index.
+		CondensedSequenceSpace::CondensedSequenceResidue* residue = this->condensed_sequence_residue_tree_[i];
+		// Pull some variables from the residue.
+		int residue_parent_id = residue->GetParentId();
+		std::string residue_configuration = residue->GetConfiguration();
+		int residue_oxygen_position = residue->GetOxygenPosition();
 
-			// Start constructing the infromation to be printed.
-			ss << "\t" << residue_parent_id << "--" << i << " [";
-			if( configs.show_config_labels_ ) {
-				ss << "headlabel=\"" << residue_configuration << "\"";
-			}
-			// Don't need to print taillabel or edge label for first Residue.
-			// TODO This may need to change if the terminal residue is a sugar.
-			if( i > 1 ) {
-				if( configs.show_position_labels_ ) {
-					ss << " taillabel=\"" << residue_oxygen_position  << "\"";
-				}
-				if( configs.show_edge_labels_ ) {
-					ss << " label=<<B>" << (i - 1) << "</B>>";
-				}
-			}
-			// Close the angle brackets
-			ss << "]" << std::endl;
+		// Start constructing the infromation to be printed.
+		ss << "\t" << residue_parent_id << "--" << i << " [";
+		if( configs.show_config_labels_ ) {
+			ss << "headlabel=\"" << residue_configuration << "\"";
 		}
-		// Close the curly brace.
+		// Don't need to print taillabel or edge label for first Residue.
+		// TODO This may need to change if the terminal residue is a sugar.
+		if( i > 1 ) {
+			if( configs.show_position_labels_ ) {
+				ss << " taillabel=\"" << residue_oxygen_position  << "\"";
+			}
+			if( configs.show_edge_labels_ ) {
+				ss << " label=<<B>" << (i - 1) << "</B>>";
+			}
+		}
+		// Close the angle brackets
+		ss << "]" << std::endl;
+	}
+	// Close the curly brace.
     ss << "}" << std::endl;
 
     // Declare std::ofstream Object, which opens file. This will override
@@ -224,7 +224,6 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
     out_file << ss.str();
     // Make sure to close the file when finished.
     out_file.close();
-
 }
 
 //////////////////////////////////////////////////////////
