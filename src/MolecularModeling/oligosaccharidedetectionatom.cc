@@ -5,20 +5,20 @@ using MolecularModeling::OligoSaccharideDetectionAtom;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-OligoSaccharideDetectionAtom::OligoSaccharideDetectionAtom() : IsCycle_(false), IsSideChain_(false), IsAnomericCarbon_(false) {}
+MolecularModeling::OligoSaccharideDetectionAtom::OligoSaccharideDetectionAtom() : IsCycle_(false), IsSideChain_(false), IsAnomericCarbon_(false) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-bool OligoSaccharideDetectionAtom::GetIsCycle()
+bool MolecularModeling::OligoSaccharideDetectionAtom::GetIsCycle()
 {
     return IsCycle_;
 }
-bool OligoSaccharideDetectionAtom::GetIsSideChain()
+bool MolecularModeling::OligoSaccharideDetectionAtom::GetIsSideChain()
 {
     return IsSideChain_;
 }
-bool OligoSaccharideDetectionAtom::GetIsAnomericCarbon()
+bool MolecularModeling::OligoSaccharideDetectionAtom::GetIsAnomericCarbon()
 {
     return IsAnomericCarbon_;
 }
@@ -26,15 +26,15 @@ bool OligoSaccharideDetectionAtom::GetIsAnomericCarbon()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void OligoSaccharideDetectionAtom::SetIsCycle(bool is_cycle)
+void MolecularModeling::OligoSaccharideDetectionAtom::SetIsCycle(bool is_cycle)
 {
     IsCycle_ = is_cycle;
 }
-void OligoSaccharideDetectionAtom::SetIsSideChain(bool is_side_chain)
+void MolecularModeling::OligoSaccharideDetectionAtom::SetIsSideChain(bool is_side_chain)
 {
     IsSideChain_ = is_side_chain;
 }
-void OligoSaccharideDetectionAtom::SetIsAnomericCarbon(bool is_anomeric_carbon)
+void MolecularModeling::OligoSaccharideDetectionAtom::SetIsAnomericCarbon(bool is_anomeric_carbon)
 {
     IsAnomericCarbon_ = is_anomeric_carbon;
 }
@@ -42,7 +42,7 @@ void OligoSaccharideDetectionAtom::SetIsAnomericCarbon(bool is_anomeric_carbon)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void OligoSaccharideDetectionAtom::Print(std::ostream &out)
+void MolecularModeling::OligoSaccharideDetectionAtom::Print(std::ostream &out)
 {
 	out << "";
 }

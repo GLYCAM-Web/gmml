@@ -203,7 +203,7 @@ void Assembly::DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono)
 
 //This is a wrapper of the original ExtractSugars function. I want to make the vector of monosaccharides external, so I can do some manipulations on them.
 //Other users call this wrapper.
-vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_files, bool glyprobity_report, bool populate_ontology ) {
+std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, bool glyprobity_report, bool populate_ontology ) {
  
     std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
 
@@ -211,7 +211,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
 
 }
 
-vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_files, vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology) {
+std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology) {
 
 
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
@@ -239,7 +239,6 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   CycleMap sorted_cycles = CycleMap();
   AtomVector AllAnomericCarbons = AtomVector();
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
-    string cycle_atoms_str = ( *it ).first;
     std::string cycle_atoms_str = ( *it ).first;
     AtomVector cycle_atoms = ( *it ).second;
     for (AtomVector::iterator it2 = cycle_atoms.begin(); it2 != cycle_atoms.end(); it2++ ){
@@ -263,7 +262,7 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   cycles = sorted_cycles;
   //Reorder the cycles to match the order they appear in input pdb file.
   //A map of the index of the first cycle atom, and the AtomVector cycle.
-  map <unsigned long long, std::pair<std::string, AtomVector> > ordered_cycles_map =  map <unsigned long long,std::pair <std::string, AtomVector> >();
+  std::map <unsigned long long, std::pair<std::string, AtomVector> > ordered_cycles_map =  std::map <unsigned long long,std::pair <std::string, AtomVector> >();
 
   for (CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++){
       ordered_cycles_map[it->second.at(0)->GetIndex()].first = it->first;
@@ -271,15 +270,15 @@ vector< Oligosaccharide* > Assembly::ExtractSugars( vector< string > amino_lib_f
   }
 
   ///CREATING MONOSACCHARIDE STRUCTURE. Ring atoms, side atoms, chemical code (Glycode), modifications/derivatives, names
-  cout << endl << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << endl;
+  std::cout << std::endl << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << std::endl;
   //vector< Monosaccharide* > monos = vector< Monosaccharide* >(); //vector of monosaccharide has been made external
   int mono_id = 0;
   //for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
-    //string cycle_atoms_str = ( *it ).first;   
+    //std::string cycle_atoms_str = ( *it ).first;   
   for (std::map <unsigned long long, std::pair<std::string, AtomVector> >::iterator it = ordered_cycles_map.begin(); it != ordered_cycles_map.end(); it++){
-    string cycle_atoms_str = it->second.first;
+    std::string cycle_atoms_str = it->second.first;
     AtomVector cycle = it->second.second;
-    Monosaccharide* mono = new Monosaccharide(); 
+    Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(); 
     //int status_index = distance( cycles.begin(), it );
     int status_index = distance( ordered_cycles_map.begin(), it );
     mono->anomeric_status_ = anomeric_carbons_status.at( status_index );
@@ -1163,15 +1162,6 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
         ///Calculating the orientation of the side atoms
         MolecularModeling::AtomNode* node = current_atom->GetNode();
         AtomVector neighbors = node->GetNodeNeighbors();
-	//Testing
-	    if (current_atom->GetResidue()->GetName() == "SIA"){
-		for (int i=0; i< neighbors.size(); i++){
-			cout << "sia neighbor: "<< neighbors[i]->GetName()<< "," << endl;
-		}
-		cout << endl << endl;
-	    }
-	
-	//end testing
         int not_h_neighbors = 0;
         for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
         {
@@ -1354,7 +1344,7 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
     return orientations;
 }
 
-void Assembly::InitiateDetectionOfCompleteSideGroupAtoms (std::vector<Monosaccharide*> monos)
+void Assembly::InitiateDetectionOfCompleteSideGroupAtoms (std::vector<Glycan::Monosaccharide*> monos)
 {
     for (std::vector<Glycan::Monosaccharide*>::iterator it1= monos.begin(); it1 != monos.end(); it1++){
         Glycan::Monosaccharide* mono = *it1;
@@ -1366,12 +1356,10 @@ void Assembly::InitiateDetectionOfCompleteSideGroupAtoms (std::vector<Monosaccha
             for (AtomVector::iterator it3 = SideAtomArm.begin(); it3 != SideAtomArm.end(); it3++){
                 if ((*it3) != NULL){
                     all_plus_one_side_atoms.push_back(*it3);
-                    //if ((*it3)->GetResidue()->GetName() == "SIA")cout << "Inarm: " << (*it3)->GetName() << endl;
                 }
             }
 
             for (AtomVector::iterator it4= all_plus_one_side_atoms.begin(); it4 != all_plus_one_side_atoms.end(); it4++ ){
-                //if ( (*it4)->GetResidue()->GetName() == "SIA") cout << "Plus one side atom for" << (*it4)->GetResidue()->GetId() << " is: " << (*it4)->GetName() << endl;
                 Atom* plus_one_side_atom = *it4;
                 AtomVector visited_atoms = AtomVector();
                 if ( this->CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide(SideAtomArm, cycle_atoms, plus_one_side_atom) ){
@@ -1403,16 +1391,12 @@ bool Assembly::CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide (AtomVector&
 	
         if (attached_anomeric_carbons.size() == 1){
             if (std::find(cycle_atoms.begin(),cycle_atoms.end(),attached_anomeric_carbons.at(0)) != cycle_atoms.end()){ //if the anomeric carbon is from the current monosaccharide 
-                cout << "check if " << working_atom->GetName() << " is terminal." << endl;
-	        cout << "checking for residue: " << attached_anomeric_carbons.at(0)->GetResidue()->GetId() << endl;
 	        bool sidechain_is_terminal = true;
 	        AtomVector cycle_and_visisted_atoms = cycle_atoms;
 	        CheckIfSideChainIsTerminal(working_atom,cycle_and_visisted_atoms,sidechain_is_terminal);
 
 	        if (!sidechain_is_terminal ){   
 	            SideAtomArm.erase(std::find(SideAtomArm.begin(), SideAtomArm.end(), working_atom));	//Unless it's terminal, this oxygen belongs to the other monosaccharide.
-		    cout << working_atom->GetResidue()->GetName() << "-"<<working_atom->GetName() << " is removed because attached to anomeric carbon, and is not on a terminal side chain." << endl;
-		    cout << "Attached anomeric carbon is: " << attached_anomeric_carbons.at(0)->GetName() << "-" << attached_anomeric_carbons.at(0)->GetResidue()->GetName()<< endl;
 		    belongs_to_current_monosaccharide = false;
 	        }
             }
@@ -1433,7 +1417,7 @@ void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_
 		 std::find(visited_atoms.begin(), visited_atoms.end(), working_node_neighbor) == visited_atoms.end() &&
 		 !working_node_neighbor->GetResidue()->CheckIfProtein() ){	//If not part of another side chain && not part of cycle && not visited && is not protein (NLN,LNK etc)
 		AtomVector working_node_neighbor_neighbors = AtomVector();
-    		string working_neighbor_name = working_node_neighbor-> GetName();
+    		std::string working_neighbor_name = working_node_neighbor-> GetName();
 
 	        if ( working_neighbor_name.substr(0,1) == "O" || working_neighbor_name.substr(0,1) == "N" || working_neighbor_name.substr(0,1) == "S") { //if this neighbor is an O,N or S
 		    AtomVector attached_anomeric_carbons = AtomVector();
@@ -1483,7 +1467,7 @@ void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_
     }//for
     visited_atoms.push_back(working_atom);
     
-    for (vector<Atom*>::iterator it3 = working_node_neighbors.begin(); it3 != working_node_neighbors.end(); it3++){
+    for (std::vector<Atom*>::iterator it3 = working_node_neighbors.begin(); it3 != working_node_neighbors.end(); it3++){
 	if (*it3 != NULL){
 	    Atom* working_node_neighbor = *it3;
 	    //if a node neighbor is not part of a ring,not visited, and not part on protein, change working atom to this neighbor, and start a new recursion call.
@@ -1499,24 +1483,22 @@ void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_
     return;
 }//SetCompleteSideGroupAtoms
 
-void Assembly::CheckIfSideChainIsTerminal(Atom* starting_atom, vector<Atom*> & cycle_and_visited_atoms, bool & is_terminal)
+void Assembly::CheckIfSideChainIsTerminal(Atom* starting_atom, std::vector<Atom*> & cycle_and_visited_atoms, bool & is_terminal)
 {
     cycle_and_visited_atoms.push_back(starting_atom);
-    cout << "hey: " << starting_atom->GetName() << endl;
-    vector<Atom*> starting_atom_node_neighbors = starting_atom->GetNode()->GetNodeNeighbors();
-    for (vector<Atom*>::iterator it = starting_atom_node_neighbors.begin(); it != starting_atom_node_neighbors.end(); it++){
+    std::vector<Atom*> starting_atom_node_neighbors = starting_atom->GetNode()->GetNodeNeighbors();
+    for (std::vector<Atom*>::iterator it = starting_atom_node_neighbors.begin(); it != starting_atom_node_neighbors.end(); it++){
 	if (*it != NULL){
 	    Atom* current_atom_node_neighbor = *it;
 	    if (std::find(cycle_and_visited_atoms.begin(), cycle_and_visited_atoms.end(), current_atom_node_neighbor) == cycle_and_visited_atoms.end() ){
 	        if (current_atom_node_neighbor->GetIsCycle() || current_atom_node_neighbor->GetResidue()->CheckIfProtein() ){
-		    cout << "bomb: " << current_atom_node_neighbor->GetName()<< endl;
 		    is_terminal = false;
 	        }
 	    }
 	}
     }//for
 
-    for (vector<Atom*>::iterator it = starting_atom_node_neighbors.begin(); it != starting_atom_node_neighbors.end(); it++){
+    for (std::vector<Atom*>::iterator it = starting_atom_node_neighbors.begin(); it != starting_atom_node_neighbors.end(); it++){
 	if ( *it != NULL){  
 	    if(std::find(cycle_and_visited_atoms.begin(), cycle_and_visited_atoms.end(), *it) == cycle_and_visited_atoms.end() &&
 	       !(*it)->GetResidue()->CheckIfProtein()  && is_terminal ){
@@ -3180,8 +3162,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                             number_of_probable_non_covalent_complexes++;
                             break;
                         }
-			}
-                    }
+		    }
                 }
             }
             if(isRoot)
@@ -3227,20 +3208,20 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
 {
   /*An old PDB feature puts multiple monosaccharides in a sigle residue.This is incompatible with downstream GMML codes.
     Solution: Each monosaccharide becomes an residue, replacing the corresponding old residue. Complete side group atoms were determined in function SetCompleteSideGroupAtoms().*/
-  vector<Residue*> OldResidue2BeErasedFromAssembly = vector<Residue*>();
+  std::vector<Residue*> OldResidue2BeErasedFromAssembly = std::vector<Residue*>();
   int mono_index = 0;
-  for (std::vector<Monosaccharide*>::iterator it= monos.begin(); it != monos.end(); it++){
+  for (std::vector<Glycan::Monosaccharide*>::iterator it= monos.begin(); it != monos.end(); it++){
       mono_index++;
-      stringstream mono_index_stream;
+      std::stringstream mono_index_stream;
       mono_index_stream << mono_index;
-      string mono_index_str = mono_index_stream.str();
+      std::string mono_index_str = mono_index_stream.str();
       
-      Monosaccharide* mono = *it;
+      Glycan::Monosaccharide* mono = *it;
       Residue * NewResidueForThisMonosaccharide = new Residue();
       Residue * OldResidueForThisMonosaccharide = mono->cycle_atoms_.at(0)->GetResidue();
 	
       NewResidueForThisMonosaccharide-> SetAssembly(this);
-      vector<Residue*> AllResiduesInAssembly= this -> GetResidues();
+      std::vector<Residue*> AllResiduesInAssembly= this -> GetResidues();
       int DistanceFromStartOfResidueVector = std::distance( AllResiduesInAssembly.begin(), std::find( AllResiduesInAssembly.begin(), AllResiduesInAssembly.end(),OldResidueForThisMonosaccharide) );
       this->InsertResidue(DistanceFromStartOfResidueVector ,NewResidueForThisMonosaccharide);
       NewResidueForThisMonosaccharide-> SetName(OldResidueForThisMonosaccharide->GetName() );
@@ -3251,11 +3232,11 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
       }
 
 
-      vector<Atom*> AllAtomsInThisMonosaccharide = vector<Atom*>(); 
+      std::vector<Atom*> AllAtomsInThisMonosaccharide = std::vector<Atom*>(); 
       for (std::vector<Atom*>::iterator it2= mono->cycle_atoms_.begin(); it2!= mono->cycle_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
           AllAtomsInThisMonosaccharide.push_back(*it2);
       }
-      for (std::vector<vector<Atom*> >::iterator it2= mono->side_atoms_.begin(); it2!= mono->side_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
+      for (std::vector<std::vector<Atom*> >::iterator it2= mono->side_atoms_.begin(); it2!= mono->side_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
 	  if ( !(*it2).empty() ){
 	      for (std::vector<Atom*>::iterator it3= (*it2).begin(); it3 != (*it2).end(); it3++){
 		  if ( (*it3) != NULL){
@@ -3608,18 +3589,17 @@ void Assembly::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosacch
 {
     if(find(checked_linkages.begin(), checked_linkages.end(), linkage) == checked_linkages.end())///If this linkage hasn't been checked before by calling the function on other side of the linkage
     {
-<<<<<<< HEAD
-        vector<string> linkage_tokens = Split(linkage, "-");
+        std::vector<std::string> linkage_tokens = gmml::Split(linkage, "-");
 
-        stringstream reverse_linkage;
+        std::stringstream reverse_linkage;
         reverse_linkage << linkage_tokens.at(2) << "-" << linkage_tokens.at(1) << "-" << linkage_tokens.at(0);
         checked_linkages.push_back(linkage);
         checked_linkages.push_back(reverse_linkage.str());
 	
 	// Check if vector has a size and do some error handling
-	std::vector<std::string> left_c_index_vector = Split(Split(linkage_tokens.at(0), "_").at(0), "C*,\'");
-	std::vector<std::string> right_c_index_vector = Split(Split(linkage_tokens.at(2), "_").at(0), "C*,\'");
-	std::vector<std::string> glycosidic_o_index_vector = Split(Split(linkage_tokens.at(1), "_").at(0), "ON*,\'");
+	std::vector<std::string> left_c_index_vector = gmml::Split(gmml::Split(linkage_tokens.at(0), "_").at(0), "C*,\'");
+	std::vector<std::string> right_c_index_vector = gmml::Split(gmml::Split(linkage_tokens.at(2), "_").at(0), "C*,\'");
+	std::vector<std::string> glycosidic_o_index_vector = gmml::Split(gmml::Split(linkage_tokens.at(1), "_").at(0), "ON*,\'");
 	
 	if( !left_c_index_vector.empty() && !right_c_index_vector.empty() && !glycosidic_o_index_vector.empty() ) {
 		// Check if string in vector.at(0) is int
@@ -3628,7 +3608,7 @@ void Assembly::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosacch
 		C_index_ErrCheck.push_back(right_c_index_vector);
 		C_index_ErrCheck.push_back(glycosidic_o_index_vector);
 		bool AllIndexesAreInt= true;
-		stringstream ss;
+		std::stringstream ss;
 		int index;
 
 		for (std::vector <std::vector <std::string> >::iterator it= C_index_ErrCheck.begin(); it!= C_index_ErrCheck.end(); it++){
@@ -3642,19 +3622,19 @@ void Assembly::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosacch
 		}
 
 		if( AllIndexesAreInt ) {
-			int left_c_index = ConvertString<int>(left_c_index_vector.at(0));
-			int right_c_index = ConvertString<int>(right_c_index_vector.at(0));
-			int glycosidic_o_index = ConvertString<int>(glycosidic_o_index_vector.at(0));
+			int left_c_index = gmml::ConvertString<int>(left_c_index_vector.at(0));
+			int right_c_index = gmml::ConvertString<int>(right_c_index_vector.at(0));
+			int glycosidic_o_index = gmml::ConvertString<int>(glycosidic_o_index_vector.at(0));
 			if((left_c_index <= 9) && (left_c_index >= 0)) {
 				if(left_c_index != glycosidic_o_index && right_c_index != glycosidic_o_index)
 				{
-            				Note* linkage_note = new Note();
+            				Glycan::Note* linkage_note = new Glycan::Note();
             				linkage_note->type_ = Glycan::ERROR;
             				linkage_note->category_ = Glycan::GLYCOSIDIC;
-            				stringstream n;
+            				std::stringstream n;
             				n << mono1->sugar_name_.monosaccharide_short_name_ << ": Glycosidic oxygen/nitrogen index does not conform to carbon index in the linkage to "
-              		  	  	  << mono2->sugar_name_.monosaccharide_short_name_ << ". " << Split(linkage_tokens.at(0), "_").at(0) << "-" << Split(linkage_tokens.at(1), "_").at(0)
-              		  	  	  << "-" << Split(linkage_tokens.at(2), "_").at(0);
+              		  	  	  << mono2->sugar_name_.monosaccharide_short_name_ << ". " << gmml::Split(linkage_tokens.at(0), "_").at(0) << "-" << gmml::Split(linkage_tokens.at(1), "_").at(0)
+              		  	  	  << "-" << gmml::Split(linkage_tokens.at(2), "_").at(0);
             				linkage_note->description_ = n.str();
             				this->AddNote(linkage_note);
         			}

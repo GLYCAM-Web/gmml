@@ -139,16 +139,15 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
 
 			if ( !(terminal_atom->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
 			{
-			    cout << "Not protein: " << terminal_atom->GetResidue()->GetName() << ": "<< terminal_atom->GetName() << endl;
 			    ResidueVector AllResiduesInAssembly = this->GetResidues();
 			    Residue* OldResidueForThisAtom = terminal_atom->GetResidue();
-			    string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
+			    std::string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
 			    Residue* new_terminal_residue = new Residue(this,new_terminal_residue_name);
 			    int DistanceFromStartOfResidueVector = std::distance( AllResiduesInAssembly.begin(), std::find(AllResiduesInAssembly.begin(),AllResiduesInAssembly.end(),
 										OldResidueForThisAtom) );
 
                             this ->InsertResidue(DistanceFromStartOfResidueVector +1 ,new_terminal_residue);
-			    string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id.
+			    std::string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id.
 			    new_terminal_residue->SetId(new_terminal_residue_id);
                             new_terminal_residue->AddAtom(terminal_atom);
                             terminal_atom->SetResidue(new_terminal_residue);
@@ -366,7 +365,7 @@ void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue
 			known_aglycon_names.push_back("ROH");
 			known_aglycon_names.push_back("OME");
 			for (std::vector<std::string>::iterator it= residue_glycam_map[residue_id].begin(); it!= residue_glycam_map[residue_id].end(); it++){
-			    string possible_glycam_name = *it;
+			    std::string possible_glycam_name = *it;
 			    //if this name is not a known aglycone
 			    if (std::find(known_aglycon_names.begin(),known_aglycon_names.end(),possible_glycam_name) == known_aglycon_names.end()){
 		                glycam_name = possible_glycam_name ;

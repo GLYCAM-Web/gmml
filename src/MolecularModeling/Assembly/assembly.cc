@@ -651,7 +651,7 @@ void Assembly::EraseResidue(int distance)
     residues_.erase(residues_.begin() + distance);
 }
 
-void Assembly::SetChemicalType(string chemical_type)
+void Assembly::SetChemicalType(std::string chemical_type)
 {
     chemical_type_ = chemical_type;
 }

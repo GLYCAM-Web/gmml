@@ -277,10 +277,10 @@ void Assembly::ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* l
 			    //my code
 				if (residue->GetId().empty()) {
 				}
-			    std::vector <std::string> ResidueIdSplit = Split(residue->GetId(),"_");
-			    std::vector <std::string> NeighborResidueIdSplit = Split(neighbor_residue->GetId(),"_");
-			    string ResidueNumber = ResidueIdSplit.at(2);
-			    string NeighborResidueNumber = NeighborResidueIdSplit.at(2);
+			    std::vector <std::string> ResidueIdSplit = gmml::Split(residue->GetId(),"_");
+			    std::vector <std::string> NeighborResidueIdSplit = gmml::Split(neighbor_residue->GetId(),"_");
+			    std::string ResidueNumber = ResidueIdSplit.at(2);
+			    std::string NeighborResidueNumber = NeighborResidueIdSplit.at(2);
 			
 			    if (ResidueNumber.compare(NeighborResidueNumber) != 0) // if this pair is not the two partial occupancies of the same residue
 			    {//my code
