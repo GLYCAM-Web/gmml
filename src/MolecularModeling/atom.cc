@@ -9,6 +9,7 @@ Atom::Atom()
 	this->index_ = this->generateAtomIndex();
 	// Call to private helper function.
 	this->SetAttributes(NULL, "", CoordinateVector(), "", "", "", NULL, "", false, "");
+	this->SetBFactor(0);
 } // end Default Constructor
 
 Atom::Atom(MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates)
@@ -18,6 +19,7 @@ Atom::Atom(MolecularModeling::Residue* residue, std::string name, CoordinateVect
 	ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
 	// Call to private helper function.
 	this->SetAttributes(residue, name, coordinates, "", "", "", NULL, ss.str(), false, "");
+	//this->SetBFactor(residue[atom]->GetBFactor())
 } // end Constructor
 
 Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate coordinate)
@@ -125,6 +127,13 @@ std::string Atom::GetAtomType() const
 	return atom_type_;
 }
 
+//Added by Dave on 03/23/18 for adding B Factor to ontology
+
+float Atom::GetBFactor() const
+{
+	return b_factor_;
+}
+
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -195,6 +204,13 @@ void Atom::SetIsRing(bool is_ring)
 void Atom::SetAtomType(std::string atom_type)
 {
 	this->atom_type_ = atom_type;
+}
+
+//Added by Dave on 03/23/18 for adding B Factor to ontology
+
+void Atom::SetBFactor(float b_factor)
+{
+	this->b_factor_ = b_factor;
 }
 
 

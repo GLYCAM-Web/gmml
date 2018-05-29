@@ -57,29 +57,29 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
     // in residue GlcNAc. To combat this, the searching will look for GlcNAc first
     // and if it isn't found, it will then look for GlcN.
     std::vector<std::string> svg_residue_names = {
-      "GlcNAc", "GlcA", "GlcN"/* Has some extra code to add. */, "Glc",
-    	"GalA", "GalNAc", "GalN", "Gal",
-    	"ManNAc", "ManA", "ManN", "Man",
-    	"Neu5Ac", "NeuNAc",
-    	"Neu5Gc", "NeuNGc",
-    	"Fuc",
-    	"IdoA",
-    	"KDN",
-    	"Xyl",
-    };
+		"GlcNAc", "GlcA", "GlcN"/* Has some extra code to add. */, "Glc",
+		"GalA", "GalNAc", "GalN", "Gal",
+		"ManNAc", "ManA", "ManN", "Man",
+		"Neu5Ac", "NeuNAc",
+		"Neu5Gc", "NeuNGc",
+		"Fuc",
+		"IdoA",
+		"KDN",
+		"Xyl",
+	};
 
-		// Declare the BOX shape vector.
+	// Declare the BOX shape vector.
     std::vector<std::string> box_shape_residue_names = {
-      "OH", "OME", "OtBu",
-      "R", "Fak"
+		"OH", "OME", "OtBu",
+		"R", "Fak"
     };
 
-		// Declare the OTHER shape vector.
+	// Declare the OTHER shape vector.
     std::vector<std::string> other_shape_residue_names = {
-      "Fru",
-      "Tag",
-      "Psi",
-      "Sor"
+		"Fru",
+		"Tag",
+		"Psi",
+		"Sor"
     };
 
     // Declare an empty std::stringstream, which is used to generate what will go into
@@ -95,7 +95,7 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
     ss << "\tnodesep=\"0.01\" ;" << std::endl;
 
     // Iterate through the Residues to add their information to the dot file.
-	for( unsigned int i = 0; i < this->condensed_sequence_residue_tree_.size(); i++) {
+    for( unsigned int i = 0; i < this->condensed_sequence_residue_tree_.size(); i++) {
 		CondensedSequenceSpace::CondensedSequenceResidue* residue = this->condensed_sequence_residue_tree_[i];
 		// Need to first get some variables from the current residue.
 		// This could probably be split up into the specific section in the loop,
@@ -105,8 +105,8 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
 		std::string residue_ring_type = "";
 		std::string residue_file_name = residue_name;
 		if(residue_name.length() > 3) {
-		residue_ring_type = residue_name.substr(3, 1);
-		residue_name = residue_name.erase(3, 1);
+			residue_ring_type = residue_name.substr(3, 1);
+			residue_name = residue_name.erase(3, 1);
 		}
 		DerivativeMap derivatives = residue->GetDerivatives();
 
@@ -227,7 +227,6 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
 	out_file << ss.str();
 	// Make sure to close the file when finished.
 	out_file.close();
-
 }
 
 //////////////////////////////////////////////////////////

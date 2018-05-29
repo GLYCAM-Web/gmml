@@ -85,6 +85,8 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/coordinate.hpp"
+#include "../../../includes/MolecularModeling/assembly.hpp"
+#include "../../../includes/Glycan/ontologyvocabulary.hpp"
 
 using PdbFileSpace::PdbFile;
 
@@ -4169,7 +4171,7 @@ bool PdbFile::ParseRemarkSection(std::ifstream& stream, std::string& line)
         }
     }
     remark_cards_ = new PdbFileSpace::PdbRemarkSection(stream_block);
-    // remark_cards_->Print();
+    // std::cout << remark_cards_->GetResolution();
     return true;
 }
 
@@ -7840,6 +7842,62 @@ void PdbFile::ResolveEndCard(std::ofstream& stream)
     stream << std::left << std::setw(6) << "END" << std::left << std::setw(74) << " " << std::endl;
 }
 
+void PdbFile::PrintOntology(std::stringstream& ont_stream) 
+{
+  //Match formatting of Ontology
+  std::stringstream uri;
+  uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
+  std::string uriStr = uri.str();
+  
+  ont_stream << uriStr << " "
+             << Ontology::TYPE << " \""
+             << Ontology::PDB << "\"."
+             << std::endl;
+  ont_stream << uriStr << " "
+             << Ontology::id << " \""
+             << header_->GetIdentifierCode() << "\"."
+             << std::endl;
+  
+  //Return Title
+  std::string ont_title = title_->GetTitle();
+  ont_stream << uriStr << " "
+             << Ontology::hasTitle << " \""
+             << gmml::TrimSpaces(ont_title) << "\"."
+             << std::endl;
+
+  //Return Authors
+  std::string ont_author = author_->GetAuthor();
+  ont_stream << uriStr << " "
+             << Ontology::hasAuthors << " \""
+             << gmml::TrimSpaces(ont_author) << "\"."
+             << std::endl;
+
+  //Return DOI
+  std::string ont_doi = journal_->GetDOI();
+  ont_stream << uriStr << " "
+             << Ontology::hasDOI << " \""
+             << gmml::TrimSpaces(ont_doi) << "\"."
+             << std::endl;
+             
+  //Return PMID
+  ont_stream << uriStr << " "
+             << Ontology::hasPMID << " \""
+             << journal_->GetPMID() << "\"."
+             << std::endl;
+                        
+  //Return Resolution
+  ont_stream << uriStr << " " 
+             << Ontology::hasResolution << " \""
+             << remark_cards_->GetResolution() << "\"^^xsd:decimal."
+             << std::endl;
+                  
+  
+  //Return B Factor
+  ont_stream << uriStr << " " 
+             << Ontology::hasBFactor << " \""
+             << remark_cards_->GetBFactor() << "\"^^xsd:decimal."
+             << std::endl;
+}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
