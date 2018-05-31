@@ -132,7 +132,7 @@ unsigned long long Atom::GetIndex() const
 
 std::string Atom::GetAtomType() const
 {
-	return atom_type_;
+	return this->atom_type_;
 }
 
 //////////////////////////////////////////////////////////

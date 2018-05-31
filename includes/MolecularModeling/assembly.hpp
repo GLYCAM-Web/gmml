@@ -60,6 +60,7 @@ namespace MolecularModeling
             typedef std::vector<Glycan::Note*> NoteVector;
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
             typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
+	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library. 
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -340,6 +341,10 @@ namespace MolecularModeling
 * @{
 */
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
+	    ResidueVector ConvertCondensedSequence2AssemblyResidues(std::string& sequence, TemplateAssembly* template_assembly);
+	    void SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>& 
+			condensed_sequence_child_parent_map, std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>& condensed_sequence_assembly_residue_map,
+			ResidueVector& query_residues);
 /** @}*/
             AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
                                                                  std::string prep_file, std::string parameter_file,
@@ -433,6 +438,13 @@ namespace MolecularModeling
               */
             void BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file, CoordinateFileSpace::CoordinateFile* coordinate_file,
                                                          std::string parameter_file = "");
+
+            /*! \fn
+	      * A funcion that builds a template assembly that contains all template residues extracted from prep file.
+	      * @param prep_file A pointer to prep file
+	      * @param query_residue_names the names of all residues needed
+	      */
+	    TemplateAssembly* BuildTemplateAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std::vector<std::string>& query_residue_names);
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
