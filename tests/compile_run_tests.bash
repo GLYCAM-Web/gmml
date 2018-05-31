@@ -87,7 +87,7 @@ fi
 ###################### Test 06 ######################
 printf "Testing BFMP Ring Shape Calculation... "
 g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/ring_shape_detection.cc -lgmml -o ring_shape_detection
-./ring_shape_detection 
+./ring_shape_detection > ring_shape_detection.txt
 if [ -f ring_conformations.txt ]; then
     if ! cmp ring_conformations.txt tests/correct_outputs/ring_conformations.txt > /dev/null 2>&1; then
         printf "Test FAILED!.\n"
@@ -98,9 +98,7 @@ if [ -f ring_conformations.txt ]; then
 else
     printf "Test FAILED!.\n"
 fi
-rm ring_shape_detection ring_conformations.txt > /dev/null 2>&1
-
-
+rm ring_shape_detection ring_shape_detection.txt ring_conformations.txt > /dev/null 2>&1
 
 ############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then
