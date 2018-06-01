@@ -57,7 +57,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     std::map<PrepFileAtom*,Atom*> prep_assembly_atom_map = std::map<PrepFileAtom*,Atom*>();	//associates a prep atom with corresponding assembly atom
     std::map<Atom*,PrepFileAtom*> assembly_prep_parent_atom_map = std::map<Atom*,PrepFileAtom*>();	//associates an assembly atom with corresonding prep atom parent.
 													//eventually: assembly atom -> prep parent -> assembly parent
-
+    this->SetName(prep_residue->GetName());
     for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
     {
         serial_number++;
@@ -269,7 +269,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     }//for
 
     //Testing
-    for (unsigned int i = 0; i < all_atoms_added.size(); i++){
+ /*   for (unsigned int i = 0; i < all_atoms_added.size(); i++){
 	std::cout << "Assembly atom: " << all_atoms_added[i]->GetName() << " Neighbor: " ;
 	AtomVector neighbors = all_atoms_added[i]->GetNode()->GetNodeNeighbors();
 	for (unsigned int j =0; j< neighbors.size(); j++){
@@ -284,6 +284,6 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     {
 	std::cout << "Tail: " << all_tail_atoms_so_far[i]->GetName() << std::endl;
     }
-
+*/
 }//BuildResidueFromPrepFileResidue
 

@@ -148,16 +148,16 @@ Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std:
     std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> condensed_sequence_child_parent_map;
     std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> condensed_sequence_assembly_residue_map;
 
-    for (unsigned int i = condensed_sequence_residues.size()-1; i >= 0; i--) //These residues are built from non-reducing end to reducing end, but here I want opposite order.
+    for (unsigned int i = 0; i< condensed_sequence_residues.size(); i++) //These residues are built from non-reducing end to reducing end, but here I want opposite order.
     {
 	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_sequence_residue = condensed_sequence_residues[i];
         std::string condensed_sequence_residue_name = condensed_sequence_residue->GetName();
-	for (unsigned int j = 0; j < all_template_residues.size(); j++)
-	{   
-	    int residue_serial_number = 0;
-	    if (condensed_sequence_residue_name == all_template_residues[i]->GetName())
+	int residue_serial_number = 0;
+	for (unsigned int j = 0; j < all_template_residues.size(); j++){
+
+	    if (condensed_sequence_residue_name == all_template_residues[j]->GetName())
 	    {
-		Residue* template_residue = all_template_residues[i];
+		Residue* template_residue = all_template_residues[j];
 		Residue* assembly_residue = new Residue();
 		this->AddResidue(assembly_residue);
 		assembly_residue->SetAssembly(this);
@@ -166,6 +166,9 @@ Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std:
 		serial_number_stream << residue_serial_number;
 		std::string residue_id = template_residue->GetName() + "_" + serial_number_stream.str() + "_" + template_residue->GetId();
 		assembly_residue->SetId (residue_id);
+		condensed_sequence_assembly_residue_map[condensed_sequence_residue] = assembly_residue;
+		newly_added_residues.push_back(assembly_residue);
+
 		int atom_serial_number = 0;
 		residue_serial_number++;
 		AtomVector all_template_atoms = template_residue->GetAtoms();
@@ -191,10 +194,9 @@ Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std:
 		    if (std::find(template_tail_atoms.begin(), template_tail_atoms.end(), template_atom) != template_tail_atoms.end() ){
 			assembly_residue->AddTailAtom(template_atom);
 		    }
+		    //Copy atom nodes
 		    atom_serial_number++;
 		}
-		condensed_sequence_assembly_residue_map[condensed_sequence_residue] = assembly_residue;
-		newly_added_residues.push_back(assembly_residue);
 		
 	    }
 	}
@@ -204,8 +206,9 @@ Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std:
 	    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_sequence_residue_parent = condensed_sequence_residues[condensed_sequence_residue->GetParentId()];
 	    condensed_sequence_child_parent_map [condensed_sequence_residue] = condensed_sequence_residue_parent;
 	}
-	else
+	else{
 	    condensed_sequence_child_parent_map [condensed_sequence_residue] = NULL; //if it doesn't have a parent
+	}
     }
     return newly_added_residues;
 
