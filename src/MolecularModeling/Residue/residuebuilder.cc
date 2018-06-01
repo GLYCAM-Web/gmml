@@ -45,8 +45,8 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     std::vector<GeometryTopology::Coordinate*> cartesian_coordinate_list = std::vector<GeometryTopology::Coordinate*>();
     int head_atom_index = INFINITY;
     int tail_atom_index = -INFINITY;
-    Atom* head_atom;
-    Atom* tail_atom;
+    Atom* head_atom = new Atom();
+    Atom* tail_atom = new Atom();
     PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
     PrepFileResidue::PrepFileAtomVector parent_atoms = prep_residue->GetAtomsParentVector();
     std::map<PrepFileSpace::PrepFileAtom*,Atom*> prep_assembly_atom_map = std::map<PrepFileSpace::PrepFileAtom*,Atom*>();	//associates a prep atom with corresponding assembly atom
