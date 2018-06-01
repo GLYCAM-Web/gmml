@@ -7,14 +7,13 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 
-using namespace gmml;
-using namespace PdbFileSpace;
+using PdbFileSpace::PdbFileProcessingException;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 PdbFileProcessingException::PdbFileProcessingException(const std::string &message)
-    : line_number_(dNotSet), message_(message) {}
+    : line_number_(gmml::dNotSet), message_(message) {}
 
 PdbFileProcessingException::PdbFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -26,7 +25,7 @@ PdbFileProcessingException::PdbFileProcessingException(int line_number, const st
 const char* PdbFileProcessingException::what() const throw()
 {
     what_ = "PdbFile: " + message_;
-    if (line_number_ != dNotSet)
+    if (line_number_ != gmml::dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)
@@ -46,5 +45,3 @@ const char* PdbFileProcessingException::what() const throw()
 }
 
 PdbFileProcessingException::~PdbFileProcessingException() throw() {}
-
-

@@ -1,8 +1,7 @@
 
 #include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyBondType;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -51,12 +50,9 @@ void TopologyBondType::SetEquilibriumValue(double equilibrium_value)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyBondType::Print(ostream &out)
+void TopologyBondType::Print(std::ostream &out)
 {
     out << "Bond index: " << index_
          << ", Force constant: " << force_constant_
          << ", Equilibrium value: " << equilibrium_value_;
 }
-
-
-

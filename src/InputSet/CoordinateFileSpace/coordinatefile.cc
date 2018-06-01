@@ -7,10 +7,7 @@
 #include "../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../../includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
 
-using namespace GeometryTopology;
-using namespace CoordinateFileSpace;
-using namespace std;
-using namespace gmml;
+using CoordinateFileSpace::CoordinateFile;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -20,10 +17,10 @@ CoordinateFile::CoordinateFile()
     path_ = "GMML-Generated";
 }
 
-CoordinateFile::CoordinateFile(const string &crd_file)
+CoordinateFile::CoordinateFile(const std::string &crd_file)
 {
     path_ = crd_file;
-    std::ifstream in_file;        
+    std::ifstream in_file;
     if(std::ifstream(crd_file.c_str()))
         in_file.open(crd_file.c_str());
     else
@@ -39,7 +36,7 @@ CoordinateFile* CoordinateFile::LoadCoordinateFile()
     return crd;
 }
 
-CoordinateFile* CoordinateFile::LoadCoordinateFile(const string &crd_file)
+CoordinateFile* CoordinateFile::LoadCoordinateFile(const std::string &crd_file)
 {
     CoordinateFile* crd = new CoordinateFile(crd_file);
     return crd;
@@ -93,10 +90,10 @@ void CoordinateFile::SetNumberOfCoordinates(int number_of_coordinates)
 }
 
 /// Clear and set the list of coordinates in the coordinate file
-void CoordinateFile::SetCoordinates(std::vector<Coordinate*> coordinates)
+void CoordinateFile::SetCoordinates(std::vector<GeometryTopology::Coordinate*> coordinates)
 {
     coordinates_.clear();
-    for(vector<Coordinate*>::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    for(std::vector<GeometryTopology::Coordinate*>::iterator it = coordinates.begin(); it != coordinates.end(); it++)
     {
         coordinates_.push_back(*it);
     }
@@ -113,7 +110,7 @@ void CoordinateFile::AddCoordinate(GeometryTopology::Coordinate* coordinate)
 //////////////////////////////////////////////////////////
 void CoordinateFile::Read(std::ifstream& in_file)
 {
-    string line;
+    std::string line;
 
     // Unable to read file
     if (!getline(in_file, line))
@@ -127,31 +124,31 @@ void CoordinateFile::Read(std::ifstream& in_file)
     /// Extract the number of coordinates in the file
     getline(in_file, line);                         /// Read the next line
     int number_of_coordinates;
-    stringstream ss(line);                          /// Create a stream from the read line
+    std::stringstream ss(line);                          /// Create a stream from the read line
     ss >> number_of_coordinates;
     number_of_coordinates_ = number_of_coordinates; /// Set the number of coordinates attribute
 
     getline(in_file, line);                         /// Read the next line
-    while(!Trim(line).empty())                      /// Read until the end of the file
+    while(!gmml::Trim(line).empty())                      /// Read until the end of the file
     {
         // Tokenizing the read line
         boost::char_separator<char> separator(" ");
         boost::tokenizer< boost::char_separator<char> > tokens(line, separator);
-        vector<string> vectorTokens = vector<string>();
+        std::vector<std::string> vectorTokens = std::vector<std::string>();
         vectorTokens.assign(tokens.begin(), tokens.end());
         switch(vectorTokens.size())
         {
             /// One coordinate in the read line
             case 3:
-                coordinates_.push_back(new Coordinate(ConvertString<double>(vectorTokens.at(0)), ConvertString<double>(vectorTokens.at(1)),
-                                                      ConvertString<double>(vectorTokens.at(2))));
+                coordinates_.push_back(new GeometryTopology::Coordinate(gmml::ConvertString<double>(vectorTokens.at(0)), gmml::ConvertString<double>(vectorTokens.at(1)),
+                                                      gmml::ConvertString<double>(vectorTokens.at(2))));
                 break;
             /// Two coordinates in the read line
             case 6:
-                coordinates_.push_back(new Coordinate(ConvertString<double>(vectorTokens.at(0)), ConvertString<double>(vectorTokens.at(1)),
-                                                      ConvertString<double>(vectorTokens.at(2))));
-                coordinates_.push_back(new Coordinate(ConvertString<double>(vectorTokens.at(3)), ConvertString<double>(vectorTokens.at(4)),
-                                                      ConvertString<double>(vectorTokens.at(5))));
+                coordinates_.push_back(new GeometryTopology::Coordinate(gmml::ConvertString<double>(vectorTokens.at(0)), gmml::ConvertString<double>(vectorTokens.at(1)),
+                                                      gmml::ConvertString<double>(vectorTokens.at(2))));
+                coordinates_.push_back(new GeometryTopology::Coordinate(gmml::ConvertString<double>(vectorTokens.at(3)), gmml::ConvertString<double>(vectorTokens.at(4)),
+                                                      gmml::ConvertString<double>(vectorTokens.at(5))));
                 break;
         }
         getline(in_file, line);
@@ -161,7 +158,7 @@ void CoordinateFile::Read(std::ifstream& in_file)
         throw CoordinateFileProcessingException(__LINE__, "Corrupted file");
     }
 }
-void CoordinateFile::Write(const string &coordinate_file)
+void CoordinateFile::Write(const std::string &coordinate_file)
 {
     std::ofstream out_file;
     try
@@ -181,19 +178,19 @@ void CoordinateFile::Write(const string &coordinate_file)
         out_file.close();
     }
 }
-void CoordinateFile::BuildCoordinateFile(ofstream &stream)
+void CoordinateFile::BuildCoordinateFile(std::ofstream &stream)
 {
-    stream << left << setw(4) << GetTitle() << endl
-           << right << setw(6) << GetNumberOfCoodinates() << endl;
+    stream << std::left << std::setw(4) << GetTitle() << std::endl
+           << std::right << std::setw(6) << GetNumberOfCoodinates() << std::endl;
     for(unsigned int i = 0; i < coordinates_.size(); i++)
     {
-        stream << right << setw(12) << fixed << setprecision(7) << coordinates_.at(i)->GetX()
-               << right << setw(12) << fixed << setprecision(7) << coordinates_.at(i)->GetY()
-               << right << setw(12) << fixed << setprecision(7) << coordinates_.at(i)->GetZ();
+        stream << std::right << std::setw(12) << std::fixed << std::setprecision(7) << coordinates_.at(i)->GetX()
+               << std::right << std::setw(12) << std::fixed << std::setprecision(7) << coordinates_.at(i)->GetY()
+               << std::right << std::setw(12) << std::fixed << std::setprecision(7) << coordinates_.at(i)->GetZ();
         if(i%2 == 1)
-            stream << endl;
+            stream << std::endl;
     }
-    stream << endl;
+    stream << std::endl;
 }
 
 //////////////////////////////////////////////////////////
@@ -201,9 +198,9 @@ void CoordinateFile::BuildCoordinateFile(ofstream &stream)
 //////////////////////////////////////////////////////////
 void CoordinateFile::Print(std::ostream& out)
 {
-    out << "*********** " << title_ << "***********" << endl;
+    out << "*********** " << title_ << "***********" << std::endl;
     for(unsigned int i = 0; i < coordinates_.size(); i++)
     {
-        out << (i+1) << ". " << coordinates_.at(i)->GetX() << ", " << coordinates_.at(i)->GetY() << ", " << coordinates_.at(i)->GetZ() << endl;
+        out << (i+1) << ". " << coordinates_.at(i)->GetX() << ", " << coordinates_.at(i)->GetY() << ", " << coordinates_.at(i)->GetZ() << std::endl;
     }
 }

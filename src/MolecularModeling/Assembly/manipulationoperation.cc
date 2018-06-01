@@ -12,7 +12,7 @@
 #include "../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -29,17 +29,17 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblink.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkresidue.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
@@ -68,24 +68,12 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, int branch_index, string parameter_file)
+void Assembly::AttachResidues(Residue *residue, Residue *parent_residue, int branch_index, std::string parameter_file)
 {
     ///Translate all atoms of the attached residue to place them in proper position with respect to the tail atom of the parent residue/assembly
     this->SetAttachedResidueBond(residue, parent_residue, branch_index, parameter_file);
@@ -104,7 +92,7 @@ void Assembly::RemoveHydrogenAtAttachedPosition(Residue *residue, int branch_ind
     {
         int oxygen_index = 1;
         if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
-            oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+            oxygen_index = gmml::ConvertString<int>(gmml::ConvertT<char>(oxygen->GetName().at(1)));
 
         Atom* hydrogen = NULL;
 
@@ -114,7 +102,7 @@ void Assembly::RemoveHydrogenAtAttachedPosition(Residue *residue, int branch_ind
             Atom* neighbor = *it;
             if(neighbor->GetName().at(0) == 'H' &&
                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
             {
                 hydrogen = neighbor;
                 break;
@@ -138,7 +126,7 @@ void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branc
         Atom* carbon = NULL;
         int oxygen_index = 1;
         if(oxygen->GetName().size() > 1 && isdigit(oxygen->GetName().at(1)))
-            oxygen_index = ConvertString<int>(ConvertT<char>(oxygen->GetName().at(1)));
+            oxygen_index = gmml::ConvertString<int>(gmml::ConvertT<char>(oxygen->GetName().at(1)));
 
         AtomVector oxygen_neighbors = oxygen->GetNode()->GetNodeNeighbors();
         for(AtomVector::iterator it = oxygen_neighbors.begin(); it != oxygen_neighbors.end(); it++)
@@ -146,7 +134,7 @@ void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branc
             Atom* neighbor = *it;
             if(neighbor->GetName().at(0) == 'C' &&
                     (neighbor->GetName().size() > 1 && isdigit(neighbor->GetName().at(1)) &&
-                     ConvertString<int>(ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
+                     gmml::ConvertString<int>(gmml::ConvertT<char>(neighbor->GetName().at(1))) == oxygen_index))
             {
                 carbon = neighbor;
                 break;

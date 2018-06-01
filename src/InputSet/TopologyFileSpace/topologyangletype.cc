@@ -1,8 +1,7 @@
 
 #include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyAngleType;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -51,12 +50,9 @@ void TopologyAngleType::SetEquilibriumValue(double equilibrium_value)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyAngleType::Print(ostream &out)
+void TopologyAngleType::Print(std::ostream &out)
 {
     out << "Angle index: " << index_
          << ", Force constant: " << force_constant_
          << ", Equilibrium value: " << equilibrium_value_;
 }
-
-
-

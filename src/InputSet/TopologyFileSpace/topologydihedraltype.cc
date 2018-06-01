@@ -1,16 +1,18 @@
 
 #include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyDihedralType;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 TopologyDihedralType::TopologyDihedralType() {}
 
-TopologyDihedralType::TopologyDihedralType(int index, double force_constant, double periodicity, double phase, double scee, double scnb) :
-    index_(index), force_constant_(force_constant), periodicity_(periodicity), phase_(phase), scee_(scee), scnb_(scnb) {}
+TopologyDihedralType::TopologyDihedralType(
+        int index, double force_constant, double periodicity, double phase,
+        double scee, double scnb) :
+    index_(index), periodicity_(periodicity), phase_(phase),
+    scee_(scee), scnb_(scnb), force_constant_(force_constant) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -76,7 +78,7 @@ void TopologyDihedralType::SetForceConstant(double force_constant)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyDihedralType::Print(ostream &out)
+void TopologyDihedralType::Print(std::ostream &out)
 {
     out << "Dihedral index: " << index_
          << ", Periodicity: " << periodicity_
@@ -85,6 +87,3 @@ void TopologyDihedralType::Print(ostream &out)
          << ", SCNB: " << scnb_
          << ", Force constant: " << force_constant_;
 }
-
-
-

@@ -12,7 +12,7 @@
 #include "../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -29,17 +29,17 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblink.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkresidue.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
@@ -68,34 +68,22 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vector<string> options, vector<string> file_paths)
+void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, std::vector<std::string> options, std::vector<std::string> file_paths)
 {
     switch(building_option)
     {
         case gmml::DISTANCE:
             if(options.size() == 1)
             {
-                stringstream ss(description_);
+                std::stringstream ss(description_);
                 ss << "Building option: Distance;";
                 description_ = ss.str();
-                vector<string> tokens = gmml::Split(options.at(0), ":");
+                std::vector<std::string> tokens = gmml::Split(options.at(0), ":");
                 if(tokens.at(0).compare("cutoff") == 0)
                 {
                     double cutoff = gmml::ConvertString<double>(tokens.at(1));
@@ -110,11 +98,11 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
             }
             if(options.size() == 2)
             {
-                stringstream ss(description_);
+                std::stringstream ss(description_);
                 ss << "Building option: Distance;";
                 description_ = ss.str();
-                vector<string> cutoff_tokens = gmml::Split(options.at(0), ":");
-                vector<string> model_tokens = gmml::Split(options.at(1), ":");
+                std::vector<std::string> cutoff_tokens = gmml::Split(options.at(0), ":");
+                std::vector<std::string> model_tokens = gmml::Split(options.at(1), ":");
                 double cutoff = gmml::dCutOff;
                 int model_index = 0;
                 if(cutoff_tokens.at(0).compare("cutoff") == 0)
@@ -134,7 +122,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
             break;
         case gmml::ORIGINAL:
         {
-            stringstream ss(description_);
+            std::stringstream ss(description_);
             ss << "Building option: Original;";
             ss << "File type: " << gmml::ConvertAssemblyInputFileType2String(this->GetSourceFileType()) << ";"
                << "File path: " << this->GetSourceFile() << ";";
@@ -143,10 +131,10 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
             break;
         }
         case gmml::DATABASE:
-            vector<gmml::InputFileType> types = vector<gmml::InputFileType>();
+            std::vector<gmml::InputFileType> types = std::vector<gmml::InputFileType>();
             for(unsigned int i = 0; i < options.size(); i++)
             {
-                vector<string> tokens = gmml::Split(options.at(i), ":");
+                std::vector<std::string> tokens = gmml::Split(options.at(i), ":");
                 if(tokens.at(0).compare("type") == 0)
                 {
                     gmml::InputFileType type = gmml::ConvertString2AssemblyInputFileType(tokens.at(1));
@@ -155,7 +143,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, vec
             }
             if(types.size() == file_paths.size())
             {
-                stringstream ss(description_);
+                std::stringstream ss(description_);
                 ss << "Building option: Distance;";
                 for(unsigned int i = 0; i < types.size(); i++)
                 {
@@ -174,13 +162,13 @@ pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 ///or first chunk small next one bigger and so on
 
 void* BuildStructureByDistanceThread(void* args){
-    DistanceCalculationThreadArgument* arg = (DistanceCalculationThreadArgument*)args;
+    MolecularModeling::DistanceCalculationThreadArgument* arg = (MolecularModeling::DistanceCalculationThreadArgument*)args;
     double cutoff = arg->cutoff;
     int model_index = arg->model_index;
     int ti = arg->thread_index;
     int t = arg->number_of_threads;
 
-    //    cout << "Thread" << ti << " start" << endl;
+    //    std::cout << "Thread" << ti << " start" << std::endl;
     Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
     int i = ti * (atoms_size/t);
@@ -198,32 +186,32 @@ void* BuildStructureByDistanceThread(void* args){
             {
                 if((*it)->GetNode() == NULL)
                 {
-                    Atom* atom = (*it);
-                    AtomNode* atom_node = new AtomNode();
+                    MolecularModeling::Atom* atom = (*it);
+                    MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
                     atom_node->SetAtom(atom);
                     atom->SetNode(atom_node);
                 }
                 break;
             }
         }
-        Atom* atom = (*it);
-        AtomNode* atom_node;
+        MolecularModeling::Atom* atom = (*it);
+        MolecularModeling::AtomNode* atom_node;
         pthread_mutex_lock(&mutex1);
         if(atom->GetNode() == NULL)
         {
-            atom_node = new AtomNode();
+            atom_node = new MolecularModeling::AtomNode();
             atom_node->SetAtom(atom);
             atom->SetNode(atom_node);
         }
         else
             atom_node = atom->GetNode();
         atom_node->SetId(i);
-        //        cout << "Thread" << ti << " atom id " << i << endl;
+        //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
         i++;
         pthread_mutex_unlock(&mutex1);
         for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
-            Atom* neighbor_atom = (*it1);
+            MolecularModeling::Atom* neighbor_atom = (*it1);
             // X distance
             if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
             {
@@ -235,11 +223,11 @@ void* BuildStructureByDistanceThread(void* args){
                     {
                         if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                         {
-                            AtomNode* neighbor_node;
+                            MolecularModeling::AtomNode* neighbor_node;
                             pthread_mutex_lock(&mutex1);
                             if (neighbor_atom->GetNode() == NULL)
                             {
-                                neighbor_node = new AtomNode();
+                                neighbor_node = new MolecularModeling::AtomNode();
                                 neighbor_node->SetAtom(neighbor_atom);
                             }
                             else
@@ -256,20 +244,20 @@ void* BuildStructureByDistanceThread(void* args){
         atom->SetNode(atom_node);
     }
 
-    //    cout << "Thread" << ti << " END" << endl;
+    //    std::cout << "Thread" << ti << " END" << std::endl;
     pthread_exit((void*) ti);
 }
 
 void* BuildStructureByDistanceByOptimizedThread(void* args){
 
-    DistanceCalculationThreadArgument* arg = (DistanceCalculationThreadArgument*)args;
+    MolecularModeling::DistanceCalculationThreadArgument* arg = (MolecularModeling::DistanceCalculationThreadArgument*)args;
     double cutoff = arg->cutoff;
     int model_index = arg->model_index;
     int ti = arg->thread_index;
     int t = arg->number_of_threads;
 
 
-    //    cout << "Thread" << ti << " start" << endl;
+    //    std::cout << "Thread" << ti << " start" << std::endl;
     Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
 
@@ -297,8 +285,8 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){
             {
                 if((*it)->GetNode() == NULL)
                 {
-                    Atom* atom = (*it);
-                    AtomNode* atom_node = new AtomNode();
+                    MolecularModeling::Atom* atom = (*it);
+                    MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
                     atom_node->SetAtom(atom);
                     atom->SetNode(atom_node);
                 }
@@ -306,23 +294,23 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){
             }
         }
         int index = distance(all_atoms_of_assembly.begin(), it);
-        Atom* atom = (*it);
-        AtomNode* atom_node;
+        MolecularModeling::Atom* atom = (*it);
+        MolecularModeling::AtomNode* atom_node;
         pthread_mutex_lock(&mutex1);
         if(atom->GetNode() == NULL)
         {
-            atom_node = new AtomNode();
+            atom_node = new MolecularModeling::AtomNode();
             atom_node->SetAtom(atom);
             atom->SetNode(atom_node);
         }
         else
             atom_node = atom->GetNode();
         atom_node->SetId(index);
-        //        cout << "Thread" << ti << " atom id " << i << endl;
+        //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
         pthread_mutex_unlock(&mutex1);
         for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
-            Atom* neighbor_atom = (*it1);
+            MolecularModeling::Atom* neighbor_atom = (*it1);
             // X distance
             if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
             {
@@ -334,11 +322,11 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){
                     {
                         if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                         {
-                            AtomNode* neighbor_node;
+                            MolecularModeling::AtomNode* neighbor_node;
                             pthread_mutex_lock(&mutex1);
                             if (neighbor_atom->GetNode() == NULL)
                             {
-                                neighbor_node = new AtomNode();
+                                neighbor_node = new MolecularModeling::AtomNode();
                                 neighbor_node->SetAtom(neighbor_atom);
                             }
                             else
@@ -355,13 +343,13 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){
         atom->SetNode(atom_node);
     }
 
-    //    cout << "Thread" << ti << " END" << endl;
+    //    std::cout << "Thread" << ti << " END" << std::endl;
     pthread_exit((void*) ti);
 }
 
 void* BuildStructureByDistanceByMatrixThread(void* args){
 
-    DistanceCalculationByMatrixThreadArgument* arg = (DistanceCalculationByMatrixThreadArgument*)args;
+    MolecularModeling::DistanceCalculationByMatrixThreadArgument* arg = (MolecularModeling::DistanceCalculationByMatrixThreadArgument*)args;
     int ti = arg->thread_index;
     double cutoff = arg->cutoff;
     int model_index = arg->model_index;
@@ -371,12 +359,12 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
     for(Assembly::AtomVector::iterator it = first_chunk->begin(); it != first_chunk->end(); it++)
     {
         int index = distance(first_chunk->begin(), it);
-        Atom* atom = (*it);
-        AtomNode* atom_node;
+        MolecularModeling::Atom* atom = (*it);
+        MolecularModeling::AtomNode* atom_node;
         pthread_mutex_lock(&mutex1);
         if(atom->GetNode() == NULL)
         {
-            atom_node = new AtomNode();
+            atom_node = new MolecularModeling::AtomNode();
             atom_node->SetAtom(atom);
             atom->SetNode(atom_node);
         }
@@ -386,7 +374,7 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
         pthread_mutex_unlock(&mutex1);
         for(Assembly::AtomVector::iterator it1 = second_chunk->begin(); it1 != second_chunk->end(); it1++)
         {
-            Atom* neighbor_atom = (*it1);
+            MolecularModeling::Atom* neighbor_atom = (*it1);
             // X distance
             if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
             {
@@ -398,11 +386,11 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
                     {
                         if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                         {
-                            AtomNode* neighbor_node;
+                            MolecularModeling::AtomNode* neighbor_node;
                             pthread_mutex_lock(&mutex1);
                             if (neighbor_atom->GetNode() == NULL)
                             {
-                                neighbor_node = new AtomNode();
+                                neighbor_node = new MolecularModeling::AtomNode();
                                 neighbor_node->SetAtom(neighbor_atom);
                             }
                             else
@@ -423,7 +411,7 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
 
 void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
 
-    DistanceCalculationByMatrixThreadArgument* arg = (DistanceCalculationByMatrixThreadArgument*)args;
+    MolecularModeling::DistanceCalculationByMatrixThreadArgument* arg = (MolecularModeling::DistanceCalculationByMatrixThreadArgument*)args;
     int ti = arg->thread_index;
     double cutoff = arg->cutoff;
     int model_index = arg->model_index;
@@ -431,7 +419,7 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
     Assembly::AtomVector* second_chunk = arg->second_chunk;
     int j = ti * 10;
 
-    vector<Assembly::AtomVector*> chunks = vector<Assembly::AtomVector*>();
+    std::vector<Assembly::AtomVector*> chunks = std::vector<Assembly::AtomVector*>();
     chunks.push_back(first_chunk);
     chunks.push_back(second_chunk);
     for(int i = 0; i < 2; i++)
@@ -441,13 +429,13 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
         {
             for(Assembly::AtomVector::iterator it = chunk->begin(); it != chunk->end(); it++)
             {
-                Atom* atom = (*it);
-                //                    cout << "chunk" << i << " start " << atom->GetId() << endl;
-                AtomNode* atom_node;
+                MolecularModeling::Atom* atom = (*it);
+                //                    std::cout << "chunk" << i << " start " << atom->GetId() << std::endl;
+                MolecularModeling::AtomNode* atom_node;
                 pthread_mutex_lock(&mutex1);
                 if(atom->GetNode() == NULL)
                 {
-                    atom_node = new AtomNode();
+                    atom_node = new MolecularModeling::AtomNode();
                     atom_node->SetAtom(atom);
                     atom->SetNode(atom_node);
                 }
@@ -460,7 +448,7 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
                     pthread_mutex_unlock(&mutex1);
                     for(Assembly::AtomVector::iterator it1 = it+1; it1 != chunk->end(); it1++)
                     {
-                        Atom* neighbor_atom = (*it1);
+                        MolecularModeling::Atom* neighbor_atom = (*it1);
                         // X distance
                         if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
                         {
@@ -472,11 +460,11 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
                                 {
                                     if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                                     {
-                                        AtomNode* neighbor_node;
+                                        MolecularModeling::AtomNode* neighbor_node;
                                         pthread_mutex_lock(&mutex1);
                                         if (neighbor_atom->GetNode() == NULL)
                                         {
-                                            neighbor_node = new AtomNode();
+                                            neighbor_node = new MolecularModeling::AtomNode();
                                             neighbor_node->SetAtom(neighbor_atom);
                                         }
                                         else
@@ -502,7 +490,7 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
 /*
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
-    cout << "Building structure by distance ..." << endl;
+    std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
@@ -514,7 +502,7 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 //    number_of_threads = 2;
 //    int matrix_size = 2;
     pthread_t threads[number_of_threads];
-    DistanceCalculationByMatrixThreadArgument arg[number_of_threads];
+    MolecularModeling::DistanceCalculationByMatrixThreadArgument arg[number_of_threads];
     int k = 0;
     for(int i = 0; i < matrix_size; i++)
     {
@@ -531,7 +519,7 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
                 if(it == all_atoms_of_assembly.end())
                     break;
             }
-            Atom* atom = (*it);
+            MolecularModeling::Atom* atom = (*it);
             first_chunk->push_back(atom);
         }
         for(int j = i+1; j < matrix_size; j++)
@@ -549,12 +537,12 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
                     if(it == all_atoms_of_assembly.end())
                         break;
                 }
-                Atom* atom = (*it);
+                MolecularModeling::Atom* atom = (*it);
                 second_chunk->push_back(atom);
             }
-//            cout << "thread=" << k << ", first chunk size = " << first_chunk->size() << ", starting from " << i * (atoms_size/matrix_size);
-//            cout << ", 2nd chunk size = " << second_chunk->size() << ", starting from " << (j * ((atoms_size/matrix_size) )) << endl;
-            arg[k] = DistanceCalculationByMatrixThreadArgument(k, model_index, cutoff, first_chunk, second_chunk);
+//            std::cout << "thread=" << k << ", first chunk size = " << first_chunk->size() << ", starting from " << i * (atoms_size/matrix_size);
+//            std::cout << ", 2nd chunk size = " << second_chunk->size() << ", starting from " << (j * ((atoms_size/matrix_size) )) << std::endl;
+            arg[k] = MolecularModeling::DistanceCalculationByMatrixThreadArgument(k, model_index, cutoff, first_chunk, second_chunk);
             pthread_create(&threads[k], NULL, &BuildStructureByDistanceByMatrixThread, &arg[k]);
             k++;
         }
@@ -580,10 +568,10 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
                     break;
                 }
             }
-            Atom* atom = (*it);
+            MolecularModeling::Atom* atom = (*it);
             first_chunk->push_back(atom);
         }
-//        cout << "thread=" << k << ", first chunk size = " << first_chunk->size() << ", starting from " << i * (atoms_size/matrix_size);
+//        std::cout << "thread=" << k << ", first chunk size = " << first_chunk->size() << ", starting from " << i * (atoms_size/matrix_size);
         i++;
         if(!no_atoms_for_second_chunk)
         {
@@ -597,12 +585,12 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
                 else
                     break;
 
-                Atom* atom = (*it);
+                MolecularModeling::Atom* atom = (*it);
                 second_chunk->push_back(atom);
             }
         }
-        //cout << ", 2nd chunk size = " << second_chunk->size() << ", starting from " << (i * (atoms_size/matrix_size)) << endl;
-        arg[k] = DistanceCalculationByMatrixThreadArgument(k, model_index, cutoff, first_chunk, second_chunk);
+        //std::cout << ", 2nd chunk size = " << second_chunk->size() << ", starting from " << (i * (atoms_size/matrix_size)) << std::endl;
+        arg[k] = MolecularModeling::DistanceCalculationByMatrixThreadArgument(k, model_index, cutoff, first_chunk, second_chunk);
             pthread_create(&threads[k], NULL, &BuildStructureByDistanceByMatrixDiameterThread, &arg[k]);
         k++;
     }
@@ -616,15 +604,15 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 ///First and second version
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
-    cout << "Building structure by distance ..." << endl;
+    std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
     pthread_t threads[number_of_threads];
-    DistanceCalculationThreadArgument arg[number_of_threads];
+    MolecularModeling::DistanceCalculationThreadArgument arg[number_of_threads];
     for(int i = 0; i < number_of_threads; i++)
     {
-        arg[i] = DistanceCalculationThreadArgument(i, number_of_threads, model_index, cutoff, this);
+        arg[i] = MolecularModeling::DistanceCalculationThreadArgument(i, number_of_threads, model_index, cutoff, this);
         //        pthread_create(&threads[i], NULL, &BuildStructureByDistanceThread, &arg[i]); ///First version. Workload of threads are not equal
         pthread_create(&threads[i], NULL, &BuildStructureByDistanceByOptimizedThread, &arg[i]); ///Second version. Workload of threads are roughly equal.
     }
@@ -665,40 +653,40 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
 void Assembly::BuildStructureByPDBFileInformation()
 {
     try{
-        cout << "Building structure by pdb file information ..." << endl;
+        std::cout << "Building structure by pdb file information ..." << std::endl;
         gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by pdb file information ...");
-        PdbFile* pdb_file = new PdbFile(this->GetSourceFile());
+        PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile(this->GetSourceFile());
         AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
         int i = 0;
         for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
         {
-            Atom* atom = (*it);
-            AtomNode* atom_node = new AtomNode();
+            MolecularModeling::Atom* atom = (*it);
+            MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
             atom_node->SetAtom(atom);
             atom_node->SetId(i);
             i++;
-            PdbAtom* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
+            PdbFileSpace::PdbAtomCard* pdb_atom = pdb_file->GetAtomOfResidueByAtomKey(atom->GetId());
             if(pdb_atom != NULL)
             {
                 int atom_serial_number = pdb_atom->GetAtomSerialNumber();
-                PdbConnectCard* connectivities = pdb_file->GetConnectivities();
-                PdbConnectCard::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
-                vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
-                for(vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
+                PdbFileSpace::PdbConnectSection* connectivities = pdb_file->GetConnectivities();
+                PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap bonded_atoms_map = connectivities->GetBondedAtomsSerialNumbers();
+                std::vector<int> bonded_atoms_serial_number = bonded_atoms_map[atom_serial_number];
+                for(std::vector<int>::iterator it1 = bonded_atoms_serial_number.begin(); it1 != bonded_atoms_serial_number.end(); it1++)
                 {
                     int bonded_atom_serial_number = *it1;
-                    PdbAtom* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
-                    stringstream sss;
+                    PdbFileSpace::PdbAtomCard* pdb_bonded_atom = pdb_file->GetAtomBySerialNumber(bonded_atom_serial_number);
+                    std::stringstream sss;
                     sss << pdb_bonded_atom->GetAtomName() << "_" << pdb_bonded_atom->GetAtomSerialNumber() << "_" << pdb_bonded_atom->GetAtomResidueName()
                         << "_" << pdb_bonded_atom->GetAtomChainId() << "_" << pdb_bonded_atom->GetAtomResidueSequenceNumber()
                         << "_" << pdb_bonded_atom->GetAtomInsertionCode() << "_" << pdb_bonded_atom->GetAtomAlternateLocation();
-                    string pdb_bonded_atom_key = sss.str();
+                    std::string pdb_bonded_atom_key = sss.str();
                     for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                     {
                         if(it != it2)
                         {
-                            Atom* assembly_atom = (*it2);
-                            string assembly_atom_key = assembly_atom->GetId();
+                            MolecularModeling::Atom* assembly_atom = (*it2);
+                            std::string assembly_atom_key = assembly_atom->GetId();
                             if(assembly_atom_key.compare(pdb_bonded_atom_key) == 0)
                             {
                                 atom_node->AddNodeNeighbor(assembly_atom);
@@ -717,15 +705,15 @@ void Assembly::BuildStructureByPDBFileInformation()
 
 void Assembly::BuildStructureByTOPFileInformation()
 {
-    cout << "Building structure by topology file information ..." << endl;
+    std::cout << "Building structure by topology file information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by topology file information ...");
-    TopologyFile* topology_file = new TopologyFile(gmml::Split(this->GetSourceFile(), ";")[0]);
+    TopologyFileSpace::TopologyFile* topology_file = new TopologyFileSpace::TopologyFile(gmml::Split(this->GetSourceFile(), ";")[0]);
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
-        Atom* atom_1 = (*it);
-        AtomNode* atom_node = new AtomNode();
+        MolecularModeling::Atom* atom_1 = (*it);
+        MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
         atom_node->SetAtom(atom_1);
         atom_node->SetId(i);
         i++;
@@ -733,26 +721,26 @@ void Assembly::BuildStructureByTOPFileInformation()
         {
             if(it != it1)
             {
-                Atom* atom_2 = (*it1);
-                stringstream ss;
+                MolecularModeling::Atom* atom_2 = (*it1);
+                std::stringstream ss;
                 ss << gmml::Split(atom_1->GetId(), "_").at(2) << "(" << gmml::Split(atom_1->GetId(), "_").at(4) << ")"
                    << ":" << gmml::Split(atom_1->GetId(), "_").at(0) << "(" <<  gmml::Split(atom_1->GetId(), "_").at(1) << ")" << "-"
                    << gmml::Split(atom_2->GetId(), "_").at(2) << "(" << gmml::Split(atom_2->GetId(), "_").at(4) << ")"
                    << ":" << gmml::Split(atom_2->GetId(), "_").at(0) << "(" << gmml::Split(atom_2->GetId(), "_").at(1) << ")";
-                string key = ss.str();
-                TopologyFile::TopologyBondMap topology_bond = topology_file->GetBonds();
-                for(TopologyFile::TopologyBondMap::iterator it2 = topology_bond.begin(); it2 != topology_bond.end(); it2++)
+                std::string key = ss.str();
+                TopologyFileSpace::TopologyFile::TopologyBondMap topology_bond = topology_file->GetBonds();
+                for(TopologyFileSpace::TopologyFile::TopologyBondMap::iterator it2 = topology_bond.begin(); it2 != topology_bond.end(); it2++)
                 {
-                    TopologyBond* bond = (*it2).second;
-                    stringstream sss;
+                    TopologyFileSpace::TopologyBond* bond = (*it2).second;
+                    std::stringstream sss;
                     sss << bond->GetResidueNames().at(0) << ":" << bond->GetBonds().at(0) << "-" << bond->GetResidueNames().at(1) << ":" << bond->GetBonds().at(1);
-                    string topology_bond_key = sss.str();
+                    std::string topology_bond_key = sss.str();
                     if(key.compare(topology_bond_key) == 0)
                     {
                         atom_node->AddNodeNeighbor(atom_2);
                         break;
                     }
-                    stringstream ssss;
+                    std::stringstream ssss;
                     ssss << bond->GetResidueNames().at(1) << ":" << bond->GetBonds().at(1) << "-" << bond->GetResidueNames().at(0) << ":" << bond->GetBonds().at(0);
                     topology_bond_key = ssss.str();
                     if(key.compare(topology_bond_key) == 0)
@@ -769,40 +757,40 @@ void Assembly::BuildStructureByTOPFileInformation()
 
 void Assembly::BuildStructureByLIBFileInformation()
 {
-    cout << "Building structure by library file information..." << endl;
+    std::cout << "Building structure by library file information..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by library file information ...");
-    LibraryFile* library_file = new LibraryFile(this->GetSourceFile());
+    LibraryFileSpace::LibraryFile* library_file = new LibraryFileSpace::LibraryFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
-        Atom* atom = (*it);
-        AtomNode* atom_node = new AtomNode();
+        MolecularModeling::Atom* atom = (*it);
+        MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
         atom_node->SetAtom(atom);
         atom_node->SetId(i);
         i++;
         Residue* assembly_residue = atom->GetResidue();
-        vector<string> atom_id_tokens = Split(atom->GetId(), "_");
-        LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
+        std::vector<std::string> atom_id_tokens = gmml::Split(atom->GetId(), "_");
+        LibraryFileSpace::LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
         if(library_residue != NULL)
         {
-            LibraryFileAtom* library_atom = library_residue->GetAtomByOrder(ConvertString<int>(atom_id_tokens.at(1)));
+            LibraryFileSpace::LibraryFileAtom* library_atom = library_residue->GetAtomByOrder(gmml::ConvertString<int>(atom_id_tokens.at(1)));
             if(library_atom != NULL)
             {
-                vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
-                for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
+                std::vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
+                for(std::vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
                 {
                     int library_bonded_atom_index = (*it1);
-                    LibraryFileAtom* library_atom = library_residue->GetAtomByOrder(library_bonded_atom_index);
+                    LibraryFileSpace::LibraryFileAtom* library_atom = library_residue->GetAtomByOrder(library_bonded_atom_index);
                     for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                     {
-                        Atom* assembly_atom = (*it2);
-                        string assembly_atom_id = assembly_atom->GetId();
-                        stringstream ss;
+                        MolecularModeling::Atom* assembly_atom = (*it2);
+                        std::string assembly_atom_id = assembly_atom->GetId();
+                        std::stringstream ss;
                         ss << library_residue->GetName() << ":" << library_atom->GetName() << "(" << library_atom->GetAtomOrder() << ")";
-                        string library_atom_id = ss.str();
-                        vector<string> assembly_atom_id_tokens = gmml::Split(assembly_atom_id, "_");
-                        stringstream sss;
+                        std::string library_atom_id = ss.str();
+                        std::vector<std::string> assembly_atom_id_tokens = gmml::Split(assembly_atom_id, "_");
+                        std::stringstream sss;
                         sss << assembly_atom_id_tokens.at(2) << ":" << assembly_atom_id_tokens.at(0) << "(" << assembly_atom_id_tokens.at(1) << ")";
                         if(sss.str().compare(library_atom_id) == 0)
                         {
@@ -819,38 +807,38 @@ void Assembly::BuildStructureByLIBFileInformation()
 
 void Assembly::BuildStructureByPrepFileInformation()
 {
-    cout << "Building structure by prep file information ..." << endl;
+    std::cout << "Building structure by prep file information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by prep file information ...");
-    PrepFile* prep_file = new PrepFile(this->GetSourceFile());
+    PrepFileSpace::PrepFile* prep_file = new PrepFileSpace::PrepFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
-        Atom* atom = (*it);
-        AtomNode* atom_node = new AtomNode();
+        MolecularModeling::Atom* atom = (*it);
+        MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
         atom_node->SetAtom(atom);
         atom_node->SetId(i);
         i++;
         Residue* assembly_residue = atom->GetResidue();
-        //        cout << assembly_residue->GetName() << endl;
-        PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
+        //        std::cout << assembly_residue->GetName() << std::endl;
+        PrepFileSpace::PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
         if(prep_residue != NULL)
         {
-            PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
+            PrepFileSpace::PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
             if(prep_atom != NULL)
             {
-                vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
-                for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
+                std::vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
+                for(std::vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                 {
                     int bonded_atom_index = (*it1);
-                    PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(prep_residue->GetAtomNameByIndex(bonded_atom_index));
-                    stringstream ss;
+                    PrepFileSpace::PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(prep_residue->GetAtomNameByIndex(bonded_atom_index));
+                    std::stringstream ss;
                     ss << prep_residue->GetName() << ":" << bonded_atom->GetName();
                     for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                     {
-                        Atom* assembly_atom = (*it2);
-                        vector<string> atom_id_tokens = gmml::Split(assembly_atom->GetId(), "_");
-                        stringstream sss;
+                        MolecularModeling::Atom* assembly_atom = (*it2);
+                        std::vector<std::string> atom_id_tokens = gmml::Split(assembly_atom->GetId(), "_");
+                        std::stringstream sss;
                         sss << atom_id_tokens.at(2) << ":" << atom_id_tokens.at(0);
                         if(sss.str().compare(ss.str()) == 0)
                         {
@@ -865,16 +853,16 @@ void Assembly::BuildStructureByPrepFileInformation()
     }
 }
 
-void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::InputFileType> types, vector<string> file_paths)
+void Assembly::BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths)
 {
-    cout << "Building structure by dataset files information ..." << endl;
+    std::cout << "Building structure by dataset files information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by dataset files information ...");
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
-        Atom* atom = (*it);
-        AtomNode* atom_node = new AtomNode();
+        MolecularModeling::Atom* atom = (*it);
+        MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
         atom_node->SetAtom(atom);
         atom_node->SetId(i);
         i++;
@@ -883,26 +871,26 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
         {
             if(types.at(i) == gmml::LIB)
             {
-                string lib_path = file_paths.at(i);
-                LibraryFile* library_file = new LibraryFile(lib_path);
-                LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
+                std::string lib_path = file_paths.at(i);
+                LibraryFileSpace::LibraryFile* library_file = new LibraryFileSpace::LibraryFile(lib_path);
+                LibraryFileSpace::LibraryFileResidue* library_residue = library_file->GetLibraryResidueByResidueName(assembly_residue->GetName());
                 if(library_residue != NULL)
                 {
-                    LibraryFileAtom* library_atom = library_residue->GetLibraryAtomByAtomName(atom->GetName());
+                    LibraryFileSpace::LibraryFileAtom* library_atom = library_residue->GetLibraryAtomByAtomName(atom->GetName());
                     if(library_atom != NULL)
                     {
-                        vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
-                        for(vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
+                        std::vector<int> library_bonded_atom_indices = library_atom->GetBondedAtomsIndices();
+                        for(std::vector<int>::iterator it1 = library_bonded_atom_indices.begin(); it1 != library_bonded_atom_indices.end(); it1++)
                         {
                             int library_bonded_atom_index = (*it1);
-                            LibraryFileAtom* library_atom = library_residue->GetAtomByIndex(library_bonded_atom_index);
+                            LibraryFileSpace::LibraryFileAtom* library_atom = library_residue->GetAtomByIndex(library_bonded_atom_index);
                             for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                             {
-                                Atom* assembly_atom = (*it2);
-                                string assembly_atom_id = assembly_atom->GetId();
-                                stringstream ss;
+                                MolecularModeling::Atom* assembly_atom = (*it2);
+                                std::string assembly_atom_id = assembly_atom->GetId();
+                                std::stringstream ss;
                                 ss << library_residue->GetName() << ":" << library_atom->GetName();
-                                string library_atom_id = ss.str();
+                                std::string library_atom_id = ss.str();
                                 if(assembly_atom_id.compare(library_atom_id) == 0)
                                 {
                                     atom_node->AddNodeNeighbor(assembly_atom);
@@ -915,24 +903,24 @@ void Assembly::BuildStructureByDatabaseFilesBondingInformation(vector<gmml::Inpu
             }
             if(types.at(i) == gmml::PREP)
             {
-                string prep_path = file_paths.at(i);
-                PrepFile* prep_file = new PrepFile(prep_path);
-                PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
+                std::string prep_path = file_paths.at(i);
+                PrepFileSpace::PrepFile* prep_file = new PrepFileSpace::PrepFile(prep_path);
+                PrepFileSpace::PrepFileResidue* prep_residue = prep_file->GetResidues()[assembly_residue->GetName()];
                 if(prep_residue != NULL)
                 {
-                    PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
+                    PrepFileSpace::PrepFileAtom* prep_atom = prep_residue->GetPrepAtomByName(atom->GetName());
                     if(prep_atom != NULL)
                     {
-                        vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
-                        for(vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
+                        std::vector<int> bonded_atoms_index = prep_residue->GetBondingsOfResidue()[prep_residue->GetAtomIndexByName(atom->GetName())];
+                        for(std::vector<int>::iterator it1 = bonded_atoms_index.begin(); it1 != bonded_atoms_index.end(); it1++)
                         {
                             int bonded_atom_index = (*it1);
-                            PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(prep_residue->GetAtomNameByIndex(bonded_atom_index));
-                            stringstream ss;
+                            PrepFileSpace::PrepFileAtom* bonded_atom = prep_residue->GetPrepAtomByName(prep_residue->GetAtomNameByIndex(bonded_atom_index));
+                            std::stringstream ss;
                             ss << prep_residue->GetName() << ":" << bonded_atom->GetName();
                             for(AtomVector::iterator it2 = all_atoms_of_assembly.begin(); it2 != all_atoms_of_assembly.end(); it2++)
                             {
-                                Atom* assembly_atom = (*it2);
+                                MolecularModeling::Atom* assembly_atom = (*it2);
                                 if(assembly_atom->GetId().compare(ss.str()) == 0)
                                 {
                                     atom_node->AddNodeNeighbor(assembly_atom);

@@ -1,68 +1,65 @@
 // Author: Alireza Khatamian
 
 #include "../../../includes/InputSet/PdbFileSpace/pdbheterogennamecard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenname.hpp"
 #include "../../../includes/utils.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
+using PdbFileSpace::PdbHeterogenNameCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogenNameCard::PdbHeterogenNameCard() : record_name_("HETNAM") {}
-PdbHeterogenNameCard::PdbHeterogenNameCard(const string &record_name) : record_name_(record_name) {}
+PdbHeterogenNameCard::PdbHeterogenNameCard() : heterogen_identifier_(""), heterogen_name_("") {}
+PdbHeterogenNameCard::PdbHeterogenNameCard(const std::string &heterogen_identifier, const std::string &heterogen_name) :
+    heterogen_identifier_(heterogen_identifier), heterogen_name_(heterogen_name) {}
 
-PdbHeterogenNameCard::PdbHeterogenNameCard(stringstream &stream_block)
+PdbHeterogenNameCard::PdbHeterogenNameCard(std::stringstream& stream_block)
 {
-    string line;
-    bool is_record_name_set = false;
+    std::string line;
+    bool is_heterogen_identifier_set = false;
+    std::stringstream ss;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
-            Trim(record_name_);
-            is_record_name_set=true;
+        if(!is_heterogen_identifier_set){
+            heterogen_identifier_ = line.substr(11,3);
+            gmml::Trim(heterogen_identifier_);
+            is_heterogen_identifier_set = true;
         }
-        stringstream heterogen_name_block;
-        heterogen_name_block << line << endl;
-        string heterogen_id = line.substr(11,3);
+
+        ss << line.substr(15,55) << " ";
 
         getline(stream_block, line);
         temp = line;
-        while (!Trim(temp).empty() && line.substr(11,3) == heterogen_id){
-            heterogen_name_block << line << endl;
-            getline(stream_block, line);
-            temp = line;
-        }
-        PdbHeterogenName* heterogen_name = new PdbHeterogenName(heterogen_name_block);
-        heterogen_id = Trim(heterogen_id);
-        heterogen_names_[heterogen_id] = heterogen_name;
     }
+    heterogen_name_ = ss.str();
+    heterogen_name_ = gmml::Trim(heterogen_name_);
 }
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbHeterogenNameCard::GetRecordName()
+std::string PdbHeterogenNameCard::GetHeterogenIdentifier()
 {
-    return record_name_;
+    return heterogen_identifier_;
 }
 
-PdbHeterogenNameCard::HeterogenNameMap PdbHeterogenNameCard::GetHeterogenNames()
+std::string PdbHeterogenNameCard::GetHeterogenName()
 {
-    return heterogen_names_;
+    return heterogen_name_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameCard::SetRecordName(const string record_name)
+void PdbHeterogenNameCard::SetHeterogenIdentifier(const std::string heterogen_identifier)
 {
-    record_name_ = record_name;
+    heterogen_identifier_ = heterogen_identifier;
+}
+
+void PdbHeterogenNameCard::SetHeterogenName(const std::string heterogen_name)
+{
+    heterogen_name_ = heterogen_name;
 }
 
 //////////////////////////////////////////////////////////
@@ -72,14 +69,7 @@ void PdbHeterogenNameCard::SetRecordName(const string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameCard::Print(ostream &out)
+void PdbHeterogenNameCard::Print(std::ostream &out)
 {
-    out << "Record Name: " << record_name_ << endl <<
-           "========== Heterogen Names ==========" << endl;
-    for(PdbHeterogenNameCard::HeterogenNameMap::iterator it = heterogen_names_.begin(); it != heterogen_names_.end(); it++)
-    {
-        out << "Heterogen ID: " << (it)->first << endl;
-        (it)->second->Print();
-        out << endl;
-    }
+    out << "Heterogen ID: " << heterogen_identifier_ << ", Heterogen Name: " << heterogen_name_ << std::endl;
 }

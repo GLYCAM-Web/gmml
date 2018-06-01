@@ -5,23 +5,14 @@
 #define PDBRESIDUESEQUENCECARD_HPP
 
 #include <string>
-#include <map>
+#include <vector>
 #include <iostream>
 
 namespace PdbFileSpace
 {
-    class PdbResidueSequence;
     class PdbResidueSequenceCard
     {
         public:
-            //////////////////////////////////////////////////////////
-            //                    TYPE DEFINITION                   //
-            //////////////////////////////////////////////////////////
-            /*! \typedef
-              * Mapping between chain identifier of a residue sequence and the residue sequence itself
-              */
-            typedef std::map<char, PdbResidueSequence*> ResidueSequenceMap;
-
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -31,14 +22,16 @@ namespace PdbFileSpace
             PdbResidueSequenceCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
+              * @param record_name Record name which is the first column of each line in a pdb file
+              * @param number_of_residues  Number of residues involving in a sequence residue
+              * @param residue_names Name of residues in the sequence residue
               */
-            PdbResidueSequenceCard(const std::string& record_name);
+            PdbResidueSequenceCard(char chain_id, int number_of_residues, const std::vector<std::string>& residue_names);
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param specification_block
               */
-            PdbResidueSequenceCard(std::stringstream& stream_block);
+            PdbResidueSequenceCard(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -47,15 +40,20 @@ namespace PdbFileSpace
                * @{
                */
             /*! \fn
-              * An accessor function in order to access to the record name in residue sequence card
-              * @return record_name_ attribute of the current object of this class
+              * An accessor function in order to access to the chain id in residue sequence
+              * @return chain_id_ attribute of the current object of this class
               */
-            std::string GetRecordName();
+            char GetChainId();
             /*! \fn
-              * An accessor function in order to access to the residue sequence chains in residue sequence card
-              * @return residue_sequence_chains_ attribute of the current object of this class
+              * An accessor function in order to access to the number of residues in residue sequence
+              * @return number_of_residues_ attribute of the current object of this class
               */
-            ResidueSequenceMap GetResidueSequenceChain();
+            int GetNumberOfResidues();
+            /*! \fn
+              * An accessor function in order to access to the list of residue names in residue sequence
+              * @return residue_names_ of the current object of this class
+              */
+            std::vector<std::string> GetResidueNames();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
@@ -64,11 +62,29 @@ namespace PdbFileSpace
                * @{
                */
             /*! \fn
-              * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current residue sequence card
-              * @param record_name The record name of the current object
+              * A mutator function in order to set the chain id of the current object
+              * Set the chain_id_ attribute of the current residue sequence
+              * @param chain_id The chain id of the current object
               */
-            void SetRecordName(const std::string record_name);
+            void SetChainId(char chain_id);
+            /*! \fn
+              * A mutator function in order to set the number of residues of the current object
+              * Set number_of_residues_ attribute of the current residue sequence
+              * @param number_of_residues The number of residues of the current object
+              */
+            void SetNumberOfResidues(int number_of_residues);
+            /*! \fn
+              * A mutator function in order to set the list of residue names of the current object
+              * Set the residue_names_ of the current residue sequence
+              * @param residue_names The residue names of the current object
+              */
+            void SetResidueNames(const std::vector<std::string> residue_names);
+            /*! \fn
+              * A function in order to add the residue name to the current object
+              * Set the residue_name_ attribute of the current residue sequence
+              * @param residue_name The residue name of the current object
+              */
+            void AddResidueName(const std::string residue_name);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -78,7 +94,7 @@ namespace PdbFileSpace
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the pdb residue sequence card contents in a structural format
+              * A function to print out the pdb residue sequence contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -88,9 +104,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;                       /*!< Name of the residue sequence record which is the first column in each line of a pdb file >*/
-            ResidueSequenceMap residue_sequence_chains_;    /*!< Mapping of all residue sequences with chain identifier as the key >*/
-
+            char chain_id_;                         /*!< Chain identifier of the residue sequence >*/
+            int number_of_residues_;                /*!< Number of residues in the residue sequence >*/
+            std::vector<std::string> residue_names_;/*!< Name of all residues in the residue sequence >*/
     };
 }
 

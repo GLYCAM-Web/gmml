@@ -24,13 +24,18 @@ check_gemshome() {
 }
 
 cd ../
-gemshome=`pwd`
+ gemshome=`pwd`
 cd -
 check_gemshome $gemshome 
 
 #Compile gmml if not compiled:
 echo "Compiling gmml if necessary with ./make.sh NoClean no-wrap"
 cd $GEMSHOME/
+ #Add these removes so the tests don't pass on an old version of the library
+ rm -f ./gmml/bin/libgmml.so.1.0.0
+ rm -f ./gmml/bin/libgmml.so
+ rm -f ./gmml/bin/libgmml.so.1
+ rm -f ./gmml/bin/libgmml.so.1.0
  ./make.sh no_clean no_wrap
 cd -
 

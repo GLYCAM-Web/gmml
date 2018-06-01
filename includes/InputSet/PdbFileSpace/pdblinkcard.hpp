@@ -1,17 +1,16 @@
 // Created by: Delaram Rahbarinia
-// Modified by: Alireza Khatamian, Delaram Rahbarinia
+// Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
 #ifndef PDBLINKCARD_HPP
 #define PDBLINKCARD_HPP
 
 #include <string>
 #include <vector>
-#include <sstream>
 #include <iostream>
 
 namespace PdbFileSpace
 {
-    class PdbLink;
+    class PdbLinkCardResidue;
 
     class PdbLinkCard
     {
@@ -20,9 +19,9 @@ namespace PdbFileSpace
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
             /*! \typedef
-              * List of links
+              * List of residues in a link
               */
-            typedef std::vector< PdbLink* > LinkVector;
+            typedef std::vector< PdbLinkCardResidue* > LinkResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -33,9 +32,9 @@ namespace PdbFileSpace
             PdbLinkCard();
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param line
               */
-            PdbLinkCard(std::stringstream& stream_block);
+            PdbLinkCard(std::string& line);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -44,15 +43,15 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * An accessor function in order to access to the record name in a link card
-              * @return record_name_ attribute of the current object of this class
+              * An accessor function in order to access to the residues in a link class
+              * @return residues_ attribute of the current object of this class
               */
-            std::string GetRecordName();
+            LinkResidueVector GetResidues();
             /*! \fn
-              * An accessor function in order to access to the resdiue links in a link card
-              * @return resdiue_links_ attribute of the current object of this class
+              * An accessor function in order to access to the link length in a link class
+              * @return link_length_ attribute of the current object of this class
               */
-            LinkVector GetResidueLinks();
+            double GetLinkLength();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -61,23 +60,23 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current link card
-              * @param record_name The record name of the current object
+              * A mutator function in order to set the residues of the current object
+              * Set the residues_ attribute of the current link card
+              * @param residues The residues of the current object
               */
-            void SetRecordName(std::string record_name);
+            void SetResidues(const LinkResidueVector residues);
             /*! \fn
-              * A mutator function in order to set the residue links of the current object
-              * Set the residue_links_ attribute of the current link card
-              * @param residue_links The residue links of the current object
+              * A function in order to add residue to the current object
+              * Set the residues_ attribute of the current link card
+              * @param residue The residue of the current object
               */
-            void SetResidueLinks(LinkVector residue_links);
+            void AddResidue(PdbLinkCardResidue* residue);
             /*! \fn
-              * A function in order to add the residue link to the current object
-              * Set the residue_link_ attribute of the current link card
-              * @param residue_link The residue link of the current object
+              * A mutator function in order to set the link length of the current object
+              * Set the link_length_ attribute of the current link card
+              * @param link_length The link length of the current object
               */
-            void AddResidueLink(PdbLink* residue_link);
+            void SetLinkLength(double link_length);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -87,7 +86,7 @@ namespace PdbFileSpace
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the link card contents in a structural format
+              * A function to print out the link contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -97,8 +96,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;       /*!< Record name of a link card in a pdb file >*/
-            LinkVector residue_links_;      /*!< List of links involving in a pdb file >*/
+            LinkResidueVector residues_;        /*!< List of residues in a link >*/
+            double link_length_;                /*!< Link length >*/
 
     };
 }

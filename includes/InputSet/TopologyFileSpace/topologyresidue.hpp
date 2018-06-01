@@ -62,6 +62,11 @@ namespace TopologyFileSpace
               * @return starting_atom_index_ attribute of the current object of this class
               */
             int GetStartingAtomIndex();
+            /*! \fn
+              * An accessor function in order to access whether a residue is a Solvent, returns true if a residue is a solvent.
+              * @return is_residue_solvent_ attribute of the current object of this class
+              */
+            bool GetIsResidueSolvent();
 
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -90,6 +95,12 @@ namespace TopologyFileSpace
               * @param starting_atom_index The starting atom index attribute of the current object
               */
             void SetStartingAtomIndex(int starting_atom_index);
+            /*! \fn
+              * A mutator function in order to set true if a topology residue is a solvent of the current object
+              * Set the is_residue_solvent_ attribute of the current  residue
+              * @param is_residue_solvent The is_residue_solvent_ attribute of the current object
+              */
+            void SetIsResidueSolvent(bool is_residue_solvent);
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -113,6 +124,7 @@ namespace TopologyFileSpace
             TopologyAtomVector atoms_;                 /*!< List of atoms those belong to this residue >*/
             int index_;                             /*!< Index of this residue among the others in a topology file >*/
             int starting_atom_index_;               /*!< Index of the first atom belongs to this residue among all other atoms in a topology file >*/
+            bool is_residue_solvent_;		 /*!< Is Residue Solvent>*/
 
     };
 }

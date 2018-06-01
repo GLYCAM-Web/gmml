@@ -1,19 +1,19 @@
-
 #include "../../../includes/Resolver/PdbPreprocessor/pdbpreprocessorhistidinemapping.hpp"
 
-using namespace std;
-using namespace PdbPreprocessorSpace;
-using namespace gmml;
+using PdbPreprocessorSpace::PdbPreprocessorHistidineMapping;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbPreprocessorHistidineMapping::PdbPreprocessorHistidineMapping() {}
 
-PdbPreprocessorHistidineMapping::PdbPreprocessorHistidineMapping(char residue_chain_id, int residue_sequence_number, PdbPreprocessorHISMapping selected_mapping,
-                                                                 char residue_insertion_code, char residue_alternate_location) :
-    residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number), selected_mapping_(selected_mapping),
-    residue_insertion_code_(residue_insertion_code), residue_alternate_location_(residue_alternate_location) {}
+PdbPreprocessorHistidineMapping::PdbPreprocessorHistidineMapping(
+        char residue_chain_id, int residue_sequence_number,
+        gmml::PdbPreprocessorHISMapping selected_mapping,
+        char residue_insertion_code, char residue_alternate_location) :
+    residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number),
+    selected_mapping_(selected_mapping), residue_insertion_code_(residue_insertion_code),
+    residue_alternate_location_(residue_alternate_location) {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -26,7 +26,7 @@ int PdbPreprocessorHistidineMapping::GetResidueSequenceNumber()
 {
     return residue_sequence_number_;
 }
-PdbPreprocessorHISMapping PdbPreprocessorHistidineMapping::GetSelectedMapping()
+gmml::PdbPreprocessorHISMapping PdbPreprocessorHistidineMapping::GetSelectedMapping()
 {
     return selected_mapping_;
 }
@@ -38,7 +38,7 @@ char PdbPreprocessorHistidineMapping::GetResidueAlternateLocation()
 {
     return residue_alternate_location_;
 }
-string PdbPreprocessorHistidineMapping::GetStringFormatOfSelectedMapping()
+std::string PdbPreprocessorHistidineMapping::GetStringFormatOfSelectedMapping()
 {
     switch(selected_mapping_)
     {
@@ -52,7 +52,7 @@ string PdbPreprocessorHistidineMapping::GetStringFormatOfSelectedMapping()
             return "";
     }
 }
-string PdbPreprocessorHistidineMapping::GetStringFormatOfMapping(PdbPreprocessorHISMapping his_mapping)
+std::string PdbPreprocessorHistidineMapping::GetStringFormatOfMapping(gmml::PdbPreprocessorHISMapping his_mapping)
 {
     switch(his_mapping)
     {
@@ -66,11 +66,11 @@ string PdbPreprocessorHistidineMapping::GetStringFormatOfMapping(PdbPreprocessor
             return "";
     }
 }
-vector<string> PdbPreprocessorHistidineMapping::GetAllHISMappingAsString()
+std::vector<std::string> PdbPreprocessorHistidineMapping::GetAllHISMappingAsString()
 {
-    vector<string> all_his_mapping_as_string;
-    for(int his_mapping = HIE; his_mapping != HID; his_mapping++)
-        all_his_mapping_as_string.push_back(GetStringFormatOfMapping((PdbPreprocessorHISMapping)his_mapping));
+    std::vector<std::string> all_his_mapping_as_string;
+    for(int his_mapping = gmml::HIE; his_mapping != gmml::HID; his_mapping++)
+        all_his_mapping_as_string.push_back(GetStringFormatOfMapping((gmml::PdbPreprocessorHISMapping)his_mapping));
     return all_his_mapping_as_string;
 }
 
@@ -85,7 +85,7 @@ void PdbPreprocessorHistidineMapping::SetResidueSequenceNumber(int residue_seque
 {
     residue_sequence_number_ = residue_sequence_number;
 }
-void PdbPreprocessorHistidineMapping::SetSelectedMapping(PdbPreprocessorHISMapping selected_mapping)
+void PdbPreprocessorHistidineMapping::SetSelectedMapping(gmml::PdbPreprocessorHISMapping selected_mapping)
 {
     selected_mapping_ = selected_mapping;
 }
@@ -101,19 +101,12 @@ void PdbPreprocessorHistidineMapping::SetResidueAlternateLocation(char residue_a
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbPreprocessorHistidineMapping::Print(ostream &out)
+void PdbPreprocessorHistidineMapping::Print(std::ostream &out)
 {
     out << "Chain id: " << residue_chain_id_
          << ", Sequence_number: " << residue_sequence_number_
          << ", Selected mapping: " << GetStringFormatOfSelectedMapping()
          << ", Insertion code: " << GetResidueInsertionCode()
          << ", Alternate location: " << GetResidueAlternateLocation()
-         << endl;
+         << std::endl;
 }
-
-
-
-
-
-
-

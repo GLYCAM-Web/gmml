@@ -6,55 +6,53 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbqtFileSpace;
-using namespace gmml;
+using PdbqtFileSpace::PdbqtModel;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbqtModel::PdbqtModel() {}
 
-PdbqtModel::PdbqtModel(stringstream &model_block)
+PdbqtModel::PdbqtModel(std::stringstream &model_block)
 {
-    string line;
-    stringstream residue_set_block;
+    std::string line;
+    std::stringstream residue_set_block;
     remarks_ = RemarkCardVector();
     torsional_dof_cards_ = TorsionalDoFCardVector();
     model_compound_card_ = NULL;
     getline(model_block, line);
-    if(line.find("MODEL") != string::npos)
+    if(line.find("MODEL") != std::string::npos)
     {
-        vector<string> tokens = Split(line, " ");
+        std::vector<std::string> tokens = gmml::Split(line, " ");
         if(tokens.size() == 1 || tokens.at(1).empty())
-            model_serial_number_ = iNotSet;
+            model_serial_number_ = gmml::iNotSet;
         else
-            model_serial_number_ = ConvertString<int>(tokens.at(1));
+            model_serial_number_ = gmml::ConvertString<int>(tokens.at(1));
         getline(model_block,line);
         // COMPND
-        if(line.find("COMPND") != string::npos)
+        if(line.find("COMPND") != std::string::npos)
         {
-            model_compound_card_ = new PdbqtCompoundCard(line);
+            model_compound_card_ = new PdbqtFileSpace::PdbqtCompoundCard(line);
             getline(model_block, line);
         }
         // REMARK
-        while(line.find("REMARK") != string::npos)
+        while(line.find("REMARK") != std::string::npos)
         {
             PdbqtRemarkCard* remark = new PdbqtRemarkCard(line);
             remarks_.push_back(remark);
             getline(model_block, line);
         }
         // ROOT/ENDROOT/ATOM/HETATM/BRANCH/ENDBRANCH
-        while(line.find("ROOT") != string::npos || line.find("ATOM") != string::npos
-              || line.find("HETATM") != string::npos || line.find("ENDROOT") != string::npos
-              || line.find("BRANCH") != string::npos || line.find("ENDBRANCH") != string::npos)
+        while(line.find("ROOT") != std::string::npos || line.find("ATOM") != std::string::npos
+              || line.find("HETATM") != std::string::npos || line.find("ENDROOT") != std::string::npos
+              || line.find("BRANCH") != std::string::npos || line.find("ENDBRANCH") != std::string::npos)
         {
-            residue_set_block << line << endl;
+            residue_set_block << line << std::endl;
             getline(model_block, line);
         }
-        model_residue_set_ = new PdbqtModelResidueSet(residue_set_block);
+        model_residue_set_ = new PdbqtFileSpace::PdbqtModelResidueSet(residue_set_block);
         // TORSDOF
-        while(line.find("TORSDOF") != string::npos)
+        while(line.find("TORSDOF") != std::string::npos)
         {
             torsional_dof_cards_.push_back(new PdbqtTorsionalDoFCard(line));
             getline(model_block, line);
@@ -63,30 +61,30 @@ PdbqtModel::PdbqtModel(stringstream &model_block)
     else
     {
         model_serial_number_ = 1;
-        string temp = line;
+        std::string temp = line;
         // COMPND
-        if(line.find("COMPND") != string::npos)
+        if(line.find("COMPND") != std::string::npos)
         {
-            model_compound_card_ = new PdbqtCompoundCard(line);
+            model_compound_card_ = new PdbqtFileSpace::PdbqtCompoundCard(line);
             getline(model_block, line);
         }
         // REMARK
-        while(line.find("REMARK") != string::npos)
+        while(line.find("REMARK") != std::string::npos)
         {
             PdbqtRemarkCard* remark = new PdbqtRemarkCard(line);
             remarks_.push_back(remark);
             getline(model_block, line);
         }
         // ROOT/ENDROOT/ATOM/HETATM/BRANCH/ENDBRANCH
-        while(line.find("ATOM") != string::npos || line.find("ANISOU") != string::npos
-              || line.find("TER") != string::npos || line.find("HETATM") != string::npos)
+        while(line.find("ATOM") != std::string::npos || line.find("ANISOU") != std::string::npos
+              || line.find("TER") != std::string::npos || line.find("HETATM") != std::string::npos)
         {
-            residue_set_block << line << endl;
+            residue_set_block << line << std::endl;
             getline(model_block, line);
         }
-        model_residue_set_ = new PdbqtModelResidueSet(residue_set_block);
+        model_residue_set_ = new PdbqtFileSpace::PdbqtModelResidueSet(residue_set_block);
         // TORSDOF
-        while(line.find("TORSDOF") != string::npos)
+        while(line.find("TORSDOF") != std::string::npos)
         {
             torsional_dof_cards_.push_back(new PdbqtTorsionalDoFCard(line));
             getline(model_block, line);
@@ -101,11 +99,11 @@ int PdbqtModel::GetModelSerialNumber()
 {
     return model_serial_number_;
 }
-PdbqtCompoundCard* PdbqtModel::GetModelCompoundCard()
+PdbqtFileSpace::PdbqtCompoundCard* PdbqtModel::GetModelCompoundCard()
 {
     return model_compound_card_;
 }
-PdbqtModelResidueSet* PdbqtModel::GetModelResidueSet()
+PdbqtFileSpace::PdbqtModelResidueSet* PdbqtModel::GetModelResidueSet()
 {
     return model_residue_set_;
 }
@@ -125,11 +123,11 @@ void PdbqtModel::SetModelSerialNumber(int model_serial_number)
 {
     model_serial_number_ = model_serial_number;
 }
-void PdbqtModel::SetModelCompundCard(PdbqtCompoundCard* model_compound_card)
+void PdbqtModel::SetModelCompundCard(PdbqtFileSpace::PdbqtCompoundCard* model_compound_card)
 {
     model_compound_card_ = model_compound_card;
 }
-void PdbqtModel::SetModelResidueSet(PdbqtModelResidueSet* model_residue_set)
+void PdbqtModel::SetModelResidueSet(PdbqtFileSpace::PdbqtModelResidueSet* model_residue_set)
 {
     model_residue_set_ = model_residue_set;
 }
@@ -165,20 +163,19 @@ void PdbqtModel::AddTorsionalDoFCard(PdbqtTorsionalDoFCard *torsional_dof_cards)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtModel::Print(ostream &out)
+void PdbqtModel::Print(std::ostream &out)
 {
-    out << "====================== Compound Card =====================" << endl;
+    out << "====================== Compound Card =====================" << std::endl;
     model_compound_card_->Print(out);
-    out << "====================== Remarks =====================" << endl;
+    out << "====================== Remarks =====================" << std::endl;
     for(RemarkCardVector::iterator it = remarks_.begin(); it != remarks_.end(); it++)
         (*it)->Print(out);
-    out << endl
-        << "====================== Residue Set =====================" << endl;
+    out << std::endl
+        << "====================== Residue Set =====================" << std::endl;
     model_residue_set_->Print(out);
-    out << endl
-        << "====================== Torsional DOF =====================" << endl;
-    out << endl;
+    out << std::endl
+        << "====================== Torsional DOF =====================" << std::endl;
+    out << std::endl;
     for(TorsionalDoFCardVector::iterator it = torsional_dof_cards_.begin(); it != torsional_dof_cards_.end(); it++)
         (*it)->Print(out);
 }
-

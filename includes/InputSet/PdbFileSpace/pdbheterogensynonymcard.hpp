@@ -1,27 +1,21 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBHETEROGENSYNONYMCARD_HPP
-#define PDBHETEROGENSYNONYMCARD_HPP
+#ifndef PDBHETEROGENSYNONYM_HPP
+#define PDBHETEROGENSYNONYM_HPP
 
 #include <string>
-#include <map>
-#include <sstream>
+#include <vector>
 #include <iostream>
 
 namespace PdbFileSpace
 {
-    class PdbHeterogenSynonym;
     class PdbHeterogenSynonymCard
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            /*! \typedef
-              * Mapping between heterogen identifier and heterogen synonym
-              */
-            typedef std::map<std::string, PdbHeterogenSynonym*> HeterogenSynonymMap;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -32,14 +26,15 @@ namespace PdbFileSpace
             PdbHeterogenSynonymCard();
             /*! \fn
               * Constructor with required parameters
-              * @param record_name
+              * @param heterogen_identifier
+              * @param heterogen_synonyms
               */
-            PdbHeterogenSynonymCard(const std::string& record_name);
+            PdbHeterogenSynonymCard(const std::string& heterogen_identifier, const std::vector<std::string>& heterogen_synonyms);
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param specification_block
               */
-            PdbHeterogenSynonymCard(std::stringstream& stream_block);
+            PdbHeterogenSynonymCard(std::stringstream& specification_block);
 
             //////////////////////////////////////////////////////////
             //                         ACCESSOR                     //
@@ -48,15 +43,15 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * An accessor function in order to access to the record name in a heterogen synonym card
-              * @return record_name_ attribute of the current object of this class
+             * An accessor function in order to access to the heterogen identifier in a heterogen synonym
+              * @return heterogen_identifier_ attribute of the current object of this class
               */
-            std::string GetRecordName();
+            std::string GetHeterogenIdentifier();
             /*! \fn
-              * An accessor function in order to access to the heterogen synonym in a heterogen synonym card
-              * @return heterogen_synonym_ attribute of the current object of this class
+              * An accessor function in order to access to the list of heterogen synonyms in a heterogen synonym
+              * @return heterogen_synonyms_ of the current object of this class
               */
-            HeterogenSynonymMap GetHeterogensSynonyms();
+            std::vector<std::string> GetHeterogenSynonymCards();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                          MUTATOR                     //
@@ -65,11 +60,23 @@ namespace PdbFileSpace
               * @{
               */
             /*! \fn
-              * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current heterogen synonym card
-              * @param record_name The record name of the current object
+              * A mutator function in order to set the heterogen identifier of the current object
+              * Set the heterogen_identifier_ attribute of the current heterogen synonym
+              * @param heterogen_identifier The heterogen identifier of the current object
               */
-            void SetRecordName(const std::string record_name);
+            void SetHeterogenIdentifier(const std::string heterogen_identifier);
+            /*! \fn
+              * A mutator function in order to set the list of heterogen synonyms of the current object
+              * Set the heterogen_synonyms_ of the current heterogen synonym
+              * @param heterogen_synonyms The heterogen synonyms of the current object
+              */
+            void SetHeterogenSynonyms(const std::vector<std::string> heterogen_synonyms);
+            /*! \fn
+              * A function in order to add the heterogen synonyms to the current object
+              * Set the heterogen_synonyms_ of the current heterogen synonym
+              * @param heterogen_synonyms The heterogen synonyms of the current object
+              */
+            void AddHeterogenSynonym(const std::string heterogen_synonym);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -79,7 +86,7 @@ namespace PdbFileSpace
             //                      DISPLAY FUNCTION                //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the heterogen synonym card contents in a structural format
+              * A function to print out the heterogen synonym contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -89,8 +96,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                        ATTRIBUTES                    //
             //////////////////////////////////////////////////////////
-            std::string record_name_;                   /*!< Record name of a heterogen synonym card >*/
-            HeterogenSynonymMap heterogens_synonyms_;   /*!< Map of heterogen synonyms with heterogen identifier as key >*/
+            std::string heterogen_identifier_;              /*!< Hetrogen identifier >*/
+            std::vector<std::string> heterogen_synonyms_;   /*!< List of synonyms for a heterogen specified by its identifier >*/
     };
 }
-#endif // PDBHETEROGENSYNONYMCARD_HPP
+#endif // PDBHETEROGENSYNONYM_HPP

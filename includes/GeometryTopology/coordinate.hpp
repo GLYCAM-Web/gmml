@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 namespace GeometryTopology
 {
@@ -33,7 +34,7 @@ namespace GeometryTopology
               * Copy constructor
               * @param coordinate A coordinate to be copied to another instance
               */
-            Coordinate(const Coordinate& coordinate);            
+            Coordinate(const Coordinate& coordinate);
             Coordinate(Coordinate* coordinate);
 
 

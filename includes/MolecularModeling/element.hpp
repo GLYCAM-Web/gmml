@@ -17,6 +17,10 @@ namespace MolecularModeling
               * Default constructor
               */
             Element();
+            ~Element();
+            Element(Element& element);
+            Element(Element *element);
+
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

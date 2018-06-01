@@ -7,6 +7,7 @@
 
 #include "../MolecularModeling/assembly.hpp"
 #include "../utils.hpp"
+#include "../MolecularModeling/residue.hpp"
 
 namespace Glycan
 {
@@ -19,10 +20,12 @@ namespace Glycan
             std::string oligosaccharide_linkages_;              /*!< The complete sequence of the linkages of the oligosacchride >*/
             std::string oligosaccharide_residue_linkages_;      /*!< The complete sequence of the residue linkages of the oligosacchride >*/
             std::string terminal_;                              /*!< The terminal residue name of the oligosacchride >*/
+            std::string oligosaccharide_terminal_;              /*!< The terminal residue name of the oligosacchride with linkage >*/
+            float oligosaccharide_b_factor_;                     /*!< The b_factor for the oligosaccharide >*/
 
             /*! \fn
               * A function to print out the oligosacchride name and the linkages between its monosacchrides
-              * Print out the information in a defined structure              
+              * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
             void Print(std::ostream& out = std::cout)
@@ -40,6 +43,7 @@ namespace Glycan
                         ss << "2-" << terminal_;
                 }
                 oligosaccharide_name_ = ss.str();
+                oligosaccharide_terminal_ = oligosaccharide_name_;
                 bool is_cycle = false;
                 this->GenerateNameLinkage(oligosaccharide_name_, oligosaccharide_linkages_, linkage_index, root_->mono_id, is_cycle);
 
@@ -79,21 +83,69 @@ namespace Glycan
                                                                     ///-> first_mono == RAM(401_A)C1
                     end_index = link_left_side.find_last_of(")");
                     first_residue_of_linkage = link_left_side.substr(0, end_index + 1); ///filtering out atom name. e.g. RAM(401_A)
+                    std::string oligo_temp = oligo_name_tokens.at(i);
+                    residue_links_stream << updateResidueLink(oligo_temp, first_residue_of_linkage) << "-";
 
-                    if(oligo_name_tokens.at(i).find("[") != std::string::npos)
-                        residue_links_stream << "[" << first_residue_of_linkage;
-                    if(oligo_name_tokens.at(i).find("]") != std::string::npos)
-                        residue_links_stream << "]-" << first_residue_of_linkage;
-                    if(i < oligo_linkages_tokens.size() - 1)
-                        residue_links_stream << first_residue_of_linkage << "-";
-                    else
+                    if (i >= oligo_linkages_tokens.size() - 1)
                     {
                         link_right_side = link_tokens.at(2);     ///Getting the second residue of linkage in the line. e.g. {1}NAG(1521_A)C1-NAG(1520_A)C4, Glycosidic linkage: NAG(1520_A)O4
                                                                         ///-> second_mono == NAG(1520_A)C4
                         end_index = link_right_side.find_last_of(")");
                         second_residue_of_linkage = link_right_side.substr(0, end_index + 1); ///filtering out atom name. e.g. NAG(1520_A)
+                        std::string oligo_temp = oligo_name_tokens.at(i+1);
+                        residue_links_stream << updateResidueLink(oligo_temp, second_residue_of_linkage);
+                    }
+                }
 
-                        residue_links_stream << first_residue_of_linkage << "-" << second_residue_of_linkage;
+                std::string root_residue_name = "";
+                std::string root_residue_number = "";
+                std::vector<MolecularModeling::Atom*> mono_ring_atoms = root_->cycle_atoms_;
+                if(mono_ring_atoms.at(0) != NULL)
+                {
+                    std::string atom_id = mono_ring_atoms.at(0)->GetId();
+                    std::vector<std::string> atom_id_tokens = gmml::Split(atom_id, "_");
+                    root_residue_name = atom_id_tokens.at(2);
+                    root_residue_number = atom_id_tokens.at(4);
+                    if(oligo_linkages_tokens.size() == 0 && oligosaccharide_name_.compare("") != 0){
+                        if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
+                            residue_links_stream << root_residue_name << "(" << root_residue_number  << "_" << root_->bfmp_ring_conformation_ << ")" ;
+                        else
+                            residue_links_stream << root_residue_name << "(" << root_residue_number <<  "_" << atom_id_tokens.at(3) << "_" << root_->bfmp_ring_conformation_ << ")" ;
+                     }
+                }
+
+                if(terminal_.compare("") != 0)
+                {
+                    std::vector<MolecularModeling::Atom*> root_anomeric_atom = root_->side_atoms_.at(0);
+                    // @TODO Where should we check for the terminal atom?
+                    if(root_anomeric_atom.at( 0 ) != NULL || root_anomeric_atom.at( 1 ) != NULL)
+                    {
+                        std::string atom_id = "";
+                        if( root_anomeric_atom.at( 0 ) != NULL ) {
+                            atom_id = root_anomeric_atom.at( 0 )->GetId();
+                        } else if( root_anomeric_atom.at( 1 ) != NULL ) {
+                            atom_id = root_anomeric_atom.at( 1 )->GetId();
+                        }
+                        std::vector<std::string> atom_id_tokens = gmml::Split(atom_id, "_");
+                        std::stringstream vec_size;
+                        vec_size << atom_id_tokens.size();
+                        std::string terminal_residue_name = atom_id_tokens.at(2);
+                        std::string terminal_residue_number = atom_id_tokens.at(4);
+                        if (root_residue_name.compare(terminal_residue_name) != 0 && root_residue_number.compare(terminal_residue_number) != 0)
+                        {
+                            //Additional underscore(_) symbol is added at the end as terminal doesn't have BFMP
+                            //It makes it easier to remove/add BFMP conformation from the whole oligo-sequence
+                            //e.g. FUL(404_D_1C4)-NAG(401_D_2d5)-ASN(80_D_)
+                            //As we have underscore symbol at the end of terminal, we can remove everything after last _ in each residue of oligo
+                            //oligo-seq without BFMP would look like: FUL(404_D)-NAG(401_D)-ASN(80_D)
+                            if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
+                            {
+                                residue_links_stream << "-" << terminal_residue_name << "(" << terminal_residue_number << "_" << ")" ;
+                            }
+                            else{
+                                residue_links_stream << "-" << terminal_residue_name << "(" << terminal_residue_number <<  "_" << atom_id_tokens.at(3) << "_" << ")" ;
+                            }
+                        }
                     }
                 }
                 oligosaccharide_residue_linkages_ = residue_links_stream.str();
@@ -102,10 +154,41 @@ namespace Glycan
                 out << oligosaccharide_name_;
                 gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_name_);
                 out << std::endl;
-                out << oligosaccharide_linkages_;
                 gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);
-                out << std::endl;
-//                out << oligosaccharide_residue_linkages_ << std::endl;
+            }
+
+
+            /*! \fn
+              * A function to update residueLinkStream based on current oligosaccharide
+              * @param oligo_temp The current oligosaccharide of oligo-sequence
+              * @param residue_of_linkage The PDB-ID of current residue
+              */
+            std::string updateResidueLink(std::string oligo_temp, std::string residue_of_linkage){
+                std::stringstream residue_link;
+                for (unsigned int number=0; number < oligo_temp.size(); number++)
+                {
+                    if (isdigit (oligo_temp[number])){
+                        std::string s(1, oligo_temp[number]);
+                        gmml::FindReplaceString(oligo_temp, s, "");
+                    }
+                }
+                if(oligo_temp.find("[") != std::string::npos && oligo_temp.find("]") != std::string::npos)
+                {
+                    if (oligo_temp.find("[") < oligo_temp.find("]")){
+                        residue_link << residue_of_linkage;
+                    }
+                    else{
+                        if (oligo_temp.find("[") == 1 && oligo_temp.find("]") == 0)
+                            residue_link << "]-[" << residue_of_linkage;
+                    }
+                }
+                else if(oligo_temp.find("]") != std::string::npos)
+                    residue_link << "]-" << residue_of_linkage;
+                else if(oligo_temp.find("[") != std::string::npos)
+                    residue_link << "[" << residue_of_linkage;
+                else
+                    residue_link << residue_of_linkage;
+                return residue_link.str();
             }
 
             /*! \fn
@@ -141,6 +224,8 @@ namespace Glycan
                     Monosaccharide* mono1 = root_;
                     Oligosaccharide* child_oligo = child_oligos_.at(0);
                     Monosaccharide* mono2 = child_oligo->root_;
+                    std::string mono1_bfmp = mono1->bfmp_ring_conformation_;
+                    std::string mono2_bfmp = mono2->bfmp_ring_conformation_;
 
                     std::vector<std::string> tokens = gmml::Split(child_oligos_linkages_.at(0), "-");
 
@@ -166,9 +251,9 @@ namespace Glycan
                                 std::vector<std::string> atom_id_tokens = gmml::Split(from, "_");
                                 std::vector<std::string> glycosidic_linkage_id_tokens = gmml::Split(tokens.at(1), "_");
                                 if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")"  << atom_id_tokens.at(0);
+                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) <<  "_" << mono1_bfmp << ")"  << atom_id_tokens.at(0);
                                 else
-                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) <<  "_" << atom_id_tokens.at(3) << ")"  << atom_id_tokens.at(0);
+                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) <<  "_" << atom_id_tokens.at(3) <<  "_" << mono1_bfmp << ")"  << atom_id_tokens.at(0);
 
                                 if(glycosidic_linkage_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                     res_linkage1 <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << ")" << glycosidic_linkage_id_tokens.at(0) << std::endl;
@@ -192,9 +277,9 @@ namespace Glycan
                                 std::vector<std::string> atom_id_tokens = gmml::Split(from, "_");
                                 std::vector<std::string> glycosidic_linkage_id_tokens = gmml::Split(tokens.at(1), "_");
                                 if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
+                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) <<  "_" << mono1_bfmp << ")" << atom_id_tokens.at(0);
                                 else
-                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                    res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) <<  "_" << mono1_bfmp << ")" << atom_id_tokens.at(0);
 
                                 if(glycosidic_linkage_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                     res_linkage1 <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << ")" << glycosidic_linkage_id_tokens.at(0) << std::endl;
@@ -228,9 +313,9 @@ namespace Glycan
                                 link << gmml::ConvertT(to_index);
                                 std::vector<std::string> atom_id_tokens = gmml::Split(to, "_");
                                 if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
+                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) <<  "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                 else
-                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) <<  "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                 break;
                             }
                         }
@@ -247,9 +332,9 @@ namespace Glycan
                                 link << gmml::ConvertT(to_index);
                                 std::vector<std::string> atom_id_tokens = gmml::Split(to, "_");
                                 if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
+                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) <<  "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                 else
-                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                    res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) <<  "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                 break;
                             }
                         }
@@ -339,6 +424,9 @@ namespace Glycan
                         Oligosaccharide* child_oligo = child_oligos_.at(index_min);
                         Monosaccharide* mono2 = child_oligo->root_;
 
+                        std::string mono1_bfmp = mono1->bfmp_ring_conformation_;
+                        std::string mono2_bfmp = mono2->bfmp_ring_conformation_;
+
                         std::vector<std::string> tokens = gmml::Split(child_oligos_linkages_.at(index_min), "-");
 
                         std::stringstream link1;
@@ -363,9 +451,9 @@ namespace Glycan
                                     std::vector<std::string> atom_id_tokens = gmml::Split(from, "_");
                                     std::vector<std::string> glycosidic_linkage_id_tokens = gmml::Split(tokens.at(1), "_");
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")"  << atom_id_tokens.at(0);
+                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << mono1_bfmp << ")"  << atom_id_tokens.at(0);
                                     else
-                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << "_" << mono1_bfmp << ")" << atom_id_tokens.at(0);
 
                                     if(glycosidic_linkage_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                         res_linkage1 <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << ")" << glycosidic_linkage_id_tokens.at(0) << std::endl;
@@ -389,9 +477,9 @@ namespace Glycan
                                     std::vector<std::string> atom_id_tokens = gmml::Split(from, "_");
                                     std::vector<std::string> glycosidic_linkage_id_tokens = gmml::Split(tokens.at(1), "_");
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
+                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << mono1_bfmp << ")" << atom_id_tokens.at(0);
                                     else
-                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage1 << "-" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << "_" << mono1_bfmp << ")" << atom_id_tokens.at(0);
 
                                     if(glycosidic_linkage_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                                         res_linkage1 <<  ", Glycosidic linkage: " << glycosidic_linkage_id_tokens.at(2) << "(" << glycosidic_linkage_id_tokens.at(4) << ")" << glycosidic_linkage_id_tokens.at(0) << std::endl;
@@ -425,9 +513,9 @@ namespace Glycan
                                     link << gmml::ConvertT(to_index);
                                     std::vector<std::string> atom_id_tokens = gmml::Split(to, "_");
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                     else
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                     break;
                                 }
                             }
@@ -444,9 +532,9 @@ namespace Glycan
                                     link << gmml::ConvertT(to_index);
                                     std::vector<std::string> atom_id_tokens = gmml::Split(to, "_");
                                     if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                     else
-                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << ")" << atom_id_tokens.at(0);
+                                        res_linkage << "{" << i+1 << "}" << atom_id_tokens.at(2) << "(" << atom_id_tokens.at(4) << "_" << atom_id_tokens.at(3) << "_" << mono2_bfmp << ")" << atom_id_tokens.at(0);
                                     break;
                                 }
                             }

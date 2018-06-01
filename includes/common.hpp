@@ -9,6 +9,7 @@
 
 #include "GeometryTopology/coordinate.hpp"
 #include "Glycan/sugarname.hpp"
+#include "MolecularModeling/atom.hpp"
 
 namespace gmml
 {
@@ -20,6 +21,7 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
     typedef GeometryTopology::Coordinate Vector;
+	typedef std::vector<MolecularModeling::Atom*> AtomVector;
 
     //*******************************************
 
@@ -35,8 +37,8 @@ namespace gmml
             int index_;
     };
 
-    struct AmberGlycamMap{
-            std::string amber_name_;
+    struct AminoacidGlycamMap{
+            std::string aminoacid_name_;
             std::string glycam_name_;
     };
 
@@ -90,6 +92,14 @@ namespace gmml
         {-72.0, 9.0, -72.0, -62.0, -61.0},
         {-43.0, 44.0, -62.0, -178.0, 62.0}
     };
+
+    const std::string PROTEINS[] = {  "ALA", "ASP", "ASN", "ARG", "GLY",
+                                      "GLU", "GLN", "PRO", "HIS", "CYS",
+                                      "VAL", "LEU", "THR", "SER", "LYS",
+                                      "MET", "TYR", "TRP", "PHE", "SEC",
+                                      "ILE", "CYX", "HID", "HIE" };
+
+    const int PROTEINSSIZE = ( sizeof( PROTEINS ) / sizeof( PROTEINS[ 0 ] ) );
 
     const AtomTypesInfo ATOMTYPESINFOLOOKUP[] = {
         {"","",""},
@@ -353,14 +363,14 @@ namespace gmml
 
     const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));
 
-    const AmberGlycamMap AMBERGLYCAMLOOKUP[] = {
+    const AminoacidGlycamMap AMINOACIDGLYCAMLOOKUP[] = {
         {"", ""},
         {"ASN", "NLN"},
         {"THR", "OLT"},
         {"SER", "OLS"}
     };
 
-    const int AMBERGLYCAMLOOKUPSIZE = (sizeof(AMBERGLYCAMLOOKUP)/sizeof(AMBERGLYCAMLOOKUP[0]));
+    const int AMINOACIDGLYCAMLOOKUPSIZE = (sizeof(AMINOACIDGLYCAMLOOKUP)/sizeof(AMINOACIDGLYCAMLOOKUP[0]));
 
     const Glycan::SugarName SUGARNAMELOOKUP[] = {
         /* {  0 = "chemical_code_string_",
@@ -648,10 +658,10 @@ namespace gmml
 
         {"", "", "", "", "", "", "", "", "", ""},
         ///Added to fix some warnings. Probably need to be moved to the correct subcategory.
-        {"_2_4^3P_a^+1A", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "a-D-glucuronic acid", "DGlcpAa" "GCU"},
-        {"_2_4^3P^a^+1A", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "b-D-glucoronic acid", "DGlcpAb" "BDP,GCU"},
+        {"_2_4^3P_a^+1A", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "a-D-glucuronic acid", "DGlcpAa", "GCU"},
+        {"_2_4^3P^a^+1A", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "b-D-glucoronic acid", "DGlcpAb", "BDP,GCU"},
         {"_3_4^2MeP_+1d^a", "a-L-fucopyranose", "LFUcpa", "L", "", "P", "a", "2-O-methyl-a-L-fucopyranose", "LFucp[2Me]a", "MXZ"},
-        {"_3_4^2MeP_+1d_a", "b-L-fucopyranose", "LFUcpb", "L", "", "P", "b", "2-O-methyl-b-L-fucopyranose", "LFucp[2Me]b", "MXY"},
+        {"_3_4^2MeP_+1d_a",  "b-L-fucopyranose", "LFUcpb", "L", "", "P", "b", "2-O-methyl-b-L-fucopyranose", "LFucp[2Me]b", "MXY"},
         {"_2NAc^3^4SP^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "4-O-sulfo-N-acetyl-b-D-galactosamine", "DGalpNAc[4S]b", "ASG"},
         {"_2NAc^3^4SP_a^+1", "a-D-galactopyranose", "DGalpa", "D", "", "P", "a", "4-O-sulfo-N-Acetyl-a-D-galactosamine", "DGalpNAc[4S]a", "NGK"},
         {"_2NAc_4^3P_a^+1", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "N-acetyl-a-D-glucosamine", "DGlcpNAca", "NDG"},
@@ -684,12 +694,12 @@ namespace gmml
         ///Nine carbons
         {"_3^42dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosate", "DKDNpa", ""},
         {"_3^42dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosate", "DKDNpb", ""},
-        {"_3^4NAc2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminate", "DNeupNAca", "SIA"},
-        {"_3^4NAc2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminate", "DNeupNAcb", ""},
+        {"_3^4NAc2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminate", "DNeup5Aca", "SIA"},
+        {"_3^4NAc2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminate", "DNeup5Acb", ""},
         {"_3Ac^4N2dP_+1R_+2R_+3^-1A_a", "", "", "D", "", "P", "a", "4-O-acetyl-a-D-neuraminate", "DNeup4Aca", ""},
         {"_3Ac^4N2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "4-O-acetyl-b-D-neuraminate", "DNeup4Acb", ""},
-        {"_3^4NGc2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminate", "DNeupNGca", ""},
-        {"_3^4NGc2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminate", "DNeupNGcb", ""},
+        {"_3^4NGc2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminate", "DNeup5Gca", ""},
+        {"_3^4NGc2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminate", "DNeup5Gcb", ""},
         {"_3^4N2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "a-D-neuraminate", "DNeupa", ""},
         {"_3^4N2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "b-D-neuraminate", "DNeupb", ""},
 
@@ -719,12 +729,12 @@ namespace gmml
         ///Nine carbons
         {"_4^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-nonulopyranosate", "LKLNpa", ""},
         {"_4^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-nonulopyranosate", "LKLNpb", ""},
-        {"_4NAc^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-acetyl-a-L-neuraminate",	"LNeupNAca", ""},
-        {"_4NAc^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-acetyl-b-L-neuraminate",	"LNeupNAcb", ""},
+        {"_4NAc^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-acetyl-a-L-neuraminate",	"LNeup5Aca", ""},
+        {"_4NAc^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-acetyl-b-L-neuraminate",	"LNeup5Acb", ""},
         {"_4N^3Ac2dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "4-O-acetyl-a-L-neuraminate", "LNeup4Aca", ""},
         {"_4N^3Ac2dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "4-O-acetyl-b-L-neuraminate", "LNeup4Acb", ""},
-        {"_4NGc^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-glycolyl-a-L-neuraminate", "LNeupNGca", ""},
-        {"_4NGc^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminate", "LNeupNGcb", ""},
+        {"_4NGc^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-glycolyl-a-L-neuraminate", "LNeup5Gca", ""},
+        {"_4NGc^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminate", "LNeup5Gcb", ""},
         {"_4N^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "a-L-neuraminate", "LNeupa", ""},
         {"_4N^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminate", "LNeupb", ""},
 
@@ -746,12 +756,12 @@ namespace gmml
         ///Nine carbons
         {"_3^42dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosate", "DKDNpa", ""},
         {"_3^42dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosate", "DKDNpb", ""},
-        {"_3^4NAc2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminate", "DNeupNAca", ""},
-        {"_3^4NAc2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminate", "DNeupNAcb", ""},
+        {"_3^4NAc2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminate", "DNeup5Aca", ""},
+        {"_3^4NAc2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminate", "DNeup5Acb", ""},
         {"_3Ac^4N2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "4-O-acetyl-a-D-neuraminate", "DNeup4Aca", ""},
         {"_3Ac^4N2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "4-O-acetyl-b-D-neuraminate", "DNeup4Acb", ""},
-        {"_3^4NGc2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminate", "DNeupNGca", ""},
-        {"_3^4NGc2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminate", "DNeupNGcb", ""},
+        {"_3^4NGc2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminate", "DNeup5Gca", ""},
+        {"_3^4NGc2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminate", "DNeup5Gcb", ""},
         {"_3^4N2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "a-D-neuraminate", "Neupa", ""},
         {"_3^4N2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "b-D-neuraminate", "Neupb", ""},
 
@@ -772,17 +782,17 @@ namespace gmml
         ///Nine carbons
         {"_4^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-nonulopyranosate", "LKDNpa", ""},
         {"_4^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-nonulopyranosate", "LKDNpb", ""},
-        {"_4NAc^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-acetyl-a-L-neuraminate", "LNeupNAca", ""},
-        {"_4NAc^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-acetyl-b-L-neuraminate", "LNeupNAcb", ""},
+        {"_4NAc^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-acetyl-a-L-neuraminate", "LNeup5Aca", ""},
+        {"_4NAc^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-acetyl-b-L-neuraminate", "LNeup5Acb", ""},
         {"_4N^3Ac2dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "4-O-acetyl-a-L-neuraminate", "LNeup4Aca", ""},
         {"_4N^3Ac2dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "4-O-acetyl-b-L-neuraminate", "LNeup4Acb", ""},
-        {"_4NGc^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-glycolyl-a-L-neuraminate", "LNeupNGca", ""},
-        {"_4NGc^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminate", "LNeupNGcb", ""},
+        {"_4NGc^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-glycolyl-a-L-neuraminate", "LNeup5Gca", ""},
+        {"_4NGc^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminate", "LNeup5Gcb", ""},
         {"_4N^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "a-L-neuraminate", "LNeupa", ""},
         {"_4N^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminate", "LNeupb", ""}
     };
 
-        const int COMPLEXSUGARNAMELOOKUPSIZE = (sizeof(COMPLEXSUGARNAMELOOKUP)/sizeof(COMPLEXSUGARNAMELOOKUP[0]));
+    const int COMPLEXSUGARNAMELOOKUPSIZE = (sizeof(COMPLEXSUGARNAMELOOKUP)/sizeof(COMPLEXSUGARNAMELOOKUP[0]));
 
     /*! \enum
       * Enumerator to possible n chain termination
@@ -914,9 +924,12 @@ namespace gmml
     {
         OntPDB,
         OntResidue,
+        OntSequenceResidue,
         OntOligosaccharide,
+        OntTerminal,
         OntNote,
         OntLinkage,
+        OntSequenceLinkage,
         OntMonosaccharide,
         OntSugarName,
         OntAtom

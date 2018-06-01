@@ -1,22 +1,48 @@
-
 #include "../../includes/MolecularModeling/element.hpp"
 
-using namespace std;
-using namespace MolecularModeling;
+using MolecularModeling::Element;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 Element::Element() {}
-
+Element::~Element(){}
+Element ::Element(Element *element)
+{
+    this->symbol_=element->GetSymbol();
+    this->name_=element->GetName();
+    this->mass_=element->GetMass();
+    this->exact_mass_=element->GetExactMass();
+    this->ionization_energy_=element->GetIonizationEnergy();
+    this->election_affinity_=element->GetElectionAffinity();
+    this->election_negativity_=element->GetElectionNegativity();
+    this->covalent_radius_=element->GetCovalentRadius();
+    this->van_der_waals_radius_=element->GetVanDerWaalsRadius();
+    this->boiling_point_=element->GetBoilingPoint();
+    this->melting_point_=element->GetMeltingPoint();
+}
+Element :: Element(Element& element)
+{
+    this->symbol_=element.GetSymbol();
+    this->name_=element.GetName();
+    this->mass_=element.GetMass();
+    this->exact_mass_=element.GetExactMass();
+    this->ionization_energy_=element.GetIonizationEnergy();
+    this->election_affinity_=element.GetElectionAffinity();
+    this->election_negativity_=element.GetElectionNegativity();
+    this->covalent_radius_=element.GetCovalentRadius();
+    this->van_der_waals_radius_=element.GetVanDerWaalsRadius();
+    this->boiling_point_=element.GetBoilingPoint();
+    this->melting_point_=element.GetMeltingPoint();
+}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string Element::GetSymbol()
+std::string Element::GetSymbol()
 {
     return symbol_;
 }
-string Element::GetName()
+std::string Element::GetName()
 {
     return name_;
 }
@@ -38,7 +64,7 @@ double Element::GetElectionAffinity()
 }
 double Element::GetElectionNegativity()
 {
-    return election_affinity_;
+    return election_negativity_;
 }
 double Element::GetCovalentRadius()
 {
@@ -60,12 +86,12 @@ double Element::GetMeltingPoint()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void Element::SetSymbol(string symbol)
+void Element::SetSymbol(std::string symbol)
 {
     symbol_ = symbol;
 }
 
-void Element::SetName(string name)
+void Element::SetName(std::string name)
 {
     name_ = name;
 }
@@ -109,7 +135,19 @@ void Element::SetMeltingPoint(double melting_point)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Element::Print(ostream &out)
+void Element::Print(std::ostream &out)
 {
-}
 
+    out << "*******Printing Element :" << name_ << " *******" << std::endl;
+    out << "Element symbol: " << symbol_<< std::endl;
+    out << "Element name: " << name_<< std::endl;
+    out << "Element mass: " << mass_<< std::endl;
+    out << "Element exact mass: " << exact_mass_<< std::endl;
+    out << "Element ionization energy: " << ionization_energy_<< std::endl;
+    out << "Element election affinity: " << election_affinity_<< std::endl;
+    out << "Element election negativity: " << election_negativity_<< std::endl;
+    out << "Element covalent radius: " << covalent_radius_<< std::endl;
+    out << "Element van der waals radius: " << van_der_waals_radius_<< std::endl;
+    out << "Element boiling point: " << boiling_point_<< std::endl;
+    out << "Element melting point: " << melting_point_<< std::endl;
+}

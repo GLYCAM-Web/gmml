@@ -2,30 +2,27 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbFileSpace;
-using namespace gmml;
-
+using PdbFileSpace::PdbNumModelCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbNumModelCard::PdbNumModelCard() : record_name_("NUMMDL"), number_of_models_(0) {}
-PdbNumModelCard::PdbNumModelCard(const string &record_name, int number_of_models) : record_name_(record_name), number_of_models_(number_of_models) {}
+PdbNumModelCard::PdbNumModelCard(const std::string &record_name, int number_of_models) : record_name_(record_name), number_of_models_(number_of_models) {}
 
-PdbNumModelCard::PdbNumModelCard(stringstream& stream_block)
+PdbNumModelCard::PdbNumModelCard(std::stringstream& stream_block)
 {
-    string line;
+    std::string line;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
-        Trim(record_name_);
+        gmml::Trim(record_name_);
         if(line.substr(10,4) == "    ")
-            number_of_models_ = iNotSet;
+            number_of_models_ = gmml::iNotSet;
         else
-            number_of_models_ = ConvertString<int>(line.substr(10,4));
+            number_of_models_ = gmml::ConvertString<int>(line.substr(10,4));
 
         getline(stream_block, line);
         temp = line;
@@ -35,7 +32,7 @@ PdbNumModelCard::PdbNumModelCard(stringstream& stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbNumModelCard::GetRecordName()
+std::string PdbNumModelCard::GetRecordName()
 {
     return record_name_;
 }
@@ -48,7 +45,7 @@ int PdbNumModelCard::GetNumberOfModels()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbNumModelCard::SetRecordName(const string record_name)
+void PdbNumModelCard::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -65,13 +62,13 @@ void PdbNumModelCard::SetNumberOfModels(int number_of_models)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbNumModelCard::Print(ostream &out)
+void PdbNumModelCard::Print(std::ostream &out)
 {
     out << "Record Name: " << record_name_
         << ", Number of Models: ";
-    if(number_of_models_ != iNotSet)
+    if(number_of_models_ != gmml::iNotSet)
         out << number_of_models_;
     else
         out << " ";
-    out << endl << endl;
+    out << std::endl << std::endl;
 }

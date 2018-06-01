@@ -1004,8 +1004,8 @@ int main(int argc, char *argv[])
 //        pdb_file->Write("pdbqt_file.pdb");
 
         Assembly* temp = new Assembly();
-        CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree prep_residues =
-                CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree();
+        CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree prep_residues =
+                CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree();
         if(temp->CheckCondensedSequenceSanity(argv[1], prep_residues))
             temp->BuildAssemblyFromCondensedSequence(argv[1], argv[2], argv[3], true);
         temp->SetSourceFile(argv[2]);
@@ -1048,8 +1048,8 @@ int main(int argc, char *argv[])
     else
     {
         Assembly* temp = new Assembly();
-        CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree prep_residues =
-                CondensedSequenceSpace::CondensedSequence::CondensedSequenceAmberPrepResidueTree();
+        CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree prep_residues =
+                CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree();
         if(temp->CheckCondensedSequenceSanity(argv[1], prep_residues))
         {
             temp->BuildAssemblyFromCondensedSequence(argv[1], argv[2], argv[3], true);

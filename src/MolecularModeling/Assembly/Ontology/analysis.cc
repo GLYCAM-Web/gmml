@@ -12,7 +12,7 @@
 #include "../../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -29,17 +29,17 @@
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblink.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblinkresidue.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
@@ -68,26 +68,14 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(string atom_name1, string atom_name2, bool is_atom2_ring, string mono_name)
+std::vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, bool is_atom2_ring, std::string mono_name)
 {
-    stringstream query;
+    std::stringstream query;
     query << "sparql PREFIX : <http://gmmo.uga.edu/#> " <<
              "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " <<
              "PREFIX owl: <http://www.w3.org/2002/07/owl#> " <<
@@ -115,7 +103,7 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(strin
     query << "};";
 
     std::ofstream sparql;
-    sparql.open("bonds.sparql", fstream::app);
+    sparql.open("bonds.sparql", std::fstream::app);
     sparql << query.str();
     sparql.close();
 
@@ -123,18 +111,18 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(strin
     remove("bonds.sparql");
 
     ///Read query result file
-    string line;
-    ifstream in("bond_results.txt");
+    std::string line;
+    std::ifstream in("bond_results.txt");
     while (getline (in, line))///skip the first lines until the coordinates
     {
-        if(line.find("____") != string::npos)
+        if(line.find("____") != std::string::npos)
         {
             getline (in, line);
             break;
         }
     }
-    Coordinate* atom1_crd = new Coordinate();
-    Coordinate* atom2_crd = new Coordinate();
+    GeometryTopology::Coordinate* atom1_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* atom2_crd = new GeometryTopology::Coordinate();
     double distance = 0.0;
     double sum_of_bond_lengths = 0.0;
     double sum_of_bond_lengths_squared = 0.0;
@@ -143,14 +131,14 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(strin
     ///Reading the coordinates from the result file, calculating the distance
     while (getline (in, line) && !line.empty())
     {
-        vector<string> line_tokens = Split(line," ");
-        atom1_crd->SetX(ConvertString<double>(Split(line_tokens.at(0), ",").at(0)));
-        atom1_crd->SetY(ConvertString<double>(Split(line_tokens.at(1), ",").at(0)));
-        atom1_crd->SetZ(ConvertString<double>(line_tokens.at(2)));
+        std::vector<std::string> line_tokens = gmml::Split(line," ");
+        atom1_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(0), ",").at(0)));
+        atom1_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(1), ",").at(0)));
+        atom1_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(2)));
 
-        atom2_crd->SetX(ConvertString<double>(Split(line_tokens.at(3), ",").at(0)));
-        atom2_crd->SetY(ConvertString<double>(Split(line_tokens.at(4), ",").at(0)));
-        atom2_crd->SetZ(ConvertString<double>(line_tokens.at(5)));
+        atom2_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(3), ",").at(0)));
+        atom2_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(4), ",").at(0)));
+        atom2_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(5)));
 
         distance = atom1_crd->Distance(*(atom2_crd));
         sum_of_bond_lengths += distance;
@@ -163,16 +151,16 @@ vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(strin
     double mean  = sum_of_bond_lengths/number_of_bond_lengths;
     double standard_deviation = sqrt(((sum_of_bond_lengths_squared - ((sum_of_bond_lengths*sum_of_bond_lengths)/number_of_bond_lengths))/number_of_bond_lengths));
 
-    vector<double> statistics = vector<double>();
+    std::vector<double> statistics = std::vector<double>();
     statistics.push_back(mean);
     statistics.push_back(standard_deviation);
 
     return statistics;
 }
 
-vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(string atom_name1, string atom_name2, string atom_name3, bool is_atom3_ring, string mono_name)
+std::vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(std::string atom_name1, std::string atom_name2, std::string atom_name3, bool is_atom3_ring, std::string mono_name)
 {
-    stringstream query;
+    std::stringstream query;
     query << "sparql PREFIX : <http://gmmo.uga.edu/#> " <<
              "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " <<
              "PREFIX owl: <http://www.w3.org/2002/07/owl#> " <<
@@ -206,7 +194,7 @@ vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(string
     query << "};";
 
     std::ofstream sparql;
-    sparql.open("bond_angles.sparql", fstream::app);
+    sparql.open("bond_angles.sparql", std::fstream::app);
     sparql << query.str();
     sparql.close();
 
@@ -214,19 +202,19 @@ vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(string
     remove("bond_angles.sparql");
 
     ///Read query result file
-    string line;
-    ifstream in("bond_angle_results.txt");
+    std::string line;
+    std::ifstream in("bond_angle_results.txt");
     while (getline (in, line))///skip the first lines until the coordinates
     {
-        if(line.find("____") != string::npos)
+        if(line.find("____") != std::string::npos)
         {
             getline (in, line);
             break;
         }
     }
-    Coordinate* atom1_crd = new Coordinate();
-    Coordinate* atom2_crd = new Coordinate();
-    Coordinate* atom3_crd = new Coordinate();
+    GeometryTopology::Coordinate* atom1_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* atom2_crd = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* atom3_crd = new GeometryTopology::Coordinate();
     double bond_angle = 0.0;
     double sum_of_bond_angles = 0.0;
     double sum_of_bond_angles_squared = 0.0;
@@ -235,18 +223,18 @@ vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(string
     ///Reading the coordinates from the result file, calculating the distance
     while (getline (in, line) && !line.empty())
     {
-        vector<string> line_tokens = Split(line," ");
-        atom1_crd->SetX(ConvertString<double>(Split(line_tokens.at(0), ",").at(0)));
-        atom1_crd->SetY(ConvertString<double>(Split(line_tokens.at(1), ",").at(0)));
-        atom1_crd->SetZ(ConvertString<double>(line_tokens.at(2)));
+        std::vector<std::string> line_tokens = gmml::Split(line," ");
+        atom1_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(0), ",").at(0)));
+        atom1_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(1), ",").at(0)));
+        atom1_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(2)));
 
-        atom2_crd->SetX(ConvertString<double>(Split(line_tokens.at(3), ",").at(0)));
-        atom2_crd->SetY(ConvertString<double>(Split(line_tokens.at(4), ",").at(0)));
-        atom2_crd->SetZ(ConvertString<double>(line_tokens.at(5)));
+        atom2_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(3), ",").at(0)));
+        atom2_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(4), ",").at(0)));
+        atom2_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(5)));
 
-        atom3_crd->SetX(ConvertString<double>(Split(line_tokens.at(6), ",").at(0)));
-        atom3_crd->SetY(ConvertString<double>(Split(line_tokens.at(7), ",").at(0)));
-        atom3_crd->SetZ(ConvertString<double>(line_tokens.at(8)));
+        atom3_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(6), ",").at(0)));
+        atom3_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(7), ",").at(0)));
+        atom3_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(8)));
 
         bond_angle = CalculateBondAngleByCoordinates(atom1_crd, atom2_crd, atom3_crd);
         sum_of_bond_angles += bond_angle;
@@ -260,55 +248,55 @@ vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(string
     double mean  = sum_of_bond_angles/number_of_bond_angles;
     double standard_deviation = sqrt(((sum_of_bond_angles_squared - ((sum_of_bond_angles*sum_of_bond_angles)/number_of_bond_angles))/number_of_bond_angles));
 
-    vector<double> statistics = vector<double>();
+    std::vector<double> statistics = std::vector<double>();
     statistics.push_back(mean);
     statistics.push_back(standard_deviation);
 
     return statistics;
 }
 
-void Assembly::ExtractTorsionAnglesFromPDB(vector<string> amino_lib_files, string disaccharide)
+void Assembly::ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_files, std::string disaccharide)
 {
-    string pdb_file_path = this->GetSourceFile();
-    string pdb = pdb_file_path.substr(pdb_file_path.find_last_of("/") + 1, pdb_file_path.size());
+    std::string pdb_file_path = this->GetSourceFile();
+    std::string pdb = pdb_file_path.substr(pdb_file_path.find_last_of("/") + 1, pdb_file_path.size());
     OligosaccharideVector oligos = this->ExtractSugars(amino_lib_files);
     double phi_angle = 0.0;
     double psi_angle = 0.0;
     int link_index = disaccharide.find_first_of("-");
     char mono1_carbon_index = disaccharide.at(link_index - 1);
     char mono2_carbon_index = disaccharide.at(link_index + 1);
-    string first_mono = disaccharide.substr(0, link_index - 1);
-    string second_mono = disaccharide.substr(link_index + 2, disaccharide.size());
+    std::string first_mono = disaccharide.substr(0, link_index - 1);
+    std::string second_mono = disaccharide.substr(link_index + 2, disaccharide.size());
 
     std::ofstream out_file;
-    out_file.open("torsions.txt", fstream::app);
+    out_file.open("torsions.txt", std::fstream::app);
 
-    ifstream in("torsions.txt");///Checking if the file is empty
+    std::ifstream in("torsions.txt");///Checking if the file is empty
     size_t out_file_size = 0;
-    in.seekg(0,ios_base::end);
+    in.seekg(0,std::ios_base::end);
     out_file_size = in.tellg();
     in.close();
 
     if(out_file_size == 0)
-        out_file << left << setw(15) << "PDB" << setw(15) << "Phi Angle" << setw(15) << "Psi Angle" << setw(25) << "Pattern" << "Oligosaccharide" << endl;
+        out_file << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(25) << "Pattern" << "Oligosaccharide" << std::endl;
 
     for(OligosaccharideVector::iterator it = oligos.begin(); it != oligos.end(); it++)
     {
-        Oligosaccharide* oligo = (*it);
-        string oligo_name = oligo->oligosaccharide_name_;
+        Glycan::Oligosaccharide* oligo = (*it);
+        std::string oligo_name = oligo->oligosaccharide_name_;
         ///The root of the sequence, last monosaccharide in the oligo name. sequence created backward from root to first mono
-        if(oligo_name.compare("") != 0 && oligo_name.find(disaccharide) != string::npos)///found root and the oligo contains the disaccharide.
+        if(oligo_name.compare("") != 0 && oligo_name.find(disaccharide) != std::string::npos)///found root and the oligo contains the disaccharide.
         {
-            queue<Oligosaccharide*> oligo_queue;
+            std::queue<Glycan::Oligosaccharide*> oligo_queue;
             oligo_queue.push(oligo);
             if(MatchDisaccharide(oligo_queue, phi_angle, psi_angle, first_mono, mono1_carbon_index, second_mono, mono2_carbon_index))
-                out_file << left << setw(15) << pdb << setw(15) << ConvertRadian2Degree(phi_angle) << setw(15) << ConvertRadian2Degree(psi_angle) << setw(25) << disaccharide << oligo_name << endl;
+                out_file << std::left << std::setw(15) << pdb << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15) << gmml::ConvertRadian2Degree(psi_angle) << std::setw(25) << disaccharide << oligo_name << std::endl;
         }
     }
     out_file.close();
 }
 
-void Assembly::CalculateTorsionStatistics(string torsion_file, int low_range, int high_range)
+void Assembly::CalculateTorsionStatistics(std::string torsion_file, int low_range, int high_range)
 {
     /* Sample output of the function
    |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  1 |  0 |  0 |  0 |  0 |  0 |  0 |  0 | 180
@@ -331,29 +319,29 @@ Psi|  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 | 
    |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  2 |  0 |  5 |  1 |  0 |  0 |  0 |  0 |  0 |  0 | -180
 -180                                         Phi                                          180
      */
-    vector<vector<int> > psi_phi_matrix(18, vector<int> (18, 0)); ///matrix 18x18
-    vector<vector<int> > psi_omega_matrix(18, vector<int> (18, 0)); ///matrix 18x18
-    vector<vector<int> > phi_omega_matrix(18, vector<int> (18, 0)); ///matrix 18x18
+    std::vector<std::vector<int> > psi_phi_matrix(18, std::vector<int> (18, 0)); ///matrix 18x18
+    std::vector<std::vector<int> > psi_omega_matrix(18, std::vector<int> (18, 0)); ///matrix 18x18
+    std::vector<std::vector<int> > phi_omega_matrix(18, std::vector<int> (18, 0)); ///matrix 18x18
     int scale = (high_range - low_range) / 18; ///range of each cell in the matrix
     int x = 0;
     int y = 0;
     bool has_omega = false;
 
-    string line;
-    string input_file = "";
+    std::string line;
+    std::string input_file = "";
     if(torsion_file.compare("") == 0)
         input_file = "torsions.txt";
     else
         input_file = torsion_file;
 
-    ifstream in(input_file.c_str());
+    std::ifstream in(input_file.c_str());
     if (!in.is_open())
-        cout << "Error in reading the torsion results file" << endl;
+        std::cout << "Error in reading the torsion results file" << std::endl;
 
     ///Read the head of the file untill the data about torsions
     while (getline (in, line) )
     {
-        if(line.find("PDB") != string::npos)
+        if(line.find("PDB") != std::string::npos)
             break;
     }
 
@@ -361,19 +349,19 @@ Psi|  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 | 
     {
         x = 0;
         y = 0;
-        vector<string> line_tokens = Split(line, " ");
-        x = (abs(low_range) + ConvertString<double>(line_tokens.at(1))) / scale; ///x axis in psi_phi_matrix
-        y = (abs(low_range) + ConvertString<double>(line_tokens.at(2))) / scale; ///y axis in psi_phi_matrix
+        std::vector<std::string> line_tokens = gmml::Split(line, " ");
+        x = (abs(low_range) + gmml::ConvertString<double>(line_tokens.at(1))) / scale; ///x axis in psi_phi_matrix
+        y = (abs(low_range) + gmml::ConvertString<double>(line_tokens.at(2))) / scale; ///y axis in psi_phi_matrix
         psi_phi_matrix.at(y).at(x) += 1;
 
         if(line_tokens.size() > 3 && line_tokens.at(3).compare("") != 0) ///x axis in psi_omega_matrix
         {
             has_omega = true;
 
-            x = (abs(low_range) + ConvertString<double>(line_tokens.at(3))) / scale; ///x axis in psi_omega_matrix and phi_omega_matrix
+            x = (abs(low_range) + gmml::ConvertString<double>(line_tokens.at(3))) / scale; ///x axis in psi_omega_matrix and phi_omega_matrix
             psi_omega_matrix.at(y).at(x) += 1;
 
-            y = (abs(low_range) + ConvertString<double>(line_tokens.at(1))) / scale; ///y axis in phi_omega_matrix
+            y = (abs(low_range) + gmml::ConvertString<double>(line_tokens.at(1))) / scale; ///y axis in phi_omega_matrix
             phi_omega_matrix.at(y).at(x) += 1;
         }
     }
@@ -382,79 +370,79 @@ Psi|  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 | 
     for(int j = 17; j >= 0; j-- )
     {
         if(j == 9)
-            cout << "Psi| ";
+            std::cout << "Psi| ";
         else
-            cout << setw(5) << right << "| ";
+            std::cout << std::setw(5) << std::right << "| ";
         for(int k = 0; k <= 17; k++ )
         {
-            cout << setw(2) << psi_phi_matrix.at(j).at(k) << " | ";
+            std::cout << std::setw(2) << psi_phi_matrix.at(j).at(k) << " | ";
         }
         if(j == 17)
-            cout << high_range;
+            std::cout << high_range;
         if(j == 0)
-            cout << low_range;
-        cout << endl;
+            std::cout << low_range;
+        std::cout << std::endl;
     }
-    cout << setw(5) << left << low_range << setw(43) << right << "Phi" << setw(45) << right << high_range << endl << endl;
+    std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Phi" << std::setw(45) << std::right << high_range << std::endl << std::endl;
 
     if(has_omega)
     {
         for(int j = 17; j >= 0; j-- )
         {
             if(j == 9)
-                cout << "Psi| ";
+                std::cout << "Psi| ";
             else
-                cout << setw(5) << right << "| ";
+                std::cout << std::setw(5) << std::right << "| ";
             for(int k = 0; k <= 17; k++ )
             {
-                cout << setw(2) << psi_omega_matrix.at(j).at(k) << " | ";
+                std::cout << std::setw(2) << psi_omega_matrix.at(j).at(k) << " | ";
             }
             if(j == 17)
-                cout << high_range;
+                std::cout << high_range;
             if(j == 0)
-                cout << low_range;
-            cout << endl;
+                std::cout << low_range;
+            std::cout << std::endl;
         }
-        cout << setw(5) << left << low_range << setw(43) << right << "Omega" << setw(45) << right << high_range << endl << endl;
+        std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Omega" << std::setw(45) << std::right << high_range << std::endl << std::endl;
 
         for(int j = 17; j >= 0; j-- )
         {
             if(j == 9)
-                cout << "Phi| ";
+                std::cout << "Phi| ";
             else
-                cout << setw(5) << right << "| ";
+                std::cout << std::setw(5) << std::right << "| ";
             for(int k = 0; k <= 17; k++ )
             {
-                cout << setw(2) << phi_omega_matrix.at(j).at(k) << " | ";
+                std::cout << std::setw(2) << phi_omega_matrix.at(j).at(k) << " | ";
             }
             if(j == 17)
-                cout << high_range;
+                std::cout << high_range;
             if(j == 0)
-                cout << low_range;
-            cout << endl;
+                std::cout << low_range;
+            std::cout << std::endl;
         }
-        cout << setw(5) << left << low_range << setw(43) << right << "Omega" << setw(45) << right << high_range << endl;
+        std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Omega" << std::setw(45) << std::right << high_range << std::endl;
     }
 }
 
-void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
+void Assembly::CalculateGlyprobityGeometryOutliers(Glycan::Monosaccharide* mono)
 {
     ///EXTRACTING BOND LENGTHS OF MONOSACCHARIDE ATOM PAIRS AND BOND ANGLES
-    vector<string> visited_bonds = vector<string>();
-    vector<string> visited_angles = vector<string>();
-    vector<double> bond_statistics = vector<double>();
-    vector<double> bond_angle_statistics = vector<double>();
-    stringstream bond_lengths_stream;
-    stringstream bond_angles_stream;
+    std::vector<std::string> visited_bonds = std::vector<std::string>();
+    std::vector<std::string> visited_angles = std::vector<std::string>();
+    std::vector<double> bond_statistics = std::vector<double>();
+    std::vector<double> bond_angle_statistics = std::vector<double>();
+    std::stringstream bond_lengths_stream;
+    std::stringstream bond_angles_stream;
     double bond_angle = 0.0;
     bool is_atom2_ring = false;
     bool is_atom3_ring = false;
 
-    bond_lengths_stream << "GLYPROBITY REPORT" << endl <<
-                           "<--Geometry Outliers-->" << endl <<
-                           "Bond lengths (current bond length, ontology mean, ontology standard deviation)" << endl;
+    bond_lengths_stream << "GLYPROBITY REPORT" << std::endl <<
+                           "<--Geometry Outliers-->" << std::endl <<
+                           "Bond lengths (current bond length, ontology mean, ontology standard deviation)" << std::endl;
 
-    bond_angles_stream << "Bond angles (current bond angle, ontology mean, ontology standard deviation)" << endl;
+    bond_angles_stream << "Bond angles (current bond angle, ontology mean, ontology standard deviation)" << std::endl;
 
     for(AtomVector::iterator ring_atom_it = mono->cycle_atoms_.begin(); ring_atom_it != mono->cycle_atoms_.end(); ring_atom_it++)
     {
@@ -463,8 +451,8 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
         for(AtomVector::iterator atom1_neighbors_it = atom1_neighbors.begin(); atom1_neighbors_it != atom1_neighbors.end(); atom1_neighbors_it++)
         {
             Atom* atom2 = (*atom1_neighbors_it);
-            stringstream check_bond;
-            stringstream check_bond_reverse;
+            std::stringstream check_bond;
+            std::stringstream check_bond_reverse;
 
             check_bond << atom1->GetId() << "-" << atom2->GetId();
             check_bond_reverse << atom2->GetId() << "-" << atom1->GetId();
@@ -477,14 +465,14 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
                                        atom1->GetCoordinates().at(model_index_)->Distance(*(atom2->GetCoordinates().at(model_index_)));
 
                 ///if atom 2 is not a ring atom set the flag to true
-                if(mono->cycle_atoms_str_.find(atom2->GetId()) == string::npos)
+                if(mono->cycle_atoms_str_.find(atom2->GetId()) == std::string::npos)
                     is_atom2_ring = false;
                 else
                     is_atom2_ring = true;
 
                 ///Find same bonds in the same monosaccharide in the ontology, calculate mean and standard deviation from ontology
                 bond_statistics = CalculateBondlengthsStatisticsBasedOnOntologyInfo(atom1->GetName(), atom2->GetName(), is_atom2_ring, mono->sugar_name_.monosaccharide_short_name_);
-                bond_lengths_stream << ", " << bond_statistics.at(0) << ", " << bond_statistics.at(1) << endl;
+                bond_lengths_stream << ", " << bond_statistics.at(0) << ", " << bond_statistics.at(1) << std::endl;
             }
 
             if(is_atom2_ring)///Calculating bond angles only for ring atoms and combination of ring atoms anf their immediate neighbors
@@ -496,8 +484,8 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
                     if((*ring_atom_it) != (*atom2_neighbors_it))///if the neighbor of the second atom is not the first atom we chose
                     {
                         Atom* atom3 = (*atom2_neighbors_it);
-                        stringstream check_angle;
-                        stringstream check_angle_reverse;
+                        std::stringstream check_angle;
+                        std::stringstream check_angle_reverse;
                         check_angle << atom1->GetId() << "-" << atom2->GetId() << "-" << atom3->GetId();
                         check_angle_reverse  << atom3->GetId() << "-" << atom2->GetId() << "-" << atom1->GetId();
                         if(find(visited_angles.begin(), visited_angles.end(), check_angle.str()) == visited_angles.end() &&
@@ -510,7 +498,7 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
                             bond_angles_stream << atom1->GetName() << "-" << atom2->GetName() << "-" << atom3->GetName() << ": " << bond_angle;
 
                             ///if atom 3 is not a ring atom set the flag to true
-                            if(mono->cycle_atoms_str_.find(atom3->GetId()) == string::npos)
+                            if(mono->cycle_atoms_str_.find(atom3->GetId()) == std::string::npos)
                                 is_atom3_ring = false;
                             else
                                 is_atom3_ring = true;
@@ -518,12 +506,12 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Monosaccharide* mono)
                             ///Find same bond angles in the same monosaccharide in the ontology, calculate mean and standard deviation from ontology
                             bond_angle_statistics = CalculateBondAnglesStatisticsBasedOnOntologyInfo(atom1->GetName(), atom2->GetName(), atom3->GetName(), is_atom3_ring,
                                                                                                      mono->sugar_name_.monosaccharide_short_name_);
-                            bond_angles_stream << ", " << bond_angle_statistics.at(0) << ", " << bond_angle_statistics.at(1) << endl;
+                            bond_angles_stream << ", " << bond_angle_statistics.at(0) << ", " << bond_angle_statistics.at(1) << std::endl;
                         }
                     }
                 }
             }
         }
     }
-    cout << endl << bond_lengths_stream.str() << endl << bond_angles_stream.str() << "<--------------------->" << endl << endl;
+    std::cout << std::endl << bond_lengths_stream.str() << std::endl << bond_angles_stream.str() << "<--------------------->" << std::endl << std::endl;
 }

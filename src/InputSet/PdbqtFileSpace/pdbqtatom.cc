@@ -2,51 +2,48 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace PdbqtFileSpace;
-using namespace gmml;
-using namespace GeometryTopology;
+using PdbqtFileSpace::PdbqtAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbqtAtom::PdbqtAtom():atom_orthogonal_coordinate_() {}
 
-PdbqtAtom::PdbqtAtom(string &line)
+PdbqtAtom::PdbqtAtom(std::string &line)
 {
-    string temp = line.substr(0, 6);
-    temp = Trim(temp);
+    std::string temp = line.substr(0, 6);
+    temp = gmml::Trim(temp);
     if(temp.compare("ATOM") == 0)
         type_ = "ATOM";
     else if(temp.compare("HETATM") == 0)
         type_ = "HETATM";
     temp =line.substr(6, 5);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_serial_number_ =  iNotSet;
+        atom_serial_number_ =  gmml::iNotSet;
     }
     else
     {
-        atom_serial_number_ = ConvertString<int>(temp);
+        atom_serial_number_ = gmml::ConvertString<int>(temp);
     }
 
     atom_name_ = line.substr(12, 4);
-    Trim(atom_name_);
+    gmml::Trim(atom_name_);
 
     temp = line.substr(16,1);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_alternate_location_ = BLANK_SPACE;
+        atom_alternate_location_ = gmml::BLANK_SPACE;
     }
     else
     {
-        atom_alternate_location_ = ConvertString<char>(temp);
+        atom_alternate_location_ = gmml::ConvertString<char>(temp);
     }
 
     temp = line.substr(17,3);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
         atom_residue_name_ = " ";
@@ -57,111 +54,111 @@ PdbqtAtom::PdbqtAtom(string &line)
     }
 
     temp = line.substr(21,1);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_chain_id_ = BLANK_SPACE;
+        atom_chain_id_ = gmml::BLANK_SPACE;
     }
     else
     {
-        atom_chain_id_ = ConvertString<char>(temp);
+        atom_chain_id_ = gmml::ConvertString<char>(temp);
     }
 
     temp = line.substr(22,4);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_residue_sequence_number_ = iNotSet;
+        atom_residue_sequence_number_ = gmml::iNotSet;
     }
     else
     {
-        atom_residue_sequence_number_ = ConvertString<int>(temp);
+        atom_residue_sequence_number_ = gmml::ConvertString<int>(temp);
     }
 
     temp = line.substr(26,1);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_insertion_code_ = BLANK_SPACE;
+        atom_insertion_code_ = gmml::BLANK_SPACE;
     }
     else
     {
-        atom_insertion_code_ = ConvertString<char>(temp);
+        atom_insertion_code_ = gmml::ConvertString<char>(temp);
     }
 
     temp = line.substr(30, 8);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_orthogonal_coordinate_.SetX(dNotSet);
+        atom_orthogonal_coordinate_.SetX(gmml::dNotSet);
     }
     else
     {
-        atom_orthogonal_coordinate_.SetX(ConvertString<double>(temp));
+        atom_orthogonal_coordinate_.SetX(gmml::ConvertString<double>(temp));
     }
 
     temp = line.substr(38,8);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_orthogonal_coordinate_.SetY(dNotSet);
+        atom_orthogonal_coordinate_.SetY(gmml::dNotSet);
     }
     else
     {
-        atom_orthogonal_coordinate_.SetY( ConvertString<double>(line.substr(38,8)));
+        atom_orthogonal_coordinate_.SetY( gmml::ConvertString<double>(line.substr(38,8)));
     }
 
     temp = line.substr(46,8);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_orthogonal_coordinate_.SetZ(dNotSet);
+        atom_orthogonal_coordinate_.SetZ(gmml::dNotSet);
     }
     else
     {
-        atom_orthogonal_coordinate_.SetZ( ConvertString<double>(temp));
+        atom_orthogonal_coordinate_.SetZ( gmml::ConvertString<double>(temp));
     }
 
     temp = line.substr(54, 6);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_occupancy_ = dNotSet;
+        atom_occupancy_ = gmml::dNotSet;
     }
     else
     {
-        atom_occupancy_ = ConvertString<double>(temp);
+        atom_occupancy_ = gmml::ConvertString<double>(temp);
     }
 
     temp = line.substr(60, 6);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_temperature_factor_ = dNotSet;
+        atom_temperature_factor_ = gmml::dNotSet;
     }
     else
     {
-        atom_temperature_factor_ = ConvertString<double>(temp);
+        atom_temperature_factor_ = gmml::ConvertString<double>(temp);
     }
 
     temp = line.substr(70, 6);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     if(temp.empty())
     {
-        atom_charge_ = dNotSet;
+        atom_charge_ = gmml::dNotSet;
     }
     else
     {
-        atom_charge_ = ConvertString<double>(temp);
+        atom_charge_ = gmml::ConvertString<double>(temp);
     }
 
     temp = line.substr(77, 2);
-    temp = Trim(temp);
+    temp = gmml::Trim(temp);
     atom_type_ = temp;
 }
-PdbqtAtom::PdbqtAtom(int atom_serial_number, string atom_name, char atom_alternate_location, string residue_name, char chain_id,
-                     int residue_sequence_number, char insertion_code, Coordinate coordinate, double occupancy, double temperature_factor,
-                     double charge, string atom_type, string type) :
+PdbqtAtom::PdbqtAtom(int atom_serial_number, std::string atom_name, char atom_alternate_location, std::string residue_name, char chain_id,
+                     int residue_sequence_number, char insertion_code, GeometryTopology::Coordinate coordinate, double occupancy, double temperature_factor,
+                     double charge, std::string atom_type, std::string type) :
     atom_serial_number_(atom_serial_number), atom_name_(atom_name), atom_alternate_location_(atom_alternate_location), atom_residue_name_(residue_name),
     atom_chain_id_(chain_id), atom_residue_sequence_number_(residue_sequence_number), atom_insertion_code_(insertion_code),
     atom_orthogonal_coordinate_(coordinate), atom_occupancy_(occupancy), atom_temperature_factor_(temperature_factor), atom_charge_(charge),
@@ -170,7 +167,7 @@ PdbqtAtom::PdbqtAtom(int atom_serial_number, string atom_name, char atom_alterna
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-string PdbqtAtom::GetCardType()
+std::string PdbqtAtom::GetCardType()
 {
     return card_type_;
 }
@@ -180,7 +177,7 @@ int PdbqtAtom::GetAtomSerialNumber()
     return atom_serial_number_;
 }
 
-string PdbqtAtom::GetAtomName()
+std::string PdbqtAtom::GetAtomName()
 {
     return atom_name_;
 }
@@ -190,7 +187,7 @@ char PdbqtAtom::GetAtomAlternateLocation()
     return atom_alternate_location_;
 }
 
-string PdbqtAtom::GetAtomResidueName()
+std::string PdbqtAtom::GetAtomResidueName()
 {
     return atom_residue_name_;
 }
@@ -229,11 +226,11 @@ double PdbqtAtom::GetAtomCharge()
 {
     return atom_charge_;
 }
-string PdbqtAtom::GetAtomType()
+std::string PdbqtAtom::GetAtomType()
 {
     return atom_type_;
 }
-string PdbqtAtom::GetType()
+std::string PdbqtAtom::GetType()
 {
     return type_;
 }
@@ -241,7 +238,7 @@ string PdbqtAtom::GetType()
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbqtAtom::SetCardType(const string card_type)
+void PdbqtAtom::SetCardType(const std::string card_type)
 {
     card_type_ = card_type;
 }
@@ -251,7 +248,7 @@ void PdbqtAtom::SetAtomSerialNumber(int atom_serial_number)
     atom_serial_number_ = atom_serial_number;
 }
 
-void PdbqtAtom::SetAtomName(const string atom_name)
+void PdbqtAtom::SetAtomName(const std::string atom_name)
 {
     atom_name_ = atom_name;
 }
@@ -261,7 +258,7 @@ void PdbqtAtom::SetAtomAlternateLocation(char atom_alternate_location)
     atom_alternate_location_ = atom_alternate_location;
 }
 
-void PdbqtAtom::SetAtomResidueName(const string atom_residue_name)
+void PdbqtAtom::SetAtomResidueName(const std::string atom_residue_name)
 {
     atom_residue_name_ = atom_residue_name;
 }
@@ -300,11 +297,11 @@ void PdbqtAtom::SetAtomCharge(double atom_charge)
 {
     atom_charge_ = atom_charge;
 }
-void PdbqtAtom::SetAtomType(string atom_type)
+void PdbqtAtom::SetAtomType(std::string atom_type)
 {
     atom_type_ = atom_type;
 }
-void PdbqtAtom::SetType(string type)
+void PdbqtAtom::SetType(std::string type)
 {
     type_ = type;
 }
@@ -312,11 +309,11 @@ void PdbqtAtom::SetType(string type)
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbqtAtom::Print(ostream &out)
+void PdbqtAtom::Print(std::ostream &out)
 {
     out << "Record Name: " << type_
         << ", Atom Serial Number: ";
-    if(atom_serial_number_ == iNotSet)
+    if(atom_serial_number_ == gmml::iNotSet)
         out << " ";
     else
         out << atom_serial_number_;
@@ -325,7 +322,7 @@ void PdbqtAtom::Print(ostream &out)
         << ", Atom Residue Name: " << atom_residue_name_
         << ", Atom Chain ID: " << atom_chain_id_
         << ", Atom Residue Sequence Number: ";
-    if(atom_residue_sequence_number_ == iNotSet)
+    if(atom_residue_sequence_number_ == gmml::iNotSet)
         out << " ";
     else
         out << atom_residue_sequence_number_;
@@ -333,16 +330,15 @@ void PdbqtAtom::Print(ostream &out)
         << ", Atom Orthogonal Coordinate: ";
     atom_orthogonal_coordinate_.Print(out);
     out << ", Atom Occupancy: ";
-    if(atom_occupancy_ == dNotSet)
+    if(atom_occupancy_ == gmml::dNotSet)
         out << " ";
     else
         out << atom_occupancy_;
     out << ", Atom Tempreture Factor: ";
-    if(atom_temperature_factor_ == dNotSet)
+    if(atom_temperature_factor_ == gmml::dNotSet)
         out << " ";
     else
         out << atom_temperature_factor_;
     out << ", Atom Charge: " << atom_charge_
-        << ", Atom Type: " << atom_type_ << endl;
+        << ", Atom Type: " << atom_type_ << std::endl;
 }
-

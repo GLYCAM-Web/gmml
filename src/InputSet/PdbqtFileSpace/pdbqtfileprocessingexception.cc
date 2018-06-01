@@ -6,14 +6,13 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
 
-using namespace gmml;
-using namespace PdbqtFileSpace;
+using PdbqtFileSpace::PdbqtFileProcessingException;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 PdbqtFileProcessingException::PdbqtFileProcessingException(const std::string &message)
-    : line_number_(dNotSet), message_(message) {}
+    : line_number_(gmml::dNotSet), message_(message) {}
 
 PdbqtFileProcessingException::PdbqtFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -25,7 +24,7 @@ PdbqtFileProcessingException::PdbqtFileProcessingException(int line_number, cons
 const char* PdbqtFileProcessingException::what() const throw()
 {
     what_ = "PdbqtFile: " + message_;
-    if (line_number_ != dNotSet)
+    if (line_number_ != gmml::dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)
@@ -42,6 +41,3 @@ const char* PdbqtFileProcessingException::what() const throw()
 }
 
 PdbqtFileProcessingException::~PdbqtFileProcessingException() throw() {}
-
-
-

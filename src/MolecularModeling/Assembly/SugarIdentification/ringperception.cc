@@ -12,7 +12,7 @@
 #include "../../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceamberprepresidue.hpp"
+#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
 #include "../../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
@@ -29,17 +29,17 @@
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblink.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblinkresidue.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
@@ -68,19 +68,7 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
@@ -89,12 +77,12 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
     CycleMap cycles = CycleMap();
     AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
-    vector<string> path_graph_edges = vector<string> (); ///The list of edges in the molecular graph
-    vector<string> path_graph_labels = vector<string> (); ///The list of labels of edges in the molecular graph
-    vector<string> cycless = vector<string>();
+    std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
+    std::vector<std::string> path_graph_labels = std::vector<std::string> (); ///The list of labels of edges in the molecular graph
+    std::vector<std::string> cycless = std::vector<std::string>();
 
-    ///Initializing the map
-    map<string, Atom*> IdAtom = map<string, Atom*>(); ///A map from atom ID to Assembly atom object
+    ///Initializing the std::map
+    std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly atom object
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -105,8 +93,8 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     ///Converting the molecular graph into a path graph
     ConvertIntoPathGraph(path_graph_edges, path_graph_labels, atoms);
-    vector<string> reduced_path_graph_edges = path_graph_edges;
-    vector<string> reduced_path_graph_labels = path_graph_labels;
+    std::vector<std::string> reduced_path_graph_edges = path_graph_edges;
+    std::vector<std::string> reduced_path_graph_labels = path_graph_labels;
 
     int neighbor_counter = 2;
     ///Reducing the path graph
@@ -120,10 +108,10 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         {
             common_atom_it = it;
             int counter = 0;
-            for(vector<string>::iterator it1 = path_graph_edges.begin(); it1 != path_graph_edges.end(); it1++)
+            for(std::vector<std::string>::iterator it1 = path_graph_edges.begin(); it1 != path_graph_edges.end(); it1++)
             {
-                string edge = (*it1);
-                if(edge.find((*common_atom_it)->GetId()) != string::npos)
+                std::string edge = (*it1);
+                if(edge.find((*common_atom_it)->GetId()) != std::string::npos)
                     counter++;
             }
             if(counter <= neighbor_counter)
@@ -146,18 +134,18 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         path_graph_labels = reduced_path_graph_labels;
     }
 
-    for(vector<string>::iterator it = cycless.begin(); it != cycless.end(); it++)
+    for(std::vector<std::string>::iterator it = cycless.begin(); it != cycless.end(); it++)
     {
-        string cycle = (*it);
-        vector<string> splitted_cycle = Split(cycle, "-");
+        std::string cycle = (*it);
+        std::vector<std::string> splitted_cycle = gmml::Split(cycle, "-");
         if(splitted_cycle.size() <= 7)
         {
             AtomVector atomvector = AtomVector();
-            stringstream ss;
-            for(vector<string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
+            std::stringstream ss;
+            for(std::vector<std::string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
             {
-                string atom_str = (*it1);
-                map<string, Atom*>::iterator mit = IdAtom.find(atom_str);
+                std::string atom_str = (*it1);
+                std::map<std::string, Atom*>::iterator mit = IdAtom.find(atom_str);
                 atomvector.push_back((*mit).second);
                 if(it1 == splitted_cycle.end() - 2)
                     ss << atom_str;
@@ -172,12 +160,12 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     /*
     CycleMap cycles = CycleMap();
     AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
-    vector<string> path_graph_edges = vector<string> (); ///The list of edges in the molecular graph
-    vector<string> path_graph_labels = vector<string> (); ///The list of labels of edges in the molecular graph
-    vector<string> cycless = vector<string>();
+    std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
+    std::vector<std::string> path_graph_labels = std::vector<std::string> (); ///The list of labels of edges in the molecular graph
+    std::vector<std::string> cycless = std::vector<std::string>();
 
-    ///Initializing the map
-    map<string, Atom*> IdAtom = map<string, Atom*>(); ///A map from atom ID to Assembly aTom object
+    ///Initializing the std::map
+    std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly aTom object
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -189,8 +177,8 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     ///Converting the molecular graph into a path graph
     ConvertIntoPathGraph(path_graph_edges, path_graph_labels, atoms);
-    vector<string> reduced_path_graph_edges = path_graph_edges;
-    vector<string> reduced_path_graph_labels = path_graph_labels;
+    std::vector<std::string> reduced_path_graph_edges = path_graph_edges;
+    std::vector<std::string> reduced_path_graph_labels = path_graph_labels;
 
     ///Reducing the path graph
     int neighbor_counter = 2;
@@ -204,10 +192,10 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         {
             common_atom_it = it;
             int counter = 0;
-            for(vector<string>::iterator it1 = path_graph_edges.begin(); it1 != path_graph_edges.end(); it1++)
+            for(std::vector<std::string>::iterator it1 = path_graph_edges.begin(); it1 != path_graph_edges.end(); it1++)
             {
-                string edge = (*it1);
-                if(edge.find((*common_atom_it)->GetId()) != string::npos) ///finding edges connected to the node
+                std::string edge = (*it1);
+                if(edge.find((*common_atom_it)->GetId()) != std::string::npos) ///finding edges connected to the node
                     counter++;
             }
             if(counter <= neighbor_counter)///A node with lower number of edges has been found
@@ -229,18 +217,18 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         path_graph_edges = reduced_path_graph_edges;
     }
 
-    for(vector<string>::iterator it = cycless.begin(); it != cycless.end(); it++)
+    for(std::vector<std::string>::iterator it = cycless.begin(); it != cycless.end(); it++)
     {
-        string cycle = (*it);
-        vector<string> splitted_cycle = Split(cycle, "-");
+        std::string cycle = (*it);
+        std::vector<std::string> splitted_cycle = gmml::Split(cycle, "-");
         if(splitted_cycle.size() <= 7)
         {
             AtomVector atomvector = AtomVector();
-            stringstream ss;
-            for(vector<string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
+            std::stringstream ss;
+            for(std::vector<std::string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
             {
-                string atom_str = (*it1);
-                map<string, Atom*>::iterator mit = IdAtom.find(atom_str);
+                std::string atom_str = (*it1);
+                std::map<std::string, Atom*>::iterator mit = IdAtom.find(atom_str);
                 atomvector.push_back((*mit).second);
                 if(it1 == splitted_cycle.end() - 2)
                     ss << atom_str;
@@ -253,26 +241,26 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     return cycles; */
 }
 
-void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> path_graph_labels, vector<string>& reduced_path_graph_edges,
-                               vector<string>& reduced_path_graph_labels, string common_atom, vector<string>& cycles)
+void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::vector<std::string> path_graph_labels, std::vector<std::string>& reduced_path_graph_edges,
+                               std::vector<std::string>& reduced_path_graph_labels, std::string common_atom, std::vector<std::string>& cycles)
 {
-    vector<int> to_be_deleted_edges = vector<int>();
-    for(vector<string>::iterator it = path_graph_edges.begin(); it != path_graph_edges.end() - 1; it++)
+    std::vector<int> to_be_deleted_edges = std::vector<int>();
+    for(std::vector<std::string>::iterator it = path_graph_edges.begin(); it != path_graph_edges.end() - 1; it++)
     {
         int source_index = distance(path_graph_edges.begin(), it);
-        string source_edge = (*it);
-        string source_label = path_graph_labels.at(source_index);
-        vector<string> source_edge_atoms = Split(source_edge, ",");
+        std::string source_edge = (*it);
+        std::string source_label = path_graph_labels.at(source_index);
+        std::vector<std::string> source_edge_atoms = gmml::Split(source_edge, ",");
 
-        for(vector<string>::iterator it1 = it + 1; it1 != path_graph_edges.end(); it1++)
+        for(std::vector<std::string>::iterator it1 = it + 1; it1 != path_graph_edges.end(); it1++)
         {
             bool walk_found = false;
             int target_index = distance(path_graph_edges.begin(), it1);
-            string target_edge = (*it1);
-            string target_label = path_graph_labels.at(target_index);
-            vector<string> target_edge_atoms = Split(target_edge, ",");
-            stringstream new_edge;
-            stringstream new_label;
+            std::string target_edge = (*it1);
+            std::string target_label = path_graph_labels.at(target_index);
+            std::vector<std::string> target_edge_atoms = gmml::Split(target_edge, ",");
+            std::stringstream new_edge;
+            std::stringstream new_label;
             if(source_edge_atoms.at(0).compare(source_edge_atoms.at(1)) != 0 && target_edge_atoms.at(0).compare(target_edge_atoms.at(1)) != 0)
             {///if the edges a != b and b != c, so there might be a walk a_b_c
 
@@ -280,8 +268,8 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                 {
                     new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(1);
                     new_label << source_label;
-                    vector<string> target_path_values = Split(target_label,"-");
-                    for(int i = 1; i < target_path_values.size(); i++)
+                    std::vector<std::string> target_path_values = gmml::Split(target_label,"-");
+                    for(unsigned int i = 1; i < target_path_values.size(); i++)
                         new_label << "-" << target_path_values.at(i);
                     walk_found = true;
                 }
@@ -289,7 +277,7 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                 {
                     new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(0);
                     new_label << source_label;
-                    vector<string> target_path_values = Split(target_label,"-");
+                    std::vector<std::string> target_path_values = gmml::Split(target_label,"-");
                     for(int i = target_path_values.size() - 2 ; i >= 0; i--)
                         new_label << "-" << target_path_values.at(i);
                     walk_found = true;
@@ -297,7 +285,7 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                 else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(0)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and b,c)
                 {
                     new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(1);
-                    vector<string> source_path_values = Split(source_label,"-");
+                    std::vector<std::string> source_path_values = gmml::Split(source_label,"-");
                     for(int i = source_path_values.size() - 1 ; i >= 1; i--)
                         new_label << source_path_values.at(i) << "-";
                     new_label << target_label;
@@ -306,10 +294,10 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
                 else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(1)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and c,b)
                 {
                     new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(0);
-                    vector<string> source_path_values = Split(source_label,"-");
+                    std::vector<std::string> source_path_values = gmml::Split(source_label,"-");
                     for(int i = source_path_values.size() - 1 ; i >= 0; i--)
                         new_label << source_path_values.at(i) << "-";
-                    vector<string> target_path_values = Split(target_label,"-");
+                    std::vector<std::string> target_path_values = gmml::Split(target_label,"-");
                     for(int i = target_path_values.size() - 2 ; i >= 0; i--)
                     {
                         if(i == 0)
@@ -323,7 +311,7 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
             if(walk_found)
             {
                 ///checking the new edge for cycle
-                vector<string> new_edge_atoms = Split(new_edge.str(), ",");
+                std::vector<std::string> new_edge_atoms = gmml::Split(new_edge.str(), ",");
                 if(new_edge_atoms.at(0).compare(new_edge_atoms.at(1)) == 0) ///edge is a,a
                 {
                     cycles.push_back(new_label.str());///label shows the atom involved in a cycle
@@ -344,9 +332,9 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
         }
     }
 
-    vector<string> temp_reduced_path_graph_edges = vector<string>();
-    vector<string> temp_reduced_path_graph_labels = vector<string>();
-    for(int i = 0; i < reduced_path_graph_edges.size(); i++)
+    std::vector<std::string> temp_reduced_path_graph_edges = std::vector<std::string>();
+    std::vector<std::string> temp_reduced_path_graph_labels = std::vector<std::string>();
+    for(unsigned int i = 0; i < reduced_path_graph_edges.size(); i++)
     {
         if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), i) == to_be_deleted_edges.end())
         {
@@ -361,7 +349,7 @@ void Assembly::ReducePathGraph(vector<string> path_graph_edges, vector<string> p
 void Assembly::PruneGraph(AtomVector& all_atoms)
 {
     AtomVector atoms_with_more_than_two_neighbors = AtomVector();
-    vector<string> het_atom_ids = vector<string>();
+    std::vector<std::string> het_atom_ids = std::vector<std::string>();
     for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         Atom* atom = *it;
@@ -372,7 +360,7 @@ void Assembly::PruneGraph(AtomVector& all_atoms)
         Atom* atom = (*it);
         AtomNode* node = atom->GetNode();
         int count = 0;
-        for(int i = 0; i < node->GetNodeNeighbors().size(); i++)
+        for(unsigned int i = 0; i < node->GetNodeNeighbors().size(); i++)
         {
             Atom* neighbor = node->GetNodeNeighbors().at(i);
             if(find(het_atom_ids.begin(), het_atom_ids.end(), neighbor->GetId()) != het_atom_ids.end())
@@ -390,9 +378,9 @@ void Assembly::PruneGraph(AtomVector& all_atoms)
         return;
 }
 
-void Assembly::ConvertIntoPathGraph(vector<string>& path_graph_edges, vector<string>& path_graph_labels, AtomVector atoms)
+void Assembly::ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, std::vector<std::string>& path_graph_labels, AtomVector atoms)
 {
-    vector<string> atoms_id = vector<string>();
+    std::vector<std::string> atoms_id = std::vector<std::string>();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = *it;
@@ -408,14 +396,14 @@ void Assembly::ConvertIntoPathGraph(vector<string>& path_graph_edges, vector<str
             Atom* neighbor = (*it1);
             if(find(atoms_id.begin(), atoms_id.end(), neighbor->GetId()) != atoms_id.end())
             {
-                stringstream ss;
+                std::stringstream ss;
                 ss << atom->GetId() << "," << neighbor->GetId();
-                stringstream reverse_ss;
+                std::stringstream reverse_ss;
                 reverse_ss << neighbor->GetId() << "," << atom->GetId();
                 if(find(path_graph_edges.begin(), path_graph_edges.end(), ss.str()) == path_graph_edges.end() &&
                         find(path_graph_edges.begin(), path_graph_edges.end(), reverse_ss.str()) == path_graph_edges.end()) ///path not existed before
                 {
-                    stringstream path;
+                    std::stringstream path;
                     path << atom->GetId() << "-" << neighbor->GetId();
                     path_graph_edges.push_back(ss.str());
                     path_graph_labels.push_back(path.str());
@@ -453,17 +441,17 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
         }
     }
 
-    stringstream n_of_cycle;
+    std::stringstream n_of_cycle;
     n_of_cycle << "Number of cycles found: " << counter;
-    cout << n_of_cycle.str() << endl;
+    std::cout << n_of_cycle.str() << std::endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, n_of_cycle.str());
     for(AtomIdAtomMap::iterator it = src_dest_map.begin(); it != src_dest_map.end(); it++)
     {
-        string src_dest = (*it).first;
+        std::string src_dest = (*it).first;
         Atom* destination = (*it).second;
         cycle.clear();
-        stringstream cycle_stream;
-        vector<string> key = Split(src_dest, "-");
+        std::stringstream cycle_stream;
+        std::vector<std::string> key = gmml::Split(src_dest, "-");
         ReturnCycleAtoms(key.at(0), destination, atom_parent_map, cycle, cycle_stream);
         cycles[cycle_stream.str()] = cycle;
     }
@@ -479,7 +467,7 @@ void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomId
     for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
     {
         Atom* neighbor = (*it);
-        if(neighbor->GetDescription().find("Het;") != string::npos)
+        if(neighbor->GetDescription().find("Het;") != std::string::npos)
         {
             if(atom_status_map[neighbor->GetId()] == gmml::UNVISITED)
             {
@@ -492,7 +480,7 @@ void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomId
                 if(neighbor->GetId().compare(parent->GetId()) != 0)///making sure we are not tracking back to the previous atom which is the parent of neigbor (current atom)
                 {
                     counter++;
-                    stringstream key;
+                    std::stringstream key;
                     key << neighbor->GetId() << "-" << atom->GetId();
                     src_dest_map[key.str()] = atom;
                 }
@@ -501,4 +489,3 @@ void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomId
     }
     atom_status_map[atom->GetId()] = gmml::DONE;
 }
-

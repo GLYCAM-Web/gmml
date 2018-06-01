@@ -5,14 +5,13 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 
-using namespace gmml;
-using namespace CondensedSequenceSpace;
+using CondensedSequenceSpace::CondensedSequenceProcessingException;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 CondensedSequenceProcessingException::CondensedSequenceProcessingException(const std::string &message)
-    : line_number_(dNotSet), message_(message) {}
+    : line_number_(gmml::dNotSet), message_(message) {}
 
 CondensedSequenceProcessingException::CondensedSequenceProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -24,7 +23,7 @@ CondensedSequenceProcessingException::CondensedSequenceProcessingException(int l
 const char* CondensedSequenceProcessingException::what() const throw()
 {
     what_ = "CondensedSequence: " + message_;
-    if (line_number_ != dNotSet)
+    if (line_number_ != gmml::dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)
@@ -44,6 +43,3 @@ const char* CondensedSequenceProcessingException::what() const throw()
 }
 
 CondensedSequenceProcessingException::~CondensedSequenceProcessingException() throw() {}
-
-
-
