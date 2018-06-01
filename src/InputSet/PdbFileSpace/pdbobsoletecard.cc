@@ -35,7 +35,7 @@ PdbObsoleteCard::PdbObsoleteCard(std::stringstream& obsolete_block)
     }
     std::string all_identifier_codes_ = ss.str();
     std::size_t pos = 0, found;
-    while ((found = all_identifier_codes_.find_first_of('      ', pos)) != std::string::npos)
+    while ((found = all_identifier_codes_.find_first_of("      ", pos)) != std::string::npos)
     {
       identifier_codes_.push_back(all_identifier_codes_.substr(pos, found - pos));
       pos = found + 1;

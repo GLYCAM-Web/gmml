@@ -22,7 +22,7 @@ namespace Glycan
             std::string anomeric_status_;                                       /*!< The detection status of the anomeric carbon >*/
 	    MolecularModeling::Atom* anomeric_carbon_location = NULL;
             std::string bfmp_ring_conformation_;                                /*!< The ring conformation of the monosaccharide, currently detected by an external program (BFMP) >*/
-
+            float b_factor_;                                                    /*!< The Average B Factor of the monosaccharide >*/
             /*! \fn
               * Default constructor
               */

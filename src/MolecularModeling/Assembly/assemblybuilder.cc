@@ -6,7 +6,10 @@
 #include <queue>
 #include <stack>
 #include <sstream>
+#include <string>
+#include <iostream>
 
+#include "../../../includes/InputSet/PdbFileSpace/inputfile.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/residue.hpp"
 #include "../../../includes/MolecularModeling/residuenode.hpp"
@@ -47,6 +50,7 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
@@ -822,17 +826,17 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
 {
     std::cout << "Building assembly from pdb file ..." << std::endl;
 //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
-    PdbFileSpace::PdbFile pdb_file;
+    PdbFileSpace::PdbFile* pdb_file;
     try
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDB file into PdbFileSpace::PdbFile structure ...");
-        pdb_file = PdbFileSpace::PdbFile(pdb_file_path);
+        pdb_file = new PdbFileSpace::PdbFile(pdb_file_path);
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
         std::cout << "Generating PdbFileSpace::PdbFile structure from " << pdb_file_path << "failed." << std::endl;
     }
-    this->BuildAssemblyFromPdbFile(&pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
+    this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
 }
 
 
@@ -874,10 +878,16 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
         if(prep_files.size() != 0)
             prep_residues = GetAllResiduesFromMultiplePrepFilesMap(prep_files);
 
+
         std::vector<std::string> key_order = std::vector<std::string>();
         PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
-
-        // pdb_file->GetRemarks()->Print(std::std::cout);
+        
+        this->input_file_ = pdb_file;
+        // std::stringstream out_stream;
+        // this->input_file_->PrintOntology(out_stream);
+        // std::cout << out_stream.str();
+        // int testPoly = this->input_file_->GetMasterCard()->GetNumRemark();
+        // std::cout << testPoly << std::endl << std::endl;
 
 
         for(std::vector<std::string>::iterator it = key_order.begin(); it != key_order.end(); it++)
@@ -905,6 +915,11 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 residue->SetName(residue_name);
                 std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
+                float atom_b_factor = atom->GetAtomTempretureFactor();
+                new_atom->SetBFactor(atom_b_factor);
+                // std::stringstream test;
+                // test << atom_b_factor;
+                //gmml::log(__LINE__, __FILE__, gmml::INF, test.str());
                 if(!lib_residues.empty() || !prep_residues.empty())
                 {
                     if(lib_residues.find(residue_name) != lib_residues.end())

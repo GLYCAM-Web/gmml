@@ -319,6 +319,39 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       }
     }
 
+    ///CALCULATING B FACTOR
+    float total_b_factor = 0;
+    int num_atoms =0;
+    for (std::vector< AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ )
+    {
+      AtomVector sides = ( *it1 );
+      for(AtomVector::iterator it2 = sides.begin(); it2 != sides.end(); it2++ )
+      {
+        MolecularModeling::Atom* atom = (*it2);
+        if(atom !=NULL)
+        {
+          float this_b_factor = atom->GetBFactor();
+          total_b_factor = total_b_factor + this_b_factor;
+          num_atoms++;
+          // std::stringstream test;
+          // test << "Atom_b_factor_mono" << this_b_factor;
+          // gmml::log(__LINE__, __FILE__, gmml::INF, test.str());
+        }
+        
+      }
+    }
+    for (AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end(); it++ )
+    {
+        MolecularModeling::Atom* atom = (*it);
+        float this_b_factor = atom->GetBFactor();
+        total_b_factor = total_b_factor + this_b_factor;
+        num_atoms++;
+    }
+    mono->b_factor_ = total_b_factor/num_atoms;
+    // std::stringstream test;
+    // test << "total_b_factor_mono" << total_b_factor;
+    // gmml::log(__LINE__, __FILE__, gmml::INF, test.str());
+
     ///PRINTING ANOMERIC STATUS
     std::cout << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << std::endl;
 
@@ -3168,6 +3201,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             if(isRoot)
             {
                 Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
+                CalculateOligosaccharideBFactor(oligo, monos);
                 BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                 oligo->terminal_ = terminal_residue_name;
                 oligosaccharides.push_back(oligo);
@@ -3193,6 +3227,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                     if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
                     {
                         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
+                        CalculateOligosaccharideBFactor(oligo, monos);
                         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                         oligosaccharides.push_back(oligo);
                         break;
@@ -3676,6 +3711,7 @@ void Assembly::BuildOligosaccharideTreeStructure(Glycan::Monosaccharide *key, st
                 {
                     //std::cout << "key id " << key->mono_id  << ", value id " << value_mono->mono_id << std::endl;
                     Glycan::Oligosaccharide* child_oligo = new Glycan::Oligosaccharide();
+                    CalculateOligosaccharideBFactor(child_oligo, values);
                     std::vector<Glycan::Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
                     //std::cout << "call " << value_mono->mono_id << std::endl;
@@ -3688,4 +3724,18 @@ void Assembly::BuildOligosaccharideTreeStructure(Glycan::Monosaccharide *key, st
         visited_monos.push_back(key->mono_id);
         return;
     }
+}
+
+void Assembly::CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, std::vector<Glycan::Monosaccharide*> monos)
+{
+  float total_b_factor = 0;
+  int num_monos = 0;
+  for (std::vector<Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
+  {
+    Glycan::Monosaccharide* mono = (*it);
+    float this_b_factor = mono->b_factor_;
+    total_b_factor = total_b_factor + this_b_factor;
+    num_monos++;
+  }
+  oligo->oligosaccharide_b_factor_ = total_b_factor/num_monos;
 }

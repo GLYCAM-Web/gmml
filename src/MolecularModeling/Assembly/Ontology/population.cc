@@ -29,6 +29,7 @@
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
@@ -64,6 +65,8 @@
 #include "../../../../includes/GeometryTopology/grid.hpp"
 #include "../../../../includes/GeometryTopology/cell.hpp"
 
+#include "../../../../includes/InputSet/PdbFileSpace/inputfile.hpp"
+
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
@@ -76,20 +79,29 @@ using MolecularModeling::Assembly;
 void Assembly::PopulateOntology(std::ofstream& main_stream, OligosaccharideVector oligos)
 {
     std::stringstream pdb_stream;
-
+    //Move to input file 
     std::string pdb_resource = CreateURIResource(gmml::OntPDB, 0, "", "");
     //    CreateTitle(pdb_resource, pdb_stream);
     std::stringstream ss;
     ss << pdb_resource << "_";
     std::string id_prefix = ss.str();
     std::string pdb_uri = CreateURI(pdb_resource);
-
-    //    pdb_stream << Ontology::ENTITY_COMMENT << pdb_resource << std::endl;
-    AddTriple(pdb_uri, Ontology::TYPE, Ontology::PDB, pdb_stream);
-    AddLiteral(pdb_uri, Ontology::id, pdb_resource, pdb_stream);
-    //    AddLiteral(pdb_uri, Ontology::LABEL, pdb_resource, pdb_stream);
-    //    AddLiteral(pdb_uri, Ontology::input_file_path, source_file_, pdb_stream);
-
+    // 
+    // 
+    // 
+    // //    pdb_stream << Ontology::ENTITY_COMMENT << pdb_resource << std::endl;
+    // AddTriple(pdb_uri, Ontology::TYPE, Ontology::PDB, pdb_stream);
+    // AddLiteral(pdb_uri, Ontology::id, pdb_resource, pdb_stream);
+    // //    AddLiteral(pdb_uri, Ontology::LABEL, pdb_resource, pdb_stream);
+    // //    AddLiteral(pdb_uri, Ontology::input_file_path, source_file_, pdb_stream);
+    // 
+    // //Add Inputfile Ontology function
+    // // std::stringstream out_stream;
+    // // this->input_file_->PrintOntology(out_stream);
+    // // std::cout << out_stream.str();
+    this->input_file_->PrintOntology(pdb_stream);
+    
+    
     int link_id = 1;
     std::stringstream oligo_stream;
     std::stringstream oligo_sequence_stream;
@@ -127,6 +139,7 @@ void Assembly::PopulateOntology(std::ofstream& main_stream, OligosaccharideVecto
     std::stringstream residue_stream;
     PopulateResidue(pdb_stream, residue_stream, pdb_uri, id_prefix, residues, side_or_ring_atoms);
 
+  
     main_stream << pdb_stream.str() << note_stream.str() << oligo_stream.str() << oligo_sequence_stream.str() << mono_stream.str() << linkage_stream.str() << residue_stream.str() << std::endl;
 }
 
@@ -182,6 +195,13 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                 mono_to_short_name_map.clear();
                 oligo_to_res_uri_map.clear();
             }
+            
+            float o_b_factor = oligo->oligosaccharide_b_factor_;
+            // std::stringstream bfss;
+            // bfss << o_b_factor;
+            // std::string o_b_factor_str = bfss.str();
+            AddDecimal(oligo_uri, Ontology::oligo_b_factor, o_b_factor, oligo_stream);  
+            
 
             std::string o_residue_links = oligo->oligosaccharide_residue_linkages_;
             if(o_residue_links.compare("") != 0)
@@ -802,6 +822,11 @@ void Assembly::AddLiteral(std::string s, std::string p, std::string o, std::stri
 {
     stream << s << " " << p << " \"" << o << "\"." << std::endl;
 }
+
+void Assembly::AddDecimal(std::string s, std::string p, float o, std::stringstream& stream)
+{
+  stream << s << " " << p << " \"" << o << "\"^^xsd:decimal." << std::endl;
+} 
 
 std::string Assembly::CreateURI(std::string uri_resource)
 {
