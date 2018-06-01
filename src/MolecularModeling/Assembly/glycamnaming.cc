@@ -106,7 +106,7 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
                 anomeric_o = oligo->root_->side_atoms_.at(0).at(1);*/
 	    //Anomeric group has now been removed from sidegroup if it shouldn't be part of oligosaccharide (e.g. NLN nitrogen). So now, find anomeric oxygen from node neighbors of anomeric carbon.
 	    AtomVector anomeric_c_neighbors = anomeric_c->GetNode()->GetNodeNeighbors();
-	    for (int i=0; i< anomeric_c_neighbors.size(); i++){
+	    for (unsigned int i=0; i< anomeric_c_neighbors.size(); i++){
 		if (!anomeric_c_neighbors[i]-> GetIsCycle() && (anomeric_c_neighbors[i]->GetName().substr(0,1) == "O" || anomeric_c_neighbors[i]->GetName().substr(0,1) == "S" ||
 		      anomeric_c_neighbors[i]->GetName().substr(0,1) == "N") ){
 
@@ -325,6 +325,12 @@ void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue
             for(std::vector<std::string>::iterator name_it = glycam_names.begin(); name_it != glycam_names.end(); name_it++)
             {
                 std::string glycam_residue_name = *name_it;
+		//Right now cannot handle X configuraton, exit when this happens
+		if (glycam_residue_name[glycam_residue_name.size()-1] == 'X'){
+		    std::cout << "Unable to determine alpha/beta configuration." << std::endl;
+		    std::cout << "Aborting." << std::endl;
+		    std::exit(EXIT_FAILURE);	    	    
+		}
                 PrepFileSpace::PrepFile::ResidueMap customized_prep_residues = PrepFileSpace::PrepFile::ResidueMap();
                 customized_prep_residues[glycam_residue_name] = prep_residues[glycam_residue_name];
                 PrepFileSpace::PrepFile* temp_prep_file = new PrepFileSpace::PrepFile();

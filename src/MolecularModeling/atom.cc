@@ -8,8 +8,6 @@
 #include "cmath"
 #include <sstream>
 
-using namespace std;
-using namespace MolecularModeling;
 using MolecularModeling::Atom;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTORS                   //

@@ -29,11 +29,6 @@
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace PrepFileSpace;
-using namespace GeometryTopology;
-using namespace gmml;
 
 using MolecularModeling::Residue;
 
@@ -42,27 +37,27 @@ using MolecularModeling::Residue;
 //////////////////////////////////////////////////////////
 void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 {
-    cout << "Building residue from prep residue ..." << endl;
+    std::cout << "Building residue from prep residue ..." << std::endl;
     std::cout << "prep res name: " << prep_residue->GetName() << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building residue from prep residue ...");
 
     int serial_number = 0;
-    std::vector<Coordinate*> cartesian_coordinate_list = std::vector<Coordinate*>();
+    std::vector<GeometryTopology::Coordinate*> cartesian_coordinate_list = std::vector<GeometryTopology::Coordinate*>();
     int head_atom_index = INFINITY;
     int tail_atom_index = -INFINITY;
     Atom* head_atom;
     Atom* tail_atom;
     PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
     PrepFileResidue::PrepFileAtomVector parent_atoms = prep_residue->GetAtomsParentVector();
-    std::map<PrepFileAtom*,Atom*> prep_assembly_atom_map = std::map<PrepFileAtom*,Atom*>();	//associates a prep atom with corresponding assembly atom
-    std::map<Atom*,PrepFileAtom*> assembly_prep_parent_atom_map = std::map<Atom*,PrepFileAtom*>();	//associates an assembly atom with corresonding prep atom parent.
+    std::map<PrepFileSpace::PrepFileAtom*,Atom*> prep_assembly_atom_map = std::map<PrepFileSpace::PrepFileAtom*,Atom*>();	//associates a prep atom with corresponding assembly atom
+    std::map<Atom*,PrepFileSpace::PrepFileAtom*> assembly_prep_parent_atom_map = std::map<Atom*,PrepFileSpace::PrepFileAtom*>();	//associates an assembly atom with corresonding prep atom parent.
 													//eventually: assembly atom -> prep parent -> assembly parent
     this->SetName(prep_residue->GetName());
     for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
     {
         serial_number++;
         Atom* assembly_atom = new Atom();
-        PrepFileAtom* prep_atom = (*it1);
+        PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
 
 	if(prep_atom->GetType().find("DU") == std::string::npos)
 	{
@@ -70,9 +65,9 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 	}
 
         assembly_atom->SetResidue(this);
-        string atom_name = prep_atom->GetName();
-        string id;
-        stringstream atom_id;
+        std::string atom_name = prep_atom->GetName();
+        std::string id;
+        std::stringstream atom_id;
         assembly_atom->SetName(atom_name);
 	id = this->GetId();
         atom_id << atom_name << "_" << serial_number << "_" << id;
@@ -80,12 +75,12 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     
         assembly_atom->SetAtomType(prep_atom->GetType());
         assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
-        assembly_atom->MolecularDynamicAtom::SetMass(dNotSet);
-        assembly_atom->MolecularDynamicAtom::SetRadius(dNotSet);
+        assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+        assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
     
         if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
         {
-            vector<Coordinate*> coordinate_list = vector<Coordinate*>();
+            std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
             unsigned int index = distance(prep_atoms.begin(), it1);
             if(index == 0)
             {
@@ -96,7 +91,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
         	if(assembly_atom->GetAtomType().find("DU") == std::string::npos){
 		    assembly_prep_parent_atom_map[assembly_atom] = parent_atoms.at(index);
 		}
-                Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                 coordinate_list.push_back(parent_coordinate);
             }
             if(index == 2)
@@ -108,8 +103,8 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 		}
 
                 int grandparent_index = parent_atoms.at(parent_index)->GetIndex() - 1;
-                Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                 coordinate_list.push_back(grandparent_coordinate);
                 coordinate_list.push_back(parent_coordinate);
             }
@@ -122,14 +117,14 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 		}
                 int grandparent_index = parent_atoms.at(parent_index)->GetIndex() - 1;
                 int great_grabdparent_index = parent_atoms.at(grandparent_index)->GetIndex() - 1;
-                Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
-                Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
-                Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
+                GeometryTopology::Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
+                GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
+                GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                 coordinate_list.push_back(great_grandparent_coordinate);
                 coordinate_list.push_back(grandparent_coordinate);
                 coordinate_list.push_back(parent_coordinate);
             }
-            Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(
+            GeometryTopology::Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(
 			    coordinate_list, 
 			    prep_atom->GetBondLength(),
                             prep_atom->GetAngle(), 
@@ -139,9 +134,9 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
         }
         else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
         {
-            assembly_atom->AddCoordinate(new Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
+            assembly_atom->AddCoordinate(new GeometryTopology::Coordinate(prep_atom->GetBondLength(), prep_atom->GetAngle(), prep_atom->GetDihedral()));
         }
-        if(prep_atom->GetTopologicalType() == kTopTypeM && prep_atom->GetType().find(prep_residue->GetDummyAtomType()) == std::string::npos)
+        if(prep_atom->GetTopologicalType() == gmml::TopologicalType::kTopTypeM && prep_atom->GetType().find(prep_residue->GetDummyAtomType()) == std::string::npos)
         {
             if(head_atom_index > prep_atom->GetIndex())
             {
@@ -171,8 +166,8 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     {
 	int from = it->first;
 	int to = it->second;
-	PrepFileAtom* from_prep_atom = NULL;	
-	PrepFileAtom* to_prep_atom = NULL;	
+	PrepFileSpace::PrepFileAtom* from_prep_atom = NULL;	
+	PrepFileSpace::PrepFileAtom* to_prep_atom = NULL;	
 	Atom* from_assembly_atom = NULL;
 	Atom* to_assembly_atom = NULL;
 	for (unsigned int i = 0; i < prep_atoms.size() ; i++){
@@ -230,7 +225,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     {
 	Atom* current_assembly_atom = all_atoms_added[i];
 	Atom* assembly_parent = NULL;
-	PrepFileAtom* current_assembly_atom_prep_parent = assembly_prep_parent_atom_map[current_assembly_atom];
+	PrepFileSpace::PrepFileAtom* current_assembly_atom_prep_parent = assembly_prep_parent_atom_map[current_assembly_atom];
 	if (current_assembly_atom_prep_parent != NULL) //When parent atoms are dummy , this equals NULL, since dummy isn't added.
 	{
 	     assembly_parent = prep_assembly_atom_map[current_assembly_atom_prep_parent];
