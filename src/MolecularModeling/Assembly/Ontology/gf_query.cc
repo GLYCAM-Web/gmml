@@ -8,13 +8,15 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     if(search.str()=="Oligo_REGEX")
     {      
       query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-      query << "?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title"
-               "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI"
-               "?note_type ?note_category ?description \n"; 
+      query << " DISTINCT ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title "
+               "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI "
+               "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) "
+               "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) "
+               "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";  
       query << Ontology::WHERE_CLAUSE;
       query << "?oligo        :oligoName              ?oligo_sequence.\n";
       
-      query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")";    
+      query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";    
       query << "?pdb_file     :identifier             ?pdb.\n";
       query << "?pdb_file     :hasTitle               ?title.\n";
       query << "OPTIONAL {";
@@ -41,20 +43,27 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "OPTIONAL {";
       query << "?linkage      :glycosidicLinkage      ?glycosidic_linkage.}\n";
       query << "OPTIONAL {";
-      query << "?pdb_file      :hasNote    ?note.}\n";
+      query << "?pdb_file      :hasNote    ?errorNote.\n";
+      query << "?errornote	       :NoteType    \"error\".\n";
+      query << "?errornote        :description ?error.}\n";
       query << "OPTIONAL {";
-      query << "?note	       :NoteType    ?note_type.}\n";
+      query << "?pdb_file      :hasNote    ?warningNote.\n";
+      query << "?warningNote	       :NoteType    \"warning\".\n";
+      query << "?warningNote        :description ?warning.}\n";
       query << "OPTIONAL {";
-      query << "?note	       :NoteCategory    ?note_category.}\n";
-      query << "OPTIONAL {";
-      query << "?note	       :description    ?description.}\n";
+      query << "?pdb_file      :hasNote    ?commentNote.\n";
+      query << "?commentNote	       :NoteType    \"comment\".\n";
+      query << "?commentNote        :description ?comment.}\n";
       query << Ontology::END_WHERE_CLAUSE;
     }
     else
     {
       query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-      query << "?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title"
-               "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI \n"; 
+      query << " DISTINCT ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title "
+               "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI "
+               "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) "
+               "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) "
+               "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";  
       query << Ontology::WHERE_CLAUSE;
       query << "?oligo        :oligoName              ?oligo_sequence.\n";
       query << "?pdb_file     :identifier             ?pdb.\n";
@@ -82,6 +91,18 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "?linkage      :hasParent 	            ?oligo.}\n";
       query << "OPTIONAL {";
       query << "?linkage      :glycosidicLinkage      ?glycosidic_linkage.}\n";
+      query << "OPTIONAL {";
+      query << "?pdb_file      :hasNote    ?errorNote.\n";
+      query << "?errornote	       :NoteType    \"error\".\n";
+      query << "?errornote        :description ?error.}\n";
+      query << "OPTIONAL {";
+      query << "?pdb_file      :hasNote    ?warningNote.\n";
+      query << "?warningNote	       :NoteType    \"warning\".\n";
+      query << "?warningNote        :description ?warning.}\n";
+      query << "OPTIONAL {";
+      query << "?pdb_file      :hasNote    ?commentNote.\n";
+      query << "?commentNote	       :NoteType    \"comment\".\n";
+      query << "?commentNote        :description ?comment.}\n";
       query << Ontology::END_WHERE_CLAUSE;
       
       if(search.str()=="PDB")
