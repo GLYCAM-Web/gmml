@@ -117,7 +117,7 @@ unsigned long long Atom::GetIndex() const
   return this->index_;
 } // end GetIndex
 
-//Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
+//Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H, etc.
 
 std::string Atom::GetAtomType() const
 {

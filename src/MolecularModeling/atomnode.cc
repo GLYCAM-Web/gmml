@@ -11,7 +11,8 @@ using namespace MolecularModeling;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-AtomNode::AtomNode(){}
+AtomNode::AtomNode(): isVisited_(false){}
+
 AtomNode::AtomNode(AtomNode *node)
 {
     atom_ = new Atom(new Atom(node->GetAtom()));
@@ -20,9 +21,8 @@ AtomNode::AtomNode(AtomNode *node)
     for(AtomVector::iterator it = node_neighbors.begin(); it != node_neighbors.end(); it++)
         node_neighbors_.push_back(new Atom(*it));
     id_ = node->GetId();
+    isVisited_= false;
 }
-
-
 AtomNode::AtomNode(AtomNode& node)
 {
     Atom* tempAtom = new Atom(*node.GetAtom());
@@ -32,7 +32,6 @@ AtomNode::AtomNode(AtomNode& node)
    for(AtomVector::iterator it = node_neighbors.begin(); it != node_neighbors.end(); it++)
          this->node_neighbors_.push_back(new Atom(*it));
 
-
     this->id_=node.GetId();
     this->element_label_=node.GetElementLabel();
     this->chirality_label_=node.GetChiralityLabel();
@@ -40,7 +39,10 @@ AtomNode::AtomNode(AtomNode& node)
    AtomVector intra_node_neighbors=node.GetIntraNodeNeighbors();
    for(AtomVector::iterator it = intra_node_neighbors.begin(); it != intra_node_neighbors.end(); it++)
        this->intra_node_neighbors_.push_back(*it);
+
+   isVisited_= false;
 }
+
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -73,6 +75,12 @@ char AtomNode::GetChiralityLabel()
 AtomNode::AtomVector AtomNode::GetIntraNodeNeighbors()
 {
     return intra_node_neighbors_;
+}
+
+//Added by Ayush on 04/11/2018 for direction based bonded Atoms in Assembly.
+bool AtomNode::GetIsVisited()
+{
+    return isVisited_;
 }
 
 //////////////////////////////////////////////////////////
@@ -163,6 +171,11 @@ int AtomNode::GetIntraEdgeDegree()
     return intra_node_neighbors_.size();
 }
 
+//Added by Ayush on 04/11/2018 for direction based bonded Atoms in Assembly.
+void AtomNode::SetIsVisited(bool isVisited)
+{
+    isVisited_= isVisited;
+}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
