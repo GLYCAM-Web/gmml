@@ -5,14 +5,10 @@
 #include <iostream>
 #include <math.h>
 
-using namespace GeometryOperation;
-using namespace GeometryTopology;
-using namespace gmml;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Geometry::Geometry(){}
+GeometryOperation::Geometry::Geometry(){}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -25,7 +21,7 @@ Geometry::Geometry(){}
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-Geometry::CoordinateVector Geometry::RotateCoordinates(Coordinate* pivot_point,Coordinate* direction_point,double rotation_angle,CoordinateVector coordinate_set)
+GeometryOperation::Geometry::CoordinateVector GeometryOperation::Geometry::RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryOperation::Geometry::CoordinateVector coordinate_set)
 {
      //Please refer https://sites.google.com/site/glennmurray/Home/rotation-matrices-and-formulas/rotation-about-an-arbitrary-axis-in-3-dimensions for the technique used in coordinate rotation with respect to arbitrary axis.
 
@@ -60,31 +56,30 @@ Geometry::CoordinateVector Geometry::RotateCoordinates(Coordinate* pivot_point,C
         double c = pivot_point->GetZ();
 
         //converting degree to radians
-        double angle = ConvertDegree2Radian(rotation_angle);
+        double angle = gmml::ConvertDegree2Radian(rotation_angle);
 
         double cosT = cos(angle);
         double oneMinusCosT = 1 - cosT;
         double sinT = sin(angle);
 
+        GeometryOperation::Geometry::CoordinateVector rotated_coordinate_set;
         for(CoordinateVector::iterator it = coordinate_set.begin(); it != coordinate_set.end(); it++)
         {
-            Coordinate* coordinate = (*it);
+            GeometryTopology::Coordinate* coordinate = (*it);
 
             double x=coordinate->GetX();
             double y=coordinate->GetY();
             double z= coordinate->GetZ();
 
-            Coordinate* result = new Coordinate();
+            GeometryTopology::Coordinate* result = new GeometryTopology::Coordinate();
             result->SetX((a*(v2 + w2) - u*(b*v + c*w - u*x - v*y - w*z)) * oneMinusCosT+ x*cosT+ (-c*v + b*w - w*y + v*z)*sinT);
             result->SetY((b*(u2 + w2) - v*(a*u + c*w - u*x - v*y - w*z)) * oneMinusCosT+ y*cosT+ (c*u - a*w + w*x - u*z)*sinT);
             result->SetZ((c*(u2 + v2) - w*(a*u + b*v - u*x - v*y - w*z)) * oneMinusCosT+ z*cosT+ (-b*u + a*v - v*x + u*y)*sinT);
 
-            (*it)->SetX(result->GetX());
-            (*it)->SetY(result->GetY());
-            (*it)->SetZ(result->GetZ());
+            rotated_coordinate_set.push_back(result);
         }
 
-           return coordinate_set;
+           return rotated_coordinate_set;
     }
 
 }
