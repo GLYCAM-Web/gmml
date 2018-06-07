@@ -4,10 +4,11 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "../coordinate.hpp"
 
 namespace GeometryTopology
 {
-    class Coordinate;
+    // class Coordinate;
     class Dihedral
     {
         public:

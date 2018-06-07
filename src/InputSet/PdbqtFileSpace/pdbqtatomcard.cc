@@ -3,27 +3,25 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PdbqtFileSpace;
+using PdbqtFileSpace::PdbqtAtomCard;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbqtAtomCard::PdbqtAtomCard() : record_name_("ATOM"){}
 
-PdbqtAtomCard::PdbqtAtomCard(stringstream &stream_block)
+PdbqtAtomCard::PdbqtAtomCard(std::stringstream &stream_block)
 {
     atoms_ = PdbqtAtomMap();
-    string line;
+    std::string line;
     bool is_record_name_set = false;
     getline(stream_block, line);
-    string temp = line;
-    while (!Trim(temp).empty())
+    std::string temp = line;
+    while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = "ATOM";
-            Trim(record_name_);
+            gmml::Trim(record_name_);
             is_record_name_set=true;
         }
 
@@ -38,7 +36,7 @@ PdbqtAtomCard::PdbqtAtomCard(stringstream &stream_block)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string PdbqtAtomCard::GetRecordName()
+std::string PdbqtAtomCard::GetRecordName()
 {
     return record_name_;
 }
@@ -51,7 +49,7 @@ PdbqtAtomCard::PdbqtAtomMap PdbqtAtomCard::GetAtoms()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbqtAtomCard::SetRecordName(const string record_name)
+void PdbqtAtomCard::SetRecordName(const std::string record_name)
 {
     record_name_ = record_name;
 }
@@ -74,19 +72,19 @@ void PdbqtAtomCard::SetAtoms(PdbqtAtomMap atoms)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtAtomCard::Print(ostream &out)
+void PdbqtAtomCard::Print(std::ostream &out)
 {
-//    out << "Record Name: " << record_name_ << endl <<
-    out << "_________________ Atoms _______________" << endl;
+//    out << "Record Name: " << record_name_ << std::endl <<
+    out << "_________________ Atoms _______________" << std::endl;
     for(PdbqtAtomCard::PdbqtAtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         out << "Atom Serial Number: ";
-        if((it)->first != iNotSet)
-            out << (it)->first << endl;
+        if((it)->first != gmml::iNotSet)
+            out << (it)->first << std::endl;
         else
-            out << " " << endl;
+            out << " " << std::endl;
         (it)->second->Print();
-        out << endl;
+        out << std::endl;
     }
-    out << endl;
+    out << std::endl;
 }

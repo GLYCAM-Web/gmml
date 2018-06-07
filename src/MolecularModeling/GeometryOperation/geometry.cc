@@ -38,7 +38,8 @@ Geometry::CoordinateVector Geometry::RotateCoordinates(Coordinate* pivot_point,C
     double l=sqrt(u*u+v*v+w*w);
     if(l<0)
     {
-        cout<<"Direction vector length is less than 1"<<endl;
+        std::cout<<"Direction vector length is less than 1"<<std::endl;
+        return coordinate_set;
     }else
     {
         // Normalize the direction vector.

@@ -5,14 +5,13 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
-using namespace gmml;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyFileProcessingException;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 TopologyFileProcessingException::TopologyFileProcessingException(const std::string &message)
-    : line_number_(dNotSet), message_(message) {}
+    : line_number_(gmml::dNotSet), message_(message) {}
 
 TopologyFileProcessingException::TopologyFileProcessingException(int line_number, const std::string &message)
     : line_number_(line_number), message_(message) {}
@@ -24,7 +23,7 @@ TopologyFileProcessingException::TopologyFileProcessingException(int line_number
 const char* TopologyFileProcessingException::what() const throw()
 {
     what_ = "TopologyFile: " + message_;
-    if (line_number_ != dNotSet)
+    if (line_number_ != gmml::dNotSet)
     {
         std::stringstream ss;
         if(ss << line_number_)

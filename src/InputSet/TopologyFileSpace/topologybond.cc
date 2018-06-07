@@ -2,23 +2,22 @@
 #include "../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyBond;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 TopologyBond::TopologyBond() {}
 
-TopologyBond::TopologyBond(vector<string> bonds, vector<string> residue_names)
+TopologyBond::TopologyBond(std::vector<std::string> bonds, std::vector<std::string> residue_names)
 {
     bonds_.clear();
-    for(vector<string>::iterator it = bonds.begin(); it != bonds.end(); it++)
+    for(std::vector<std::string>::iterator it = bonds.begin(); it != bonds.end(); it++)
     {
         bonds_.push_back(*it);
     }
     residue_names_.clear();
-    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    for(std::vector<std::string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
     {
         residue_names_.push_back(*it);
     }
@@ -27,11 +26,11 @@ TopologyBond::TopologyBond(vector<string> bonds, vector<string> residue_names)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-vector<string> TopologyBond::GetBonds()
+std::vector<std::string> TopologyBond::GetBonds()
 {
     return bonds_;
 }
-TopologyBondType* TopologyBond::GetBondType()
+TopologyFileSpace::TopologyBondType* TopologyBond::GetBondType()
 {
     return bond_type_;
 }
@@ -39,7 +38,7 @@ bool TopologyBond::GetIncludingHydrogen()
 {
     return including_hydrogen_;
 }
-vector<string> TopologyBond::GetResidueNames()
+std::vector<std::string> TopologyBond::GetResidueNames()
 {
     return residue_names_;
 }
@@ -47,15 +46,15 @@ vector<string> TopologyBond::GetResidueNames()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyBond::SetBonds(vector<string> bonds)
+void TopologyBond::SetBonds(std::vector<std::string> bonds)
 {
     bonds_.clear();
-    for(vector<string>::iterator it = bonds.begin(); it != bonds.end(); it++)
+    for(std::vector<std::string>::iterator it = bonds.begin(); it != bonds.end(); it++)
     {
         bonds_.push_back(*it);
     }
 }
-void TopologyBond::SetBondType(TopologyBondType* bond_type)
+void TopologyBond::SetBondType(TopologyFileSpace::TopologyBondType* bond_type)
 {
     bond_type_ = bond_type;
 }
@@ -63,10 +62,10 @@ void TopologyBond::SetIncludingHydrogen(bool including_hydrogen)
 {
     including_hydrogen_ = including_hydrogen;
 }
-void TopologyBond::SetResidueNames(vector<string> residue_names)
+void TopologyBond::SetResidueNames(std::vector<std::string> residue_names)
 {
     residue_names_.clear();
-    for(vector<string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
+    for(std::vector<std::string>::iterator it = residue_names.begin(); it != residue_names.end(); it++)
     {
         residue_names_.push_back(*it);
     }
@@ -79,9 +78,9 @@ void TopologyBond::SetResidueNames(vector<string> residue_names)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyBond::Print(ostream &out)
+void TopologyBond::Print(std::ostream &out)
 {
-    out << "Bond: " << residue_names_.at(0) << ":" << bonds_.at(0) << "-" << residue_names_.at(1) << ":" << bonds_.at(1) << endl;
+    out << "Bond: " << residue_names_.at(0) << ":" << bonds_.at(0) << "-" << residue_names_.at(1) << ":" << bonds_.at(1) << std::endl;
     out << "\t ";
     bond_type_->Print(out);
     out << ", Including Hydrogen: ";
@@ -89,8 +88,5 @@ void TopologyBond::Print(ostream &out)
         out << "YES";
     else
         out << "NO";
-    out << endl;
+    out << std::endl;
 }
-
-
-

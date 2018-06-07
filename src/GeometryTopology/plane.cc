@@ -1,8 +1,6 @@
-
 #include "../../includes/GeometryTopology/plane.hpp"
 
-using namespace GeometryTopology;
-using namespace std;
+using GeometryTopology::Plane;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -68,6 +66,5 @@ void Plane::SetV2(double x, double y, double z)
 //////////////////////////////////////////////////////////
 void Plane::Print(std::ostream& out)
 {
+    out << "";
 }
-
-

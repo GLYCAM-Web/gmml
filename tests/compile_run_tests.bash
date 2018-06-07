@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Manually change this number as you add tests:
-number_of_tests=4
+number_of_tests=6
 tests_passed=0
 
 # Required for compiling
@@ -11,7 +11,7 @@ export LD_LIBRARY_PATH
 
 ###################### Test 01 ###################### 
 printf "Testing create_Assembly_WritePDB... "
-g++ -I../includes/* -L../bin/ tests/create_Assembly_WritePDB.cc -lgmml -o create_Assembly_WritePDB
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/create_Assembly_WritePDB.cc -lgmml -o create_Assembly_WritePDB
 ./create_Assembly_WritePDB > /dev/null 2>&1
 if [ -f test-NLN.pdb ]; then
     if ! cmp test-NLN.pdb tests/correct_outputs/test-NLN.pdb > /dev/null 2>&1; then
@@ -28,7 +28,7 @@ rm test-NLN.pdb create_Assembly_WritePDB > /dev/null 2>&1
 
 ###################### Test 02 ######################
 printf "Testing superimposition_Eigen... "
-g++ -I../includes/* -L../bin/ tests/superimposition_Eigen.cc -lgmml -o superimposition_Eigen
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/superimposition_Eigen.cc -lgmml -o superimposition_Eigen
 ./superimposition_Eigen > /dev/null 2>&1
 if [ -f moved.pdb ]; then
     if ! cmp moved.pdb tests/correct_outputs/moved.pdb > /dev/null 2>&1; then
@@ -44,7 +44,7 @@ rm moved.pdb superimposition_Eigen > /dev/null 2>&1
 
 ###################### Test 03 ######################
 printf "Testing PDBpreprocessor... "
-g++ -I../includes/* -L../bin/ tests/PDB_preprocessor.cc -lgmml -o PDB_preprocessor
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/PDB_preprocessor.cc -lgmml -o PDB_preprocessor
 ./PDB_preprocessor > /dev/null 2>&1
 if [ -f Processed.pdb ]; then
     if ! cmp Processed.pdb tests/correct_outputs/Processed.pdb > /dev/null 2>&1; then
@@ -60,7 +60,7 @@ rm Processed.pdb PDB_preprocessor > /dev/null 2>&1
 
 ###################### Test 04 ######################
 printf "Testing Overlaps function... "
-g++ -I../includes/* -L../bin/ tests/overlaps.cc -lgmml -o overlaps
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/overlaps.cc -lgmml -o overlaps
 ./overlaps > overlaps.txt
 if [ -f overlaps.txt ]; then
     if ! cmp overlaps.txt tests/correct_outputs/overlaps.txt > /dev/null 2>&1; then
@@ -74,6 +74,31 @@ else
 fi
 rm overlaps overlaps.txt > /dev/null 2>&1
 
+###################### Test 05 ######################
+printf "Testing to make sure there are no using namespace declarations... "
+namespace_count=$( grep -r --exclude-dir=Eigen_Algebra_Template_Library "using namespace" ../includes/ ../src/ | wc -l )
+if [[ $namespace_count -eq 0 ]]; then
+	printf "Test passed!\n"
+	((tests_passed++))
+else
+	printf "Test FAILED!\n"
+fi
+
+###################### Test 06 ######################
+printf "Testing BFMP Ring Shape Calculation... "
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/ring_shape_detection.cc -lgmml -o ring_shape_detection
+./ring_shape_detection > ring_shape_detection.txt
+if [ -f ring_conformations.txt ]; then
+    if ! cmp ring_conformations.txt tests/correct_outputs/ring_conformations.txt > /dev/null 2>&1; then
+        printf "Test FAILED!.\n"
+    else
+        printf "Test passed.\n"
+        ((tests_passed++))
+    fi
+else
+    printf "Test FAILED!.\n"
+fi
+rm ring_shape_detection ring_shape_detection.txt ring_conformations.txt > /dev/null 2>&1
 
 ############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then

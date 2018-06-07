@@ -1,17 +1,16 @@
 // Created by: Delaram Rahbarinia
-// Modified by: Alireza Khatamian, Delaram Rahbarinia
+// Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
 #ifndef PDBMODELCARD_HPP
 #define PDBMODELCARD_HPP
 
 #include <string>
-#include <map>
 #include <sstream>
 #include <iostream>
 
 namespace PdbFileSpace
 {
-    class PdbModel;
+    class PdbModelResidueSet;
 
     class PdbModelCard
     {
@@ -19,10 +18,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       TYPE DEFINITION                //
             //////////////////////////////////////////////////////////
-            /*! \typedef
-              * Mapping between model serial number and the model
-              */
-            typedef std::map<int, PdbModel*> PdbModelMap;
+
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -33,9 +29,9 @@ namespace PdbFileSpace
             PdbModelCard();
             /*! \fn
               * Constructor with required parameters
-              * @param stream_block
+              * @param model_block
               */
-            PdbModelCard(std::stringstream& stream_block);
+            PdbModelCard(std::stringstream& model_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -44,15 +40,15 @@ namespace PdbFileSpace
                * @{
                */
             /*! \fn
-              * An accessor function in order to access to the record name in a model card
-              * @return record_name_ attribute of the current object of this class
+              * An accessor function in order to access to the model serial number in a pdb model
+              * @return model_serial_number_ attribute of the current object of this class
               */
-            std::string GetRecordName();
+            int GetModelSerialNumber();
             /*! \fn
-              * An accessor function in order to access to the models in a model card
-              * @return models_ attribute of the current object of this class
+              * An accessor function in order to access to the model residue set in a pdb model
+              * @return model_residue_set_ attribute of the current object of this class
               */
-            PdbModelMap GetModels();
+            PdbModelResidueSet* GetModelResidueSet();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -61,17 +57,17 @@ namespace PdbFileSpace
                * @{
                */
             /*! \fn
-              * A mutator function in order to set the record name of the current object
-              * Set the record_name_ attribute of the current model card
-              * @param record_name The record name attribute of the current object
+              * A mutator function in order to set the model serial number of the current object
+              * Set the model_serial_number_ attribute of the current pdb model
+              * @param model_serial_number The model serial number attribute of the current object
               */
-            void SetRecordName(const std::string record_name);
+            void SetModelSerialNumber(int model_serial_number);
             /*! \fn
-              * A mutator function in order to set the models of the current object
-              * Set the models_ attribute of the current model card
-              * @param models The model attribute of the current object
+              * A mutator function in order to set the model residue set of the current object
+              * Set the model_residue_set_ attribute of the current pdb model
+              * @param model_residue_set The model residue set attribute of the current object
               */
-            void SetModels(PdbModelMap models);
+            void SetModelResidueSet(PdbModelResidueSet* model_residue_set);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -81,7 +77,7 @@ namespace PdbFileSpace
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A function to print out the model card contents in a structural format
+              * A function to print out the model contents in a structural format
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -91,8 +87,8 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;           /*!< Name of model card record which is in the first column of each line of a pdb file >*/
-            PdbModelMap models_;                /*!< Models that are in model card of a pdb file >*/
+            int model_serial_number_;               /*!< Serial number of a model >*/
+            PdbModelResidueSet* model_residue_set_; /*!< Residue sets involving in a model >*/
 
     };
 }

@@ -2,6 +2,8 @@
 #define CELL_HPP
 
 #include <iostream>
+
+#include "../../includes/common.hpp"
 #include "coordinate.hpp"
 #include "grid.hpp"
 
@@ -79,4 +81,5 @@ namespace GeometryTopology
             Grid* grid_;
     };
 }
+
 #endif // CELL_HPP

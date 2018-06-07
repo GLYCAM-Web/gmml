@@ -29,6 +29,7 @@ namespace PrepFileSpace
               * @param prep_file An existing prep file path to be read
               */
             PrepFile(const std::string& prep_file);
+            PrepFile(const std::string& prep_file, std::vector<std::string>& query_residue_names);
             /*! \fn
               * Default constructor
               */
@@ -93,7 +94,8 @@ namespace PrepFileSpace
               * Parse the given stream and set the attributes of the current object accordingly
               * @param in_file A stream contains whole contents of a prep file
               */
-            void Read(std::ifstream& in_file);
+            void ReadAllResidues(std::ifstream& in_file);
+            void ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names);
 /** @}*/
             /** \addtogroup Output_File_Builder
                * @{

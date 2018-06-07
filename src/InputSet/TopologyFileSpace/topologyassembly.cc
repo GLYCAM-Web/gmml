@@ -3,8 +3,7 @@
 #include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
 #include "../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
 
-using namespace std;
-using namespace TopologyFileSpace;
+using TopologyFileSpace::TopologyAssembly;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -18,7 +17,7 @@ TopologyAssembly::TopologyAssembly()
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-string TopologyAssembly::GetAssemblyName()
+std::string TopologyAssembly::GetAssemblyName()
 {
     return assembly_name_;
 }
@@ -26,28 +25,28 @@ TopologyAssembly::TopologyResidueVector TopologyAssembly::GetResidues()
 {
     return residues_;
 }
-TopologyResidue* TopologyAssembly::GetResidueByIndex(int index)
+TopologyFileSpace::TopologyResidue* TopologyAssembly::GetResidueByIndex(int index)
 {
     for(TopologyResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        TopologyResidue* residue = (*it);
+        TopologyFileSpace::TopologyResidue* residue = (*it);
         if(residue->GetIndex() == index)
             return residue;
     }
     return NULL;
 }
-int TopologyAssembly::GetAtomIndexByName(string atom_name, int residue_index)
-{    
+int TopologyAssembly::GetAtomIndexByName(std::string atom_name, int residue_index)
+{
     for(TopologyResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
-    {        
-        TopologyResidue* residue = (*it);
+    {
+        TopologyFileSpace::TopologyResidue* residue = (*it);
         if(residue->GetIndex() == residue_index)
         {
             TopologyResidue::TopologyAtomVector atoms = residue->GetAtoms();
-            for(TopologyResidue::TopologyAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+            for(TopologyFileSpace::TopologyResidue::TopologyAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
             {
                 TopologyAtom* atom = (*it1);
-                string name = atom->GetAtomName();
+                std::string name = atom->GetAtomName();
                 if(name.compare(atom_name) == 0)
                 {
                     return atom->GetIndex();
@@ -61,7 +60,7 @@ int TopologyAssembly::GetAtomIndexByName(string atom_name, int residue_index)
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void TopologyAssembly::SetAssemblyName(const string assembly_name)
+void TopologyAssembly::SetAssemblyName(const std::string assembly_name)
 {
     assembly_name_ = assembly_name;
 }
@@ -70,11 +69,11 @@ void TopologyAssembly::SetResidues(TopologyResidueVector residues)
     residues_.clear();
     for(TopologyResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
     {
-        TopologyResidue* residue = (*it);
+        TopologyFileSpace::TopologyResidue* residue = (*it);
         residues_.push_back(residue);
     }
 }
-void TopologyAssembly::AddResidue(TopologyResidue *residue)
+void TopologyAssembly::AddResidue(TopologyFileSpace::TopologyResidue *residue)
 {
     residues_.push_back(residue);
 }
@@ -86,14 +85,13 @@ void TopologyAssembly::AddResidue(TopologyResidue *residue)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void TopologyAssembly::Print(ostream &out)
+void TopologyAssembly::Print(std::ostream &out)
 {
-    out << "Assembly Name: " << assembly_name_ << endl;
+    out << "Assembly Name: " << assembly_name_ << std::endl;
     for(TopologyResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
     {
-        TopologyResidue* residue = (*it);
-        out << "-------------------------- " << residue->GetResidueName() << " -------------------------" << endl;
+        TopologyFileSpace::TopologyResidue* residue = (*it);
+        out << "-------------------------- " << residue->GetResidueName() << " -------------------------" << std::endl;
         residue->Print(out);
     }
 }
-

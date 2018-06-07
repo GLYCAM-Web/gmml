@@ -2,9 +2,9 @@
 #define SUPERIMPOSITION_HPP
 
 #include "../Eigen_Algebra_Template_Library/Geometry"
-//#include "../GeometryTopology/coordinate.hpp"
+#include "../GeometryTopology/coordinate.hpp"
 #include "assembly.hpp"
-//#include "atom.hpp"
+#include "atom.hpp"
 
 //*******************************************
 
@@ -14,13 +14,11 @@ typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
 
 //*******************************************
 
-using namespace MolecularModeling;
-
 namespace gmml
 {
-    void GenerateMatrixFromAssembyCoordinates(Assembly *assembly, Eigen::Matrix3Xd *matrix);
+    void GenerateMatrixFromAssembyCoordinates(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
-    void ReplaceAssemblyCoordinatesFromMatrix(Assembly *assembly, Eigen::Matrix3Xd *matrix);
+    void ReplaceAssemblyCoordinatesFromMatrix(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
     //Atom Vector version, may be removed
     void GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
@@ -32,11 +30,11 @@ namespace gmml
 
     void Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving);
 
-    void Superimpose(Assembly *moving, Assembly *target);
+    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target);
 
-    void Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving);
+    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, MolecularModeling::Assembly *alsoMoving);
 
-    void Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving);
+    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving);
     // A function to test Find3DAffineTransform()
     // void TestFind3DAffineTransform();
 }

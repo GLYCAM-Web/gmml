@@ -54,6 +54,12 @@ namespace Ontology
     const std::string hasCore = "gmmo:hasCore";
     const std::string hasSideAtom = "gmmo:hasSideAtom";
     const std::string hasSugarName = "gmmo:hasSugarName";
+    const std::string hasTitle = "gmmo:hasTitle";
+    const std::string hasAuthors = "gmmo:hasAuthors";
+    const std::string hasDOI = "gmmo:hasDOI";
+    const std::string hasPMID = "gmmo:hasPMID";
+    const std::string hasResolution = "gmmo:hasResolution";
+    const std::string hasBFactor = "gmmo:hasBFactor";
 
     /* Datatype Properties */
     const std::string input_file_path = "gmmo:filePath";
@@ -75,6 +81,7 @@ namespace Ontology
     const std::string oligo_name = "gmmo:oligoName";
     const std::string oligo_sequence_name = "gmmo:oligoSequenceName";
     const std::string oligo_residue_linkages = "gmmo:oligoResidueLinks";
+    const std::string oligo_b_factor = "gmmo:oligoBFactor";
     const std::string note_type = "gmmo:NoteType";
     const std::string note_category = "gmmo:NoteCategory";
     const std::string note_description = "gmmo:description";

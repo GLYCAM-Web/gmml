@@ -19,9 +19,6 @@
 
 #include <iostream>
 
-using std::cout;
-using std::endl;
-
 namespace gmml
 {
     /*! \fn
@@ -34,6 +31,37 @@ namespace gmml
         str.erase(str.find_last_not_of(" ") + 1);
         str.erase(0, str.find_first_not_of(" "));
         return str;
+    }
+    
+    /*! \fn
+      * Removes duplicate spaces inside of the string.
+      * @param str String with duplicate spaces
+      * @return Given string without duplicate spaces within the original one
+      */
+    inline std::string& TrimSpaces(std::string& str)
+    {
+          std::string s;
+          bool first = true;
+          bool space = false;
+          std::string::iterator iter;
+          for(iter = str.begin(); iter != str.end(); ++iter){
+              if(*iter == ' '){
+                  if(first == false){
+                      space = true;
+                  }
+              }else{
+                  if(*iter != ',' && *iter != '.'){
+                      if(space){
+                          s.push_back(' ');
+                      }
+                  }
+                  s.push_back(*iter);
+                  space = false;
+                  first = false;
+              }
+          }
+          str = s;
+          return str;
     }
 
     /*! \fn
@@ -81,9 +109,8 @@ namespace gmml
         T val;
         std::stringstream ss(str);
         ss >> val;
-//        if (ss >> val)
+        // if(ss >> val)
         return val;
-
         throw std::invalid_argument("ConvertString: invalid conversion of string " + str);
     }
 
@@ -516,8 +543,8 @@ namespace gmml
             {
                 for(int j = 0; j < vocab_size; j++)
                 {
-                    int target_index = target_code.find(vocab[j]);
-                    int code_index = code.find(vocab[j]);
+                    size_t target_index = target_code.find(vocab[j]);
+                    size_t code_index = code.find(vocab[j]);
                     if(target_index != std::string::npos)
                     {
                         //target code and the key code both contain the vocab[j]
@@ -724,27 +751,27 @@ namespace gmml
       */
     inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "log.log")
     {
-//        std::ofstream file;
-//        file.open(out_file_name.c_str(), std::ios_base::app);
+       std::ofstream file;
+       file.open(out_file_name.c_str(), std::ios_base::app);
 
-//        time_t t = time(0);
-//        std::string time_str = std::asctime(std::localtime(&t));
-//        file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>>";
-//        switch(level)
-//        {
-//            case INF:
-//                file << " [INFO]: ";
-//                break;
-//            case ERR:
-//                file << " [ERROR]: ";
-//                break;
-//            case WAR:
-//                file << " [WARNING]: ";
-//                break;
-//        }
-//        file << msg << std::endl;
+       time_t t = time(0);
+       std::string time_str = std::asctime(std::localtime(&t));
+       file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>>";
+       switch(level)
+       {
+           case INF:
+               file << " [INFO]: ";
+               break;
+           case ERR:
+               file << " [ERROR]: ";
+               break;
+           case WAR:
+               file << " [WARNING]: ";
+               break;
+       }
+       file << msg << std::endl;
 
-//        file.close();
+       file.close();
     }
 
     inline double** GenerateRotationMatrix(GeometryTopology::Coordinate* direction, GeometryTopology::Coordinate* parent, double angle)

@@ -4,17 +4,15 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 
-using namespace std;
-using namespace gmml;
-using namespace PrepFileSpace;
+using PrepFileSpace::PrepFileAtom;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-PrepFileAtom::PrepFileAtom() : index_(0), name_(""), type_(""), topological_type_(kTopTypeM), bond_index_(0), angle_index_(0), dihedral_index_(0),
-    bond_length_(dNotSet), angle_(dNotSet), dihedral_(dNotSet), charge_(dNotSet) {}
+PrepFileAtom::PrepFileAtom() : index_(0), name_(""), type_(""), topological_type_(gmml::kTopTypeM), bond_index_(0), angle_index_(0), dihedral_index_(0),
+    bond_length_(gmml::dNotSet), angle_(gmml::dNotSet), dihedral_(gmml::dNotSet), charge_(gmml::dNotSet) {}
 
-PrepFileAtom::PrepFileAtom(int index, const string& name, const string& type, TopologicalType topological_type, int bond_index, int angle_index, int dihedral_index,
+PrepFileAtom::PrepFileAtom(int index, const std::string& name, const std::string& type, gmml::TopologicalType topological_type, int bond_index, int angle_index, int dihedral_index,
                            double bond_length, double angle, double dihedral, double charge) :
     index_(index), name_(name), type_(type), topological_type_(topological_type), bond_index_(bond_index), angle_index_(angle_index), dihedral_index_(dihedral_index),
     bond_length_(bond_length), angle_(angle), dihedral_(dihedral), charge_(charge) {}
@@ -48,20 +46,20 @@ PrepFileAtom::~PrepFileAtom()
 //////////////////////////////////////////////////////////
 /// Extract corresponding topological type from a stream line
 /// Return value is an enumeration type
-TopologicalType PrepFileAtom::ExtractAtomTopologicalType(istream &ss)
+gmml::TopologicalType PrepFileAtom::ExtractAtomTopologicalType(std::istream &ss)
 {
-    string s;
+    std::string s;
     ss >> s;
     if (s == "M")
-        return kTopTypeM;
+        return gmml::kTopTypeM;
     else if (s == "S")
-        return kTopTypeS;
+        return gmml::kTopTypeS;
     else if (s == "B")
-        return kTopTypeB;
+        return gmml::kTopTypeB;
     else if (s == "E")
-        return kTopTypeE;
+        return gmml::kTopTypeE;
     else
-        return kTopType3;
+        return gmml::kTopType3;
 }
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
@@ -79,7 +77,7 @@ std::string PrepFileAtom::GetType(){
     return type_;
 }
 
-TopologicalType PrepFileAtom::GetTopologicalType(){
+gmml::TopologicalType PrepFileAtom::GetTopologicalType(){
     return topological_type_;
 }
 
@@ -110,62 +108,62 @@ double PrepFileAtom::GetDihedral(){
 double PrepFileAtom::GetCharge(){
     return charge_;
 }
-string PrepFileAtom::GetStringFormatOfTopologicalType(TopologicalType topological_type)
+std::string PrepFileAtom::GetStringFormatOfTopologicalType(gmml::TopologicalType topological_type)
 {
     switch(topological_type)
     {
-        case kTopTypeE:
+        case gmml::kTopTypeE:
             return "E";
-        case kTopTypeS:
+        case gmml::kTopTypeS:
             return "S";
-        case kTopTypeB:
+        case gmml::kTopTypeB:
             return "B";
-        case kTopType3:
+        case gmml::kTopType3:
             return "3";
-        case kTopType4:
+        case gmml::kTopType4:
             return "4";
-        case kTopTypeM:
+        case gmml::kTopTypeM:
             return "M";
         default:
             return "E";
     }
 }
-string PrepFileAtom::GetStringFormatOfTopologicalType()
+std::string PrepFileAtom::GetStringFormatOfTopologicalType()
 {
     switch(topological_type_)
     {
-        case kTopTypeE:
+        case gmml::kTopTypeE:
             return "E";
-        case kTopTypeS:
+        case gmml::kTopTypeS:
             return "S";
-        case kTopTypeB:
+        case gmml::kTopTypeB:
             return "B";
-        case kTopType3:
+        case gmml::kTopType3:
             return "3";
-        case kTopType4:
+        case gmml::kTopType4:
             return "4";
-        case kTopTypeM:
+        case gmml::kTopTypeM:
             return "M";
         default:
             return "E";
     }
 }
-TopologicalType PrepFileAtom::GetTopologicalTypeFromString(string topological_type)
+gmml::TopologicalType PrepFileAtom::GetTopologicalTypeFromString(std::string topological_type)
 {
     if(topological_type.compare("E") == 0)
-        return kTopTypeE;
+        return gmml::kTopTypeE;
     if(topological_type.compare("S") == 0)
-        return kTopTypeS;
+        return gmml::kTopTypeS;
     if(topological_type.compare("B") == 0)
-        return kTopTypeB;
+        return gmml::kTopTypeB;
     if(topological_type.compare("3") == 0)
-        return kTopType3;
+        return gmml::kTopType3;
     if(topological_type.compare("4") == 0)
-        return kTopType4;
+        return gmml::kTopType4;
     if(topological_type.compare("M") == 0)
-        return kTopTypeM;
+        return gmml::kTopTypeM;
     else
-        return kTopTypeE;
+        return gmml::kTopTypeE;
 }
 
 //////////////////////////////////////////////////////////
@@ -184,7 +182,7 @@ void PrepFileAtom::SetType(const std::string type){
     type_ = type;
 }
 
-void PrepFileAtom::SetTopologicalType(TopologicalType topological_type){
+void PrepFileAtom::SetTopologicalType(gmml::TopologicalType topological_type){
     topological_type_ = topological_type;
 }
 
@@ -219,33 +217,33 @@ void PrepFileAtom::SetCharge(double charge){
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void PrepFileAtom::Print(ostream &out)
+void PrepFileAtom::Print(std::ostream &out)
 {
-    out << setw(3) << index_
-        << setw(6) << name_
-        << setw(6) << type_;
-    if(topological_type_ == kTopTypeE)
-        out << setw(3) << "E";
-    else if(topological_type_ == kTopTypeS)
-        out << setw(3) << "S";
-    else if(topological_type_ == kTopTypeB)
-        out << setw(3) << "B";
-    else if(topological_type_ == kTopType3)
-        out << setw(3) << "3";
-    else if(topological_type_ == kTopType4)
-        out << setw(3) << "4";
-    else if(topological_type_ == kTopTypeM)
-        out << setw(3) << "M";
+    out << std::setw(3) << index_
+        << std::setw(6) << name_
+        << std::setw(6) << type_;
+    if(topological_type_ == gmml::kTopTypeE)
+        out << std::setw(3) << "E";
+    else if(topological_type_ == gmml::kTopTypeS)
+        out << std::setw(3) << "S";
+    else if(topological_type_ == gmml::kTopTypeB)
+        out << std::setw(3) << "B";
+    else if(topological_type_ == gmml::kTopType3)
+        out << std::setw(3) << "3";
+    else if(topological_type_ == gmml::kTopType4)
+        out << std::setw(3) << "4";
+    else if(topological_type_ == gmml::kTopTypeM)
+        out << std::setw(3) << "M";
     else
-        out << setw(3) << "-";
+        out << std::setw(3) << "-";
 
-    out << setw(4) << bond_index_
-        << setw(4) << angle_index_
-        << setw(4) << dihedral_index_
-        << setw(10) << bond_length_
-        << setw(10) << angle_
-        << setw(10) << dihedral_
-        << setw(10) << charge_;
+    out << std::setw(4) << bond_index_
+        << std::setw(4) << angle_index_
+        << std::setw(4) << dihedral_index_
+        << std::setw(10) << bond_length_
+        << std::setw(10) << angle_
+        << std::setw(10) << dihedral_
+        << std::setw(10) << charge_;
 //        << endl;
 
 }

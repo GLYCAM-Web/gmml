@@ -5,16 +5,15 @@
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
 #include "../../../includes/common.hpp"
 
-using namespace gmml;
-using namespace ParameterFileSpace;
+using ParameterFileSpace::ParameterFileDihedral;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileDihedral::ParameterFileDihedral()
-    : types_(), terms_(), scee_(dNotSet), scnb_(dNotSet), is_generic_(false), is_improper_(false) {}
+    : types_(), terms_(), scee_(gmml::dNotSet), scnb_(gmml::dNotSet), is_generic_(false), is_improper_(false) {}
 
-ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string> &types, const ParameterFileDihedralTerm& term,
+ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string> &types, const ParameterFileSpace::ParameterFileDihedralTerm& term,
                                              double scee, double scnb, bool is_generic, bool is_improper)
     : types_(types), terms_(), scee_(scee), scnb_(scnb), is_generic_(is_generic), is_improper_(is_improper)
 {
@@ -30,7 +29,7 @@ std::vector<std::string> ParameterFileDihedral::GetTypes()
     return types_;
 }
 
-std::vector<ParameterFileDihedralTerm> ParameterFileDihedral::GetTerms()
+std::vector<ParameterFileSpace::ParameterFileDihedralTerm> ParameterFileDihedral::GetTerms()
 {
     return terms_;
 }
@@ -67,15 +66,15 @@ void ParameterFileDihedral::SetTypes(std::vector<std::string> types){
     }
 }
 
-void ParameterFileDihedral::SetTerms(std::vector<ParameterFileDihedralTerm> terms){
+void ParameterFileDihedral::SetTerms(std::vector<ParameterFileSpace::ParameterFileDihedralTerm> terms){
     terms_.clear();
-    for(std::vector<ParameterFileDihedralTerm>::iterator it = terms.begin(); it != terms.end(); it++)
+    for(std::vector<ParameterFileSpace::ParameterFileDihedralTerm>::iterator it = terms.begin(); it != terms.end(); it++)
     {
         terms_.push_back(*it);
     }
 }
 
-void ParameterFileDihedral::AddTerm(ParameterFileDihedralTerm term){
+void ParameterFileDihedral::AddTerm(ParameterFileSpace::ParameterFileDihedralTerm term){
     terms_.push_back(term);
 }
 
@@ -119,17 +118,17 @@ void ParameterFileDihedral::Print(std::ostream& out)
     else
         out << std::setw(10) << "NO";
 
-    if(scee_ == dNotSet)
+    if(scee_ == gmml::dNotSet)
         out << std::setw(6) << "--";
     else
         out << std::setw(6) << scee_;
 
-    if(scnb_ == dNotSet)
+    if(scnb_ == gmml::dNotSet)
         out << std::setw(6) << "--";
     else
         out << std::setw(6) << scnb_;
 
-    for(std::vector<ParameterFileDihedralTerm>::iterator it = terms_.begin(); it != terms_.end(); it++)
+    for(std::vector<ParameterFileSpace::ParameterFileDihedralTerm>::iterator it = terms_.begin(); it != terms_.end(); it++)
     {
         if(it == terms_.begin())
             it->Print(out);

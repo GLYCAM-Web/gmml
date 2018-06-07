@@ -1,7 +1,5 @@
 #include "../includes/MolecularModeling/superimposition.hpp"
 
-using namespace MolecularModeling;
-
 void gmml::GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix)
 {
     int col = 0; // Column index for matrix
@@ -135,7 +133,7 @@ void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::A
     gmml::Superimpose(moving_atoms, target_atoms);
 }
 
-void gmml::Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving)
+void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, MolecularModeling::Assembly *alsoMoving)
 {
     AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
     AtomVector target_atoms = target->GetAllAtomsOfAssembly();
@@ -145,7 +143,7 @@ void gmml::Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving)
 
 }
 
-void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
+void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving)
 {
 
     AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
@@ -203,4 +201,3 @@ void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoM
              (S-A.translation()).cwiseAbs().maxCoeff() > 1e-13)
             throw "Could not determine the affine transform accurately enough";
     }*/
-

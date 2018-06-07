@@ -4,14 +4,13 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
 
-using namespace gmml;
-using namespace ParameterFileSpace;
+using ParameterFileSpace::ParameterFileDihedralTerm;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileDihedralTerm::ParameterFileDihedralTerm() :
-    factor_(dNotSet), force_constant_(dNotSet), phase_(dNotSet), periodicity_(dNotSet), dscr_("") {}
+    factor_(gmml::dNotSet), force_constant_(gmml::dNotSet), phase_(gmml::dNotSet), periodicity_(gmml::dNotSet), dscr_("") {}
 
 ParameterFileDihedralTerm::ParameterFileDihedralTerm(int factor, double force_constant, double phase, double periodicity, const std::string& dscr) :
     factor_(factor), force_constant_(force_constant), phase_(phase), periodicity_(periodicity), dscr_(dscr) {}
@@ -69,22 +68,22 @@ void ParameterFileDihedralTerm::SetDscr(const std::string dscr){
 //////////////////////////////////////////////////////////
 void ParameterFileDihedralTerm::Print(std::ostream& out)
 {
-    if(factor_ == iNotSet)
+    if(factor_ == gmml::iNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << factor_;
 
-    if(force_constant_ == dNotSet)
+    if(force_constant_ == gmml::dNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << force_constant_;
 
-    if(phase_ == dNotSet)
+    if(phase_ == gmml::dNotSet)
         out << std::setw(10) << "--";
     else
         out << std::setw(10) << phase_;
 
-    if(periodicity_ == dNotSet)
+    if(periodicity_ == gmml::dNotSet)
         out << std::setw(12) << "--";
     else
         out << std::setw(12) << periodicity_;

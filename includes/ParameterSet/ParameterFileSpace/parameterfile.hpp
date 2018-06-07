@@ -86,7 +86,7 @@ namespace ParameterFileSpace
               * An accessor function in order to access to the parameter file type of the current object
               * @return file_type_ attribute of the current object of this class
               */
-            const int GetParameterFileType();
+            int GetParameterFileType();
             /*! \fn
               * An accessor function in order to access all improper dihedrals of the current object
               * @return improper_dihedrals Improper dihedrals the current object of this class

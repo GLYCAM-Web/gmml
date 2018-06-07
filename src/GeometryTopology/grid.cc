@@ -3,34 +3,32 @@
 #include "../../includes/GeometryTopology/grid.hpp"
 #include "../../includes/common.hpp"
 
-using namespace std;
-using namespace GeometryTopology;
-using namespace MolecularModeling;
-using namespace gmml;
+using GeometryTopology::Grid;
+
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 Grid::Grid()
 {
-    min_corner_ = new Coordinate();
-    max_corner_ = new Coordinate();
+    min_corner_ = new GeometryTopology::Coordinate();
+    max_corner_ = new GeometryTopology::Coordinate();
     cells_ = CellVector();
     assembly_ = NULL;
 }
 
-Grid::Grid(Assembly *assembly, Coordinate *min, Coordinate *max, double ion_radius, double ion_charge)
+Grid::Grid(MolecularModeling::Assembly *assembly, GeometryTopology::Coordinate *min, GeometryTopology::Coordinate *max, double ion_radius, double ion_charge)
 {
-    min_corner_ = new Coordinate(min->GetX(), min->GetY(), min->GetZ());
-    max_corner_ = new Coordinate(max->GetX(), max->GetY(), max->GetZ());
+    min_corner_ = new GeometryTopology::Coordinate(min->GetX(), min->GetY(), min->GetZ());
+    max_corner_ = new GeometryTopology::Coordinate(max->GetX(), max->GetY(), max->GetZ());
     cells_ = CellVector();
     assembly_ = assembly;
     this->UpdateGrid(ion_charge);
 }
 
-Grid::Grid(Assembly *assembly, Coordinate *min, Coordinate *max, double cell_length, double cell_width, double cell_height)
+Grid::Grid(MolecularModeling::Assembly *assembly, GeometryTopology::Coordinate *min, GeometryTopology::Coordinate *max, double cell_length, double cell_width, double cell_height)
 {
-    min_corner_ = new Coordinate(min->GetX(), min->GetY(), min->GetZ());
-    max_corner_ = new Coordinate(max->GetX(), max->GetY(), max->GetZ());
+    min_corner_ = new GeometryTopology::Coordinate(min->GetX(), min->GetY(), min->GetZ());
+    max_corner_ = new GeometryTopology::Coordinate(max->GetX(), max->GetY(), max->GetZ());
     cells_ = CellVector();
     assembly_ = assembly;
     this->UpdateGrid(cell_length, cell_width, cell_height);
@@ -38,27 +36,27 @@ Grid::Grid(Assembly *assembly, Coordinate *min, Coordinate *max, double cell_len
 
 Grid::Grid(Grid &grid)
 {
-    cout<<"In Deep Copy"<<endl;
-    Coordinate* tempMinCoordinate = new Coordinate(*grid.GetMinCorner());
+    std::cout<<"In Deep Copy"<<std::endl;
+    GeometryTopology::Coordinate* tempMinCoordinate = new GeometryTopology::Coordinate(*grid.GetMinCorner());
     this->min_corner_=tempMinCoordinate;
 
-    Coordinate* tempMaxCoordinate = new Coordinate(*grid.GetMaxCorner());
+    GeometryTopology::Coordinate* tempMaxCoordinate = new GeometryTopology::Coordinate(*grid.GetMaxCorner());
     this->max_corner_=tempMaxCoordinate;
 
     this->cells_=grid.GetCells();
 
-    Assembly* tempAssembly = new Assembly(*grid.GetAssembly());
+    MolecularModeling::Assembly* tempAssembly = new MolecularModeling::Assembly(*grid.GetAssembly());
     this->assembly_= tempAssembly;
 }
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-Coordinate* Grid::GetMinCorner()
+GeometryTopology::Coordinate* Grid::GetMinCorner()
 {
     return min_corner_;
 }
 
-Coordinate* Grid::GetMaxCorner()
+GeometryTopology::Coordinate* Grid::GetMaxCorner()
 {
     return max_corner_;
 }
@@ -68,7 +66,7 @@ Grid::CellVector Grid::GetCells()
     return cells_;
 }
 
-Assembly* Grid::GetAssembly()
+MolecularModeling::Assembly* Grid::GetAssembly()
 {
     return assembly_;
 }
@@ -76,12 +74,12 @@ Assembly* Grid::GetAssembly()
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
-void Grid::SetMinCorner(Coordinate *min)
+void Grid::SetMinCorner(GeometryTopology::Coordinate *min)
 {
     min_corner_ = min;
 }
 
-void Grid::SetMaxCorner(Coordinate *max)
+void Grid::SetMaxCorner(GeometryTopology::Coordinate *max)
 {
     max_corner_ = max;
 }
@@ -95,7 +93,7 @@ void Grid::SetCells(CellVector cells)
     }
 }
 
-void Grid::SetAssembly(Assembly *assembly)
+void Grid::SetAssembly(MolecularModeling::Assembly *assembly)
 {
     assembly_ = assembly;
 }
@@ -125,14 +123,14 @@ void Grid::UpdateGrid(double length, double width, double height)
                     {
                         if(k + height <= max_z)
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k),
-                                                      new Coordinate(i + length, j + width, k + height));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k),
+                                                      new GeometryTopology::Coordinate(i + length, j + width, k + height));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
                         }
                         else
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + length, j + width, max_z));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(i + length, j + width, max_z));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
                         }
@@ -141,13 +139,13 @@ void Grid::UpdateGrid(double length, double width, double height)
                     {
                         if(k + height <= max_z)
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + length, max_y, k + height));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(i + length, max_y, k + height));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
                         }
                         else
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + length, max_y, max_z));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(i + length, max_y, max_z));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
                         }
@@ -159,13 +157,13 @@ void Grid::UpdateGrid(double length, double width, double height)
                     {
                         if(k + height <= max_z)
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + width, k + height));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, j + width, k + height));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
                         }
                         else
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + width, max_z));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, j + width, max_z));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
                         }
@@ -174,14 +172,14 @@ void Grid::UpdateGrid(double length, double width, double height)
                     {
                         if(k + height <= max_z)
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, k + height));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, max_y, k + height));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
 
                         }
                         else
                         {
-                            Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, max_z));
+                            Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, max_y, max_z));
                             new_cell->SetGrid(this);
                             grid_cells.push_back(new_cell);
 
@@ -205,27 +203,27 @@ void Grid::UpdateGrid(double ion_charge)
     double max_y = this->GetMaxCorner()->GetY();
     double max_z = this->GetMaxCorner()->GetZ();
 
-    Coordinate* min_boundary = new Coordinate();
-    Coordinate* max_boundary = new Coordinate();
+    GeometryTopology::Coordinate* min_boundary = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* max_boundary = new GeometryTopology::Coordinate();
     this->assembly_->GetBoundary(min_boundary, max_boundary);
 
-    if(max_x - min_x <= DEFAULT_BOX_LENGTH && max_y - min_y <= DEFAULT_BOX_WIDTH && max_z - min_z <= DEFAULT_BOX_HEIGHT)
+    if(max_x - min_x <= gmml::DEFAULT_BOX_LENGTH && max_y - min_y <= gmml::DEFAULT_BOX_WIDTH && max_z - min_z <= gmml::DEFAULT_BOX_HEIGHT)
     {
         Grid::CellVector grid_cells = Grid::CellVector();
-        for(double i = min_x; i <= max_x; i += DEFAULT_GRID_LENGTH)
+        for(double i = min_x; i <= max_x; i += gmml::DEFAULT_GRID_LENGTH)
         {
-            for(double j = min_y; j <= max_y; j += DEFAULT_GRID_WIDTH)
+            for(double j = min_y; j <= max_y; j += gmml::DEFAULT_GRID_WIDTH)
             {
-                for(double k = min_z; k <= max_z; k += DEFAULT_GRID_HEIGHT)
+                for(double k = min_z; k <= max_z; k += gmml::DEFAULT_GRID_HEIGHT)
                 {
-                    if(i + DEFAULT_GRID_LENGTH <= max_x)
+                    if(i + gmml::DEFAULT_GRID_LENGTH <= max_x)
                     {
-                        if(j + DEFAULT_GRID_WIDTH <= max_y)
+                        if(j + gmml::DEFAULT_GRID_WIDTH <= max_y)
                         {
-                            if(k + DEFAULT_GRID_HEIGHT <= max_z)
+                            if(k + gmml::DEFAULT_GRID_HEIGHT <= max_z)
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k),
-                                                          new Coordinate(i + DEFAULT_GRID_LENGTH, j + DEFAULT_GRID_WIDTH, k + DEFAULT_GRID_HEIGHT));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k),
+                                                          new GeometryTopology::Coordinate(i + gmml::DEFAULT_GRID_LENGTH, j + gmml::DEFAULT_GRID_WIDTH, k + gmml::DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -236,7 +234,7 @@ void Grid::UpdateGrid(double ion_charge)
                             }
                             else
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + DEFAULT_GRID_LENGTH, j + DEFAULT_GRID_WIDTH, max_z));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(i + gmml::DEFAULT_GRID_LENGTH, j + gmml::DEFAULT_GRID_WIDTH, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -248,9 +246,9 @@ void Grid::UpdateGrid(double ion_charge)
                         }
                         else
                         {
-                            if(k + DEFAULT_GRID_HEIGHT <= max_z)
+                            if(k + gmml::DEFAULT_GRID_HEIGHT <= max_z)
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + DEFAULT_GRID_LENGTH, max_y, k + DEFAULT_GRID_HEIGHT));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(i + gmml::DEFAULT_GRID_LENGTH, max_y, k + gmml::DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -261,7 +259,7 @@ void Grid::UpdateGrid(double ion_charge)
                             }
                             else
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(i + DEFAULT_GRID_LENGTH, max_y, max_z));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(i + gmml::DEFAULT_GRID_LENGTH, max_y, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -274,11 +272,11 @@ void Grid::UpdateGrid(double ion_charge)
                     }
                     else
                     {
-                        if(j + DEFAULT_GRID_WIDTH <= max_y)
+                        if(j + gmml::DEFAULT_GRID_WIDTH <= max_y)
                         {
-                            if(k + DEFAULT_GRID_HEIGHT <= max_z)
+                            if(k + gmml::DEFAULT_GRID_HEIGHT <= max_z)
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + DEFAULT_GRID_WIDTH, k + DEFAULT_GRID_HEIGHT));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, j + gmml::DEFAULT_GRID_WIDTH, k + gmml::DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -289,7 +287,7 @@ void Grid::UpdateGrid(double ion_charge)
                             }
                             else
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, j + DEFAULT_GRID_WIDTH, max_z));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, j + gmml::DEFAULT_GRID_WIDTH, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -301,9 +299,9 @@ void Grid::UpdateGrid(double ion_charge)
                         }
                         else
                         {
-                            if(k + DEFAULT_GRID_HEIGHT <= max_z)
+                            if(k + gmml::DEFAULT_GRID_HEIGHT <= max_z)
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, k + DEFAULT_GRID_HEIGHT));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, max_y, k + gmml::DEFAULT_GRID_HEIGHT));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -315,7 +313,7 @@ void Grid::UpdateGrid(double ion_charge)
                             }
                             else
                             {
-                                Cell* new_cell = new Cell(new Coordinate(i, j, k), new Coordinate(max_x, max_y, max_z));
+                                Cell* new_cell = new Cell(new GeometryTopology::Coordinate(i, j, k), new GeometryTopology::Coordinate(max_x, max_y, max_z));
                                 if(!(new_cell->GetCellCenter()->GetX() > min_boundary->GetX() && new_cell->GetCellCenter()->GetX() < max_boundary->GetX() &&
                                      new_cell->GetCellCenter()->GetY() > min_boundary->GetY() && new_cell->GetCellCenter()->GetY() < max_boundary->GetY() &&
                                      new_cell->GetCellCenter()->GetZ() > min_boundary->GetZ() && new_cell->GetCellCenter()->GetZ() < max_boundary->GetZ()))
@@ -347,63 +345,63 @@ void Grid::UpdateGrid(double ion_charge)
         Grid::CellVector grid_cells = Grid::CellVector();
         grid_cells.push_back(new Cell(temp_grid,
                                       temp_grid->GetMinCorner(),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                      new GeometryTopology::Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
                                                      temp_grid->GetMinCorner()->GetY(),
                                                      temp_grid->GetMinCorner()->GetZ()),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_x),
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                      new Coordinate(temp_grid->GetMinCorner()->GetX(),
+                                      new GeometryTopology::Coordinate(temp_grid->GetMinCorner()->GetX(),
                                                      temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                                      temp_grid->GetMinCorner()->GetZ()),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                      new GeometryTopology::Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
                                                      temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                                      temp_grid->GetMinCorner()->GetZ()),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2)));
         grid_cells.push_back(new Cell(temp_grid,
-                                      new Coordinate(temp_grid->GetMinCorner()->GetX(),
+                                      new GeometryTopology::Coordinate(temp_grid->GetMinCorner()->GetX(),
                                                      temp_grid->GetMinCorner()->GetY(),
                                                      temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_y) / 2,
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
         grid_cells.push_back(new Cell(temp_grid,
-                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                      new GeometryTopology::Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
                                                      temp_grid->GetMinCorner()->GetY(),
                                                      temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
         grid_cells.push_back(new Cell(temp_grid,
-                                      new Coordinate(temp_grid->GetMinCorner()->GetX(),
+                                      new GeometryTopology::Coordinate(temp_grid->GetMinCorner()->GetX(),
                                                      temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                                      temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
         grid_cells.push_back(new Cell(temp_grid,
-                                      new Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
+                                      new GeometryTopology::Coordinate(temp_grid->GetMinCorner()->GetX() + (max_x - min_x) / 2,
                                                      temp_grid->GetMinCorner()->GetY() + (max_y - min_y) / 2,
                                                      temp_grid->GetMinCorner()->GetZ() + (max_z - min_z) / 2),
-                                      new Coordinate(
+                                      new GeometryTopology::Coordinate(
                                           temp_grid->GetMinCorner()->GetX() + (max_x - min_y),
                                           temp_grid->GetMinCorner()->GetY() + (max_y - min_y),
                                           temp_grid->GetMinCorner()->GetZ() + (max_z - min_z))));
@@ -427,7 +425,7 @@ void Grid::UpdateGrid(double ion_charge)
         }
         else
         {
-            cout << "Can't create an appropriate grid!" << endl;
+            std::cout << "Can't create an appropriate grid!" << std::endl;
             return;
         }
 
@@ -467,7 +465,7 @@ void Grid::CalculateBoxPotentialEnergy()
     }
 }
 
-Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
+GeometryTopology::Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
 {
     if(ion_charge > 0)
     {
@@ -489,7 +487,7 @@ Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
             {
                 continue;
             }
-            if(fabs(min_value - grid->GetCells().at(i)->GetCellPotentialEnergy()) < THRESHOLD_PARTITIONING)
+            if(fabs(min_value - grid->GetCells().at(i)->GetCellPotentialEnergy()) < gmml::THRESHOLD_PARTITIONING)
             {
                 return grid->GetCells().at(i);
             }
@@ -515,7 +513,7 @@ Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
             {
                 continue;
             }
-            if(fabs(max_value - grid->GetCells().at(i)->GetCellPotentialEnergy()) < THRESHOLD_PARTITIONING)
+            if(fabs(max_value - grid->GetCells().at(i)->GetCellPotentialEnergy()) < gmml::THRESHOLD_PARTITIONING)
             {
                 return grid->GetCells().at(i);
             }
@@ -525,9 +523,9 @@ Cell* Grid::GetBestBox(Grid *grid, double ion_charge)
 
 }
 
-vector<Coordinate*> Grid::GetBestPositions(double ion_charge)
+std::vector<GeometryTopology::Coordinate*> Grid::GetBestPositions(double ion_charge)
 {
-    vector<Coordinate*> best_coordinates = vector<Coordinate*>();
+    std::vector<GeometryTopology::Coordinate*> best_coordinates = std::vector<GeometryTopology::Coordinate*>();
     if(ion_charge > 0)
     {
         double min_value = INFINITY;
@@ -542,8 +540,8 @@ vector<Coordinate*> Grid::GetBestPositions(double ion_charge)
         {
             if((*it)->GetCellPotentialEnergy() == INFINITY)
                 continue;
-            if(fabs(min_value - (*it)->GetCellPotentialEnergy()) < THRESHOLD)
-                best_coordinates.push_back(new Coordinate((*it)->GetCellCenter()->GetX(), (*it)->GetCellCenter()->GetY(), (*it)->GetCellCenter()->GetZ()));
+            if(fabs(min_value - (*it)->GetCellPotentialEnergy()) < gmml::THRESHOLD)
+                best_coordinates.push_back(new GeometryTopology::Coordinate((*it)->GetCellCenter()->GetX(), (*it)->GetCellCenter()->GetY(), (*it)->GetCellCenter()->GetZ()));
         }
     }
     else if(ion_charge < 0)
@@ -560,8 +558,8 @@ vector<Coordinate*> Grid::GetBestPositions(double ion_charge)
         {
             if((*it)->GetCellPotentialEnergy() == INFINITY)
                 continue;
-            if(fabs(max_value - (*it)->GetCellPotentialEnergy()) < THRESHOLD)
-                best_coordinates.push_back(new Coordinate((*it)->GetCellCenter()->GetX(), (*it)->GetCellCenter()->GetY(), (*it)->GetCellCenter()->GetZ()));
+            if(fabs(max_value - (*it)->GetCellPotentialEnergy()) < gmml::THRESHOLD)
+                best_coordinates.push_back(new GeometryTopology::Coordinate((*it)->GetCellCenter()->GetX(), (*it)->GetCellCenter()->GetY(), (*it)->GetCellCenter()->GetZ()));
         }
     }
     return best_coordinates;
@@ -570,7 +568,7 @@ vector<Coordinate*> Grid::GetBestPositions(double ion_charge)
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void Grid::Print(ostream &out)
+void Grid::Print(std::ostream &out)
 {
     for(CellVector::iterator it = cells_.begin(); it != cells_.end(); it++)
     {
@@ -578,7 +576,7 @@ void Grid::Print(ostream &out)
         {
             Cell* cell = *it;
             cell->GetCellCenter()->Print(out);
-            out << ":  " << cell->GetCellPotentialEnergy() << endl;
+            out << ":  " << cell->GetCellPotentialEnergy() << std::endl;
         }
     }
 }

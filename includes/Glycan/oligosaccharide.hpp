@@ -21,6 +21,7 @@ namespace Glycan
             std::string oligosaccharide_residue_linkages_;      /*!< The complete sequence of the residue linkages of the oligosacchride >*/
             std::string terminal_;                              /*!< The terminal residue name of the oligosacchride >*/
             std::string oligosaccharide_terminal_;              /*!< The terminal residue name of the oligosacchride with linkage >*/
+            float oligosaccharide_b_factor_;                     /*!< The b_factor for the oligosaccharide >*/
 
             /*! \fn
               * A function to print out the oligosacchride name and the linkages between its monosacchrides
@@ -153,7 +154,7 @@ namespace Glycan
                 out << oligosaccharide_name_;
                 gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_name_);
                 out << std::endl;
-                gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);                
+                gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);
             }
 
 

@@ -29,17 +29,17 @@
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbtitlecard.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbmodel.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbheterogenatomcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbatom.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbconnectcard.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblink.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblinkresidue.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
 #include "../../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
 #include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
@@ -68,37 +68,25 @@
 #include <errno.h>
 #include <string.h>
 
-using namespace std;
-using namespace MolecularModeling;
-using namespace TopologyFileSpace;
-using namespace CoordinateFileSpace;
-using namespace PrepFileSpace;
-using namespace PdbFileSpace;
-using namespace PdbqtFileSpace;
-using namespace ParameterFileSpace;
-using namespace GeometryTopology;
-using namespace LibraryFileSpace;
-using namespace gmml;
-using namespace Glycan;
-using namespace CondensedSequenceSpace;
+using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
+LibraryFileSpace::LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
 {
-    cout << "Creating library file ..." << endl;
+    std::cout << "Creating library file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating library file ...");
-    LibraryFile* library_file = new LibraryFile();
-    LibraryFile::ResidueMap residue_map = LibraryFile::ResidueMap();
+    LibraryFileSpace::LibraryFile* library_file = new LibraryFileSpace::LibraryFile();
+    LibraryFileSpace::LibraryFile::ResidueMap residue_map = LibraryFileSpace::LibraryFile::ResidueMap();
     ResidueVector residues_of_assembly = this->GetAllResiduesOfAssembly();
     for(ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
     {
         Residue* assembly_residue = *it;
-        //        cout << assembly_residue->GetId() << endl;
+        //        std::cout << assembly_residue->GetId() << std::endl;
         int residue_index = distance(residues_of_assembly.begin(), it) + 1;
         AtomVector assembly_residue_atoms = assembly_residue->GetAtoms();
-        LibraryFileResidue* library_residue = new LibraryFileResidue();
+        LibraryFileSpace::LibraryFileResidue* library_residue = new LibraryFileSpace::LibraryFileResidue();
         library_residue->SetName(assembly_residue->GetName());
         AtomVector head_atoms = assembly_residue->GetHeadAtoms();
         AtomVector tail_atoms = assembly_residue->GetTailAtoms();
@@ -117,7 +105,7 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
         {
             Atom* residue_atom = (*it1);
             int atom_index = distance(assembly_residue_atoms.begin(), it1) + 1;
-            vector<int> bonded_atom_indices = vector<int>();
+            std::vector<int> bonded_atom_indices = std::vector<int>();
             AtomNode* atom_node = residue_atom->GetNode();
             if(atom_node != NULL)
             {
@@ -130,7 +118,7 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
                     bonded_atom_indices.push_back(bonded_atom_index);
                 }
             }
-            LibraryFileAtom* atom = new LibraryFileAtom(residue_atom->GetAtomType(), residue_atom->GetName(), residue_index, atom_index,
+            LibraryFileSpace::LibraryFileAtom* atom = new LibraryFileSpace::LibraryFileAtom(residue_atom->GetAtomType(), residue_atom->GetName(), residue_index, atom_index,
                                                         gmml::iNotSet, residue_atom->MolecularDynamicAtom::GetCharge(),
                                                         *(residue_atom->GetCoordinates()[assembly_residue->GetAssembly()->GetModelIndex()]), bonded_atom_indices,
                     order);
@@ -142,4 +130,3 @@ LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
     library_file->SetResidues(residue_map);
     return library_file;
 }
-
