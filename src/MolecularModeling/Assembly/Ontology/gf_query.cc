@@ -8,7 +8,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     if(search.str()=="Oligo_REGEX")
     {      
       query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-      query << " DISTINCT ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title "
+      query << " REDUCED ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title "
                "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI "
                "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) "
                "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) "
@@ -59,7 +59,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     else
     {
       query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-      query << " DISTINCT ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title "
+      query << " REDUCED ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title "
                "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI "
                "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) "
                "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) "
