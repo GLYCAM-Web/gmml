@@ -69,6 +69,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
         std::string id;
         std::stringstream atom_id;
         assembly_atom->SetName(atom_name);
+	assembly_atom->SetNaming("glycam06");
 	id = this->GetId();
         atom_id << atom_name << "_" << serial_number << "_" << id;
         assembly_atom->SetId(atom_id.str());

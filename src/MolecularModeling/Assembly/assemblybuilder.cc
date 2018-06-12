@@ -115,6 +115,7 @@ bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSeque
 
 Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (PrepFileSpace::PrepFile* prep_file, std::vector<std::string>& query_residue_names)
 {
+    //Sorting query_residue_names to remove duplicate residue names.
     std::set<std::string> query_residue_names_unique;
     query_residue_names_unique.insert(query_residue_names.begin(), query_residue_names.end());
     TemplateAssembly* template_assembly = new TemplateAssembly();
@@ -122,11 +123,13 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (PrepFil
     ResidueVector template_assembly_residues = ResidueVector();
     PrepFileSpace::PrepFile::ResidueMap prep_residue_map = prep_file->GetResidues();
     std::vector<std::string> all_prep_residue_names = std::vector<std::string>();
+    //Getting all residue names in prep file
     for (PrepFileSpace::PrepFile::ResidueMap::iterator it = prep_residue_map.begin(); it != prep_residue_map.end(); it++)
     {
 	std::string prep_residue_name = it-> first;
 	all_prep_residue_names.push_back(prep_residue_name);
     }
+    //Check each prep file residue, if their name match query residue name, build assembly residue from this prep residue, and add assembly residue to a template assembly.
     for (std::set<std::string>::iterator it = query_residue_names_unique.begin(); it != query_residue_names_unique.end(); it++)
     {
 	if (std::find(all_prep_residue_names.begin(), all_prep_residue_names.end(), *it) != all_prep_residue_names.end() )
@@ -142,27 +145,37 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (PrepFil
     
 }
 
-Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std::string& sequence, TemplateAssembly* template_assembly)
+std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> 
+Assembly::ConvertCondensedSequence2AssemblyResidues(std::string& sequence, TemplateAssembly* template_assembly)
 {
     
     CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_residues = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
     ResidueVector all_template_residues = template_assembly->GetResidues();
     ResidueVector newly_added_residues = ResidueVector();
-    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> condensed_sequence_child_parent_map;
-    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> condensed_sequence_assembly_residue_map;
-
+    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> condensed_sequence_child_parent_map = 
+	std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>();
+    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> condensed_sequence_assembly_residue_map = 
+	std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>();
+    std::map<Atom*, AtomNode*> new_atom_template_node_map = std::map<Atom*, AtomNode*>();
+//testing
+    std::cout << "06 residues in order: " <<std::endl;
+    for (unsigned int i = 0; i< condensed_sequence_residues.size(); i++){
+	std::cout << condensed_sequence_residues[i]->GetName() << "---" << i << "---" << condensed_sequence_residues[i]->GetParentId()<< std::endl;
+    } //These residues are built from non-reducing end to reducing end, but here I want opposite order.
+//testing
     for (unsigned int i = 0; i< condensed_sequence_residues.size(); i++) //These residues are built from non-reducing end to reducing end, but here I want opposite order.
     {
 	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_sequence_residue = condensed_sequence_residues[i];
         std::string condensed_sequence_residue_name = condensed_sequence_residue->GetName();
 	int residue_serial_number = 0;
 	for (unsigned int j = 0; j < all_template_residues.size(); j++){
-
+	    //Copy residues
 	    if (condensed_sequence_residue_name == all_template_residues[j]->GetName())
 	    {
 		Residue* template_residue = all_template_residues[j];
 		Residue* assembly_residue = new Residue();
+		assembly_residue->SetNode(NULL);	//When residue object is constructed, its node attribute is not set to NULL, causing it to contain garbage node address.So I need to do this.
 		this->AddResidue(assembly_residue);
 		assembly_residue->SetAssembly(this);
 		assembly_residue->SetName(template_residue->GetName());
@@ -172,7 +185,11 @@ Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std:
 		assembly_residue->SetId (residue_id);
 		condensed_sequence_assembly_residue_map[condensed_sequence_residue] = assembly_residue;
 		newly_added_residues.push_back(assembly_residue);
-
+		std::cout << "Newly added to map: " << condensed_sequence_residue_name << std::endl;
+		std::cout << "Ano carb: " << condensed_sequence_residue->GetAnomericCarbon() << std::endl;
+		std::cout << "oxygen pos: " << condensed_sequence_residue->GetParentOxygen() << std::endl <<std::endl;
+	
+		//Copy atoms in residue
 		int atom_serial_number = 0;
 		residue_serial_number++;
 		AtomVector all_template_atoms = template_residue->GetAtoms();
@@ -183,6 +200,7 @@ Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std:
 		    assembly_residue->AddAtom(template_atom_copy);
 		    template_atom_copy->SetResidue(assembly_residue);
 		    template_atom_copy->SetName(template_atom->GetName());
+		    template_atom_copy->SetNaming(template_atom->GetNaming());
 		    template_atom_copy->SetAtomType(template_atom->GetAtomType());
 		    template_atom_copy->SetCharge(template_atom->GetCharge());
 		    template_atom_copy->SetCoordinates(template_atom->GetCoordinates());
@@ -198,95 +216,262 @@ Assembly::ResidueVector Assembly::ConvertCondensedSequence2AssemblyResidues(std:
 		    if (std::find(template_tail_atoms.begin(), template_tail_atoms.end(), template_atom) != template_tail_atoms.end() ){
 			assembly_residue->AddTailAtom(template_atom);
 		    }
-		    //Copy atom nodes
+		    AtomNode* template_atom_node = template_atom ->GetNode(); 
+		    new_atom_template_node_map [template_atom_copy] = template_atom_node;
 		    atom_serial_number++;
 		}
+		//Copy atom nodes
+		for (std::map<Atom*, AtomNode*>::iterator it = new_atom_template_node_map.begin(); it != new_atom_template_node_map.end(); it++){
+		    Atom* new_atom = it->first;
+		    AtomNode* template_node = it ->second;
+		    AtomNode* new_atom_node = new AtomNode();
+		    new_atom_node->SetAtom(new_atom);
+		    new_atom->SetNode(new_atom_node);
+		    std::vector<std::string> all_node_neighbor_names = std::vector<std::string>();
+		    AtomVector template_node_neighbors = template_node->GetNodeNeighbors();
+		    for (AtomVector::iterator it2 = template_node_neighbors.begin(); it2 != template_node_neighbors.end(); it2++){
+			all_node_neighbor_names.push_back((*it2)->GetName());
+		    }
+		    AtomVector atoms_in_new_residue = new_atom->GetResidue()->GetAtoms();
+		    for (AtomVector::iterator it2 = atoms_in_new_residue.begin(); it2 != atoms_in_new_residue.end(); it2++){
+			Atom* new_atom_in_residue = *it2;
+			std::string atom_name = new_atom_in_residue->GetName(); 
+			if (std::find(all_node_neighbor_names.begin(), all_node_neighbor_names.end(), atom_name) != all_node_neighbor_names.end()){
+			    new_atom_node->AddNodeNeighbor(new_atom_in_residue);
+			}
+
+		    }
+
+		}
+
 		
 	    }
 	}
 
-	if(condensed_sequence_residue->GetParentId() != -1)
-	{
-	    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_sequence_residue_parent = condensed_sequence_residues[condensed_sequence_residue->GetParentId()];
-	    condensed_sequence_child_parent_map [condensed_sequence_residue] = condensed_sequence_residue_parent;
-	}
-	else{
-	    condensed_sequence_child_parent_map [condensed_sequence_residue] = NULL; //if it doesn't have a parent
-	}
     }
-    return newly_added_residues;
+
+    return condensed_sequence_assembly_residue_map;
 
 }//ConvertCondensedSequence2AssemblyResidues
 
-void Assembly::SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>& 
-                        condensed_sequence_child_parent_map, std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>& condensed_sequence_assembly_residue_map,
-			Assembly::ResidueVector& query_residues)
+void Assembly::SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>& condensed_sequence_assembly_residue_map)
 {
-   //Adding residue nodes and interface atom nodes
-    for (unsigned int i = 0; i < query_residues.size(); i++)
-    {
-        MolecularModeling::Residue* assembly_residue = query_residues[i];
-        MolecularModeling::Residue* assembly_residue_parent = NULL;
-        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* corresponding_condensed_sequence_residue = NULL;
-        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* corresponding_condensed_sequence_residue_parent = NULL;
-        for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator 
-		it = condensed_sequence_assembly_residue_map.begin(); it != condensed_sequence_assembly_residue_map.end(); it++)
-        {
-            if(it->second == assembly_residue)
-            {
-                corresponding_condensed_sequence_residue = it->first;
-            }
-            if (corresponding_condensed_sequence_residue != NULL)
-            {
-                corresponding_condensed_sequence_residue_parent = condensed_sequence_child_parent_map[corresponding_condensed_sequence_residue];
-                if (corresponding_condensed_sequence_residue_parent != NULL)
-                {
-                    assembly_residue_parent = condensed_sequence_assembly_residue_map[corresponding_condensed_sequence_residue_parent];
-                }
-            }
-        }
-
-        if (assembly_residue_parent != NULL)
-        {
-            MolecularModeling::ResidueNode* residue_node;
-            MolecularModeling::ResidueNode* parent_node;
-            if (assembly_residue->GetNode() == NULL)
-            {
-                residue_node = new MolecularModeling::ResidueNode();
-                residue_node->SetResidue(assembly_residue);
-            }
-            else {
-                residue_node = assembly_residue->GetNode();
-            }
-
-            if (assembly_residue_parent -> GetNode() == NULL){
-                parent_node = new MolecularModeling::ResidueNode();
-                parent_node->SetResidue(assembly_residue_parent);
-            }
-            else {
-                parent_node = assembly_residue_parent -> GetNode();
-            }
-            MolecularModeling::ResidueNode::ResidueNodeVector existing_node_neighbors = residue_node->GetResidueNodeNeighbors();
-            MolecularModeling::ResidueNode::ResidueNodeVector existing_parent_node_neighbors = parent_node->GetResidueNodeNeighbors();
-            if (std::find (existing_node_neighbors.begin(), existing_node_neighbors.end(), parent_node) == existing_node_neighbors.end()
-                && std::find (existing_parent_node_neighbors.begin(), existing_parent_node_neighbors.end(), residue_node) == existing_node_neighbors.end() ){
-
-                residue_node->AddResidueNodeNeighbor(parent_node);
-                parent_node->AddResidueNodeNeighbor(residue_node);
-            }
-
-	    //Add connecting atoms
-            gmml::AtomVector residue_connecting_atoms = gmml::AtomVector();
-            residue_connecting_atoms.insert(residue_connecting_atoms.end(), assembly_residue->GetHeadAtoms().begin(), assembly_residue->GetHeadAtoms().end() );
-            residue_connecting_atoms.insert(residue_connecting_atoms.end(), assembly_residue->GetTailAtoms().begin(), assembly_residue->GetTailAtoms().end() );
-            gmml::AtomVector parent_connecting_atoms = gmml::AtomVector();
-            parent_connecting_atoms.insert(parent_connecting_atoms.end(), assembly_residue_parent->GetHeadAtoms().begin(), assembly_residue_parent->GetHeadAtoms().end() );
-            parent_connecting_atoms.insert(parent_connecting_atoms.end(), assembly_residue_parent->GetTailAtoms().begin(), assembly_residue_parent->GetTailAtoms().end() );
-            residue_node-> SetResidueNodeConnectingAtoms(residue_connecting_atoms);
-            parent_node-> SetResidueNodeConnectingAtoms(parent_connecting_atoms);
-        }
+    CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree all_condensed_residues = CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree(); 
+    std::cout << "order of residues in map: " << std::endl;
+    for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator it = condensed_sequence_assembly_residue_map.begin() ;
+	 it != condensed_sequence_assembly_residue_map.end(); it++){
+	int index = std::distance(condensed_sequence_assembly_residue_map.begin(),it);
+	std::cout << it->first->GetName() <<"---" <<index << "---" << it->first->GetParentId()<<std::endl;
+	all_condensed_residues.push_back(it->first);
     }
- 
+    
+    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> condensed_residue_chilren_map = 
+	std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> ();
+
+    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> condensed_residue_parent_map = 
+	std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> ();
+    //Assigning default empty value to the map
+    for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = all_condensed_residues.begin(); it != all_condensed_residues.end(); it++){
+	condensed_residue_chilren_map [(*it)] = CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree ();
+	condensed_residue_parent_map [(*it)] = CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree ();
+    }
+
+    //Associating a condensed sequence residue with its children and/or parent.
+    for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it =  all_condensed_residues.begin(); it !=  all_condensed_residues.end(); it++){
+	int index1 = std::distance(all_condensed_residues.begin(),it);
+	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = *it;
+
+        for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it2 =  all_condensed_residues.begin(); it2 !=  all_condensed_residues.end(); it2++){
+
+	    int index2 = std::distance(all_condensed_residues.begin(),it2);
+	    if ((*it2)->GetParentId() == index1){
+		CondensedSequenceSpace::CondensedSequenceGlycam06Residue* child_of_condensed_residue = *it2;
+		condensed_residue_chilren_map[condensed_residue].push_back(child_of_condensed_residue);
+	    }
+	    if (condensed_residue->GetParentId() == index2){
+		CondensedSequenceSpace::CondensedSequenceGlycam06Residue* parent_of_condensed_residue = *it2;
+		condensed_residue_parent_map[condensed_residue].push_back(parent_of_condensed_residue);	
+	    }
+	}
+    }
+
+    //Set Assembly Residue Nodes based on information extracted from condensed sequence.
+    for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator it = condensed_sequence_assembly_residue_map.begin();
+		it != condensed_sequence_assembly_residue_map.end(); it++){
+	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = it->first;
+	MolecularModeling::Residue* corresponding_assembly_residue = it->second;	
+	ResidueVector corresponding_assembly_residue_neighbors = ResidueVector();
+
+	CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_children = condensed_residue_chilren_map[condensed_residue];
+	for (unsigned int i = 0; i < condensed_residue_children.size(); i++){
+	    MolecularModeling::Residue* corresponding_assembly_residue_child = condensed_sequence_assembly_residue_map[condensed_residue_children[i] ];
+	    corresponding_assembly_residue_neighbors.push_back(corresponding_assembly_residue_child); 
+	}
+	CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_parents = condensed_residue_parent_map[condensed_residue];
+	for (unsigned int i = 0; i < condensed_residue_parents.size(); i++){
+	    MolecularModeling::Residue* corresponding_assembly_residue_parent = condensed_sequence_assembly_residue_map[condensed_residue_parents[i] ];
+	    corresponding_assembly_residue_neighbors.push_back(corresponding_assembly_residue_parent); 
+	}
+
+	//Create Residue Nodes and add Node neighbors
+	ResidueNode* corresponding_assembly_residue_node = NULL;
+	if (corresponding_assembly_residue->GetNode() == NULL){
+	    corresponding_assembly_residue_node = new ResidueNode();
+	    corresponding_assembly_residue_node->SetResidue(corresponding_assembly_residue);
+	    corresponding_assembly_residue->SetNode(corresponding_assembly_residue_node);
+	}
+	else{
+	    corresponding_assembly_residue_node = corresponding_assembly_residue->GetNode();
+	}
+	
+	ResidueNodeVector existing_assembly_residue_neighbor_nodes = corresponding_assembly_residue_node->GetResidueNodeNeighbors();
+	//Iterate through all neighboring residues, and bond this neighbor to curent assembly residue.
+	for (unsigned int i = 0; i < corresponding_assembly_residue_neighbors.size(); i++){
+	    MolecularModeling::Residue* neighbor = corresponding_assembly_residue_neighbors[i];
+	    ResidueNode* neighbor_node = NULL;
+	    if (neighbor->GetNode() == NULL){
+		neighbor_node = new ResidueNode();
+		neighbor_node->SetResidue(neighbor);
+		neighbor->SetNode(neighbor_node);
+	    }
+	    else{
+		neighbor_node = neighbor->GetNode();
+	    }
+
+	    if (std::find(existing_assembly_residue_neighbor_nodes.begin(), existing_assembly_residue_neighbor_nodes.end(), neighbor_node) == existing_assembly_residue_neighbor_nodes.end() ){
+	        corresponding_assembly_residue_node->AddResidueNodeNeighbor(neighbor_node);
+	    }
+
+	    ResidueNodeVector existing_neighbor_neighbor_nodes = neighbor_node->GetResidueNodeNeighbors();
+	    if (std::find(existing_neighbor_neighbor_nodes.begin(),existing_neighbor_neighbor_nodes.end(), corresponding_assembly_residue_node) == existing_neighbor_neighbor_nodes.end() ){
+	    	neighbor_node->AddResidueNodeNeighbor(corresponding_assembly_residue_node);
+	    }
+	}//for
+
+    }//for
+  
+    //Set Residue Node Connecting Atoms, and set a bond between connecting connecting atoms in adjacent residue nodes.
+    for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator it = condensed_sequence_assembly_residue_map.begin();
+                it != condensed_sequence_assembly_residue_map.end(); it++){
+	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = it->first;
+        MolecularModeling::Residue* corresponding_assembly_residue = it->second;
+	CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_children = condensed_residue_chilren_map[condensed_residue];
+	gmml::AtomVector all_atoms_in_assembly_residue = corresponding_assembly_residue->GetAtoms();
+	std::map<std::string, MolecularModeling::Atom*> name_atom_map = std::map<std::string, MolecularModeling::Atom*>();
+	for (unsigned int i = 0; i < all_atoms_in_assembly_residue.size(); i++){
+	    name_atom_map[all_atoms_in_assembly_residue[i] -> GetName()] = all_atoms_in_assembly_residue[i];
+	}
+
+	std::vector<std::string> children_parent_oxygen_names = std::vector<std::string>();
+	//find out the name of parent oxygen
+	for (unsigned int i = 0; i < condensed_residue_children.size(); i++){
+	    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue_child = condensed_residue_children[i];
+	    std::string parent_oxygen_name = condensed_residue_child -> GetParentOxygen();
+	    children_parent_oxygen_names.push_back(parent_oxygen_name);
+	    //Also set a bond between child anomeric carbon and linking parent tail atom.
+	    for (std::map<std::string, MolecularModeling::Atom*>::iterator it2 = name_atom_map.begin(); it2 != name_atom_map.end(); it2++){
+		std::string atom_name = it2->first;
+		if (atom_name == parent_oxygen_name) { //if this is the tail atom that connects to the child anomeric carbon
+		    MolecularModeling::Atom* parent_oxygen_atom = it2->second;
+		    std::string anomeric_carbon_name = condensed_residue_child-> GetAnomericCarbon();
+		    MolecularModeling::Residue* child_assembly_residue = condensed_sequence_assembly_residue_map[condensed_residue_child];
+		    gmml::AtomVector child_assembly_residue_atoms = child_assembly_residue->GetAtoms();
+		    for (unsigned int j = 0; j < child_assembly_residue_atoms.size(); j++){
+			if (child_assembly_residue_atoms[j]->GetName() == anomeric_carbon_name){
+			    MolecularModeling::Atom* anomeric_carbon_atom = child_assembly_residue_atoms[j];
+			    //Add parent oxygen to anomric carbon's node neighbors.
+			    AtomNode* anomeric_carbon_atom_node = NULL;
+			    if (anomeric_carbon_atom->GetNode() == NULL){
+			        anomeric_carbon_atom_node = new AtomNode();
+				anomeric_carbon_atom_node->SetAtom(anomeric_carbon_atom);
+				anomeric_carbon_atom->SetNode(anomeric_carbon_atom_node);
+			    }
+			    else
+				anomeric_carbon_atom_node = anomeric_carbon_atom->GetNode();
+
+			    gmml::AtomVector existing_anomeric_carbon_atom_node_neighbors = anomeric_carbon_atom_node->GetNodeNeighbors();
+			    if (std::find (existing_anomeric_carbon_atom_node_neighbors.begin(), existing_anomeric_carbon_atom_node_neighbors.end(), parent_oxygen_atom) == 
+				  existing_anomeric_carbon_atom_node_neighbors.end() ){
+				anomeric_carbon_atom_node->AddNodeNeighbor(parent_oxygen_atom);
+			    }
+			    
+			    //Add anomeric carbon to parent oxygen's node neighbors.
+			    AtomNode* parent_oxygen_atom_node = NULL;
+			    if (parent_oxygen_atom->GetNode() == NULL){
+                                parent_oxygen_atom_node = new AtomNode();
+                                parent_oxygen_atom_node->SetAtom(parent_oxygen_atom);
+                                parent_oxygen_atom->SetNode(parent_oxygen_atom_node);
+                            }
+                            else
+                                parent_oxygen_atom_node = parent_oxygen_atom->GetNode();
+
+                            gmml::AtomVector existing_parent_oxygen_atom_node_neighbors = parent_oxygen_atom_node->GetNodeNeighbors();
+                            if (std::find (existing_parent_oxygen_atom_node_neighbors.begin(), existing_parent_oxygen_atom_node_neighbors.end(), anomeric_carbon_atom) == 
+                                  existing_parent_oxygen_atom_node_neighbors.end() ){
+                                parent_oxygen_atom_node->AddNodeNeighbor(anomeric_carbon_atom);
+                            }
+
+			}
+		    }
+		}
+	    }//for
+	}
+	//Add all tail atoms to ResidueNode connectin atoms
+	gmml::AtomVector all_tail_atoms = gmml::AtomVector();
+	for (std::map<std::string, MolecularModeling::Atom*>::iterator it2 = name_atom_map.begin(); it2 != name_atom_map.end(); it2++){
+	    std::string atom_name = it2->first;
+	    MolecularModeling::Atom* atom = it2->second;
+	    if (std::find(children_parent_oxygen_names.begin(),children_parent_oxygen_names.end(), atom_name) != children_parent_oxygen_names.end() ){
+		all_tail_atoms.push_back(atom);
+	    }
+	}
+	corresponding_assembly_residue->SetTailAtoms(all_tail_atoms);
+	ResidueNode* corresponding_assembly_residue_node = corresponding_assembly_residue-> GetNode();
+	corresponding_assembly_residue_node-> SetResidueNodeConnectingAtoms(all_tail_atoms);
+	
+	//Add all head atoms to ResidueNode connecting atoms
+	gmml::AtomVector all_head_atoms = gmml::AtomVector();
+	std::string anomeric_carbon_name = condensed_residue -> GetAnomericCarbon();
+	std::vector<std::string> all_head_atom_names = std::vector<std::string>();
+	all_head_atom_names.push_back(anomeric_carbon_name);
+	for (std::map<std::string, MolecularModeling::Atom*>::iterator it2 = name_atom_map.begin(); it2 != name_atom_map.end(); it2++){
+	    std::string atom_name = it2->first;
+	    MolecularModeling::Atom* atom = it2->second;
+	    if (std::find(all_head_atom_names.begin(),all_head_atom_names.end(), atom_name) != all_head_atom_names.end() ){
+		all_head_atoms.push_back(atom);
+	    }
+	}
+	corresponding_assembly_residue->SetHeadAtoms(all_head_atoms);
+	for (unsigned int i = 0; i < all_head_atoms.size(); i++){
+	    corresponding_assembly_residue_node->AddResidueNodeConnectingAtom(all_head_atoms[i]);
+	}
+	
+    }//for
+
+//testing
+for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator it = condensed_sequence_assembly_residue_map.begin();
+                it != condensed_sequence_assembly_residue_map.end(); it++){
+	MolecularModeling::Residue* assembly_residue = it->second;
+	std::cout << "center residue: " << assembly_residue->GetName() <<assembly_residue<<std::endl;
+	std::cout << "node: " << assembly_residue->GetNode() <<std::endl;
+	ResidueNodeVector neighbor_nodes = assembly_residue ->GetNode()->GetResidueNodeNeighbors();
+	for (unsigned int i = 0; i < neighbor_nodes.size(); i++){
+	    std::cout << "residue neighbor: " << neighbor_nodes[i]->GetResidue()->GetName() << std::endl;
+	}
+	    gmml::AtomVector all_connecting_atoms = assembly_residue ->GetNode()->GetResidueNodeConnectingAtoms();
+	 for (unsigned int i = 0; i< all_connecting_atoms.size(); i++){
+	    std::cout << "connecting atom: " << all_connecting_atoms[i]->GetName() << std::endl;
+	    gmml::AtomVector connecting_atom_neighbors = all_connecting_atoms[i]->GetNode()->GetNodeNeighbors();
+	    for (unsigned int j = 0; j < connecting_atom_neighbors.size(); j++){
+		std::cout << "connecting atom neighbor name: " << connecting_atom_neighbors[j]->GetName() << "---" << connecting_atom_neighbors[j]->GetResidue()->GetName()
+		<< connecting_atom_neighbors[j]->GetResidue()<< std::endl;
+	    }
+	 }
+	
+std::cout << std::endl <<std::endl;
+}
+//testing
+
 }//SetGlycam06ResidueBonding
 
 void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)

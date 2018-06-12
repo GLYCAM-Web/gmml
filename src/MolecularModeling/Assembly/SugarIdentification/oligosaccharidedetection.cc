@@ -3552,7 +3552,7 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
 	//I have encounter the situation where a NLN is recognized as ROH, because the anomeric nitrogen has hydrogen and satisfies the criteria for ROH.
 	// So, I added codes to check if terminal is protein.
 	bool non_protein_terminal = true;			
-	for (int i=0; i< o_neighbors.size(); i++){
+	for (unsigned int i=0; i< o_neighbors.size(); i++){
 	    if (o_neighbors[i]->GetResidue()->CheckIfProtein()){
 		non_protein_terminal = false;
 	    }
