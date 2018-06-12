@@ -274,6 +274,16 @@ void Assembly::ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* l
                     {
                         if(residue->GetId().compare(neighbor_residue->GetId()) != 0)
                         {
+			    //my code
+				if (residue->GetId().empty()) {
+				}
+			    std::vector <std::string> ResidueIdSplit = gmml::Split(residue->GetId(),"_");
+			    std::vector <std::string> NeighborResidueIdSplit = gmml::Split(neighbor_residue->GetId(),"_");
+			    std::string ResidueNumber = ResidueIdSplit.at(2);
+			    std::string NeighborResidueNumber = NeighborResidueIdSplit.at(2);
+			
+			    if (ResidueNumber.compare(NeighborResidueNumber) != 0) // if this pair is not the two partial occupancies of the same residue
+			    {//my code
                             visited_links.push_back(atom->GetId());
                             visited_links.push_back(neighbor->GetId());
                             PdbFileSpace::PdbLinkCardResidue* link_residue1 = new PdbFileSpace::PdbLinkCardResidue();
@@ -300,6 +310,7 @@ void Assembly::ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* l
                             pdb_link->SetLinkLength(distance);
 
                             link_vector.push_back(pdb_link);
+			    }//my code
                         }
                     }
                 }
