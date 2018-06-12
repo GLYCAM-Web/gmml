@@ -56,13 +56,16 @@ namespace MolecularModeling
             std::string GetElementLabel();
             char GetChiralityLabel();
             AtomVector GetIntraNodeNeighbors();
-/** @}*/
+
+            /*! \fn                                                  //Added by Ayush on 04/11/2018 for Direction based bonded Atoms in Assembly.
+              * An accessor function in order to access whether a Atomnode is visited during Graph Traversal, returns true if a Atomode is visited.
+              * @return isVisited_ attribute of the current object of this class
+              */
+            bool GetIsVisited();
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
-/** \addtogroup Manipulators
-               * @{
-               */
+
             /*! \fn
               * A mutator function in order to set the atom of the current object
               * Set the atom_ attribute of the current atom node
@@ -97,7 +100,13 @@ namespace MolecularModeling
             void RemoveIntraNodeNeighbor(Atom* intra_node_neighbor);
             std::string CreateNeighboringLabel(bool excluding_hydrogen = true);
             int GetIntraEdgeDegree();
-/** @}*/
+
+            /*! \fn                                                            //Added by Ayush on 04/11/2018 for Direction based bonded Atoms in Assembly.
+              * A mutator function in order to set true if a Atomnode is visited during Graph Traversal
+              * Set the isVisited_ attribute of the current Atomnode object
+              * @param isVisited The is_visited_ attribute of the current object
+              */
+            void SetIsVisited(bool isVisited);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -115,6 +124,7 @@ namespace MolecularModeling
             Atom* atom_;                        /*!< Pointer back to an atom that this node of graph indicates >*/
             AtomVector node_neighbors_;         /*!< List of all neighbors of this atom in the graph >*/
             int id_;                            /*!< An integer number that indicates the id of a node in the graph >*/
+            bool isVisited_;                    /*!< A boolean value to check if the node is visted while traversing atomnodes in the graph >*/ //Added by Ayush on 04/11/2018 for Direction based bonded Atoms in Assembly.
 
             /// Pattern matching-related attribute
             std::string element_label_;
