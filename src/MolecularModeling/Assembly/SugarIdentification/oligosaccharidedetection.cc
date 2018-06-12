@@ -63,6 +63,7 @@
 #include "../../../../includes/common.hpp"
 #include "../../../../includes/GeometryTopology/grid.hpp"
 #include "../../../../includes/GeometryTopology/cell.hpp"
+#include "../../../../includes/MolecularModeling/ring_shape_detection.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -73,10 +74,17 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::GetBFMP( Glycan::Monosaccharide* mono ) {
-  CoordinateVector coordinates = GetCycleAtomCoordinates( mono );
+void Assembly::GetBFMP( Glycan::Monosaccharide* mono )
+{
+  CoordinateVector ring_coordinates = GetCycleAtomCoordinates( mono );
+  std::string bfmp = calculateRingShapeBFMP(ring_coordinates);
+
+  /* June 2018
+  // Below was placeholder code written by Davis for Yik. Oliver is replacing it with the above as he has ported BFMP into GMML.
+  // OG is wondering why there isn't a header file for oligosaccharidedetection. OG is wondering why there are 5 million includes.
   // Testing GetCycleAtomCoordinates function
-  for( CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++ ) {
+  for( CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); ++it )
+  {
     ( *it )->Print( std::cout );
   }
   // @TODO At this point you should have a CoordinateVector with the GeometryTopology::Coordinates of the 6 cycle atoms.
@@ -86,6 +94,8 @@ void Assembly::GetBFMP( Glycan::Monosaccharide* mono ) {
 
   // @TODO This may end up being 'return bfmp' since the name of the function is GetBFMP.
   // It would make sense to have it return the BFMP for the user to store it as they wish.
+  */
+  // OG is wondering why Monosaccharide isn't a class with Get'ers and Set'ers.
   mono->bfmp_ring_conformation_ = bfmp;
 }
 
