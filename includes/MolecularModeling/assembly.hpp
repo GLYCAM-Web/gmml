@@ -58,7 +58,6 @@ namespace MolecularModeling
             typedef std::map<std::string, std::string> DerivativeModificationMap;
             typedef std::vector<std::vector<std::string> > AttachedGlycanStructuresVector;
             typedef std::vector<Glycan::Note*> NoteVector;
-            typedef std::vector<AtomNode*>AtomNodeVector; //Added by ayush on 04/11/18 for TopologyFix in assembly
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
             typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
 	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library. 
@@ -1179,7 +1178,7 @@ namespace MolecularModeling
             * @param searchTerm The search term submitted from GlyFinder
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type = "csv");
+            std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type = "csv");
 
             /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
@@ -1633,6 +1632,7 @@ namespace MolecularModeling
               * @return pattern The discovered pattern of the attached derivative
               */
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str/*, AtomVector& pattern_atoms*/);
+/** @}*/
             void AddIon(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
             void AddSolvent(double extension, double closeness, Assembly* solvent_component_assembly, std::string lib_file );
             void SplitSolvent(Assembly* solvent, Assembly* solute);
@@ -1682,42 +1682,6 @@ namespace MolecularModeling
 
             double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
             AtomVector GetAllAtomsOfAssemblyWithinXAngstromOf(GeometryTopology::Coordinate *coordinate, double distance);
-
-            /*! \fn                                                                              //Added by ayush on 04/11/18 for TopologyFix in assembly
-              * A function that returns list of atoms bonded to each other by start and direction in the Assembly. eg:(start)Atom1->(direction)Atom2
-              * @param start_atom The starting point in the assembly list of Atoms.
-              * @param direction_atom The direction for traversing the bonding among atom list of Assembly
-              * @param ignore_list The list of atoms which is ignored during traversal
-              * @return bonded_atoms_bystartdirection_ A list of assembly atoms bonded to each other based on start point and direction
-              */
-            AtomVector GetAllBondedAtomsByStartDirection(Atom* start_atom, Atom* direction_atom , AtomVector ignore_list);
-
-
-            /*! \fn                                                                          //Added by ayush on 04/11/18 for TopologyFix in assembly
-              * A function to check if an atom exists in Assebly AtomList
-              * @param An atom to check
-              * @start_atom_neighbors Neighbors of the start atom in considertion
-              * @ignore_list Ignore list of atoms provided by the user
-              * @return True/False based on existence
-              */
-            bool CheckIfAtomExistInAssembly(Atom* atom);
-
-            /*! \fn                                                                              //Added by ayush on 04/11/18 for TopologyFix in assembly
-              * A function that performs the Depth First Search traversal to find the bonded atoms based on start and direction atoms.
-              * @param atom The current atom under consideration.
-              * @param start_atom_neighbors The list of neighbors of the current atom.
-              * @param ignore_list The list of atoms which is ignored during traversal
-              */
-           void BondedAtomsByStartDirectionDFSUtil(Atom* atom, AtomVector start_atom_neighbors, AtomVector ignore_list);
-
-           /*! \fn                                                                          //Added by ayush on 04/16/18 for TopologyFix in assembly
-             * A function that returns the cooridnate vector corresponding to the atom vector based on the index specified.
-             * @param atomList Vector of atoms (Atoms)
-             * @param CoordinateIndex The index of the coordinate set that should be extracted
-             * @return Vector of pointers to the coordinates for the vector of atoms, in the same order as the vector of atoms.
-             */
-            CoordinateVector GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex);
-
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -1752,7 +1716,6 @@ namespace MolecularModeling
             NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
             ResidueNodeVector residuenodes_;                /*!< List of residuenodes present in the current object of assembly >*/     //Added by ayush on 11/16/17 for residuenodes in assembly
             MoleculeVector molecules_;                      /*!< List of molecules present in the current object of assembly >*/        //Added by ayush on 11/12/17 for molecules in assembly
-            AtomVector bonded_atoms_bystartdirection_;           /*!< List of atoms bonded based on start point an ddirection in Assembly>*/  //Added by ayush on 04/11/18 for Bonded Atoms based on start-direction in assembly
             PdbFileSpace::InputFile* input_file_;           /*!< A pointer back to the Input object >*/
     };
 

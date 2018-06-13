@@ -1,6 +1,6 @@
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 
-std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
+std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 {
     std::stringstream query;
     std::stringstream search;
@@ -96,18 +96,42 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     query << "?linkage      :hasParent 	            ?oligo.}\n";
     query << "OPTIONAL {";
     query << "?linkage      :glycosidicLinkage      ?glycosidic_linkage.}\n";
-    query << "OPTIONAL {";
+    if(isError == 0)
+    {
+      query << "OPTIONAL {";
+    }
     query << "?pdb_file      :hasNote    ?errorNote.\n";
     query << "?errornote	       :NoteType    \"error\".\n";
-    query << "?errornote        :description ?error.}\n";
-    query << "OPTIONAL {";
+    query << "?errornote        :description ?error.";
+    if(isError == 0)
+    {
+      query << "}";
+    }
+    query << "\n";
+    if(isWarning == 0)
+    {
+      query << "OPTIONAL {";
+    }
     query << "?pdb_file      :hasNote    ?warningNote.\n";
     query << "?warningNote	       :NoteType    \"warning\".\n";
-    query << "?warningNote        :description ?warning.}\n";
-    query << "OPTIONAL {";
+    query << "?warningNote        :description ?warning.";
+    if(isWarning == 0)
+    {
+      query << "}";
+    }
+    query << "\n";
+    if(isComment == 0)
+    {
+      query << "OPTIONAL {";
+    }
     query << "?pdb_file      :hasNote    ?commentNote.\n";
     query << "?commentNote	       :NoteType    \"comment\".\n";
-    query << "?commentNote        :description ?comment.}\n";
+    query << "?commentNote        :description ?comment.";
+    if(isComment == 0)
+    {
+      query << "}";
+    }
+    query << "\n";
     query << Ontology::END_WHERE_CLAUSE << "\n";
     query << "ORDER BY  ?" << sortBy << "\n";
     if(resultsPerPage != -1)
