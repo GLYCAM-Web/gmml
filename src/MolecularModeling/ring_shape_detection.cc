@@ -1,5 +1,26 @@
 #include "../includes/MolecularModeling/ring_shape_detection.hpp"
 
+/*********************************************************************************************************/
+/***************** Overview of port **********************************************************************/
+// In May 2018 Oliver ported Spandana's C code for BFMP into GMML
+// Method here: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4210171/
+// C program found by searching BFMP ring detection or probably broken by the time you read this:
+// http://glycam.org/docs/othertoolsservice/download-docs/publication-materials/bfmp/
+// I initially thought I would replace the classes with C++ and GMML classes , but after a few
+// days I started just copying in the Glylib classes. The big change was to hard code canonicals.txt, as
+// I don't think that will be changed very often, and how it was read in was awful. Hardcoding that
+// meant I could delete a chunk of code. I also created a function does_conformation_match which
+// somewhat reduces code replication, but boy this whole file is just tons of repeated code with
+// different parameters. I ran out of time, and I'm thinking the more I change the harder it will
+// be to find any bugs in this vs the original C code.
+
+// There are a lot of geometry functions at the bottom. Some can be replaced by generic functions
+// once they become available within gmml, others use the Glylib structs, so probably not unless
+// you do a more extensive overhaul/replacment of the classes used here.
+// Probably a namespace would be a good addition to hide the functions from other parts of GMML.
+/***********************************************************************************************************/
+
+
 std::string calculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off)
 {
 
