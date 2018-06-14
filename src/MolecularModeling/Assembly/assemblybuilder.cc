@@ -175,6 +175,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(std::string& sequence, Templ
 	    {
 		Residue* template_residue = all_template_residues[j];
 		Residue* assembly_residue = new Residue();
+		assembly_residue->SetIsSugarDerivative (condensed_sequence_residue->GetIsDerivative());
 		assembly_residue->SetNode(NULL);	//When residue object is constructed, its node attribute is not set to NULL, causing it to contain garbage node address.So I need to do this.
 		this->AddResidue(assembly_residue);
 		assembly_residue->SetAssembly(this);
@@ -354,6 +355,7 @@ void Assembly::SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::Conde
     for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator it = condensed_sequence_assembly_residue_map.begin();
                 it != condensed_sequence_assembly_residue_map.end(); it++){
 	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = it->first;
+	std::cout << " cond resname: " << condensed_residue->GetName() << std::endl;
         MolecularModeling::Residue* corresponding_assembly_residue = it->second;
 	CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_children = condensed_residue_chilren_map[condensed_residue];
 	gmml::AtomVector all_atoms_in_assembly_residue = corresponding_assembly_residue->GetAtoms();
@@ -367,6 +369,7 @@ void Assembly::SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::Conde
 	for (unsigned int i = 0; i < condensed_residue_children.size(); i++){
 	    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue_child = condensed_residue_children[i];
 	    std::string parent_oxygen_name = condensed_residue_child -> GetParentOxygen();
+	    std::cout << "child: " << condensed_residue_child->GetName() << "oxy name: " << parent_oxygen_name << std::endl;
 	    children_parent_oxygen_names.push_back(parent_oxygen_name);
 	    //Also set a bond between child anomeric carbon and linking parent tail atom.
 	    for (std::map<std::string, MolecularModeling::Atom*>::iterator it2 = name_atom_map.begin(); it2 != name_atom_map.end(); it2++){
@@ -410,6 +413,15 @@ void Assembly::SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::Conde
                                   existing_parent_oxygen_atom_node_neighbors.end() ){
                                 parent_oxygen_atom_node->AddNodeNeighbor(anomeric_carbon_atom);
                             }
+			    //If child residue is a derivative, must remove a hydrogen neighbor of the parent oxygen
+			    if (child_assembly_residue->GetIsSugarDerivative()){
+				gmml::AtomVector parent_oxygen_neighbors = parent_oxygen_atom_node->GetNodeNeighbors();
+				for (unsigned int k = 0; k < parent_oxygen_neighbors.size(); k++){
+				    if (parent_oxygen_neighbors[k]->GetName().substr(0,1) == "H"){
+					parent_oxygen_atom -> GetResidue() -> RemoveAtom(parent_oxygen_neighbors[k]);
+				    }
+				}
+			    }
 
 			}
 		    }
@@ -422,6 +434,7 @@ void Assembly::SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::Conde
 	    std::string atom_name = it2->first;
 	    MolecularModeling::Atom* atom = it2->second;
 	    if (std::find(children_parent_oxygen_names.begin(),children_parent_oxygen_names.end(), atom_name) != children_parent_oxygen_names.end() ){
+		std::cout << "Tail " << atom->GetName() << " is being added to " << corresponding_assembly_residue-> GetName() << corresponding_assembly_residue<< std:: endl;
 		all_tail_atoms.push_back(atom);
 	    }
 	}
@@ -453,6 +466,10 @@ for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Molecul
                 it != condensed_sequence_assembly_residue_map.end(); it++){
 	MolecularModeling::Residue* assembly_residue = it->second;
 	std::cout << "center residue: " << assembly_residue->GetName() <<assembly_residue<<std::endl;
+	gmml::AtomVector tails = assembly_residue->GetTailAtoms();
+	for (unsigned int a = 0; a < tails.size(); a++){
+	    std::cout << "tail in assembly residue: " << tails[a]->GetName() << std::endl;
+	}
 	std::cout << "node: " << assembly_residue->GetNode() <<std::endl;
 	ResidueNodeVector neighbor_nodes = assembly_residue ->GetNode()->GetResidueNodeNeighbors();
 	for (unsigned int i = 0; i < neighbor_nodes.size(); i++){
@@ -473,6 +490,34 @@ std::cout << std::endl <<std::endl;
 //testing
 
 }//SetGlycam06ResidueBonding
+
+void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residue)
+{
+    std::cout << "parent: " << parent_residue->GetName() << parent_residue << std::endl;
+    gmml::AtomVector all_tail_atoms = parent_residue->GetTailAtoms();
+    for (unsigned int i = 0; i < all_tail_atoms.size(); i++){
+	MolecularModeling::Atom* tail_atom = all_tail_atoms[i];
+	std::cout << "tail atom : " << tail_atom->GetName()  <<std::endl;
+	gmml::AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
+	gmml::AtomVector all_atoms_in_residue = parent_residue->GetAtoms();
+	for (unsigned int j = 0; j < tail_atom_neighbors.size(); j++){
+	    MolecularModeling::Atom* neighbor_atom = tail_atom_neighbors[j];
+	    //if a neighbor is outside of a parent residue, it must be the head atom of a child residue.There should only exist one such atom, otherwise, something is amiss.
+	    if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
+		MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
+		MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
+		gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
+		//Set Point
+		//Translate
+		//Set angle, dihedral
+
+		//Start new recursion
+		MolecularModeling::Residue* new_parent_residue = child_residue;
+		this-> RecursivelySetGeometry(new_parent_residue);
+	    }
+	}//for
+    }
+}
 
 void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)
 {

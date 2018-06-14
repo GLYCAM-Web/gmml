@@ -99,6 +99,8 @@ namespace MolecularModeling
               */
             ResidueNode* GetNode();
 
+	    bool GetIsSugarDerivative();
+
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -192,6 +194,8 @@ namespace MolecularModeling
               * @param atoms The atom attribute of the current object
               */
             void ReplaceAtomCoordinates(AtomVector *newAtoms);
+
+	    void SetIsSugarDerivative(bool is_derivative);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -246,6 +250,8 @@ namespace MolecularModeling
             std::string chemical_type_;         /*!< A descriptor in order to describe chemical type of the residue >*/
             std::string description_;           /*!< A short description of the residue >*/
             std::string id_;                    /*!< An identifier for a residue that is generated based on the type of the given file from which the structure has to be built >*/
+	    //Added by Yao 06/13/2018
+	    bool is_sugar_derivative_;
             ResidueNode* node_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
     };
  }
