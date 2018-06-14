@@ -5,9 +5,6 @@
 #include <sstream>
 #include "gmml.hpp"
 
-//constexpr auto PI = 3.14159265358979323846;
-
-
 //****************************************************//
 //*************** Glylib structs *********************//
 typedef struct
@@ -28,7 +25,7 @@ typedef struct
 typedef std::vector<plane> PlaneVector;
 
 //****************************************************//
-//*************** Glylilb functions ******************//
+//*************** Glylib functions ******************//
 double get_signed_distance_from_point_to_plane(plane p, GeometryTopology::Coordinate pt);
 vectormag_3D get_crossprod(vectormag_3D a, vectormag_3D b);
 std::string calculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off = 10);
@@ -45,7 +42,8 @@ int count_conformation_matches(int jloops, int *sortedplanes, int *atoms, int at
 
 //****************************************************//
 //************* The BFMP function ********************//
-std::string calculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off);
+std::string CalculateRingShapeBFMP( Glycan::Monosaccharide* mono );
+std::string CalculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off);
 //****************************************************//
 
 #endif // ring_shape_detection_HPP

@@ -827,20 +827,6 @@ namespace MolecularModeling
             * @return oligosaccharides A list of extarcted oligosaccharide structures
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false);
-            /*! \fn
-            * A function in order to detect the shape of the ring using the external BFMP program
-             * A function in order to extract the BFMP ring conformation of a Monosaccharide object.
-             * @param mono The Monosaccharide object
-             */
-            void GetBFMP( Glycan::Monosaccharide* mono );
-            /*! \fn
-            * A function in order to detec the shape of the ring using the external BFMP program
-            * This function creates a pdb file and a configuration file for input arguments of the external detect_shape program.
-            * the function updates the bfmp_ring_confomration attribute of the monosaccharide
-            * @param cycle The list of ring atoms
-            * @param mono The monosaccharide object
-            */
-            void DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono);
 
             /*! \fn
             * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology

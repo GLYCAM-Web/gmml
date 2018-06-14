@@ -20,10 +20,18 @@
 // Probably a namespace would be a good addition to hide the functions from other parts of GMML.
 /***********************************************************************************************************/
 
-
-std::string calculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off)
+// This should not be in Assembly. Overloading to handle legacy code. Returning string so people can do as they wish.
+std::string CalculateRingShapeBFMP( Glycan::Monosaccharide* mono )
 {
+  CoordinateVector ring_coordinates = GetCycleAtomCoordinates( mono );
+  std::string bfmp = CalculateRingShapeBFMP(ring_coordinates);
+  // OG is wondering why Monosaccharide isn't a class with Get'ers and Set'ers.
+  mono->bfmp_ring_conformation_ = bfmp;
+  return bfmp;
+}
 
+std::string CalculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off)
+{
     //****************************************************//
     //****************** canonicals.txt ******************//
     //****** OG is Hardcoding canonicals.txt here ********//
