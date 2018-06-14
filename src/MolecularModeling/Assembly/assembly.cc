@@ -641,22 +641,14 @@ void Assembly::AddResidue(Residue *residue)
     residues_.push_back(residue);
 }
 
-void Assembly::RemoveResidue(Residue *residue_to_be_removed)
+void Assembly::InsertResidue(int distance, Residue *residue)
 {
-    // Once ResidueNode is in place, this needs to be uncommented:
-//    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); ++it)
-//    {
-//        Residue* residue = *it;
-//        if(residue->GetId().compare(residue_to_be_removed->GetId()) != 0)
-//        {
-//            //if(residue->GetNode() != NULL)
-//            //{
-//            //    residue->GetNode()->RemoveNodeNeighbor(residue_to_be_removed);
-//            //}
-//
-//        }
-//    }
-    residues_.erase(std::remove(residues_.begin(), residues_.end(), residue_to_be_removed), residues_.end()); // Note need #include <algorithm>
+    residues_.insert(residues_.begin() + distance,residue);
+}
+
+void Assembly::EraseResidue(int distance)
+{
+    residues_.erase(residues_.begin() + distance);
 }
 
 void Assembly::SetChemicalType(std::string chemical_type)
@@ -994,6 +986,7 @@ void Assembly::GenerateMoleculesDFSUtil(ResidueNode* DFSresiduenode)
 
 
 }
+
 //Added by ayush on 11/12/17 for molecules in assembly
 void Assembly::AddMolecule(Molecule *molecule)
 {
@@ -1001,6 +994,126 @@ void Assembly::AddMolecule(Molecule *molecule)
     molecule->SetMoleculeIndex(max_index_);
     molecules_.push_back(molecule);
 }
+
+
+ //Added by ayush on 04/11/18 for TopologyFix in assembly
+Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(Atom* start_atom, Atom* direction_atom , AtomVector ignore_list)
+{
+
+        if(start_atom == NULL || direction_atom == NULL){
+            std::cout<<"Start Atom or Direction Atom is null"<<std::endl;}
+        else if(CheckIfAtomExistInAssembly(start_atom)==false||CheckIfAtomExistInAssembly(direction_atom)==false){
+            std::cout<<"Start Atom or Direction Atom does not exist in Assembly"<<std::endl;
+        }else{
+                bool isNeighbor=false;
+                 AtomVector start_atom_neighbors = start_atom->GetNode()->GetNodeNeighbors();
+
+                 for(AtomVector::iterator it = start_atom_neighbors.begin(); it != start_atom_neighbors.end(); it++)
+                 {
+                     Atom* atom = *it;
+                    if(atom->GetId().compare(direction_atom->GetId())==0)
+                    { isNeighbor=true;}
+                 }
+                 if(isNeighbor==true)
+                 {
+                   
+                    start_atom->GetNode()->SetIsVisited(true);                   
+                    direction_atom->GetNode()->SetIsVisited(true);
+                    bonded_atoms_bystartdirection_.push_back(direction_atom);
+                    AtomVector direction_atom_neighbors=direction_atom->GetNode()->GetNodeNeighbors();
+                    for(AtomVector::iterator it = direction_atom_neighbors.begin(); it != direction_atom_neighbors.end(); it++)
+                    {
+                          Atom* neighbor_atom = *it;
+                          if(neighbor_atom->GetNode()->GetIsVisited()==false)
+                          {
+                                BondedAtomsByStartDirectionDFSUtil(neighbor_atom, direction_atom_neighbors, ignore_list);
+                          }
+                    }
+
+                 }else{
+                     std::cout<<"Direction Atom is invalid. Not a neighbor of Start Atom."<<std::endl;
+                 }
+        }
+
+        return bonded_atoms_bystartdirection_;
+}
+
+void Assembly::BondedAtomsByStartDirectionDFSUtil(Atom* DFSatom, AtomVector start_atom_neighbors, AtomVector ignore_list)
+{
+    bool toConsider=false; //Check if the atom is part of the start atom neighor or ignore list and set toConsider accordingly. If toConsider is true, skip the atom.
+
+    DFSatom->GetNode()->SetIsVisited(true);
+
+    for(AtomVector::iterator it1 = start_atom_neighbors.begin(); it1!= start_atom_neighbors.end(); it1++)
+    {
+        Atom* atom = *it1;
+       if(atom->GetId().compare(DFSatom->GetId())==0)
+       {
+           toConsider = true;
+       }
+    }
+
+     for(AtomVector::iterator it2 = ignore_list.begin(); it2!= ignore_list.end(); it2++)
+    {
+        Atom* atom = *it2;
+       if(atom->GetId().compare(DFSatom->GetId())==0)
+       {
+           toConsider = false;
+       }
+    }
+
+    if(toConsider==false)
+    {
+        AtomVector DFSatom_neighbors = DFSatom->GetNode()->GetNodeNeighbors();
+
+        for(AtomVector::iterator it3 = DFSatom_neighbors.begin(); it3!= DFSatom_neighbors.end(); it3++)
+        {
+            Atom* atom = *it3;
+                if(atom->GetNode()->GetIsVisited()==false)
+                {
+                    BondedAtomsByStartDirectionDFSUtil(DFSatom, start_atom_neighbors, ignore_list);
+                }
+        }
+
+        bonded_atoms_bystartdirection_.push_back(DFSatom);
+    }
+}
+
+
+bool Assembly::CheckIfAtomExistInAssembly(Atom* toCheckAtom)
+{
+    bool status = false;
+    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
+    {
+        Atom* atom = *it;
+       if(atom->GetId().compare(toCheckAtom->GetId())==0)
+       {
+            status=true;
+       }
+    }
+    return status;
+}
+
+ //Added by ayush on 04/16/18 for TopologyFix in assembly
+
+Assembly::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex)
+{
+    CoordinateVector coordinatesByIndex= CoordinateVector();
+    for( AtomVector::iterator it1 = atomList.begin(); it1 != atomList.end(); it1++ ) {
+      Atom* atom = ( *it1 );
+      CoordinateVector atom_coordinates = atom->GetCoordinates();
+      if(CoordinateIndex < atom_coordinates.size())
+      {
+        GeometryTopology::Coordinate* coordinate = atom_coordinates[CoordinateIndex];
+        coordinatesByIndex.push_back(coordinate);
+      }else{
+          std::cout<<"Atom ID "<<atom->GetId()<<" does not have coordinate at index: "<<CoordinateIndex<<std::endl;
+      }
+    }
+    return coordinatesByIndex;
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////

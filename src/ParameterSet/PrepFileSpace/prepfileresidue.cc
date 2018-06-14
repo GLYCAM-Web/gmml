@@ -7,8 +7,10 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "../../../includes/MolecularModeling/residue.hpp"
 
 using PrepFileSpace::PrepFileResidue;
+using MolecularModeling::Residue;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -723,7 +725,6 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
                 break;
         }
     }
-
     return residue;
 }
 

@@ -8,6 +8,11 @@
 #include <vector>
 #include "residueproperties.hpp"
 #include "../GeometryTopology/coordinate.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
+
 
 
 namespace MolecularModeling
@@ -15,6 +20,7 @@ namespace MolecularModeling
     class Assembly;
     class Atom;
     class ResidueNode;
+    class PrepFileResidue;
     class Residue : public ResidueProperties
     {
         public:
@@ -23,7 +29,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             typedef std::vector<Atom*> AtomVector;
             typedef std::vector<std::string> StringVector;
-
+	    typedef PrepFileSpace::PrepFileResidue PrepFileResidue;
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -190,6 +196,8 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
+	    
+	    void BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue);
             /// Check if all atoms in the residue have their element symbols --> Label directly (1st priority)
             bool CheckSymbolBasedElementLabeling();
             /// Check if all atoms in the residue have their atom type --> Element symbols come from parameter file (2nd priority)

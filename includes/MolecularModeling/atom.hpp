@@ -11,14 +11,13 @@
 #include "moleculardynamicatom.hpp"
 #include "quantommechanicatom.hpp"
 #include "dockingatom.hpp"
-#include "atomnode.hpp"
-#include "residue.hpp"
+#include "oligosaccharidedetectionatom.hpp"
 
 namespace MolecularModeling
 {
-    // class Residue;
-    // class AtomNode;
-    class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom
+    class Residue;
+    class AtomNode;
+    class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom, public OligoSaccharideDetectionAtom
     {
         public:
             //////////////////////////////////////////////////////////
