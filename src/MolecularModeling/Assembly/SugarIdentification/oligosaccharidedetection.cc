@@ -199,7 +199,6 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
 
     Assembly::ExtractSugars( amino_lib_files, monos, glyprobity_report,  populate_ontology ); 
-
 }
 
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology) {
@@ -364,7 +363,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       // for testing purposes.
       //GetBFMP( mono );
       //DetectShape( cycle, mono );
-      CalculateRingShapeBFMP(mono);
+      glylib::CalculateRingShapeBFMP(mono);
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
       {
         std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << std::endl << std::endl; ///Part of Glyprobity report
