@@ -818,7 +818,7 @@ namespace MolecularModeling
             /*! \fn
             * A wrapper function for the next function. I do this to make the vector of monosaccharides external. I want to do some manipulations to them.
             */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
+            void ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
             /*! \fn
             * A function in order to extract all the saccharide structures
             * @param amino_lib_files The list of paths to amino library files, used for identifying terminal residues
