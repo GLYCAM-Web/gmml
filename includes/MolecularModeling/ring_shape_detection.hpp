@@ -3,7 +3,10 @@
 
 #include <stdio.h>
 #include <sstream>
-#include "gmml.hpp"
+#include <string.h>
+#include "../GeometryTopology/coordinate.hpp"
+#include "../Glycan/monosaccharide.hpp"
+#include "../common.hpp"
 
 //****************************************************//
 //*************** Glylib structs *********************//
@@ -23,6 +26,7 @@ typedef struct
 //****************************************************//
 
 typedef std::vector<plane> PlaneVector;
+typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
 
 //****************************************************//
 //*************** Glylib functions ******************//
@@ -42,8 +46,9 @@ int count_conformation_matches(int jloops, int *sortedplanes, int *atoms, int at
 
 //****************************************************//
 //************* The BFMP function ********************//
+CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
 std::string CalculateRingShapeBFMP( Glycan::Monosaccharide* mono );
-std::string CalculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off);
+std::string CalculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off = 10);
 //****************************************************//
 
 #endif // ring_shape_detection_HPP
