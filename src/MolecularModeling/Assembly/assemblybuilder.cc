@@ -75,6 +75,7 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
+#include "../../../includes/MolecularModeling/GeometryOperation/geometry.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -491,7 +492,7 @@ std::cout << std::endl <<std::endl;
 
 }//SetGlycam06ResidueBonding
 
-void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residue)
+void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residue, PrepFileSpace::PrepFile::ResidueMap& prep_residue_map)
 {
     std::cout << "parent: " << parent_residue->GetName() << parent_residue << std::endl;
     gmml::AtomVector all_tail_atoms = parent_residue->GetTailAtoms();
@@ -506,14 +507,43 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 	    if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
 		MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
 		MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
-		gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
-		//Set Point
-		//Translate
+		//Graft child residue onto parent tail atom, based on bond length/direction.
+		this->SetResidueResidueBondDistance(tail_atom, head_atom_of_child_residue, prep_residue_map);
 		//Set angle, dihedral
+		GeometryTopology::Coordinate* tail_atom_coordinate = tail_atom->GetCoordinates().at(0);
+		GeometryTopology::Coordinate* child_head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
+		GeometryTopology::Coordinate* tail_head_bond_vector = new GeometryTopology::Coordinate();
+		tail_head_bond_vector->SetX(child_head_atom_coordinate->GetX() - tail_atom_coordinate->GetX());
+		tail_head_bond_vector->SetY(child_head_atom_coordinate->GetY() - tail_atom_coordinate->GetY());
+		tail_head_bond_vector->SetZ(child_head_atom_coordinate->GetZ() - tail_atom_coordinate->GetZ());
 
+			//Rotate all atoms in child residue by an angle.
+		gmml::AtomVector all_atoms_to_be_rotated = child_residue->GetAtoms();
+		std::vector<GeometryTopology::Coordinate*> all_atoms_to_be_rotated_coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+		for (gmml::AtomVector::iterator it = all_atoms_to_be_rotated.begin(); it != all_atoms_to_be_rotated.end(); it++){
+		    all_atoms_to_be_rotated_coordinate_list.push_back((*it)-> GetCoordinates().at(0));
+		}
+
+		GeometryOperation::Geometry* new_geometric_operation = new GeometryOperation::Geometry();
+		std::vector<GeometryTopology::Coordinate*> rotated_atoms_coordinate_list =
+			new_geometric_operation -> RotateCoordinates (tail_atom_coordinate, tail_head_bond_vector, 120.00, all_atoms_to_be_rotated_coordinate_list);
+		
+			//Change the old coordinate of each atom to the new rotated one.
+			
+		for (gmml::AtomVector::iterator it = all_atoms_to_be_rotated.begin(); it != all_atoms_to_be_rotated.end(); it++){
+		    int index = std::distance (all_atoms_to_be_rotated.begin(), it);
+		    MolecularModeling::Atom* atom = *it;
+		    std::vector<GeometryTopology::Coordinate*> new_coordinate =  std::vector<GeometryTopology::Coordinate*> ();
+		    new_coordinate.push_back(rotated_atoms_coordinate_list[index]);
+		    atom -> SetCoordinates(new_coordinate);
+		}
+		//Set omega torsion(if exists)
+		
+		//Set psi torsion
+		//Set phi torsion
 		//Start new recursion
 		MolecularModeling::Residue* new_parent_residue = child_residue;
-		this-> RecursivelySetGeometry(new_parent_residue);
+		this-> RecursivelySetGeometry(new_parent_residue, prep_residue_map);
 	    }
 	}//for
     }

@@ -347,7 +347,11 @@ namespace MolecularModeling
 		 ConvertCondensedSequence2AssemblyResidues(std::string& sequence, TemplateAssembly* template_assembly);
 
 	    void SetGlycam06ResidueBonding(std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>& condensed_sequence_assembly_residue_map);
-	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue);
+	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue, PrepFileSpace::PrepFile::ResidueMap& prep_residue_map);
+
+
+	    void SetResidueResidueBondDistance(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom, 
+			PrepFileSpace::PrepFile::ResidueMap& prep_residue_map);
 /** @}*/
             AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
                                                                  std::string prep_file, std::string parameter_file,

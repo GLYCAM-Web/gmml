@@ -74,7 +74,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
         atom_id << atom_name << "_" << serial_number << "_" << id;
         assembly_atom->SetId(atom_id.str());
     
-        assembly_atom->SetAtomType(prep_atom->GetType());
+        assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
         assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
         assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
         assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
