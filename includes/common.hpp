@@ -359,6 +359,8 @@ namespace gmml
         {"GlcNS", "Y", 36},
         {"U", "045", 37},
         {"S", "245", 38},
+		{"KDN", "KN", 39},
+		{"KDO", "KO", 40},
     };
 
     const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));

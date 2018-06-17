@@ -58,29 +58,43 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
     // in residue GlcNAc. To combat this, the searching will look for GlcNAc first
     // and if it isn't found, it will then look for GlcN.
     std::vector<std::string> svg_residue_names = {
+        "",
+        "All",
+        "Alt",
+        "Ara",
+        "Fru",
+        "Fuc",
 		"GlcNAc", "GlcA", "GlcN"/* Has some extra code to add. */, "Glc",
 		"GalA", "GalNAc", "GalN", "Gal",
+        "Gul",
+        "Ido",
+        "IdoA",
+        "KDN",
+        "KDO",
+        "Lyx",
 		"ManNAc", "ManA", "ManN", "Man",
 		"Neu5Ac", "NeuNAc",
 		"Neu5Gc", "NeuNGc",
-		"Fuc",
-		"IdoA",
-		"KDN",
+        "Psi",
+        "Qui",
+        "Rha",
+        "Rib"
+        "Sor",
+        "Tag",
+        "Tal",
 		"Xyl",
 	};
 
 	// Declare the BOX shape vector.
     std::vector<std::string> box_shape_residue_names = {
+        "",
 		"OH", "OME", "OtBu",
 		"R", "Fak"
     };
 
 	// Declare the OTHER shape vector.
     std::vector<std::string> other_shape_residue_names = {
-		"Fru",
-		"Tag",
-		"Psi",
-		"Sor"
+        "",
     };
 
     // Declare an empty std::stringstream, which is used to generate what will go into
