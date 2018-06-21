@@ -179,11 +179,16 @@ namespace MolecularModeling
               */
             ResidueVector GetAllResiduesOfAssembly();
             /*! \fn
+              * A functions that extracts all protein residues of an assembly
+              * @return Vector of all protein residues in the current object of assembly
+              */
+            ResidueVector GetAllProteinResiduesOfAssembly();
+            /*! \fn
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
             CoordinateVector GetAllCoordinates();
-            /* ! \fn
+            /*! \fn
              * A function to extract all the coordinates of all the cycle atoms of the monosaccharide.
              * @param mono The Monosaccharide object
              * @return coordinates The CoordinateVector with all the Coordinates
