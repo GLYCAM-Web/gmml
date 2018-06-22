@@ -14,7 +14,7 @@ namespace gmml::MolecularMetadata::AMBER
   typedef struct 
   {
     std::string element_;  // The element symbol
-    std::string mass_;     // The mass, in amu, used by most/all of Amber
+    double mass_;     // The mass, in amu, used by most/all of Amber
   } AmberAtomInfo ;
   
   const AmberAtomInfo AMBERATOMINFO[] =
