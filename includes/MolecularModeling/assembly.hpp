@@ -258,19 +258,19 @@ namespace MolecularModeling
               * Set the residues_ attribute of the current assembly
               * @param residue The residue of the current object
               */
-	    void InsertResidue(int distance, Residue *residue);
+            void InsertResidue(int distance, Residue *residue);
             /*! \fn
               * A function in order to erase a residue from the current object
               * Set the residues_ attribute of the current assembly
               * @param distance The distance from beginning of ResidueVector to residue to be removed.
               */
-	    void EraseResidue(int distance);
+            void EraseResidue(int distance);
+            void RemoveResidue(Residue *residue);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current assembly
               * @param chemical_type The chemical_type attribute of the current object
               */
-	    
             void SetChemicalType(std::string chemical_type);
             /*! \fn
               * A mutator function in order to set the sequence number of the current object

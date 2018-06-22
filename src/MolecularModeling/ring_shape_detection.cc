@@ -655,7 +655,7 @@ if(focheck ==1){
     {
         if(sdsize>=3)
         {
-            if(does_conformation_match(3, sortedplanes, chair, 12, list, 4))
+            if(does_conformation_match(3, sortedplanes, chair, 12, list, 3))
             {
                 d[0]=get_signed_distance_from_point_to_plane(fifteen_planes[12],ring_coordinates.at(3));
                 d[1]=get_signed_distance_from_point_to_plane(fifteen_planes[12],ring_coordinates.at(0));
