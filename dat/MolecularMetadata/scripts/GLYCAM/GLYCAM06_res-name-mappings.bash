@@ -131,6 +131,9 @@ NAMES[${i}]=" NOLP  NOLS  NOLT "
 ##
 ##  aglycon
 ##
+##  monosaccharides that can be aglycons are added elsewhere in
+##      these scripts
+##
 ###################################
 
 i=$((i+1))

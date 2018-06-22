@@ -350,6 +350,26 @@ for i in tv ; do
 	echo '"' >> ${OF}
 done
 
+## All aldoses that can be 'aglycon' terminals via anomeric-to-anomeric linkage
+AllStandardAldoses='T N E F L G K M Q H t n e f l g k m q h 
+V Y W  v y w  O Z U  o z u  A D R X  a d r x  '
+AllSpecialAldoses=' AE TV  Ae Tv  tV  tv  Bc bc YN Yn YNP YnP YS Ys yS ys'
+echo "## aldose monosacharides that can be aglycons " >> ${OF}
+for i in ${AllStandardAldoses} ; do
+        echo 'i=$((i+1))' >> ${OF}
+        echo "TYPES[\${i}]=\" aglycon \" " >> ${OF}
+        echo 'NAMES[${i}]="' >> ${OF}
+        grep   ^1${i}[ABDU]$  ${RN} >> ${OF}
+        echo '"' >> ${OF}
+done
+for i in ${AllSpecialAldoses} ; do                    
+        echo 'i=$((i+1))' >> ${OF}
+        echo "TYPES[\${i}]=\" aglycon \" " >> ${OF}
+        echo 'NAMES[${i}]="' >> ${OF}
+        grep   ^1${i}$  ${RN} >> ${OF}
+        echo '"' >> ${OF}
+done
+
 #####################
 ## Ketoses
 #####################
@@ -472,3 +492,23 @@ TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge
     	grep   ^.sB$  ${RN} >> ${OF}
     	grep   ^.sB$  ${RN} >> ${SL}
 	echo '"' >> ${OF}
+
+
+## All aldoses that can be 'aglycon' terminals via anomeric-to-anomeric linkage
+AllStandardKetoses=' C P B J c p b j S s '
+AllSpecialKetoses=' GL gL '
+echo "## aldose monosacharides that can be aglycons " >> ${OF}
+for i in ${AllStandardKetoses} ; do
+        echo 'i=$((i+1))' >> ${OF}
+        echo "TYPES[\${i}]=\" aglycon \" " >> ${OF}
+        echo 'NAMES[${i}]="' >> ${OF}
+        grep   ^1${i}[ABDU]$  ${RN} >> ${OF}
+        echo '"' >> ${OF}
+done
+for i in ${AllSpecialKetoses} ; do                    
+        echo 'i=$((i+1))' >> ${OF}
+        echo "TYPES[\${i}]=\" aglycon \" " >> ${OF}
+        echo 'NAMES[${i}]="' >> ${OF}
+        grep   ^1${i}$  ${RN} >> ${OF}
+        echo '"' >> ${OF}
+done

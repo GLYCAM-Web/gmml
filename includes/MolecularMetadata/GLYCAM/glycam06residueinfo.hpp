@@ -5,7 +5,7 @@
  * GLYCAM06 metadata for residues
  *
  * This file is enerated automatically on:
- *     Thu Jun 21 19:47:08 EDT 2018
+ *     Fri Jun 22 12:58:53 EDT 2018
  *
  * by a script named:
  *     GLYCAM06_make_glycam06_residue_name-2-type_lookup.bash
@@ -9477,6 +9477,194 @@ namespace gmml::MolecularMetadata::GLYCAM
         { "Ytv"     ,  "deoxy"                                  } , 
         { "Ytv"     ,  "beta"                                   } , 
         { "Ytv"     ,  "L-isomer"                               } , 
+//    Names:    1TA 1TB  
+//    Types:    aglycon  
+        { "1TA"     ,  "aglycon"                                } , 
+        { "1TB"     ,  "aglycon"                                } , 
+//    Names:    1NA 1NB  
+//    Types:    aglycon  
+        { "1NA"     ,  "aglycon"                                } , 
+        { "1NB"     ,  "aglycon"                                } , 
+//    Names:    1EA 1EB  
+//    Types:    aglycon  
+        { "1EA"     ,  "aglycon"                                } , 
+        { "1EB"     ,  "aglycon"                                } , 
+//    Names:    1FA 1FB  
+//    Types:    aglycon  
+        { "1FA"     ,  "aglycon"                                } , 
+        { "1FB"     ,  "aglycon"                                } , 
+//    Names:    1LA 1LB  
+//    Types:    aglycon  
+        { "1LA"     ,  "aglycon"                                } , 
+        { "1LB"     ,  "aglycon"                                } , 
+//    Names:    1GA 1GB  
+//    Types:    aglycon  
+        { "1GA"     ,  "aglycon"                                } , 
+        { "1GB"     ,  "aglycon"                                } , 
+//    Names:    1KA 1KB  
+//    Types:    aglycon  
+        { "1KA"     ,  "aglycon"                                } , 
+        { "1KB"     ,  "aglycon"                                } , 
+//    Names:    1MA 1MB  
+//    Types:    aglycon  
+        { "1MA"     ,  "aglycon"                                } , 
+        { "1MB"     ,  "aglycon"                                } , 
+//    Names:    1QA 1QB  
+//    Types:    aglycon  
+        { "1QA"     ,  "aglycon"                                } , 
+        { "1QB"     ,  "aglycon"                                } , 
+//    Names:    1HA 1HB  
+//    Types:    aglycon  
+        { "1HA"     ,  "aglycon"                                } , 
+        { "1HB"     ,  "aglycon"                                } , 
+//    Names:    1tA 1tB  
+//    Types:    aglycon  
+        { "1tA"     ,  "aglycon"                                } , 
+        { "1tB"     ,  "aglycon"                                } , 
+//    Names:    1nA 1nB  
+//    Types:    aglycon  
+        { "1nA"     ,  "aglycon"                                } , 
+        { "1nB"     ,  "aglycon"                                } , 
+//    Names:    1eA 1eB  
+//    Types:    aglycon  
+        { "1eA"     ,  "aglycon"                                } , 
+        { "1eB"     ,  "aglycon"                                } , 
+//    Names:    1fA 1fB  
+//    Types:    aglycon  
+        { "1fA"     ,  "aglycon"                                } , 
+        { "1fB"     ,  "aglycon"                                } , 
+//    Names:    1lA 1lB  
+//    Types:    aglycon  
+        { "1lA"     ,  "aglycon"                                } , 
+        { "1lB"     ,  "aglycon"                                } , 
+//    Names:    1gA 1gB  
+//    Types:    aglycon  
+        { "1gA"     ,  "aglycon"                                } , 
+        { "1gB"     ,  "aglycon"                                } , 
+//    Names:    1kA 1kB  
+//    Types:    aglycon  
+        { "1kA"     ,  "aglycon"                                } , 
+        { "1kB"     ,  "aglycon"                                } , 
+//    Names:    1mA 1mB  
+//    Types:    aglycon  
+        { "1mA"     ,  "aglycon"                                } , 
+        { "1mB"     ,  "aglycon"                                } , 
+//    Names:    1qA 1qB  
+//    Types:    aglycon  
+        { "1qA"     ,  "aglycon"                                } , 
+        { "1qB"     ,  "aglycon"                                } , 
+//    Names:    1hA 1hB  
+//    Types:    aglycon  
+        { "1hA"     ,  "aglycon"                                } , 
+        { "1hB"     ,  "aglycon"                                } , 
+//    Names:    1VA 1VB  
+//    Types:    aglycon  
+        { "1VA"     ,  "aglycon"                                } , 
+        { "1VB"     ,  "aglycon"                                } , 
+//    Names:    1YA 1YB  
+//    Types:    aglycon  
+        { "1YA"     ,  "aglycon"                                } , 
+        { "1YB"     ,  "aglycon"                                } , 
+//    Names:    1WA 1WB  
+//    Types:    aglycon  
+        { "1WA"     ,  "aglycon"                                } , 
+        { "1WB"     ,  "aglycon"                                } , 
+//    Names:    1vA 1vB  
+//    Types:    aglycon  
+        { "1vA"     ,  "aglycon"                                } , 
+        { "1vB"     ,  "aglycon"                                } , 
+//    Names:    1yA 1yB  
+//    Types:    aglycon  
+        { "1yA"     ,  "aglycon"                                } , 
+        { "1yB"     ,  "aglycon"                                } , 
+//    Names:    1wA 1wB  
+//    Types:    aglycon  
+        { "1wA"     ,  "aglycon"                                } , 
+        { "1wB"     ,  "aglycon"                                } , 
+//    Names:    1OA 1OB  
+//    Types:    aglycon  
+        { "1OA"     ,  "aglycon"                                } , 
+        { "1OB"     ,  "aglycon"                                } , 
+//    Names:    1ZA 1ZB  
+//    Types:    aglycon  
+        { "1ZA"     ,  "aglycon"                                } , 
+        { "1ZB"     ,  "aglycon"                                } , 
+//    Names:    1UA 1UB  
+//    Types:    aglycon  
+        { "1UA"     ,  "aglycon"                                } , 
+        { "1UB"     ,  "aglycon"                                } , 
+//    Names:    1oA 1oB  
+//    Types:    aglycon  
+        { "1oA"     ,  "aglycon"                                } , 
+        { "1oB"     ,  "aglycon"                                } , 
+//    Names:    1zA 1zB  
+//    Types:    aglycon  
+        { "1zA"     ,  "aglycon"                                } , 
+        { "1zB"     ,  "aglycon"                                } , 
+//    Names:    1uA 1uB  
+//    Types:    aglycon  
+        { "1uA"     ,  "aglycon"                                } , 
+        { "1uB"     ,  "aglycon"                                } , 
+//    Names:    1AA 1AB 1AD 1AU  
+//    Types:    aglycon  
+        { "1AA"     ,  "aglycon"                                } , 
+        { "1AB"     ,  "aglycon"                                } , 
+        { "1AD"     ,  "aglycon"                                } , 
+        { "1AU"     ,  "aglycon"                                } , 
+//    Names:    1DA 1DB 1DD 1DU  
+//    Types:    aglycon  
+        { "1DA"     ,  "aglycon"                                } , 
+        { "1DB"     ,  "aglycon"                                } , 
+        { "1DD"     ,  "aglycon"                                } , 
+        { "1DU"     ,  "aglycon"                                } , 
+//    Names:    1RA 1RB 1RD 1RU  
+//    Types:    aglycon  
+        { "1RA"     ,  "aglycon"                                } , 
+        { "1RB"     ,  "aglycon"                                } , 
+        { "1RD"     ,  "aglycon"                                } , 
+        { "1RU"     ,  "aglycon"                                } , 
+//    Names:    1XA 1XB 1XD 1XU  
+//    Types:    aglycon  
+        { "1XA"     ,  "aglycon"                                } , 
+        { "1XB"     ,  "aglycon"                                } , 
+        { "1XD"     ,  "aglycon"                                } , 
+        { "1XU"     ,  "aglycon"                                } , 
+//    Names:    1aA 1aB 1aD 1aU  
+//    Types:    aglycon  
+        { "1aA"     ,  "aglycon"                                } , 
+        { "1aB"     ,  "aglycon"                                } , 
+        { "1aD"     ,  "aglycon"                                } , 
+        { "1aU"     ,  "aglycon"                                } , 
+//    Names:    1dA 1dB 1dD 1dU  
+//    Types:    aglycon  
+        { "1dA"     ,  "aglycon"                                } , 
+        { "1dB"     ,  "aglycon"                                } , 
+        { "1dD"     ,  "aglycon"                                } , 
+        { "1dU"     ,  "aglycon"                                } , 
+//    Names:    1rA 1rB 1rD 1rU  
+//    Types:    aglycon  
+        { "1rA"     ,  "aglycon"                                } , 
+        { "1rB"     ,  "aglycon"                                } , 
+        { "1rD"     ,  "aglycon"                                } , 
+        { "1rU"     ,  "aglycon"                                } , 
+//    Names:    1xA 1xB 1xD 1xU  
+//    Types:    aglycon  
+        { "1xA"     ,  "aglycon"                                } , 
+        { "1xB"     ,  "aglycon"                                } , 
+        { "1xD"     ,  "aglycon"                                } , 
+        { "1xU"     ,  "aglycon"                                } , 
+//    Names:    1TV  
+//    Types:    aglycon  
+        { "1TV"     ,  "aglycon"                                } , 
+//    Names:    1Tv  
+//    Types:    aglycon  
+        { "1Tv"     ,  "aglycon"                                } , 
+//    Names:    1tV  
+//    Types:    aglycon  
+        { "1tV"     ,  "aglycon"                                } , 
+//    Names:    1tv  
+//    Types:    aglycon  
+        { "1tv"     ,  "aglycon"                                } , 
 //    Names:    0CA 1CA 2CA 3CA 4CA 5CA WCA  
 //    Types:     carbohydrate monosaccharide pyranose ketose n-carbon=6 formal-charge=0  alpha D-isomer  
         { "0CA"     ,  "carbohydrate"                           } , 
@@ -12551,6 +12739,216 @@ namespace gmml::MolecularMetadata::GLYCAM
         { "KSB"     ,  "deoxy"                                  } , 
         { "KSB"     ,  "ulosonate"                              } , 
         { "KSB"     ,  "D-isomer"                               } , 
+//    Names:    0sB 4sB 7sB 8sB 9sB AsB BsB CsB DsB EsB FsB GsB HsB IsB JsB KsB  
+//    Types:     carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 beta deoxy ulosonate  L-isomer  
+        { "0sB"     ,  "carbohydrate"                           } , 
+        { "0sB"     ,  "monosaccharide"                         } , 
+        { "0sB"     ,  "pyranose"                               } , 
+        { "0sB"     ,  "ketose"                                 } , 
+        { "0sB"     ,  "n-carbon=9"                             } , 
+        { "0sB"     ,  "formal-charge=-1"                       } , 
+        { "0sB"     ,  "beta"                                   } , 
+        { "0sB"     ,  "deoxy"                                  } , 
+        { "0sB"     ,  "ulosonate"                              } , 
+        { "0sB"     ,  "L-isomer"                               } , 
+        { "4sB"     ,  "carbohydrate"                           } , 
+        { "4sB"     ,  "monosaccharide"                         } , 
+        { "4sB"     ,  "pyranose"                               } , 
+        { "4sB"     ,  "ketose"                                 } , 
+        { "4sB"     ,  "n-carbon=9"                             } , 
+        { "4sB"     ,  "formal-charge=-1"                       } , 
+        { "4sB"     ,  "beta"                                   } , 
+        { "4sB"     ,  "deoxy"                                  } , 
+        { "4sB"     ,  "ulosonate"                              } , 
+        { "4sB"     ,  "L-isomer"                               } , 
+        { "7sB"     ,  "carbohydrate"                           } , 
+        { "7sB"     ,  "monosaccharide"                         } , 
+        { "7sB"     ,  "pyranose"                               } , 
+        { "7sB"     ,  "ketose"                                 } , 
+        { "7sB"     ,  "n-carbon=9"                             } , 
+        { "7sB"     ,  "formal-charge=-1"                       } , 
+        { "7sB"     ,  "beta"                                   } , 
+        { "7sB"     ,  "deoxy"                                  } , 
+        { "7sB"     ,  "ulosonate"                              } , 
+        { "7sB"     ,  "L-isomer"                               } , 
+        { "8sB"     ,  "carbohydrate"                           } , 
+        { "8sB"     ,  "monosaccharide"                         } , 
+        { "8sB"     ,  "pyranose"                               } , 
+        { "8sB"     ,  "ketose"                                 } , 
+        { "8sB"     ,  "n-carbon=9"                             } , 
+        { "8sB"     ,  "formal-charge=-1"                       } , 
+        { "8sB"     ,  "beta"                                   } , 
+        { "8sB"     ,  "deoxy"                                  } , 
+        { "8sB"     ,  "ulosonate"                              } , 
+        { "8sB"     ,  "L-isomer"                               } , 
+        { "9sB"     ,  "carbohydrate"                           } , 
+        { "9sB"     ,  "monosaccharide"                         } , 
+        { "9sB"     ,  "pyranose"                               } , 
+        { "9sB"     ,  "ketose"                                 } , 
+        { "9sB"     ,  "n-carbon=9"                             } , 
+        { "9sB"     ,  "formal-charge=-1"                       } , 
+        { "9sB"     ,  "beta"                                   } , 
+        { "9sB"     ,  "deoxy"                                  } , 
+        { "9sB"     ,  "ulosonate"                              } , 
+        { "9sB"     ,  "L-isomer"                               } , 
+        { "AsB"     ,  "carbohydrate"                           } , 
+        { "AsB"     ,  "monosaccharide"                         } , 
+        { "AsB"     ,  "pyranose"                               } , 
+        { "AsB"     ,  "ketose"                                 } , 
+        { "AsB"     ,  "n-carbon=9"                             } , 
+        { "AsB"     ,  "formal-charge=-1"                       } , 
+        { "AsB"     ,  "beta"                                   } , 
+        { "AsB"     ,  "deoxy"                                  } , 
+        { "AsB"     ,  "ulosonate"                              } , 
+        { "AsB"     ,  "L-isomer"                               } , 
+        { "BsB"     ,  "carbohydrate"                           } , 
+        { "BsB"     ,  "monosaccharide"                         } , 
+        { "BsB"     ,  "pyranose"                               } , 
+        { "BsB"     ,  "ketose"                                 } , 
+        { "BsB"     ,  "n-carbon=9"                             } , 
+        { "BsB"     ,  "formal-charge=-1"                       } , 
+        { "BsB"     ,  "beta"                                   } , 
+        { "BsB"     ,  "deoxy"                                  } , 
+        { "BsB"     ,  "ulosonate"                              } , 
+        { "BsB"     ,  "L-isomer"                               } , 
+        { "CsB"     ,  "carbohydrate"                           } , 
+        { "CsB"     ,  "monosaccharide"                         } , 
+        { "CsB"     ,  "pyranose"                               } , 
+        { "CsB"     ,  "ketose"                                 } , 
+        { "CsB"     ,  "n-carbon=9"                             } , 
+        { "CsB"     ,  "formal-charge=-1"                       } , 
+        { "CsB"     ,  "beta"                                   } , 
+        { "CsB"     ,  "deoxy"                                  } , 
+        { "CsB"     ,  "ulosonate"                              } , 
+        { "CsB"     ,  "L-isomer"                               } , 
+        { "DsB"     ,  "carbohydrate"                           } , 
+        { "DsB"     ,  "monosaccharide"                         } , 
+        { "DsB"     ,  "pyranose"                               } , 
+        { "DsB"     ,  "ketose"                                 } , 
+        { "DsB"     ,  "n-carbon=9"                             } , 
+        { "DsB"     ,  "formal-charge=-1"                       } , 
+        { "DsB"     ,  "beta"                                   } , 
+        { "DsB"     ,  "deoxy"                                  } , 
+        { "DsB"     ,  "ulosonate"                              } , 
+        { "DsB"     ,  "L-isomer"                               } , 
+        { "EsB"     ,  "carbohydrate"                           } , 
+        { "EsB"     ,  "monosaccharide"                         } , 
+        { "EsB"     ,  "pyranose"                               } , 
+        { "EsB"     ,  "ketose"                                 } , 
+        { "EsB"     ,  "n-carbon=9"                             } , 
+        { "EsB"     ,  "formal-charge=-1"                       } , 
+        { "EsB"     ,  "beta"                                   } , 
+        { "EsB"     ,  "deoxy"                                  } , 
+        { "EsB"     ,  "ulosonate"                              } , 
+        { "EsB"     ,  "L-isomer"                               } , 
+        { "FsB"     ,  "carbohydrate"                           } , 
+        { "FsB"     ,  "monosaccharide"                         } , 
+        { "FsB"     ,  "pyranose"                               } , 
+        { "FsB"     ,  "ketose"                                 } , 
+        { "FsB"     ,  "n-carbon=9"                             } , 
+        { "FsB"     ,  "formal-charge=-1"                       } , 
+        { "FsB"     ,  "beta"                                   } , 
+        { "FsB"     ,  "deoxy"                                  } , 
+        { "FsB"     ,  "ulosonate"                              } , 
+        { "FsB"     ,  "L-isomer"                               } , 
+        { "GsB"     ,  "carbohydrate"                           } , 
+        { "GsB"     ,  "monosaccharide"                         } , 
+        { "GsB"     ,  "pyranose"                               } , 
+        { "GsB"     ,  "ketose"                                 } , 
+        { "GsB"     ,  "n-carbon=9"                             } , 
+        { "GsB"     ,  "formal-charge=-1"                       } , 
+        { "GsB"     ,  "beta"                                   } , 
+        { "GsB"     ,  "deoxy"                                  } , 
+        { "GsB"     ,  "ulosonate"                              } , 
+        { "GsB"     ,  "L-isomer"                               } , 
+        { "HsB"     ,  "carbohydrate"                           } , 
+        { "HsB"     ,  "monosaccharide"                         } , 
+        { "HsB"     ,  "pyranose"                               } , 
+        { "HsB"     ,  "ketose"                                 } , 
+        { "HsB"     ,  "n-carbon=9"                             } , 
+        { "HsB"     ,  "formal-charge=-1"                       } , 
+        { "HsB"     ,  "beta"                                   } , 
+        { "HsB"     ,  "deoxy"                                  } , 
+        { "HsB"     ,  "ulosonate"                              } , 
+        { "HsB"     ,  "L-isomer"                               } , 
+        { "IsB"     ,  "carbohydrate"                           } , 
+        { "IsB"     ,  "monosaccharide"                         } , 
+        { "IsB"     ,  "pyranose"                               } , 
+        { "IsB"     ,  "ketose"                                 } , 
+        { "IsB"     ,  "n-carbon=9"                             } , 
+        { "IsB"     ,  "formal-charge=-1"                       } , 
+        { "IsB"     ,  "beta"                                   } , 
+        { "IsB"     ,  "deoxy"                                  } , 
+        { "IsB"     ,  "ulosonate"                              } , 
+        { "IsB"     ,  "L-isomer"                               } , 
+        { "JsB"     ,  "carbohydrate"                           } , 
+        { "JsB"     ,  "monosaccharide"                         } , 
+        { "JsB"     ,  "pyranose"                               } , 
+        { "JsB"     ,  "ketose"                                 } , 
+        { "JsB"     ,  "n-carbon=9"                             } , 
+        { "JsB"     ,  "formal-charge=-1"                       } , 
+        { "JsB"     ,  "beta"                                   } , 
+        { "JsB"     ,  "deoxy"                                  } , 
+        { "JsB"     ,  "ulosonate"                              } , 
+        { "JsB"     ,  "L-isomer"                               } , 
+        { "KsB"     ,  "carbohydrate"                           } , 
+        { "KsB"     ,  "monosaccharide"                         } , 
+        { "KsB"     ,  "pyranose"                               } , 
+        { "KsB"     ,  "ketose"                                 } , 
+        { "KsB"     ,  "n-carbon=9"                             } , 
+        { "KsB"     ,  "formal-charge=-1"                       } , 
+        { "KsB"     ,  "beta"                                   } , 
+        { "KsB"     ,  "deoxy"                                  } , 
+        { "KsB"     ,  "ulosonate"                              } , 
+        { "KsB"     ,  "L-isomer"                               } , 
+//    Names:    1CA 1CB 1CD 1CU  
+//    Types:    aglycon  
+        { "1CA"     ,  "aglycon"                                } , 
+        { "1CB"     ,  "aglycon"                                } , 
+        { "1CD"     ,  "aglycon"                                } , 
+        { "1CU"     ,  "aglycon"                                } , 
+//    Names:    1PA 1PB 1PD 1PU  
+//    Types:    aglycon  
+        { "1PA"     ,  "aglycon"                                } , 
+        { "1PB"     ,  "aglycon"                                } , 
+        { "1PD"     ,  "aglycon"                                } , 
+        { "1PU"     ,  "aglycon"                                } , 
+//    Names:    1BA 1BB 1BD 1BU  
+//    Types:    aglycon  
+        { "1BA"     ,  "aglycon"                                } , 
+        { "1BB"     ,  "aglycon"                                } , 
+        { "1BD"     ,  "aglycon"                                } , 
+        { "1BU"     ,  "aglycon"                                } , 
+//    Names:    1JA 1JB 1JD 1JU  
+//    Types:    aglycon  
+        { "1JA"     ,  "aglycon"                                } , 
+        { "1JB"     ,  "aglycon"                                } , 
+        { "1JD"     ,  "aglycon"                                } , 
+        { "1JU"     ,  "aglycon"                                } , 
+//    Names:    1cA 1cB 1cD 1cU  
+//    Types:    aglycon  
+        { "1cA"     ,  "aglycon"                                } , 
+        { "1cB"     ,  "aglycon"                                } , 
+        { "1cD"     ,  "aglycon"                                } , 
+        { "1cU"     ,  "aglycon"                                } , 
+//    Names:    1pA 1pB 1pD 1pU  
+//    Types:    aglycon  
+        { "1pA"     ,  "aglycon"                                } , 
+        { "1pB"     ,  "aglycon"                                } , 
+        { "1pD"     ,  "aglycon"                                } , 
+        { "1pU"     ,  "aglycon"                                } , 
+//    Names:    1bA 1bB 1bD 1bU  
+//    Types:    aglycon  
+        { "1bA"     ,  "aglycon"                                } , 
+        { "1bB"     ,  "aglycon"                                } , 
+        { "1bD"     ,  "aglycon"                                } , 
+        { "1bU"     ,  "aglycon"                                } , 
+//    Names:    1jA 1jB 1jD 1jU  
+//    Types:    aglycon  
+        { "1jA"     ,  "aglycon"                                } , 
+        { "1jB"     ,  "aglycon"                                } , 
+        { "1jD"     ,  "aglycon"                                } , 
+        { "1jU"     ,  "aglycon"                                } , 
   }; // close Glycam06NamesToTypesLookupMap
 
 } // close namespace

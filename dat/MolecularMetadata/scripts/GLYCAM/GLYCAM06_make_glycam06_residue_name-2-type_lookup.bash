@@ -125,6 +125,10 @@ NumSets=$((NumSets-1))
 i=0
 ## print out all but the last one
 while [ "${i}" -lt "${NumSets}" ] ; do 
+        if [ "x`printf '%s' "${NAMES[${i}]}" | tr -d "$IFS"`" = x ] ; then
+                i=$((i+1))
+                continue
+        fi
 	## 
 	##   Ensure that the data doesn't contain newlines (for the comments to be right)
 	thisNames="${NAMES[${i}]//$'\n'/ }"
