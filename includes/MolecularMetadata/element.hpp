@@ -1,10 +1,10 @@
-#ifndef ELEMENT_HPP
-#define ELEMENT_HPP
+#ifndef GMML_ELEMENT_META_HPP
+#define GMML_ELEMENT_META_HPP
 
 #include <string>
 #include <iostream>
 
-namespace MolecularModeling
+namespace MolecularMetadata
 {
     class Element
     {
@@ -186,4 +186,4 @@ namespace MolecularModeling
     };
 }
 
-#endif // ELEMENT_HPP
+#endif // GMML_ELEMENT_META_HPP
