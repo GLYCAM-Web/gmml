@@ -1,18 +1,18 @@
 #ifndef GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
 #define GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
 
-/** \file:  ../../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp 
+/** \file:  ../../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp
  * GLYCAM06 metadata for residues
  *
  * This file is enerated automatically on:
- *     Fri Jun 22 12:58:53 EDT 2018
+ *     Fri Jun 22 16:48:59 EDT 2018
  *
  * by a script named:
  *     GLYCAM06_make_glycam06_residue_name-2-type_lookup.bash
  *
  * The script was begun on 16 June 2018 by BLFoley and
  * can be found in:
- *     dat/MolecularMetadata/scripts 
+ *     dat/MolecularMetadata/scripts
  *
  * See that and associated scripts for more information.
  */
@@ -20,24 +20,28 @@
 #include <string>
 #include <map>
 
-namespace gmml::MolecularMetadata::GLYCAM
+namespace gmml
 {
-/**
- *   Glycam06NamesToTypesLookupMap 
- *
- *   The first string is the name-code for a residue.  It is typically
- *   three or four characters long.
- *
- *     Examples:  OME, 0GA, WYB, ZOLT YuAP
- *
- *   The second string is a type or attribute appropriate to that residue.
- *
- *     Examples:  monosaccharide, derivative, aglycon, protonated, pyranose
- *   
- *   See the scripts that generate this file for further documentation.
- */
-  const std::multimap<std::string, std::string> Glycam06NamesToTypesLookupMap=
+    namespace MolecularMetadata
     {
+        namespace GLYCAM
+        {
+        /**
+         *   Glycam06NamesToTypesLookupMap
+         *
+         *   The first string is the name-code for a residue.  It is typically
+         *   three or four characters long.
+         *
+         *     Examples:  OME, 0GA, WYB, ZOLT YuAP
+         *
+         *   The second string is a type or attribute appropriate to that residue.
+         *
+         *     Examples:  monosaccharide, derivative, aglycon, protonated, pyranose
+         *
+         *   See the scripts that generate this file for further documentation.
+         */
+          const std::multimap<std::string, std::string> Glycam06NamesToTypesLookupMap=
+            {
 //    Names:    HYP  
 //    Types:    amino-acid modified mid-chain  
         { "HYP"     ,  "amino-acid"                             } , 
@@ -12949,8 +12953,10 @@ namespace gmml::MolecularMetadata::GLYCAM
         { "1jB"     ,  "aglycon"                                } , 
         { "1jD"     ,  "aglycon"                                } , 
         { "1jU"     ,  "aglycon"                                } , 
-  }; // close Glycam06NamesToTypesLookupMap
 
+            }; // close Glycam06NamesToTypesLookupMap
+        }
+    }
 } // close namespace
 
 #endif // GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP

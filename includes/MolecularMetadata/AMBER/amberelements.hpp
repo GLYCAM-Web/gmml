@@ -7,25 +7,30 @@
 #include <map>
 #include <set>
 
-
-namespace gmml::MolecularMetadata::AMBER
+namespace gmml
 {
+    namespace MolecularMetadata
+    {
+        namespace AMBER
+        {
 
-  typedef struct 
-  {
-    std::string element_;  // The element symbol
-    double mass_;     // The mass, in amu, used by most/all of Amber
-  } AmberAtomInfo ;
-  
-  const AmberAtomInfo AMBERATOMINFO[] =
-  {
-  //{ "Element" , "Mass" },
-    { "C"       , 12.011 },
-    { "H"       , 1.008  },
-    { "N"       , 14.01  },
-    { "O"       , 16.00  },
-    { "S"       , 32.06  },
-    { "P"       , 30.97  }
-  };
+            typedef struct
+            {
+                std::string element_;  // The element symbol
+                double mass_;     // The mass, in amu, used by most/all of Amber
+            } AmberAtomInfo ;
+
+            const AmberAtomInfo AMBERATOMINFO[] =
+            {
+                //{ "Element" , "Mass" },
+                { "C"       , 12.011 },
+                { "H"       , 1.008  },
+                { "N"       , 14.01  },
+                { "O"       , 16.00  },
+                { "S"       , 32.06  },
+                { "P"       , 30.97  }
+            };
+        }
+    }
 }
 #endif // AMBER_ELEMENTS_META_HPP
