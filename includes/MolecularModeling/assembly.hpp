@@ -178,11 +178,16 @@ namespace MolecularModeling
               */
             ResidueVector GetAllResiduesOfAssembly();
             /*! \fn
+              * A functions that extracts all protein residues of an assembly
+              * @return Vector of all protein residues in the current object of assembly
+              */
+            ResidueVector GetAllProteinResiduesOfAssembly();
+            /*! \fn
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
             CoordinateVector GetAllCoordinates();
-            /* ! \fn
+            /*! \fn
              * A function to extract all the coordinates of all the cycle atoms of the monosaccharide.
              * @param mono The Monosaccharide object
              * @return coordinates The CoordinateVector with all the Coordinates
@@ -257,19 +262,19 @@ namespace MolecularModeling
               * Set the residues_ attribute of the current assembly
               * @param residue The residue of the current object
               */
-	    void InsertResidue(int distance, Residue *residue);
+            void InsertResidue(int distance, Residue *residue);
             /*! \fn
               * A function in order to erase a residue from the current object
               * Set the residues_ attribute of the current assembly
               * @param distance The distance from beginning of ResidueVector to residue to be removed.
               */
-	    void EraseResidue(int distance);
+            void EraseResidue(int distance);
+            void RemoveResidue(Residue *residue);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current assembly
               * @param chemical_type The chemical_type attribute of the current object
               */
-	    
             void SetChemicalType(std::string chemical_type);
             /*! \fn
               * A mutator function in order to set the sequence number of the current object
@@ -826,20 +831,6 @@ namespace MolecularModeling
             * @return oligosaccharides A list of extarcted oligosaccharide structures
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false);
-            /*! \fn
-            * A function in order to detect the shape of the ring using the external BFMP program
-             * A function in order to extract the BFMP ring conformation of a Monosaccharide object.
-             * @param mono The Monosaccharide object
-             */
-            void GetBFMP( Glycan::Monosaccharide* mono );
-            /*! \fn
-            * A function in order to detec the shape of the ring using the external BFMP program
-            * This function creates a pdb file and a configuration file for input arguments of the external detect_shape program.
-            * the function updates the bfmp_ring_confomration attribute of the monosaccharide
-            * @param cycle The list of ring atoms
-            * @param mono The monosaccharide object
-            */
-            void DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono);
 
             /*! \fn
             * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology

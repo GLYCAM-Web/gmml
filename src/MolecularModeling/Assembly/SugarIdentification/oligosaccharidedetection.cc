@@ -77,152 +77,135 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Assembly::GetBFMP( Glycan::Monosaccharide* mono )
-{
-  CoordinateVector ring_coordinates = GetCycleAtomCoordinates( mono );
-  std::string bfmp = calculateRingShapeBFMP(ring_coordinates);
 
-  /* June 2018
-  // Below was placeholder code written by Davis for Yik. Oliver is replacing it with the above as he has ported BFMP into GMML.
-  // OG is wondering why there isn't a header file for oligosaccharidedetection. OG is wondering why there are 5 million includes.
-  // Testing GetCycleAtomCoordinates function
-  for( CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); ++it )
-  {
-    ( *it )->Print( std::cout );
-  }
-  // @TODO At this point you should have a CoordinateVector with the GeometryTopology::Coordinates of the 6 cycle atoms.
-  // Should just be math to figure out the bfmp to store to the Glycan::Monosaccharide below.
-  std::string bfmp = "";
-
-
-  // @TODO This may end up being 'return bfmp' since the name of the function is GetBFMP.
-  // It would make sense to have it return the BFMP for the user to store it as they wish.
-  */
-  // OG is wondering why Monosaccharide isn't a class with Get'ers and Set'ers.
-  mono->bfmp_ring_conformation_ = bfmp;
-}
-
-void Assembly::DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono)
-{
-    ///Creating a new assembly only from the ring atoms for external detect shape program
-    Assembly* detect_shape_assembly = new Assembly();
-    detect_shape_assembly->AddResidue(cycle.at(0)->GetResidue());
+// As of June 2018, DetectShape is called once in gmml, during the ExtractSugars function. Yao commented it out a month ago
+// as it was causing segfaults and also removing all sidechain atoms from the assembly. Davis thinks this will be a problem
+// when we go to build the ontology again, as it needs Detect Shape. I (Oliver) intend to comment out the below, and set up
+// gmml to use the BFMP code I ported into gmml. See ring_shape_detection.hpp in MolecularModeling folder.
+//void Assembly::DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono)
+//void Assembly::GetRingShapeBFMP_deprecatedExternalProgramCall(AtomVector cycle, Glycan::Monosaccharide* mono)
+//{
+//    ///Creating a new assembly only from the ring atoms for external detect shape program
+//    Assembly* detect_shape_assembly = new Assembly();
+//    detect_shape_assembly->AddResidue(cycle.at(0)->GetResidue());
     
-    Residue* detect_shape_residue = detect_shape_assembly->GetResidues().at(0);
-    for(unsigned int i = 0; i < cycle.size(); i++)
-    {
-        std::string name = cycle.at(i)->GetName();
-        std::string id = cycle.at(i)->GetId();
+//    Residue* detect_shape_residue = detect_shape_assembly->GetResidues().at(0);
+//    for(unsigned int i = 0; i < cycle.size(); i++)
+//    {
+//        std::string name = cycle.at(i)->GetName();
+//        std::string id = cycle.at(i)->GetId();
 
-        ///Preparing atom name and id for detect shape program. It doesn't work with atoms containing special characters: C', C* etc
-        //        replace( id.begin(), id.end(), '?', 'n'); // replace all '?' with 'n'
-        gmml::FindReplaceString(id, "\'", "");
-        gmml::FindReplaceString(id, ",", "");
-        gmml::FindReplaceString(name, "*", "");
-        replace( id.begin(), id.end(), '*', 's'); // replace all '*' with ''
+//        ///Preparing atom name and id for detect shape program. It doesn't work with atoms containing special characters: C', C* etc
+//        //        replace( id.begin(), id.end(), '?', 'n'); // replace all '?' with 'n'
+//        gmml::FindReplaceString(id, "\'", "");
+//        gmml::FindReplaceString(id, ",", "");
+//        gmml::FindReplaceString(name, "*", "");
+//        replace( id.begin(), id.end(), '*', 's'); // replace all '*' with ''
 
-        //        replace( name.begin(), name.end(), '?', 'n'); // replace all '?' with 'n'
-        gmml::FindReplaceString(name, "\'", "");
-        gmml::FindReplaceString(name, ",", "");
-        gmml::FindReplaceString(name, "*", "");
+//        //        replace( name.begin(), name.end(), '?', 'n'); // replace all '?' with 'n'
+//        gmml::FindReplaceString(name, "\'", "");
+//        gmml::FindReplaceString(name, ",", "");
+//        gmml::FindReplaceString(name, "*", "");
 
 	
-        cycle.at(i)->SetName(name);
-        cycle.at(i)->SetId(id);
-    }
-    detect_shape_residue->SetAtoms(cycle); //Commented out, suspected bug.
-    //detect_shape_residue->SetAtoms(detect_shape_assembly-> GetAllAtomsOfAssembly());
+//        cycle.at(i)->SetName(name);
+//        cycle.at(i)->SetId(id);
+//    }
+//    detect_shape_residue->SetAtoms(cycle); //Commented out, suspected bug.
+//    //detect_shape_residue->SetAtoms(detect_shape_assembly-> GetAllAtomsOfAssembly());
 
-		// First need to get environment variable GEMSHOME
-		std::string gemshome( getenv( "GEMSHOME" ) );
-		// Concatenate GEMSHOME to name of all files used for BFMP detect shape program.
-		std::string detect_shape = gemshome + "/apps/BFMP/detect_shape";
-		std::string temp_gmml_PDB = gemshome + "/temp_gmml_pdb.pdb";
-		std::string temp_detect_shape_PDB = gemshome + "/temp_detect_shape_pdb.pdb";
-		std::string temp_config = gemshome + "/temp_config";
-		std::string canonicals = gemshome + "/apps/BFMP/canonicals.txt";
-		// This file doesn't get concatenated to GEMSHOME because BFMP program generates it in the PWD
-		std::string ring_conformations = "ring_conformations.txt";
+//		// First need to get environment variable GEMSHOME
+//		std::string gemshome( getenv( "GEMSHOME" ) );
+//		// Concatenate GEMSHOME to name of all files used for BFMP detect shape program.
+//		std::string detect_shape = gemshome + "/apps/BFMP/detect_shape";
+//		std::string temp_gmml_PDB = gemshome + "/temp_gmml_pdb.pdb";
+//		std::string temp_detect_shape_PDB = gemshome + "/temp_detect_shape_pdb.pdb";
+//		std::string temp_config = gemshome + "/temp_config";
+//		std::string canonicals = gemshome + "/apps/BFMP/canonicals.txt";
+//		// This file doesn't get concatenated to GEMSHOME because BFMP program generates it in the PWD
+//		std::string ring_conformations = "ring_conformations.txt";
 
-    ///Write a new PDB file from the new assembly
-    PdbFileSpace::PdbFile* pdb = detect_shape_assembly->BuildPdbFileStructureFromAssembly();
-    pdb->Write( temp_gmml_PDB );
+//    ///Write a new PDB file from the new assembly
+//    PdbFileSpace::PdbFile* pdb = detect_shape_assembly->BuildPdbFileStructureFromAssembly();
+//    pdb->Write( temp_gmml_PDB );
 
-    ///Converting the written PDB file to format readable by detect_shape program
-    std::string line = "";
-    std::ifstream gmml_pdb ( temp_gmml_PDB.c_str() );
-    std::ofstream detect_shape_pdb ( temp_detect_shape_PDB.c_str() );
-    int n = 0;
-    if (gmml_pdb.is_open())
-    {
-        while (!gmml_pdb.eof()) {
-            getline(gmml_pdb, line);
-            if(line.find("HETATM") != std::string::npos)
-            {
-                detect_shape_pdb << line << std::endl;
-            }
-            n++;
-        }
-        gmml_pdb.close();
-        detect_shape_pdb.close();
-    }
-    else std::cout << "Unable to open " << temp_detect_shape_PDB << " file" << std::endl;
+//    ///Converting the written PDB file to format readable by detect_shape program
+//    std::string line = "";
+//    std::ifstream gmml_pdb ( temp_gmml_PDB.c_str() );
+//    std::ofstream detect_shape_pdb ( temp_detect_shape_PDB.c_str() );
+//    int n = 0;
+//    if (gmml_pdb.is_open())
+//    {
+//        while (!gmml_pdb.eof()) {
+//            getline(gmml_pdb, line);
+//            if(line.find("HETATM") != std::string::npos)
+//            {
+//                detect_shape_pdb << line << std::endl;
+//            }
+//            n++;
+//        }
+//        gmml_pdb.close();
+//        detect_shape_pdb.close();
+//    }
+//    else std::cout << "Unable to open " << temp_detect_shape_PDB << " file" << std::endl;
 
-    ///Writing a configuration file for the second argument of the detect_sugar program
-    std::ofstream detect_shape_configuration ( temp_config.c_str() );
-    detect_shape_configuration << "Atom" << std::endl;
-    for(unsigned int i = 0; i < cycle.size(); i++)
-    {
-        detect_shape_configuration << cycle.at(i)->GetName() << std::endl;
-    }
-    detect_shape_configuration << "Residue" << std::endl;
-    detect_shape_configuration << "1" << std::endl;
-    detect_shape_configuration << "Path" << std::endl;
-    detect_shape_configuration << canonicals << std::endl;
-    detect_shape_configuration.close();
+//    ///Writing a configuration file for the second argument of the detect_sugar program
+//    std::ofstream detect_shape_configuration ( temp_config.c_str() );
+//    detect_shape_configuration << "Atom" << std::endl;
+//    for(unsigned int i = 0; i < cycle.size(); i++)
+//    {
+//        detect_shape_configuration << cycle.at(i)->GetName() << std::endl;
+//    }
+//    detect_shape_configuration << "Residue" << std::endl;
+//    detect_shape_configuration << "1" << std::endl;
+//    detect_shape_configuration << "Path" << std::endl;
+//    detect_shape_configuration << canonicals << std::endl;
+//    detect_shape_configuration.close();
 
-    ///Calling detect_shape program
-    // The better way to do this would be to pass the bfmp code the six cartesian
-    // coords it needs and call it as a part of the library.  not sure how much
-    // work it would take to do this, but it would be better.
-		std::string command = detect_shape + " " + temp_detect_shape_PDB + " " + temp_config + " > /dev/null";
-		system( command.c_str() );
+//    ///Calling detect_shape program
+//    // The better way to do this would be to pass the bfmp code the six cartesian
+//    // coords it needs and call it as a part of the library.  not sure how much
+//    // work it would take to do this, but it would be better.
+//		std::string command = detect_shape + " " + temp_detect_shape_PDB + " " + temp_config + " > /dev/null";
+//		system( command.c_str() );
 
-    ///Adding the BFMP ring conformation information gained from the detect_sugar program to the monosaccharide
-    std::ifstream shape_detection_result ( ring_conformations.c_str() );
-    line = "";
-    if (shape_detection_result.is_open())
-    {
-        getline (shape_detection_result,line);
-        getline (shape_detection_result,line);
-        std::vector<std::string> line_tokens = gmml::Split(line, "\t");
-        if(line_tokens.at(1).compare("-") == 0)
-            mono->bfmp_ring_conformation_ = line_tokens.at(2);
-        else
-            mono->bfmp_ring_conformation_ = line_tokens.at(1);
-        shape_detection_result.close();
-    }
-    else std::cout << "Unable to open " << ring_conformations << " file from detect shape program" << std::endl;
+//    ///Adding the BFMP ring conformation information gained from the detect_sugar program to the monosaccharide
+//    std::ifstream shape_detection_result ( ring_conformations.c_str() );
+//    line = "";
+//    if (shape_detection_result.is_open())
+//    {
+//        getline (shape_detection_result,line);
+//        getline (shape_detection_result,line);
+//        std::vector<std::string> line_tokens = gmml::Split(line, "\t");
+//        if(line_tokens.at(1).compare("-") == 0)
+//            mono->bfmp_ring_conformation_ = line_tokens.at(2);
+//        else
+//            mono->bfmp_ring_conformation_ = line_tokens.at(1);
+//        shape_detection_result.close();
+//    }
+//    else std::cout << "Unable to open " << ring_conformations << " file from detect shape program" << std::endl;
 
-    ///Deleting temporary files
-    remove( temp_detect_shape_PDB.c_str() );
-    remove( temp_gmml_PDB.c_str() );
-    remove( temp_config.c_str() );
-    remove( ring_conformations.c_str() );
-}
+//    ///Deleting temporary files
+//    remove( temp_detect_shape_PDB.c_str() );
+//    remove( temp_gmml_PDB.c_str() );
+//    remove( temp_config.c_str() );
+//    remove( ring_conformations.c_str() );
+//}
 
 //This is a wrapper of the original ExtractSugars function. I want to make the vector of monosaccharides external, so I can do some manipulations on them.
 //Other users call this wrapper.
-std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, bool glyprobity_report, bool populate_ontology ) {
+std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, bool glyprobity_report, bool populate_ontology )
+{
  
     std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
 
-    Assembly::ExtractSugars( amino_lib_files, monos, glyprobity_report,  populate_ontology ); 
+    OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, glyprobity_report,  populate_ontology );
 
+    return oligos; // Oliver thinks Yao hosed ontology::analysis. This might fix it?
 }
 
-std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology) {
-
+std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology)
+{
 
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
 
@@ -368,21 +351,24 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     ///CREATING CHEMICAL CODE (Glycode) OBJECT
     Glycan::ChemicalCode* code = BuildChemicalCode( orientations );
 
-    if( code != NULL ) {
+    if( code != NULL )
+    {
       mono->chemical_code_ = code;
     }
     std::cout << std::endl << "Ring Stereo chemistry chemical code:"  << std::endl;
     mono->chemical_code_->Print( std::cout );
     std::cout << std::endl;
     // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
-    if( cycle.size() > 5 ) {
+    if( cycle.size() > 5 )
+    {
       // @TODO uncomment this out once GetBFMP function is implemented to determine the BFMP of the Glycan::Monosaccharide.
       // Comment out the call to DetectShape. You can use the DetectShape function to compare the results of GetBFMP
       // for testing purposes.
       //GetBFMP( mono );
-
       //DetectShape( cycle, mono );
-      if( mono->bfmp_ring_conformation_.compare( "" ) != 0 ) {
+      glylib::CalculateRingShapeBFMP(mono);
+      if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
+      {
         std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << std::endl << std::endl; ///Part of Glyprobity report
       }
     }

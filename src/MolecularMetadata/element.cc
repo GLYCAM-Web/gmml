@@ -1,6 +1,6 @@
-#include "../../includes/MolecularModeling/element.hpp"
+#include "../../includes/MolecularMetadata/element.hpp"
 
-using MolecularModeling::Element;
+using MolecularMetadata::Element;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
