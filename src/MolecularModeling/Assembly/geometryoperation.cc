@@ -5,6 +5,7 @@
 #include <set>
 #include <queue>
 #include <stack>
+#include <sstream>
 
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/residue.hpp"
@@ -64,10 +65,12 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06.hpp"
 
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <cstdlib> //Yao Xiao: call exit() instead of throwing exception, if there's an error.
 
 typedef std::vector<MolecularModeling::Atom*> AtomVector;
 
@@ -162,6 +165,100 @@ void Assembly::SetAttachedResidueBond(MolecularModeling::Residue *residue, Molec
     for(AtomVector::iterator it = atomsToTranslate.begin() + 1; it != atomsToTranslate.end(); it++)
     {
         (*it)->GetCoordinates().at(model_index_)->Translate(offset->GetX(), offset->GetY(), offset->GetZ());
+    }
+}
+
+void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom, MolecularModeling::Atom* head_atom_of_child_residue)
+{
+    //Attention: SetAtomType()function is overloaded as MolecularModeling::Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
+    //Likewise, GetAtomType() is also overloaded.
+    //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called MolecularModeling::Atom::GetAtomType(). The result is empty.
+    //We need to talk about this later
+    std::string tail_atom_type = tail_atom->MolecularDynamicAtom::GetAtomType(); 
+    std::string head_atom_type = head_atom_of_child_residue->MolecularDynamicAtom::GetAtomType(); 
+    std::string tail_atom_hybridization = "";
+    std::string head_atom_hybridization = "";
+    double head_tail_bond_length = gmml::BOND_LENGTH;
+    //look up hybridization state based on atom type
+    for (int j = 0; j < gmml::MolecularMetadata::GLYCAM::GLYCAM06J1ATOMTYPESSIZE; j++){
+	gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfo entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[j];
+	if (tail_atom_type == entry.type_){
+	    tail_atom_hybridization = entry.hybridization_;
+	}
+	if (head_atom_type == entry.type_){
+	    head_atom_hybridization = entry.hybridization_;
+	}
+    }
+    
+   //look up bond length based on hybridization of head and tail. 
+    for (int j = 0; j < gmml::MolecularMetadata::GLYCAM::GLYCAM06J1BONDLENGTHSSIZE; j++){
+	gmml::MolecularMetadata::GLYCAM::BondLengthByTypePair entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths[j];    
+	//Search bidirectionally e.g Cg-Os, Os-Cg
+	if ( (tail_atom_type == entry.type1_ && head_atom_type == entry.type2_) || (tail_atom_type == entry.type2_ && head_atom_type == entry.type1_) ){ 
+	    std::string length_str = entry.length_;
+	    std::stringstream s;
+	    s << length_str;
+	    s >> head_tail_bond_length;
+	}
+    }
+
+    GeometryTopology::Coordinate* tail_atom_coordinate = tail_atom->GetCoordinates().at(0);
+    GeometryTopology::Coordinate* head_tail_atom_bond_vector = new GeometryTopology::Coordinate();
+    //for sp3 and sp2 hybridzation, sum up all bond vectors between tail atom and neighbors excluding head. Then tail-head bond vector is the opposite of the sum. 
+	//Normallize length of tail-head bond vector to bond length
+    if (tail_atom_hybridization == "sp3" || tail_atom_hybridization == "sp2"){
+	gmml::AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
+	std::vector<GeometryTopology::Coordinate*> tail_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
+	for(unsigned int i = 0; i < tail_atom_neighbors.size(); i++){
+	    MolecularModeling::Atom* neighbor = tail_atom_neighbors[i];
+	    if (neighbor != head_atom_of_child_residue){
+	        GeometryTopology::Coordinate* neighbor_coordinate = neighbor->GetCoordinates().at(0);
+		GeometryTopology::Coordinate* tail_neighbor_bond_vector = new GeometryTopology::Coordinate();
+		tail_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - tail_atom_coordinate->GetX());	
+		tail_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - tail_atom_coordinate->GetY());	
+		tail_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - tail_atom_coordinate->GetZ());	
+		tail_atom_bonds.push_back(tail_neighbor_bond_vector);
+	    }
+	}
+	double total_x=0.0;
+	double total_y=0.0;
+	double total_z=0.0;
+	for (unsigned int j = 0; j < tail_atom_bonds.size(); j++){
+	    total_x += tail_atom_bonds[j]->GetX();
+	    total_y += tail_atom_bonds[j]->GetY();
+	    total_z += tail_atom_bonds[j]->GetZ();
+	} 
+	head_tail_atom_bond_vector->SetX(-1 * total_x);
+	head_tail_atom_bond_vector->SetY(-1 * total_y);
+	head_tail_atom_bond_vector->SetZ(-1 * total_z);
+	double vector_length = head_tail_atom_bond_vector-> length();
+	head_tail_atom_bond_vector->SetX(head_tail_bond_length * head_tail_atom_bond_vector->GetX() / vector_length);
+	head_tail_atom_bond_vector->SetY(head_tail_bond_length * head_tail_atom_bond_vector->GetY() / vector_length);
+	head_tail_atom_bond_vector->SetZ(head_tail_bond_length * head_tail_atom_bond_vector->GetZ() / vector_length);
+    }//if sp3/sp2
+
+    //Add in logics for sp, s hybridization later,but for now:
+    else{
+	std::cout << "Grafting: tail atom is not sp3/sp2, no rule for rotation right now. Aborting." << std::endl;
+	std::exit(1);
+    }
+
+    //Obtain new head position
+    GeometryTopology::Coordinate* new_head_atom_position = new GeometryTopology::Coordinate();
+    new_head_atom_position->SetX(tail_atom_coordinate->GetX() + head_tail_atom_bond_vector->GetX());
+    new_head_atom_position->SetY(tail_atom_coordinate->GetY() + head_tail_atom_bond_vector->GetY());
+    new_head_atom_position->SetZ(tail_atom_coordinate->GetZ() + head_tail_atom_bond_vector->GetZ());
+    //Obtain translation vector by new head positon - current head position
+    GeometryTopology::Coordinate* current_head_atom_position = head_atom_of_child_residue->GetCoordinates().at(0);
+    GeometryTopology::Coordinate* translation_vector = new GeometryTopology::Coordinate();
+    translation_vector->SetX(new_head_atom_position->GetX() - current_head_atom_position->GetX());
+    translation_vector->SetY(new_head_atom_position->GetY() - current_head_atom_position->GetY());
+    translation_vector->SetZ(new_head_atom_position->GetZ() - current_head_atom_position->GetZ());
+    //Translate coordinates of all atoms in child residue by translation vector.
+    gmml::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
+    for (unsigned int i = 0; i < child_residue_atoms.size(); i++){
+	GeometryTopology::Coordinate* current_position = child_residue_atoms[i]->GetCoordinates().at(0); 
+	current_position->Translate(translation_vector->GetX(), translation_vector->GetY(), translation_vector->GetZ());
     }
 }
 

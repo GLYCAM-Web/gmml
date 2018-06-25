@@ -53,31 +53,42 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     std::map<Atom*,PrepFileSpace::PrepFileAtom*> assembly_prep_parent_atom_map = std::map<Atom*,PrepFileSpace::PrepFileAtom*>();	//associates an assembly atom with corresonding prep atom parent.
 													//eventually: assembly atom -> prep parent -> assembly parent
     this->SetName(prep_residue->GetName());
+    std::stringstream residue_id;
+    //Set id for testing purpose
+    residue_id << prep_residue->GetName() <<"_" << " " << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
     for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
     {
         serial_number++;
-        Atom* assembly_atom = new Atom();
         PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
-
+        Atom* assembly_atom = new Atom();
 	if(prep_atom->GetType().find("DU") == std::string::npos)
 	{
+            assembly_atom->SetResidue(this);
+	    this->AddAtom(assembly_atom);
+            std::string atom_name = prep_atom->GetName();
+            std::string id;
+            std::stringstream atom_id;
+            assembly_atom->SetName(atom_name);
+	    assembly_atom->SetNaming("glycam06");
+            //atom_id << atom_name << "_" << serial_number << "_" << id;
+	    //For testing purpose, need to make atom id long enough to prevent seg fault. C1_1196_NAG_A_78_?_?_1
+            atom_id << atom_name << "_" << " " << "_" << prep_residue->GetName() << "_" << "A" << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
+            assembly_atom->SetId(atom_id.str());
+    
+	    //Attention: SetAtomType()function is overloaded as MolecularModeling::Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
+	    //Likewise, GetAtomType() is also overloaded.
+	    //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called MolecularModeling::Atom::GetAtomType(). The result is empty.
+	    //We need to talk about this later
+            assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
+            assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
+            assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
+            assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
+
+	    int index = std::distance(prep_atoms.begin(), it1);
+	    PrepFileSpace::PrepFileAtom* parent_prep_atom = parent_atoms.at(index);
+	    assembly_prep_parent_atom_map[assembly_atom] = parent_prep_atom;
    	    prep_assembly_atom_map[prep_atom] = assembly_atom; 
 	}
-
-        assembly_atom->SetResidue(this);
-        std::string atom_name = prep_atom->GetName();
-        std::string id;
-        std::stringstream atom_id;
-        assembly_atom->SetName(atom_name);
-	assembly_atom->SetNaming("glycam06");
-	id = this->GetId();
-        atom_id << atom_name << "_" << serial_number << "_" << id;
-        assembly_atom->SetId(atom_id.str());
-    
-        assembly_atom->MolecularDynamicAtom::SetAtomType(prep_atom->GetType());
-        assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
-        assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
-        assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
     
         if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
         {
@@ -89,20 +100,12 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
             if(index == 1)
             {
                 int parent_index = parent_atoms.at(index)->GetIndex() - 1;
-        	if(assembly_atom->GetAtomType().find("DU") == std::string::npos){
-		    assembly_prep_parent_atom_map[assembly_atom] = parent_atoms.at(index);
-		}
                 GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                 coordinate_list.push_back(parent_coordinate);
             }
             if(index == 2)
             {
                 int parent_index = parent_atoms.at(index)->GetIndex() - 1;
-        	if(assembly_atom->GetAtomType().find("DU") == std::string::npos)
-		{
-		    assembly_prep_parent_atom_map[assembly_atom] = parent_atoms.at(index);
-		}
-
                 int grandparent_index = parent_atoms.at(parent_index)->GetIndex() - 1;
                 GeometryTopology::Coordinate* grandparent_coordinate = cartesian_coordinate_list.at(grandparent_index);
                 GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
@@ -112,10 +115,6 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
             if(index > 2)
             {
                 int parent_index = parent_atoms.at(index)->GetIndex() - 1;
-		if(assembly_atom->GetAtomType().find("DU") == std::string::npos && parent_atoms.at(index)->GetType().find("DU") ==std::string::npos)
-		{
-		    assembly_prep_parent_atom_map[assembly_atom] = parent_atoms.at(index);
-		}
                 int grandparent_index = parent_atoms.at(parent_index)->GetIndex() - 1;
                 int great_grabdparent_index = parent_atoms.at(grandparent_index)->GetIndex() - 1;
                 GeometryTopology::Coordinate* great_grandparent_coordinate = cartesian_coordinate_list.at(great_grabdparent_index);
@@ -152,10 +151,10 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 	        tail_atom->SetName(assembly_atom->GetName());
 	    }
         }
-        if(assembly_atom->GetAtomType().find("DU") == std::string::npos)
+/*        if(assembly_atom->GetAtomType().find("DU") == std::string::npos)
 	{
             this->AddAtom(assembly_atom);
-	}
+	}*/
     }
 
     this->AddHeadAtom(head_atom);
@@ -263,23 +262,12 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 	        assembly_parent_node-> AddNodeNeighbor(current_assembly_atom);
 	}
     }//for
-
-    //Testing
- /*   for (unsigned int i = 0; i < all_atoms_added.size(); i++){
-	std::cout << "Assembly atom: " << all_atoms_added[i]->GetName() << " Neighbor: " ;
-	AtomVector neighbors = all_atoms_added[i]->GetNode()->GetNodeNeighbors();
-	for (unsigned int j =0; j< neighbors.size(); j++){
-	    std::cout << neighbors[j]->GetName() << ",";
-	}
-	std::cout << std::endl;
-    }//test for
-
-    std::cout << "Head: " << head_atom->GetName() << std::endl;
-    AtomVector all_tail_atoms_so_far = this->GetTailAtoms();
-    for (unsigned int i = 0 ; i < all_tail_atoms_so_far.size(); i++)
-    {
-	std::cout << "Tail: " << all_tail_atoms_so_far[i]->GetName() << std::endl;
+//testing
+	std::cout << "Atoms coordinates:" << std::endl;
+    for (unsigned int b =0; b< all_atoms_added.size(); b++){
+	std::cout << all_atoms_added[b]->GetName() << ": " << all_atoms_added[b]->GetCoordinates().at(0)->GetX() <<"," << all_atoms_added[b]->GetCoordinates().at(0)->GetY() <<"," 
+			<< all_atoms_added[b]->GetCoordinates().at(0)->GetZ() <<std::endl;
     }
-*/
+//testing
 }//BuildResidueFromPrepFileResidue
 
