@@ -1,5 +1,6 @@
 *.o
 *.so
+*.gch
 Makefile
 gmml.pro
 libgmml.so.1

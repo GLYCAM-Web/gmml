@@ -691,6 +691,28 @@ void Assembly::RemoveResidue(Residue *residue_to_be_removed) //Created by Yao Xi
 */ //skip dealing with residue nodes. Take this back in as condition allows.
 }
 
+void Assembly::RemoveResidue(Residue *residue) // Added back in by Oliver so that Glycoprotein builder will compile.
+{
+//    ResidueVector newResidues = ResidueVector();
+//    newResidues.resize(residues_.size() - 1); // Resizing each push_back is inefficient, set size to be current - 1.
+//    for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); ++it)
+//    {
+//        Residue* r = *it;
+//        if(r->GetId().compare(residue->GetId()) != 0)
+//        {
+//            //if(r->GetNode() != NULL)
+//            //{
+//            //    r->GetNode()->RemoveNodeNeighbor(residue); // OG to Ayush: make it so.
+//            //}
+//            newResidues.push_back(r);
+//        }
+//    }
+//    this->SetResidues(newResidues);
+
+    // Next part is cleaner way to do it, but when removing residue node too you'd have to iterate anyway
+    residues_.erase(std::remove(residues_.begin(), residues_.end(), residue), residues_.end()); // Note need #include <algorithm>
+}
+
 void Assembly::SetChemicalType(std::string chemical_type)
 {
     chemical_type_ = chemical_type;
