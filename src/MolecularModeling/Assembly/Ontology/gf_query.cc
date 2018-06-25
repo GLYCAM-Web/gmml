@@ -13,24 +13,19 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
              "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) "
              "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";  
     query << Ontology::WHERE_CLAUSE;
-    query << "?oligo        :oligoName              ?oligo_sequence.\n";
-    if(search.str()=="Oligo_REGEX")
-    {
-      query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";    
-    }
-    if(search.str()=="Condensed_Sequence")
-    {
-      gmml::FindReplaceString(searchTerm, "[", "\\\\[");
-      gmml::FindReplaceString(searchTerm, "]", "\\\\]");
-      gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
-      query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
-    }
     query << "?pdb_file     :identifier             ?pdb.\n";
     if(search.str()=="PDB")
     {
       query << "VALUES ?pdb { \"" << searchTerm << "\" }\n";
     }
     query << "?pdb_file     :hasTitle               ?title.\n";
+    query << "?pdb_file     :hasAuthors             ?authors.\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasJournal             ?journal.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasDOI                 ?DOI.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasPMID                ?PMID.}\n";
     if(resolution_max == -1 && resolution_min == -1)
     {
       query << "OPTIONAL {";
@@ -49,13 +44,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "}";
     }
     query << "\n";
-    query << "?pdb_file     :hasAuthors             ?authors.\n";
-    query << "OPTIONAL {";
-    query << "?pdb_file     :hasJournal             ?journal.}\n";
-    query << "OPTIONAL {";
-    query << "?pdb_file     :hasDOI                 ?DOI.}\n";
-    query << "OPTIONAL {";
-    query << "?pdb_file     :hasPMID                ?PMID.}\n";
+    
     if(b_factor_max != -1)
     {
       query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.";
@@ -72,8 +61,26 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.}";
     }
     query << "\n";
-    query << "OPTIONAL {";
-    query << "?oligo        :oligoName              ?oligo_sequence.}\n";
+    query << "?pdb_file :hasOligo ?oligo.\n";
+    query << "?oligo        :oligoName              ?oligo_sequence.\n";
+    if(search.str()=="Oligo_REGEX")
+    {
+      query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";    
+    }
+    if(search.str()=="Condensed_Sequence")
+    {
+      gmml::FindReplaceString(searchTerm, "[", "\\\\[");
+      gmml::FindReplaceString(searchTerm, "]", "\\\\]");
+      gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+      query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
+    }
+    
+    if(oligo_b_factor_max == -1 && oligo_b_factor_min == -1)
+    {
+      query << "OPTIONAL {";
+      query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}";
+    }
+    query << "\n";
     if(oligo_b_factor_max != -1)
     {
       query << "FILTER (" << oligo_b_factor_max << " > ?oligo_mean_B_Factor)";
@@ -82,20 +89,12 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     {
       query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)";
     }
-    if(oligo_b_factor_max == -1 && oligo_b_factor_min == -1)
-    {
-      query << "OPTIONAL {";
-      query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}";
-    }
-    query << "\n";
-    query << "OPTIONAL {";
-    query << "?pdb_file     :hasOligo	              ?oligo.}\n";
+
     query << "OPTIONAL {";
     query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
     query << "OPTIONAL {";
-    query << "?linkage      :hasParent 	            ?oligo.}\n";
-    query << "OPTIONAL {";
-    query << "?linkage      :glycosidicLinkage      ?glycosidic_linkage.}\n";
+    query << "?linkage      :hasParent 	            ?oligo;\n";
+    query << "      :glycosidicLinkage      ?glycosidic_linkage.}\n";
     if(isError == 0)
     {
       query << "OPTIONAL {";
