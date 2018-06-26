@@ -35,8 +35,7 @@ PdbAuthorSection::PdbAuthorSection(std::stringstream& stream_block)
         getline(stream_block, line);
         temp = line;
     }
-    author_ = ss.str();
-    gmml::Trim(author_);
+    this->SetAuthor( ss.str() );
 }
 
 //////////////////////////////////////////////////////////
@@ -62,7 +61,9 @@ void PdbAuthorSection::SetRecordName(const std::string record_name)
 
 void PdbAuthorSection::SetAuthor(const std::string author)
 {
-    author_ = author;
+    this->author_ = author;
+	gmml::Trim( this->author_ );
+	gmml::TrimSpaces( this->author_ );
 }
 
 //////////////////////////////////////////////////////////
