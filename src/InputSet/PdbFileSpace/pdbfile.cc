@@ -7842,61 +7842,35 @@ void PdbFile::ResolveEndCard(std::ofstream& stream)
     stream << std::left << std::setw(6) << "END" << std::left << std::setw(74) << " " << std::endl;
 }
 
-void PdbFile::PrintOntology(std::stringstream& ont_stream) 
+void PdbFile::PrintOntology(std::stringstream& ont_stream)
 {
   //Match formatting of Ontology
   std::stringstream uri;
   uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
   std::string uriStr = uri.str();
-  
-  ont_stream << uriStr << " "
-             << Ontology::TYPE << " \""
-             << Ontology::PDB << "\"."
-             << std::endl;
-  ont_stream << uriStr << " "
-             << Ontology::id << " \""
-             << header_->GetIdentifierCode() << "\"."
-             << std::endl;
-  
+
+  gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
+
+  gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
+
   //Return Title
-  std::string ont_title = title_->GetTitle();
-  ont_stream << uriStr << " "
-             << Ontology::hasTitle << " \""
-             << gmml::TrimSpaces(ont_title) << "\"."
-             << std::endl;
+  gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
 
   //Return Authors
-  std::string ont_author = author_->GetAuthor();
-  ont_stream << uriStr << " "
-             << Ontology::hasAuthors << " \""
-             << gmml::TrimSpaces(ont_author) << "\"."
-             << std::endl;
+  gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
 
   //Return DOI
-  std::string ont_doi = journal_->GetDOI();
-  ont_stream << uriStr << " "
-             << Ontology::hasDOI << " \""
-             << gmml::TrimSpaces(ont_doi) << "\"."
-             << std::endl;
-             
+  gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
+
   //Return PMID
-  ont_stream << uriStr << " "
-             << Ontology::hasPMID << " \""
-             << journal_->GetPMID() << "\"."
-             << std::endl;
-                        
+  gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+
   //Return Resolution
-  ont_stream << uriStr << " " 
-             << Ontology::hasResolution << " \""
-             << remark_cards_->GetResolution() << "\"^^xsd:decimal."
-             << std::endl;
-                  
+  gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
   
   //Return B Factor
-  ont_stream << uriStr << " " 
-             << Ontology::hasBFactor << " \""
-             << remark_cards_->GetBFactor() << "\"^^xsd:decimal."
-             << std::endl;
+  gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
+
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

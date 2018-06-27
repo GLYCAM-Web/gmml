@@ -35,8 +35,7 @@ PdbTitleSection::PdbTitleSection(std::stringstream& stream_block)
         getline(stream_block, line);
         temp = line;
     }
-    title_ = ss.str();
-    gmml::Trim(title_);
+    this->SetTitle( ss.str() );
 }
 
 //////////////////////////////////////////////////////////
@@ -62,7 +61,9 @@ void PdbTitleSection::SetRecordName(const std::string record_name)
 
 void PdbTitleSection::SetTitle(const std::string title)
 {
-    title_ = title;
+    this->title_ = title;
+	gmml::Trim( this->title_ );
+	gmml::TrimSpaces( this->title_ );
 }
 
 //////////////////////////////////////////////////////////

@@ -353,9 +353,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
                     Atom *atom = *it2;
                     selection_from_assembly.push_back(atom);
                 }
-
             }
-
         }
     }
     // This is unintuitive, but GetAssemblies does not return "this" assembly, just additonal "sub-assemblies" contained within this assembly. Horrific.
@@ -373,9 +371,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
                 Atom *atom = *it2;
                 selection_from_assembly.push_back(atom);
             }
-
         }
-
     }
     return selection_from_assembly;
 }
@@ -466,11 +462,11 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
 Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
 {
     ResidueVector all_residues_of_assembly = ResidueVector();
-    AssemblyVector assemblies = this->GetAssemblies();
-    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    AssemblyVector sub_assemblies = this->GetAssemblies();
+    for(AssemblyVector::iterator it = sub_assemblies.begin(); it != sub_assemblies.end(); it++)
     {
-        Assembly* assembly = (*it);
-        ResidueVector residues_of_assembly = assembly->GetAllResiduesOfAssembly();
+        Assembly* sub_assembly = (*it);
+        ResidueVector residues_of_assembly = sub_assembly->GetAllResiduesOfAssembly();
         for(ResidueVector::iterator it1 = residues_of_assembly.begin(); it1 != residues_of_assembly.end(); it1++)
         {
             all_residues_of_assembly.push_back(*it1);
@@ -484,6 +480,20 @@ Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
     return all_residues_of_assembly;
 }
 
+Assembly::ResidueVector Assembly::GetAllProteinResiduesOfAssembly()
+{
+    ResidueVector protein_residues;
+    ResidueVector all_residues = this->GetAllResiduesOfAssembly();
+    for (ResidueVector::iterator it1 = all_residues.begin(); it1 != all_residues.end(); ++it1)
+    {
+        Residue *current_residue = *it1;
+        if (current_residue->CheckIfProtein()==1) // the current residue is an amino acid
+        {
+            protein_residues.push_back(current_residue);
+        }
+    }
+    return protein_residues;
+}
 Assembly::CoordinateVector Assembly::GetAllCoordinates()
 {
     CoordinateVector coordinates = CoordinateVector();

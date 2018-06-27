@@ -32,7 +32,7 @@ namespace gmml
         str.erase(0, str.find_first_not_of(" "));
         return str;
     }
-    
+
     /*! \fn
       * Removes duplicate spaces inside of the string.
       * @param str String with duplicate spaces
@@ -813,6 +813,24 @@ namespace gmml
 
         return rotation_matrix;
     }
+
+    inline void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream)
+    {
+        // Find and replace escape characters to and '\'
+        stream << s << " " << p << " " << o << "." << std::endl;
+    }
+
+    inline void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream)
+    {
+        // Find and replace
+        stream << s << " " << p << " \"\"\"" << o << "\"\"\"." << std::endl;
+    }
+
+    inline void AddDecimal(std::string s, std::string p, float o, std::stringstream& stream)
+    {
+        stream << s << " " << p << " \"" << o << "\"^^xsd:decimal." << std::endl;
+    }
+
     /*! \fn
       * A function in order to replace all occurrences of a sub-string with another sub-string in a string
       * @param str The string that is going to be manipulated

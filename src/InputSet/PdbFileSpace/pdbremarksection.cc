@@ -39,14 +39,16 @@ PdbRemarkSection::PdbRemarkSection(std::stringstream &stream_block)
                 remark_cardstream << line << std::endl;
                 if (line.find("2 RESOLUTION.")!= std::string::npos)
                 {
-                  resolution_ = line.substr(23,7);
-                  gmml::Trim(resolution_);
+                    std::string tmp_resolution = line.substr(23,7);
+                    gmml::Trim(tmp_resolution);
+                    this->SetResolution( std::stof( tmp_resolution ) );
                 }
                 if (line.find("MEAN B VALUE")!= std::string::npos)
                 {
-                  int start = line.find(":") + 1;
-                  b_factor_ = line.substr(start,80-start);
-                  gmml::Trim(b_factor_);
+                    int start = line.find(":") + 1;
+                    std::string tmp_b_factor = line.substr(start,80-start);
+                    gmml::Trim( tmp_b_factor );
+                    this->SetBFactor( std::stof( tmp_b_factor ) );
                 }
                 getline(stream_block,line);
                 temp = line;
@@ -69,11 +71,11 @@ std::string PdbRemarkSection::GetRemarks(){
     return remark_cards_;
 }
 
-std::string PdbRemarkSection::GetResolution(){
+float PdbRemarkSection::GetResolution(){
     return resolution_;
 }
 
-std::string PdbRemarkSection::GetBFactor(){
+float PdbRemarkSection::GetBFactor(){
     return b_factor_;
 }
 
@@ -89,12 +91,12 @@ void PdbRemarkSection::SetRemarks(const std::string remark_cards){
     remark_cards_ = remark_cards;
 }
 
-void PdbRemarkSection::SetResolution(const std::string resolution){
-    resolution_ = resolution;
+void PdbRemarkSection::SetResolution(const float resolution) {
+    this->resolution_ = resolution;
 }
 
-void PdbRemarkSection::SetBFactor(const std::string b_factor){
-    b_factor_ = b_factor;
+void PdbRemarkSection::SetBFactor(const float b_factor) {
+    this->b_factor_ = b_factor;
 }
 
 //////////////////////////////////////////////////////////

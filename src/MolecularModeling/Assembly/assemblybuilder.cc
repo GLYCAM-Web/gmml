@@ -538,10 +538,9 @@ void Assembly::SetGlycam06ResidueBonding (std::map<int, std::pair<CondensedSeque
 
 }//SetGlycam06ResidueBonding
 
-void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residue, int&a)
+void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residue)
 {
     gmml::AtomVector all_tail_atoms = parent_residue->GetTailAtoms();
-    std::cout << "parent: " << parent_residue->GetName() <<std::endl;
     for (unsigned int i = 0; i < all_tail_atoms.size(); i++){
 	MolecularModeling::Atom* tail_atom = all_tail_atoms[i];
 	gmml::AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
@@ -550,7 +549,6 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 	    MolecularModeling::Atom* neighbor_atom = tail_atom_neighbors[j];
 	    //if a neighbor is outside of a parent residue, it must be the head atom of a child residue.There should only exist one such atom, otherwise, something is amiss.
 	    if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
-	        a++;
 		MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
 		MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
 		gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
@@ -558,11 +556,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		//SetResidueResidueBondDistance function: takes a pair of parent tail/child head atoms as argument. This function keeps the parent residue intact,but
 		//finds out the new position of child head atom, and move atoms of child residue accordingly.(i.e. grafting)
 		this->SetResidueResidueBondDistance(tail_atom, head_atom_of_child_residue);
-		if (a >= 999)
-		break;
 		
-		std::cout << "Tail:"<< tail_atom->GetName() <<"--" << tail_atom->GetResidue()->GetName() << std::endl;
-		std::cout << "Head:" << head_atom_of_child_residue->GetName() << "--" << head_atom_of_child_residue->GetResidue()->GetName() << std::endl;
 		//Set C-O(tail atom)-C(head atom ) angle to 120 deg. The first C is the neighbor of tail atom that is not the head atom && not a hydrogen
 		//The only exception is ROH, where you have to use that hydrogen
 		//Right now,rely on the first letter of atom name to determine element type (if hydrogen or not). Better solution is the rule class.
@@ -578,7 +572,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 
 		//Exit if atom 1 cannot be be found
 		if (non_hydrogen_tail_atom_neighbor == NULL){ 
-		    std::cout << "SetAngle: Cannot find atom 1.Skipping" << std::endl;
+		    //std::cout << "SetAngle: Cannot find atom 1.Skipping" << std::endl;
 		}
 		//If atom 1 is identified, proceed with setting angle
 		else{
@@ -588,7 +582,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		
 		//If child is a derivative,or parent is an  aglycon, skip setting dihedrals
 		if (child_residue->GetIsSugarDerivative()  || parent_residue->GetName() == "OME" || parent_residue->GetName() == "TBT"){
-		    std::cout << "Warning: skip setting dihedrals for derivative/aglycon residue " << child_residue->GetName() << std::endl;
+		    //std::cout << "Warning: skip setting dihedrals for derivative/aglycon residue " << child_residue->GetName() << std::endl;
 		}
 		//Otherwise,attempt setting dihedrals
 		else{
@@ -623,11 +617,10 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		
 			//If phi_atom_4 cannot be found, exit.
 		    if (phi_atom_4 == NULL || phi_atom_3 == NULL || phi_atom_2 == NULL || phi_atom_1 == NULL ){
-			std::cout << "SetPhiDihedral: cannot find all four phi atoms. Skipping." << std::endl;
+			//std::cout << "SetPhiDihedral: cannot find all four phi atoms. Skipping." << std::endl;
 		    }
 			//If phi_atom_4 can be found, set phi.
 		    else{
-			std::cout << "phi: " << phi_atom_1->GetName() << "-" << phi_atom_2->GetName() << "-" << phi_atom_3->GetName() << "-" << phi_atom_4->GetName() << std::endl;
 			const double dihedral_phi = 180.0;
 			this->SetDihedral(phi_atom_1, phi_atom_2, phi_atom_3, phi_atom_4, dihedral_phi);
 		    }
@@ -645,10 +638,9 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		    }
 
 		    if (psi_atom_1 == NULL || psi_atom_2 == NULL || psi_atom_3 == NULL || psi_atom_4 == NULL ){
-		        std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
+		        //std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
 		    }
 		    else {
-			std::cout << "psi: " << psi_atom_1->GetName() << "-" << psi_atom_2->GetName() << "-" << psi_atom_3->GetName() << "-" << psi_atom_4->GetName() << std::endl;
 		        const double dihedral_psi = 0.0;
 		        this->SetDihedral(psi_atom_1, psi_atom_2, psi_atom_3, psi_atom_4, dihedral_psi);
 		    }
@@ -662,7 +654,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		    //omega atom 3 should be a exocyclic non-hydrogen(probably carbon) atom that 's connects to the atoms that connects to tail atom (neighbor of neighbor of tail oxygen)
 		    //If such an atom is already on the ring, then there is no omega angle. If it is exocyclic, then omega exists.
 		    if (omega_atom_3->GetIsCycle()){
-			std::cout << "Tail atom is directly attached to ring atom. So omega does not exist. Skip setting omega." << std::endl;
+			//std::cout << "Tail atom is directly attached to ring atom. So omega does not exist. Skip setting omega." << std::endl;
 		    }
 		    else{
 			//Choose omega atom 2 from the neighbors of omega atom 3. It can't be omega_atom_4, and it shouldn't be a hydrogen
@@ -686,20 +678,18 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		    }
 		    //If all four omega atoms exist, set omega to -60 deg, assuming gt.
 		    if (omega_atom_4 == NULL || omega_atom_3 == NULL || omega_atom_2 == NULL || omega_atom_1 == NULL){
-			std::cout << "SetOmegaDihedral: cannot find all four omega atoms. Skipping." << std::endl;
+			//std::cout << "SetOmegaDihedral: cannot find all four omega atoms. Skipping." << std::endl;
 		    }
 		    else {
-			std::cout << "omega: " << omega_atom_1->GetName() << "-" << omega_atom_2->GetName() << "-" << omega_atom_3->GetName() << "-" << omega_atom_4->GetName() << std::endl;
 			const double dihedral_omega = -60.0;
 			this ->SetDihedral(omega_atom_1, omega_atom_2, omega_atom_3, omega_atom_4, dihedral_omega);
 		    }
 		   	
-		}//else Done setting phi,phi, omega(if exists)
+		}//else Done setting phi,psi, omega(if exists)
 		//Start new recursion
 		MolecularModeling::Residue* new_parent_residue = child_residue;
 		//Leave a blank line for easy visualization
-		std::cout << std::endl;
-		this-> RecursivelySetGeometry(new_parent_residue, a);
+		this-> RecursivelySetGeometry(new_parent_residue);
 	    }//if
 	}//for
 
@@ -709,6 +699,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 //New BuildAssemblyFromCondensedSequence() created by Yao on 06/25/2018. This will replace the old version below.
 void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file)
 {
+    std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
 
@@ -719,7 +710,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 
     this -> SetGlycam06ResidueBonding (glycam06_assembly_residue_map);
     
-    int a=0; //temporary, for testing
     for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = 
 	glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
 
@@ -728,10 +718,11 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
         //The atom and the only atom without a parent is the absolute parent(terminal).
         if (glycam_06_res->GetParentId() == -1 ){
             MolecularModeling::Residue* root = corresponding_assembly_residue;
-            this->RecursivelySetGeometry(root, a);
+            this->RecursivelySetGeometry(root);
 	    break;
         }
     }
+    std::cout << "Building Assembly From Condensed Sequence Complete......" << std::endl;
 //test
 }
 

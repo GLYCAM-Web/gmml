@@ -61,7 +61,7 @@ namespace MolecularModeling
             typedef std::vector<AtomNode*>AtomNodeVector; //Added by ayush on 04/11/18 for TopologyFix in assembly
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
             typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
-	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library. 
+	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -179,11 +179,16 @@ namespace MolecularModeling
               */
             ResidueVector GetAllResiduesOfAssembly();
             /*! \fn
+              * A functions that extracts all protein residues of an assembly
+              * @return Vector of all protein residues in the current object of assembly
+              */
+            ResidueVector GetAllProteinResiduesOfAssembly();
+            /*! \fn
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
             CoordinateVector GetAllCoordinates();
-            /* ! \fn
+            /*! \fn
              * A function to extract all the coordinates of all the cycle atoms of the monosaccharide.
              * @param mono The Monosaccharide object
              * @return coordinates The CoordinateVector with all the Coordinates
@@ -348,7 +353,7 @@ namespace MolecularModeling
 		 ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, TemplateAssembly* template_assembly);
 
 	    void SetGlycam06ResidueBonding(std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >& condensed_sequence_assembly_residue_map);
-	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue, int& a);
+	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue);
 
 
 	    void SetResidueResidueBondDistance(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom);
@@ -999,30 +1004,30 @@ namespace MolecularModeling
             * @param pdb_stream The output stream of PDB triples to be added to the main output stream
             */
             void CreateTitle(std::string pdb_resource, std::stringstream& pdb_stream);
-            /*! \fn
-            * A function in order to create a turtle formatted triple (subject predicate object) and appending it to the output file stream
-            * @param s The subject part of the triple
-            * @param p The predicate part of the triple
-            * @param o The object part of the triple
-            * @param stream The output stream which is going to be written in the ontology turtle file
-            */
-            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
-            /*! \fn
-            * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
-            * @param s The subject part of the triple
-            * @param p The predicate part of the triple
-            * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
-            * @param stream The output stream which is going to be written in the ontology turtle file
-            */
-            void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
-            /*! \fn
-            * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
-            * @param s The subject part of the triple
-            * @param p The predicate part of the triple
-            * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
-            * @param stream The output stream which is going to be written in the ontology turtle file
-            */
-            void AddDecimal(std::string s, std::string p, float o, std::stringstream& stream);
+            // /*! \fn
+            // * A function in order to create a turtle formatted triple (subject predicate object) and appending it to the output file stream
+            // * @param s The subject part of the triple
+            // * @param p The predicate part of the triple
+            // * @param o The object part of the triple
+            // * @param stream The output stream which is going to be written in the ontology turtle file
+            // */
+            // void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
+            // /*! \fn
+            // * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
+            // * @param s The subject part of the triple
+            // * @param p The predicate part of the triple
+            // * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
+            // * @param stream The output stream which is going to be written in the ontology turtle file
+            // */
+            // void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
+            // /*! \fn
+            // * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
+            // * @param s The subject part of the triple
+            // * @param p The predicate part of the triple
+            // * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
+            // * @param stream The output stream which is going to be written in the ontology turtle file
+            // */
+            // void AddDecimal(std::string s, std::string p, float o, std::stringstream& stream);
             /*! \fn
             * A function in order to create the an ontology resource based on the given resource type
             * @param resource The resource type e.g. PDB, Residue, Atom
@@ -1404,7 +1409,7 @@ namespace MolecularModeling
 	      */
 	    void SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_atom, AtomVector & cycle_atoms, AtomVector & visited_atoms);
 	    /*! \fn
-	      * A function to make all atoms of a monosaccharide a new residue, replacing the corresponding old one in input file. This is to solve the problem wher one residue contains more than one sugar. 
+	      * A function to make all atoms of a monosaccharide a new residue, replacing the corresponding old one in input file. This is to solve the problem wher one residue contains more than one sugar.
 	      * @param monos a vector of Monosaccharide*, containing all identified monosaccharides in the input files.
 	      */
 	    void UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide*>& monos);
