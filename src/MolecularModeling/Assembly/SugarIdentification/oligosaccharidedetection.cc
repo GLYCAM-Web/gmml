@@ -201,6 +201,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
     OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, glyprobity_report,  populate_ontology );
 
+
     return oligos; // Oliver thinks Yao hosed ontology::analysis. This might fix it?
 }
 
@@ -366,7 +367,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       // for testing purposes.
       //GetBFMP( mono );
       //DetectShape( cycle, mono );
-      glylib::CalculateRingShapeBFMP(mono);
+      //glylib::CalculateRingShapeBFMP(mono);
+	mono->bfmp_ring_conformation_ = "TBD";
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
       {
         std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << std::endl << std::endl; ///Part of Glyprobity report
@@ -610,11 +612,12 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     } else {
       number_of_monosaccharides++;
     }
-    oligo->Print( std::cout );
+    oligo->Print( std::cout ); 
   }
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
+  std::cout << "past note" << std::endl;
   if( !notes.empty() ) {
     std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
     std::cout << std::endl << "NOTES/ISSUES:" << std::endl;
@@ -965,7 +968,7 @@ MolecularModeling::Atom* Assembly::FindAnomericCarbon( Glycan::Note* anomeric_no
                 && ( o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) { ///if first element is "O" or "N"
           //                        && isdigit(gmml::ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
           anomeric_carbon = o_neighbor1;
-          anomeric_carbons_status.push_back( "Anomeric carbon: " + anomeric_carbon->GetName() );
+          anomeric_carbons_status.push_back( "Anomeric carbon: "  );
           anomeric_note->description_ = "";
 
           return anomeric_carbon;
@@ -984,7 +987,7 @@ MolecularModeling::Atom* Assembly::FindAnomericCarbon( Glycan::Note* anomeric_no
                 && ( o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) {
           //                        && isdigit(gmml::ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
           anomeric_carbon = o_neighbor2;
-          anomeric_carbons_status.push_back( "Anomeric carbon: " + anomeric_carbon->GetName() );
+          anomeric_carbons_status.push_back( "Anomeric carbon: "  );
           anomeric_note->description_ = "";
 
           return anomeric_carbon;
@@ -3250,15 +3253,13 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
       Glycan::Monosaccharide* mono = *it;
       Residue * NewResidueForThisMonosaccharide = new Residue();
       Residue * OldResidueForThisMonosaccharide = mono->cycle_atoms_.at(0)->GetResidue();
-	
       NewResidueForThisMonosaccharide-> SetAssembly(this);
       std::vector<Residue*> AllResiduesInAssembly= this -> GetResidues();
-      int DistanceFromStartOfResidueVector = std::distance( AllResiduesInAssembly.begin(), std::find( AllResiduesInAssembly.begin(), AllResiduesInAssembly.end(),OldResidueForThisMonosaccharide) );
-      this->InsertResidue(DistanceFromStartOfResidueVector ,NewResidueForThisMonosaccharide);
+      this->InsertResidue(OldResidueForThisMonosaccharide ,NewResidueForThisMonosaccharide);
       NewResidueForThisMonosaccharide-> SetName(OldResidueForThisMonosaccharide->GetName() );
       NewResidueForThisMonosaccharide-> SetId(OldResidueForThisMonosaccharide->GetId() + "-mon-" + mono_index_str);
 
-      if ( find(OldResidue2BeErasedFromAssembly.begin(),OldResidue2BeErasedFromAssembly.end(),OldResidueForThisMonosaccharide) == OldResidue2BeErasedFromAssembly.end() ){
+      if ( std::find(OldResidue2BeErasedFromAssembly.begin(),OldResidue2BeErasedFromAssembly.end(),OldResidueForThisMonosaccharide) == OldResidue2BeErasedFromAssembly.end() ){
           OldResidue2BeErasedFromAssembly.push_back(OldResidueForThisMonosaccharide);
       }
 
@@ -3267,7 +3268,8 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
       for (std::vector<Atom*>::iterator it2= mono->cycle_atoms_.begin(); it2!= mono->cycle_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
           AllAtomsInThisMonosaccharide.push_back(*it2);
       }
-      for (std::vector<std::vector<Atom*> >::iterator it2= mono->side_atoms_.begin(); it2!= mono->side_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
+
+      for (std::vector<std::vector<Atom*> >::iterator it2= mono->side_atoms_.begin(); it2!= mono->side_atoms_.end(); it2++){ //Add side chain atoms to monosaccharide
 	  if ( !(*it2).empty() ){
 	      for (std::vector<Atom*>::iterator it3= (*it2).begin(); it3 != (*it2).end(); it3++){
 		  if ( (*it3) != NULL){
@@ -3287,11 +3289,7 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
 
 
   for (std::vector<Residue*>::iterator it= OldResidue2BeErasedFromAssembly.begin(); it!= OldResidue2BeErasedFromAssembly.end(); it++){ ////remove old residues
-      ResidueVector AllResiduesInAssemblyAfterInsertion = this -> GetResidues();
-      int DistanceFromStartOfResidueVector = std::distance( AllResiduesInAssemblyAfterInsertion.begin(), std::find( AllResiduesInAssemblyAfterInsertion.begin(), 
-	    AllResiduesInAssemblyAfterInsertion.end(),*it) );
-
-      this->EraseResidue(DistanceFromStartOfResidueVector);
+      this->RemoveResidue(*it);
   }
 
 }//UpdateMonosaccharides2Residues
@@ -3542,16 +3540,14 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
 
 std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector& terminal_atoms)
 {
-    if(target != NULL)
+    if(target !=NULL)
     {
         AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
 	//I have encounter the situation where a NLN is recognized as ROH, because the anomeric nitrogen has hydrogen and satisfies the criteria for ROH.
 	// So, I added codes to check if terminal is protein.
 	bool non_protein_terminal = true;			
-	for (int i=0; i< o_neighbors.size(); i++){
-	    if (o_neighbors[i]->GetResidue()->CheckIfProtein()){
-		non_protein_terminal = false;
-	    }
+	if (target->GetResidue()->CheckIfProtein()){
+	    non_protein_terminal = false;
 	}
 
 	if (non_protein_terminal){
@@ -3561,23 +3557,25 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
                 return "OME";
             else if(CheckTBTTerminal(target, terminal_atoms).compare("") != 0)
                 return "TBT";
+	    else
+		return "UNK";
 	}
         //else if(o_neighbors.size() == 2)
         else if(o_neighbors.size() >= 2) //Not just size =2 ,if terminal is NLN && input pdb file contains hydrogen.the sidechain connecting nitrogen contain 3 atoms
         {
             Atom* target_o_neighbor = NULL;
-            /*if(o_neighbors.at(0)->GetDescription().find("Het;") != string::npos && o_neighbors.at(1)->GetDescription().find("Het;") == string::npos)	//if one is het and the other is not
+            if(o_neighbors.at(0)->GetDescription().find("Het;") != std::string::npos && o_neighbors.at(1)->GetDescription().find("Het;") == std::string::npos)	//if one is het and the other is not
                 target_o_neighbor = o_neighbors.at(1);
-            else if(o_neighbors.at(0)->GetDescription().find("Het;") == string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != string::npos)
-                target_o_neighbor = o_neighbors.at(0);*/
+            else if(o_neighbors.at(0)->GetDescription().find("Het;") == std::string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != std::string::npos)
+                target_o_neighbor = o_neighbors.at(0);
 
 	    //My code for assigning target_o_neighbor:
-	    for (int i=0; i< o_neighbors.size(); i++){
+	    /*for (unsigned int i=0; i< o_neighbors.size(); i++){
 		if (o_neighbors[i] -> GetResidue() -> CheckIfProtein()){
 		    //assuming normal structure, all neighbor atoms should belong to the same protein.
 		    target_o_neighbor = o_neighbors[i];		
 		}
-	    }
+	    }*/
 	    // Yao Xiao: my code ends.
             if(target_o_neighbor != NULL)
             {
@@ -3599,21 +3597,30 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
                 gmml::AminoacidGlycamMap aminoacid_glycam = gmml::AminoacidGlycamLookup(target_o_neighbor->GetResidue()->GetName());
                 gmml::AminoacidGlycamMap glycam_aminoacid = gmml::GlycamAminoacidLookup(target_o_neighbor->GetResidue()->GetName());
 
-                if(aminoacid_glycam.aminoacid_name_.compare("") != 0)
-                    return aminoacid_glycam.aminoacid_name_;
-                else if(glycam_aminoacid.glycam_name_.compare("") != 0)
-                    return glycam_aminoacid.aminoacid_name_;
-                else
+                if(aminoacid_glycam.aminoacid_name_.compare("") != 0){
+                    //return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
+                    return aminoacid_glycam.glycam_name_;	
+		}
+                else if(glycam_aminoacid.glycam_name_.compare("") != 0){
+                    //return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
+                    return glycam_aminoacid.glycam_name_;	
+		}
+                else{
+		    std::cout << "This return." << std::endl;
                     return target_o_neighbor->GetResidue()->GetName();
+	 	}
             }
-            else
-                return "";
+            else{
+                return "UNK";
+	    }
         }
-        else
-            return "";
+        else{
+            return "UNK";
+	}
     }
-    else
-        return "";
+    else{
+        return "UNK";
+    }
 }
 
 void Assembly::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosaccharide* mono2, std::string linkage, std::vector<std::string>& checked_linkages)

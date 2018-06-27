@@ -75,8 +75,9 @@ namespace Glycan
                 std::string first_residue_of_linkage  = "";
                 std::string second_residue_of_linkage  = "";
 
-                for(unsigned int i = 0; i < oligo_linkages_tokens.size(); i++) ///Processing linkages line by line
+                for(unsigned int i = 0; i < oligo_linkages_tokens.size() && i < oligo_name_tokens.size(); i++) ///Processing linkages line by line
                 {
+			std::cout << oligo_linkages_tokens.at(i) << " " << oligo_name_tokens.at(i) << std::endl;
                     full_glycosidic_linkage = oligo_linkages_tokens.at(i);
                     link_tokens = gmml::Split(full_glycosidic_linkage, "}-,");
                     link_left_side = link_tokens.at(1);     ///Getting the first residue of linkage in each line. e.g. {2}RAM(401_A)C1-RAE(402_A)C3, Glycosidic linkage: RAE(402_A)O3

@@ -263,13 +263,12 @@ namespace MolecularModeling
               * Set the residues_ attribute of the current assembly
               * @param residue The residue of the current object
               */
-            void InsertResidue(int distance, Residue *residue);
+	    void InsertResidue(Residue *insert_infront_of, Residue *to_be_inserted); //Added by Yao @ 06-25-2018
             /*! \fn
-              * A function in order to erase a residue from the current object
+              * A function in order to remove a residue from the current object
               * Set the residues_ attribute of the current assembly
-              * @param distance The distance from beginning of ResidueVector to residue to be removed.
+              * @param residue The residue to be removed.
               */
-            void EraseResidue(int distance);
             void RemoveResidue(Residue *residue);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
@@ -347,10 +346,17 @@ namespace MolecularModeling
 * @{
 */
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
-	    ResidueVector ConvertCondensedSequence2AssemblyResidues(std::string& sequence, TemplateAssembly* template_assembly);
-	    void SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>&
-			condensed_sequence_child_parent_map, std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>& condensed_sequence_assembly_residue_map,
-			ResidueVector& query_residues);
+
+	    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file);	//Created by Yao 06/25/2018, replace old version above
+
+	    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >
+		 ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, TemplateAssembly* template_assembly);
+
+	    void SetGlycam06ResidueBonding(std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >& condensed_sequence_assembly_residue_map);
+	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue);
+
+
+	    void SetResidueResidueBondDistance(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom);
 /** @}*/
             AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
                                                                  std::string prep_file, std::string parameter_file,
@@ -450,7 +456,7 @@ namespace MolecularModeling
 	      * @param prep_file A pointer to prep file
 	      * @param query_residue_names the names of all residues needed
 	      */
-	    TemplateAssembly* BuildTemplateAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std::vector<std::string>& query_residue_names);
+	    TemplateAssembly* BuildTemplateAssemblyFromPrepFile (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, PrepFileSpace::PrepFile* prep_file);
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure

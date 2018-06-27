@@ -5,6 +5,7 @@
 #include <set>
 #include <queue>
 #include <stack>
+#include <algorithm>
 
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/residue.hpp"
@@ -651,14 +652,10 @@ void Assembly::AddResidue(Residue *residue)
     residues_.push_back(residue);
 }
 
-void Assembly::InsertResidue(int distance, Residue *residue)
+void Assembly::InsertResidue(Residue* point_of_insertion,  Residue *to_be_inserted)
 {
-    residues_.insert(residues_.begin() + distance,residue);
-}
-
-void Assembly::EraseResidue(int distance)
-{
-    residues_.erase(residues_.begin() + distance);
+    int distance = std::distance(residues_.begin(), std::find(residues_.begin(), residues_.end(), point_of_insertion) );
+    residues_.insert(residues_.begin() + distance, to_be_inserted);
 }
 
 void Assembly::RemoveResidue(Residue *residue) // Added back in by Oliver so that Glycoprotein builder will compile.

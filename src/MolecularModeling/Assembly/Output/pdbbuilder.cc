@@ -98,6 +98,7 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
                                     assembly_to_serial_number_map);
 
     PdbFileSpace::PdbLinkSection* link_card = new PdbFileSpace::PdbLinkSection();
+    //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
     ExtractPdbLinkSectionFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
     link_card->SetRecordName("LINK");
     pdb_file->SetLinks(link_card);
@@ -105,6 +106,7 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
     if(connect_card_existance == 1)
     {
         PdbFileSpace::PdbConnectSection* connect_card = new PdbFileSpace::PdbConnectSection();
+    //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
         ExtractPdbConnectSectionFromAssembly(connect_card, assembly_to_serial_number_map);
         pdb_file->SetConnectivities(connect_card);
     }

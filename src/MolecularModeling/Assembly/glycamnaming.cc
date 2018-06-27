@@ -123,7 +123,6 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
                 {
                     //TODO:
                     //Add the residue mismatch into a structure for the Ontology usage
-
                     for(AtomVector::iterator it1 = terminal_atoms.begin(); it1 != terminal_atoms.end(); it1++)
                     {
                         MolecularModeling::Atom* terminal_atom = *it1;
@@ -137,16 +136,26 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
                             pdb_glycam_residue_map[terminal_residue_id] = std::vector<std::string>();
                         pdb_glycam_residue_map[terminal_residue_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
 
+			std::string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
 			if ( !(terminal_atom->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
 			{
 			    ResidueVector AllResiduesInAssembly = this->GetResidues();
 			    Residue* OldResidueForThisAtom = terminal_atom->GetResidue();
-			    std::string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
+			    unsigned int OldResidueIndex = std::distance(AllResiduesInAssembly.begin(), std::find(AllResiduesInAssembly.begin(), AllResiduesInAssembly.end(), OldResidueForThisAtom));
+			    //If the old residue housing this terminal atom is not the last residue, BehindOldResidue = OldResidueIndex +1 is fine. But if it is, doing so will cause out_of_range.
+			    //So,if not the last one, insert residue. Otherwise, add residue.
 			    Residue* new_terminal_residue = new Residue(this,new_terminal_residue_name);
-			    int DistanceFromStartOfResidueVector = std::distance( AllResiduesInAssembly.begin(), std::find(AllResiduesInAssembly.begin(),AllResiduesInAssembly.end(),
-										OldResidueForThisAtom) );
+			    if (OldResidueIndex != AllResiduesInAssembly.size()-1){	//If old residue is not the last residue
+			        int BehindOldResidue = OldResidueIndex +1;
+			        Residue* ResidueBehindOldResidue = AllResiduesInAssembly.at(BehindOldResidue);
 
-                            this ->InsertResidue(DistanceFromStartOfResidueVector +1 ,new_terminal_residue);
+                                this ->InsertResidue(ResidueBehindOldResidue ,new_terminal_residue); //Terminal residue should go behind its original residue, i.e. in front of the residue behind origin.
+ 		            }
+
+			    else{	//Else, the old residue is the last residue.
+			        this ->AddResidue(new_terminal_residue);
+			    }
+												  //For example, the ROH coming from terminal BGC, should go after, instead of in front of BGC.
 			    std::string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id.
 			    new_terminal_residue->SetId(new_terminal_residue_id);
                             new_terminal_residue->AddAtom(terminal_atom);

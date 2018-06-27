@@ -5,7 +5,7 @@ using MolecularModeling::OligoSaccharideDetectionAtom;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-MolecularModeling::OligoSaccharideDetectionAtom::OligoSaccharideDetectionAtom() : IsCycle_(false), IsSideChain_(false), IsAnomericCarbon_(false) {}
+MolecularModeling::OligoSaccharideDetectionAtom::OligoSaccharideDetectionAtom() : IsCycle_(false), IsSideChain_(false), IsAnomericCarbon_(false), naming_("") {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -22,7 +22,10 @@ bool MolecularModeling::OligoSaccharideDetectionAtom::GetIsAnomericCarbon()
 {
     return IsAnomericCarbon_;
 }
-
+std::string MolecularModeling::OligoSaccharideDetectionAtom::GetNaming()
+{
+    return naming_;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -37,6 +40,10 @@ void MolecularModeling::OligoSaccharideDetectionAtom::SetIsSideChain(bool is_sid
 void MolecularModeling::OligoSaccharideDetectionAtom::SetIsAnomericCarbon(bool is_anomeric_carbon)
 {
     IsAnomericCarbon_ = is_anomeric_carbon;
+}
+void MolecularModeling::OligoSaccharideDetectionAtom::SetNaming(std::string naming)
+{
+    naming_ = naming;
 }
 
 //////////////////////////////////////////////////////////

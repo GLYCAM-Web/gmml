@@ -6,6 +6,7 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
+#include <iostream>
 
 using CondensedSequenceSpace::CondensedSequence;
 
@@ -475,10 +476,14 @@ std::string CondensedSequence::GetGlycam06TerminalResidueCodeOfTerminalResidue(s
         return "OME";
     else if(terminal_residue_name.compare("OtBu") == 0 || terminal_residue_name.compare("TBT") == 0)
         return "TBT";
+    else if (terminal_residue_name.compare("UNK") == 0)
+	return "UNK";
     else if(gmml::AminoacidGlycamLookup(terminal_residue_name).aminoacid_name_.compare("") != 0 ||
             gmml::AminoacidGlycamLookup(terminal_residue_name).glycam_name_.compare("") != 0)
         return gmml::AminoacidGlycamLookup(terminal_residue_name).glycam_name_;
-    throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
+    else {
+        throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
+    }
 }
 
 std::string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, std::vector<int> open_valences)
@@ -613,14 +618,16 @@ std::string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(std::string c
 
 CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::GetCondensedSequenceDerivativeGlycam06Residue(std::string derivative_name, int derivative_index)
 {
+    //Oxygen names are usually OK, but why does an SO3 have a C atom? Here basicaaly oxygen_name = tail atom name, carbon_name = head atom name. Right now, the carbon_name has to be hard-coded.
     std::string oxygen_name = "O" + gmml::ConvertT<int>(derivative_index);
-    std::string carbon_name = "C" + gmml::ConvertT<int>(derivative_index);;
+    //std::string carbon_name = "C" + gmml::ConvertT<int>(derivative_index); //Can't always use C* as head atom name.
     if(derivative_name.compare("S") == 0)
-        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("SO3", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("SO3", "S1", oxygen_name, true);
     else if(derivative_name.compare("Me") == 0)
-        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("MEX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("MEX", "CH3", oxygen_name, true);
     else if(derivative_name.compare("A") == 0)
-        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("ACX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("ACX", "C1A", oxygen_name, true);
+    //Later PO3 might need to be added, but now I dont' now the name of its head atom yet.
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
 }
 

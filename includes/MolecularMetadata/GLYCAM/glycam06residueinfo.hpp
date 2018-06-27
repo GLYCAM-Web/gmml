@@ -40,7 +40,7 @@ namespace gmml
          *
          *   See the scripts that generate this file for further documentation.
          */
-          const std::multimap<std::string, std::string> Glycam06NamesToTypesLookupMap=
+          const std::multimap<std::string, std::string> Glycam06NamesToTypesLookupMap =
             {
 //    Names:    HYP  
 //    Types:    amino-acid modified mid-chain  
