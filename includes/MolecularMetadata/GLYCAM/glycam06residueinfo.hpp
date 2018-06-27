@@ -5,7 +5,7 @@
  * GLYCAM06 metadata for residues
  *
  * This file is enerated automatically on:
- *     Fri Jun 22 16:48:59 EDT 2018
+ *     Wed Jun 27 17:56:06 EDT 2018
  *
  * by a script named:
  *     GLYCAM06_make_glycam06_residue_name-2-type_lookup.bash
