@@ -444,7 +444,6 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
                                                                                                         condensed_residue, open_valences[i])
                                                                                                     , anomeric_carbon, oxygen_position);
 
-std::cout << "aka: " << tree_residue->GetName() << std::endl;
             int residue_index = this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
 
             CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
@@ -600,7 +599,6 @@ std::string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(std::string 
     if(residue_name_code.name_.compare("") != 0)
     {
         std::string code = residue_name_code.code_;
-	std::cout << "hey: " << code <<std::endl;
         if(isomer.compare("L") == 0)
             std::transform(code.begin(), code.end(), code.begin(), ::tolower);
         return code;

@@ -55,7 +55,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     this->SetName(prep_residue->GetName());
     std::stringstream residue_id;
     //Set id for testing purpose
-    residue_id << prep_residue->GetName() <<"_" << " " << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
+    //residue_id << prep_residue->GetName() <<"_" << " " << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
     for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
     {
         serial_number++;
@@ -262,12 +262,5 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 	        assembly_parent_node-> AddNodeNeighbor(current_assembly_atom);
 	}
     }//for
-//testing
-	std::cout << "Atoms coordinates:" << std::endl;
-    for (unsigned int b =0; b< all_atoms_added.size(); b++){
-	std::cout << all_atoms_added[b]->GetName() << ": " << all_atoms_added[b]->GetCoordinates().at(0)->GetX() <<"," << all_atoms_added[b]->GetCoordinates().at(0)->GetY() <<"," 
-			<< all_atoms_added[b]->GetCoordinates().at(0)->GetZ() <<std::endl;
-    }
-//testing
 }//BuildResidueFromPrepFileResidue
 

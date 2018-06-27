@@ -648,49 +648,6 @@ void Assembly::InsertResidue(Residue* point_of_insertion,  Residue *to_be_insert
     residues_.insert(residues_.begin() + distance, to_be_inserted);
 }
 
-void Assembly::RemoveResidue(Residue *residue_to_be_removed) //Created by Yao Xiao 06/18/2018
-{
-
-    //Remove this residue from assembly
-    int distance = std::distance(residues_.begin(), std::find(residues_.begin(), residues_.end(), residue_to_be_removed) );
-    residues_.erase(residues_.begin() + distance);
-    //Remove the node of this residue from every other residue's neighbor node.
-    //The node attribute in a residue is uninitiated,and contains garbage values. Thus I can't catch if a residue has its node set or not.
-    //If it's uninitiated, doing anything with node ptr will cause segfault. I believe node should be initiated to NULL.
-    //For now, skip dealing with nodes
-/*  //skip dealing with residue nodes. Take this back in as condition allows
-    if (residue_to_be_removed->GetNode() != NULL)
-    MolecularModeling::ResidueNode* node_of_removed_residue = residue_to_be_removed->GetNode();
-    for (ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++){
-	Residue* res = *it;
-	MolecularModeling::ResidueNode* res_node = res->GetNode();
-	MolecularModeling::ResidueNode::ResidueNodeVector neighbor_nodes = res_node->GetResidueNodeNeighbors();
-	if (std::find(neighbor_nodes.begin(), neighbor_nodes.end(), node_of_removed_residue) != neighbor_nodes.end()){
-	    res_node->RemoveNodeNeighbor(node_of_removed_residue);
-	    node_of_removed_residue->RemoveNodeNeighbor(res_node);
-	}
-        //Remove connecting atoms to this to-be-removed residue from other reidues' node as well.
-	gmml::AtomVector res_node_connecting_atoms = res_node->GetResidueNodeConnectingAtoms();
-	for (gmml::AtomVector::iterator it2 = res_node_connecting_atoms.begin(); it2 != res_node_connecting_atoms.end(); it2++){
-	    MolecularModeling::Atom* connecting_atom = *it2;
-	    //Get the neighbors of this connecting atom, if this neighbor is in the residue to be removed, then this connecting atom needs to be removed.
-	    gmml::AtomVector connecting_atom_neighbors = connecting_atom->GetNode()->GetNodeNeighbors();
-	    for (gmml::AtomVector::iterator it3 = connecting_atom_neighbors.begin(); it3 != connecting_atom_neighbors.end(); it3++){
-		MolecularModeling::Atom* connecting_atom_neighbor = *it3;
-		if (connecting_atom_neighbor->GetResidue() == residue_to_be_removed){
-		    //The below find statement seems to be redundant, but if a connecting atom has n (n>1) bonds to the residue to be removed, the code wil
-			//try to remove this connecting atoms n times. To make sure this is done only once, I added the below find statement.
-		    if (std::find(res_node_connecting_atoms.begin(), res_node_connecting_atoms.end(), connecting_atom) != res_node_connecting_atoms.end())
-		        res_node->RemoveResidueNodeConnectingAtom(connecting_atom);
-			node_of_removed_residue->RemoveResidueNodeConnectingAtom(connecting_atom_neighbor);
-		}
-		
-	    }
-	}
-    }
-*/ //skip dealing with residue nodes. Take this back in as condition allows.
-}
-
 void Assembly::RemoveResidue(Residue *residue) // Added back in by Oliver so that Glycoprotein builder will compile.
 {
 //    ResidueVector newResidues = ResidueVector();

@@ -180,7 +180,8 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     std::string head_atom_hybridization = "";
     double head_tail_bond_length = gmml::BOND_LENGTH;
     //look up hybridization state based on atom type
-    for (int j = 0; j < gmml::MolecularMetadata::GLYCAM::GLYCAM06J1ATOMTYPESSIZE; j++){
+    int GLYCAM06J1ATOMTYPESSIZE = sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes)/sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[0]);
+    for (int j = 0; j < GLYCAM06J1ATOMTYPESSIZE; j++){
 	gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfo entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[j];
 	if (tail_atom_type == entry.type_){
 	    tail_atom_hybridization = entry.hybridization_;
@@ -191,50 +192,49 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     }
     
    //look up bond length based on hybridization of head and tail. 
-    for (int j = 0; j < gmml::MolecularMetadata::GLYCAM::GLYCAM06J1BONDLENGTHSSIZE; j++){
+    int GLYCAM06J1BONDLENGTHSSIZE = sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths)/sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths[0]);
+    for (int j = 0; j < GLYCAM06J1BONDLENGTHSSIZE; j++){
 	gmml::MolecularMetadata::GLYCAM::BondLengthByTypePair entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths[j];    
 	//Search bidirectionally e.g Cg-Os, Os-Cg
 	if ( (tail_atom_type == entry.type1_ && head_atom_type == entry.type2_) || (tail_atom_type == entry.type2_ && head_atom_type == entry.type1_) ){ 
-	    std::string length_str = entry.length_;
-	    std::stringstream s;
-	    s << length_str;
-	    s >> head_tail_bond_length;
+	    head_tail_bond_length = entry.length_;
 	}
     }
 
-    GeometryTopology::Coordinate* tail_atom_coordinate = tail_atom->GetCoordinates().at(0);
-    GeometryTopology::Coordinate* head_tail_atom_bond_vector = new GeometryTopology::Coordinate();
+    GeometryTopology::Coordinate* head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
+    GeometryTopology::Coordinate* tail_head_atom_bond_vector = new GeometryTopology::Coordinate();
     //for sp3 and sp2 hybridzation, sum up all bond vectors between tail atom and neighbors excluding head. Then tail-head bond vector is the opposite of the sum. 
 	//Normallize length of tail-head bond vector to bond length
-    if (tail_atom_hybridization == "sp3" || tail_atom_hybridization == "sp2"){
-	gmml::AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
-	std::vector<GeometryTopology::Coordinate*> tail_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
-	for(unsigned int i = 0; i < tail_atom_neighbors.size(); i++){
-	    MolecularModeling::Atom* neighbor = tail_atom_neighbors[i];
-	    if (neighbor != head_atom_of_child_residue){
+    //if (tail_atom_hybridization == "sp3" || tail_atom_hybridization == "sp2"){
+    if (head_atom_hybridization == "sp3" || head_atom_hybridization == "sp2"){
+	gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
+	std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
+	for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
+	    MolecularModeling::Atom* neighbor = head_atom_neighbors[i];
+	    if (neighbor != tail_atom){
 	        GeometryTopology::Coordinate* neighbor_coordinate = neighbor->GetCoordinates().at(0);
-		GeometryTopology::Coordinate* tail_neighbor_bond_vector = new GeometryTopology::Coordinate();
-		tail_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - tail_atom_coordinate->GetX());	
-		tail_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - tail_atom_coordinate->GetY());	
-		tail_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - tail_atom_coordinate->GetZ());	
-		tail_atom_bonds.push_back(tail_neighbor_bond_vector);
+		GeometryTopology::Coordinate* head_neighbor_bond_vector = new GeometryTopology::Coordinate();
+		head_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - head_atom_coordinate->GetX());	
+		head_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - head_atom_coordinate->GetY());	
+		head_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - head_atom_coordinate->GetZ());	
+		head_atom_bonds.push_back(head_neighbor_bond_vector);
 	    }
 	}
 	double total_x=0.0;
 	double total_y=0.0;
 	double total_z=0.0;
-	for (unsigned int j = 0; j < tail_atom_bonds.size(); j++){
-	    total_x += tail_atom_bonds[j]->GetX();
-	    total_y += tail_atom_bonds[j]->GetY();
-	    total_z += tail_atom_bonds[j]->GetZ();
+	for (unsigned int j = 0; j < head_atom_bonds.size(); j++){
+	    total_x += head_atom_bonds[j]->GetX();
+	    total_y += head_atom_bonds[j]->GetY();
+	    total_z += head_atom_bonds[j]->GetZ();
 	} 
-	head_tail_atom_bond_vector->SetX(-1 * total_x);
-	head_tail_atom_bond_vector->SetY(-1 * total_y);
-	head_tail_atom_bond_vector->SetZ(-1 * total_z);
-	double vector_length = head_tail_atom_bond_vector-> length();
-	head_tail_atom_bond_vector->SetX(head_tail_bond_length * head_tail_atom_bond_vector->GetX() / vector_length);
-	head_tail_atom_bond_vector->SetY(head_tail_bond_length * head_tail_atom_bond_vector->GetY() / vector_length);
-	head_tail_atom_bond_vector->SetZ(head_tail_bond_length * head_tail_atom_bond_vector->GetZ() / vector_length);
+	tail_head_atom_bond_vector->SetX(-1 * total_x);
+	tail_head_atom_bond_vector->SetY(-1 * total_y);
+	tail_head_atom_bond_vector->SetZ(-1 * total_z);
+	double vector_length = tail_head_atom_bond_vector-> length();
+	tail_head_atom_bond_vector->SetX(head_tail_bond_length * tail_head_atom_bond_vector->GetX() / vector_length);
+	tail_head_atom_bond_vector->SetY(head_tail_bond_length * tail_head_atom_bond_vector->GetY() / vector_length);
+	tail_head_atom_bond_vector->SetZ(head_tail_bond_length * tail_head_atom_bond_vector->GetZ() / vector_length);
     }//if sp3/sp2
 
     //Add in logics for sp, s hybridization later,but for now:
@@ -243,17 +243,17 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
 	std::exit(1);
     }
 
-    //Obtain new head position
-    GeometryTopology::Coordinate* new_head_atom_position = new GeometryTopology::Coordinate();
-    new_head_atom_position->SetX(tail_atom_coordinate->GetX() + head_tail_atom_bond_vector->GetX());
-    new_head_atom_position->SetY(tail_atom_coordinate->GetY() + head_tail_atom_bond_vector->GetY());
-    new_head_atom_position->SetZ(tail_atom_coordinate->GetZ() + head_tail_atom_bond_vector->GetZ());
-    //Obtain translation vector by new head positon - current head position
-    GeometryTopology::Coordinate* current_head_atom_position = head_atom_of_child_residue->GetCoordinates().at(0);
+    //Obtain relative tail position
+    GeometryTopology::Coordinate* relative_tail_atom_position = new GeometryTopology::Coordinate();
+    relative_tail_atom_position->SetX(head_atom_coordinate->GetX() + tail_head_atom_bond_vector->GetX());
+    relative_tail_atom_position->SetY(head_atom_coordinate->GetY() + tail_head_atom_bond_vector->GetY());
+    relative_tail_atom_position->SetZ(head_atom_coordinate->GetZ() + tail_head_atom_bond_vector->GetZ());
+    //Obtain translation vector by current tail positon - relative tail position
+    GeometryTopology::Coordinate* current_tail_atom_position = tail_atom->GetCoordinates().at(0);
     GeometryTopology::Coordinate* translation_vector = new GeometryTopology::Coordinate();
-    translation_vector->SetX(new_head_atom_position->GetX() - current_head_atom_position->GetX());
-    translation_vector->SetY(new_head_atom_position->GetY() - current_head_atom_position->GetY());
-    translation_vector->SetZ(new_head_atom_position->GetZ() - current_head_atom_position->GetZ());
+    translation_vector->SetX(current_tail_atom_position->GetX() - relative_tail_atom_position->GetX());
+    translation_vector->SetY(current_tail_atom_position->GetY() - relative_tail_atom_position->GetY());
+    translation_vector->SetZ(current_tail_atom_position->GetZ() - relative_tail_atom_position->GetZ());
     //Translate coordinates of all atoms in child residue by translation vector.
     gmml::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
     for (unsigned int i = 0; i < child_residue_atoms.size(); i++){

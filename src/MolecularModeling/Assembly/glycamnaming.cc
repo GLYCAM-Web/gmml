@@ -87,18 +87,13 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
     //Iterates on all oligosaccharides and update the naming map
     for(std::vector<Glycan::Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++)
     {
-std::cout << "deb1" << std::endl;
         int index = 0;
         Glycan::Oligosaccharide* oligo = *it;
-std::cout << "deb1.1" << std::endl;
         std::string oligo_name = oligo->oligosaccharide_name_;
-std::cout << "deb1.2" << std::endl;
         //In case that there is no terminal attached to the reducing end adds a temporary terminal residue to make the sequence parser able to parse the sequence
         if(oligo->terminal_.compare("") == 0)
             oligo_name = oligo_name + "1-OH";
-std::cout << "deb1.3" << std::endl;
         CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(oligo_name);
-std::cout << "deb1.4" << std::endl;
         //Gets the three letter code of all carbohydrates involved in current oligosaccharide
         CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
         if(oligo->terminal_.compare("") != 0)
@@ -111,7 +106,6 @@ std::cout << "deb1.4" << std::endl;
                 anomeric_o = oligo->root_->side_atoms_.at(0).at(1);*/
 	    //Anomeric group has now been removed from sidegroup if it shouldn't be part of oligosaccharide (e.g. NLN nitrogen). So now, find anomeric oxygen from node neighbors of anomeric carbon.
 	    AtomVector anomeric_c_neighbors = anomeric_c->GetNode()->GetNodeNeighbors();
-std::cout << "deb2" << std::endl;
 	    for (unsigned int i=0; i< anomeric_c_neighbors.size(); i++){
 		if (!anomeric_c_neighbors[i]-> GetIsCycle() && (anomeric_c_neighbors[i]->GetName().substr(0,1) == "O" || anomeric_c_neighbors[i]->GetName().substr(0,1) == "S" ||
 		      anomeric_c_neighbors[i]->GetName().substr(0,1) == "N") ){
@@ -120,7 +114,6 @@ std::cout << "deb2" << std::endl;
 		}
 	    }
 
-std::cout << "deb3 ano o name: "<<anomeric_o->GetName() << std::endl;
             if(anomeric_o != NULL && anomeric_c != NULL)
             {
                 AtomVector terminal_atoms = AtomVector();
@@ -130,42 +123,31 @@ std::cout << "deb3 ano o name: "<<anomeric_o->GetName() << std::endl;
                 {
                     //TODO:
                     //Add the residue mismatch into a structure for the Ontology usage
-std::cout << "terminal atom size: "<<terminal_atoms.size() << std::endl;
                     for(AtomVector::iterator it1 = terminal_atoms.begin(); it1 != terminal_atoms.end(); it1++)
                     {
-std::cout << "deb3.1 terminal name: " << terminal << std::endl;
-std::cout << "terminal atom name: " << (*it1)->GetName() << std::endl;
                         MolecularModeling::Atom* terminal_atom = *it1;
                         std::string terminal_atom_id = terminal_atom->GetId();
                         std::string terminal_residue_id = terminal_atom->GetResidue()->GetId();
                         if(pdb_glycam_residue_map.find(terminal_atom_id) == pdb_glycam_residue_map.end())
                             pdb_glycam_residue_map[terminal_atom_id] == std::vector<std::string>();
                         pdb_glycam_residue_map[terminal_atom_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
-std::cout << "deb3.2" << std::endl;
 			
                         if(pdb_glycam_residue_map.find(terminal_residue_id) == pdb_glycam_residue_map.end())
                             pdb_glycam_residue_map[terminal_residue_id] = std::vector<std::string>();
                         pdb_glycam_residue_map[terminal_residue_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
-std::cout << "deb3.3" << std::endl;
 
 			std::string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
-std::cout << "deb3.4" << std::endl;
 			if ( !(terminal_atom->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
 			{
-std::cout << "deb3.5" << std::endl;
 			    ResidueVector AllResiduesInAssembly = this->GetResidues();
-std::cout << "deb3.5.1" << std::endl;
 			    Residue* OldResidueForThisAtom = terminal_atom->GetResidue();
-std::cout << "deb3.5.2" << std::endl;
-			    int OldResidueIndex = std::distance(AllResiduesInAssembly.begin(), std::find(AllResiduesInAssembly.begin(), AllResiduesInAssembly.end(), OldResidueForThisAtom));
-std::cout << "deb3.5.3" << std::endl;
+			    unsigned int OldResidueIndex = std::distance(AllResiduesInAssembly.begin(), std::find(AllResiduesInAssembly.begin(), AllResiduesInAssembly.end(), OldResidueForThisAtom));
 			    //If the old residue housing this terminal atom is not the last residue, BehindOldResidue = OldResidueIndex +1 is fine. But if it is, doing so will cause out_of_range.
 			    //So,if not the last one, insert residue. Otherwise, add residue.
 			    Residue* new_terminal_residue = new Residue(this,new_terminal_residue_name);
 			    if (OldResidueIndex != AllResiduesInAssembly.size()-1){	//If old residue is not the last residue
 			        int BehindOldResidue = OldResidueIndex +1;
 			        Residue* ResidueBehindOldResidue = AllResiduesInAssembly.at(BehindOldResidue);
-std::cout << "deb3.5.4" << std::endl;
 
                                 this ->InsertResidue(ResidueBehindOldResidue ,new_terminal_residue); //Terminal residue should go behind its original residue, i.e. in front of the residue behind origin.
  		            }
@@ -173,25 +155,18 @@ std::cout << "deb3.5.4" << std::endl;
 			    else{	//Else, the old residue is the last residue.
 			        this ->AddResidue(new_terminal_residue);
 			    }
-std::cout << "deb3.5.5" << std::endl;
 												  //For example, the ROH coming from terminal BGC, should go after, instead of in front of BGC.
 			    std::string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id.
-std::cout << "deb3.5.6" << std::endl;
 			    new_terminal_residue->SetId(new_terminal_residue_id);
-std::cout << "deb3.5.7" << std::endl;
                             new_terminal_residue->AddAtom(terminal_atom);
-std::cout << "deb3.5.8" << std::endl;
                             terminal_atom->SetResidue(new_terminal_residue);
-std::cout << "deb3.5.9" << std::endl;
                             OldResidueForThisAtom->RemoveAtom(terminal_atom);
-std::cout << "deb3.6" << std::endl;
 			}
                     }
 
                 }
             }
 	}
-std::cout << "deb4" << std::endl;
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_glycam06_residue_tree, index);
     }
