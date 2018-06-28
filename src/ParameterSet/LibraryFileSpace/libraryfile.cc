@@ -556,7 +556,7 @@ void LibraryFile::Write(const std::string& library_file)
     }
     catch(...)
     {
-        throw LibraryFileProcessingException(__LINE__,"File could not be created");
+        throw LibraryFileSpace::LibraryFileProcessingException(__LINE__,"File could not be created");
     }
     try
     {

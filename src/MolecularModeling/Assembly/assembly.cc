@@ -51,6 +51,7 @@
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
+#include "../../../includes/ParameterSet/OffFileSpace/offfile.hpp"         //Added by ayush on 06/16/18 for OffFile
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfile.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
@@ -537,7 +538,7 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
 Assembly::CoordinateVector Assembly::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
   CoordinateVector coordinates;
   for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); it1++ ) {
-    Atom* atom = ( *it1 );
+    MolecularModeling::Atom* atom = ( *it1 );
     CoordinateVector atom_coordinates = atom->GetCoordinates();
     for( CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
       coordinates.push_back( ( *it2 ) );
@@ -986,7 +987,7 @@ void Assembly::GenerateMoleculesInAssembly()
 
     for(ResidueNodeVector::iterator it = residuenodes_.begin(); it != residuenodes_.end(); it++)
     {
-         ResidueNode* residuenode = (*it);
+         MolecularModeling::ResidueNode* residuenode = (*it);
          if(residuenode->GetIsVisited()==false)
          {
              GenerateMoleculesDFSUtil(residuenode);
@@ -998,14 +999,14 @@ void Assembly::GenerateMoleculesInAssembly()
 
 }
 
-void Assembly::GenerateMoleculesDFSUtil(ResidueNode* DFSresiduenode)
+void Assembly::GenerateMoleculesDFSUtil(MolecularModeling::ResidueNode* DFSresiduenode)
 {
         DFSresiduenode->SetIsVisited(true);
         ResidueNodeVector residuenode_neighbors=DFSresiduenode->GetResidueNodeNeighbors();
 
         for(ResidueNodeVector::iterator it2 = residuenode_neighbors.begin(); it2 != residuenode_neighbors.end(); it2++)
         {
-               ResidueNode* current_residuenode_neighbor = (*it2);
+               MolecularModeling::ResidueNode* current_residuenode_neighbor = (*it2);
                if(current_residuenode_neighbor->GetIsVisited()==false)
                {
                     GenerateMoleculesDFSUtil(current_residuenode_neighbor);
@@ -1017,7 +1018,7 @@ void Assembly::GenerateMoleculesDFSUtil(ResidueNode* DFSresiduenode)
 }
 
 //Added by ayush on 11/12/17 for molecules in assembly
-void Assembly::AddMolecule(Molecule *molecule)
+void Assembly::AddMolecule(MolecularModeling::Molecule *molecule)
 {
     int max_index_=molecules_.size()+1;
     molecule->SetMoleculeIndex(max_index_);
@@ -1026,7 +1027,7 @@ void Assembly::AddMolecule(Molecule *molecule)
 
 
  //Added by ayush on 04/11/18 for TopologyFix in assembly
-Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(Atom* start_atom, Atom* direction_atom , AtomVector ignore_list)
+Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(MolecularModeling::Atom* start_atom, MolecularModeling::Atom* direction_atom , AtomVector ignore_list)
 {
 
         if(start_atom == NULL || direction_atom == NULL){
@@ -1039,7 +1040,7 @@ Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(Atom* start_ato
 
                  for(AtomVector::iterator it = start_atom_neighbors.begin(); it != start_atom_neighbors.end(); it++)
                  {
-                     Atom* atom = *it;
+                     MolecularModeling::Atom* atom = *it;
                     if(atom->GetId().compare(direction_atom->GetId())==0)
                     { isNeighbor=true;}
                  }
@@ -1052,7 +1053,7 @@ Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(Atom* start_ato
                     AtomVector direction_atom_neighbors=direction_atom->GetNode()->GetNodeNeighbors();
                     for(AtomVector::iterator it = direction_atom_neighbors.begin(); it != direction_atom_neighbors.end(); it++)
                     {
-                          Atom* neighbor_atom = *it;
+                          MolecularModeling::Atom* neighbor_atom = *it;
                           if(neighbor_atom->GetNode()->GetIsVisited()==false)
                           {
                                 BondedAtomsByStartDirectionDFSUtil(neighbor_atom, direction_atom_neighbors, ignore_list);
@@ -1067,7 +1068,7 @@ Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(Atom* start_ato
         return bonded_atoms_bystartdirection_;
 }
 
-void Assembly::BondedAtomsByStartDirectionDFSUtil(Atom* DFSatom, AtomVector start_atom_neighbors, AtomVector ignore_list)
+void Assembly::BondedAtomsByStartDirectionDFSUtil(MolecularModeling::Atom* DFSatom, AtomVector start_atom_neighbors, AtomVector ignore_list)
 {
     bool toConsider=false; //Check if the atom is part of the start atom neighor or ignore list and set toConsider accordingly. If toConsider is true, skip the atom.
 
@@ -1075,7 +1076,7 @@ void Assembly::BondedAtomsByStartDirectionDFSUtil(Atom* DFSatom, AtomVector star
 
     for(AtomVector::iterator it1 = start_atom_neighbors.begin(); it1!= start_atom_neighbors.end(); it1++)
     {
-        Atom* atom = *it1;
+        MolecularModeling::Atom* atom = *it1;
        if(atom->GetId().compare(DFSatom->GetId())==0)
        {
            toConsider = true;
@@ -1084,7 +1085,7 @@ void Assembly::BondedAtomsByStartDirectionDFSUtil(Atom* DFSatom, AtomVector star
 
      for(AtomVector::iterator it2 = ignore_list.begin(); it2!= ignore_list.end(); it2++)
     {
-        Atom* atom = *it2;
+        MolecularModeling::Atom* atom = *it2;
        if(atom->GetId().compare(DFSatom->GetId())==0)
        {
            toConsider = false;
@@ -1097,7 +1098,7 @@ void Assembly::BondedAtomsByStartDirectionDFSUtil(Atom* DFSatom, AtomVector star
 
         for(AtomVector::iterator it3 = DFSatom_neighbors.begin(); it3!= DFSatom_neighbors.end(); it3++)
         {
-            Atom* atom = *it3;
+            MolecularModeling::Atom* atom = *it3;
                 if(atom->GetNode()->GetIsVisited()==false)
                 {
                     BondedAtomsByStartDirectionDFSUtil(DFSatom, start_atom_neighbors, ignore_list);
@@ -1109,13 +1110,13 @@ void Assembly::BondedAtomsByStartDirectionDFSUtil(Atom* DFSatom, AtomVector star
 }
 
 
-bool Assembly::CheckIfAtomExistInAssembly(Atom* toCheckAtom)
+bool Assembly::CheckIfAtomExistInAssembly(MolecularModeling::Atom* toCheckAtom)
 {
     bool status = false;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     for(AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
     {
-        Atom* atom = *it;
+        MolecularModeling::Atom* atom = *it;
        if(atom->GetId().compare(toCheckAtom->GetId())==0)
        {
             status=true;
@@ -1130,7 +1131,7 @@ Assembly::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector ato
 {
     CoordinateVector coordinatesByIndex= CoordinateVector();
     for( AtomVector::iterator it1 = atomList.begin(); it1 != atomList.end(); it1++ ) {
-      Atom* atom = ( *it1 );
+      MolecularModeling::Atom* atom = ( *it1 );
       CoordinateVector atom_coordinates = atom->GetCoordinates();
       if(CoordinateIndex < atom_coordinates.size())
       {
@@ -1141,6 +1142,13 @@ Assembly::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector ato
       }
     }
     return coordinatesByIndex;
+}
+
+// //Added by ayush on 06/16/18 for OffFile
+void Assembly::CreateOffFileFromAssembly(std::string file_name, int CoordinateIndex)
+{
+    OffFileSpace::OffFile* off_file = new OffFileSpace::OffFile();
+    off_file->Write(file_name, CoordinateIndex, this);
 }
 
 //////////////////////////////////////////////////////////
@@ -1162,7 +1170,7 @@ void Assembly::Print(std::ostream &out)
     {
         for(ResidueVector::iterator it = residues_.begin(); it != residues_.end(); it++)
         {
-            Residue* residue = (*it);
+            MolecularModeling::Residue* residue = (*it);
             residue->Print(out);
         }
     }
