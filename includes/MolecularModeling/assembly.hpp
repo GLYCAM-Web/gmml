@@ -1718,6 +1718,12 @@ namespace MolecularModeling
              */
             CoordinateVector GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex);
 
+            /*! \fn                                                                          //Added by ayush on 06/16/18 for OffFile
+              * A function that create an OFF file from Assembly
+              * @param CoordinateIndex The index of the coordinate set
+              */
+            void CreateOffFileFromAssembly(std::string file_name, int CoordinateIndex);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

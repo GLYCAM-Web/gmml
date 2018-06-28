@@ -98,8 +98,6 @@ namespace MolecularModeling
             int molecule_index_;                            /*!< An index of the molecule in an assembly >*/
             AtomVector molecule_atoms_;                     /*!< List of all atoms in the current molecule object >*/
             ResidueVector molecule_residues_;               /*!< List of residues involved in the current object of molecule >*/
-
-
     };
 }
 
