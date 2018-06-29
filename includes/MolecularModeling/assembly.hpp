@@ -1176,6 +1176,13 @@ namespace MolecularModeling
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
             std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type = "csv");
+            /*! \fn
+            * A function in order to extract information from ontology based on user input
+            * @param searchType The type of search submitted from GlyFinder
+            * @param searchTerm The search term submitted from GlyFinder
+            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
+            */
+            std::string MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type = "csv");
 
             /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles

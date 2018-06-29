@@ -1,5 +1,62 @@
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 
+std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type)
+{
+  std::stringstream query;
+  
+  query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
+  query << " DISTINCT ?residue_links ?glycosidic_linkage ?title ?resolution ?Mean_B_Factor"
+           "?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI"
+           "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments)" 
+           "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)" 
+           "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)";
+  query << Ontology::WHERE_CLAUSE;
+  query << "?pdb_file     :identifier    \"" << pdb_id << "\";\n";
+  query << "              :hasOligo      ?oligo.\n";
+  query << "FILTER regex(?oligo, \"" << oligo << "\")\n";
+  gmml::FindReplaceString(oligo_sequence, "[", "\\\\[");
+  gmml::FindReplaceString(oligo_sequence, "]", "\\\\]");
+  gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
+  query << "?oligo        :oligoName     \"" << oligo_sequence << "\".\n";
+  query << "?pdb_file     :hasTitle               ?title;\n";
+  query << "              :hasAuthors             ?authors.\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file     :hasJournal             ?journal.}\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file     :hasDOI                 ?DOI.}\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file     :hasPMID                ?PMID.}\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file     :hasResolution          ?resolution.}\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.}\n";
+  query << "OPTIONAL {";
+  query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
+  query << "OPTIONAL {";
+  query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}\n";
+  query << "OPTIONAL {";
+  query << "?linkage      :hasParent 	            ?oligo;\n";
+  query << "              :glycosidicLinkage      ?glycosidic_linkage.}\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file       :hasNote       ?errorNote.\n";
+  query << "?errorNote	    :NoteType      \"error\".\n";
+  query << "?errorNote      :description   ?error.}\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file       :hasNote       ?warningNote.\n";
+  query << "?warningNote    :NoteType      \"warning\".\n";
+  query << "?warningNote    :description   ?warning.}\n";
+  query << "OPTIONAL {";
+  query << "?pdb_file       :hasNote       ?commentNote.\n";
+  query << "?commentNote    :NoteType      \"comment\".\n";
+  query << "?commentNote    :description   ?comment.}\n";
+  query << Ontology::END_WHERE_CLAUSE << "\n";
+  
+  
+  return FormulateCURLGF(output_file_type, query.str(), url);
+
+}
+
+
 std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 {
     std::stringstream query;
@@ -7,64 +64,56 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     search << searchType;
        
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-    query << " REDUCED ?pdb ?oligo_sequence ?residue_links ?glycosidic_linkage ?title "
-             "?resolution ?Mean_B_Factor ?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI "
-             "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) "
-             "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) "
-             "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";  
+    query << " DISTINCT ?pdb ?oligo ?oligo_sequence \n";
+    if(isComment == 1)
+    {
+      query << "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) ";
+    }
+    if(isWarning == 1)
+    {
+      query << "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) ";
+    }
+    if(isError == 1)
+    {
+       query << "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";  
+    }     
     query << Ontology::WHERE_CLAUSE;
     query << "?pdb_file     :identifier             ?pdb.\n";
     if(search.str()=="PDB")
     {
       query << "VALUES ?pdb { \"" << searchTerm << "\" }\n";
     }
-    query << "?pdb_file     :hasTitle               ?title.\n";
-    query << "?pdb_file     :hasAuthors             ?authors.\n";
-    query << "OPTIONAL {";
-    query << "?pdb_file     :hasJournal             ?journal.}\n";
-    query << "OPTIONAL {";
-    query << "?pdb_file     :hasDOI                 ?DOI.}\n";
-    query << "OPTIONAL {";
-    query << "?pdb_file     :hasPMID                ?PMID.}\n";
-    if(resolution_max == -1 && resolution_min == -1)
+    if((resolution_max != -1) | (resolution_min != -1))
     {
-      query << "OPTIONAL {";
+      query << "?pdb_file     :hasResolution          ?resolution.\n";
     }
-    query << "?pdb_file     :hasResolution          ?resolution.";
     if(resolution_max != -1)
     {
-      query << "FILTER (" << resolution_max << " > ?resolution)";
+      query << "FILTER (" << resolution_max << " > ?resolution)\n";
     }
     if(resolution_min != -1)
     {
-      query << "FILTER (" << resolution_min << " < ?resolution)";
+      query << "FILTER (" << resolution_min << " < ?resolution)\n";
     }
-    if(resolution_max == -1 && resolution_min == -1)
+    if((b_factor_max != -1) | (b_factor_min != -1))
     {
-      query << "}";
+      query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.\n";
     }
-    query << "\n";
-    
     if(b_factor_max != -1)
     {
-      query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.";
-      query << "FILTER (" << b_factor_max << " > ?Mean_B_Factor)";
+      query << "FILTER (" << b_factor_max << " > ?Mean_B_Factor)\n";
     }
     if(b_factor_min != -1)
     {
-      query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.";
-      query << "FILTER (" << b_factor_min << " < ?Mean_B_Factor)";
+      query << "FILTER (" << b_factor_min << " < ?Mean_B_Factor)\n";
     }
-    if(b_factor_max == -1 && b_factor_min == -1)
-    {
-      query << "OPTIONAL {";
-      query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.}";
-    }
-    query << "\n";
-    query << "?pdb_file :hasOligo ?oligo.\n";
+    query << "?pdb_file     :hasOligo               ?oligo.\n";
     query << "?oligo        :oligoName              ?oligo_sequence.\n";
     if(search.str()=="Oligo_REGEX")
     {
+      gmml::FindReplaceString(searchTerm, "[", "\\\\[");
+      gmml::FindReplaceString(searchTerm, "]", "\\\\]");
+      gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
       query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";    
     }
     if(search.str()=="Condensed_Sequence")
@@ -74,63 +123,37 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
       query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
     }
-    
-    if(oligo_b_factor_max == -1 && oligo_b_factor_min == -1)
+    if((oligo_b_factor_max != -1) | (oligo_b_factor_min != -1))
     {
-      query << "OPTIONAL {";
-      query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}";
+      query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.\n";
     }
-    query << "\n";
     if(oligo_b_factor_max != -1)
     {
-      query << "FILTER (" << oligo_b_factor_max << " > ?oligo_mean_B_Factor)";
+      query << "FILTER (" << oligo_b_factor_max << " > ?oligo_mean_B_Factor)\n";
     }
     if(oligo_b_factor_min != -1)
     {
-      query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)";
+      query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)\n";
     }
-
-    query << "OPTIONAL {";
-    query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
-    query << "OPTIONAL {";
-    query << "?linkage      :hasParent 	            ?oligo;\n";
-    query << "      :glycosidicLinkage      ?glycosidic_linkage.}\n";
-    if(isError == 0)
+    if(isError == 1)
     {
-      query << "OPTIONAL {";
+      query << "?pdb_file       :hasNote       ?errorNote.\n";
+      query << "?errorNote	    :NoteType      \"error\".\n";
+      query << "?errorNote      :description   ?error.\n";
     }
-    query << "?pdb_file      :hasNote    ?errorNote.\n";
-    query << "?errornote	       :NoteType    \"error\".\n";
-    query << "?errornote        :description ?error.";
-    if(isError == 0)
+    if(isWarning == 1)
     {
-      query << "}";
+      query << "?pdb_file       :hasNote       ?warningNote.\n";
+      query << "?warningNote    :NoteType      \"warning\".\n";
+      query << "?warningNote    :description   ?warning.\n";
     }
-    query << "\n";
-    if(isWarning == 0)
+    if(isComment == 1)
     {
-      query << "OPTIONAL {";
+      query << "?pdb_file       :hasNote       ?commentNote.\n";
+      query << "?commentNote    :NoteType      \"comment\".\n";
+      query << "?commentNote    :description   ?comment.\n";
     }
-    query << "?pdb_file      :hasNote    ?warningNote.\n";
-    query << "?warningNote	       :NoteType    \"warning\".\n";
-    query << "?warningNote        :description ?warning.";
-    if(isWarning == 0)
-    {
-      query << "}";
-    }
-    query << "\n";
-    if(isComment == 0)
-    {
-      query << "OPTIONAL {";
-    }
-    query << "?pdb_file      :hasNote    ?commentNote.\n";
-    query << "?commentNote	       :NoteType    \"comment\".\n";
-    query << "?commentNote        :description ?comment.";
-    if(isComment == 0)
-    {
-      query << "}";
-    }
-    query << "\n";
+  
     query << Ontology::END_WHERE_CLAUSE << "\n";
     query << "ORDER BY  ?" << sortBy << "\n";
     if(resultsPerPage != -1)
@@ -140,11 +163,6 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     query << "OFFSET " << resultsPerPage*(page - 1) << "\n";
     
     
-  
-    
-    
-    
-
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 // 
