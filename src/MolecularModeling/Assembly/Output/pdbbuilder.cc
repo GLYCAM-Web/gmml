@@ -99,7 +99,7 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
 
     PdbFileSpace::PdbLinkSection* link_card = new PdbFileSpace::PdbLinkSection();
     //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
-    ExtractPdbLinkSectionFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
+    //ExtractPdbLinkSectionFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
     link_card->SetRecordName("LINK");
     pdb_file->SetLinks(link_card);
 
@@ -139,7 +139,8 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
         PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
         PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap het_atom_map = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap();
         PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector het_atom_vector = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
-        ResidueVector residues = assembly->GetResidues();
+        //ResidueVector residues = assembly->GetResidues();
+        ResidueVector residues = this->GetResidues();
         for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
             Residue* residue = (*it1);

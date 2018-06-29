@@ -418,9 +418,23 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
         {
             int oxygen_position = residue->GetOxygenPosition();
             open_valences[parent].push_back(oxygen_position);
-        }
-    }
 
+	    CondensedSequenceResidue* parent_residue =  residue_tree.at(residue->GetParentId());
+            CondensedSequenceResidue::DerivativeMap parent_residue_derivatives = parent_residue->GetDerivatives();
+            /*for(CondensedSequenceResidue::DerivativeMap::iterator it = parent_residue_derivatives.begin(); it != parent_residue_derivatives.end(); ++it)
+            {
+                int derivative_index = it->first;
+		open_valences[parent].push_back(derivative_index);
+	    }*/
+        }
+
+        CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = residue->GetDerivatives();
+        for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
+        {
+            int derivative_index = it->first;
+	    open_valences[i].push_back(derivative_index);
+	}
+    }
     std::string terminal = residue_tree.at(0)->GetName();
     this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)));
 

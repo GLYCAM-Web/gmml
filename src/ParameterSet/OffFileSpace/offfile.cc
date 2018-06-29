@@ -36,7 +36,7 @@ using OffFileSpace::OffFile;
             ResidueVector residues = assembly->GetResidues();
             unit_name_=assembly->GetName();
             out_file << "!!index array str" << std::endl;
-            out_file  << unit_name_ << std::endl;
+            out_file  << "\"" <<unit_name_ << "\"" << std::endl;
             WriteAtomSection(out_file,residues);
             WriteAtomPertInfoSection(out_file,residues);
             WriteBoundBoxSection(out_file,assembly);
@@ -72,7 +72,7 @@ using OffFileSpace::OffFile;
                 {
                     MolecularModeling::Atom* atom = *it;
                     atom_count++;
-                stream << "\"" << atom->GetName() << "\" " << "\"" << atom->GetAtomType() << "\" " << "0" << " " << residue_count << " " << FLAG << " "
+                stream << "\"" << atom->GetName() << "\" " << "\"" << atom->MolecularDynamicAtom::GetAtomType() << "\" " << "0" << " " << residue_count << " " << FLAG << " "
                 << atom->GetIndex() << " " << " 0 " << " " << std::fixed << atom->GetCharge() << std::endl;
                 }
             }
@@ -185,7 +185,7 @@ using OffFileSpace::OffFile;
     void OffFileSpace::OffFile::WriteResidueConnectSection(std::ofstream& stream, ResidueVector assembly_residues)
     {
             
-            stream << "!entry." << unit_name_ << ".unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x" << std::endl;
+            stream << "!entry." << "\"" << unit_name_ << "\"" << ".unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x" << std::endl;
         for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
             {
 
@@ -232,7 +232,7 @@ using OffFileSpace::OffFile;
             std::string restype;
             unsigned int imagingx;
 
-            stream << "!entry." <<unit_name_<<".unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx" << std::endl;
+            stream << "!entry." << "\"" <<unit_name_<< "\"" << ".unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx" << std::endl;
             for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
                 {
                     MolecularModeling::Residue* residue = (*it);
