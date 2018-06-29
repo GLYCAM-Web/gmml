@@ -60,7 +60,7 @@ namespace MolecularModeling
             typedef std::vector<Glycan::Note*> NoteVector;
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
             typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
-	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library. 
+	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -262,13 +262,12 @@ namespace MolecularModeling
               * Set the residues_ attribute of the current assembly
               * @param residue The residue of the current object
               */
-            void InsertResidue(int distance, Residue *residue);
+	    void InsertResidue(Residue *insert_infront_of, Residue *to_be_inserted); //Added by Yao @ 06-25-2018
             /*! \fn
-              * A function in order to erase a residue from the current object
+              * A function in order to remove a residue from the current object
               * Set the residues_ attribute of the current assembly
-              * @param distance The distance from beginning of ResidueVector to residue to be removed.
+              * @param residue The residue to be removed.
               */
-            void EraseResidue(int distance);
             void RemoveResidue(Residue *residue);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
@@ -346,10 +345,17 @@ namespace MolecularModeling
 * @{
 */
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
-	    ResidueVector ConvertCondensedSequence2AssemblyResidues(std::string& sequence, TemplateAssembly* template_assembly);
-	    void SetGlycam06ResidueBonding (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>& 
-			condensed_sequence_child_parent_map, std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>& condensed_sequence_assembly_residue_map,
-			ResidueVector& query_residues);
+
+	    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file);	//Created by Yao 06/25/2018, replace old version above
+
+	    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >
+		 ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, TemplateAssembly* template_assembly);
+
+	    void SetGlycam06ResidueBonding(std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >& condensed_sequence_assembly_residue_map);
+	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue);
+
+
+	    void SetResidueResidueBondDistance(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom);
 /** @}*/
             AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
                                                                  std::string prep_file, std::string parameter_file,
@@ -449,7 +455,7 @@ namespace MolecularModeling
 	      * @param prep_file A pointer to prep file
 	      * @param query_residue_names the names of all residues needed
 	      */
-	    TemplateAssembly* BuildTemplateAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std::vector<std::string>& query_residue_names);
+	    TemplateAssembly* BuildTemplateAssemblyFromPrepFile (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, PrepFileSpace::PrepFile* prep_file);
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
@@ -997,30 +1003,30 @@ namespace MolecularModeling
             * @param pdb_stream The output stream of PDB triples to be added to the main output stream
             */
             void CreateTitle(std::string pdb_resource, std::stringstream& pdb_stream);
-            /*! \fn
-            * A function in order to create a turtle formatted triple (subject predicate object) and appending it to the output file stream
-            * @param s The subject part of the triple
-            * @param p The predicate part of the triple
-            * @param o The object part of the triple
-            * @param stream The output stream which is going to be written in the ontology turtle file
-            */
-            void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
-            /*! \fn
-            * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
-            * @param s The subject part of the triple
-            * @param p The predicate part of the triple
-            * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
-            * @param stream The output stream which is going to be written in the ontology turtle file
-            */
-            void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
-            /*! \fn
-            * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
-            * @param s The subject part of the triple
-            * @param p The predicate part of the triple
-            * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
-            * @param stream The output stream which is going to be written in the ontology turtle file
-            */
-            void AddDecimal(std::string s, std::string p, float o, std::stringstream& stream);
+            // /*! \fn
+            // * A function in order to create a turtle formatted triple (subject predicate object) and appending it to the output file stream
+            // * @param s The subject part of the triple
+            // * @param p The predicate part of the triple
+            // * @param o The object part of the triple
+            // * @param stream The output stream which is going to be written in the ontology turtle file
+            // */
+            // void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream);
+            // /*! \fn
+            // * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
+            // * @param s The subject part of the triple
+            // * @param p The predicate part of the triple
+            // * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
+            // * @param stream The output stream which is going to be written in the ontology turtle file
+            // */
+            // void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream);
+            // /*! \fn
+            // * A function in order to create a turtle formatted triple (subject predicate object=literal value) and appending it to the output file stream
+            // * @param s The subject part of the triple
+            // * @param p The predicate part of the triple
+            // * @param o The object part of the triple, the object is not a resource in this case. It can be a literal value e.g. string , int
+            // * @param stream The output stream which is going to be written in the ontology turtle file
+            // */
+            // void AddDecimal(std::string s, std::string p, float o, std::stringstream& stream);
             /*! \fn
             * A function in order to create the an ontology resource based on the given resource type
             * @param resource The resource type e.g. PDB, Residue, Atom
@@ -1402,7 +1408,7 @@ namespace MolecularModeling
 	      */
 	    void SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_atom, AtomVector & cycle_atoms, AtomVector & visited_atoms);
 	    /*! \fn
-	      * A function to make all atoms of a monosaccharide a new residue, replacing the corresponding old one in input file. This is to solve the problem wher one residue contains more than one sugar. 
+	      * A function to make all atoms of a monosaccharide a new residue, replacing the corresponding old one in input file. This is to solve the problem wher one residue contains more than one sugar.
 	      * @param monos a vector of Monosaccharide*, containing all identified monosaccharides in the input files.
 	      */
 	    void UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide*>& monos);
@@ -1673,6 +1679,48 @@ namespace MolecularModeling
 
             double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
             AtomVector GetAllAtomsOfAssemblyWithinXAngstromOf(GeometryTopology::Coordinate *coordinate, double distance);
+
+            /*! \fn                                                                              //Added by ayush on 04/11/18 for TopologyFix in assembly
+              * A function that returns list of atoms bonded to each other by start and direction in the Assembly. eg:(start)Atom1->(direction)Atom2
+              * @param start_atom The starting point in the assembly list of Atoms.
+              * @param direction_atom The direction for traversing the bonding among atom list of Assembly
+              * @param ignore_list The list of atoms which is ignored during traversal
+              * @return bonded_atoms_bystartdirection_ A list of assembly atoms bonded to each other based on start point and direction
+              */
+            AtomVector GetAllBondedAtomsByStartDirection(Atom* start_atom, Atom* direction_atom , AtomVector ignore_list);
+
+
+            /*! \fn                                                                          //Added by ayush on 04/11/18 for TopologyFix in assembly
+              * A function to check if an atom exists in Assebly AtomList
+              * @param An atom to check
+              * @start_atom_neighbors Neighbors of the start atom in considertion
+              * @ignore_list Ignore list of atoms provided by the user
+              * @return True/False based on existence
+              */
+            bool CheckIfAtomExistInAssembly(Atom* atom);
+
+            /*! \fn                                                                              //Added by ayush on 04/11/18 for TopologyFix in assembly
+              * A function that performs the Depth First Search traversal to find the bonded atoms based on start and direction atoms.
+              * @param atom The current atom under consideration.
+              * @param start_atom_neighbors The list of neighbors of the current atom.
+              * @param ignore_list The list of atoms which is ignored during traversal
+              */
+           void BondedAtomsByStartDirectionDFSUtil(Atom* atom, AtomVector start_atom_neighbors, AtomVector ignore_list);
+
+           /*! \fn                                                                          //Added by ayush on 04/16/18 for TopologyFix in assembly
+             * A function that returns the cooridnate vector corresponding to the atom vector based on the index specified.
+             * @param atomList Vector of atoms (Atoms)
+             * @param CoordinateIndex The index of the coordinate set that should be extracted
+             * @return Vector of pointers to the coordinates for the vector of atoms, in the same order as the vector of atoms.
+             */
+            CoordinateVector GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex);
+
+            /*! \fn                                                                          //Added by ayush on 06/16/18 for OffFile
+              * A function that create an OFF file from Assembly
+              * @param CoordinateIndex The index of the coordinate set
+              */
+            void CreateOffFileFromAssembly(std::string file_name, int CoordinateIndex);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////

@@ -1,0 +1,4 @@
+#ifndef OFFFILEATOM_HPP
+#define OFFFILEATOM_HPP
+
+#endif // OFFFILEATOM_HPP

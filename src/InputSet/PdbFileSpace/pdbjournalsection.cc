@@ -127,8 +127,7 @@ PdbJournalSection::PdbJournalSection(std::stringstream& stream_block)
         else if(subrecord == "DOI")
         {
           std::string new_doi = line.substr(19,59);
-          gmml::Trim(new_doi);
-          doi_.append(new_doi);
+          this->SetDOI( new_doi );
         }
     getline(stream_block, line);
     temp = line;
@@ -232,7 +231,11 @@ void PdbJournalSection::SetPMID(const std::string pmid)
 
 void PdbJournalSection::SetDOI(const std::string doi)
 {
-    doi_ = doi;
+    this->doi_ += doi;
+	gmml::Trim( this->doi_ );
+    gmml::TrimSpaces( this->doi_ );
+	// I know this is weird to Trim spaces then add one space back, but it was/is necessary. DT
+	this->doi_ += " ";
 }
 
 void PdbJournalSection::SetText(const std::string text)

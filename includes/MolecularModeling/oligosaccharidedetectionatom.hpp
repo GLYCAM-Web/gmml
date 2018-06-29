@@ -38,6 +38,8 @@ namespace MolecularModeling
               * @return IsAnomericCarbon_ attribute of the current object of this class
               */
             bool GetIsAnomericCarbon();
+
+	    std::string GetNaming();
 /** @}*/
 
              /////////////////////////////////////////////////////////
@@ -64,6 +66,8 @@ namespace MolecularModeling
 	      * @param is_anomeric_carbon A boolean indicating if this atom is anomeric.
               */
             void SetIsAnomericCarbon(bool is_anomeric_carbon);
+
+	    void SetNaming(std::string naming);
 /** @}*/
 
             //////////////////////////////////////////////////////////
@@ -83,6 +87,7 @@ namespace MolecularModeling
 	    bool IsCycle_;						// A boolean indicating if this atom is part of a cycle(ring).
 	    bool IsSideChain_;						// A boolean indicating if this atom is part of a sidechain.
 	    bool IsAnomericCarbon_;
+	    std::string naming_;
 
     };//class
 

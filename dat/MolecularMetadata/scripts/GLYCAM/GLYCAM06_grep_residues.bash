@@ -43,6 +43,7 @@ echo "#!/bin/bash
 #####################
 
 ## Plain hexose monosaccharides
+## For most of these, the gauche effect is handled below
 TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=0 '
 for i in T N E F L G K M Q H ; do 
 	## alpha D
@@ -111,8 +112,9 @@ for i in v y w ; do
     	grep   ^.${i}B$  ${RN} >> ${SL}
 	echo '"' >> ${OF}
 done
+
 ## bacillosamine
-TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=0 N-acetyl beta '
+TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=0 N-acetyl beta gauche-effect=na '
 	# D
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} D-isomer \" " >> ${OF}
@@ -190,7 +192,7 @@ TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge
     	grep  ^.ys$  ${RN} >> ${SL}
 	echo '"' >> ${OF}
 ## uronates (acids)
-TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=-1 uronate '
+TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=-1 uronate gauche-effect=na '
 for i in O Z U ; do 
 	## alpha D
 	echo 'i=$((i+1))' >> ${OF}
@@ -224,27 +226,67 @@ for i in o z u ; do
 	echo '"' >> ${OF}
 done
 ## protonated uronates
-TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 alpha L-isomer formal-charge=0 uronate protonated '
+TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 alpha L-isomer formal-charge=0 uronate protonated gauche-effect=na '
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OF}
 	echo 'NAMES[${i}]=" YuAP "' >> ${OF}
     	echo 'YuAP' >> ${SL}
-TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 beta D-isomer formal-charge=0 uronate protonated '
+TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 beta D-isomer formal-charge=0 uronate protonated gauche-effect=na '
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OF}
 	echo 'NAMES[${i}]=" 0ZBP "' >> ${OF}
     	echo '0ZBP' >> ${SL}
 
 ## unsaturated uronates
-TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=-1 uronate unsaturated-uronate ' 
+TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=-1 uronate unsaturated-uronate gauche-effect=na ' 
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OF}
 	echo 'NAMES[${i}]=" 045 245 "' >> ${OF}
     	echo  "045
 245" >> ${SL}
 
+# gauche effect defaults
+# gluco like
+GAUCHETYPE=' N E G M Y W n e g m y w  '
+for i in ${GAUCHETYPE} ; do 
+	echo 'i=$((i+1))' >> ${OF}
+	echo "TYPES[\${i}]=\" gauche-effect=gluco \" " >> ${OF}
+	echo 'NAMES[${i}]="' >> ${OF}
+    	grep   ^.${i}A$  ${RN} >> ${OF}
+    	grep   ^.${i}B$  ${RN} >> ${OF}
+	echo '"' >> ${OF}
+done
+GAUCHETYPE=' YN Yn YNP YnP YS Ys yS ys '
+for i in ${GAUCHETYPE} ; do 
+	echo 'i=$((i+1))' >> ${OF}
+	echo "TYPES[\${i}]=\" gauche-effect=gluco \" " >> ${OF}
+	echo 'NAMES[${i}]="' >> ${OF}
+    	grep   ^.${i}$  ${RN} >> ${OF}
+	echo '"' >> ${OF}
+done
+# galacto like
+GAUCHETYPE='T L I K V t l i k v'
+for i in ${GAUCHETYPE} ; do 
+	echo 'i=$((i+1))' >> ${OF}
+	echo "TYPES[\${i}]=\" gauche-effect=galacto \" " >> ${OF}
+	echo 'NAMES[${i}]="' >> ${OF}
+    	grep   ^.${i}A$  ${RN} >> ${OF}
+    	grep   ^.${i}B$  ${RN} >> ${OF}
+	echo '"' >> ${OF}
+done
+# deoxy, so although there is an exocyclic C6, there is no gauche effect
+GAUCHETYPE='F Q H f q h'
+for i in ${GAUCHETYPE} ; do 
+	echo 'i=$((i+1))' >> ${OF}
+	echo "TYPES[\${i}]=\" gauche-effect=na \" " >> ${OF}
+	echo 'NAMES[${i}]="' >> ${OF}
+    	grep   ^.${i}A$  ${RN} >> ${OF}
+    	grep   ^.${i}B$  ${RN} >> ${OF}
+	echo '"' >> ${OF}
+done
+
 ## Plain pentose monosaccharides
-TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=5 formal-charge=0 '
+TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=5 formal-charge=0 gauche-effect=na '
 for i in A D R X ; do 
 	## alpha D
 	echo 'i=$((i+1))' >> ${OF}
@@ -277,7 +319,7 @@ for i in a d r x ; do
     	grep   ^.${i}B$  ${RN} >> ${SL}
 	echo '"' >> ${OF}
 done
-TYPE_BASE=' carbohydrate monosaccharide furanose aldose n-carbon=5 formal-charge=0 '
+TYPE_BASE=' carbohydrate monosaccharide furanose aldose n-carbon=5 formal-charge=0 gauche-effect=unknown '
 for i in A D R X ; do 
 	## alpha D
 	echo 'i=$((i+1))' >> ${OF}
@@ -312,7 +354,7 @@ for i in a d r x ; do
 done
 ## Deoxy pentose monosaccharides
 ## Tyvelose, Abequose
-TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=5 formal-charge=0 deoxy '
+TYPE_BASE=' carbohydrate monosaccharide pyranose aldose n-carbon=5 formal-charge=0 deoxy gauche-effect=na '
 for i in AE TV ; do 
 	# alpha
 	echo 'i=$((i+1))' >> ${OF}
@@ -375,7 +417,7 @@ done
 #####################
 
 ## Plain hexose monosaccharides
-TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=6 formal-charge=0 '
+TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=6 formal-charge=0 gauche-effect=unknown '
 for i in C P B J ; do 
 	## alpha D
 	echo 'i=$((i+1))' >> ${OF}
@@ -408,7 +450,7 @@ for i in c p b j ; do
     	grep   ^.${i}B$  ${RN} >> ${SL}
 	echo '"' >> ${OF}
 done
-TYPE_BASE=' carbohydrate monosaccharide furanose ketose n-carbon=6 formal-charge=0 '
+TYPE_BASE=' carbohydrate monosaccharide furanose ketose n-carbon=6 formal-charge=0 gauche-effect=unknown '
 for i in C P B J ; do 
 	## alpha D
 	echo 'i=$((i+1))' >> ${OF}
@@ -447,19 +489,19 @@ done
 #####################
 ## Pyranose only
 ## KDO
-TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=8 formal-charge=-1 alpha D-isomer deoxy ulosonate '
+TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=8 formal-charge=-1 alpha D-isomer deoxy ulosonate gauche-effect=unknown '
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OF}
 	echo 'NAMES[${i}]=" KDO "' >> ${OF}
 	echo 'KDO' >> ${SL}
 ## KDN 
-TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha D-isomer deoxy ulosonate '
+TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha D-isomer deoxy ulosonate gauche-effect=unknown'
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OF}
 	echo 'NAMES[${i}]=" KDN "' >> ${OF}
 	echo 'KDN' >> ${SL}
 ## Neu5Ac Neu5Gc
-TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha deoxy ulosonate '
+TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha deoxy ulosonate gauche-effect=sialic-acid-tail '
 for i in SA GL ; do 
 	## alpha D
 	echo 'i=$((i+1))' >> ${OF}
@@ -478,14 +520,14 @@ for i in sA gL ; do
     	grep   ^.${i}$  ${RN} >> ${SL}
 	echo '"' >> ${OF}
 done
-TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 beta deoxy ulosonate '
+TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 beta deoxy ulosonate gauche-effect=sialic-acid-tail '
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} D-isomer \" " >> ${OF}
 	echo 'NAMES[${i}]="' >> ${OF}
     	grep   ^.SB$  ${RN} >> ${OF}
     	grep   ^.SB$  ${RN} >> ${SL}
 	echo '"' >> ${OF}
-TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 beta deoxy ulosonate '
+TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 beta deoxy ulosonate gauche-effect=sialic-acid-tail '
 	echo 'i=$((i+1))' >> ${OF}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} L-isomer \" " >> ${OF}
 	echo 'NAMES[${i}]="' >> ${OF}
@@ -494,7 +536,7 @@ TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge
 	echo '"' >> ${OF}
 
 
-## All aldoses that can be 'aglycon' terminals via anomeric-to-anomeric linkage
+## All ketoses that can be 'aglycon' terminals via anomeric-to-anomeric linkage
 AllStandardKetoses=' C P B J c p b j S s '
 AllSpecialKetoses=' GL gL '
 echo "## aldose monosacharides that can be aglycons " >> ${OF}
