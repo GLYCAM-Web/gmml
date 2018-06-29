@@ -58,6 +58,7 @@ namespace MolecularModeling
             typedef std::map<std::string, std::string> DerivativeModificationMap;
             typedef std::vector<std::vector<std::string> > AttachedGlycanStructuresVector;
             typedef std::vector<Glycan::Note*> NoteVector;
+            typedef std::vector<AtomNode*>AtomNodeVector; //Added by ayush on 04/11/18 for TopologyFix in assembly
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
             typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
 	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
@@ -1176,13 +1177,6 @@ namespace MolecularModeling
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
             std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type = "csv");
-            /*! \fn
-            * A function in order to extract information from ontology based on user input
-            * @param searchType The type of search submitted from GlyFinder
-            * @param searchTerm The search term submitted from GlyFinder
-            * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
-            */
-            std::string MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type = "csv");
 
             /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
@@ -1636,7 +1630,6 @@ namespace MolecularModeling
               * @return pattern The discovered pattern of the attached derivative
               */
             std::string CheckxCOO(Atom* target, std::string cycle_atoms_str/*, AtomVector& pattern_atoms*/);
-/** @}*/
             void AddIon(std::string ion_name, std::string lib_file, std::string parameter_file, int ion_count = 0);
             void AddSolvent(double extension, double closeness, Assembly* solvent_component_assembly, std::string lib_file );
             void SplitSolvent(Assembly* solvent, Assembly* solute);
@@ -1762,6 +1755,7 @@ namespace MolecularModeling
             NoteVector notes_;                              /*!< A list of note instances from the Note struct in Glycan name space which is used for representing the potential issues within a structure >*/
             ResidueNodeVector residuenodes_;                /*!< List of residuenodes present in the current object of assembly >*/     //Added by ayush on 11/16/17 for residuenodes in assembly
             MoleculeVector molecules_;                      /*!< List of molecules present in the current object of assembly >*/        //Added by ayush on 11/12/17 for molecules in assembly
+            AtomVector bonded_atoms_bystartdirection_;           /*!< List of atoms bonded based on start point an ddirection in Assembly>*/  //Added by ayush on 04/11/18 for Bonded Atoms based on start-direction in assembly
             PdbFileSpace::InputFile* input_file_;           /*!< A pointer back to the Input object >*/
     };
 
