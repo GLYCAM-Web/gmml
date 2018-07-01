@@ -301,11 +301,11 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
 
 		    AtomVector template_head_atoms = template_residue->GetHeadAtoms();
 		    if (std::find(template_head_atoms.begin(), template_head_atoms.end(), template_atom) != template_head_atoms.end() ){
-			assembly_residue->AddHeadAtom(template_atom);
+			assembly_residue->AddHeadAtom(template_atom_copy);
 		    }
 		    AtomVector template_tail_atoms = template_residue->GetTailAtoms();
 		    if (std::find(template_tail_atoms.begin(), template_tail_atoms.end(), template_atom) != template_tail_atoms.end() ){
-			assembly_residue->AddTailAtom(template_atom);
+			assembly_residue->AddTailAtom(template_atom_copy);
 		    }
 		    AtomNode* template_atom_node = template_atom ->GetNode(); 
 		    new_atom_template_node_map [template_atom_copy] = template_atom_node;
@@ -742,11 +742,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             this->RecursivelySetGeometry(root);
 	    break;
         }
-    }
-    gmml::AtomVector allAtoms = this -> GetAllAtomsOfAssembly();
-    std::cout << "All atoms in assembly: " << std::endl;
-    for (unsigned int b=0; b< allAtoms.size(); b++){
-	std::cout << allAtoms[b]->GetName() << std::endl;	
     }
     std::cout << "Building Assembly From Condensed Sequence Complete......" << std::endl;
 //test
