@@ -256,6 +256,10 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
 	    {
 		Residue* template_residue = all_template_residues[j];
 		Residue* assembly_residue = new Residue();
+		//Set the first residue in the tree to be the aglycon.
+		if (i == 0){
+		    assembly_residue->SetIsAglycon(true);
+		}
 		assembly_residue->SetIsSugarDerivative (condensed_sequence_residue->GetIsDerivative());
 		assembly_residue->SetNode(NULL);	//When residue object is constructed, its node attribute is not set to NULL, causing it to contain garbage node address.So I need to do this.
 		this->AddResidue(assembly_residue);
@@ -513,16 +517,6 @@ void Assembly::SetGlycam06ResidueBonding (std::map<int, std::pair<CondensedSeque
                 existing_tail_atom_neighbors.end() ){
                 tail_atom_node->AddNodeNeighbor(child_head_atom);
             }
-	    //If child residue is a derivative, must remove a hydrogen neighbor of the parent tail atom.
-	    /*if (child_head_atom->GetResidue()->GetIsSugarDerivative()){
-	        gmml::AtomVector parent_tail_neighbors = tail_atom_node->GetNodeNeighbors();
-	        for (unsigned int k = 0; k < parent_tail_neighbors.size(); k++){
-	            if (parent_tail_neighbors[k]->GetName().substr(0,1) == "H"){
-	                parent_tail_atom -> GetResidue() -> RemoveAtom(parent_tail_neighbors[k]);
-	            }
-	        }
-	    }*/
-	
 	}
 
 	//Add all tail/head atoms to corresponding residue's tail/head atoms, as well as corresponding residueNode connecting atoms
@@ -566,10 +560,10 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
     gmml::AtomVector all_head_atoms = parent_residue->GetHeadAtoms();
     for (unsigned int i = 0; i < all_tail_atoms.size(); i++){
 	MolecularModeling::Atom* tail_atom = all_tail_atoms[i];
-	//For non-reducing end terminal residues, tail atom equals head atom. In this case, the tail atoms aren't really connecting to a child residue.
+	//For non-reducing terminal/derivative residues, tail atom equals head atom. In this case, the tail atoms aren't really connecting to a child residue.
 	//If this is the case, stop recursion from further going down the oligosaccharide tree through such tail atoms. 
 	//This if statement below makes sure a tail atom is a head atom at the same time.If so, skip any operations.
-	if (std::find(all_head_atoms.begin(),all_head_atoms.end(),tail_atom) == all_head_atoms.end()){
+	if ( parent_residue->GetIsAglycon() || std::find(all_head_atoms.begin(),all_head_atoms.end(),tail_atom) == all_head_atoms.end()){
 	    gmml::AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
 	    gmml::AtomVector all_atoms_in_residue = parent_residue->GetAtoms();
 	    for (unsigned int j = 0; j < tail_atom_neighbors.size(); j++){
@@ -665,7 +659,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		        }
 
 		        if (psi_atom_1 == NULL || psi_atom_2 == NULL || psi_atom_3 == NULL || psi_atom_4 == NULL ){
-		        //std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
+		            //std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
 		        }
 		        else {
 		            const double dihedral_psi = 0.0;
@@ -715,6 +709,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		    }//else Done setting phi,psi, omega(if exists)
 		    //Start new recursion
 		    MolecularModeling::Residue* new_parent_residue = child_residue;
+		    this->RecursivelySetGeometry(new_parent_residue);
 	        }//if
 	    }//for
 	}//if
@@ -747,6 +742,11 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             this->RecursivelySetGeometry(root);
 	    break;
         }
+    }
+    gmml::AtomVector allAtoms = this -> GetAllAtomsOfAssembly();
+    std::cout << "All atoms in assembly: " << std::endl;
+    for (unsigned int b=0; b< allAtoms.size(); b++){
+	std::cout << allAtoms[b]->GetName() << std::endl;	
     }
     std::cout << "Building Assembly From Condensed Sequence Complete......" << std::endl;
 //test

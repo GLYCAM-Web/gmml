@@ -40,6 +40,7 @@ namespace MolecularModeling
             bool GetIsAnomericCarbon();
 
 	    std::string GetNaming();
+	
 /** @}*/
 
              /////////////////////////////////////////////////////////
@@ -68,6 +69,7 @@ namespace MolecularModeling
             void SetIsAnomericCarbon(bool is_anomeric_carbon);
 
 	    void SetNaming(std::string naming);
+
 /** @}*/
 
             //////////////////////////////////////////////////////////
@@ -88,6 +90,7 @@ namespace MolecularModeling
 	    bool IsSideChain_;						// A boolean indicating if this atom is part of a sidechain.
 	    bool IsAnomericCarbon_;
 	    std::string naming_;
+	    bool is_aglycon_;
 
     };//class
 

@@ -101,6 +101,8 @@ namespace MolecularModeling
 
 	    bool GetIsSugarDerivative();
 
+	    bool GetIsAglycon();
+
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -196,6 +198,8 @@ namespace MolecularModeling
             void ReplaceAtomCoordinates(AtomVector *newAtoms);
 
 	    void SetIsSugarDerivative(bool is_derivative);
+
+	    void SetIsAglycon(bool is_aglycon);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -251,7 +255,8 @@ namespace MolecularModeling
             std::string description_;           /*!< A short description of the residue >*/
             std::string id_;                    /*!< An identifier for a residue that is generated based on the type of the given file from which the structure has to be built >*/
 	    //Added by Yao 06/13/2018
-	    bool is_sugar_derivative_;
+	    bool is_sugar_derivative_ = false;
+	    bool is_aglycon_ = false;
             ResidueNode* node_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
     };
  }

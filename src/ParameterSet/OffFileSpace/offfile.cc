@@ -36,6 +36,7 @@ using OffFileSpace::OffFile;
             ResidueVector residues = assembly->GetResidues();
             unit_name_=assembly->GetName();
             out_file << "!!index array str" << std::endl;
+	    //Yao: "Unit_name" needs to be in double quotes, so I added a pair of double quotes.
             out_file  << "\"" <<unit_name_ << "\"" << std::endl;
             WriteAtomSection(out_file,residues);
             WriteAtomPertInfoSection(out_file,residues);

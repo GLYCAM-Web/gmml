@@ -45,7 +45,6 @@ void MolecularModeling::OligoSaccharideDetectionAtom::SetNaming(std::string nami
 {
     naming_ = naming;
 }
-
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
