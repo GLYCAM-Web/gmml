@@ -29,7 +29,7 @@ cd -
 check_gemshome $gemshome 
 
 #Compile gmml if not compiled:
-echo "Compiling gmml if necessary with ./make.sh NoClean no-wrap"
+echo "Compiling gmml with ./make.sh no_clean no_wrap"
 cd $GEMSHOME/
  #Add these removes so the tests don't pass on an old version of the library
  rm -f ./gmml/bin/libgmml.so.1.0.0
@@ -45,12 +45,25 @@ cd $GEMSHOME/gmml/tests/
  result=$? # record the exit status from compile_run_tests.bash
 cd -
 if [ $result -eq 0 ] ; then
-    echo  "All tests have passed. Pushing is allowed."
-    exit 0
+    echo  "GMML level tests have passed. Wrapping and doing gems level tests."
+    cd $GEMSHOME/
+     ./make.sh no_clean wrap
+    cd $GEMSHOME/tests/
+     bash run_tests.sh
+     gems_tests_result=$? # record the exit status of previous command
+     if [ $gems_tests_result -eq 0 ] ; then
+         echo "GMML and GEMS tests have passed. Pushing is allowed."
+         exit 0
+     else
+         echo "GEMS level tests have failed. Make sure you have pulled the latest version. At time of writing (July 2018) you probably need the gems-dev branch if using the gmml-dev branch." 
+         echo "If you are up-to-date, this failure indicates that you have caused the outputs of $GEMSHOME/tests to change. You can open the $GEMSHOME/tests/run_tests.sh file and run the test line by line to get an output file. Compare it to the saved \"correct\" version in $GEMSHOME/tests/correct_outputs." 
+         echo "Sometimes the changes you make are fine, and you just need to update what the correct output is by overwriting the old output. Make sure it is ok though, or you will be mur-didely-urdered."
+         exit 1
+     fi
 else
     echo "
          *****************************************************************
-         The tests have failed! 
+         The GMML level tests have failed! 
          Push cancelled.
          *****************************************************************
          "
