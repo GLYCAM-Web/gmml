@@ -6,10 +6,12 @@
 #include <iostream>
 #include <vector>
 #include "../../common.hpp"
+#include "../../gmml.hpp"
 #include "../../MolecularModeling/assembly.hpp"
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/atomnode.hpp"
+#include "../../MolecularMetadata/elementattributes.hpp"
 
 namespace OffFileSpace
 {
