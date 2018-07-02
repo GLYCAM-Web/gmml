@@ -86,7 +86,6 @@ using OffFileSpace::OffFile;
 
                     stream << " \"" << atom->GetName() << "\" " << "\"" << atom->MolecularDynamicAtom::GetAtomType() << "\" " << "0" << " " << residue_count << " " << FLAG << " "
                     << atom_count << " " << element_index << " " << std::fixed << atom->GetCharge() << std::endl;
->>>>>>> TopWriterFix
                 }
             }
     }
