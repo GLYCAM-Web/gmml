@@ -14,8 +14,8 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
   query << "?pdb_file     :identifier    \"" << pdb_id << "\";\n";
   query << "              :hasOligo      ?oligo.\n";
   query << "FILTER regex(?oligo, \"" << oligo << "$\")\n";
-  gmml::FindReplaceString(oligo_sequence, "[", "\\\\[");
-  gmml::FindReplaceString(oligo_sequence, "]", "\\\\]");
+  // gmml::FindReplaceString(oligo_sequence, "[", "\\\\[");
+  // gmml::FindReplaceString(oligo_sequence, "]", "\\\\]");
   gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
   query << "?oligo        :oligoName     \"" << oligo_sequence << "\".\n";
   query << "?pdb_file     :hasTitle               ?title;\n";
