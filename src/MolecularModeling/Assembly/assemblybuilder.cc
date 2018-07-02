@@ -283,6 +283,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
 		    template_atom_copy->SetResidue(assembly_residue);
 		    template_atom_copy->SetName(template_atom->GetName());
 		    template_atom_copy->SetNaming(template_atom->GetNaming());
+		    template_atom_copy->SetElementSymbol(template_atom->GetElementSymbol());
 	    //Attention: SetAtomType()function is overloaded as MolecularModeling::Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
 	    //Likiwise, GetAtomType() is also overloaded.
             //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called MolecularModeling::Atom::GetAtomType(). The result is empty.
