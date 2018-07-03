@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Manually change this number as you add tests:
-number_of_tests=6
+number_of_tests=7
 tests_passed=0
 
 # Required for compiling
@@ -99,6 +99,23 @@ else
     printf "Test FAILED!.\n"
 fi
 rm ring_shape_detection ring_shape_detection.txt ring_conformations.txt > /dev/null 2>&1
+
+###################### Test 07 ######################
+printf "Testing buildBySequence... "
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/buildBySequence.cc -lgmml -o buildBySequence
+./buildBySequence > /dev/null 2>&1
+if [ -f buildBySequence.pdb ]; then
+    if ! cmp buildBySequence.pdb tests/correct_outputs/buildBySequence.pdb > /dev/null 2>&1; then
+        printf "Test FAILED!.\n"
+    else
+        printf "Test passed.\n"
+        ((tests_passed++))
+    fi
+else
+    printf "Test FAILED!.\n"
+fi
+rm buildBySequence.pdb buildBySequence > /dev/null 2>&1
+
 
 ############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then
