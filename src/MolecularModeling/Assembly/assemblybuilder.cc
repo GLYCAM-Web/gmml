@@ -718,6 +718,12 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
     }//for
 }
 
+//This is a wrapper for Python to call.
+void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence, std::string prep_file_path)
+{
+    PrepFileSpace::PrepFile* prepfile = new PrepFileSpace::PrepFile(prep_file_path);
+    this->BuildAssemblyFromCondensedSequence(condensed_sequence, prepfile);
+}
 //New BuildAssemblyFromCondensedSequence() created by Yao on 06/25/2018. This will replace the old version below.
 void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file)
 {

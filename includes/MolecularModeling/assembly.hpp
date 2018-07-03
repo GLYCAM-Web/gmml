@@ -349,6 +349,8 @@ namespace MolecularModeling
 
 	    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file);	//Created by Yao 06/25/2018, replace old version above
 
+	    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, std::string prep_file_path);	//Created by Yao 07/02/2018, a temporary wrapepr for Python to call.
+
 	    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >
 		 ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, TemplateAssembly* template_assembly);
 
