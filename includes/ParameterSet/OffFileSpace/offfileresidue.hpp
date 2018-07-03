@@ -18,7 +18,8 @@ namespace OffFileSpace
             /*! \def
               * A mapping between the atom order and its atom object
               */
-            typedef std::map<int, OffFileAtom*> AtomMap;
+          //  typedef std::map<int, OffFileAtom*> AtomMap;
+            typedef std::vector<OffFileSpace::OffFileAtom*> OffFileAtomVector;
 
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
@@ -27,24 +28,6 @@ namespace OffFileSpace
               * Default constructor
               */
             OffFileResidue();
-            /*! \fn
-              * Constructor with given atom name
-              * @param name Atom name
-              */
-            OffFileResidue(std::string& name, int listing_index);
-            /*! \fn
-              * Constructor with given all information about an atom
-              * @param name Atom name
-              * @param atoms A vector of atoms (corresponding to a Off file) belong to a residue
-              * @param head_atom_index Index of the atom in a residue which is head
-              * @param tail_atom_index Index of the atom in a residue which is tail
-              * @param box_angle Angle of a box surrounding a residue
-              * @param box_length Length of the surrounding box
-              * @param box_width Width of the surrounding box
-              * @param box_height Height of the surrounding box
-              */
-            OffFileResidue(std::string& name, int listing_index, std::vector<OffFileAtom*>& atoms, int head_atom_index, int tail_atom_index, double box_angle = 0,
-                               double box_length = 0, double box_width = 0, double box_height = 0);
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -58,7 +41,7 @@ namespace OffFileSpace
               * An accessor function in order to access to the atoms belonging to the current object
               * @return atoms_ attribute of the current residue
               */
-            AtomMap GetAtoms();
+            OffFileAtomVector GetAtoms();
             /*! \fn
               * An accessor function in order to access to a atom belonging to the current object by its atom index
               * @param index Index of the target atom in the current residue
@@ -128,7 +111,7 @@ namespace OffFileSpace
               * Set the atoms_ attribute of the current atom
               * @param atoms A set of atoms belonging to the current residue
               */
-            void SetAtoms(AtomMap& atoms);
+            void SetAtoms(OffFileAtomVector atoms);
             /*! \fn
               * A mutator function in order to add an atom belonging to the current object
               * Add a new entry to the atoms_ attribute of the current atom
@@ -192,8 +175,8 @@ namespace OffFileSpace
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////
-            std::string name_;          /*!< Residue nam; Set by each line of the index section of a Off file */
-            AtomMap atoms_;             /*!< List of atoms belonging to the residue mapped to their order numbers; set by various sections (atom, connectivity, positions) of a Off file*/
+            std::string name_;          /*!< Residue name.Set by each line of the index section of a Off file */
+            OffFileAtomVector atoms_;             /*!< List of atoms belonging to the residue mapped to their order numbers; set by various sections (atom, connectivity, positions) of a Off file*/
             double box_angle_;          /*!< Box angle; set by the 2nd line of the boundbox section of a Off file*/
             double box_length_;         /*!< Box length; set by the 3rd line of the boundbox section of a Off file*/
             double box_width_;          /*!< Box width; set by the 4th line of the boundbox section of a Off file*/
