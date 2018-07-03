@@ -1146,11 +1146,11 @@ Assembly::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector ato
 
 // //Added by ayush on 06/16/18 for OffFile
 void Assembly::CreateOffFileFromAssembly(std::string file_name, int CoordinateIndex)
-{
-       std::cout<<"before assembly"<<std::endl;
+{ 
     OffFileSpace::OffFile* off_file = new OffFileSpace::OffFile();
-     std::cout<<"In assembly"<<std::endl;
     off_file->Write(file_name, CoordinateIndex, this);
+    std::cout<<"end of assembly"<<std::endl;
+
 }
 
 //////////////////////////////////////////////////////////

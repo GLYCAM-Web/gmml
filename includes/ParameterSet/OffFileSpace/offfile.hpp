@@ -29,7 +29,7 @@ namespace OffFileSpace
             typedef std::vector<OffFileSpace::OffFileResidue*> OffFileResidueVector;
             typedef std::vector<OffFileSpace::OffFileAtom*> OffFileAtomVector;
             typedef std::map<int, int>AtomIndexMap;
-            typedef std::map<int, std::string>AtomBondingMap;
+            typedef std::map<int, int>AtomBondingMap;
 
 
             //////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ namespace OffFileSpace
               * @param CoordinateIndex The coodinate index of the coordinate vector
               * return off_file_residues_ The off file residues of the current off assembly
               */
-            OffFileResidueVector PopulateOffFileResiduesFromAssembly(ResidueVector assembly_residues,int CoordinateIndex);
+            void PopulateOffFileResiduesFromAssembly(ResidueVector assembly_residues,int CoordinateIndex);
             /*! \fn
               * A function to write an assembly in Off file format
               * @param out_stream Output stream
@@ -83,7 +83,7 @@ namespace OffFileSpace
               * A function in order to write the atom pert info section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteAtomPertInfoSection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteAtomPertInfoSection(std::ofstream& stream, OffFileResidueVector off_file_residues);
 
             /*! \fn
               * A function in order to write the bound box section of a specified residue into an output stream
@@ -95,25 +95,25 @@ namespace OffFileSpace
               * A function in order to write the child sequence section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteChildSequenceSection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteChildSequenceSection(std::ofstream& stream,OffFileResidueVector off_file_residues);
 
             /*! \fn
               * A function in order to write the connect section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteConnectSection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteConnectSection(std::ofstream& stream, OffFileResidueVector off_file_residues);
 
             /*! \fn
               * A function in order to write the connectivity section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteConnectivitySection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteConnectivitySection(std::ofstream& stream,ResidueVector assembly_residues);
 
             /*! \fn
               * A function in order to write the hierarchy section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteHierarchySection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteHierarchySection(std::ofstream& stream, OffFileResidueVector off_file_residues);
 
             /*! \fn
               * A function in order to write the name section of a specified residue into an output stream
@@ -125,7 +125,7 @@ namespace OffFileSpace
               * A function in order to write the position section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WritePositionSection(std::ofstream& stream, ResidueVector assembly_residues, int CoordinateIndex);
+            void WritePositionSection(std::ofstream& stream,ResidueVector assembly_residues, int CoordinateIndex);
 
             /*! \fn
               * A function in order to write the residue connect section of a specified residue into an output stream
@@ -149,7 +149,7 @@ namespace OffFileSpace
               * A function in order to write the velocities section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteVelocitiesSection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteVelocitiesSection(std::ofstream& stream, OffFileResidueVector off_file_residues);
 
 
             //////////////////////////////////////////////////////////
