@@ -6,6 +6,8 @@
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/ParameterSet/OffFileSpace/offfile.hpp"
+#include "../../../includes/ParameterSet/OffFileSpace/offfileresidue.hpp"
+#include "../../../includes/ParameterSet/OffFileSpace/offfileatom.hpp"
 
 using OffFileSpace::OffFile;
 
@@ -35,58 +37,156 @@ using OffFileSpace::OffFile;
             std::ofstream out_file;
             out_file.open(file_name.c_str());
             ResidueVector residues = assembly->GetResidues();
+             std::cout<<"aaa"<<std::endl;
             unit_name_=assembly->GetName();
+              std::cout<<"bb"<<std::endl;
             out_file << "!!index array str" << std::endl;
             out_file << " \"" << unit_name_ << "\"" << std::endl;
-            WriteAtomSection(out_file,residues);
-            WriteAtomPertInfoSection(out_file,residues);
-            WriteBoundBoxSection(out_file,assembly);
-            WriteChildSequenceSection(out_file,residues);
-            WriteConnectSection(out_file,residues);
-            WriteConnectivitySection(out_file,residues);
-            WriteHierarchySection(out_file,residues);
-            WriteNameSection(out_file);
-            WritePositionSection(out_file,residues, CoordinateIndex);
-            WriteResidueConnectSection(out_file,residues);
-            WriteResiduesSection(out_file,residues);
-            WriteSolventCapSection(out_file);
-            WriteVelocitiesSection(out_file,residues);
+
+             std::cout<<"Before PopulateOffFileResiduesFromAssembly"<<std::endl;
+            OffFileResidueVector off_file_residues=PopulateOffFileResiduesFromAssembly(residues,CoordinateIndex);
+            std::cout<<"After PopulateOffFileResiduesFromAssembly"<<std::endl;
+            WriteAtomSection(out_file,this->off_file_residues_);
+//            WriteAtomPertInfoSection(out_file,residues);
+//            WriteBoundBoxSection(out_file,assembly);
+//            WriteChildSequenceSection(out_file,residues);
+//            WriteConnectSection(out_file,residues);
+//            WriteConnectivitySection(out_file,residues);
+//            WriteHierarchySection(out_file,residues);
+//            WriteNameSection(out_file);
+//            WritePositionSection(out_file,residues, CoordinateIndex);
+//            WriteResidueConnectSection(out_file,residues);
+//            WriteResiduesSection(out_file,residues);
+//            WriteSolventCapSection(out_file);
+//            WriteVelocitiesSection(out_file,residues);
             out_file.close();
     }
 
-    void OffFileSpace::OffFile::WriteAtomSection(std::ofstream &stream, ResidueVector assembly_residues)
+    OffFileSpace::OffFile::OffFileResidueVector OffFileSpace::OffFile::PopulateOffFileResiduesFromAssembly(ResidueVector assembly_residues,int CoordinateIndex)
     {
+            int ResidueIndex=0;
+            for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+            {     std::cout<<"000000"<<std::endl;
+                ResidueIndex++;
+                OffFileResidue* off_file_residue = new OffFileResidue();
 
-        const std::string FLAG = "131072";
-        int residue_count=0;
-
-        stream << "!entry." << unit_name_ << ".unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg" << std::endl;
-           
-           for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
-            {
-                int atom_count=0;
-                MolecularModeling::Residue* residue = (*it);
-                residue_count++;
-                AtomVector all_atoms_of_residue = residue->GetAtoms();
+                MolecularModeling::Residue* assembly_residue = (*it);
+                std::string name=assembly_residue->GetName();
+                off_file_residue->SetName(name);
+                off_file_residue->SetListingIndex(ResidueIndex);
+                
+                  AtomVector all_atoms_of_residue = assembly_residue->GetAtoms();
+                std::cout<<"1111111"<<std::endl;
+                int AtomIndex=0;
                 for(AtomVector::iterator it = all_atoms_of_residue.begin(); it != all_atoms_of_residue.end(); it++)
                 {
-                    int element_index=0;
-                    MolecularModeling::Atom* atom = *it;
-                    atom_count++;
-                    std::string atom_element_symbol= atom->GetElementSymbol();
-
+                    AtomIndex++;
+                    MolecularModeling::Atom* residue_atom = *it;
+                    OffFileAtom* off_file_atom= new OffFileAtom();
+                    std::cout<<"222222"<<std::endl;
+                    //setting values from residue atom to off file atom
+                    off_file_atom->SetName(residue_atom->GetName());
+                    off_file_atom->SetType(residue_atom->MolecularDynamicAtom::GetAtomType());
+                    off_file_atom->SetResidueIndex(ResidueIndex);
+                    off_file_atom->SetAtomIndex(AtomIndex);
+                    std::cout<<"333333"<<std::endl;
+                    int AtomicNumber;
+                    std::string atom_element_symbol= residue_atom->GetElementSymbol();
                    int size_of_lookup_map = sizeof(gmml::ElementAtributes::Elements) / sizeof(gmml::ElementAtributes::Elements[0]);
                        for (int i = 0; i < size_of_lookup_map; i++){
                                   gmml::ElementAtributes::ElementAttributeInfo entry = gmml::ElementAtributes::Elements[i];
                                   if (atom_element_symbol.compare(entry.elment_type_) == 0){
-                                      element_index = entry.atomic_number_;
+                                      AtomicNumber = entry.atomic_number_;
                                   }
                               }
 
+                     std::cout<<"44444"<<std::endl;
+                    off_file_atom->SetAtomicNumber(AtomicNumber);
+                    off_file_atom->SetCoordinate(residue_atom->GetCoordinates().at(CoordinateIndex));
+                    off_file_atom->SetAtomCharge(residue_atom->GetCharge());
+                    this->atom_index_map_[residue_atom->GetIndex()]=AtomIndex;
 
-                    stream << " \"" << atom->GetName() << "\" " << "\"" << atom->MolecularDynamicAtom::GetAtomType() << "\" " << "0" << " " << residue_count << " " << FLAG << " "
-                    << atom_count << " " << element_index << " " << std::fixed << atom->GetCharge() << std::endl;
+                    off_file_residue->AddAtom(off_file_atom);
                 }
+
+                //for adding head and tail atoms of residues
+                AtomVector head_atoms_of_residue= assembly_residue->GetHeadAtoms();
+                AtomVector tail_atoms_of_residue= assembly_residue->GetTailAtoms();
+
+                std::map<int,int>::iterator it1,it2;
+                int head_temp_index= head_atoms_of_residue.at(0)->GetIndex();
+                it1 = atom_index_map_.find(head_temp_index);
+                    if(it1 != atom_index_map_.end()){
+                          off_file_residue->SetHeadAtomIndex(atom_index_map_[head_temp_index]);
+                    }
+
+
+                int tail_temp_index=tail_atoms_of_residue.at(0)->GetIndex();
+                  it2 = atom_index_map_.find(tail_temp_index);
+                    if(it2 != atom_index_map_.end()){
+                          off_file_residue->SetTailAtomIndex(atom_index_map_[tail_temp_index]);
+                    }
+
+                    //adding an off file residue to the offfileresidue vector
+                    off_file_residues_.push_back(off_file_residue);
+            }
+
+
+            //For populating the bounding information 
+
+       // gmml::AtomVector center_atoms_visited = gmml::AtomVector();
+        for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+        {
+            MolecularModeling::Residue* residue = (*it);
+            AtomVector all_atoms_of_residue = residue->GetAtoms();
+            for(AtomVector::iterator it2 = all_atoms_of_residue.begin(); it2 != all_atoms_of_residue.end(); it2++)
+            {
+                MolecularModeling::Atom* atom = (*it2);
+
+                  int main_atom_index;
+                    //adding the bonding atom index to 
+                    std::map<int,int>::iterator it = atom_index_map_.find(atom->GetIndex());
+                    if(it != atom_index_map_.end()){
+                            main_atom_index = atom_index_map_[atom->GetIndex()];
+                    }
+
+
+                std::string bonded_index;
+                AtomVector bonded_atoms = atom->GetNode()->GetNodeNeighbors();
+                for(AtomVector::iterator it3 = bonded_atoms.begin(); it3 != bonded_atoms.end(); it3++)
+                {
+                    MolecularModeling::Atom* bonded_atom = (*it3);
+
+                    int bonded_atom_index= bonded_atom->GetIndex();
+                    std::map<int,int>::iterator it = atom_index_map_.find(bonded_atom_index);
+                    if(it != atom_index_map_.end()){
+                      std::size_t found = bonded_index.find_first_of(atom_index_map_[bonded_atom_index]);
+                      if(found==std::string::npos)
+                      {
+                        bonded_index.append(" "+atom_index_map_[bonded_atom_index]);
+                      }
+                    }
+                }
+                atom_bonding_map_[main_atom_index]=bonded_index;
+            }
+        }
+    }
+    void OffFileSpace::OffFile::WriteAtomSection(std::ofstream &stream, OffFileResidueVector off_file_residues)
+    {
+
+        const std::string FLAG = "131072";
+        stream << "!entry." << unit_name_ << ".unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg" << std::endl;
+           
+           for(OffFileResidueVector::iterator it = off_file_residues.begin(); it != off_file_residues.end(); it++)
+            {
+                    OffFileSpace::OffFileResidue* residue =(*it);
+                    OffFileAtomVector residue_atoms=residue->GetAtoms();
+                    for(OffFileAtomVector::iterator it1 = residue_atoms.begin(); it1 != residue_atoms.end(); it1++)
+                    {
+                        OffFileAtom* atom=(*it1);
+                        stream << " \"" << atom->GetName() << "\" " << "\"" << atom->GetType() << "\" " << "0" << " " << atom->GetResidueIndex() << " " << FLAG << " "
+                         << atom->GetAtomIndex() << " " << atom->GetAtomicNumber() << " " << std::fixed << atom->GetCharge() << std::endl;
+                    }
             }
     }
     void OffFileSpace::OffFile::WriteAtomPertInfoSection(std::ofstream& stream, ResidueVector assembly_residues)

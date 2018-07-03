@@ -10,22 +10,6 @@ using OffFileSpace::OffFileAtom;
 OffFileAtom::OffFileAtom() : type_(""), name_(""), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
     atom_order_(0) {}
 
-OffFileAtom::OffFileAtom(std::string name,std::string type, int residue_index, int atom_index, int atomic_number, double charge) :
-    type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge), coordinate_(),
-    atom_order_(0) {}
-
-OffFileAtom::OffFileAtom(std::string name,std::string type,int residue_index, int atom_index, int atomic_number, double charge,
-                                 GeometryTopology::Coordinate coordinate, std::vector<int> bonded_atoms_indices, int atom_order) :
-    type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge),
-    coordinate_(coordinate), atom_order_(atom_order)
-{
-    bonded_atoms_indices_.clear();
-    for(std::vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
-    {
-        bonded_atoms_indices_.push_back(*it);
-    }
-}
-
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -118,13 +102,14 @@ void OffFileAtom::SetAtomicNumber(int atomic_number)
 }
 
 /// Set the postion of the atom
-void OffFileAtom::SetCoordinate(GeometryTopology::Coordinate& coordinate)
+void OffFileAtom::SetCoordinate(GeometryTopology::Coordinate* coordinate)
 {
-    coordinate_.SetX(coordinate.GetX());
-    coordinate_.SetY(coordinate.GetY());
-    coordinate_.SetZ(coordinate.GetZ());
+    coordinate_.SetX(coordinate->GetX());
+    coordinate_.SetY(coordinate->GetY());
+    coordinate_.SetZ(coordinate->GetZ());
 }
 
+/*
 /// Set all the bonded atom indices to the current atom
 void OffFileAtom::SetBondedAtomsIndices(const std::vector<int> bonded_atoms_indices)
 {
@@ -134,7 +119,7 @@ void OffFileAtom::SetBondedAtomsIndices(const std::vector<int> bonded_atoms_indi
         bonded_atoms_indices_.push_back(*it);
     }
 }
-
+*/
 /// Add a new bonded atom index to the list of bonded atom indices
 void OffFileAtom::AddBondedAtomIndex(int index)
 {
@@ -147,6 +132,10 @@ void OffFileAtom::SetAtomOrder(int atom_order)
     atom_order_ = atom_order;
 }
 
+void OffFileAtom::SetAtomCharge(double atom_charge)
+{
+    charge_=atom_charge;
+}
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////

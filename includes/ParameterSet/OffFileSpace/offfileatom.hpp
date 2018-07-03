@@ -19,31 +19,6 @@ namespace OffFileSpace
               */
             OffFileAtom();
 
-            /*! \fn
-              * Constructor with given set of values of essential attributes
-              * @param name Atom name
-              * @param type Atom type
-              * @param residue_index Index of residue that the atom belongs to
-              * @param atom_index Index of the atom in the belonging residue
-              * @param atomic_number Atomic number of the atom
-              * @param charge Charge of the atom
-              */
-            OffFileAtom(std::string name, std::string type, int residue_index, int atom_index, int atomic_number, double charge);
-            /*! \fn
-              * Constructor with given set of values for all attributes
-              * @param name Atom name
-              * @param type Atom type
-              * @param residue_index Index of residue that the atom belongs to
-              * @param atom_index Index of the atom in the belonging residue
-              * @param atomic_number Atomic number of the atom
-              * @param charge Charge of the atom
-              * @param coordinate Position of the atom in cartesian coordinate
-              * @param bondend_atom_indices List of atom indices connected (bonded) to the atom
-              * @param atom_order Order of the atom in which the atom information has been written in a Off file
-              */
-            OffFileAtom(std::string name,std::string type, int residue_index, int atom_index, int atomic_number, double charge,
-                            GeometryTopology::Coordinate coordinate, std::vector<int> bonded_atoms_indices, int atom_order);
-
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
             //////////////////////////////////////////////////////////
@@ -135,7 +110,7 @@ namespace OffFileSpace
               * Set the coordinate_ attribute of the current atom
               * @param coordinate The position of the current object in the cartesian coordinate
               */
-            void SetCoordinate(GeometryTopology::Coordinate& coordinate);
+            void SetCoordinate(GeometryTopology::Coordinate* coordinate);
             /*! \fn
               * A mutator function in order to set the list of bonded atom indices of the current object
               * Set the bonded_atom_indices_ attribute of the current atom
@@ -154,6 +129,13 @@ namespace OffFileSpace
               * @param atom_order_ written order of the current object in a library file
               */
             void SetAtomOrder(int atom_order);
+
+            /*! \fn
+              * A mutator function in order to set the atom charge of the current object
+              * Set the charge_ attribute of the current atom
+              * @param charge charge of the atom in the off file
+              */
+            void SetAtomCharge(double charge);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
