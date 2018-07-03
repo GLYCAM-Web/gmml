@@ -29,6 +29,8 @@ cd -
 check_gemshome $gemshome 
 
 #Compile gmml if not compiled:
+echo "Pulling any gmml changes"
+git pull
 echo "Compiling gmml with ./make.sh no_clean no_wrap"
 cd $GEMSHOME/
  #Add these removes so the tests don't pass on an old version of the library
@@ -47,6 +49,7 @@ cd -
 if [ $result -eq 0 ] ; then
     echo  "GMML level tests have passed. Wrapping and doing gems level tests."
     cd $GEMSHOME/
+     git pull
      ./make.sh no_clean wrap
     cd $GEMSHOME/tests/
      bash run_tests.sh
