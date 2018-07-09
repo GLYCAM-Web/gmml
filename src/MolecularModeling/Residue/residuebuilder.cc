@@ -72,10 +72,6 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
             std::stringstream atom_id;
             assembly_atom->SetName(atom_name);
 	    assembly_atom->SetNaming("glycam06");
-            //atom_id << atom_name << "_" << serial_number << "_" << id;
-	    //For testing purpose, need to make atom id long enough to prevent seg fault. C1_1196_NAG_A_78_?_?_1
-            //atom_id << atom_name << "_" << serial_number << "_" << prep_residue->GetName() << "_" << "A" << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
-            //assembly_atom->SetId(atom_id.str());
     
 	    //Attention: SetAtomType()function is overloaded as MolecularModeling::Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
 	    //Likewise, GetAtomType() is also overloaded.

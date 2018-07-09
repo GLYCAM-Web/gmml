@@ -602,9 +602,31 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		        this->SetAngle(non_hydrogen_tail_atom_neighbor, tail_atom, head_atom_of_child_residue, angle_to_set);
 		    }
 		
-		    //If child is a derivative,or parent is an  aglycon, skip setting dihedrals
+		    //If child is a derivative, set only one dihedral: HX-CX-OX(tail atom)-head atom. Set this to 0 degree, making the derivative head eclipse the hydrogen. This is a general solution for bad derivative angles
+		    //This torsion closely resembles the psi torsion for regular sugar-sugar connection.
 		    if (child_residue->GetIsSugarDerivative()){
-		        //std::cout << "Warning: skip setting dihedrals for derivative/aglycon residue " << child_residue->GetName() << std::endl;
+			std::cout << "Setting derivative psi torsion for residue: " << child_residue->GetName() <<std::endl;
+		        MolecularModeling::Atom* derivative_atom_4 = head_atom_of_child_residue;
+		        MolecularModeling::Atom* derivative_atom_3 = tail_atom;
+		        MolecularModeling::Atom* derivative_atom_2 = non_hydrogen_tail_atom_neighbor;
+		        MolecularModeling::Atom* derivative_atom_1 = NULL;
+		        gmml::AtomVector derivative_atom_2_neighbors = derivative_atom_2->GetNode()->GetNodeNeighbors();
+		        //Derivative atom 1 should be a exocyclic (normally hydrogen) neighbor of the neighbor of tail atom (neighbor of neighbor of tail oxygen), for example: H4-C4-O4-C1
+		        for (unsigned int k = 0; k < derivative_atom_2_neighbors.size(); k++){
+			    if (!derivative_atom_2_neighbors[k]->GetIsCycle() && derivative_atom_2_neighbors[k] != derivative_atom_3){
+			        derivative_atom_1 = derivative_atom_2_neighbors[k];
+			    }
+		        }
+			if (derivative_atom_1 == NULL || derivative_atom_2 == NULL || derivative_atom_3 == NULL || derivative_atom_4 == NULL ){
+                            //std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
+                        }
+                        else {
+			    std::cout << "Derivative psi: " << derivative_atom_1->GetName() << "-" << derivative_atom_2->GetName() << "-" << derivative_atom_3->GetName() << "-" << derivative_atom_4->GetName() <<std::endl;
+                            const double derivative_psi = 0.0;
+                            this->SetDihedral(derivative_atom_1, derivative_atom_2, derivative_atom_3, derivative_atom_4, derivative_psi);
+                        }
+
+			
 		    }
 		    //Otherwise,attempt setting dihedrals
 		    else{
@@ -683,7 +705,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		            gmml::AtomVector omega_atom_3_neighbors = omega_atom_3->GetNode()->GetNodeNeighbors();
 		            for (gmml::AtomVector::iterator atom_it4 = omega_atom_3_neighbors.begin(); atom_it4 != omega_atom_3_neighbors.end(); atom_it4++){
 			        MolecularModeling::Atom* neighbor = *atom_it4;
-			        if (neighbor->GetName().substr(0,1) != "H" && neighbor != omega_atom_4){
+			        if (neighbor->GetElementSymbol() != "H" && neighbor != omega_atom_4){
 			            omega_atom_2 = neighbor;
 			        }
 		            }
@@ -693,7 +715,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 			    gmml::AtomVector omega_atom_2_neighbors = omega_atom_2->GetNode()->GetNodeNeighbors();
 			    for (gmml::AtomVector::iterator atom_it5 = omega_atom_2_neighbors.begin(); atom_it5 != omega_atom_2_neighbors.end(); atom_it5++){
 			        MolecularModeling::Atom* neighbor = *atom_it5;
-			        if (neighbor->GetName().substr(0,1) == "H" && neighbor != omega_atom_3){
+			        if (neighbor->GetElementSymbol() != "H" && neighbor != omega_atom_3){
 				    omega_atom_1 = neighbor;
 			        }
 			    }
